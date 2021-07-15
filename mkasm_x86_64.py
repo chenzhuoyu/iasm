@@ -5,6 +5,7 @@ import copy
 
 from typing import List
 from typing import Tuple
+from typing import Iterable
 from opcodes import x86_64
 
 def instruction_set():
@@ -28,9 +29,6 @@ def instruction_set():
 instrs = {}
 for instr in instruction_set():
     for form in instr.forms:
-        # TODO: remove this
-        if not (form.gas_name.startswith('j') or form.gas_name.startswith('add') or form.gas_name == 'vzeroupper'): # 'vpperm'):
-            continue
         if all([v.type not in ('r8l', 'r16l', 'r32l', 'moffs32', 'moffs64') for v in form.operands]):
             name = form.gas_name.upper()
             if name not in instrs:
@@ -123,6 +121,11 @@ EVEXCHECKS = {
     'vm64y' : 'isEVEXVMY(%s)',
 }
 
+VEXBYTES = {
+    'VEX': '0xc4',
+    'XOP': '0x8f',
+}
+
 ISAMAPPING = {
     'CPUID'           : 'ISA_CPUID',
     'RDTSC'           : 'ISA_RDTSC',
@@ -198,16 +201,18 @@ def require_isa(isa: List[x86_64.ISAExtension]) -> str:
         flags.append(ISAMAPPING[v.name])
     return ' | '.join(flags)
 
-def operand_match(ops: List[x86_64.Operand], avx512: bool) -> str:
-    checks = []
+def operand_match(ops: List[x86_64.Operand], argc: int, avx512: bool) -> Iterable[str]:
     for i, op in enumerate(ops):
-        if op.extended_size is not None and op.type in IMMCHECKS:
-            checks.append(IMMCHECKS[op.type] % ('args[%d]' % i, op.extended_size))
-        elif avx512 and op.type in EVEXCHECKS:
-            checks.append(EVEXCHECKS[op.type] % 'args[%d]' % i)
+        if i < argc:
+            argv = 'v%d' % i
         else:
-            checks.append(OPCHECKS[op.type] % 'args[%d]' % i)
-    return ' && '.join(checks)
+            argv = 'vv[%d]' % (i - argc)
+        if op.extended_size is not None and op.type in IMMCHECKS:
+            yield IMMCHECKS[op.type] % (argv, op.extended_size)
+        elif avx512 and op.type in EVEXCHECKS:
+            yield EVEXCHECKS[op.type] % argv
+        else:
+            yield OPCHECKS[op.type] % argv
 
 def generate_encoding(enc: x86_64.Encoding, ops: List[x86_64.Operand]) -> Tuple[str, List[str]]:
     buf = []
@@ -265,7 +270,7 @@ def generate_encoding(enc: x86_64.Encoding, ops: List[x86_64.Operand]) -> Tuple[
             if item.type == 'VEX' and item.mmmmm == 0b00001 and item.W == 0:
                 if item.R == 1 and item.X == 1 and item.B == 1:
                     buf.append('m.emit(0xc5)')
-                    buf.append('m.emit(0x%02x)' % (0xf8 | int(item.L << 2) | item.pp))
+                    buf.append('m.emit(0x%02x)' % (0xf8 | (item.L << 2) | int(item.pp)))
                 else:
                     args = [str(int(item.L << 2) | item.pp)]
                     if isinstance(item.R, x86_64.Operand):
@@ -285,10 +290,105 @@ def generate_encoding(enc: x86_64.Encoding, ops: List[x86_64.Operand]) -> Tuple[
                     buf.append('m.vex2(%s)' % ', '.join(args))
                     flags.append('_VEX2')
             else:
-                pass
+                if isinstance(item.X, x86_64.Operand):
+                    args = [
+                        VEXBYTES[item.type],
+                        bin(item.mmmmm),
+                        '0x%02x' % ((item.W << 7) | (item.L << 2) | int(item.pp)),
+                    ]
+                    if isinstance(item.R, x86_64.Operand):
+                        args.append('hcode(v[%d])' % ops.index(item.R))
+                    else:
+                        args.append('0')
+                    args.append('addr(v[%d])' % ops.index(item.X))
+                    if isinstance(item.vvvv, x86_64.Operand):
+                        args.append('hlcode(v[%d])' % ops.index(item.vvvv))
+                    else:
+                        args.append('0')
+                    buf.append('m.vex3(%s)' % ', '.join(args))
+                else:
+                    buf.append('m.emit(%s)' % VEXBYTES[item.type])
+                    v0 = '0x%02x' % (0xe0 | item.mmmmm)
+                    if isinstance(item.R, x86_64.Operand):
+                        v0 += ' ^ (hcode(v[%d]) << 7)' % ops.index(item.R)
+                    if isinstance(item.B, x86_64.Operand):
+                        v0 += ' ^ (hcode(v[%d]) << 5)' % ops.index(item.B)
+                    buf.append('m.emit(%s)' % v0)
+                    vex = 0x78 | (item.W << 7) | (item.L << 2) | int(item.pp)
+                    if isinstance(item.vvvv, x86_64.Operand):
+                        buf.append('m.emit(0x%02x ^ (hlcode(v[%d]) << 3))' % (vex, ops.index(item.vvvv)))
+                    else:
+                        buf.append('m.emit(0x%02x)' % vex)
         elif isinstance(item, x86_64.EVEX):
-            # TODO: this
-            buf.append('EVEX')
+            disp8v = item.disp8xN
+            item.set_ignored()
+            if item.X.is_memory:
+                args = ['0b' + format(item.mm, '02b'), '0x%02x' % (item.W << 7 | int(item.pp) | 0b100)]
+                if isinstance(item.LL, x86_64.Operand):
+                    args.append('vcode(v[%d])' % ops.index(item.LL))
+                else:
+                    args.append('0b' + format(item.LL, '02b'))
+                if isinstance(item.RR, x86_64.Operand):
+                    args.append('ehcode(v[%d])' % ops.index(item.RR))
+                else:
+                    args.append(str(item.RR))
+                args.append('addr(v[%d])' % ops.index(item.X))
+                if item.vvvv != 0:
+                    args.append('vcode(v[%d])' % ops.index(item.vvvv))
+                else:
+                    args.append('0')
+                if item.aaa != 0:
+                    args.append('kcode(v[%d])' % ops.index(item.aaa))
+                else:
+                    args.append('0')
+                if item.z != 0:
+                    args.append('zcode(v[%d])' % ops.index(item.z))
+                else:
+                    args.append('0')
+                if isinstance(item.b, x86_64.Operand):
+                    args.append('bcode(v[%d])' % ops.index(item.b))
+                elif item.b != 0:
+                    args.append(str(item.b))
+                else:
+                    args.append('0')
+                buf.append('m.evex(%s)' % ', '.join(args))
+                flags.append('_EVEX')
+            else:
+                buf.append('m.emit(0x62)')
+                if isinstance(item.RR, x86_64.Operand):
+                    v0, v1, v2, v3 = 0xf0 | item.mm, ops.index(item.RR), ops.index(item.B), ops.index(item.RR)
+                    buf.append('m.emit(0x%02x ^ ((hcode(v[%d]) << 7) | (ehcode(v[%d]) << 5) | (ecode(v[%d]) << 4)))' % (v0, v1, v2, v3))
+                else:
+                    r0 = item.RR & 1
+                    r1 = (item.RR >> 1) & 1
+                    byte = (item.mm | (r0 << 7) | (r1 << 4)) ^ 0xf0
+                    if byte == 0:
+                        buf.append('m.emit(ehcode(v[%d]) << 5)' % ops.index(item.B))
+                    else:
+                        buf.append('m.emit(0x%02x ^ (ehcode(v[%d]) << 5))' % (byte, ops.index(item.B)))
+                vvvv = item.W << 7 | int(item.pp) | 0b01111100
+                if isinstance(item.vvvv, x86_64.Operand):
+                    buf.append('m.emit(0x%02x ^ (hlcode(v[%d]) << 3))' % (vvvv, ops.index(item.vvvv)))
+                else:
+                    buf.append('m.emit(0x%02x)' % vvvv)
+                byte = item.b << 4
+                parts = []
+                if isinstance(item.z, x86_64.Operand):
+                    parts.append('(zcode(v[%d]) << 7)' % ops.index(item.z))
+                else:
+                    byte |= item.z << 7
+                if isinstance(item.LL, x86_64.Operand):
+                    parts.append('(vcode(v[%d]) << 5)' % ops.index(item.LL))
+                else:
+                    byte |= item.LL << 5
+                if isinstance(item.V, x86_64.Operand):
+                    parts.append('(0x08 ^ (ecode(v[%d]) << 3))' % ops.index(item.V))
+                else:
+                    byte |= (item.V ^ 1) << 3
+                if isinstance(item.aaa, x86_64.Operand):
+                    parts.append('kcode(v[%d])' % ops.index(item.aaa))
+                parts.append('0x%02x' % byte)
+                buf.append('m.emit(%s)' % ' | '.join(parts))
         elif isinstance(item, x86_64.Opcode):
             if not item.addend:
                 buf.append('m.emit(0x%02x)' % item.byte)
@@ -339,8 +439,10 @@ def generate_encoding(enc: x86_64.Encoding, ops: List[x86_64.Operand]) -> Tuple[
                 else:
                     raise RuntimeError('invalid imm size: ' + str(item.size))
         elif isinstance(item, x86_64.RegisterByte):
-            # TODO: this
-            buf.append('RegByte')
+            ibr = 'hlcode(v[%d]) << 4' % ops.index(item.register)
+            if item.payload is not None:
+                ibr = '(%s) | imml(v[%d])' % (ibr, ops.index(item.payload))
+            buf.append('m.emit(%s)' % ibr)
         elif isinstance(item, x86_64.CodeOffset):
             if item.size == 1:
                 buf.append('m.imm1(offs(v[%d]))' % ops.index(item.value))
@@ -355,60 +457,177 @@ def generate_encoding(enc: x86_64.Encoding, ops: List[x86_64.Operand]) -> Tuple[
     else:
         return ' | '.join(flags), buf
 
-src = [
-    '// Code generated by "mkasm_amd64.py", DO NOT EDIT.',
-    '',
-    'package x86_64',
-    '',
-    '// Instructions maps all the instruction name to it\'s encoder function.',
-    'var Instructions = map[string]func(*Program, ...interface{}) *Instruction {',
-]
+class CodeGen:
+    def __init__(self):
+        self.buf = []
+        self.level = 0
+
+    @property
+    def src(self) -> str:
+        return '\n'.join(self.buf)
+
+    def line(self, src: str = ''):
+        self.buf.append(' ' * (self.level * 4) + src)
+
+    def dedent(self):
+        self.level -= 1
+
+    def indent(self):
+        self.level += 1
+
+class CodeBlock:
+    def __init__(self, gen: CodeGen):
+        self.gen = gen
+
+    def __exit__(self, *_):
+        self.gen.dedent()
+
+    def __enter__(self):
+        self.gen.indent()
+        return self
+
+cc = CodeGen()
+cc.line('// Code generated by "mkasm_amd64.py", DO NOT EDIT.')
+cc.line()
+cc.line('package x86_64')
+cc.line()
+
+nargs = 0
+nforms = 0
+argsmap = {}
+for name, (_, _, forms) in instrs.items():
+    fcnt = 0
+    for form in forms:
+        acnt = len(form.operands)
+        fcnt += len(form.encodings)
+        argsmap.setdefault(name, set()).add(acnt)
+        if nargs < acnt:
+            nargs = acnt
+    if nforms < fcnt:
+        nforms = fcnt
+
+cc.line('const (')
+with CodeBlock(cc):
+    cc.line('_MAX_ARGS  = %d' % nargs)
+    cc.line('_MAX_FORMS = %d' % nforms)
+cc.line(')')
+cc.line()
+cc.line('// Instructions maps all the instruction name to it\'s encoder function.')
+cc.line('var Instructions = map[string]func(*Program, ...interface{}) *Instruction {')
 
 width = max(
     len(x)
     for x in instrs
 )
 
-for name in sorted(instrs):
-    key = '"%s"' % name.lower()
-    src.append('    %s: (*Program).%s,' % (key.ljust(width + 3), name))
+with CodeBlock(cc):
+    for name in sorted(instrs):
+        key = '"%s"' % name.lower()
+        cc.line('%s: __asm_proxy_%s__,' % (key.ljust(width + 3), name))
 
-src.append('}')
-src.append('')
+cc.line('}')
+cc.line()
+
+for name in sorted(instrs):
+    cc.line('func __asm_proxy_%s__(p *Program, v ...interface{}) *Instruction {' % name)
+    with CodeBlock(cc):
+        args = argsmap[name]
+        if len(args) == 1:
+            argc = next(iter(args))
+            cc.line('if len(v) == %d {' % argc)
+            with CodeBlock(cc):
+                argv = ['v[%d]' % i for i in range(argc)]
+                cc.line('return p.%s(%s)' % (name, ', '.join(argv)))
+            cc.line('} else {')
+            with CodeBlock(cc):
+                if argc == 0:
+                    cc.line('panic("instruction %s takes no operands")' % name)
+                elif argc == 1:
+                    cc.line('panic("instruction %s takes exactly operands")' % name)
+                else:
+                    cc.line('panic("instruction %s takes exactly %d operands")' % (name, argc))
+            cc.line('}')
+        else:
+            cc.line('switch len(v) {')
+            with CodeBlock(cc):
+                for argc in sorted(args):
+                    argv = ['v[%d]' % i for i in range(argc)]
+                    cc.line('case %d  : return p.%s(%s)' % (argc, name, ', '.join(argv)))
+                cc.line('default : panic("instruction %s takes %s operands")' % (name, ' or '.join(map(str, sorted(args)))))
+            cc.line('}')
+    cc.line('}')
+    cc.line()
+
+with open('x86_64/instructions_table.go', 'w') as fp:
+    fp.write(cc.src)
+
+cc = CodeGen()
+cc.line('// Code generated by "mkasm_amd64.py", DO NOT EDIT.')
+cc.line()
+cc.line('package x86_64')
+cc.line()
 
 for name, (ins, desc, forms) in sorted(instrs.items()):
-    src.append('// %s performs "%s".' % (name, desc))
-    src.append('//')
-    src.append('// Mnemonic        : ' + ins)
-    src.append('// Supported forms : (%d form%s)' % (len(forms), '' if len(forms) == 1 else 's'))
-    src.append('//')
+    isax = set(v.name for f in forms for v in f.isa_extensions)
+    cc.line('// %s performs "%s".' % (name, desc))
+    cc.line('//')
+    cc.line('// Mnemonic        : ' + ins)
+    if isax:
+        cc.line('// ISA extensions  : ' + ', '.join(sorted(isax)))
+    cc.line('// Supported forms : (%d form%s)' % (len(forms), '' if len(forms) == 1 else 's'))
+    cc.line('//')
+    nops = set()
     for form in forms:
-        src.append('//    * ' + dump_form(form))
-    src.append('//')
-    src.append('func (self *Program) %s(args ...interface{}) *Instruction {' % name)
-    src.append('    p := self.alloc(args)')
-    for form in forms:
-        ops = list(reversed(form.operands))
-        src.append('    // ' + dump_form(form))
-        if not ops:
-            src.append('    if len(args) == 0 {')
+        nops.add(len(form.operands))
+        cc.line('//    * ' + dump_form(form))
+    nfix = min(nops)
+    args = ['v%d interface{}' % i for i in range(nfix)]
+    if len(nops) != 1:
+        args.append('vv ...interface{}')
+    cc.line('//')
+    cc.line('func (self *Program) %s(%s) *Instruction {' % (name, ', '.join(args)))
+    with CodeBlock(cc):
+        base = ['v%d' % i for i in range(nfix)]
+        if len(nops) == 1:
+            cc.line('p := self.alloc(%d, [_MAX_ARGS]interface{}{%s})' % (nfix, ', '.join(base)))
         else:
-            src.append('    if len(args) == %d && %s {' % (len(ops), operand_match(ops, is_avx512(form))))
-        if form.isa_extensions:
-            src.append('        self.require(%s)' % require_isa(form.isa_extensions))
-        for enc in form.encodings:
-            flags, instr = generate_encoding(enc, ops)
-            src.append('        p.add(%s, func(m *_Encoding, v []interface{}) {' % flags)
-            for line in instr:
-                src.append('            ' + line)
-            src.append('        })')
-        src.append('    }')
-    src.append('    if len(p.buf) == 0 {')
-    src.append('        panic("invalid operands for %s")' % name)
-    src.append('    }')
-    src.append('    return p')
-    src.append('}')
-    src.append('')
+            cc.line('var p *Instruction')
+            cc.line('switch len(vv) {')
+            with CodeBlock(cc):
+                for argc in sorted(nops):
+                    args = base[:] + ['vv[%d]' % i for i in range(argc - nfix)]
+                    cc.line('case %d  : p = self.alloc(%d, [_MAX_ARGS]interface{}{%s})' % (argc - nfix, argc, ', '.join(args)))
+                cc.line('default : panic("instruction %s takes %s operands")' % (name, ' or '.join(map(str, sorted(nops)))))
+            cc.line('}')
+        for form in forms:
+            ops = list(reversed(form.operands))
+            conds = []
+            cc.line('// ' + dump_form(form))
+            if len(nops) != 1:
+                conds.append('len(vv) == %d' % (len(ops) - nfix))
+            conds.extend(operand_match(ops, nfix, is_avx512(form)))
+            if conds:
+                cc.line('if %s {' % ' && '.join(conds))
+                cc.indent()
+            if form.isa_extensions:
+                cc.line('self.require(%s)' % require_isa(form.isa_extensions))
+            for enc in form.encodings:
+                flags, instr = generate_encoding(enc, ops)
+                cc.line('p.add(%s, func(m *_Encoding, v []interface{}) {' % flags)
+                with CodeBlock(cc):
+                    for line in instr:
+                        cc.line(line)
+                cc.line('})')
+            if conds:
+                cc.dedent()
+                cc.line('}')
+        cc.line('if p.len == 0 {')
+        with CodeBlock(cc):
+            cc.line('panic("invalid operands for %s")' % name)
+        cc.line('}')
+        cc.line('return p')
+    cc.line('}')
+    cc.line()
 
-with open('x86_64/instrs.go', 'w') as fp:
-    fp.write('\n'.join(src))
+with open('x86_64/instructions.go', 'w') as fp:
+    fp.write(cc.src)

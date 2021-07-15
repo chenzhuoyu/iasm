@@ -52,9 +52,25 @@ func (ExceptionControl) String() string {
     return "sae"
 }
 
-// Addressable is a marker interface to mark something is memory-addressable.
-type Addressable interface {
-    implAddressable()
+// AddressType indicates which kind of value that an Addressable contains.
+type AddressType uint
+
+const (
+    // None indicates the Addressable does not contain any addressable value.
+    None AddressType = iota
+
+    // Memory indicates the Addressable contains a memory address.
+    Memory
+
+    // Offset indicates the Addressable contains an RIP-relative offset.
+    Offset
+)
+
+// Addressable is an union to represent something is memory-addressable.
+type Addressable struct {
+    Type   AddressType
+    Memory MemoryAddress
+    Offset RelativeOffset
 }
 
 // MemoryOperand represents a memory operand for an instruction.
@@ -67,36 +83,63 @@ type MemoryOperand struct {
 }
 
 const (
-    _Broadcasts = 0b10000000100010111   // bit-mask for valid broadcasts (0, 1, 2, 4, 8, 16)
+    _Sizes = 0b10000000100010111 // bit-mask for valid sizes (0, 1, 2, 4, 8, 16)
 )
 
-func (self MemoryOperand) isVMX(evex bool) bool {
-    v, ok := self.Addr.(MemoryAddress)
-    return ok && v.isVMX(evex)
+func (self *MemoryOperand) isVMX(evex bool) bool {
+    return self.Addr.Type == Memory && self.Addr.Memory.isVMX(evex)
 }
 
-func (self MemoryOperand) isVMY(evex bool) bool {
-    v, ok := self.Addr.(MemoryAddress)
-    return ok && v.isVMY(evex)
+func (self *MemoryOperand) isVMY(evex bool) bool {
+    return self.Addr.Type == Memory && self.Addr.Memory.isVMY(evex)
 }
 
-func (self MemoryOperand) isVMZ() bool {
-    v, ok := self.Addr.(MemoryAddress)
-    return ok && v.isVMZ()
+func (self *MemoryOperand) isVMZ() bool {
+    return self.Addr.Type == Memory && self.Addr.Memory.isVMZ()
 }
 
-func (self MemoryOperand) isMem() bool {
-    v, k1 := self.Addr.(MemoryAddress)
-    _, k2 := self.Addr.(RelativeOffset)
-    return (k2 || (k1 && v.isMem())) && (_Broadcasts & (1 << self.Broadcast)) != 0
+func (self *MemoryOperand) isMem() bool {
+    if (_Sizes & (1 << self.Broadcast)) == 0 {
+        return false
+    } else {
+        return self.Addr.Type == Offset || (self.Addr.Type == Memory && self.Addr.Memory.isMem())
+    }
 }
 
-func (self MemoryOperand) isSize(n int) bool {
+func (self *MemoryOperand) isSize(n int) bool {
     return self.Size == 0 || self.Size == n
 }
 
-func (self MemoryOperand) isBroadcast(n int, b uint8) bool {
+func (self *MemoryOperand) isBroadcast(n int, b uint8) bool {
     return self.Size == n && self.Broadcast == b
+}
+
+func (self *MemoryOperand) ensureAddrValid() {
+    switch self.Addr.Type {
+        case None   : break
+        case Offset : break
+        case Memory : self.Addr.Memory.EnsureValid()
+        default     : panic("invalid address type")
+    }
+}
+
+func (self *MemoryOperand) ensureSizeValid() {
+    if (_Sizes & (1 << self.Size)) == 0 {
+        panic("invalid memory operand size")
+    }
+}
+
+func (self *MemoryOperand) ensureBroadcastValid() {
+    if (_Sizes & (1 << self.Broadcast)) == 0 {
+        panic("invalid memory operand broadcast")
+    }
+}
+
+// EnsureValid checks if the memory operand is valid, if not, it panics.
+func (self *MemoryOperand) EnsureValid() {
+    self.ensureAddrValid()
+    self.ensureSizeValid()
+    self.ensureBroadcastValid()
 }
 
 // MemoryAddress represents a memory address.
@@ -111,62 +154,51 @@ const (
 	_Scales = 0b100010111   // bit-mask for valid scales (0, 1, 2, 4, 8)
 )
 
-func (self MemoryAddress) isVMX(evex bool) bool {
+func (self *MemoryAddress) isVMX(evex bool) bool {
     return self.isMemBase() && (self.Index == nil || isXMM(self.Index) || (evex && isEVEXXMM(self.Index)))
 }
 
-func (self MemoryAddress) isVMY(evex bool) bool {
+func (self *MemoryAddress) isVMY(evex bool) bool {
     return self.isMemBase() && (self.Index == nil || isYMM(self.Index) || (evex && isEVEXYMM(self.Index)))
 }
 
-func (self MemoryAddress) isVMZ() bool {
+func (self *MemoryAddress) isVMZ() bool {
     return self.isMemBase() && (self.Index == nil || isZMM(self.Index))
 }
 
-func (self MemoryAddress) isMem() bool {
+func (self *MemoryAddress) isMem() bool {
     return self.isMemBase() && (self.Index == nil || isReg64(self.Index))
 }
 
-func (self MemoryAddress) isMemBase() bool {
+func (self *MemoryAddress) isMemBase() bool {
     return (self.Base != nil || self.Index != nil) &&   // must have at least one of `Base` or `Index`
            (self.Base == nil || isReg64(self.Base)) &&  // `Base` must be 64-bit if present
            (self.Scale == 0) == (self.Index == nil) &&  // `Scale` and `Index` depends on each other
            (_Scales & (1 << self.Scale)) != 0           // `Scale` can only be 0, 1, 2, 4 or 8
 }
 
-func (MemoryAddress)  implAddressable() {}
-func (RelativeOffset) implAddressable() {}
-
-func verifyScale(v uint8) uint8 {
-    switch v {
-        case  1: fallthrough
-        case  2: fallthrough
-        case  4: fallthrough
-        case  8: return v
-        default: panic("not a valid scale value")
+// EnsureValid checks if the memory address is valid, if not, it panics.
+func (self *MemoryAddress) EnsureValid() {
+    if !self.isMemBase() || (self.Index != nil && !isIndexable(self.Index)) {
+        panic("not a valid memory address")
     }
 }
 
 // Ptr constructs a simple memory operand with base and displacement.
-func Ptr(base Register, disp int32) MemoryOperand {
-    return MemoryOperand {
-        Addr: MemoryAddress {
-            Base         : base,
-            Displacement : disp,
-        },
-    }
+func Ptr(base Register, disp int32) *MemoryOperand {
+    return Sib(base, nil, 0, disp)
 }
 
-// Sib constructs a simple memory operand that represents an array index.
-func Sib(base Register, index Register, scale uint8, disp int32) MemoryOperand {
-    return MemoryOperand {
-        Addr: MemoryAddress {
-            Base         : base,
-            Index        : index,
-            Scale        : verifyScale(scale),
-            Displacement : disp,
-        },
-    }
+// Sib constructs a simple memory operand that represents a complete memory address.
+func Sib(base Register, index Register, scale uint8, disp int32) (v *MemoryOperand) {
+    v = newMemoryOperand()
+    v.Addr.Type = Memory
+    v.Addr.Memory.Base = base
+    v.Addr.Memory.Index = index
+    v.Addr.Memory.Scale = scale
+    v.Addr.Memory.Displacement = disp
+    v.EnsureValid()
+    return
 }
 
 /** Operand Matching Helpers **/
@@ -229,6 +261,10 @@ func isSpecial(v interface{}) bool {
     }
 }
 
+func isIndexable(v interface{}) bool {
+    return isZMM(v) || isReg64(v) || isEVEXXMM(v) || isEVEXYMM(v)
+}
+
 func isAccumulator(v interface{}) bool {
     switch r := v.(type) {
         case Register8  : return r == AL
@@ -267,39 +303,39 @@ func isZMMk        (v interface{}) bool { x, r := v.(MaskedRegister)   ; return 
 func isZMMkz       (v interface{}) bool { x, r := v.(MaskedRegister)   ; return isZMM(v) || (r && isZMM(x.Reg)) }
 func isK           (v interface{}) bool { _, r := v.(KRegister)        ; return r }
 func isKk          (v interface{}) bool { x, r := v.(MaskedRegister)   ; return isK(v) || (r && isK(x.Reg) && !x.Mask.Z) }
-func isM           (v interface{}) bool { x, r := v.(MemoryOperand)    ; return r && x.isMem() && x.Broadcast == 0 && !x.Masked }
-func isMk          (v interface{}) bool { x, r := v.(MemoryOperand)    ; return r && x.isMem() && x.Broadcast == 0 && !(x.Masked && x.Mask.Z) }
-func isMkz         (v interface{}) bool { x, r := v.(MemoryOperand)    ; return r && x.isMem() && x.Broadcast == 0 }
-func isM8          (v interface{}) bool { x, r := v.(MemoryOperand)    ; return r && isM(v)   && x.isSize(1)  }
-func isM16         (v interface{}) bool { x, r := v.(MemoryOperand)    ; return r && isM(v)   && x.isSize(2)  }
-func isM16kz       (v interface{}) bool { x, r := v.(MemoryOperand)    ; return r && isMkz(v) && x.isSize(2)  }
-func isM32         (v interface{}) bool { x, r := v.(MemoryOperand)    ; return r && isM(v)   && x.isSize(4)  }
-func isM32k        (v interface{}) bool { x, r := v.(MemoryOperand)    ; return r && isMk(v)  && x.isSize(4)  }
-func isM32kz       (v interface{}) bool { x, r := v.(MemoryOperand)    ; return r && isMkz(v) && x.isSize(4)  }
-func isM64         (v interface{}) bool { x, r := v.(MemoryOperand)    ; return r && isM(v)   && x.isSize(8)  }
-func isM64k        (v interface{}) bool { x, r := v.(MemoryOperand)    ; return r && isMk(v)  && x.isSize(8)  }
-func isM64kz       (v interface{}) bool { x, r := v.(MemoryOperand)    ; return r && isMkz(v) && x.isSize(8)  }
-func isM128        (v interface{}) bool { x, r := v.(MemoryOperand)    ; return r && isM(v)   && x.isSize(16) }
-func isM128kz      (v interface{}) bool { x, r := v.(MemoryOperand)    ; return r && isMkz(v) && x.isSize(16) }
-func isM256        (v interface{}) bool { x, r := v.(MemoryOperand)    ; return r && isM(v)   && x.isSize(32) }
-func isM256kz      (v interface{}) bool { x, r := v.(MemoryOperand)    ; return r && isMkz(v) && x.isSize(32) }
-func isM512        (v interface{}) bool { x, r := v.(MemoryOperand)    ; return r && isM(v)   && x.isSize(64) }
-func isM512kz      (v interface{}) bool { x, r := v.(MemoryOperand)    ; return r && isMkz(v) && x.isSize(64) }
-func isM64M32bcst  (v interface{}) bool { x, r := v.(MemoryOperand)    ; return isM64(v)  || (r && x.isBroadcast(4, 2)) }
-func isM128M32bcst (v interface{}) bool { x, r := v.(MemoryOperand)    ; return isM128(v) || (r && x.isBroadcast(4, 4)) }
-func isM256M32bcst (v interface{}) bool { x, r := v.(MemoryOperand)    ; return isM256(v) || (r && x.isBroadcast(4, 8)) }
-func isM512M32bcst (v interface{}) bool { x, r := v.(MemoryOperand)    ; return isM512(v) || (r && x.isBroadcast(4, 16)) }
-func isM128M64bcst (v interface{}) bool { x, r := v.(MemoryOperand)    ; return isM128(v) || (r && x.isBroadcast(8, 2)) }
-func isM256M64bcst (v interface{}) bool { x, r := v.(MemoryOperand)    ; return isM256(v) || (r && x.isBroadcast(8, 4)) }
-func isM512M64bcst (v interface{}) bool { x, r := v.(MemoryOperand)    ; return isM512(v) || (r && x.isBroadcast(8, 8)) }
-func isVMX         (v interface{}) bool { x, r := v.(MemoryOperand)    ; return r && x.isVMX(false) && !x.Masked }
-func isEVEXVMX     (v interface{}) bool { x, r := v.(MemoryOperand)    ; return r && x.isVMX(true) && !x.Masked }
-func isVMXk        (v interface{}) bool { x, r := v.(MemoryOperand)    ; return r && x.isVMX(true) }
-func isVMY         (v interface{}) bool { x, r := v.(MemoryOperand)    ; return r && x.isVMY(false) && !x.Masked }
-func isEVEXVMY     (v interface{}) bool { x, r := v.(MemoryOperand)    ; return r && x.isVMY(true) && !x.Masked }
-func isVMYk        (v interface{}) bool { x, r := v.(MemoryOperand)    ; return r && x.isVMY(true) }
-func isVMZ         (v interface{}) bool { x, r := v.(MemoryOperand)    ; return r && x.isVMZ() && !x.Masked }
-func isVMZk        (v interface{}) bool { x, r := v.(MemoryOperand)    ; return r && x.isVMZ() }
+func isM           (v interface{}) bool { x, r := v.(*MemoryOperand)   ; return r && x.isMem() && x.Broadcast == 0 && !x.Masked }
+func isMk          (v interface{}) bool { x, r := v.(*MemoryOperand)   ; return r && x.isMem() && x.Broadcast == 0 && !(x.Masked && x.Mask.Z) }
+func isMkz         (v interface{}) bool { x, r := v.(*MemoryOperand)   ; return r && x.isMem() && x.Broadcast == 0 }
+func isM8          (v interface{}) bool { x, r := v.(*MemoryOperand)   ; return r && isM(v)   && x.isSize(1)  }
+func isM16         (v interface{}) bool { x, r := v.(*MemoryOperand)   ; return r && isM(v)   && x.isSize(2)  }
+func isM16kz       (v interface{}) bool { x, r := v.(*MemoryOperand)   ; return r && isMkz(v) && x.isSize(2)  }
+func isM32         (v interface{}) bool { x, r := v.(*MemoryOperand)   ; return r && isM(v)   && x.isSize(4)  }
+func isM32k        (v interface{}) bool { x, r := v.(*MemoryOperand)   ; return r && isMk(v)  && x.isSize(4)  }
+func isM32kz       (v interface{}) bool { x, r := v.(*MemoryOperand)   ; return r && isMkz(v) && x.isSize(4)  }
+func isM64         (v interface{}) bool { x, r := v.(*MemoryOperand)   ; return r && isM(v)   && x.isSize(8)  }
+func isM64k        (v interface{}) bool { x, r := v.(*MemoryOperand)   ; return r && isMk(v)  && x.isSize(8)  }
+func isM64kz       (v interface{}) bool { x, r := v.(*MemoryOperand)   ; return r && isMkz(v) && x.isSize(8)  }
+func isM128        (v interface{}) bool { x, r := v.(*MemoryOperand)   ; return r && isM(v)   && x.isSize(16) }
+func isM128kz      (v interface{}) bool { x, r := v.(*MemoryOperand)   ; return r && isMkz(v) && x.isSize(16) }
+func isM256        (v interface{}) bool { x, r := v.(*MemoryOperand)   ; return r && isM(v)   && x.isSize(32) }
+func isM256kz      (v interface{}) bool { x, r := v.(*MemoryOperand)   ; return r && isMkz(v) && x.isSize(32) }
+func isM512        (v interface{}) bool { x, r := v.(*MemoryOperand)   ; return r && isM(v)   && x.isSize(64) }
+func isM512kz      (v interface{}) bool { x, r := v.(*MemoryOperand)   ; return r && isMkz(v) && x.isSize(64) }
+func isM64M32bcst  (v interface{}) bool { x, r := v.(*MemoryOperand)   ; return isM64(v)  || (r && x.isBroadcast(4, 2)) }
+func isM128M32bcst (v interface{}) bool { x, r := v.(*MemoryOperand)   ; return isM128(v) || (r && x.isBroadcast(4, 4)) }
+func isM256M32bcst (v interface{}) bool { x, r := v.(*MemoryOperand)   ; return isM256(v) || (r && x.isBroadcast(4, 8)) }
+func isM512M32bcst (v interface{}) bool { x, r := v.(*MemoryOperand)   ; return isM512(v) || (r && x.isBroadcast(4, 16)) }
+func isM128M64bcst (v interface{}) bool { x, r := v.(*MemoryOperand)   ; return isM128(v) || (r && x.isBroadcast(8, 2)) }
+func isM256M64bcst (v interface{}) bool { x, r := v.(*MemoryOperand)   ; return isM256(v) || (r && x.isBroadcast(8, 4)) }
+func isM512M64bcst (v interface{}) bool { x, r := v.(*MemoryOperand)   ; return isM512(v) || (r && x.isBroadcast(8, 8)) }
+func isVMX         (v interface{}) bool { x, r := v.(*MemoryOperand)   ; return r && x.isVMX(false) && !x.Masked }
+func isEVEXVMX     (v interface{}) bool { x, r := v.(*MemoryOperand)   ; return r && x.isVMX(true) && !x.Masked }
+func isVMXk        (v interface{}) bool { x, r := v.(*MemoryOperand)   ; return r && x.isVMX(true) }
+func isVMY         (v interface{}) bool { x, r := v.(*MemoryOperand)   ; return r && x.isVMY(false) && !x.Masked }
+func isEVEXVMY     (v interface{}) bool { x, r := v.(*MemoryOperand)   ; return r && x.isVMY(true) && !x.Masked }
+func isVMYk        (v interface{}) bool { x, r := v.(*MemoryOperand)   ; return r && x.isVMY(true) }
+func isVMZ         (v interface{}) bool { x, r := v.(*MemoryOperand)   ; return r && x.isVMZ() && !x.Masked }
+func isVMZk        (v interface{}) bool { x, r := v.(*MemoryOperand)   ; return r && x.isVMZ() }
 func isSAE         (v interface{}) bool { _, r := v.(ExceptionControl) ; return r }
 func isER          (v interface{}) bool { _, r := v.(RoundingControl)  ; return r }
 

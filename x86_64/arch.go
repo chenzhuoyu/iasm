@@ -229,61 +229,39 @@ func (self *Arch) DisableISA(isa ISA) *Arch {
 
 // CreateProgram creates a new empty program.
 func (self *Arch) CreateProgram() *Program {
-    return &Program {
-        arch   : self,
-        instrs : make([]*Instruction, 0, 16),
-    }
+    return newProgram(self)
 }
 
-// Program represents a sequence of instructions
-type Program struct {
-    arch   *Arch
-    instrs []*Instruction
-}
-
-func (self *Program) alloc(args []interface{}) (ret *Instruction) {
-    ret = newInstruction(args)
-    self.instrs = append(self.instrs, ret)
-    return
-}
-
-func (self *Program) require(isa ISA) {
-    if !self.arch.HasISA(isa) {
-        panic("ISA '" + isa.String() + "' was not enabled")
-    }
-}
+// Operands represents a sequence of operand required by an instruction.
+type Operands [_MAX_ARGS]interface{}
 
 // Instruction represents an unencoded instruction.
 type Instruction struct {
-    buf  []_Encoding
-    args []interface{}
-}
-
-func newInstruction(args []interface{}) *Instruction {
-    return &Instruction {
-        buf  : make([]_Encoding, 0, 1),
-        args : args,
-    }
+    len   int
+    argc  int
+    argv  [_MAX_ARGS]interface{}
+    forms [_MAX_FORMS]_Encoding
 }
 
 func (self *Instruction) add(flags int, encoder func(m *_Encoding, v []interface{})) {
-    self.buf = append(self.buf, _Encoding {
-        flags   : flags,
-        encoder : encoder,
-    })
+    self.forms[self.len].flags = flags
+    self.forms[self.len].encoder = encoder
+    self.len++
 }
 
 func (self *Instruction) check(e *_Encoding) bool {
-    f := e.flags
-    n := len(self.args)
-
-    /* match the args with flags */
-    if (f & _ACC0) != 0 {
-        return n >= 1 && isAccumulator(self.args[n - 1])
-    } else if (f & _ACC1) != 0 {
-        return n >= 2 && isAccumulator(self.args[n - 2])
+    if (e.flags & _ACC0) != 0 {
+        return self.argc >= 1 && isAccumulator(self.argv[self.argc - 1])
+    } else if (e.flags & _ACC1) != 0 {
+        return self.argc >= 2 && isAccumulator(self.argv[self.argc - 2])
     } else {
         return true
+    }
+}
+
+func (self *Instruction) reset() {
+    for i := 0; i < self.argc; i++ {
+        freeMemoryOperand(self.argv[i])
     }
 }
 
@@ -299,9 +277,9 @@ func (self *Instruction) EncodeInto(m *[]byte) int {
     p := (*_Encoding)(nil)
 
     /* find the shortest encoding */
-    for i := range self.buf {
-        if e := &self.buf[i]; self.check(e) {
-            if v := e.encode(self.args); v < n {
+    for i := 0; i < self.len; i++ {
+        if e := &self.forms[i]; self.check(e) {
+            if v := e.encode(self.Operands()); v < n {
                 n = v
                 p = e
             }
@@ -311,4 +289,41 @@ func (self *Instruction) EncodeInto(m *[]byte) int {
     /* add to buffer */
     *m = append(*m, p.bytes[:n]...)
     return n
+}
+
+// Operands returns a sequence of operands used to construct this instruction.
+func (self *Instruction) Operands() []interface{} {
+    return self.argv[:self.argc:self.argc]
+}
+
+// Program represents a sequence of instructions.
+type Program struct {
+    arch   *Arch
+    instrs []*Instruction
+}
+
+// Free returns the Program as free'd.
+// Any operation performed after Free is undefined behavior.
+func (self *Program) Free() {
+    self.clear()
+    freeProgram(self)
+}
+
+func (self *Program) clear() {
+    for _, v := range self.instrs {
+        v.reset()
+        freeInstruction(v)
+    }
+}
+
+func (self *Program) alloc(argc int, argv Operands) (ret *Instruction) {
+    ret = newInstruction(argc, argv)
+    self.instrs = append(self.instrs, ret)
+    return
+}
+
+func (self *Program) require(isa ISA) {
+    if !self.arch.HasISA(isa) {
+        panic("ISA '" + isa.String() + "' was not enabled")
+    }
 }

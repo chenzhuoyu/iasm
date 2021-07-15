@@ -7,12 +7,66 @@ import (
 
 /** Operand Encoding Helpers **/
 
-func addr(v interface{}) interface{} {
-    return v.(MemoryOperand).Addr
+func imml(v interface{}) byte {
+    return byte(toImmAny(v) & 0x0f)
 }
 
 func offs(v interface{}) int64 {
     return int64(v.(RelativeOffset))
+}
+
+func addr(v interface{}) interface{} {
+    switch a := v.(*MemoryOperand).Addr; a.Type {
+        case Memory : return a.Memory
+        case Offset : return a.Offset
+        default     : panic("invalid memory operand type")
+    }
+}
+
+func bcode(v interface{}) byte {
+    if m, ok := v.(*MemoryOperand); !ok {
+        panic("v is not a memory operand")
+    } else if m.Broadcast == 0 {
+        return 0
+    } else {
+        return 1
+    }
+}
+
+func vcode(v interface{}) byte {
+    switch r := v.(type) {
+        case XMMRegister    : return byte(r)
+        case YMMRegister    : return byte(r)
+        case ZMMRegister    : return byte(r)
+        case MaskedRegister : return vcode(r.Reg)
+        default             : panic("v is not a vector register")
+    }
+}
+
+func kcode(v interface{}) byte {
+    switch r := v.(type) {
+        case KRegister      : return byte(r)
+        case XMMRegister    : return 0
+        case YMMRegister    : return 0
+        case ZMMRegister    : return 0
+        case RegisterMask   : return byte(r.K)
+        case MaskedRegister : return byte(r.Mask.K)
+        case MemoryOperand  : return toKcodeMem(r)
+        default             : panic("v is not a maskable operand")
+    }
+}
+
+func zcode(v interface{}) byte {
+    switch r := v.(type) {
+        case KRegister      : return 0
+        case XMMRegister    : return 0
+        case YMMRegister    : return 0
+        case ZMMRegister    : return 0
+        case RegisterMask   : return toZcodeRegM(r)
+        case MaskedRegister : return toZcodeRegM(r.Mask)
+        case MemoryOperand  : return toZcodeMem(r)
+        default             : panic("v is not a maskable operand")
+    }
 }
 
 func lcode(v interface{}) byte {
@@ -47,6 +101,54 @@ func hcode(v interface{}) byte {
     }
 }
 
+func ecode(v interface{}) byte {
+    switch r := v.(type) {
+        case Register8      : return byte(r >> 4) & 1
+        case Register16     : return byte(r >> 4) & 1
+        case Register32     : return byte(r >> 4) & 1
+        case Register64     : return byte(r >> 4) & 1
+        case KRegister      : return byte(r >> 4) & 1
+        case MMRegister     : return byte(r >> 4) & 1
+        case XMMRegister    : return byte(r >> 4) & 1
+        case YMMRegister    : return byte(r >> 4) & 1
+        case ZMMRegister    : return byte(r >> 4) & 1
+        case MaskedRegister : return ecode(r.Reg)
+        default             : panic("v is not a register")
+    }
+}
+
+func hlcode(v interface{}) byte {
+    switch r := v.(type) {
+        case Register8      : return toHLcodeReg8(r)
+        case Register16     : return byte(r & 0x0f)
+        case Register32     : return byte(r & 0x0f)
+        case Register64     : return byte(r & 0x0f)
+        case KRegister      : return byte(r & 0x0f)
+        case MMRegister     : return byte(r & 0x0f)
+        case XMMRegister    : return byte(r & 0x0f)
+        case YMMRegister    : return byte(r & 0x0f)
+        case ZMMRegister    : return byte(r & 0x0f)
+        case MaskedRegister : return hlcode(r.Reg)
+        default             : panic("v is not a register")
+    }
+}
+
+func ehcode(v interface{}) byte {
+    switch r := v.(type) {
+        case Register8      : return byte(r >> 3) & 0x03
+        case Register16     : return byte(r >> 3) & 0x03
+        case Register32     : return byte(r >> 3) & 0x03
+        case Register64     : return byte(r >> 3) & 0x03
+        case KRegister      : return byte(r >> 3) & 0x03
+        case MMRegister     : return byte(r >> 3) & 0x03
+        case XMMRegister    : return byte(r >> 3) & 0x03
+        case YMMRegister    : return byte(r >> 3) & 0x03
+        case ZMMRegister    : return byte(r >> 3) & 0x03
+        case MaskedRegister : return ehcode(r.Reg)
+        default             : panic("v is not a register")
+    }
+}
+
 func toImmAny(v interface{}) int64 {
     if x, ok := asInt64(v); ok {
         return x
@@ -60,6 +162,49 @@ func toHcodeOpt(v interface{}) byte {
         return 0
     } else {
         return hcode(v)
+    }
+}
+
+func toEcodeVMM(v interface{}, x byte) byte {
+    switch r := v.(type) {
+        case XMMRegister : return ecode(r)
+        case YMMRegister : return ecode(r)
+        case ZMMRegister : return ecode(r)
+        default          : return x
+    }
+}
+
+func toKcodeMem(v MemoryOperand) byte {
+    if !v.Masked {
+        return 0
+    } else {
+        return byte(v.Mask.K)
+    }
+}
+
+func toZcodeMem(v MemoryOperand) byte {
+    if !v.Masked || v.Mask.Z {
+        return 0
+    } else {
+        return 1
+    }
+}
+
+func toZcodeRegM(v RegisterMask) byte {
+    if v.Z {
+        return 1
+    } else {
+        return 0
+    }
+}
+
+func toHLcodeReg8(v Register8) byte {
+    switch v {
+        case AH: fallthrough
+        case BH: fallthrough
+        case CH: fallthrough
+        case DH: panic("ah/bh/ch/dh registers never use 4-bit encoding")
+        default: return byte(v & 0x0f)
     }
 }
 
@@ -130,7 +275,7 @@ func (self *_Encoding) imm8(v int64) {
 //                          2-byte VEX prefix:
 // Requires: VEX.W = 0, VEX.mmmmm = 0b00001 and VEX.B = VEX.X = 0
 //         +----------------+
-// Byte 0: | Bits 0-7: 0xC5 |
+// Byte 0: | Bits 0-7: 0xc5 |
 //         +----------------+
 //
 //         +-----------+----------------+----------+--------------+
@@ -139,7 +284,7 @@ func (self *_Encoding) imm8(v int64) {
 //
 //                          3-byte VEX prefix:
 //         +----------------+
-// Byte 0: | Bits 0-7: 0xC4 |
+// Byte 0: | Bits 0-7: 0xc4 |
 //         +----------------+
 //
 //         +-----------+-----------+-----------+-------------------+
@@ -155,7 +300,7 @@ func (self *_Encoding) vex2(lpp byte, r byte, rm interface{}, vvvv byte) {
     var x byte
 
     /* VEX.R must be a single-bit mask */
-    if r != 0 && r != 1 {
+    if r > 1 {
         panic("VEX.R must be a 1-bit mask")
     }
 
@@ -169,7 +314,7 @@ func (self *_Encoding) vex2(lpp byte, r byte, rm interface{}, vvvv byte) {
         panic("VEX.vvvv must be a 4-bit mask")
     }
 
-    /* encode the RM byte if any */
+    /* encode the RM bits if any */
     if rm != nil {
         switch v := rm.(type) {
             case Register       : b = hcode(v)
@@ -190,7 +335,137 @@ func (self *_Encoding) vex2(lpp byte, r byte, rm interface{}, vvvv byte) {
     }
 }
 
-// rexm encodes a mandatory REX prefix
+// vex3 encodes a 3-byte VEX or XOP prefix.
+//
+//                         3-byte VEX/XOP prefix
+//         +-----------------------------------+
+// Byte 0: | Bits 0-7: 0xc4 (VEX) / 0x8f (XOP) |
+//         +-----------------------------------+
+//
+//         +-----------+-----------+-----------+-----------------+
+// Byte 1: | Bit 7: ~R | Bit 6: ~X | Bit 5: ~B | Bits 0-4: mmmmm |
+//         +-----------+-----------+-----------+-----------------+
+//
+//         +----------+-----------------+----------+--------------+
+// Byte 2: | Bit 7: W | Bits 3-6: ~vvvv | Bit 2: L | Bits 0-1: pp |
+//         +----------+-----------------+----------+--------------+
+//
+func (self *_Encoding) vex3(esc byte, mmmmm byte, wlpp byte, r byte, rm interface{}, vvvv byte) {
+    var b byte
+    var x byte
+
+    /* VEX.R must be a single-bit mask */
+    if r > 1 {
+        panic("VEX.R must be a 1-bit mask")
+    }
+
+    /* VEX.vvvv must be a 4-bit mask */
+    if vvvv &^ 0b111 != 0 {
+        panic("VEX.vvvv must be a 4-bit mask")
+    }
+
+    /* escape must be a 3-byte VEX (0xc4) or XOP (0x8f) prefix */
+    if esc != 0xc4 && esc != 0x8f {
+        panic("escape must be a 3-byte VEX (0xc4) or XOP (0x8f) prefix")
+    }
+
+    /* VEX.W____Lpp is expected to have no bits set except 0, 1, 2 and 7 */
+    if wlpp &^ 0b10000111 != 0 {
+        panic("VEX.W____Lpp is expected to have no bits set except 0, 1, 2 and 7")
+    }
+
+    /* VEX.m-mmmm is expected to be a 5-bit mask */
+    if mmmmm &^ 0b11111 != 0 {
+        panic("VEX.m-mmmm is expected to be a 5-bit mask")
+    }
+
+    /* encode the RM bits */
+    switch v := rm.(type) {
+        case MemoryAddress  : b, x = toHcodeOpt(v.Base), toHcodeOpt(v.Index)
+        case RelativeOffset : break
+        default             : panic("rm is expected to be a register or a memory address")
+    }
+
+    /* encode the 3-byte VEX or XOP prefix */
+    self.emit(esc)
+    self.emit(0xe0 ^ (r << 7) ^ (x << 6) ^ (b << 5) ^ mmmmm)
+    self.emit(0x78 ^ (vvvv << 3) ^ wlpp)
+}
+
+// evex encodes a 4-byte EVEX prefix.
+func (self *_Encoding) evex(mm byte, w1pp byte, ll byte, rr byte, rm interface{}, vvvvv byte, aaa byte, zz byte, bb byte) {
+    var b byte
+    var x byte
+
+    /* EVEX.b must be a single-bit mask */
+    if bb > 1 {
+        panic("EVEX.b must be a 1-bit mask")
+    }
+
+    /* EVEX.z must be a single-bit mask */
+    if zz > 1 {
+        panic("EVEX.z must be a 1-bit mask")
+    }
+
+    /* EVEX.mm must be a 2-bit mask */
+    if mm &^ 0b11 != 0 {
+        panic("EVEX.mm must be a 2-bit mask")
+    }
+
+    /* EVEX.L'L must be a 2-bit mask */
+    if ll &^ 0b11 != 0 {
+        panic("EVEX.L'L must be a 2-bit mask")
+    }
+
+    /* EVEX.R'R must be a 2-bit mask */
+    if rr &^ 0b11 != 0 {
+        panic("EVEX.R'R must be a 2-bit mask")
+    }
+
+    /* EVEX.aaa must be a 3-bit mask */
+    if aaa &^ 0b111 == 0 {
+        panic("EVEX.aaa must be a 3-bit mask")
+    }
+
+    /* EVEX.v'vvvv must be a 5-bit mask */
+    if vvvvv &^ 0b11111 == 0 {
+        panic("EVEX.v'vvvv must be a 5-bit mask")
+    }
+
+    /* EVEX.W____1pp is expected to have no bits set except 0, 1, 2, and 7 */
+    if w1pp &^ 0b10000011 != 0b100 {
+        panic("EVEX.W____1pp is expected to have no bits set except 0, 1, 2, and 7")
+    }
+
+    /* extract bits from EVEX.R'R and EVEX.v'vvvv */
+    r1, r0 := rr >> 1, rr & 1
+    v1, v0 := vvvvv >> 4, vvvvv & 0b1111
+
+    /* encode the RM bits if any */
+    if rm != nil {
+        switch m := rm.(type) {
+            case Register       : b, x = hcode(m), ecode(m)
+            case MemoryAddress  : b, x, v1 = toHcodeOpt(m.Base), toHcodeOpt(m.Index), toEcodeVMM(m.Index, v1)
+            case RelativeOffset : break
+            default             : panic("rm is expected to be a register or a memory address")
+        }
+    }
+
+    /* EVEX prefix bytes */
+    p0 := (r0 << 7) | (x << 6) | (b << 5) | (r1 << 4) | mm
+    p1 := (v0 << 3) | w1pp
+    p2 := (zz << 7) | (ll << 5) | (b << 4) | (v1 << 3) | aaa
+
+    /* p0: invert RXBR' (bits 4-7)
+     * p1: invert vvvv  (bits 3-6)
+     * p2: invert V'    (bit  3) */
+    self.emit(0x62)
+    self.emit(p0 ^ 0xf0)
+    self.emit(p1 ^ 0x78)
+    self.emit(p2 ^ 0x08)
+}
+
+// rexm encodes a mandatory REX prefix.
 func (self *_Encoding) rexm(w byte, r byte, rm interface{}) {
     var b byte
     var x byte
@@ -205,7 +480,7 @@ func (self *_Encoding) rexm(w byte, r byte, rm interface{}) {
         panic("REX.W must be 0 or 1")
     }
 
-    /* encode the RM byte */
+    /* encode the RM bits */
     switch v := rm.(type) {
         case MemoryAddress  : b, x = toHcodeOpt(v.Base), toHcodeOpt(v.Index)
         case RelativeOffset : break
@@ -226,7 +501,7 @@ func (self *_Encoding) rexo(r byte, rm interface{}, force bool) {
         panic("REX.R must be 0 or 1")
     }
 
-    /* encode the RM byte */
+    /* encode the RM bits */
     switch v := rm.(type) {
         case Register       : b = hcode(v)
         case MemoryAddress  : b, x = toHcodeOpt(v.Base), toHcodeOpt(v.Index)
@@ -240,7 +515,7 @@ func (self *_Encoding) rexo(r byte, rm interface{}, force bool) {
     }
 }
 
-// mrsd encodes ModR/M, SIB, Displacement.
+// mrsd encodes ModR/M, SIB and Displacement.
 //
 //                    ModR/M byte
 // +----------------+---------------+---------------+
