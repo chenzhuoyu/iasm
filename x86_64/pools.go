@@ -62,21 +62,24 @@ func resetInstruction(argc int, argv Operands, instr *Instruction) *Instruction 
     return instr
 }
 
-func newMemoryOperand() *MemoryOperand {
-    if v := memoryOperandPool.Get(); v == nil {
-        return new(MemoryOperand)
-    } else {
-        return resetMemoryOperand(v.(*MemoryOperand))
-    }
-}
-
 func freeMemoryOperand(m interface{}) {
     if _, ok := m.(*MemoryOperand); ok {
         memoryOperandPool.Put(m)
     }
 }
 
-func resetMemoryOperand(m *MemoryOperand) *MemoryOperand {
+// CreateMemoryOperand creates a new MemoryOperand, it may allocate a new one or grab one from a pool.
+func CreateMemoryOperand() *MemoryOperand {
+    var v interface{}
+    var m *MemoryOperand
+
+    /* attempt to grab from the pool */
+    if v = memoryOperandPool.Get(); v == nil {
+        return new(MemoryOperand)
+    }
+
+    /* clear and reuse the operand */
+    m = v.(*MemoryOperand)
     *m = MemoryOperand{}
     return m
 }

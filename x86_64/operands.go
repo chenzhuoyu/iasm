@@ -66,7 +66,7 @@ const (
     Offset
 )
 
-// Addressable is an union to represent something is memory-addressable.
+// Addressable is an union to represent an addressable operand.
 type Addressable struct {
     Type   AddressType
     Memory MemoryAddress
@@ -191,7 +191,7 @@ func Ptr(base Register, disp int32) *MemoryOperand {
 
 // Sib constructs a simple memory operand that represents a complete memory address.
 func Sib(base Register, index Register, scale uint8, disp int32) (v *MemoryOperand) {
-    v = newMemoryOperand()
+    v = CreateMemoryOperand()
     v.Addr.Type = Memory
     v.Addr.Memory.Base = base
     v.Addr.Memory.Index = index
