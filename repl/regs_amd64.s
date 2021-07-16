@@ -5,6 +5,7 @@
 TEXT ·dumpregs(SB), NOSPLIT, $0 - 8
     NO_LOCAL_POINTERS
     PUSHFQ
+    PUSHFQ
     PUSHQ AX
     MOVQ  p+0(FP), AX
     POPQ  (AX)
@@ -15,7 +16,7 @@ TEXT ·dumpregs(SB), NOSPLIT, $0 - 8
     MOVQ  SI, 0x28(AX)
     MOVQ  BP, 0x30(AX)
     MOVQ  SP, 0x38(AX)
-    ADDQ  $8, 0x38(AX)
+    ADDQ  $16, 0x38(AX)
     MOVQ  R8, 0x40(AX)
     MOVQ  R9, 0x48(AX)
     MOVQ  R10, 0x50(AX)
@@ -24,7 +25,7 @@ TEXT ·dumpregs(SB), NOSPLIT, $0 - 8
     MOVQ  R13, 0x68(AX)
     MOVQ  R14, 0x70(AX)
     MOVQ  R15, 0x78(AX)
-    MOVQ  8(SP), CX
+    MOVQ  16(SP), CX
     MOVQ  CX, 0x80(AX)
     POPQ  0x88(AX)
     MOVW  CS, 0x90(AX)
@@ -177,4 +178,5 @@ _no_avx512bw:
 _avx512bw_done:
 _no_avx512f:
 _no_avx:
+    POPFQ
     RET
