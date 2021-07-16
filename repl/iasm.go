@@ -56,7 +56,7 @@ func (self *IASM) Start() {
     ret.SetAutoSaveHistory(_HistoryFile, true)
 
     /* greeding prompts */
-    println("Interactive Assembler v1.0 -- Debugging Tool")
+    println("Interactive Assembler v1.0")
     println("Compiled with [" + runtime.Version() + "].")
     println("Loading history from '" + _HistoryFile + "'.")
     println(`Type ".help" for more information.`)
@@ -125,6 +125,7 @@ var _CMDS = map[string]func(*IASM, string) {
     ".read"   : (*IASM)._cmd_read,
     ".write"  : (*IASM)._cmd_write,
     ".fill"   : (*IASM)._cmd_fill,
+    ".regs"   : (*IASM)._cmd_regs,
     ".exit"   : (*IASM)._cmd_exit,
     ".help"   : (*IASM)._cmd_help,
 }
@@ -317,34 +318,62 @@ func (self *IASM) _cmd_fill(v string) {
     }
 }
 
+func (self *IASM) _cmd_regs(v string) {
+    regs := _regs.Dump(13)
+    sels := map[string]bool{}
+
+    /* check for register selectors */
+    if fv := strings.Fields(v); len(fv) != 0 {
+        for _, x := range fv {
+            sels[strings.ToLower(x)] = true
+        }
+    }
+
+    /* dump the registers */
+    for _, reg := range regs {
+        if v == "*" || sels[reg.reg] || (!reg.vec && len(sels) == 0) {
+            println(fmt.Sprintf("%10s = %s", reg.reg, reg.val))
+        }
+    }
+}
+
 func (self *IASM) _cmd_exit(_ string) {
     self.run = false
 }
 
 func (self *IASM) _cmd_help(_ string) {
     println("Supported commands:")
-    println("    .free   ID ................... Free a block of memory with ID.")
-    println("    .malloc ID SIZE .............. Allocate a block of memory with ID of SIZE ")
-    println("                                   bytes.")
+    println("    .free   ID ........................ Free a block of memory with ID.")
+    println("    .malloc ID SIZE ................... Allocate a block of memory with ID of")
+    println("                                        SIZE bytes.")
     println()
-    println("    .info   ID ................... Prints basic informations of a memory block")
-    println("                                   identified by ID.")
+    println("    .info   ID ........................ Print basic informations of a memory")
+    println("                                        block identified by ID.")
     println()
-    println("    .read   ID[+OFF] [SIZE] ...... Read a block of memory identified by ID[+OFF]")
-    println("                                   of SIZE bytes, default to the whole block if")
-    println("                                   SIZE is not set.")
+    println("    .read   ID[+OFF] [SIZE] ........... Read a block of memory identified by")
+    println("                                        ID[+OFF] of SIZE bytes, default to the")
+    println("                                        whole block if SIZE is not set.")
     println()
-    println("    .write  ID[+OFF] DATA ........ Write DATA into a block of memory identified")
-    println("                                   by ID[+OFF].")
+    println("    .write  ID[+OFF] DATA ............. Write DATA into a block of memory")
+    println("                                        identified by ID[+OFF].")
     println()
-    println("    .fill   ID[+OFF] BYTE SIZE ... Fill a block of memory identified by ID[+OFF]")
-    println("                                   with BYTE of SIZE bytes, default to the whole")
-    println("                                   block if SIZE is not set.")
+    println("    .fill   ID[+OFF] BYTE [SIZE] ...... Fill a block of memory identified by")
+    println("                                        ID[+OFF] with BYTE of SIZE bytes,")
+    println("                                        default to the whole block if SIZE is")
+    println("                                        not set.")
     println()
-    println("    .new    NAME ................. Create a new function with NAME.")
-    println("    .run    NAME ................. Execute the function NAME.")
-    println("    .unload NAME ................. Unload and delete the function NAME.")
-    println("    .exit ........................ Exit the REPL.")
-    println("    .help ........................ This help message.")
+    println("    .regs   [REG*] .................... Print the content of the specified")
+    println("                                        registers, default to all registers if")
+    println("                                        not specified.")
+    println()
+    println("    .new    NAME ...................... Create a new function with NAME.")
+    println("    .run    NAME ...................... Execute the function NAME.")
+    println("    .unload NAME ...................... Unload and delete the function NAME.")
+    println("    .exit ............................. Exit Interactive Assembler.")
+    println("    .help ............................. This help message.")
+    println()
+    println("You can also execute assembly instructions of the current CPU architecture")
+    println("directly in this prompt without creating a function every time, by typing the")
+    println("instruction and then press ENTER.")
     println()
 }

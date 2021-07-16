@@ -6,6 +6,26 @@ import (
     `unicode`
 )
 
+func vector(v []byte, indent int) string {
+    n := len(v)
+    m := make([]string, 0, len(v))
+
+    /* convert each element */
+    for i := 0; i < n; i++ {
+        if i == 0 || (i & 15) != 0 {
+            m = append(m, fmt.Sprintf("0x%02x", v[n - i - 1]))
+        } else {
+            m = append(m, fmt.Sprintf("\n%s0x%02x", strings.Repeat(" ", indent + 1), v[n - i - 1]))
+        }
+    }
+
+    /* join them together */
+    return fmt.Sprintf(
+        "{%s}",
+        strings.Join(m, ", "),
+    )
+}
+
 func display(v byte) string {
     if !unicode.IsPrint(rune(v)) {
         return "."
