@@ -184,6 +184,26 @@ ISAMAPPING = {
     'MONITORX'        : 'ISA_MONITORX',
 }
 
+BRANCHES = {
+    'JA'    , 'JNA',
+    'JAE'   , 'JNAE',
+    'JB'    , 'JNB',
+    'JBE'   , 'JNBE',
+    'JC'    , 'JNC',
+    'JE'    , 'JNE',
+    'JG'    , 'JNG',
+    'JGE'   , 'JNGE',
+    'JL'    , 'JNL',
+    'JLE'   , 'JNLE',
+    'JO'    , 'JNO',
+    'JP'    , 'JNP',
+    'JS'    , 'JNS',
+    'JZ'    , 'JNZ',
+    'JPE'   , 'JPO',
+    'JECXZ' , 'JRCXZ',
+    'JMP'
+}
+
 def is_avx512(form: x86_64.InstructionForm) -> bool:
     return any(v.name.startswith('AVX512') for v in form.isa_extensions)
 
@@ -214,7 +234,7 @@ def operand_match(ops: List[x86_64.Operand], argc: int, avx512: bool) -> Iterabl
         else:
             yield OPCHECKS[op.type] % argv
 
-def generate_encoding(enc: x86_64.Encoding, ops: List[x86_64.Operand]) -> Tuple[str, List[str]]:
+def generate_encoding(enc: x86_64.Encoding, ops: List[x86_64.Operand], gen_branch: bool = False) -> Tuple[str, List[str]]:
     buf = []
     flags = []
     disp8v = None
@@ -264,7 +284,6 @@ def generate_encoding(enc: x86_64.Encoding, ops: List[x86_64.Operand]) -> Tuple[
                 else:
                     args.append(' || '.join(rexv))
                 buf.append('m.rexo(%s)' % ', '.join(args))
-                flags.append('_OREX')
         elif isinstance(item, x86_64.VEX):
             item.set_ignored()
             if item.type == 'VEX' and item.mmmmm == 0b00001 and item.W == 0:
@@ -288,7 +307,6 @@ def generate_encoding(enc: x86_64.Encoding, ops: List[x86_64.Operand]) -> Tuple[
                     else:
                         args.append('0')
                     buf.append('m.vex2(%s)' % ', '.join(args))
-                    flags.append('_VEX2')
             else:
                 if isinstance(item.X, x86_64.Operand):
                     args = [
@@ -352,7 +370,6 @@ def generate_encoding(enc: x86_64.Encoding, ops: List[x86_64.Operand]) -> Tuple[
                 else:
                     args.append('0')
                 buf.append('m.evex(%s)' % ', '.join(args))
-                flags.append('_EVEX')
             else:
                 buf.append('m.emit(0x62)')
                 if isinstance(item.RR, x86_64.Operand):
@@ -405,7 +422,6 @@ def generate_encoding(enc: x86_64.Encoding, ops: List[x86_64.Operand]) -> Tuple[
                 else:
                     disp = disp8v
                 buf.append('m.mrsd(%s, addr(v[%d]), %d)' % (reg, ops.index(item.rm), disp))
-                flags.append('_MRSD')
             else:
                 mod = item.mode << 6
                 parts = []
@@ -446,8 +462,12 @@ def generate_encoding(enc: x86_64.Encoding, ops: List[x86_64.Operand]) -> Tuple[
         elif isinstance(item, x86_64.CodeOffset):
             if item.size == 1:
                 buf.append('m.imm1(offs(v[%d]))' % ops.index(item.value))
+                if gen_branch:
+                    flags.append('_REL1')
             elif item.size == 4:
                 buf.append('m.imm4(offs(v[%d]))' % ops.index(item.value))
+                if gen_branch:
+                    flags.append('_REL4')
             else:
                 raise RuntimeError('invalid code offset size: ' + repr(item.size))
         else:
@@ -599,8 +619,14 @@ for name, (ins, desc, forms) in sorted(instrs.items()):
                     cc.line('case %d  : p = self.alloc(%d, [_MAX_ARGS]interface{}{%s})' % (argc - nfix, argc, ', '.join(args)))
                 cc.line('default : panic("instruction %s takes %s operands")' % (name, ' or '.join(map(str, sorted(nops)))))
             cc.line('}')
+        if name in BRANCHES:
+            cc.line('p.branch = true')
+        is_labeled = False
+        must_success = False
         for form in forms:
             ops = list(reversed(form.operands))
+            if len(ops) == 1 and ops[0].type in ('rel8', 'rel32'):
+                is_labeled = True
             conds = []
             cc.line('// ' + dump_form(form))
             if len(nops) != 1:
@@ -609,10 +635,12 @@ for name, (ins, desc, forms) in sorted(instrs.items()):
             if conds:
                 cc.line('if %s {' % ' && '.join(conds))
                 cc.indent()
+            else:
+                must_success = True
             if form.isa_extensions:
                 cc.line('self.require(%s)' % require_isa(form.isa_extensions))
             for enc in form.encodings:
-                flags, instr = generate_encoding(enc, ops)
+                flags, instr = generate_encoding(enc, ops, gen_branch = False)
                 cc.line('p.add(%s, func(m *_Encoding, v []interface{}) {' % flags)
                 with CodeBlock(cc):
                     for line in instr:
@@ -621,10 +649,25 @@ for name, (ins, desc, forms) in sorted(instrs.items()):
             if conds:
                 cc.dedent()
                 cc.line('}')
-        cc.line('if p.len == 0 {')
-        with CodeBlock(cc):
-            cc.line('panic("invalid operands for %s")' % name)
-        cc.line('}')
+        if is_labeled:
+            cc.line('// %s label' % name)
+            cc.line('if isLabel(v0) {')
+            with CodeBlock(cc):
+                for form in forms:
+                    ops = list(reversed(form.operands))
+                    for enc in form.encodings:
+                        flags, instr = generate_encoding(enc, ops, gen_branch = True)
+                        cc.line('p.add(%s, func(m *_Encoding, v []interface{}) {' % flags)
+                        with CodeBlock(cc):
+                            for line in instr:
+                                cc.line(line)
+                        cc.line('})')
+            cc.line('}')
+        if not must_success:
+            cc.line('if p.len == 0 {')
+            with CodeBlock(cc):
+                cc.line('panic("invalid operands for %s")' % name)
+            cc.line('}')
         cc.line('return p')
     cc.line('}')
     cc.line()

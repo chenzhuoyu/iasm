@@ -64,13 +64,31 @@ const (
 
     // Offset indicates the Addressable contains an RIP-relative offset.
     Offset
+
+    // Reference indicates the Addressable contains a label reference.
+    Reference
 )
+
+// Label represents a location within the program.
+type Label struct {
+    Name string
+    Dest *Instruction
+}
+
+func (self *Label) offset(p int, n int) RelativeOffset {
+    if self.Dest == nil {
+        panic("unresolved label: " + self.Name)
+    } else {
+        return RelativeOffset(self.Dest.pc - p - n)
+    }
+}
 
 // Addressable is an union to represent an addressable operand.
 type Addressable struct {
-    Type   AddressType
-    Memory MemoryAddress
-    Offset RelativeOffset
+    Type      AddressType
+    Memory    MemoryAddress
+    Offset    RelativeOffset
+    Reference *Label
 }
 
 // MemoryOperand represents a memory operand for an instruction.
@@ -101,8 +119,14 @@ func (self *MemoryOperand) isVMZ() bool {
 func (self *MemoryOperand) isMem() bool {
     if (_Sizes & (1 << self.Broadcast)) == 0 {
         return false
+    } else if self.Addr.Type == Memory {
+        return self.Addr.Memory.isMem()
+    } else if self.Addr.Type == Offset {
+        return true
+    } else if self.Addr.Type == Reference {
+        return true
     } else {
-        return self.Addr.Type == Offset || (self.Addr.Type == Memory && self.Addr.Memory.isMem())
+        return false
     }
 }
 
@@ -116,10 +140,11 @@ func (self *MemoryOperand) isBroadcast(n int, b uint8) bool {
 
 func (self *MemoryOperand) ensureAddrValid() {
     switch self.Addr.Type {
-        case None   : break
-        case Offset : break
-        case Memory : self.Addr.Memory.EnsureValid()
-        default     : panic("invalid address type")
+        case None      : break
+        case Memory    : self.Addr.Memory.EnsureValid()
+        case Offset    : break
+        case Reference : break
+        default        : panic("invalid address type")
     }
 }
 
@@ -184,6 +209,14 @@ func (self *MemoryAddress) EnsureValid() {
     }
 }
 
+// Ref constructs a memory reference to a label.
+func Ref(ref *Label) (v *MemoryOperand) {
+    v = CreateMemoryOperand()
+    v.Addr.Type = Reference
+    v.Addr.Reference = ref
+    return
+}
+
 // Ptr constructs a simple memory operand with base and displacement.
 func Ptr(base Register, disp int32) *MemoryOperand {
     return Sib(base, nil, 0, disp)
@@ -203,36 +236,28 @@ func Sib(base Register, index Register, scale uint8, disp int32) (v *MemoryOpera
 
 /** Operand Matching Helpers **/
 
-func isInt(k reflect.Kind) bool {
-    switch k {
-        case reflect.Int   : fallthrough
-        case reflect.Int8  : fallthrough
-        case reflect.Int16 : fallthrough
-        case reflect.Int32 : fallthrough
-        case reflect.Int64 : return true
-        default            : return false
-    }
-}
+const _IntMask =
+    (1 << reflect.Int    ) |
+    (1 << reflect.Int8   ) |
+    (1 << reflect.Int16  ) |
+    (1 << reflect.Int32  ) |
+    (1 << reflect.Int64  ) |
+    (1 << reflect.Uint   ) |
+    (1 << reflect.Uint8  ) |
+    (1 << reflect.Uint16 ) |
+    (1 << reflect.Uint32 ) |
+    (1 << reflect.Uint64 ) |
+    (1 << reflect.Uintptr)
 
-func isUint(k reflect.Kind) bool {
-    switch k {
-        case reflect.Uint    : fallthrough
-        case reflect.Uint8   : fallthrough
-        case reflect.Uint16  : fallthrough
-        case reflect.Uint32  : fallthrough
-        case reflect.Uint64  : fallthrough
-        case reflect.Uintptr : return true
-        default              : return false
-    }
+func isInt(k reflect.Kind) bool {
+    return (_IntMask & (1 << k)) != 0
 }
 
 func asInt64(v interface{}) (int64, bool) {
     if isSpecial(v) {
         return 0, false
-    } else if x := reflect.ValueOf(v); isInt(x.Kind()) {
-        return x.Int(), true
-    } else if isUint(x.Kind()) {
-        return int64(x.Uint()), true
+    } else if x := efaceOf(v); isInt(x.kind()) {
+        return x.toInt64(), true
     } else {
         return 0, false
     }
@@ -265,16 +290,6 @@ func isIndexable(v interface{}) bool {
     return isZMM(v) || isReg64(v) || isEVEXXMM(v) || isEVEXYMM(v)
 }
 
-func isAccumulator(v interface{}) bool {
-    switch r := v.(type) {
-        case Register8  : return r == AL
-        case Register16 : return r == AX
-        case Register32 : return r == EAX
-        case Register64 : return r == RAX
-        default         : return false
-    }
-}
-
 func isImm4        (v interface{}) bool { return inRange(v, 0, 15) }
 func isImm8        (v interface{}) bool { return inRange(v, math.MinInt8, math.MaxUint8) }
 func isImm16       (v interface{}) bool { return inRange(v, math.MinInt16, math.MaxUint16) }
@@ -284,6 +299,7 @@ func isConst1      (v interface{}) bool { x, r := asInt64(v)           ; return 
 func isConst3      (v interface{}) bool { x, r := asInt64(v)           ; return r && x == 3 }
 func isRel8        (v interface{}) bool { x, r := v.(RelativeOffset)   ; return r && x >= math.MinInt8 && x <= math.MaxInt8 }
 func isRel32       (v interface{}) bool { _, r := v.(RelativeOffset)   ; return r }
+func isLabel       (v interface{}) bool { _, r := v.(*Label)           ; return r }
 func isReg8        (v interface{}) bool { _, r := v.(Register8)        ; return r }
 func isReg8REX     (v interface{}) bool { x, r := v.(Register8)        ; return r && (x & 0x80) == 0 && x >= SPL }
 func isReg16       (v interface{}) bool { _, r := v.(Register16)       ; return r }

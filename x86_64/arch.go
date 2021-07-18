@@ -2,7 +2,6 @@ package x86_64
 
 import (
     `fmt`
-    `math`
 )
 
 // ISA represents an extension to x86-64 instruction set.
@@ -230,100 +229,4 @@ func (self *Arch) DisableISA(isa ISA) *Arch {
 // CreateProgram creates a new empty program.
 func (self *Arch) CreateProgram() *Program {
     return newProgram(self)
-}
-
-// Operands represents a sequence of operand required by an instruction.
-type Operands [_MAX_ARGS]interface{}
-
-// Instruction represents an unencoded instruction.
-type Instruction struct {
-    len   int
-    argc  int
-    argv  [_MAX_ARGS]interface{}
-    forms [_MAX_FORMS]_Encoding
-}
-
-func (self *Instruction) add(flags int, encoder func(m *_Encoding, v []interface{})) {
-    self.forms[self.len].flags = flags
-    self.forms[self.len].encoder = encoder
-    self.len++
-}
-
-func (self *Instruction) check(e *_Encoding) bool {
-    if (e.flags & _ACC0) != 0 {
-        return self.argc >= 1 && isAccumulator(self.argv[self.argc - 1])
-    } else if (e.flags & _ACC1) != 0 {
-        return self.argc >= 2 && isAccumulator(self.argv[self.argc - 2])
-    } else {
-        return true
-    }
-}
-
-func (self *Instruction) reset() {
-    for i := 0; i < self.argc; i++ {
-        freeMemoryOperand(self.argv[i])
-    }
-}
-
-// Encode encodes the instruction into a byte slice.
-func (self *Instruction) Encode() (v []byte) {
-    self.EncodeInto(&v)
-    return
-}
-
-// EncodeInto is like Encode, but use the provided buffer instead allocating a new one.
-func (self *Instruction) EncodeInto(m *[]byte) int {
-    n := math.MaxInt64
-    p := (*_Encoding)(nil)
-
-    /* find the shortest encoding */
-    for i := 0; i < self.len; i++ {
-        if e := &self.forms[i]; self.check(e) {
-            if v := e.encode(self.Operands()); v < n {
-                n = v
-                p = e
-            }
-        }
-    }
-
-    /* add to buffer */
-    *m = append(*m, p.bytes[:n]...)
-    return n
-}
-
-// Operands returns a sequence of operands used to construct this instruction.
-func (self *Instruction) Operands() []interface{} {
-    return self.argv[:self.argc:self.argc]
-}
-
-// Program represents a sequence of instructions.
-type Program struct {
-    arch   *Arch
-    instrs []*Instruction
-}
-
-// Free returns the Program as free'd.
-// Any operation performed after Free is undefined behavior.
-func (self *Program) Free() {
-    self.clear()
-    freeProgram(self)
-}
-
-func (self *Program) clear() {
-    for _, v := range self.instrs {
-        v.reset()
-        freeInstruction(v)
-    }
-}
-
-func (self *Program) alloc(argc int, argv Operands) (ret *Instruction) {
-    ret = newInstruction(argc, argv)
-    self.instrs = append(self.instrs, ret)
-    return
-}
-
-func (self *Program) require(isa ISA) {
-    if !self.arch.HasISA(isa) {
-        panic("ISA '" + isa.String() + "' was not enabled")
-    }
 }

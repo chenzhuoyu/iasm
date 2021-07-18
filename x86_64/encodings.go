@@ -12,14 +12,19 @@ func imml(v interface{}) byte {
 }
 
 func offs(v interface{}) int64 {
-    return int64(v.(RelativeOffset))
+    switch r := v.(type) {
+        case *Label         : return 0
+        case RelativeOffset : return int64(r)
+        default             : panic("invalid relative offset")
+    }
 }
 
 func addr(v interface{}) interface{} {
     switch a := v.(*MemoryOperand).Addr; a.Type {
-        case Memory : return a.Memory
-        case Offset : return a.Offset
-        default     : panic("invalid memory operand type")
+        case Memory    : return a.Memory
+        case Offset    : return a.Offset
+        case Reference : return a.Reference
+        default        : panic("invalid memory operand type")
     }
 }
 
@@ -211,14 +216,8 @@ func toHLcodeReg8(v Register8) byte {
 /** Instruction Encoding Helpers **/
 
 const (
-    _ACC0 = 0x01
-    _ACC1 = 0x02
-    _REL1 = 0x04
-    _REL4 = 0x08
-    _MRSD = 0x10
-    _OREX = 0x20
-    _VEX2 = 0x40
-    _EVEX = 0x80
+    _REL1 = 1 << iota
+    _REL4
 )
 
 const (
@@ -317,6 +316,7 @@ func (self *_Encoding) vex2(lpp byte, r byte, rm interface{}, vvvv byte) {
     /* encode the RM bits if any */
     if rm != nil {
         switch v := rm.(type) {
+            case *Label         : break
             case Register       : b = hcode(v)
             case MemoryAddress  : b, x = toHcodeOpt(v.Base), toHcodeOpt(v.Index)
             case RelativeOffset : break
@@ -381,6 +381,7 @@ func (self *_Encoding) vex3(esc byte, mmmmm byte, wlpp byte, r byte, rm interfac
 
     /* encode the RM bits */
     switch v := rm.(type) {
+        case *Label         : break
         case MemoryAddress  : b, x = toHcodeOpt(v.Base), toHcodeOpt(v.Index)
         case RelativeOffset : break
         default             : panic("rm is expected to be a register or a memory address")
@@ -444,6 +445,7 @@ func (self *_Encoding) evex(mm byte, w1pp byte, ll byte, rr byte, rm interface{}
     /* encode the RM bits if any */
     if rm != nil {
         switch m := rm.(type) {
+            case *Label         : break
             case Register       : b, x = hcode(m), ecode(m)
             case MemoryAddress  : b, x, v1 = toHcodeOpt(m.Base), toHcodeOpt(m.Index), toEcodeVMM(m.Index, v1)
             case RelativeOffset : break
@@ -482,6 +484,7 @@ func (self *_Encoding) rexm(w byte, r byte, rm interface{}) {
 
     /* encode the RM bits */
     switch v := rm.(type) {
+        case *Label         : break
         case MemoryAddress  : b, x = toHcodeOpt(v.Base), toHcodeOpt(v.Index)
         case RelativeOffset : break
         default             : panic("rm is expected to be a register or a memory address")
@@ -503,6 +506,7 @@ func (self *_Encoding) rexo(r byte, rm interface{}, force bool) {
 
     /* encode the RM bits */
     switch v := rm.(type) {
+        case *Label         : break
         case Register       : b = hcode(v)
         case MemoryAddress  : b, x = toHcodeOpt(v.Base), toHcodeOpt(v.Index)
         case RelativeOffset : break
@@ -547,6 +551,13 @@ func (self *_Encoding) mrsd(reg byte, rm interface{}, disp8v int32) {
         case 32: break
         case 64: break
         default: panic("invalid displacement size")
+    }
+
+    /* special case: unresolved labels, assuming a zero offset */
+    if _, ok = rm.(*Label); ok {
+        self.emit(0x05 | (reg << 3))
+        self.imm4(0)
+        return
     }
 
     /* special case: RIP-relative offset

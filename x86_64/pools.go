@@ -5,10 +5,39 @@ import (
 )
 
 var (
+    labelPool         sync.Pool
     programPool       sync.Pool
     instructionPool   sync.Pool
     memoryOperandPool sync.Pool
 )
+
+func freeLabel(v interface{}) {
+    if _, ok := v.(*Label); ok {
+        labelPool.Put(v)
+    }
+}
+
+func allocLabel(name string) *Label {
+    return &Label {
+        Dest: nil,
+        Name: name,
+    }
+}
+
+func resetLabel(name string, label *Label) *Label {
+    label.Dest = nil
+    label.Name = name
+    return label
+}
+
+// CreateLabel creates a new Label, it may allocate a new one or grab one from a pool.
+func CreateLabel(name string) *Label {
+    if p := labelPool.Get(); p == nil {
+        return allocLabel(name)
+    } else {
+        return resetLabel(name, p.(*Label))
+    }
+}
 
 func newProgram(arch *Arch) *Program {
     if p := programPool.Get(); p == nil {
@@ -24,14 +53,16 @@ func freeProgram(p *Program) {
 
 func allocProgram(arch *Arch) *Program {
     return &Program {
-        arch   : arch,
-        instrs : make([]*Instruction, 0, 16),
+        arch: arch,
+        head: nil,
+        tail: nil,
     }
 }
 
 func resetProgram(arch *Arch, prog *Program) *Program {
+    prog.head = nil
+    prog.tail = nil
     prog.arch = arch
-    prog.instrs = prog.instrs[:0]
     return prog
 }
 
@@ -49,16 +80,19 @@ func freeInstruction(v *Instruction) {
 
 func allocInstruction(argc int, argv Operands) *Instruction {
     return &Instruction {
-        len  : 0,
         argc : argc,
         argv : argv,
     }
 }
 
 func resetInstruction(argc int, argv Operands, instr *Instruction) *Instruction {
+    instr.pc = 0
+    instr.nb = 0
     instr.len = 0
     instr.argc = argc
     instr.argv = argv
+    instr.branch = false
+    instr.pseudo = _Pseudo{}
     return instr
 }
 
