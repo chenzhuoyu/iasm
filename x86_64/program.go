@@ -27,22 +27,22 @@ const (
 func (self *_Pseudo) encode(m *[]byte) int {
     switch self.kind {
         case _PSEUDO_NOP  : return 0
-        case _PSEUDO_BYTE : self.encodePseudoByte(m); return 1
-        case _PSEUDO_WORD : self.encodePseudoWord(m); return 2
-        case _PSEUDO_LONG : self.encodePseudoLong(m); return 4
-        case _PSEUDO_QUAD : self.encodePseudoQuad(m); return 8
-        case _PSEUDO_DATA : self.encodePseudoData(m); return len(self.data)
+        case _PSEUDO_BYTE : self.encodeByte(m); return 1
+        case _PSEUDO_WORD : self.encodeWord(m); return 2
+        case _PSEUDO_LONG : self.encodeLong(m); return 4
+        case _PSEUDO_QUAD : self.encodeQuad(m); return 8
+        case _PSEUDO_DATA : self.encodeData(m); return len(self.data)
         default           : panic("invalid pseudo instruction")
     }
 }
 
-func (self *_Pseudo) encodePseudoByte(m *[]byte) {
+func (self *_Pseudo) encodeByte(m *[]byte) {
     if m != nil {
         *m = append(*m, byte(self.uint))
     }
 }
 
-func (self *_Pseudo) encodePseudoWord(m *[]byte) {
+func (self *_Pseudo) encodeWord(m *[]byte) {
     if m != nil {
         p := len(*m)
         *m = append(*m, 0, 0)
@@ -50,7 +50,7 @@ func (self *_Pseudo) encodePseudoWord(m *[]byte) {
     }
 }
 
-func (self *_Pseudo) encodePseudoLong(m *[]byte) {
+func (self *_Pseudo) encodeLong(m *[]byte) {
     if m != nil {
         p := len(*m)
         *m = append(*m, 0, 0, 0, 0)
@@ -58,7 +58,7 @@ func (self *_Pseudo) encodePseudoLong(m *[]byte) {
     }
 }
 
-func (self *_Pseudo) encodePseudoQuad(m *[]byte) {
+func (self *_Pseudo) encodeQuad(m *[]byte) {
     if m != nil {
         p := len(*m)
         *m = append(*m, 0, 0, 0, 0, 0, 0, 0, 0)
@@ -66,7 +66,7 @@ func (self *_Pseudo) encodePseudoQuad(m *[]byte) {
     }
 }
 
-func (self *_Pseudo) encodePseudoData(m *[]byte) {
+func (self *_Pseudo) encodeData(m *[]byte) {
     if m != nil {
         *m = append(*m, self.data...)
     }
