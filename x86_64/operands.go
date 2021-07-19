@@ -83,6 +83,15 @@ func (self *Label) offset(p int, n int) RelativeOffset {
     }
 }
 
+// Evaluate implements the interface expr.Term.
+func (self *Label) Evaluate() int64 {
+    if self.Dest == nil {
+        panic("unresolved label: " + self.Name)
+    } else {
+        return int64(self.Dest.pc)
+    }
+}
+
 // Addressable is an union to represent an addressable operand.
 type Addressable struct {
     Type      AddressType

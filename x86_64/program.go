@@ -1,68 +1,82 @@
 package x86_64
 
 import (
-    `encoding/binary`
+    `fmt`
     `math`
+
+    `github.com/chenzhuoyu/iasm/expr`
 )
 
-type _Node struct {
-    next *Instruction
-}
-
-type _Pseudo struct {
-    kind int
-    data []byte
-    uint uint64
-}
+type (
+	_PseudoType int
+)
 
 const (
-    _PSEUDO_NOP = iota + 1
+    _PSEUDO_NOP _PseudoType = iota + 1
     _PSEUDO_BYTE
     _PSEUDO_WORD
     _PSEUDO_LONG
     _PSEUDO_QUAD
     _PSEUDO_DATA
+    _PSEUDO_EXPR_BYTE
+    _PSEUDO_EXPR_WORD
+    _PSEUDO_EXPR_LONG
+    _PSEUDO_EXPR_QUAD
 )
+
+type _Pseudo struct {
+    kind _PseudoType
+    data []byte
+    uint uint64
+    expr *expr.Expr
+}
+
+func (self *_Pseudo) free() {
+    switch self.kind {
+        case _PSEUDO_EXPR_BYTE: fallthrough
+        case _PSEUDO_EXPR_WORD: fallthrough
+        case _PSEUDO_EXPR_LONG: fallthrough
+        case _PSEUDO_EXPR_QUAD: self.expr.Free()
+    }
+}
 
 func (self *_Pseudo) encode(m *[]byte) int {
     switch self.kind {
-        case _PSEUDO_NOP  : return 0
-        case _PSEUDO_BYTE : self.encodeByte(m); return 1
-        case _PSEUDO_WORD : self.encodeWord(m); return 2
-        case _PSEUDO_LONG : self.encodeLong(m); return 4
-        case _PSEUDO_QUAD : self.encodeQuad(m); return 8
-        case _PSEUDO_DATA : self.encodeData(m); return len(self.data)
-        default           : panic("invalid pseudo instruction")
+        case _PSEUDO_NOP       : return 0
+        case _PSEUDO_BYTE      : self.encodeByte(m)     ; return 1
+        case _PSEUDO_WORD      : self.encodeWord(m)     ; return 2
+        case _PSEUDO_LONG      : self.encodeLong(m)     ; return 4
+        case _PSEUDO_QUAD      : self.encodeQuad(m)     ; return 8
+        case _PSEUDO_DATA      : self.encodeData(m)     ; return len(self.data)
+        case _PSEUDO_EXPR_BYTE : self.encodeExprByte(m) ; return 1
+        case _PSEUDO_EXPR_WORD : self.encodeExprWord(m) ; return 2
+        case _PSEUDO_EXPR_LONG : self.encodeExprLong(m) ; return 4
+        case _PSEUDO_EXPR_QUAD : self.encodeExprQuad(m) ; return 8
+        default                : panic("invalid pseudo instruction")
     }
 }
 
 func (self *_Pseudo) encodeByte(m *[]byte) {
     if m != nil {
-        *m = append(*m, byte(self.uint))
+        append8(m, byte(self.uint))
     }
 }
 
 func (self *_Pseudo) encodeWord(m *[]byte) {
     if m != nil {
-        p := len(*m)
-        *m = append(*m, 0, 0)
-        binary.LittleEndian.PutUint16((*m)[p:], uint16(self.uint))
+        append16(m, uint16(self.uint))
     }
 }
 
 func (self *_Pseudo) encodeLong(m *[]byte) {
     if m != nil {
-        p := len(*m)
-        *m = append(*m, 0, 0, 0, 0)
-        binary.LittleEndian.PutUint32((*m)[p:], uint32(self.uint))
+        append32(m, uint32(self.uint))
     }
 }
 
 func (self *_Pseudo) encodeQuad(m *[]byte) {
     if m != nil {
-        p := len(*m)
-        *m = append(*m, 0, 0, 0, 0, 0, 0, 0, 0)
-        binary.LittleEndian.PutUint64((*m)[p:], self.uint)
+        append64(m, self.uint)
     }
 }
 
@@ -72,12 +86,44 @@ func (self *_Pseudo) encodeData(m *[]byte) {
     }
 }
 
+func (self *_Pseudo) encodeExprByte(m *[]byte) {
+    if m != nil {
+        append8(m, byte(self.evaluteExpression(math.MinInt8, math.MaxUint8)))
+    }
+}
+
+func (self *_Pseudo) encodeExprWord(m *[]byte) {
+    if m != nil {
+        append16(m, uint16(self.evaluteExpression(math.MinInt16, math.MaxUint16)))
+    }
+}
+
+func (self *_Pseudo) encodeExprLong(m *[]byte) {
+    if m != nil {
+        append32(m, uint32(self.evaluteExpression(math.MinInt32, math.MaxUint32)))
+    }
+}
+
+func (self *_Pseudo) encodeExprQuad(m *[]byte) {
+    if m != nil {
+        append64(m, uint64(self.evaluteExpression(math.MinInt64, math.MaxUint64)))
+    }
+}
+
+func (self *_Pseudo) evaluteExpression(low int64, high uint64) int64 {
+    if v := self.expr.Evaluate(); v < low || uint64(v) > high {
+        panic(fmt.Sprintf("expression out of range [%d, %d]: %d", low, high, v))
+    } else {
+        return v
+    }
+}
+
 // Operands represents a sequence of operand required by an instruction.
 type Operands [_MAX_ARGS]interface{}
 
 // Instruction represents an unencoded instruction.
 type Instruction struct {
-    _Node
+    next   *Instruction
     pc     int
     nb     int
     len    int
@@ -96,6 +142,7 @@ func (self *Instruction) add(flags int, encoder func(m *_Encoding, v []interface
 
 func (self *Instruction) free() {
     self.clear()
+    self.pseudo.free()
     freeInstruction(self)
 }
 
@@ -180,7 +227,7 @@ func (self *Program) alloc(argc int, argv Operands) *Instruction {
     return q
 }
 
-func (self *Program) pseudo(kind int) (p *Instruction) {
+func (self *Program) pseudo(kind _PseudoType) (p *Instruction) {
     p = self.alloc(0, Operands{})
     p.pseudo.kind = kind
     return
@@ -229,10 +276,42 @@ func (self *Program) Data(v []byte) (p *Instruction) {
     return
 }
 
+// SetB is a pseudo-instruction to add a byte expression to the assembled code.
+func (self *Program) SetB(v *expr.Expr) (p *Instruction) {
+    p = self.pseudo(_PSEUDO_EXPR_BYTE)
+    p.pseudo.expr = v
+    return
+}
+
+// SetW is a pseudo-instruction to add a word (2 bytes) expression to the assembled code.
+func (self *Program) SetW(v *expr.Expr) (p *Instruction) {
+    p = self.pseudo(_PSEUDO_EXPR_WORD)
+    p.pseudo.expr = v
+    return
+}
+
+// SetL is a pseudo-instruction to add a double-word (4 bytes) expression to the assembled code.
+func (self *Program) SetL(v *expr.Expr) (p *Instruction) {
+    p = self.pseudo(_PSEUDO_EXPR_LONG)
+    p.pseudo.expr = v
+    return
+}
+
+// SetQ is a pseudo-instruction to add a quad-word (8 bytes) expression to the assembled code.
+func (self *Program) SetQ(v *expr.Expr) (p *Instruction) {
+    p = self.pseudo(_PSEUDO_EXPR_QUAD)
+    p.pseudo.expr = v
+    return
+}
+
 /** Program Assembler **/
 
 // Free returns the Program object into pool.
 // Any operation performed after Free is undefined behavior.
+//
+// NOTE: This also frees all the instructions, labels, memory
+//       operands and expressions associated with this program.
+//
 func (self *Program) Free() {
     self.clear()
     freeProgram(self)

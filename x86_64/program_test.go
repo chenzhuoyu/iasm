@@ -4,6 +4,7 @@ import (
     `bytes`
     `testing`
 
+    `github.com/chenzhuoyu/iasm/expr`
     `github.com/davecgh/go-spew/spew`
 )
 
@@ -25,7 +26,7 @@ func TestProgram_Assemble(t *testing.T) {
     p.ADDQ   (RDI, RAX)
     p.JMPQ   (RAX)
     p.Link   (s)
-    p.Long   (0x1234)
-    p.Long   (0x5678)
+    p.SetL   (expr.Ref(s).Sub(expr.Ref(j)))
+    p.SetL   (expr.Ref(s).Sub(expr.Ref(b)))
     spew.Dump(p.Assemble())
 }
