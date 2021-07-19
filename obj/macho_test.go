@@ -24,7 +24,7 @@ func TestMachO_Create(t *testing.T) {
         'h', 'e', 'l', 'l', 'o', ',', ' ',
         'w', 'o', 'r', 'l', 'd', '\r', '\n',
     }
-    err = assembleMachO(fp, 0x00100000, code)
+    err = assembleMachO(fp, code)
     require.NoError(t, err)
     err = fp.Close()
     require.NoError(t, err)
