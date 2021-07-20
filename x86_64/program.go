@@ -3,6 +3,7 @@ package x86_64
 import (
     `fmt`
     `math`
+    `math/bits`
 
     `github.com/chenzhuoyu/iasm/expr`
 )
@@ -18,10 +19,7 @@ const (
     _PSEUDO_LONG
     _PSEUDO_QUAD
     _PSEUDO_DATA
-    _PSEUDO_EXPR_BYTE
-    _PSEUDO_EXPR_WORD
-    _PSEUDO_EXPR_LONG
-    _PSEUDO_EXPR_QUAD
+    _PSEUDO_ALIGN
 )
 
 type _Pseudo struct {
@@ -33,50 +31,40 @@ type _Pseudo struct {
 
 func (self *_Pseudo) free() {
     switch self.kind {
-        case _PSEUDO_EXPR_BYTE: fallthrough
-        case _PSEUDO_EXPR_WORD: fallthrough
-        case _PSEUDO_EXPR_LONG: fallthrough
-        case _PSEUDO_EXPR_QUAD: self.expr.Free()
+        case _PSEUDO_BYTE  : fallthrough
+        case _PSEUDO_WORD  : fallthrough
+        case _PSEUDO_LONG  : fallthrough
+        case _PSEUDO_QUAD  : fallthrough
+        case _PSEUDO_ALIGN : self.expr.Free()
     }
 }
 
-func (self *_Pseudo) encode(m *[]byte) int {
+func (self *_Pseudo) encode(m *[]byte, pc int) int {
     switch self.kind {
-        case _PSEUDO_NOP       : return 0
-        case _PSEUDO_BYTE      : self.encodeByte(m)     ; return 1
-        case _PSEUDO_WORD      : self.encodeWord(m)     ; return 2
-        case _PSEUDO_LONG      : self.encodeLong(m)     ; return 4
-        case _PSEUDO_QUAD      : self.encodeQuad(m)     ; return 8
-        case _PSEUDO_DATA      : self.encodeData(m)     ; return len(self.data)
-        case _PSEUDO_EXPR_BYTE : self.encodeExprByte(m) ; return 1
-        case _PSEUDO_EXPR_WORD : self.encodeExprWord(m) ; return 2
-        case _PSEUDO_EXPR_LONG : self.encodeExprLong(m) ; return 4
-        case _PSEUDO_EXPR_QUAD : self.encodeExprQuad(m) ; return 8
-        default                : panic("invalid pseudo instruction")
+        case _PSEUDO_NOP   : return 0
+        case _PSEUDO_BYTE  : self.encodeByte(m)      ; return 1
+        case _PSEUDO_WORD  : self.encodeWord(m)      ; return 2
+        case _PSEUDO_LONG  : self.encodeLong(m)      ; return 4
+        case _PSEUDO_QUAD  : self.encodeQuad(m)      ; return 8
+        case _PSEUDO_DATA  : self.encodeData(m)      ; return len(self.data)
+        case _PSEUDO_ALIGN : self.encodeAlign(m, pc) ; return self.alignSize(pc)
+        default            : panic("invalid pseudo instruction")
     }
 }
 
-func (self *_Pseudo) encodeByte(m *[]byte) {
-    if m != nil {
-        append8(m, byte(self.uint))
+func (self *_Pseudo) evalExpr(low int64, high uint64) int64 {
+    if v := self.expr.Evaluate(); v < low || uint64(v) > high {
+        panic(fmt.Sprintf("expression out of range [%d, %d]: %d", low, high, v))
+    } else {
+        return v
     }
 }
 
-func (self *_Pseudo) encodeWord(m *[]byte) {
-    if m != nil {
-        append16(m, uint16(self.uint))
-    }
-}
-
-func (self *_Pseudo) encodeLong(m *[]byte) {
-    if m != nil {
-        append32(m, uint32(self.uint))
-    }
-}
-
-func (self *_Pseudo) encodeQuad(m *[]byte) {
-    if m != nil {
-        append64(m, self.uint)
+func (self *_Pseudo) alignSize(pc int) int {
+    if !ispow2(self.uint) {
+        panic(fmt.Sprintf("aligment should be a power of 2, not %d", self.uint))
+    } else {
+        return align(pc, bits.TrailingZeros64(self.uint)) - pc
     }
 }
 
@@ -86,35 +74,37 @@ func (self *_Pseudo) encodeData(m *[]byte) {
     }
 }
 
-func (self *_Pseudo) encodeExprByte(m *[]byte) {
+func (self *_Pseudo) encodeByte(m *[]byte) {
     if m != nil {
-        append8(m, byte(self.evaluteExpression(math.MinInt8, math.MaxUint8)))
+        append8(m, byte(self.evalExpr(math.MinInt8, math.MaxUint8)))
     }
 }
 
-func (self *_Pseudo) encodeExprWord(m *[]byte) {
+func (self *_Pseudo) encodeWord(m *[]byte) {
     if m != nil {
-        append16(m, uint16(self.evaluteExpression(math.MinInt16, math.MaxUint16)))
+        append16(m, uint16(self.evalExpr(math.MinInt16, math.MaxUint16)))
     }
 }
 
-func (self *_Pseudo) encodeExprLong(m *[]byte) {
+func (self *_Pseudo) encodeLong(m *[]byte) {
     if m != nil {
-        append32(m, uint32(self.evaluteExpression(math.MinInt32, math.MaxUint32)))
+        append32(m, uint32(self.evalExpr(math.MinInt32, math.MaxUint32)))
     }
 }
 
-func (self *_Pseudo) encodeExprQuad(m *[]byte) {
+func (self *_Pseudo) encodeQuad(m *[]byte) {
     if m != nil {
-        append64(m, uint64(self.evaluteExpression(math.MinInt64, math.MaxUint64)))
+        append64(m, uint64(self.evalExpr(math.MinInt64, math.MaxUint64)))
     }
 }
 
-func (self *_Pseudo) evaluteExpression(low int64, high uint64) int64 {
-    if v := self.expr.Evaluate(); v < low || uint64(v) > high {
-        panic(fmt.Sprintf("expression out of range [%d, %d]: %d", low, high, v))
-    } else {
-        return v
+func (self *_Pseudo) encodeAlign(m *[]byte, pc int) {
+    if m != nil {
+        if self.expr == nil {
+            expandmm(m, self.alignSize(pc), 0)
+        } else {
+            expandmm(m, self.alignSize(pc), byte(self.evalExpr(math.MinInt8, math.MaxUint8)))
+        }
     }
 }
 
@@ -169,7 +159,7 @@ func (self *Instruction) encode(m *[]byte) int {
 
     /* check for pseudo-instructions */
     if self.pseudo.kind != 0 {
-        self.nb = self.pseudo.encode(m)
+        self.nb = self.pseudo.encode(m, self.pc)
         return self.nb
     }
 
@@ -203,6 +193,7 @@ type Program struct {
 const (
     _NB_FAR  = 5    // far-branch takes 5 bytes to encode
     _NB_NEAR = 2    // near-branch (-128 ~ +127) takes 2 bytes to encode
+    _NB_DIFF = _NB_FAR - _NB_NEAR
 )
 
 func (self *Program) clear() {
@@ -242,30 +233,30 @@ func (self *Program) require(isa ISA) {
 /** Pseudo-Instructions **/
 
 // Byte is a pseudo-instruction to add raw byte to the assembled code.
-func (self *Program) Byte(v byte) (p *Instruction) {
+func (self *Program) Byte(v *expr.Expr) (p *Instruction) {
     p = self.pseudo(_PSEUDO_BYTE)
-    p.pseudo.uint = uint64(v)
+    p.pseudo.expr = v
     return
 }
 
 // Word is a pseudo-instruction to add raw uint16 as little-endian to the assembled code.
-func (self *Program) Word(v uint16) (p *Instruction) {
+func (self *Program) Word(v *expr.Expr) (p *Instruction) {
     p = self.pseudo(_PSEUDO_WORD)
-    p.pseudo.uint = uint64(v)
+    p.pseudo.expr = v
     return
 }
 
 // Long is a pseudo-instruction to add raw uint32 as little-endian to the assembled code.
-func (self *Program) Long(v uint32) (p *Instruction) {
+func (self *Program) Long(v *expr.Expr) (p *Instruction) {
     p = self.pseudo(_PSEUDO_LONG)
-    p.pseudo.uint = uint64(v)
+    p.pseudo.expr = v
     return
 }
 
 // Quad is a pseudo-instruction to add raw uint64 as little-endian to the assembled code.
-func (self *Program) Quad(v uint64) (p *Instruction) {
+func (self *Program) Quad(v *expr.Expr) (p *Instruction) {
     p = self.pseudo(_PSEUDO_QUAD)
-    p.pseudo.uint = v
+    p.pseudo.expr = v
     return
 }
 
@@ -276,31 +267,11 @@ func (self *Program) Data(v []byte) (p *Instruction) {
     return
 }
 
-// SetB is a pseudo-instruction to add a byte expression to the assembled code.
-func (self *Program) SetB(v *expr.Expr) (p *Instruction) {
-    p = self.pseudo(_PSEUDO_EXPR_BYTE)
-    p.pseudo.expr = v
-    return
-}
-
-// SetW is a pseudo-instruction to add a word (2 bytes) expression to the assembled code.
-func (self *Program) SetW(v *expr.Expr) (p *Instruction) {
-    p = self.pseudo(_PSEUDO_EXPR_WORD)
-    p.pseudo.expr = v
-    return
-}
-
-// SetL is a pseudo-instruction to add a double-word (4 bytes) expression to the assembled code.
-func (self *Program) SetL(v *expr.Expr) (p *Instruction) {
-    p = self.pseudo(_PSEUDO_EXPR_LONG)
-    p.pseudo.expr = v
-    return
-}
-
-// SetQ is a pseudo-instruction to add a quad-word (8 bytes) expression to the assembled code.
-func (self *Program) SetQ(v *expr.Expr) (p *Instruction) {
-    p = self.pseudo(_PSEUDO_EXPR_QUAD)
-    p.pseudo.expr = v
+// Align is a pseudo-instruction to ensure the PC is aligned to a certain value.
+func (self *Program) Align(align uint64, padding *expr.Expr) (p *Instruction) {
+    p = self.pseudo(_PSEUDO_ALIGN)
+    p.pseudo.uint = align
+    p.pseudo.expr = padding
     return
 }
 
@@ -327,17 +298,16 @@ func (self *Program) Link(p *Label) {
 }
 
 // Assemble assembles and links the entire program into machine code.
-func (self *Program) Assemble() (ret []byte) {
-    pc  := 0
-    adj := 0
-    asm := true
+func (self *Program) Assemble(pc int) (ret []byte) {
+    offs := 0
+    next := true
 
     /* Pass 0: PC-precompute, assume all labeled branches are far-branches. */
     for p := self.head; p != nil; p = p.next {
-        if p.branch && isLabel(p.argv[0]) {
-            p.pc, pc = pc, pc + _NB_FAR
+        if p.pc = pc; p.branch && isLabel(p.argv[0]) {
+            pc += _NB_FAR
         } else {
-            p.pc, pc = pc, pc + p.encode(nil)
+            pc += p.encode(nil)
         }
     }
 
@@ -346,29 +316,36 @@ func (self *Program) Assemble() (ret []byte) {
     ret = make([]byte, 0, nb)
 
     /* Pass 1: adjust all the jumps */
-    for asm {
-        adj = 0
-        asm = false
+    for next {
+        offs = 0
+        next = false
 
         /* scan all the branches */
         for p := self.head; p != nil; p = p.next {
             var ok bool
             var lb *Label
 
+            /* re-calculate the alignment here */
+            if nb = p.nb; p.pseudo.kind == _PSEUDO_ALIGN {
+                p.pc -= offs
+                offs += nb - p.encode(nil)
+                continue
+            }
+
             /* only care about branches */
             if !p.branch {
-                p.pc -= adj
+                p.pc -= offs
                 continue
             }
 
             /* check for labeled branches */
             if lb, ok = p.argv[0].(*Label); !ok {
-                p.pc -= adj
+                p.pc -= offs
                 continue
             }
 
             /* calculate the jump offset */
-            p.pc -= adj
+            p.pc -= offs
             diff := lb.offset(p.pc, _NB_FAR)
 
             /* this is already a near jump */
@@ -384,9 +361,9 @@ func (self *Program) Assemble() (ret []byte) {
 
             /* a far jump becomes a near jump, calculate
              * the PC adjustment value and assemble again */
-            asm  = true
-            adj += _NB_FAR - _NB_NEAR
+            next = true
             p.nb = _NB_NEAR
+            offs += _NB_DIFF
         }
     }
 

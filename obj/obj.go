@@ -17,7 +17,7 @@ const (
     MachO
 )
 
-var formatTab = [...]func(w io.Writer, code []byte) error {
+var formatTab = [...]func(w io.Writer, code []byte, base uint64, entry uint64) error {
     ELF   : nil,
     MachO : assembleMachO,
 }
@@ -37,16 +37,16 @@ func (self Format) String() string {
 }
 
 // Write assembles a binary executable.
-func (self Format) Write(w io.Writer, code []byte) error {
+func (self Format) Write(w io.Writer, code []byte, base uint64, entry uint64) error {
     if self >= 0 && int(self) < len(formatTab) && formatTab[self] != nil {
-        return formatTab[self](w, code)
+        return formatTab[self](w, code, base, entry)
     } else {
         return fmt.Errorf("unsupported format: %s", self)
     }
 }
 
 // Generate generates a binary executable file from the specified code.
-func (self Format) Generate(name string, code []byte) error {
+func (self Format) Generate(name string, code []byte, base uint64, entry uint64) error {
     var fp *os.File
     var err error
 
@@ -56,7 +56,7 @@ func (self Format) Generate(name string, code []byte) error {
     }
 
     /* generate the code */
-    if err = self.Write(fp, code); err != nil {
+    if err = self.Write(fp, code, base, entry); err != nil {
         _ = fp.Close()
         _ = os.Remove(name)
         return err

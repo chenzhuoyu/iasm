@@ -9,6 +9,10 @@ import (
     `github.com/stretchr/testify/require`
 )
 
+const (
+    _IMAGE_BASE = 0x00400000 // 64-bit virtual offsets always start at 0x00400000
+)
+
 func TestMachO_Create(t *testing.T) {
     fp, err := os.CreateTemp("", "macho_out-")
     require.NoError(t, err)
@@ -24,7 +28,7 @@ func TestMachO_Create(t *testing.T) {
         'h', 'e', 'l', 'l', 'o', ',', ' ',
         'w', 'o', 'r', 'l', 'd', '\r', '\n',
     }
-    err = assembleMachO(fp, code)
+    err = assembleMachO(fp, code, _IMAGE_BASE, 0)
     require.NoError(t, err)
     err = fp.Close()
     require.NoError(t, err)

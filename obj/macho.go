@@ -105,7 +105,7 @@ var (
     zeroBytes = [4096]byte{}
 )
 
-func assembleMachO(w io.Writer, code []byte) error {
+func assembleMachO(w io.Writer, code []byte, base uint64, entry uint64) error {
     var p0name [16]byte
     var txname [16]byte
 
@@ -122,7 +122,7 @@ func assembleMachO(w io.Writer, code []byte) error {
         Cmd    : _LC_SEGMENT_64,
         Size   : _SEGMENT_SIZE,
         Name   : p0name,
-        VMSize : _IMAGE_BASE,
+        VMSize : base,
     }
 
     /* TEXT Segment */
@@ -130,7 +130,7 @@ func assembleMachO(w io.Writer, code []byte) error {
         Cmd         : _LC_SEGMENT_64,
         Size        : _SEGMENT_SIZE,
         Name        : txname,
-        VMAddr      : _IMAGE_BASE,
+        VMAddr      : base,
         VMSize      : hlen + clen,
         FileSize    : hlen + clen,
         MaxProtect  : _VM_PROT_READ | _VM_PROT_WRITE | _VM_PROT_EXECUTE,
@@ -143,7 +143,7 @@ func assembleMachO(w io.Writer, code []byte) error {
         Size   : _UNIXTHREAD_SIZE,
         Flavor : _x86_THREAD_STATE64,
         Count  : _x86_EXCEPTION_STATE64_COUNT,
-        Regs   : Registers{RIP: _IMAGE_BASE + hlen},
+        Regs   : Registers{RIP: base + hlen + entry},
     }
 
     /* Mach-O Header */

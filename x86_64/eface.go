@@ -27,6 +27,12 @@ func (self *_GoType) kind() reflect.Kind {
     return reflect.Kind(self.kflags & _KindMask)
 }
 
+type _GoSlice struct {
+    ptr unsafe.Pointer
+    len int
+    cap int
+}
+
 type _GoEface struct {
     vt  *_GoType
     ptr unsafe.Pointer

@@ -461,11 +461,11 @@ def generate_encoding(enc: x86_64.Encoding, ops: List[x86_64.Operand], gen_branc
             buf.append('m.emit(%s)' % ibr)
         elif isinstance(item, x86_64.CodeOffset):
             if item.size == 1:
-                buf.append('m.imm1(offs(v[%d]))' % ops.index(item.value))
+                buf.append('m.imm1(relv(v[%d]))' % ops.index(item.value))
                 if gen_branch:
                     flags.append('_REL1')
             elif item.size == 4:
-                buf.append('m.imm4(offs(v[%d]))' % ops.index(item.value))
+                buf.append('m.imm4(relv(v[%d]))' % ops.index(item.value))
                 if gen_branch:
                     flags.append('_REL4')
             else:

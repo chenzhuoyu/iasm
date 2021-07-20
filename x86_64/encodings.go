@@ -11,7 +11,7 @@ func imml(v interface{}) byte {
     return byte(toImmAny(v) & 0x0f)
 }
 
-func offs(v interface{}) int64 {
+func relv(v interface{}) int64 {
     switch r := v.(type) {
         case *Label         : return 0
         case RelativeOffset : return int64(r)

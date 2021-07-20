@@ -8,6 +8,10 @@ import (
     `github.com/davecgh/go-spew/spew`
 )
 
+const (
+    _IMAGE_BASE = 0x00400000 // 64-bit virtual offsets always start at 0x00400000
+)
+
 func TestProgram_Assemble(t *testing.T) {
     a := CreateArch()
     b := CreateLabel("bak")
@@ -25,8 +29,9 @@ func TestProgram_Assemble(t *testing.T) {
     p.MOVSLQ (Sib(RDI, RAX, 4, -4), RAX)
     p.ADDQ   (RDI, RAX)
     p.JMPQ   (RAX)
+    p.Align  (32, expr.Int(0xcc))
     p.Link   (s)
-    p.SetL   (expr.Ref(s).Sub(expr.Ref(j)))
-    p.SetL   (expr.Ref(s).Sub(expr.Ref(b)))
-    spew.Dump(p.Assemble())
+    p.Long   (expr.Ref(s).Sub(expr.Ref(j)))
+    p.Long   (expr.Ref(s).Sub(expr.Ref(b)))
+    spew.Dump(p.Assemble(0))
 }

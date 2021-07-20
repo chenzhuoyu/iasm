@@ -3849,14 +3849,14 @@ func (self *Program) CALL(v0 interface{}) *Instruction {
     if isRel32(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0xe8)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     // CALL label
     if isLabel(v0) {
         p.add(_REL4, func(m *_Encoding, v []interface{}) {
             m.emit(0xe8)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     if p.len == 0 {
@@ -10138,7 +10138,7 @@ func (self *Program) JA(v0 interface{}) *Instruction {
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x77)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
     }
     // JA rel32
@@ -10146,19 +10146,19 @@ func (self *Program) JA(v0 interface{}) *Instruction {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x87)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     // JA label
     if isLabel(v0) {
         p.add(_REL1, func(m *_Encoding, v []interface{}) {
             m.emit(0x77)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
         p.add(_REL4, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x87)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     if p.len == 0 {
@@ -10182,7 +10182,7 @@ func (self *Program) JAE(v0 interface{}) *Instruction {
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x73)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
     }
     // JAE rel32
@@ -10190,19 +10190,19 @@ func (self *Program) JAE(v0 interface{}) *Instruction {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x83)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     // JAE label
     if isLabel(v0) {
         p.add(_REL1, func(m *_Encoding, v []interface{}) {
             m.emit(0x73)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
         p.add(_REL4, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x83)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     if p.len == 0 {
@@ -10226,7 +10226,7 @@ func (self *Program) JB(v0 interface{}) *Instruction {
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x72)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
     }
     // JB rel32
@@ -10234,19 +10234,19 @@ func (self *Program) JB(v0 interface{}) *Instruction {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x82)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     // JB label
     if isLabel(v0) {
         p.add(_REL1, func(m *_Encoding, v []interface{}) {
             m.emit(0x72)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
         p.add(_REL4, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x82)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     if p.len == 0 {
@@ -10270,7 +10270,7 @@ func (self *Program) JBE(v0 interface{}) *Instruction {
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x76)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
     }
     // JBE rel32
@@ -10278,19 +10278,19 @@ func (self *Program) JBE(v0 interface{}) *Instruction {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x86)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     // JBE label
     if isLabel(v0) {
         p.add(_REL1, func(m *_Encoding, v []interface{}) {
             m.emit(0x76)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
         p.add(_REL4, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x86)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     if p.len == 0 {
@@ -10314,7 +10314,7 @@ func (self *Program) JC(v0 interface{}) *Instruction {
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x72)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
     }
     // JC rel32
@@ -10322,19 +10322,19 @@ func (self *Program) JC(v0 interface{}) *Instruction {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x82)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     // JC label
     if isLabel(v0) {
         p.add(_REL1, func(m *_Encoding, v []interface{}) {
             m.emit(0x72)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
         p.add(_REL4, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x82)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     if p.len == 0 {
@@ -10358,7 +10358,7 @@ func (self *Program) JE(v0 interface{}) *Instruction {
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x74)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
     }
     // JE rel32
@@ -10366,19 +10366,19 @@ func (self *Program) JE(v0 interface{}) *Instruction {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x84)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     // JE label
     if isLabel(v0) {
         p.add(_REL1, func(m *_Encoding, v []interface{}) {
             m.emit(0x74)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
         p.add(_REL4, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x84)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     if p.len == 0 {
@@ -10401,14 +10401,14 @@ func (self *Program) JECXZ(v0 interface{}) *Instruction {
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0xe3)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
     }
     // JECXZ label
     if isLabel(v0) {
         p.add(_REL1, func(m *_Encoding, v []interface{}) {
             m.emit(0xe3)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
     }
     if p.len == 0 {
@@ -10432,7 +10432,7 @@ func (self *Program) JG(v0 interface{}) *Instruction {
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x7f)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
     }
     // JG rel32
@@ -10440,19 +10440,19 @@ func (self *Program) JG(v0 interface{}) *Instruction {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x8f)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     // JG label
     if isLabel(v0) {
         p.add(_REL1, func(m *_Encoding, v []interface{}) {
             m.emit(0x7f)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
         p.add(_REL4, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x8f)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     if p.len == 0 {
@@ -10476,7 +10476,7 @@ func (self *Program) JGE(v0 interface{}) *Instruction {
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x7d)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
     }
     // JGE rel32
@@ -10484,19 +10484,19 @@ func (self *Program) JGE(v0 interface{}) *Instruction {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x8d)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     // JGE label
     if isLabel(v0) {
         p.add(_REL1, func(m *_Encoding, v []interface{}) {
             m.emit(0x7d)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
         p.add(_REL4, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x8d)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     if p.len == 0 {
@@ -10520,7 +10520,7 @@ func (self *Program) JL(v0 interface{}) *Instruction {
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x7c)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
     }
     // JL rel32
@@ -10528,19 +10528,19 @@ func (self *Program) JL(v0 interface{}) *Instruction {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x8c)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     // JL label
     if isLabel(v0) {
         p.add(_REL1, func(m *_Encoding, v []interface{}) {
             m.emit(0x7c)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
         p.add(_REL4, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x8c)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     if p.len == 0 {
@@ -10564,7 +10564,7 @@ func (self *Program) JLE(v0 interface{}) *Instruction {
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x7e)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
     }
     // JLE rel32
@@ -10572,19 +10572,19 @@ func (self *Program) JLE(v0 interface{}) *Instruction {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x8e)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     // JLE label
     if isLabel(v0) {
         p.add(_REL1, func(m *_Encoding, v []interface{}) {
             m.emit(0x7e)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
         p.add(_REL4, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x8e)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     if p.len == 0 {
@@ -10608,25 +10608,25 @@ func (self *Program) JMP(v0 interface{}) *Instruction {
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0xeb)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
     }
     // JMP rel32
     if isRel32(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0xe9)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     // JMP label
     if isLabel(v0) {
         p.add(_REL1, func(m *_Encoding, v []interface{}) {
             m.emit(0xeb)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
         p.add(_REL4, func(m *_Encoding, v []interface{}) {
             m.emit(0xe9)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     if p.len == 0 {
@@ -10682,7 +10682,7 @@ func (self *Program) JNA(v0 interface{}) *Instruction {
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x76)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
     }
     // JNA rel32
@@ -10690,19 +10690,19 @@ func (self *Program) JNA(v0 interface{}) *Instruction {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x86)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     // JNA label
     if isLabel(v0) {
         p.add(_REL1, func(m *_Encoding, v []interface{}) {
             m.emit(0x76)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
         p.add(_REL4, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x86)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     if p.len == 0 {
@@ -10726,7 +10726,7 @@ func (self *Program) JNAE(v0 interface{}) *Instruction {
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x72)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
     }
     // JNAE rel32
@@ -10734,19 +10734,19 @@ func (self *Program) JNAE(v0 interface{}) *Instruction {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x82)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     // JNAE label
     if isLabel(v0) {
         p.add(_REL1, func(m *_Encoding, v []interface{}) {
             m.emit(0x72)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
         p.add(_REL4, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x82)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     if p.len == 0 {
@@ -10770,7 +10770,7 @@ func (self *Program) JNB(v0 interface{}) *Instruction {
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x73)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
     }
     // JNB rel32
@@ -10778,19 +10778,19 @@ func (self *Program) JNB(v0 interface{}) *Instruction {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x83)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     // JNB label
     if isLabel(v0) {
         p.add(_REL1, func(m *_Encoding, v []interface{}) {
             m.emit(0x73)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
         p.add(_REL4, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x83)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     if p.len == 0 {
@@ -10814,7 +10814,7 @@ func (self *Program) JNBE(v0 interface{}) *Instruction {
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x77)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
     }
     // JNBE rel32
@@ -10822,19 +10822,19 @@ func (self *Program) JNBE(v0 interface{}) *Instruction {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x87)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     // JNBE label
     if isLabel(v0) {
         p.add(_REL1, func(m *_Encoding, v []interface{}) {
             m.emit(0x77)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
         p.add(_REL4, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x87)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     if p.len == 0 {
@@ -10858,7 +10858,7 @@ func (self *Program) JNC(v0 interface{}) *Instruction {
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x73)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
     }
     // JNC rel32
@@ -10866,19 +10866,19 @@ func (self *Program) JNC(v0 interface{}) *Instruction {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x83)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     // JNC label
     if isLabel(v0) {
         p.add(_REL1, func(m *_Encoding, v []interface{}) {
             m.emit(0x73)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
         p.add(_REL4, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x83)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     if p.len == 0 {
@@ -10902,7 +10902,7 @@ func (self *Program) JNE(v0 interface{}) *Instruction {
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x75)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
     }
     // JNE rel32
@@ -10910,19 +10910,19 @@ func (self *Program) JNE(v0 interface{}) *Instruction {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x85)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     // JNE label
     if isLabel(v0) {
         p.add(_REL1, func(m *_Encoding, v []interface{}) {
             m.emit(0x75)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
         p.add(_REL4, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x85)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     if p.len == 0 {
@@ -10946,7 +10946,7 @@ func (self *Program) JNG(v0 interface{}) *Instruction {
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x7e)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
     }
     // JNG rel32
@@ -10954,19 +10954,19 @@ func (self *Program) JNG(v0 interface{}) *Instruction {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x8e)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     // JNG label
     if isLabel(v0) {
         p.add(_REL1, func(m *_Encoding, v []interface{}) {
             m.emit(0x7e)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
         p.add(_REL4, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x8e)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     if p.len == 0 {
@@ -10990,7 +10990,7 @@ func (self *Program) JNGE(v0 interface{}) *Instruction {
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x7c)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
     }
     // JNGE rel32
@@ -10998,19 +10998,19 @@ func (self *Program) JNGE(v0 interface{}) *Instruction {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x8c)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     // JNGE label
     if isLabel(v0) {
         p.add(_REL1, func(m *_Encoding, v []interface{}) {
             m.emit(0x7c)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
         p.add(_REL4, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x8c)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     if p.len == 0 {
@@ -11034,7 +11034,7 @@ func (self *Program) JNL(v0 interface{}) *Instruction {
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x7d)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
     }
     // JNL rel32
@@ -11042,19 +11042,19 @@ func (self *Program) JNL(v0 interface{}) *Instruction {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x8d)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     // JNL label
     if isLabel(v0) {
         p.add(_REL1, func(m *_Encoding, v []interface{}) {
             m.emit(0x7d)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
         p.add(_REL4, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x8d)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     if p.len == 0 {
@@ -11078,7 +11078,7 @@ func (self *Program) JNLE(v0 interface{}) *Instruction {
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x7f)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
     }
     // JNLE rel32
@@ -11086,19 +11086,19 @@ func (self *Program) JNLE(v0 interface{}) *Instruction {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x8f)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     // JNLE label
     if isLabel(v0) {
         p.add(_REL1, func(m *_Encoding, v []interface{}) {
             m.emit(0x7f)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
         p.add(_REL4, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x8f)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     if p.len == 0 {
@@ -11122,7 +11122,7 @@ func (self *Program) JNO(v0 interface{}) *Instruction {
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x71)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
     }
     // JNO rel32
@@ -11130,19 +11130,19 @@ func (self *Program) JNO(v0 interface{}) *Instruction {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x81)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     // JNO label
     if isLabel(v0) {
         p.add(_REL1, func(m *_Encoding, v []interface{}) {
             m.emit(0x71)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
         p.add(_REL4, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x81)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     if p.len == 0 {
@@ -11166,7 +11166,7 @@ func (self *Program) JNP(v0 interface{}) *Instruction {
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x7b)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
     }
     // JNP rel32
@@ -11174,19 +11174,19 @@ func (self *Program) JNP(v0 interface{}) *Instruction {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x8b)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     // JNP label
     if isLabel(v0) {
         p.add(_REL1, func(m *_Encoding, v []interface{}) {
             m.emit(0x7b)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
         p.add(_REL4, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x8b)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     if p.len == 0 {
@@ -11210,7 +11210,7 @@ func (self *Program) JNS(v0 interface{}) *Instruction {
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x79)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
     }
     // JNS rel32
@@ -11218,19 +11218,19 @@ func (self *Program) JNS(v0 interface{}) *Instruction {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x89)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     // JNS label
     if isLabel(v0) {
         p.add(_REL1, func(m *_Encoding, v []interface{}) {
             m.emit(0x79)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
         p.add(_REL4, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x89)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     if p.len == 0 {
@@ -11254,7 +11254,7 @@ func (self *Program) JNZ(v0 interface{}) *Instruction {
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x75)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
     }
     // JNZ rel32
@@ -11262,19 +11262,19 @@ func (self *Program) JNZ(v0 interface{}) *Instruction {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x85)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     // JNZ label
     if isLabel(v0) {
         p.add(_REL1, func(m *_Encoding, v []interface{}) {
             m.emit(0x75)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
         p.add(_REL4, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x85)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     if p.len == 0 {
@@ -11298,7 +11298,7 @@ func (self *Program) JO(v0 interface{}) *Instruction {
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x70)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
     }
     // JO rel32
@@ -11306,19 +11306,19 @@ func (self *Program) JO(v0 interface{}) *Instruction {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x80)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     // JO label
     if isLabel(v0) {
         p.add(_REL1, func(m *_Encoding, v []interface{}) {
             m.emit(0x70)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
         p.add(_REL4, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x80)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     if p.len == 0 {
@@ -11342,7 +11342,7 @@ func (self *Program) JP(v0 interface{}) *Instruction {
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x7a)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
     }
     // JP rel32
@@ -11350,19 +11350,19 @@ func (self *Program) JP(v0 interface{}) *Instruction {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x8a)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     // JP label
     if isLabel(v0) {
         p.add(_REL1, func(m *_Encoding, v []interface{}) {
             m.emit(0x7a)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
         p.add(_REL4, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x8a)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     if p.len == 0 {
@@ -11386,7 +11386,7 @@ func (self *Program) JPE(v0 interface{}) *Instruction {
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x7a)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
     }
     // JPE rel32
@@ -11394,19 +11394,19 @@ func (self *Program) JPE(v0 interface{}) *Instruction {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x8a)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     // JPE label
     if isLabel(v0) {
         p.add(_REL1, func(m *_Encoding, v []interface{}) {
             m.emit(0x7a)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
         p.add(_REL4, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x8a)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     if p.len == 0 {
@@ -11430,7 +11430,7 @@ func (self *Program) JPO(v0 interface{}) *Instruction {
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x7b)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
     }
     // JPO rel32
@@ -11438,19 +11438,19 @@ func (self *Program) JPO(v0 interface{}) *Instruction {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x8b)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     // JPO label
     if isLabel(v0) {
         p.add(_REL1, func(m *_Encoding, v []interface{}) {
             m.emit(0x7b)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
         p.add(_REL4, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x8b)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     if p.len == 0 {
@@ -11473,14 +11473,14 @@ func (self *Program) JRCXZ(v0 interface{}) *Instruction {
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0xe3)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
     }
     // JRCXZ label
     if isLabel(v0) {
         p.add(_REL1, func(m *_Encoding, v []interface{}) {
             m.emit(0xe3)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
     }
     if p.len == 0 {
@@ -11504,7 +11504,7 @@ func (self *Program) JS(v0 interface{}) *Instruction {
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x78)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
     }
     // JS rel32
@@ -11512,19 +11512,19 @@ func (self *Program) JS(v0 interface{}) *Instruction {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x88)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     // JS label
     if isLabel(v0) {
         p.add(_REL1, func(m *_Encoding, v []interface{}) {
             m.emit(0x78)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
         p.add(_REL4, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x88)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     if p.len == 0 {
@@ -11548,7 +11548,7 @@ func (self *Program) JZ(v0 interface{}) *Instruction {
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x74)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
     }
     // JZ rel32
@@ -11556,19 +11556,19 @@ func (self *Program) JZ(v0 interface{}) *Instruction {
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x84)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     // JZ label
     if isLabel(v0) {
         p.add(_REL1, func(m *_Encoding, v []interface{}) {
             m.emit(0x74)
-            m.imm1(offs(v[0]))
+            m.imm1(relv(v[0]))
         })
         p.add(_REL4, func(m *_Encoding, v []interface{}) {
             m.emit(0x0f)
             m.emit(0x84)
-            m.imm4(offs(v[0]))
+            m.imm4(relv(v[0]))
         })
     }
     if p.len == 0 {
