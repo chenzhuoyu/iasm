@@ -2,7 +2,10 @@ package x86_64
 
 import (
     `encoding/binary`
+    `errors`
     `reflect`
+    `strconv`
+    `unicode/utf8`
     `unsafe`
 )
 
@@ -94,6 +97,25 @@ func memsetv(p unsafe.Pointer, c byte, n uintptr) {
     for i := uintptr(0); i < n; i++ {
         *(*byte)(unsafe.Pointer(uintptr(p) + i)) = c
     }
+}
+
+func literal64(v string) (uint64, error) {
+    var nb int
+    var ch rune
+    var ex error
+    var mm [12]byte
+
+    /* unquote the runes */
+    for v != "" {
+        if ch, _, v, ex = strconv.UnquoteChar(v, '\''); ex != nil {
+            return 0, ex
+        } else if nb += utf8.EncodeRune(mm[nb:], ch); nb > 8 {
+            return 0, errors.New("multi-char constant too large")
+        }
+    }
+
+    /* convert to uint64 */
+    return *(*uint64)(unsafe.Pointer(&mm)), nil
 }
 
 var (
