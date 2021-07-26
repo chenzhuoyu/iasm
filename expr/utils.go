@@ -20,19 +20,19 @@ var op2ch = [...]bool {
     '>': true,
 }
 
-func neg2(v int64, err error) (int64, error) {
+func neg2(v *Expr, err error) (*Expr, error) {
     if err != nil {
-        return 0, err
+        return nil, err
     } else {
-        return -v, nil
+        return v.Neg(), nil
     }
 }
 
-func inv2(v int64, err error) (int64, error) {
+func not2(v *Expr, err error) (*Expr, error) {
     if err != nil {
-        return 0, err
+        return nil, err
     } else {
-        return ^v, nil
+        return v.Not(), nil
     }
 }
 

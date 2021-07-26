@@ -1,6 +1,7 @@
 package x86_64
 
 import (
+    `errors`
     `math`
     `reflect`
 )
@@ -84,11 +85,11 @@ func (self *Label) offset(p int, n int) RelativeOffset {
 }
 
 // Evaluate implements the interface expr.Term.
-func (self *Label) Evaluate() int64 {
-    if self.Dest == nil {
-        panic("unresolved label: " + self.Name)
+func (self *Label) Evaluate() (int64, error) {
+    if self.Dest != nil {
+        return int64(self.Dest.pc), nil
     } else {
-        return int64(self.Dest.pc)
+        return 0, errors.New("unresolved label: " + self.Name)
     }
 }
 

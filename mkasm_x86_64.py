@@ -533,7 +533,7 @@ with CodeBlock(cc):
 cc.line(')')
 cc.line()
 cc.line('// Instructions maps all the instruction name to it\'s encoder function.')
-cc.line('var Instructions = map[string]func(*Program, ...interface{}) *Instruction {')
+cc.line('var Instructions = map[string]_InstructionEncoder {')
 
 width = max(
     len(x)

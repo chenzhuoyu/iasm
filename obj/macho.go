@@ -143,7 +143,7 @@ func assembleMachO(w io.Writer, code []byte, base uint64, entry uint64) error {
         Size   : _UNIXTHREAD_SIZE,
         Flavor : _x86_THREAD_STATE64,
         Count  : _x86_EXCEPTION_STATE64_COUNT,
-        Regs   : Registers{RIP: base + hlen + entry},
+        Regs   : Registers{RIP: hlen + entry},
     }
 
     /* Mach-O Header */

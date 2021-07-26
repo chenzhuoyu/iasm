@@ -9,7 +9,8 @@ import (
 )
 
 type (
-	_PseudoType int
+	_PseudoType         int
+    _InstructionEncoder func(*Program, ...interface{}) *Instruction
 )
 
 const (
@@ -53,7 +54,9 @@ func (self *_Pseudo) encode(m *[]byte, pc int) int {
 }
 
 func (self *_Pseudo) evalExpr(low int64, high uint64) int64 {
-    if v := self.expr.Evaluate(); v < low || uint64(v) > high {
+    if v, err := self.expr.Evaluate(); err != nil {
+        panic(err)
+    } else if v < low || uint64(v) > high {
         panic(fmt.Sprintf("expression out of range [%d, %d]: %d", low, high, v))
     } else {
         return v

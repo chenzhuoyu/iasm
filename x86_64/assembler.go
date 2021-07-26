@@ -1,6 +1,7 @@
 package x86_64
 
 import (
+    `bytes`
     `fmt`
     `math`
     `strconv`
@@ -312,11 +313,11 @@ type LabelKind int
 type OperandKind int
 
 const (
-    // OpReg means the operand is a register.
-    OpReg OperandKind = 1 << iota
-
     // OpImm means the operand is an immediate value.
-    OpImm
+    OpImm OperandKind = 1 << iota
+
+    // OpReg means the operand is a register.
+    OpReg
 
     // OpMem means the operand is a memory address.
     OpMem
@@ -327,12 +328,15 @@ const (
 )
 
 const (
-    // JumpTarget means the label should be treated as a branch target.
-    JumpTarget LabelKind = iota + 1
+    // Declaration means the label is a declaration.
+    Declaration LabelKind = iota + 1
 
-    // CodeReference means the label should be treated as a reference to
+    // BranchTarget means the label should be treated as a branch target.
+    BranchTarget
+
+    // RelativeAddress means the label should be treated as a reference to
     // the code section (e.g. RIP-relative addressing).
-    CodeReference
+    RelativeAddress
 )
 
 // ParsedLabel represents a label in the source, either a jump target or
@@ -383,7 +387,7 @@ func (self *ParsedInstruction) target(v string) {
         Kind  : OpLabel,
         Label : ParsedLabel {
             Name: v,
-            Kind: JumpTarget,
+            Kind: BranchTarget,
         },
     })
 }
@@ -393,7 +397,7 @@ func (self *ParsedInstruction) reference(v string) {
         Kind  : OpLabel,
         Label : ParsedLabel {
             Name: v,
-            Kind: CodeReference,
+            Kind: RelativeAddress,
         },
     })
 }
@@ -401,35 +405,21 @@ func (self *ParsedInstruction) reference(v string) {
 // LineKind indicates the type of a ParsedLine.
 type LineKind int
 
-// CommandArgKind indicates the type of a ParsedCommandArg.
-type CommandArgKind int
-
 const (
-    // LineInstr means the ParsedLine is an instruction.
-    LineInstr LineKind = iota + 1
-
     // LineLabel means the ParsedLine is a label.
-    LineLabel
+    LineLabel LineKind = iota + 1
+
+    // LineInstr means the ParsedLine is an instruction.
+    LineInstr
 
     // LineCommand means the ParsedLine is a ParsedCommand.
     LineCommand
 )
 
-const (
-    // ArgInt means the ParsedCommandArg is an integer.
-    ArgInt CommandArgKind = iota + 1
-
-    // ArgString means the ParsedCommandArg is a string.
-    ArgString
-
-    // ArgExpression means the ParsedCommandArg is an expression.
-    ArgExpression
-)
-
 // ParsedLine represents a parsed source line.
 type ParsedLine struct {
     Kind        LineKind
-    Label       string
+    Label       ParsedLabel
     Command     ParsedCommand
     Instruction ParsedInstruction
 }
@@ -442,9 +432,8 @@ type ParsedCommand struct {
 
 // ParsedCommandArg represents an argument of a ParsedCommand.
 type ParsedCommandArg struct {
-    Int  int64
-    Str  string
-    Kind CommandArgKind
+    Value    string
+    IsString bool
 }
 
 // Parser parses the source, and generates a sequence of ParsedInstruction's.
@@ -452,7 +441,7 @@ type Parser struct {
     row int
     src string
     lex _Tokenizer
-    exp expr.Expression
+    exp expr.Parser
 }
 
 const (
@@ -488,9 +477,9 @@ func (self *Parser) negv() int64 {
     }
 }
 
-func (self *Parser) eval(p int) int64 {
-    var v int64
+func (self *Parser) eval(p int) (r int64) {
     var e error
+    var v *expr.Expr
 
     /* searching start */
     n := 1
@@ -511,13 +500,19 @@ func (self *Parser) eval(p int) int64 {
     }
 
     /* evaluate the expression */
-    if v, e = self.exp.SetSource(string(self.lex.src[p:q - 1])).Evaluate(nil); e != nil {
+    if v, e = self.exp.SetSource(string(self.lex.src[p:q - 1])).Parse(nil); e != nil {
+        panic(self.err(p, "cannot evaluate expression: " + e.Error()))
+    }
+
+    /* evaluate the expression */
+    if r, e = v.Evaluate(); e != nil {
         panic(self.err(p, "cannot evaluate expression: " + e.Error()))
     }
 
     /* skip the last ')' */
+    v.Free()
     self.lex.pos = q
-    return v
+    return
 }
 
 func (self *Parser) relx(tk _Token) {
@@ -554,7 +549,7 @@ func (self *Parser) regx(tk _Token) Register {
     } else if reg, ok := Registers[tk.str]; ok {
         return reg
     } else {
-        panic(self.err(tk.pos, "invalid register name: " + tk.str))
+        panic(self.err(tk.pos, "invalid register name: " + strconv.Quote(tk.str)))
     }
 }
 
@@ -597,7 +592,9 @@ func (self *Parser) base(tk _Token, disp int32) MemoryAddress {
     nk := self.lex.next()
 
     /* check for register indirection or base-index addressing */
-    if nk.tag != _T_punc {
+    if !isReg64(rr) {
+        panic(self.err(tk.pos, "not a valid base register"))
+    } else if nk.tag != _T_punc {
         panic(self.err(nk.pos, "',' or ')' expected"))
     } else if nk.punc() == _P_comma {
         return self.index(rr, disp)
@@ -609,18 +606,23 @@ func (self *Parser) base(tk _Token, disp int32) MemoryAddress {
 }
 
 func (self *Parser) index(base Register, disp int32) MemoryAddress {
-    rr := self.regx(self.lex.next())
     tk := self.lex.next()
+    rr := self.regx(tk)
+    nk := self.lex.next()
 
     /* check for scaled indexing */
-    if tk.tag != _T_punc {
-        panic(self.err(tk.pos, "',' or ')' expected"))
-    } else if tk.punc() == _P_comma {
+    if base == rip {
+        panic(self.err(tk.pos, "RIP-relative addressing does not support indexing or scaling"))
+    } else if !isIndexable(rr) {
+        panic(self.err(tk.pos, "not a valid index register"))
+    } else if nk.tag != _T_punc {
+        panic(self.err(nk.pos, "',' or ')' expected"))
+    } else if nk.punc() == _P_comma {
         return self.scale(base, rr, disp)
-    } else if tk.punc() == _P_rbrk {
+    } else if nk.punc() == _P_rbrk {
         return MemoryAddress{Base: base, Index: rr, Scale: 1, Displacement: disp}
     } else {
-        panic(self.err(tk.pos, "',' or ')' expected"))
+        panic(self.err(nk.pos, "',' or ')' expected"))
     }
 }
 
@@ -662,19 +664,19 @@ func (self *Parser) feed(line string) *ParsedLine {
     self.src = line
 
     /* check for directives */
-    if line[0] == '.' {
+    if strings.HasPrefix(strings.TrimSpace(line), ".") {
         return self.cmds(line)
     }
 
     /* check for labels */
-    if line[len(line) - 1] == ':' {
+    if strings.HasSuffix(strings.TrimSpace(line), ":") {
         return self.labels(line)
     }
 
     /* it must be instructions now */
     self.lex.pos = 0
     self.lex.row = self.row
-    self.lex.src = []rune(line)
+    self.lex.src = []rune(self.src)
 
     /* parse the first token */
     tk := self.lex.next()
@@ -772,30 +774,32 @@ func (self *Parser) feed(line string) *ParsedLine {
 }
 
 func (self *Parser) cmds(line string) *ParsedLine {
-    var p int
-    var v []ParsedCommandArg
+    pos := 0
+    cmd := ""
+    src := []rune(line)
+    buf := []ParsedCommandArg(nil)
 
-    /* split the commands */
-    vals := strings.SplitN(line, " ", 2)
-    args := []rune(strings.Join(vals[1:], " "))
+    /* sanity check */
+    if self.next(src, &pos) != '.' {
+        panic("invalid command: " + strconv.Quote(line))
+    }
+
+    /* find the end of command */
+    for p := pos; pos < len(src); pos++ {
+        if unicode.IsSpace(src[pos]) {
+            cmd = string(src[p + 1:pos])
+            break
+        }
+    }
 
     /* parse the arguments */
-    loop: for {
-        switch self.next(args, &p) {
-            case 0   : break loop
-            case '"' : p = self.strings(&v, args, p)
-            case '-' : fallthrough
-            case '0' : fallthrough
-            case '1' : fallthrough
-            case '2' : fallthrough
-            case '3' : fallthrough
-            case '4' : fallthrough
-            case '5' : fallthrough
-            case '6' : fallthrough
-            case '7' : fallthrough
-            case '8' : fallthrough
-            case '9' : p = self.integers(&v, args, p)
-            default  : p = self.expressions(&v, args, p)
+    for {
+        if cc := self.next(src, &pos); cc == 0 {
+            break
+        } else if cc == '"' {
+            pos = self.strings(&buf, src, pos)
+        } else {
+            pos = self.expressions(&buf, src, pos)
         }
     }
 
@@ -803,8 +807,8 @@ func (self *Parser) cmds(line string) *ParsedLine {
     return &ParsedLine {
         Kind    : LineCommand,
         Command : ParsedCommand {
-            Cmd  : vals[0],
-            Args : v,
+            Cmd  : cmd,
+            Args : buf,
         },
     }
 }
@@ -821,10 +825,23 @@ func (self *Parser) next(line []rune, p *int) rune {
     }
 }
 
+func (self *Parser) delim(line []rune, p int) int {
+    if cc := self.next(line, &p); cc == 0 {
+        return p
+    } else if cc == ',' {
+        return p + 1
+    } else {
+        panic(self.err(p, "',' expected"))
+    }
+}
+
 func (self *Parser) labels(line string) *ParsedLine {
     return &ParsedLine {
         Kind  : LineLabel,
-        Label : line[:len(line) - 1],
+        Label : ParsedLabel {
+            Kind: Declaration,
+            Name: strings.TrimSuffix(strings.TrimSpace(line), ":"),
+        },
     }
 }
 
@@ -851,35 +868,8 @@ func (self *Parser) strings(argv *[]ParsedCommandArg, line []rune, p int) int {
     }
 
     /* add the argument to buffer */
-    *argv = append(*argv, ParsedCommandArg{Str: v, Kind: ArgString})
-    return i + 1
-}
-
-func (self *Parser) integers(argv *[]ParsedCommandArg, line []rune, p int) int {
-    var i int
-    var v int64
-    var e error
-
-    /* skip the '-' if needed */
-    if line[p] != '-' {
-        i = p
-    } else {
-        i = p + 1
-    }
-
-    /* find the end of integer */
-    for i < len(line) && isnumber(line[i]) {
-        i++
-    }
-
-    /* parse the integer */
-    if v, e = strconv.ParseInt(string(line[p:i]), 0, 64); e != nil {
-        panic(self.err(p, "invalid integer: " + e.Error()))
-    }
-
-    /* add the argument to buffer */
-    *argv = append(*argv, ParsedCommandArg{Int: v, Kind: ArgInt})
-    return i
+    *argv = append(*argv, ParsedCommandArg{Value: v, IsString: true})
+    return self.delim(line, i + 1)
 }
 
 func (self *Parser) expressions(argv *[]ParsedCommandArg, line []rune, p int) int {
@@ -890,11 +880,12 @@ func (self *Parser) expressions(argv *[]ParsedCommandArg, line []rune, p int) in
     /* scan until the first standalone ',' or EOF */
     loop: for i = p; i < len(line); i++ {
         switch line[i] {
-            case '"'           : s ^= 1
             case ','           : if s == 0 { if n == 0 { break loop } }
             case ']', '}', '>' : if s == 0 { if n == 0 { break loop } else { n-- } }
             case '[', '{', '<' : if s == 0 { n++ }
             case '\\'          : if s != 0 { i++ }
+            case '\''          : if s != 2 { s ^= 1 }
+            case '"'           : if s != 1 { s ^= 2 }
         }
     }
 
@@ -909,22 +900,489 @@ func (self *Parser) expressions(argv *[]ParsedCommandArg, line []rune, p int) in
     }
 
     /* add the argument to buffer */
-    *argv = append(*argv, ParsedCommandArg{Str: string(line[p:i]), Kind: ArgExpression})
-    return i
+    *argv = append(*argv, ParsedCommandArg{Value: string(line[p:i])})
+    return self.delim(line, i)
 }
 
 // Feed feeds the parser with one more line, and the parser
 // parses it into a ParsedLine.
 //
 // NOTE: Feed does not handle empty lines or multiple lines,
-//       it panics when this happens.
+//       it panics when this happens. Use Parse to parse multiple
+//       lines of assembly source.
 //
-func (self *Parser) Feed(line string) *ParsedLine {
-    if strings.TrimSpace(line) == "" {
-        panic("empty line")
-    } else if strings.ContainsRune(line, '\n') {
-        panic("passing multiple lines to Feed()")
-    } else {
-        return self.feed(line)
+func (self *Parser) Feed(src string) (ret *ParsedLine, err error) {
+    var ok bool
+    var vv interface{}
+
+    /* check for blank lines */
+    if strings.TrimSpace(src) == "" {
+        panic("blank line")
     }
+
+    /* check for multiple lines */
+    if strings.ContainsRune(src, '\n') {
+        panic("passing multiple lines to Feed()")
+    }
+
+    /* setup error handler */
+    defer func() {
+        if vv = recover(); vv != nil {
+            if err, ok = vv.(*SyntaxError); !ok {
+                panic(vv)
+            }
+        }
+    }()
+
+    /* call the actual parser */
+    ret = self.feed(src)
+    return
+}
+
+// Parse parses the entire assembly source (possibly multiple lines) into
+// a sequence of *ParsedLine.
+func (self *Parser) Parse(src string) (ret []*ParsedLine, err error) {
+    var ok bool
+    var vv interface{}
+
+    /* setup error handler */
+    defer func() {
+        if vv = recover(); vv != nil {
+            if err, ok = vv.(*SyntaxError); !ok {
+                panic(vv)
+            }
+        }
+    }()
+
+    /* feed every line */
+    for _, line := range strings.Split(src, "\n") {
+        if strings.TrimSpace(line) == "" {
+            self.row++
+        } else {
+            ret = append(ret, self.feed(line))
+        }
+    }
+
+    /* all done */
+    return
+}
+
+type _LabelRepo struct {
+    labels map[string]*Label
+}
+
+func (self *_LabelRepo) Get(name string) (expr.Term, error) {
+    return self.findOrCreate(name), nil
+}
+
+func (self *_LabelRepo) findOrCreate(name string) *Label {
+    var ok bool
+    var lb *Label
+
+    /* check for existing labels */
+    if lb, ok = self.labels[name]; ok {
+        return lb
+    }
+
+    /* create a new one as needed */
+    lb = new(Label)
+    lb.Name = name
+
+    /* create the map if needed */
+    if self.labels == nil {
+        self.labels = make(map[string]*Label, 1)
+    }
+
+    /* register the label */
+    self.labels[name] = lb
+    return lb
+}
+
+// _Command describes an assembler command.
+//
+// The _Command.args describes both the arity and argument type with characters,
+// the length is the number of arguments, the character it self represents the
+// argument type.
+//
+// Possible values are:
+//
+//      s   This argument should be a string
+//      e   This argument should be an expression
+//      ?   The next argument is optional, and must be the last argument.
+//
+type _Command struct {
+    args    string
+    handler func(*Assembler, []ParsedCommandArg) error
+}
+
+// Assembler assembles the entire assembly program and generates the corresponding
+// machine code representations.
+type Assembler struct {
+    pc   int
+    cc   int
+    ps   Parser
+    buf  []byte
+    main string
+    prog Program
+    repo _LabelRepo
+    expr expr.Parser
+}
+
+var asmCommands = map[string]_Command {
+    "org"   : { "e"   , (*Assembler).assembleCommandOrg   },
+    "byte"  : { "e"   , (*Assembler).assembleCommandByte  },
+    "word"  : { "e"   , (*Assembler).assembleCommandWord  },
+    "long"  : { "e"   , (*Assembler).assembleCommandLong  },
+    "quad"  : { "e"   , (*Assembler).assembleCommandQuad  },
+    "fill"  : { "e?e" , (*Assembler).assembleCommandFill  },
+    "align" : { "e?e" , (*Assembler).assembleCommandAlign },
+    "entry" : { "e"   , (*Assembler).assembleCommandEntry },
+    "ascii" : { "s"   , (*Assembler).assembleCommandAscii },
+    "asciz" : { "s"   , (*Assembler).assembleCommandAsciz },
+}
+
+func (self *Assembler) err(msg string) *SyntaxError {
+    return &SyntaxError {
+        Row    : self.ps.row,
+        Reason : msg,
+    }
+}
+
+func (self *Assembler) eval(expr string) (int64, error) {
+    if exp, err := self.expr.SetSource(expr).Parse(nil); err != nil {
+        return 0, err
+    } else {
+        return exp.Evaluate()
+    }
+}
+
+func (self *Assembler) checkArgs(i int, n int, v *ParsedCommand, isString bool) error {
+    if i >= len(v.Args) {
+        return self.err(fmt.Sprintf("command %s takes exact %d arguments", strconv.Quote(v.Cmd), n))
+    } else if isString && !v.Args[i].IsString {
+        return self.err(fmt.Sprintf("argument %d of command %s must be a string", i + 1, strconv.Quote(v.Cmd)))
+    } else if !isString && v.Args[i].IsString {
+        return self.err(fmt.Sprintf("argument %d of command %s must be an expression", i + 1, strconv.Quote(v.Cmd)))
+    } else {
+        return nil
+    }
+}
+
+func (self *Assembler) assembleLabel(lb *ParsedLabel) error {
+    self.prog.Link(self.repo.findOrCreate(lb.Name))
+    return nil
+}
+
+func (self *Assembler) assembleInstr(line *ParsedInstruction) (err error) {
+    var ok  bool
+    var ops []interface{}
+    var enc _InstructionEncoder
+
+    /* find the instruction encoder */
+    if enc, ok = Instructions[strings.ToLower(line.Mnemonic)]; !ok {
+        return self.err("no such instruction: " + strconv.Quote(line.Mnemonic))
+    }
+
+    /* convert the operands */
+    for _, op := range line.Operands {
+        switch op.Kind {
+            case OpImm   : ops = append(ops, op.Imm)
+            case OpReg   : ops = append(ops, op.Reg)
+            case OpMem   : self.assembleInstrMem(&ops, op.Memory)  
+            case OpLabel : self.assembleInstrLabel(&ops, op.Label) 
+            default      : panic("parser yields an invalid operand kind")
+        }
+    }
+
+    /* catch any exceptions in the encoder */
+    defer func() {
+        if v := recover(); v != nil {
+            err = self.err(fmt.Sprint(v))
+        }
+    }()
+
+    /* encode the instruction */
+    enc(&self.prog, ops...)
+    return nil
+}
+
+func (self *Assembler) assembleInstrMem(ops *[]interface{}, addr MemoryAddress) {
+    mem := new(MemoryOperand)
+    *ops = append(*ops, mem)
+
+    /* check for RIP-relative addressing */
+    if addr.Base != rip {
+        mem.Addr.Type = Memory
+        mem.Addr.Memory = addr
+    } else {
+        mem.Addr.Type = Offset
+        mem.Addr.Offset = RelativeOffset(addr.Displacement)
+    }
+}
+
+func (self *Assembler) assembleInstrLabel(ops *[]interface{}, label ParsedLabel) {
+    vk := label.Kind
+    lb := self.repo.findOrCreate(label.Name)
+
+    /* check for branch target */
+    if vk == BranchTarget {
+        *ops = append(*ops, lb)
+        return
+    }
+
+    /* add to ops */
+    *ops = append(*ops, &MemoryOperand {
+        Addr: Addressable {
+            Type      : Reference,
+            Reference : lb,
+        },
+    })
+}
+
+func (self *Assembler) assembleCommand(line *ParsedCommand) error {
+    var iv int
+    var cc rune
+    var ok bool
+    var va bool
+    var fn _Command
+
+    /* find the command */
+    if fn, ok = asmCommands[line.Cmd]; !ok {
+        return self.err("no such command: " + strconv.Quote(line.Cmd))
+    }
+
+    /* expected & real argument count */
+    argx := len(fn.args)
+    argc := len(line.Args)
+
+    /* check the arguments */
+    loop: for iv, cc = range fn.args {
+        switch cc {
+            case '?' : va = true; break loop
+            case 's' : if err := self.checkArgs(iv, argx, line, true)  ; err != nil { return err }
+            case 'e' : if err := self.checkArgs(iv, argx, line, false) ; err != nil { return err }
+            default  : panic("invalid argument descriptor: " + strconv.Quote(fn.args))
+        }
+    }
+
+    /* simple case: non-variadic command */
+    if !va {
+        if argc == argx {
+            return fn.handler(self, line.Args)
+        } else {
+            return self.err(fmt.Sprintf("command %s takes exact %d arguments", strconv.Quote(line.Cmd), argx))
+        }
+    }
+
+    /* check for the descriptor */
+    if iv != argx - 2 {
+        panic("invalid argument descriptor: " + strconv.Quote(fn.args))
+    }
+
+    /* variadic command and the final optional argument is set */
+    if argc == argx - 1 {
+        switch fn.args[argx - 1] {
+            case 's' : if err := self.checkArgs(iv, -1, line, true)  ; err != nil { return err }
+            case 'e' : if err := self.checkArgs(iv, -1, line, false) ; err != nil { return err }
+            default  : panic("invalid argument descriptor: " + strconv.Quote(fn.args))
+        }
+    }
+
+    /* check argument count */
+    if argc == argx - 1 || argc == argx - 2 {
+        return fn.handler(self, line.Args)
+    } else {
+        return self.err(fmt.Sprintf("command %s takes %d or %d arguments", strconv.Quote(line.Cmd), argx - 2, argx - 1))
+    }
+}
+
+func (self *Assembler) assembleCommandInt(argv []ParsedCommandArg, addfn func(*Program, *expr.Expr) *Instruction) error {
+    var err error
+    var val *expr.Expr
+
+    /* parse the expression */
+    if val, err = self.expr.SetSource(argv[0].Value).Parse(&self.repo); err != nil {
+        return err
+    }
+
+    /* add to the program */
+    addfn(&self.prog, val)
+    return nil
+}
+
+func (self *Assembler) assembleCommandOrg(argv []ParsedCommandArg) error {
+    var err error
+    var val int64
+
+    /* evaluate the expression */
+    if val, err = self.eval(argv[0].Value); err != nil {
+        return err
+    }
+
+    /* check for origin */
+    if val < 0 {
+        return self.err(fmt.Sprintf("negative origin: %d", val))
+    }
+
+    /* ".org" must be the first command if any */
+    if self.cc != 1 {
+        return self.err(".org must be the first command if present")
+    }
+
+    /* set the initial program counter */
+    self.pc = int(val)
+    return nil
+}
+
+func (self *Assembler) assembleCommandByte(argv []ParsedCommandArg) error {
+    return self.assembleCommandInt(argv, (*Program).Byte)
+}
+
+func (self *Assembler) assembleCommandWord(argv []ParsedCommandArg) error {
+    return self.assembleCommandInt(argv, (*Program).Word)
+}
+
+func (self *Assembler) assembleCommandLong(argv []ParsedCommandArg) error {
+    return self.assembleCommandInt(argv, (*Program).Long)
+}
+
+func (self *Assembler) assembleCommandQuad(argv []ParsedCommandArg) error {
+    return self.assembleCommandInt(argv, (*Program).Quad)
+}
+
+func (self *Assembler) assembleCommandFill(argv []ParsedCommandArg) error {
+    var fv byte
+    var nb int64
+    var ex error
+
+    /* evaluate the size */
+    if nb, ex = self.eval(argv[0].Value); ex != nil {
+        return ex
+    }
+
+    /* check for filling size */
+    if nb < 0 {
+        return self.err(fmt.Sprintf("negative filling size: %d", nb))
+    }
+
+    /* check for optional filling value */
+    if len(argv) == 2 {
+        if val, err := self.eval(argv[1].Value); err != nil {
+            return err
+        } else if val < math.MinInt8 || val > math.MaxUint8 {
+            return self.err(fmt.Sprintf("value %d cannot be represented with a byte", val))
+        } else {
+            fv = byte(val)
+        }
+    }
+
+    /* fill with specified byte */
+    self.prog.Data(bytes.Repeat([]byte{fv}, int(nb)))
+    return nil
+}
+
+func (self *Assembler) assembleCommandAlign(argv []ParsedCommandArg) error {
+    var nb int64
+    var ex error
+    var fv *expr.Expr
+
+    /* evaluate the size */
+    if nb, ex = self.eval(argv[0].Value); ex != nil {
+        return ex
+    }
+
+    /* check for alignment value */
+    if nb <= 0 {
+        return self.err(fmt.Sprintf("zero or negative alignment: %d", nb))
+    }
+
+    /* alignment must be a power of 2 */
+    if (nb & (nb - 1)) != 0 {
+        return self.err(fmt.Sprintf("alignment must be a power of 2: %d", nb))
+    }
+
+    /* check for optional filling value */
+    if len(argv) == 2 {
+        if p, err := self.expr.SetSource(argv[1].Value).Parse(&self.repo); err == nil {
+            fv = p
+        } else {
+            return err
+        }
+    }
+
+    /* fill with specified byte, default to 0 if not specified */
+    self.prog.Align(uint64(nb), fv)
+    return nil
+}
+
+func (self *Assembler) assembleCommandEntry(argv []ParsedCommandArg) error {
+    name := argv[0].Value
+    rbuf := []rune(name)
+
+    /* check all the characters */
+    for i, cc := range rbuf {
+        if !isident0(cc) && (i == 0 || !isident(cc)) {
+            return self.err("entry point must be a label name")
+        }
+    }
+
+    /* set the main entry point */
+    self.main = name
+    return nil
+}
+
+func (self *Assembler) assembleCommandAscii(argv []ParsedCommandArg) error {
+    self.prog.Data([]byte(argv[0].Value))
+    return nil
+}
+
+func (self *Assembler) assembleCommandAsciz(argv []ParsedCommandArg) error {
+    self.prog.Data(append([]byte(argv[0].Value), 0))
+    return nil
+}
+
+// Base returns the origin.
+func (self *Assembler) Base() int {
+    return self.pc
+}
+
+// Code returns the assembled machine code.
+func (self *Assembler) Code() []byte {
+    return self.buf
+}
+
+// Entry returns the address of the specified entry point, or the origin if not specified.
+func (self *Assembler) Entry() int {
+    if self.main == "" {
+        return self.pc
+    } else if val, err := self.repo.findOrCreate(self.main).Evaluate(); err == nil {
+        return int(val)
+    } else {
+        panic(err)
+    }
+}
+
+// Assemble assembles the assembly source and save the machine code to buf.
+func (self *Assembler) Assemble(src string) error {
+    var err error
+    var buf []*ParsedLine
+
+    /* parse the source */
+    if buf, err = self.ps.Parse(src); err != nil {
+        return err
+    }
+
+    /* process every line */
+    for _, line := range buf {
+        switch self.cc++; line.Kind {
+            case LineLabel   : if err = self.assembleLabel(&line.Label)       ; err != nil { return err }
+            case LineInstr   : if err = self.assembleInstr(&line.Instruction) ; err != nil { return err }
+            case LineCommand : if err = self.assembleCommand(&line.Command)   ; err != nil { return err }
+            default          : panic("parser yields an invalid line kind")
+        }
+    }
+
+    /* all done */
+    self.buf = self.prog.Assemble(self.pc)
+    return nil
 }

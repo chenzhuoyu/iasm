@@ -78,29 +78,29 @@ func tokenName(p int, v []rune) _Token {
     }
 }
 
-// Repository represents a repository of symbols.
+// Repository represents a repository of Term's.
 type Repository interface {
-    Get(name string) (int64, error)
+    Get(name string) (Term, error)
 }
 
-// Expression evalutes a string as an integer expression.
-type Expression struct {
+// Parser parses an expression string to it's AST representation.
+type Parser struct {
     pos int
     src []rune
 }
 
-var binaryOps = [...]func(int64, int64) (int64, error) {
-    '+'  : func(a, b int64) (int64, error) { return a + b, nil },
-    '-'  : func(a, b int64) (int64, error) { return a - b, nil },
-    '*'  : func(a, b int64) (int64, error) { return a * b, nil },
-    '/'  : idiv,
-    '%'  : imod,
-    '&'  : func(a, b int64) (int64, error) { return a & b, nil },
-    '^'  : func(a, b int64) (int64, error) { return a ^ b, nil },
-    '|'  : func(a, b int64) (int64, error) { return a | b, nil },
-    _SHL : func(a, b int64) (int64, error) { return a << b, nil },
-    _SHR : func(a, b int64) (int64, error) { return a >> b, nil },
-    _POW : ipow,
+var binaryOps = [...]func(*Expr, *Expr) *Expr {
+    '+'  : (*Expr).Add,
+    '-'  : (*Expr).Sub,
+    '*'  : (*Expr).Mul,
+    '/'  : (*Expr).Div,
+    '%'  : (*Expr).Mod,
+    '&'  : (*Expr).And,
+    '^'  : (*Expr).Xor,
+    '|'  : (*Expr).Or,
+    _SHL : (*Expr).Shl,
+    _SHR : (*Expr).Shr,
+    _POW : (*Expr).Pow,
 }
 
 var precedence = [...]map[int]bool {
@@ -113,20 +113,20 @@ var precedence = [...]map[int]bool {
     {_POW: true},
 }
 
-func (self *Expression) ch() rune {
+func (self *Parser) ch() rune {
     return self.src[self.pos]
 }
 
-func (self *Expression) eof() bool {
+func (self *Parser) eof() bool {
     return self.pos >= len(self.src)
 }
 
-func (self *Expression) rch() (v rune) {
+func (self *Parser) rch() (v rune) {
     v, self.pos = self.src[self.pos], self.pos + 1
     return
 }
 
-func (self *Expression) hex(ss []rune) bool {
+func (self *Parser) hex(ss []rune) bool {
     if len(ss) == 1 && ss[0] == '0' {
         return unicode.ToLower(self.ch()) == 'x'
     } else if len(ss) <= 1 || unicode.ToLower(ss[1]) != 'x' {
@@ -136,7 +136,7 @@ func (self *Expression) hex(ss []rune) bool {
     }
 }
 
-func (self *Expression) int(p int, ss []rune) (_Token, error) {
+func (self *Parser) int(p int, ss []rune) (_Token, error) {
     var err error
     var val uint64
 
@@ -153,12 +153,12 @@ func (self *Expression) int(p int, ss []rune) (_Token, error) {
     }
 }
 
-func (self *Expression) name(p int, ss []rune) _Token {
+func (self *Parser) name(p int, ss []rune) _Token {
     for !self.eof() && isident(self.ch()) { ss = append(ss, self.rch()) }
     return tokenName(p, ss)
 }
 
-func (self *Expression) read(p int, ch rune) (_Token, error) {
+func (self *Parser) read(p int, ch rune) (_Token, error) {
     if isdigit(ch) {
         return self.int(p, []rune{ch})
     } else if isident0(ch) {
@@ -172,7 +172,7 @@ func (self *Expression) read(p int, ch rune) (_Token, error) {
     }
 }
 
-func (self *Expression) next() (_Token, error) {
+func (self *Parser) next() (_Token, error) {
     for {
         var p int
         var c rune
@@ -193,39 +193,41 @@ func (self *Expression) next() (_Token, error) {
     }
 }
 
-func (self *Expression) grab(tk _Token, repo Repository) (int64, error) {
-    if repo != nil {
-        return repo.Get(tk.str())
+func (self *Parser) grab(tk _Token, repo Repository) (*Expr, error) {
+    if repo == nil {
+        return nil, newSyntaxError(tk.pos, "unresolved symbol: "+tk.str())
+    } else if term, err := repo.Get(tk.str()); err != nil {
+        return nil, err
     } else {
-        return 0, newSyntaxError(tk.pos, "unresolved symbol: " + tk.str())
+        return Ref(term), nil
     }
 }
 
-func (self *Expression) nest(nest int, repo Repository) (int64, error) {
-    var ret int64
+func (self *Parser) nest(nest int, repo Repository) (*Expr, error) {
     var err error
+    var ret *Expr
     var ntk _Token
 
     /* evaluate the nested expression */
     if ret, err = self.expr(0, nest + 1, repo); err != nil {
-        return 0, err
+        return nil, err
     }
 
     /* must follows with a ')' */
     if ntk, err = self.next(); err != nil {
-        return 0, err
+        return nil, err
     } else if ntk.tag != _T_punc || ntk.u64 != ')' {
-        return 0, newSyntaxError(ntk.pos, "')' expected")
+        return nil, newSyntaxError(ntk.pos, "')' expected")
     } else {
         return ret, nil
     }
 }
 
-func (self *Expression) unit(nest int, repo Repository) (int64, error) {
+func (self *Parser) unit(nest int, repo Repository) (*Expr, error) {
     if tk, err := self.next(); err != nil {
-        return 0, err
+        return nil, err
     } else if tk.tag == _T_int {
-        return int64(tk.u64), nil
+        return Int(int64(tk.u64)), nil
     } else if tk.tag == _T_name {
         return self.grab(tk, repo)
     } else if tk.tag == _T_punc && tk.u64 == '(' {
@@ -235,25 +237,25 @@ func (self *Expression) unit(nest int, repo Repository) (int64, error) {
     } else if tk.tag == _T_punc && tk.u64 == '-' {
         return neg2(self.unit(nest, repo))
     } else if tk.tag == _T_punc && tk.u64 == '~' {
-        return inv2(self.unit(nest, repo))
+        return not2(self.unit(nest, repo))
     } else {
-        return 0, newSyntaxError(tk.pos, "integer, unary operator or nested expression expected")
+        return nil, newSyntaxError(tk.pos, "integer, unary operator or nested expression expected")
     }
 }
 
-func (self *Expression) term(prec int, nest int, repo Repository) (int64, error) {
-    var val int64
+func (self *Parser) term(prec int, nest int, repo Repository) (*Expr, error) {
     var err error
+    var val *Expr
 
     /* parse the LHS operand */
     if val, err = self.expr(prec + 1, nest, repo); err != nil {
-        return 0, err
+        return nil, err
     }
 
     /* parse all the operators of the same precedence */
     for {
         var op int
-        var rv int64
+        var rv *Expr
         var tk _Token
 
         /* peek the next token */
@@ -262,7 +264,7 @@ func (self *Expression) term(prec int, nest int, repo Repository) (int64, error)
 
         /* check for errors */
         if err != nil {
-            return 0, err
+            return nil, err
         }
 
         /* encountered EOF */
@@ -272,7 +274,7 @@ func (self *Expression) term(prec int, nest int, repo Repository) (int64, error)
 
         /* must be an operator */
         if tk.tag != _T_punc {
-            return 0, newSyntaxError(tk.pos, "operators expected")
+            return nil, newSyntaxError(tk.pos, "operators expected")
         }
 
         /* check for the operator precedence */
@@ -281,19 +283,16 @@ func (self *Expression) term(prec int, nest int, repo Repository) (int64, error)
             return val, nil
         }
 
-        /* evaluate the RHS operand */
+        /* evaluate the RHS operand, and combine the value */
         if rv, err = self.expr(prec + 1, nest, repo); err != nil {
-            return 0, err
-        }
-
-        /* combine the value */
-        if val, err = binaryOps[op](val, rv); err != nil {
-            return 0, err
+            return nil, err
+        } else {
+            val = binaryOps[op](val, rv)
         }
     }
 }
 
-func (self *Expression) expr(prec int, nest int, repo Repository) (int64, error) {
+func (self *Parser) expr(prec int, nest int, repo Repository) (*Expr, error) {
     if prec >= len(precedence) {
         return self.unit(nest, repo)
     } else {
@@ -301,13 +300,13 @@ func (self *Expression) expr(prec int, nest int, repo Repository) (int64, error)
     }
 }
 
-// Evaluate evaluates the expression with an optional Repository.
-func (self *Expression) Evaluate(repo Repository) (int64, error) {
+// Parse parses the expression, and returns it's AST tree.
+func (self *Parser) Parse(repo Repository) (*Expr, error) {
     return self.expr(0, 0, repo)
 }
 
 // SetSource resets the expression parser and sets the expression source.
-func (self *Expression) SetSource(src string) *Expression {
+func (self *Parser) SetSource(src string) *Parser {
     self.pos = 0
     self.src = []rune(src)
     return self

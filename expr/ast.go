@@ -34,7 +34,7 @@ func (self Type) String() string {
 }
 
 // Operator represents an operation to perform when Type is EXPR.
-type Operator int
+type Operator uint8
 
 const (
     // ADD performs "Add Expr.Left and Expr.Right".
@@ -67,6 +67,9 @@ const (
     // SHR performs "Bitwise Shift Expr.Left to the Right by Expr.Right Bits".
     SHR
 
+    // POW performs "Raise Expr.Left to the power of Expr.Right"
+    POW
+
     // NOT performs "Bitwise Invert Expr.Left".
     NOT
 
@@ -85,6 +88,7 @@ var operatorNames = map[Operator]string {
     XOR : "ExclusiveOr",
     SHL : "ShiftLeft",
     SHR : "ShiftRight",
+    POW : "Power",
     NOT : "Invert",
     NEG : "Negate",
 }
@@ -137,11 +141,11 @@ func (self *Expr) Free() {
 
 // Evaluate evaluates the expression into an integer.
 // It also implements the Term interface.
-func (self *Expr) Evaluate() int64 {
+func (self *Expr) Evaluate() (int64, error) {
     switch self.Type {
         case EXPR  : return self.eval()
         case TERM  : return self.Term.Evaluate()
-        case CONST : return self.Const
+        case CONST : return self.Const, nil
         default    : panic("invalid expression type: " + self.Type.String())
     }
 }
@@ -167,40 +171,72 @@ func (self *Expr) Or (v *Expr) *Expr { return combine(self, OR , v) }
 func (self *Expr) Xor(v *Expr) *Expr { return combine(self, XOR, v) }
 func (self *Expr) Shl(v *Expr) *Expr { return combine(self, SHL, v) }
 func (self *Expr) Shr(v *Expr) *Expr { return combine(self, SHR, v) }
+func (self *Expr) Pow(v *Expr) *Expr { return combine(self, POW, v) }
 func (self *Expr) Not()        *Expr { return combine(self, NOT, nil) }
 func (self *Expr) Neg()        *Expr { return combine(self, NEG, nil) }
 
 /** Expression Evaluator **/
 
-func (self *Expr) eval() int64 {
+var binaryEvaluators = [256]func(int64, int64) (int64, error) {
+    ADD: func(a, b int64) (int64, error) { return a + b, nil },
+    SUB: func(a, b int64) (int64, error) { return a - b, nil },
+    MUL: func(a, b int64) (int64, error) { return a * b, nil },
+    DIV: idiv,
+    MOD: imod,
+    AND: func(a, b int64) (int64, error) { return a & b, nil },
+     OR: func(a, b int64) (int64, error) { return a | b, nil },
+    XOR: func(a, b int64) (int64, error) { return a ^ b, nil },
+    SHL: func(a, b int64) (int64, error) { return a << b, nil },
+    SHR: func(a, b int64) (int64, error) { return a >> b, nil },
+    POW: ipow,
+}
+
+func (self *Expr) eval() (int64, error) {
+    var lhs int64
+    var rhs int64
+    var err error
+    var vfn func(int64, int64) (int64, error)
+
+    /* evaluate LHS */
+    if lhs, err = self.Left.Evaluate(); err != nil {
+        return 0, err
+    }
+
+    /* check for unary operators */
     switch self.Op {
-        case ADD : return self.Left.Evaluate() + self.Right.Evaluate()
-        case SUB : return self.Left.Evaluate() - self.Right.Evaluate()
-        case MUL : return self.Left.Evaluate() * self.Right.Evaluate()
-        case DIV : return self.Left.Evaluate() / self.Right.Evaluate()
-        case MOD : return self.Left.Evaluate() % self.Right.Evaluate()
-        case AND : return self.Left.Evaluate() & self.Right.Evaluate()
-        case OR  : return self.Left.Evaluate() | self.Right.Evaluate()
-        case XOR : return self.Left.Evaluate() ^ self.Right.Evaluate()
-        case SHL : return self.Left.Evaluate() << self.Right.Evaluate()
-        case SHR : return self.Left.Evaluate() >> self.Right.Evaluate()
-        case NOT : return self.unaryNot()
-        case NEG : return self.unaryNeg()
-        default  : panic("invalid operator: " + self.Op.String())
+        case NOT: return self.unaryNot(lhs)
+        case NEG: return self.unaryNeg(lhs)
+    }
+
+    /* check for operators */
+    if vfn = binaryEvaluators[self.Op]; vfn == nil {
+        panic("invalid operator: " + self.Op.String())
+    }
+
+    /* must be a binary expression */
+    if self.Right == nil {
+        panic("operator " + self.Op.String() + " is a binary operator")
+    }
+
+    /* evaluate RHS, and call the operator */
+    if rhs, err = self.Right.Evaluate(); err != nil {
+        return 0, err
+    } else {
+        return vfn(lhs, rhs)
     }
 }
 
-func (self *Expr) unaryNot() int64 {
+func (self *Expr) unaryNot(v int64) (int64, error) {
     if self.Right == nil {
-        return ^self.Left.Evaluate()
+        return ^v, nil
     } else {
         panic("operator Invert is an unary operator")
     }
 }
 
-func (self *Expr) unaryNeg() int64 {
+func (self *Expr) unaryNeg(v int64) (int64, error) {
     if self.Right == nil {
-        return -self.Left.Evaluate()
+        return -v, nil
     } else {
         panic("operator Negate is an unary operator")
     }

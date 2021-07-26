@@ -8,7 +8,7 @@ const (
 )
 
 // Instructions maps all the instruction name to it's encoder function.
-var Instructions = map[string]func(*Program, ...interface{}) *Instruction {
+var Instructions = map[string]_InstructionEncoder {
     "adcb"             : __asm_proxy_ADCB__,
     "adcl"             : __asm_proxy_ADCL__,
     "adcq"             : __asm_proxy_ADCQ__,
