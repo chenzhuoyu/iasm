@@ -31,7 +31,7 @@ const (
 )
 
 var (
-	_PageSize = uint64(os.Getpagesize())
+    _PageSize = uint64(os.Getpagesize())
 )
 
 func mmap(nb uint64) (_Memory, error) {
