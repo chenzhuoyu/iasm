@@ -7,72 +7,90 @@ import (
     `os`
     `path`
     `runtime`
+    `strconv`
     `strings`
     `unicode`
     `unsafe`
 
     `github.com/knz/go-libedit`
+    `github.com/mattn/go-isatty`
 )
 
+// IASM is the interactive REPL.
 type IASM struct {
     run bool
+    efd libedit.EditLine
+    ias _IASMArchSpecific
     mem map[uint64]_Memory
     fns map[string]unsafe.Pointer
 }
 
-func CreateIASM() *IASM {
-    return &IASM {
-        run: true,
-        mem: map[uint64]_Memory{},
-        fns: map[string]unsafe.Pointer{},
-    }
-}
-
-var (
-    _HistoryFile = path.Clean(os.ExpandEnv("$HOME/.iasmhistory"))
-)
+// HistoryFile is the file that saves the REPL history, defaults to "~/.iasmhistory".
+var HistoryFile = path.Clean(os.ExpandEnv("$HOME/.iasmhistory"))
 
 // Start starts a new REPL session.
 func (self *IASM) Start() {
     var err error
-    var cmd string
-    var ret libedit.EditLine
+    var efd libedit.EditLine
+
+    /* greeting messages */
+    println("Interactive Assembler v1.0")
+    println("Compiled with " + strconv.Quote(runtime.Version()) + ".")
+    println("History will be loaded from " + strconv.Quote(HistoryFile) + ".")
+    println(`Type ".help" for more information.`)
 
     /* initialize libedit */
-    if ret, err = libedit.Init("iasm", false); err != nil {
+    if efd, err = libedit.Init("iasm", false); err != nil {
         panic(err)
     }
 
+    /* initialize IASM */
+    self.efd = efd
+    self.run = true
+    self.mem = map[uint64]_Memory{}
+    self.fns = map[string]unsafe.Pointer{}
+
     /* initialze the editor instance */
-    defer ret.Close()
-    ret.RebindControlKeys()
+    defer self.efd.Close()
+    self.efd.RebindControlKeys()
 
     /* enable history */
-    _ = ret.UseHistory(-1, true)
-    _ = ret.LoadHistory(_HistoryFile)
+    _ = self.efd.UseHistory(-1, true)
+    _ = self.efd.LoadHistory(HistoryFile)
 
     /* set prompt and enable auto-save */
-    ret.SetLeftPrompt(">>> ")
-    ret.SetAutoSaveHistory(_HistoryFile, true)
-
-    /* greeding prompts */
-    println("Interactive Assembler v1.0")
-    println("Compiled with [" + runtime.Version() + "].")
-    println("Loading history from '" + _HistoryFile + "'.")
-    println(`Type ".help" for more information.`)
+    self.efd.SetLeftPrompt(">>> ")
+    self.efd.SetAutoSaveHistory(HistoryFile, true)
 
     /* main REPL loop */
     for self.run {
-        if cmd, err = ret.GetLine(); err == nil {
-            self.handleCommand(&ret, strings.TrimSpace(cmd))
-        } else if err == io.EOF {
-            self.handleEOF()
-        } else if err == libedit.ErrInterrupted {
-            println("^C")
-        } else {
+        self.handleOnce()
+    }
+}
+
+func (self *IASM) readLine() string {
+    var err error
+    var ret string
+
+    /* read the line */
+    for {
+        if ret, err = self.efd.GetLine(); err == nil {
+            break
+        } else if err != libedit.ErrInterrupted {
             panic(err)
+        } else {
+            println("^C")
         }
     }
+
+    /* check for empty line */
+    if ret == "" {
+        return ""
+    }
+
+    /* add to history */
+    _ = self.efd.AddHistory(ret)
+    return ret
 }
 
 func (self *IASM) handleEOF() {
@@ -80,18 +98,26 @@ func (self *IASM) handleEOF() {
     println()
 }
 
-func (self *IASM) handleCommand(el *libedit.EditLine, cmd string) {
+func (self *IASM) handleOnce() {
+    defer self.handleError()
+    self.handleCommand(strings.TrimSpace(self.readLine()))
+}
+
+func (self *IASM) handleError() {
+    switch v := recover(); v {
+        case nil    : break
+        case io.EOF : self.handleEOF()
+        default     : panic(v)
+    }
+}
+
+func (self *IASM) handleCommand(cmd string) {
     var pos int
     var fnv func(*IASM, string)
 
     /* check for empty command */
     if cmd == "" {
         return
-    }
-
-    /* add the command to history */
-    if err := el.AddHistory(cmd); err != nil {
-        panic(err)
     }
 
     /* find the command delimiter */
@@ -126,6 +152,8 @@ var _CMDS = map[string]func(*IASM, string) {
     ".write"  : (*IASM)._cmd_write,
     ".fill"   : (*IASM)._cmd_fill,
     ".regs"   : (*IASM)._cmd_regs,
+    ".asm"    : (*IASM)._cmd_asm,
+    ".sys"    : (*IASM)._cmd_sys,
     ".exit"   : (*IASM)._cmd_exit,
     ".help"   : (*IASM)._cmd_help,
 }
@@ -337,6 +365,119 @@ func (self *IASM) _cmd_regs(v string) {
     }
 }
 
+func (self *IASM) _cmd_asm(v string) {
+    var ok  bool
+    var err error
+    var off uint64
+    var mid uint64
+    var fnv uintptr
+    var mem _Memory
+
+    /* parse the memory ID, offset, filling byte and the optional size */
+    scan  (v).
+    idoff (&mid, &off).
+    close ()
+
+    /* find the memory block */
+    if mem, ok = self.mem[mid]; !ok {
+        println(fmt.Sprintf("iasm: no such memory block with ID %d", mid))
+        return
+    }
+
+    /* check for memory boundary */
+    if fnv = mem.addr + uintptr(off); off >= mem.size {
+        println("iasm: indexing past the end of memory")
+        return
+    }
+
+    /* prompt messages */
+    println(fmt.Sprintf("Assemble in memory block #(%d)+%#x (%#x).", mid, off, fnv))
+    println(`Type ".end" and ENTER to end the assembly session.`)
+
+    /* restore prompt later */
+    buf := []byte(nil)
+    rem := mem.size - off
+    defer self.efd.SetLeftPrompt(">>> ")
+    self.efd.SetLeftPrompt(fmt.Sprintf("(%#x) ", fnv))
+
+    /* read and assemble the assembly source */
+    for {
+        src := strings.TrimSuffix(self.readLine(), "\n")
+        val := strings.TrimSpace(src)
+
+        /* check for end of assembly */
+        if val == ".end" {
+            break
+        }
+
+        /* feed into the assembler */
+        if buf, err = self.ias.doasm(fnv, src); err != nil {
+            println("iasm: assembly failed: " + err.Error())
+            continue
+        }
+
+        /* check for memory space */
+        if rem < uint64(len(buf)) {
+            println(fmt.Sprintf("iasm: no space left in memory block: %d < %d", rem, len(buf)))
+            continue
+        }
+
+        /* update the input line if stdout is a terminal */
+        if isatty.IsTerminal(os.Stdout.Fd()) {
+            println("\x1b[F\x1b[K" + asmdump(buf, fnv, src))
+        }
+
+        /* save the machine code */
+        ptr := mem.buf()
+        copy(ptr[off:], buf)
+
+        /* update the prompt and offsets */
+        rem -= uint64(len(buf))
+        off += uint64(len(buf))
+        fnv += uintptr(len(buf))
+        self.efd.SetLeftPrompt(fmt.Sprintf("(%#x) ", fnv))
+    }
+}
+
+func (self *IASM) _cmd_sys(v string) {
+    var ok  bool
+    var err error
+    var off uint64
+    var mid uint64
+    var fnv uintptr
+    var mem _Memory
+    var rs0 _RegFile
+    var rs1 _RegFile
+
+    /* parse the memory ID, offset, filling byte and the optional size */
+    scan  (v).
+    idoff (&mid, &off).
+    close ()
+
+    /* find the memory block */
+    if mem, ok = self.mem[mid]; !ok {
+        println(fmt.Sprintf("iasm: no such memory block with ID %d", mid))
+        return
+    }
+
+    /* check for memory boundary */
+    if fnv = mem.addr + uintptr(off); off >= mem.size {
+        println("iasm: indexing past the end of memory")
+        return
+    }
+
+    /* execute the code */
+    if rs0, rs1, err = _exec.Execute(fnv); err != nil {
+        println(fmt.Sprintf("iasm: cannot execute at memory address %#x: %s", fnv, err))
+        return
+    }
+
+    /* print the differences */
+    for _, diff := range rs0.Compare(rs1, 13) {
+        println(fmt.Sprintf("%10s = %s", diff.reg, diff.val))
+    }
+}
+
 func (self *IASM) _cmd_exit(_ string) {
     self.run = false
 }
@@ -367,14 +508,13 @@ func (self *IASM) _cmd_help(_ string) {
     println("                                        registers if not specified. To also")
     println(`                                        include SIMD registers, type ".regs *".`)
     println()
-    println("    .new    NAME ...................... Create a new function with NAME.")
-    println("    .run    NAME ...................... Execute the function NAME.")
-    println("    .unload NAME ...................... Unload and delete the function NAME.")
+    println("    .asm    ID[+OFF] .................. Assemble into memory block identified by")
+    println("                                        ID[+OFF].")
+    println()
+    println("    .sys    ID[+OFF] .................. Execute code in memory block identified")
+    println("                                        by ID[+OFF] with the CALL instruction.")
+    println()
     println("    .exit ............................. Exit Interactive Assembler.")
     println("    .help ............................. This help message.")
-    println()
-    println("You can also execute assembly instructions of the current CPU architecture")
-    println("directly in this prompt without creating a function every time, by typing the")
-    println("instruction and then press ENTER.")
     println()
 }

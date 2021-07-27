@@ -34,6 +34,38 @@ func display(v byte) string {
     }
 }
 
+func vecdiff(v0 []byte, v1 []byte, indent int) string {
+    return vector(v0, indent) + strings.Repeat(" ", indent - 2) + "->" + vector(v1, indent)
+}
+
+func asmdump(m []byte, pos uintptr, src string) string {
+    row := -1
+    ret := []string(nil)
+
+    /* must have at least 1 byte */
+    if len(m) == 0 {
+        panic("empty instruction bytes")
+    }
+
+    /* convert all the bytes */
+    for i, v := range m {
+        if pos++; i % 7 != 0 {
+            ret[row] = ret[row] + fmt.Sprintf(" %02x", v)
+        } else {
+            ret, row = append(ret, fmt.Sprintf("(%#x) %02x", pos - 1, v)), row + 1
+        }
+    }
+
+    /* pad the first line if needed */
+    if n := len(m); n < 7 {
+        ret[0] += strings.Repeat(" ", (7 - n) * 3)
+    }
+
+    /* add the source */
+    ret[0] += "  " + src
+    return strings.Join(ret, "\n")
+}
+
 func hexdump(buf []byte, start uintptr) string {
     off := 0
     nbs := len(buf)

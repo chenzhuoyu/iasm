@@ -8,6 +8,7 @@ type _Reg struct {
 
 type _RegFile interface {
     Dump(indent int) []_Reg
+    Compare(other _RegFile, indent int) []_Reg
 }
 
 var (

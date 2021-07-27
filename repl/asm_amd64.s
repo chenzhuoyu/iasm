@@ -2,12 +2,12 @@
 #include "funcdata.h"
 #include "textflag.h"
 
-TEXT ·dumpregs(SB), NOSPLIT, $0 - 8
+TEXT ·dumpregs(SB), (NOSPLIT | NOFRAME), $0
     NO_LOCAL_POINTERS
     PUSHFQ
     PUSHFQ
     PUSHQ AX
-    MOVQ  p+0(FP), AX
+    MOVQ  0x20(SP), AX
     POPQ  (AX)
     MOVQ  BX, 0x08(AX)
     MOVQ  CX, 0x10(AX)
@@ -178,5 +178,22 @@ _no_avx512bw:
 _avx512bw_done:
 _no_avx512f:
 _no_avx:
+    MOVQ 0x10(AX), CX
+    MOVQ (AX), AX
     POPFQ
     RET
+
+TEXT ·execaddr(SB), (NOSPLIT | NOFRAME), $0
+    NO_LOCAL_POINTERS
+    LONG  $0x102474ff       // pushq 0x10(%rsp)
+    CALL  ·dumpregs(SB)
+    LEAQ  8(SP), SP
+    CALL  exectrampoline(SB)
+    LONG  $0x182474ff       // pushq 0x18(%rsp)
+    CALL  ·dumpregs(SB)
+    LEAQ  8(SP), SP
+    RET
+
+TEXT exectrampoline(SB), (NOSPLIT | NOFRAME), $0
+    NO_LOCAL_POINTERS
+    JMP 0x10(SP)

@@ -5,5 +5,5 @@ import (
 )
 
 func main() {
-    repl.CreateIASM().Start()
+    new(repl.IASM).Start()
 }
