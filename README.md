@@ -23,7 +23,7 @@ For `macOS`:
 ```bash
 git clone https://github.com/chenzhuoyu/iasm
 cd iasm
-go build .
+go build ./cmd/iasm
 ./iasm -h
 ./iasm -f macho -D __Darwin__ -o helloworld example/helloworld.s
 ./helloworld 
