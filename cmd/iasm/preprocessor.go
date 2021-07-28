@@ -22,7 +22,6 @@ func preprocess(name string, defs []string) (string, error) {
 
     /* command arguments */
     args := []string {
-        "-P",
         "-CC",
         "-nostdinc",
     }

@@ -59,7 +59,7 @@ func compile() {
 
     /* parse the options */
     if ret, rem, err = optparse.Parse(opts, os.Args); err != nil {
-        println("error: " + err.Error())
+        println("iasm: error: " + err.Error())
         usage()
     }
 
@@ -81,7 +81,7 @@ func compile() {
 
     /* check file format */
     if _, ok := formatTab[ffmt]; !ok {
-        println("error: unknown file format: " + ffmt)
+        println("iasm: error: unknown file format: " + ffmt)
         os.Exit(1)
     }
 
@@ -92,25 +92,25 @@ func compile() {
 
     /* must have source files */
     if len(rem) == 0 {
-        println("error: missing input file.")
+        println("iasm: error: missing input file.")
         os.Exit(1)
     }
 
     /* must have exactly 1 source file */
     if len(rem) != 1 {
-        println("error: too many input files.")
+        println("iasm: error: too many input files.")
         os.Exit(1)
     }
 
     /* preprocess the source file */
     if src, err = preprocess(rem[0], defs); err != nil {
-        println("error: failed to run preprocessor: " + err.Error())
+        println("iasm: error: failed to run preprocessor: " + err.Error())
         os.Exit(1)
     }
 
     /* assemble the source */
     if err = asm.Assemble(src); err != nil {
-        println("error: " + err.Error())
+        println("iasm: error: " + err.Error())
         os.Exit(1)
     }
 
@@ -124,7 +124,7 @@ func compile() {
 
     /* check for errors */
     if err != nil {
-        println("error: " + err.Error())
+        println("iasm: error: " + err.Error())
         os.Exit(1)
     }
 }

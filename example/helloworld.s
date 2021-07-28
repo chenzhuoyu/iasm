@@ -26,4 +26,3 @@ start:
     xorl    %edi, %edi
     movq    SYS_exit, %rax
     syscall
-

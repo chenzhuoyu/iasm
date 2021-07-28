@@ -2,6 +2,7 @@ package x86_64
 
 import (
     `bytes`
+    `errors`
     `fmt`
     `math`
     `strconv`
@@ -40,6 +41,7 @@ const (
     _P_rbrk
     _P_comma
     _P_dollar
+    _P_hash
 )
 
 var _PUNC_NAME = map[_Punctuation]string {
@@ -58,6 +60,7 @@ var _PUNC_NAME = map[_Punctuation]string {
     _P_rbrk    : ")",
     _P_comma   : ",",
     _P_dollar  : "$",
+    _P_hash    : "#",
 }
 
 func (self _Punctuation) String() string {
@@ -135,13 +138,17 @@ func tokenSpace(p int, end int) _Token {
 type SyntaxError struct {
     Pos    int
     Row    int
-    Src    string
+    Src    []rune
     Reason string
 }
 
 // Error implements the error interface.
 func (self *SyntaxError) Error() string {
-    return fmt.Sprintf("%s at %d:%d", self.Reason, self.Row, self.Pos + 1)
+    if self.Pos < 0 {
+        return fmt.Sprintf("%s at line %d", self.Reason, self.Row)
+    } else {
+        return fmt.Sprintf("%s at %d:%d", self.Reason, self.Row, self.Pos + 1)
+    }
 }
 
 type _Tokenizer struct {
@@ -167,7 +174,7 @@ func (self *_Tokenizer) err(pos int, msg string) *SyntaxError {
     return &SyntaxError {
         Pos    : pos,
         Row    : self.row,
-        Src    : string(self.src),
+        Src    : self.src,
         Reason : msg,
     }
 }
@@ -289,6 +296,7 @@ func (self *_Tokenizer) read() _Token {
         case ')'  : t = tokenPunc(p, _P_rbrk)
         case ','  : t = tokenPunc(p, _P_comma)
         case '$'  : t = tokenPunc(p, _P_dollar)
+        case '#'  : t = tokenPunc(p, _P_hash)
         case '\'' : t = self.chrv(p)
         default   : t = self.defv(p, c)
     }
@@ -418,6 +426,8 @@ const (
 
 // ParsedLine represents a parsed source line.
 type ParsedLine struct {
+    Row         int
+    Src         []rune
     Kind        LineKind
     Label       ParsedLabel
     Command     ParsedCommand
@@ -439,7 +449,7 @@ type ParsedCommandArg struct {
 // Parser parses the source, and generates a sequence of ParsedInstruction's.
 type Parser struct {
     row int
-    src string
+    src []rune
     lex _Tokenizer
     exp expr.Parser
 }
@@ -661,7 +671,7 @@ func (self *Parser) scale(base Register, index Register, disp int32) MemoryAddre
 
 func (self *Parser) feed(line string) *ParsedLine {
     self.row++
-    self.src = line
+    self.src = []rune(line)
 
     /* check for directives */
     if strings.HasPrefix(strings.TrimSpace(line), ".") {
@@ -676,7 +686,7 @@ func (self *Parser) feed(line string) *ParsedLine {
     /* it must be instructions now */
     self.lex.pos = 0
     self.lex.row = self.row
-    self.lex.src = []rune(self.src)
+    self.lex.src = self.src
 
     /* parse the first token */
     tk := self.lex.next()
@@ -690,6 +700,8 @@ func (self *Parser) feed(line string) *ParsedLine {
 
     /* set the line kind and mnemonic */
     ret := &ParsedLine {
+        Row         : self.row,
+        Src         : self.src,
         Kind        : LineInstr,
         Instruction : ParsedInstruction{Mnemonic: tk.str},
     }
@@ -805,6 +817,8 @@ func (self *Parser) cmds(line string) *ParsedLine {
 
     /* construct the line */
     return &ParsedLine {
+        Row     : self.row,
+        Src     : self.src,
         Kind    : LineCommand,
         Command : ParsedCommand {
             Cmd  : cmd,
@@ -837,6 +851,8 @@ func (self *Parser) delim(line []rune, p int) int {
 
 func (self *Parser) labels(line string) *ParsedLine {
     return &ParsedLine {
+        Row   : self.row,
+        Src   : self.src,
         Kind  : LineLabel,
         Label : ParsedLabel {
             Kind: Declaration,
@@ -870,6 +886,36 @@ func (self *Parser) strings(argv *[]ParsedCommandArg, line []rune, p int) int {
     /* add the argument to buffer */
     *argv = append(*argv, ParsedCommandArg{Value: v, IsString: true})
     return self.delim(line, i + 1)
+}
+
+func (self *Parser) directives(line string) {
+    self.row++
+    self.src = []rune(line)
+
+    /* initialize the lexer */
+    self.lex.pos = 0
+    self.lex.row = self.row
+    self.lex.src = self.src
+
+    /* parse the first token */
+    tk := self.lex.next()
+    tt := tk.tag
+
+    /* must be a directive */
+    if tt != _T_punc || tk.punc() != _P_hash {
+        panic(self.err(tk.pos, "'#' expected"))
+    }
+
+    /* parse the line number */
+    tk = self.lex.next()
+    tt = tk.tag
+
+    /* must be a line number, if it is, set the row number, and ignore the rest of the line */
+    if tt != _T_int {
+        panic(self.err(tk.pos, "line number expected"))
+    } else {
+        self.row = int(tk.u64) - 1
+    }
 }
 
 func (self *Parser) expressions(argv *[]ParsedCommandArg, line []rune, p int) int {
@@ -913,16 +959,17 @@ func (self *Parser) expressions(argv *[]ParsedCommandArg, line []rune, p int) in
 //
 func (self *Parser) Feed(src string) (ret *ParsedLine, err error) {
     var ok bool
+    var ss string
     var vv interface{}
-
-    /* check for blank lines */
-    if strings.TrimSpace(src) == "" {
-        panic("blank line")
-    }
 
     /* check for multiple lines */
     if strings.ContainsRune(src, '\n') {
-        panic("passing multiple lines to Feed()")
+        return nil, errors.New("passing multiple lines to Feed()")
+    }
+
+    /* check for blank lines */
+    if ss = strings.TrimSpace(src); ss == "" || ss[0] == '#' || strings.HasPrefix(ss, "//") {
+        return nil, errors.New("blank line or line with only comments or line-marks")
     }
 
     /* setup error handler */
@@ -943,6 +990,7 @@ func (self *Parser) Feed(src string) (ret *ParsedLine, err error) {
 // a sequence of *ParsedLine.
 func (self *Parser) Parse(src string) (ret []*ParsedLine, err error) {
     var ok bool
+    var ss string
     var vv interface{}
 
     /* setup error handler */
@@ -956,14 +1004,41 @@ func (self *Parser) Parse(src string) (ret []*ParsedLine, err error) {
 
     /* feed every line */
     for _, line := range strings.Split(src, "\n") {
-        if strings.TrimSpace(line) == "" {
+        if ss = strings.TrimSpace(line); ss == "" || strings.HasPrefix(ss, "//") {
             self.row++
+        } else if ss[0] == '#' {
+            self.directives(line)
         } else {
             ret = append(ret, self.feed(line))
         }
     }
 
     /* all done */
+    return
+}
+
+// Directive handles the directive.
+func (self *Parser) Directive(line string) (err error) {
+    var ok bool
+    var ss string
+    var vv interface{}
+
+    /* check for directives */
+    if ss = strings.TrimSpace(line); ss == "" || ss[0] != '#' {
+        return errors.New("not a directive")
+    }
+
+    /* setup error handler */
+    defer func() {
+        if vv = recover(); vv != nil {
+            if err, ok = vv.(*SyntaxError); !ok {
+                panic(vv)
+            }
+        }
+    }()
+
+    /* call the directive parser */
+    self.directives(line)
     return
 }
 
@@ -1026,6 +1101,7 @@ type Assembler struct {
     prog Program
     repo _LabelRepo
     expr expr.Parser
+    line *ParsedLine
 }
 
 var asmCommands = map[string]_Command {
@@ -1043,7 +1119,9 @@ var asmCommands = map[string]_Command {
 
 func (self *Assembler) err(msg string) *SyntaxError {
     return &SyntaxError {
-        Row    : self.ps.row,
+        Pos    : -1,
+        Row    : self.line.Row,
+        Src    : self.line.Src,
         Reason : msg,
     }
 }
@@ -1373,11 +1451,11 @@ func (self *Assembler) Assemble(src string) error {
     }
 
     /* process every line */
-    for _, line := range buf {
-        switch self.cc++; line.Kind {
-            case LineLabel   : if err = self.assembleLabel(&line.Label)       ; err != nil { return err }
-            case LineInstr   : if err = self.assembleInstr(&line.Instruction) ; err != nil { return err }
-            case LineCommand : if err = self.assembleCommand(&line.Command)   ; err != nil { return err }
+    for _, self.line = range buf {
+        switch self.cc++; self.line.Kind {
+            case LineLabel   : if err = self.assembleLabel(&self.line.Label)       ; err != nil { return err }
+            case LineInstr   : if err = self.assembleInstr(&self.line.Instruction) ; err != nil { return err }
+            case LineCommand : if err = self.assembleCommand(&self.line.Command)   ; err != nil { return err }
             default          : panic("parser yields an invalid line kind")
         }
     }
