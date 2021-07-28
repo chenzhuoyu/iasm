@@ -14,4 +14,17 @@ This can be used to implement:
 * Compiler backend
 * And more !
 
+See `x86_64/program_test.go` for more info.
+
 ### It can also be used as a static assembler
+
+For `macOS`:
+
+```bash
+git clone https://github.com/chenzhuoyu/iasm
+cd iasm
+go build .
+./iasm -h
+./iasm -f macho -D __Darwin__ -o helloworld example/helloworld.s
+./helloworld 
+```
