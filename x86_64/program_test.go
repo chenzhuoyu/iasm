@@ -8,10 +8,6 @@ import (
     `github.com/davecgh/go-spew/spew`
 )
 
-const (
-    _IMAGE_BASE = 0x00400000 // 64-bit virtual offsets always start at 0x00400000
-)
-
 func TestProgram_Assemble(t *testing.T) {
     a := CreateArch()
     b := CreateLabel("bak")
