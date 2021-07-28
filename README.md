@@ -28,3 +28,11 @@ go build .
 ./iasm -f macho -D __Darwin__ -o helloworld example/helloworld.s
 ./helloworld 
 ```
+
+### It also contains an interactive REPL shell
+
+Just run IASM without any arguments.
+
+```bash
+./iasm
+```
