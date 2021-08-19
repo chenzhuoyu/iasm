@@ -31,6 +31,19 @@ type SegmentCommand struct {
     Flags        uint32
 }
 
+type SegmentSection struct {
+    Name      [16]byte
+    SegName   [16]byte
+    Addr      uint64
+    Size      uint64
+    Offset    uint32
+    Align     uint32
+    RelOffset uint32
+    RelCount  uint32
+    Flags     uint32
+    _         [3]uint32
+}
+
 type Registers struct {
     RAX    uint64
     RBX    uint64
@@ -91,6 +104,11 @@ const (
 )
 
 const (
+    _S_ATTR_SOME_INSTRUCTIONS = 0x00000400
+    _S_ATTR_PURE_INSTRUCTIONS = 0x80000000
+)
+
+const (
     _x86_THREAD_STATE64          = 0x04
     _x86_EXCEPTION_STATE64_COUNT = 42
 )
@@ -98,24 +116,43 @@ const (
 const (
     _MACHO_SIZE      = uint32(unsafe.Sizeof(MachOHeader{}))
     _SEGMENT_SIZE    = uint32(unsafe.Sizeof(SegmentCommand{}))
+    _SECTION_SIZE    = uint32(unsafe.Sizeof(SegmentSection{}))
     _UNIXTHREAD_SIZE = uint32(unsafe.Sizeof(UnixThreadCommand{}))
 )
 
+const (
+    _IMAGE_SIZE = 4096
+    _IMAGE_BASE = 0x04000000
+)
+
+const (
+    _HDR_SIZE  = _MACHO_SIZE + _SEGMENT_SIZE * 2 + _SECTION_SIZE + _UNIXTHREAD_SIZE
+    _ZERO_SIZE = (_IMAGE_SIZE - _HDR_SIZE %_IMAGE_SIZE) % _IMAGE_SIZE
+)
+
 var (
-    zeroBytes = [4096]byte{}
+    zeroBytes = [_ZERO_SIZE]byte{}
 )
 
 func assembleMachO(w io.Writer, code []byte, base uint64, entry uint64) error {
     var p0name [16]byte
     var txname [16]byte
+    var tsname [16]byte
 
     /* segment names */
+    copy(tsname[:], "__text")
     copy(txname[:], "__TEXT")
     copy(p0name[:], "__PAGEZERO")
 
     /* calculate size of code */
     clen := uint64(len(code))
-    hlen := uint64(_MACHO_SIZE) + uint64(_SEGMENT_SIZE) + uint64(_SEGMENT_SIZE) + uint64(_UNIXTHREAD_SIZE)
+    hlen := uint64(_HDR_SIZE + _ZERO_SIZE)
+
+    /* Mach-O does not allow image base at zero */
+    if base == 0 {
+        base = _IMAGE_BASE
+        entry += _IMAGE_BASE
+    }
 
     /* Page-0 Segment */
     p0 := SegmentCommand {
@@ -127,14 +164,25 @@ func assembleMachO(w io.Writer, code []byte, base uint64, entry uint64) error {
 
     /* TEXT Segment */
     text := SegmentCommand {
-        Cmd         : _LC_SEGMENT_64,
-        Size        : _SEGMENT_SIZE,
-        Name        : txname,
-        VMAddr      : base,
-        VMSize      : hlen + clen,
-        FileSize    : hlen + clen,
-        MaxProtect  : _VM_PROT_READ | _VM_PROT_WRITE | _VM_PROT_EXECUTE,
-        InitProtect : _VM_PROT_READ | _VM_PROT_EXECUTE,
+        Cmd          : _LC_SEGMENT_64,
+        Size         : _SEGMENT_SIZE + _SECTION_SIZE,
+        Name         : txname,
+        VMAddr       : base,
+        VMSize       : hlen + clen,
+        FileSize     : hlen + clen,
+        MaxProtect   : _VM_PROT_READ | _VM_PROT_WRITE | _VM_PROT_EXECUTE,
+        InitProtect  : _VM_PROT_READ | _VM_PROT_EXECUTE,
+        SectionCount : 1,
+    }
+
+    /* __TEXT.__text section */
+    tsec := SegmentSection {
+        Name    : tsname,
+        SegName : txname,
+        Addr    : base + hlen,
+        Size    : clen,
+        Offset  : uint32(hlen),
+        Flags   : _S_ATTR_SOME_INSTRUCTIONS | _S_ATTR_PURE_INSTRUCTIONS,
     }
 
     /* UNIX Thread Metadata */
@@ -153,29 +201,22 @@ func assembleMachO(w io.Writer, code []byte, base uint64, entry uint64) error {
         CPUSubType : _CPU_SUBTYPE_LIB64 | _CPU_SUBTYPE_I386_ALL,
         FileType   : _MH_EXECUTE,
         CmdCount   : 3,
-        CmdSize    : _SEGMENT_SIZE * 2 + _UNIXTHREAD_SIZE,
+        CmdSize    : _SEGMENT_SIZE * 2 + _SECTION_SIZE + _UNIXTHREAD_SIZE,
         Flags      : _MH_NOUNDEFS,
     }
 
     /* write the headers */
-    if err := binary.Write(w, binary.LittleEndian, &macho) ; err != nil { return err }
-    if err := binary.Write(w, binary.LittleEndian, &p0)    ; err != nil { return err }
-    if err := binary.Write(w, binary.LittleEndian, &text)  ; err != nil { return err }
-    if err := binary.Write(w, binary.LittleEndian, &unix)  ; err != nil { return err }
+    if err := binary.Write(w, binary.LittleEndian, &macho)     ; err != nil { return err }
+    if err := binary.Write(w, binary.LittleEndian, &p0)        ; err != nil { return err }
+    if err := binary.Write(w, binary.LittleEndian, &text)      ; err != nil { return err }
+    if err := binary.Write(w, binary.LittleEndian, &tsec)      ; err != nil { return err }
+    if err := binary.Write(w, binary.LittleEndian, &unix)      ; err != nil { return err }
+    if err := binary.Write(w, binary.LittleEndian, &zeroBytes) ; err != nil { return err }
 
     /* write the code */
     if n, err := w.Write(code); err != nil {
         return err
     } else if n != len(code) {
-        return io.ErrShortWrite
-    }
-
-    /* add paddings to ensure file is larger than 4k */
-    if d := 4096 - int(hlen + clen); d <= 0 {
-        return nil
-    } else if n, err := w.Write(zeroBytes[:d]); err != nil {
-        return err
-    } else if n != d {
         return io.ErrShortWrite
     } else {
         return nil

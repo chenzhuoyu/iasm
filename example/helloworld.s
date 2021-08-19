@@ -14,9 +14,6 @@
 .org   IMAGE_BASE
 .entry start
 
-msg:
-    .ascii "hello, world\n"
-
 start:
     movq    STDOUT, %rdi
     leaq    msg(%rip), %rsi
@@ -26,3 +23,6 @@ start:
     xorl    %edi, %edi
     movq    SYS_exit, %rax
     syscall
+
+msg:
+    .ascii "hello, world\n"
