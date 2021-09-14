@@ -1460,7 +1460,7 @@ func (self *Assembler) Assemble(src string) error {
         }
     }
 
-    /* all done */
+    /* assemble the program */
     self.buf = self.prog.Assemble(self.pc)
     return nil
 }

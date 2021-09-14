@@ -176,7 +176,7 @@ func (self *Instruction) encode(m *[]byte) int {
         }
     }
 
-    /* add to buffers if needed */
+    /* add to buffer if needed */
     if m != nil {
         *m = append(*m, p.bytes[:n]...)
     }
@@ -303,6 +303,7 @@ func (self *Program) Link(p *Label) {
 // Assemble assembles and links the entire program into machine code.
 func (self *Program) Assemble(pc int) (ret []byte) {
     offs := 0
+    orig := pc
     next := true
 
     /* Pass 0: PC-precompute, assume all labeled branches are far-branches. */
@@ -315,7 +316,7 @@ func (self *Program) Assemble(pc int) (ret []byte) {
     }
 
     /* allocate space for the machine code */
-    nb := pc
+    nb := pc - orig
     ret = make([]byte, 0, nb)
 
     /* Pass 1: adjust all the jumps */
@@ -370,7 +371,7 @@ func (self *Program) Assemble(pc int) (ret []byte) {
         }
     }
 
-    /* Pass 3: link all the cross references */
+    /* Pass 3: link all the cross-references */
     for p := self.head; p != nil; p = p.next {
         for i := 0; i < p.argc; i++ {
             var ok bool

@@ -240,7 +240,7 @@ func (self *_Encoding) buf(n int) []byte {
     }
 }
 
-// emit emits a single byte.
+// emit encodes a single byte.
 func (self *_Encoding) emit(v byte) {
     self.buf(1)[0] = v
     self.len++
