@@ -15,7 +15,7 @@ package x86_64
 //    * ADCB r8, m8
 //
 func (self *Program) ADCB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // ADCB imm8, al
     if isImm8(v0) && v1 == AL {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -91,7 +91,7 @@ func (self *Program) ADCB(v0 interface{}, v1 interface{}) *Instruction {
 //    * ADCL r32, m32
 //
 func (self *Program) ADCL(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // ADCL imm32, eax
     if isImm32(v0) && v1 == EAX {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -185,7 +185,7 @@ func (self *Program) ADCL(v0 interface{}, v1 interface{}) *Instruction {
 //    * ADCQ r64, m64
 //
 func (self *Program) ADCQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // ADCQ imm32, rax
     if isImm32(v0) && v1 == RAX {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -280,7 +280,7 @@ func (self *Program) ADCQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * ADCW r16, m16
 //
 func (self *Program) ADCW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // ADCW imm16, ax
     if isImm16(v0) && v1 == AX {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -378,7 +378,7 @@ func (self *Program) ADCW(v0 interface{}, v1 interface{}) *Instruction {
 //    * ADCXL m32, r32
 //
 func (self *Program) ADCXL(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // ADCXL r32, r32
     if isReg32(v0) && isReg32(v1) {
         self.require(ISA_ADX)
@@ -419,7 +419,7 @@ func (self *Program) ADCXL(v0 interface{}, v1 interface{}) *Instruction {
 //    * ADCXQ m64, r64
 //
 func (self *Program) ADCXQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // ADCXQ r64, r64
     if isReg64(v0) && isReg64(v1) {
         self.require(ISA_ADX)
@@ -463,7 +463,7 @@ func (self *Program) ADCXQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * ADDB r8, m8
 //
 func (self *Program) ADDB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // ADDB imm8, al
     if isImm8(v0) && v1 == AL {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -539,7 +539,7 @@ func (self *Program) ADDB(v0 interface{}, v1 interface{}) *Instruction {
 //    * ADDL r32, m32
 //
 func (self *Program) ADDL(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // ADDL imm32, eax
     if isImm32(v0) && v1 == EAX {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -628,7 +628,7 @@ func (self *Program) ADDL(v0 interface{}, v1 interface{}) *Instruction {
 //    * ADDPD m128, xmm
 //
 func (self *Program) ADDPD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // ADDPD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE2)
@@ -667,7 +667,7 @@ func (self *Program) ADDPD(v0 interface{}, v1 interface{}) *Instruction {
 //    * ADDPS m128, xmm
 //
 func (self *Program) ADDPS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // ADDPS xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE)
@@ -709,7 +709,7 @@ func (self *Program) ADDPS(v0 interface{}, v1 interface{}) *Instruction {
 //    * ADDQ r64, m64
 //
 func (self *Program) ADDQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // ADDQ imm32, rax
     if isImm32(v0) && v1 == RAX {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -799,7 +799,7 @@ func (self *Program) ADDQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * ADDSD m64, xmm
 //
 func (self *Program) ADDSD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // ADDSD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE2)
@@ -838,7 +838,7 @@ func (self *Program) ADDSD(v0 interface{}, v1 interface{}) *Instruction {
 //    * ADDSS m32, xmm
 //
 func (self *Program) ADDSS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // ADDSS xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE)
@@ -877,7 +877,7 @@ func (self *Program) ADDSS(v0 interface{}, v1 interface{}) *Instruction {
 //    * ADDSUBPD m128, xmm
 //
 func (self *Program) ADDSUBPD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // ADDSUBPD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE3)
@@ -916,7 +916,7 @@ func (self *Program) ADDSUBPD(v0 interface{}, v1 interface{}) *Instruction {
 //    * ADDSUBPS m128, xmm
 //
 func (self *Program) ADDSUBPS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // ADDSUBPS xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE3)
@@ -960,7 +960,7 @@ func (self *Program) ADDSUBPS(v0 interface{}, v1 interface{}) *Instruction {
 //    * ADDW r16, m16
 //
 func (self *Program) ADDW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // ADDW imm16, ax
     if isImm16(v0) && v1 == AX {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -1058,7 +1058,7 @@ func (self *Program) ADDW(v0 interface{}, v1 interface{}) *Instruction {
 //    * ADOXL m32, r32
 //
 func (self *Program) ADOXL(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // ADOXL r32, r32
     if isReg32(v0) && isReg32(v1) {
         self.require(ISA_ADX)
@@ -1099,7 +1099,7 @@ func (self *Program) ADOXL(v0 interface{}, v1 interface{}) *Instruction {
 //    * ADOXQ m64, r64
 //
 func (self *Program) ADOXQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // ADOXQ r64, r64
     if isReg64(v0) && isReg64(v1) {
         self.require(ISA_ADX)
@@ -1140,7 +1140,7 @@ func (self *Program) ADOXQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * AESDEC m128, xmm
 //
 func (self *Program) AESDEC(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // AESDEC xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_AES)
@@ -1181,7 +1181,7 @@ func (self *Program) AESDEC(v0 interface{}, v1 interface{}) *Instruction {
 //    * AESDECLAST m128, xmm
 //
 func (self *Program) AESDECLAST(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // AESDECLAST xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_AES)
@@ -1222,7 +1222,7 @@ func (self *Program) AESDECLAST(v0 interface{}, v1 interface{}) *Instruction {
 //    * AESENC m128, xmm
 //
 func (self *Program) AESENC(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // AESENC xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_AES)
@@ -1263,7 +1263,7 @@ func (self *Program) AESENC(v0 interface{}, v1 interface{}) *Instruction {
 //    * AESENCLAST m128, xmm
 //
 func (self *Program) AESENCLAST(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // AESENCLAST xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_AES)
@@ -1304,7 +1304,7 @@ func (self *Program) AESENCLAST(v0 interface{}, v1 interface{}) *Instruction {
 //    * AESIMC m128, xmm
 //
 func (self *Program) AESIMC(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // AESIMC xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_AES)
@@ -1345,7 +1345,7 @@ func (self *Program) AESIMC(v0 interface{}, v1 interface{}) *Instruction {
 //    * AESKEYGENASSIST imm8, m128, xmm
 //
 func (self *Program) AESKEYGENASSIST(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // AESKEYGENASSIST imm8, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_AES)
@@ -1391,7 +1391,7 @@ func (self *Program) AESKEYGENASSIST(v0 interface{}, v1 interface{}, v2 interfac
 //    * ANDB r8, m8
 //
 func (self *Program) ANDB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // ANDB imm8, al
     if isImm8(v0) && v1 == AL {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -1467,7 +1467,7 @@ func (self *Program) ANDB(v0 interface{}, v1 interface{}) *Instruction {
 //    * ANDL r32, m32
 //
 func (self *Program) ANDL(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // ANDL imm32, eax
     if isImm32(v0) && v1 == EAX {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -1556,7 +1556,7 @@ func (self *Program) ANDL(v0 interface{}, v1 interface{}) *Instruction {
 //    * ANDNL m32, r32, r32
 //
 func (self *Program) ANDNL(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // ANDNL r32, r32, r32
     if isReg32(v0) && isReg32(v1) && isReg32(v2) {
         self.require(ISA_BMI)
@@ -1593,7 +1593,7 @@ func (self *Program) ANDNL(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
 //    * ANDNPD m128, xmm
 //
 func (self *Program) ANDNPD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // ANDNPD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE2)
@@ -1632,7 +1632,7 @@ func (self *Program) ANDNPD(v0 interface{}, v1 interface{}) *Instruction {
 //    * ANDNPS m128, xmm
 //
 func (self *Program) ANDNPS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // ANDNPS xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE)
@@ -1669,7 +1669,7 @@ func (self *Program) ANDNPS(v0 interface{}, v1 interface{}) *Instruction {
 //    * ANDNQ m64, r64, r64
 //
 func (self *Program) ANDNQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // ANDNQ r64, r64, r64
     if isReg64(v0) && isReg64(v1) && isReg64(v2) {
         self.require(ISA_BMI)
@@ -1706,7 +1706,7 @@ func (self *Program) ANDNQ(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
 //    * ANDPD m128, xmm
 //
 func (self *Program) ANDPD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // ANDPD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE2)
@@ -1745,7 +1745,7 @@ func (self *Program) ANDPD(v0 interface{}, v1 interface{}) *Instruction {
 //    * ANDPS m128, xmm
 //
 func (self *Program) ANDPS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // ANDPS xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE)
@@ -1787,7 +1787,7 @@ func (self *Program) ANDPS(v0 interface{}, v1 interface{}) *Instruction {
 //    * ANDQ r64, m64
 //
 func (self *Program) ANDQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // ANDQ imm32, rax
     if isImm32(v0) && v1 == RAX {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -1882,7 +1882,7 @@ func (self *Program) ANDQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * ANDW r16, m16
 //
 func (self *Program) ANDW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // ANDW imm16, ax
     if isImm16(v0) && v1 == AX {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -1986,7 +1986,7 @@ func (self *Program) ANDW(v0 interface{}, v1 interface{}) *Instruction {
 //    * BEXTR r64, m64, r64
 //
 func (self *Program) BEXTR(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // BEXTR imm32, r32, r32
     if isImm32(v0) && isReg32(v1) && isReg32(v2) {
         self.require(ISA_TBM)
@@ -2089,7 +2089,7 @@ func (self *Program) BEXTR(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
 //    * BLCFILL m64, r64
 //
 func (self *Program) BLCFILL(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // BLCFILL r32, r32
     if isReg32(v0) && isReg32(v1) {
         self.require(ISA_TBM)
@@ -2148,7 +2148,7 @@ func (self *Program) BLCFILL(v0 interface{}, v1 interface{}) *Instruction {
 //    * BLCI m64, r64
 //
 func (self *Program) BLCI(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // BLCI r32, r32
     if isReg32(v0) && isReg32(v1) {
         self.require(ISA_TBM)
@@ -2207,7 +2207,7 @@ func (self *Program) BLCI(v0 interface{}, v1 interface{}) *Instruction {
 //    * BLCIC m64, r64
 //
 func (self *Program) BLCIC(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // BLCIC r32, r32
     if isReg32(v0) && isReg32(v1) {
         self.require(ISA_TBM)
@@ -2266,7 +2266,7 @@ func (self *Program) BLCIC(v0 interface{}, v1 interface{}) *Instruction {
 //    * BLCMSK m64, r64
 //
 func (self *Program) BLCMSK(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // BLCMSK r32, r32
     if isReg32(v0) && isReg32(v1) {
         self.require(ISA_TBM)
@@ -2325,7 +2325,7 @@ func (self *Program) BLCMSK(v0 interface{}, v1 interface{}) *Instruction {
 //    * BLCS m64, r64
 //
 func (self *Program) BLCS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // BLCS r32, r32
     if isReg32(v0) && isReg32(v1) {
         self.require(ISA_TBM)
@@ -2382,7 +2382,7 @@ func (self *Program) BLCS(v0 interface{}, v1 interface{}) *Instruction {
 //    * BLENDPD imm8, m128, xmm
 //
 func (self *Program) BLENDPD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // BLENDPD imm8, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_SSE4_1)
@@ -2425,7 +2425,7 @@ func (self *Program) BLENDPD(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * BLENDPS imm8, m128, xmm
 //
 func (self *Program) BLENDPS(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // BLENDPS imm8, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_SSE4_1)
@@ -2468,7 +2468,7 @@ func (self *Program) BLENDPS(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * BLENDVPD xmm0, m128, xmm
 //
 func (self *Program) BLENDVPD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // BLENDVPD xmm0, xmm, xmm
     if v0 == XMM0 && isXMM(v1) && isXMM(v2) {
         self.require(ISA_SSE4_1)
@@ -2509,7 +2509,7 @@ func (self *Program) BLENDVPD(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * BLENDVPS xmm0, m128, xmm
 //
 func (self *Program) BLENDVPS(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // BLENDVPS xmm0, xmm, xmm
     if v0 == XMM0 && isXMM(v1) && isXMM(v2) {
         self.require(ISA_SSE4_1)
@@ -2552,7 +2552,7 @@ func (self *Program) BLENDVPS(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * BLSFILL m64, r64
 //
 func (self *Program) BLSFILL(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // BLSFILL r32, r32
     if isReg32(v0) && isReg32(v1) {
         self.require(ISA_TBM)
@@ -2611,7 +2611,7 @@ func (self *Program) BLSFILL(v0 interface{}, v1 interface{}) *Instruction {
 //    * BLSI m64, r64
 //
 func (self *Program) BLSI(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // BLSI r32, r32
     if isReg32(v0) && isReg32(v1) {
         self.require(ISA_BMI)
@@ -2670,7 +2670,7 @@ func (self *Program) BLSI(v0 interface{}, v1 interface{}) *Instruction {
 //    * BLSIC m64, r64
 //
 func (self *Program) BLSIC(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // BLSIC r32, r32
     if isReg32(v0) && isReg32(v1) {
         self.require(ISA_TBM)
@@ -2729,7 +2729,7 @@ func (self *Program) BLSIC(v0 interface{}, v1 interface{}) *Instruction {
 //    * BLSMSK m64, r64
 //
 func (self *Program) BLSMSK(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // BLSMSK r32, r32
     if isReg32(v0) && isReg32(v1) {
         self.require(ISA_BMI)
@@ -2788,7 +2788,7 @@ func (self *Program) BLSMSK(v0 interface{}, v1 interface{}) *Instruction {
 //    * BLSR m64, r64
 //
 func (self *Program) BLSR(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // BLSR r32, r32
     if isReg32(v0) && isReg32(v1) {
         self.require(ISA_BMI)
@@ -2844,7 +2844,7 @@ func (self *Program) BLSR(v0 interface{}, v1 interface{}) *Instruction {
 //    * BSFL m32, r32
 //
 func (self *Program) BSFL(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // BSFL r32, r32
     if isReg32(v0) && isReg32(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -2878,7 +2878,7 @@ func (self *Program) BSFL(v0 interface{}, v1 interface{}) *Instruction {
 //    * BSFQ m64, r64
 //
 func (self *Program) BSFQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // BSFQ r64, r64
     if isReg64(v0) && isReg64(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -2912,7 +2912,7 @@ func (self *Program) BSFQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * BSFW m16, r16
 //
 func (self *Program) BSFW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // BSFW r16, r16
     if isReg16(v0) && isReg16(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -2948,7 +2948,7 @@ func (self *Program) BSFW(v0 interface{}, v1 interface{}) *Instruction {
 //    * BSRL m32, r32
 //
 func (self *Program) BSRL(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // BSRL r32, r32
     if isReg32(v0) && isReg32(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -2982,7 +2982,7 @@ func (self *Program) BSRL(v0 interface{}, v1 interface{}) *Instruction {
 //    * BSRQ m64, r64
 //
 func (self *Program) BSRQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // BSRQ r64, r64
     if isReg64(v0) && isReg64(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -3016,7 +3016,7 @@ func (self *Program) BSRQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * BSRW m16, r16
 //
 func (self *Program) BSRW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // BSRW r16, r16
     if isReg16(v0) && isReg16(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -3051,7 +3051,7 @@ func (self *Program) BSRW(v0 interface{}, v1 interface{}) *Instruction {
 //    * BSWAPL r32
 //
 func (self *Program) BSWAPL(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // BSWAPL r32
     if isReg32(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -3074,7 +3074,7 @@ func (self *Program) BSWAPL(v0 interface{}) *Instruction {
 //    * BSWAPQ r64
 //
 func (self *Program) BSWAPQ(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // BSWAPQ r64
     if isReg64(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -3100,7 +3100,7 @@ func (self *Program) BSWAPQ(v0 interface{}) *Instruction {
 //    * BTCL r32, m32
 //
 func (self *Program) BTCL(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // BTCL imm8, r32
     if isImm8(v0) && isReg32(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -3156,7 +3156,7 @@ func (self *Program) BTCL(v0 interface{}, v1 interface{}) *Instruction {
 //    * BTCQ r64, m64
 //
 func (self *Program) BTCQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // BTCQ imm8, r64
     if isImm8(v0) && isReg64(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -3212,7 +3212,7 @@ func (self *Program) BTCQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * BTCW r16, m16
 //
 func (self *Program) BTCW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // BTCW imm8, r16
     if isImm8(v0) && isReg16(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -3272,7 +3272,7 @@ func (self *Program) BTCW(v0 interface{}, v1 interface{}) *Instruction {
 //    * BTL r32, m32
 //
 func (self *Program) BTL(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // BTL imm8, r32
     if isImm8(v0) && isReg32(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -3328,7 +3328,7 @@ func (self *Program) BTL(v0 interface{}, v1 interface{}) *Instruction {
 //    * BTQ r64, m64
 //
 func (self *Program) BTQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // BTQ imm8, r64
     if isImm8(v0) && isReg64(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -3384,7 +3384,7 @@ func (self *Program) BTQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * BTRL r32, m32
 //
 func (self *Program) BTRL(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // BTRL imm8, r32
     if isImm8(v0) && isReg32(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -3440,7 +3440,7 @@ func (self *Program) BTRL(v0 interface{}, v1 interface{}) *Instruction {
 //    * BTRQ r64, m64
 //
 func (self *Program) BTRQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // BTRQ imm8, r64
     if isImm8(v0) && isReg64(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -3496,7 +3496,7 @@ func (self *Program) BTRQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * BTRW r16, m16
 //
 func (self *Program) BTRW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // BTRW imm8, r16
     if isImm8(v0) && isReg16(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -3556,7 +3556,7 @@ func (self *Program) BTRW(v0 interface{}, v1 interface{}) *Instruction {
 //    * BTSL r32, m32
 //
 func (self *Program) BTSL(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // BTSL imm8, r32
     if isImm8(v0) && isReg32(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -3612,7 +3612,7 @@ func (self *Program) BTSL(v0 interface{}, v1 interface{}) *Instruction {
 //    * BTSQ r64, m64
 //
 func (self *Program) BTSQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // BTSQ imm8, r64
     if isImm8(v0) && isReg64(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -3668,7 +3668,7 @@ func (self *Program) BTSQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * BTSW r16, m16
 //
 func (self *Program) BTSW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // BTSW imm8, r16
     if isImm8(v0) && isReg16(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -3728,7 +3728,7 @@ func (self *Program) BTSW(v0 interface{}, v1 interface{}) *Instruction {
 //    * BTW r16, m16
 //
 func (self *Program) BTW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // BTW imm8, r16
     if isImm8(v0) && isReg16(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -3789,7 +3789,7 @@ func (self *Program) BTW(v0 interface{}, v1 interface{}) *Instruction {
 //    * BZHI r64, m64, r64
 //
 func (self *Program) BZHI(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // BZHI r32, r32, r32
     if isReg32(v0) && isReg32(v1) && isReg32(v2) {
         self.require(ISA_BMI2)
@@ -3844,7 +3844,7 @@ func (self *Program) BZHI(v0 interface{}, v1 interface{}, v2 interface{}) *Instr
 //    * CALL rel32
 //
 func (self *Program) CALL(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // CALL rel32
     if isRel32(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -3874,7 +3874,7 @@ func (self *Program) CALL(v0 interface{}) *Instruction {
 //    * CALLQ m64
 //
 func (self *Program) CALLQ(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // CALLQ r64
     if isReg64(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -3905,7 +3905,7 @@ func (self *Program) CALLQ(v0 interface{}) *Instruction {
 //    * CBTW
 //
 func (self *Program) CBTW() *Instruction {
-    p := self.alloc(0, [_MAX_ARGS]interface{}{})
+    p := self.alloc(0, Operands{})
     // CBTW
     p.add(0, func(m *_Encoding, v []interface{}) {
         m.emit(0x66)
@@ -3922,7 +3922,7 @@ func (self *Program) CBTW() *Instruction {
 //    * CLC
 //
 func (self *Program) CLC() *Instruction {
-    p := self.alloc(0, [_MAX_ARGS]interface{}{})
+    p := self.alloc(0, Operands{})
     // CLC
     p.add(0, func(m *_Encoding, v []interface{}) {
         m.emit(0xf8)
@@ -3938,7 +3938,7 @@ func (self *Program) CLC() *Instruction {
 //    * CLD
 //
 func (self *Program) CLD() *Instruction {
-    p := self.alloc(0, [_MAX_ARGS]interface{}{})
+    p := self.alloc(0, Operands{})
     // CLD
     p.add(0, func(m *_Encoding, v []interface{}) {
         m.emit(0xfc)
@@ -3955,7 +3955,7 @@ func (self *Program) CLD() *Instruction {
 //    * CLFLUSH m8
 //
 func (self *Program) CLFLUSH(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // CLFLUSH m8
     if isM8(v0) {
         self.require(ISA_CLFLUSH)
@@ -3981,7 +3981,7 @@ func (self *Program) CLFLUSH(v0 interface{}) *Instruction {
 //    * CLFLUSHOPT m8
 //
 func (self *Program) CLFLUSHOPT(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // CLFLUSHOPT m8
     if isM8(v0) {
         self.require(ISA_CLFLUSHOPT)
@@ -4007,7 +4007,7 @@ func (self *Program) CLFLUSHOPT(v0 interface{}) *Instruction {
 //    * CLTD
 //
 func (self *Program) CLTD() *Instruction {
-    p := self.alloc(0, [_MAX_ARGS]interface{}{})
+    p := self.alloc(0, Operands{})
     // CLTD
     p.add(0, func(m *_Encoding, v []interface{}) {
         m.emit(0x99)
@@ -4023,7 +4023,7 @@ func (self *Program) CLTD() *Instruction {
 //    * CLTQ
 //
 func (self *Program) CLTQ() *Instruction {
-    p := self.alloc(0, [_MAX_ARGS]interface{}{})
+    p := self.alloc(0, Operands{})
     // CLTQ
     p.add(0, func(m *_Encoding, v []interface{}) {
         m.emit(0x48)
@@ -4041,7 +4041,7 @@ func (self *Program) CLTQ() *Instruction {
 //    * CLWB m8
 //
 func (self *Program) CLWB(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // CLWB m8
     if isM8(v0) {
         self.require(ISA_CLWB)
@@ -4068,7 +4068,7 @@ func (self *Program) CLWB(v0 interface{}) *Instruction {
 //    * CLZERO
 //
 func (self *Program) CLZERO() *Instruction {
-    p := self.alloc(0, [_MAX_ARGS]interface{}{})
+    p := self.alloc(0, Operands{})
     // CLZERO
     self.require(ISA_CLZERO)
     p.add(0, func(m *_Encoding, v []interface{}) {
@@ -4087,7 +4087,7 @@ func (self *Program) CLZERO() *Instruction {
 //    * CMC
 //
 func (self *Program) CMC() *Instruction {
-    p := self.alloc(0, [_MAX_ARGS]interface{}{})
+    p := self.alloc(0, Operands{})
     // CMC
     p.add(0, func(m *_Encoding, v []interface{}) {
         m.emit(0xf5)
@@ -4109,7 +4109,7 @@ func (self *Program) CMC() *Instruction {
 //    * CMOVA m64, r64
 //
 func (self *Program) CMOVA(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CMOVA r16, r16
     if isReg16(v0) && isReg16(v1) {
         self.require(ISA_CMOV)
@@ -4192,7 +4192,7 @@ func (self *Program) CMOVA(v0 interface{}, v1 interface{}) *Instruction {
 //    * CMOVAE m64, r64
 //
 func (self *Program) CMOVAE(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CMOVAE r16, r16
     if isReg16(v0) && isReg16(v1) {
         self.require(ISA_CMOV)
@@ -4275,7 +4275,7 @@ func (self *Program) CMOVAE(v0 interface{}, v1 interface{}) *Instruction {
 //    * CMOVB m64, r64
 //
 func (self *Program) CMOVB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CMOVB r16, r16
     if isReg16(v0) && isReg16(v1) {
         self.require(ISA_CMOV)
@@ -4358,7 +4358,7 @@ func (self *Program) CMOVB(v0 interface{}, v1 interface{}) *Instruction {
 //    * CMOVBE m64, r64
 //
 func (self *Program) CMOVBE(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CMOVBE r16, r16
     if isReg16(v0) && isReg16(v1) {
         self.require(ISA_CMOV)
@@ -4441,7 +4441,7 @@ func (self *Program) CMOVBE(v0 interface{}, v1 interface{}) *Instruction {
 //    * CMOVC m64, r64
 //
 func (self *Program) CMOVC(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CMOVC r16, r16
     if isReg16(v0) && isReg16(v1) {
         self.require(ISA_CMOV)
@@ -4524,7 +4524,7 @@ func (self *Program) CMOVC(v0 interface{}, v1 interface{}) *Instruction {
 //    * CMOVE m64, r64
 //
 func (self *Program) CMOVE(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CMOVE r16, r16
     if isReg16(v0) && isReg16(v1) {
         self.require(ISA_CMOV)
@@ -4607,7 +4607,7 @@ func (self *Program) CMOVE(v0 interface{}, v1 interface{}) *Instruction {
 //    * CMOVG m64, r64
 //
 func (self *Program) CMOVG(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CMOVG r16, r16
     if isReg16(v0) && isReg16(v1) {
         self.require(ISA_CMOV)
@@ -4690,7 +4690,7 @@ func (self *Program) CMOVG(v0 interface{}, v1 interface{}) *Instruction {
 //    * CMOVGE m64, r64
 //
 func (self *Program) CMOVGE(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CMOVGE r16, r16
     if isReg16(v0) && isReg16(v1) {
         self.require(ISA_CMOV)
@@ -4773,7 +4773,7 @@ func (self *Program) CMOVGE(v0 interface{}, v1 interface{}) *Instruction {
 //    * CMOVL m64, r64
 //
 func (self *Program) CMOVL(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CMOVL r16, r16
     if isReg16(v0) && isReg16(v1) {
         self.require(ISA_CMOV)
@@ -4856,7 +4856,7 @@ func (self *Program) CMOVL(v0 interface{}, v1 interface{}) *Instruction {
 //    * CMOVLE m64, r64
 //
 func (self *Program) CMOVLE(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CMOVLE r16, r16
     if isReg16(v0) && isReg16(v1) {
         self.require(ISA_CMOV)
@@ -4939,7 +4939,7 @@ func (self *Program) CMOVLE(v0 interface{}, v1 interface{}) *Instruction {
 //    * CMOVNA m64, r64
 //
 func (self *Program) CMOVNA(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CMOVNA r16, r16
     if isReg16(v0) && isReg16(v1) {
         self.require(ISA_CMOV)
@@ -5022,7 +5022,7 @@ func (self *Program) CMOVNA(v0 interface{}, v1 interface{}) *Instruction {
 //    * CMOVNAE m64, r64
 //
 func (self *Program) CMOVNAE(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CMOVNAE r16, r16
     if isReg16(v0) && isReg16(v1) {
         self.require(ISA_CMOV)
@@ -5105,7 +5105,7 @@ func (self *Program) CMOVNAE(v0 interface{}, v1 interface{}) *Instruction {
 //    * CMOVNB m64, r64
 //
 func (self *Program) CMOVNB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CMOVNB r16, r16
     if isReg16(v0) && isReg16(v1) {
         self.require(ISA_CMOV)
@@ -5188,7 +5188,7 @@ func (self *Program) CMOVNB(v0 interface{}, v1 interface{}) *Instruction {
 //    * CMOVNBE m64, r64
 //
 func (self *Program) CMOVNBE(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CMOVNBE r16, r16
     if isReg16(v0) && isReg16(v1) {
         self.require(ISA_CMOV)
@@ -5271,7 +5271,7 @@ func (self *Program) CMOVNBE(v0 interface{}, v1 interface{}) *Instruction {
 //    * CMOVNC m64, r64
 //
 func (self *Program) CMOVNC(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CMOVNC r16, r16
     if isReg16(v0) && isReg16(v1) {
         self.require(ISA_CMOV)
@@ -5354,7 +5354,7 @@ func (self *Program) CMOVNC(v0 interface{}, v1 interface{}) *Instruction {
 //    * CMOVNE m64, r64
 //
 func (self *Program) CMOVNE(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CMOVNE r16, r16
     if isReg16(v0) && isReg16(v1) {
         self.require(ISA_CMOV)
@@ -5437,7 +5437,7 @@ func (self *Program) CMOVNE(v0 interface{}, v1 interface{}) *Instruction {
 //    * CMOVNG m64, r64
 //
 func (self *Program) CMOVNG(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CMOVNG r16, r16
     if isReg16(v0) && isReg16(v1) {
         self.require(ISA_CMOV)
@@ -5520,7 +5520,7 @@ func (self *Program) CMOVNG(v0 interface{}, v1 interface{}) *Instruction {
 //    * CMOVNGE m64, r64
 //
 func (self *Program) CMOVNGE(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CMOVNGE r16, r16
     if isReg16(v0) && isReg16(v1) {
         self.require(ISA_CMOV)
@@ -5603,7 +5603,7 @@ func (self *Program) CMOVNGE(v0 interface{}, v1 interface{}) *Instruction {
 //    * CMOVNL m64, r64
 //
 func (self *Program) CMOVNL(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CMOVNL r16, r16
     if isReg16(v0) && isReg16(v1) {
         self.require(ISA_CMOV)
@@ -5686,7 +5686,7 @@ func (self *Program) CMOVNL(v0 interface{}, v1 interface{}) *Instruction {
 //    * CMOVNLE m64, r64
 //
 func (self *Program) CMOVNLE(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CMOVNLE r16, r16
     if isReg16(v0) && isReg16(v1) {
         self.require(ISA_CMOV)
@@ -5769,7 +5769,7 @@ func (self *Program) CMOVNLE(v0 interface{}, v1 interface{}) *Instruction {
 //    * CMOVNO m64, r64
 //
 func (self *Program) CMOVNO(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CMOVNO r16, r16
     if isReg16(v0) && isReg16(v1) {
         self.require(ISA_CMOV)
@@ -5852,7 +5852,7 @@ func (self *Program) CMOVNO(v0 interface{}, v1 interface{}) *Instruction {
 //    * CMOVNP m64, r64
 //
 func (self *Program) CMOVNP(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CMOVNP r16, r16
     if isReg16(v0) && isReg16(v1) {
         self.require(ISA_CMOV)
@@ -5935,7 +5935,7 @@ func (self *Program) CMOVNP(v0 interface{}, v1 interface{}) *Instruction {
 //    * CMOVNS m64, r64
 //
 func (self *Program) CMOVNS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CMOVNS r16, r16
     if isReg16(v0) && isReg16(v1) {
         self.require(ISA_CMOV)
@@ -6018,7 +6018,7 @@ func (self *Program) CMOVNS(v0 interface{}, v1 interface{}) *Instruction {
 //    * CMOVNZ m64, r64
 //
 func (self *Program) CMOVNZ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CMOVNZ r16, r16
     if isReg16(v0) && isReg16(v1) {
         self.require(ISA_CMOV)
@@ -6101,7 +6101,7 @@ func (self *Program) CMOVNZ(v0 interface{}, v1 interface{}) *Instruction {
 //    * CMOVO m64, r64
 //
 func (self *Program) CMOVO(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CMOVO r16, r16
     if isReg16(v0) && isReg16(v1) {
         self.require(ISA_CMOV)
@@ -6184,7 +6184,7 @@ func (self *Program) CMOVO(v0 interface{}, v1 interface{}) *Instruction {
 //    * CMOVP m64, r64
 //
 func (self *Program) CMOVP(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CMOVP r16, r16
     if isReg16(v0) && isReg16(v1) {
         self.require(ISA_CMOV)
@@ -6267,7 +6267,7 @@ func (self *Program) CMOVP(v0 interface{}, v1 interface{}) *Instruction {
 //    * CMOVPE m64, r64
 //
 func (self *Program) CMOVPE(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CMOVPE r16, r16
     if isReg16(v0) && isReg16(v1) {
         self.require(ISA_CMOV)
@@ -6350,7 +6350,7 @@ func (self *Program) CMOVPE(v0 interface{}, v1 interface{}) *Instruction {
 //    * CMOVPO m64, r64
 //
 func (self *Program) CMOVPO(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CMOVPO r16, r16
     if isReg16(v0) && isReg16(v1) {
         self.require(ISA_CMOV)
@@ -6433,7 +6433,7 @@ func (self *Program) CMOVPO(v0 interface{}, v1 interface{}) *Instruction {
 //    * CMOVS m64, r64
 //
 func (self *Program) CMOVS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CMOVS r16, r16
     if isReg16(v0) && isReg16(v1) {
         self.require(ISA_CMOV)
@@ -6516,7 +6516,7 @@ func (self *Program) CMOVS(v0 interface{}, v1 interface{}) *Instruction {
 //    * CMOVZ m64, r64
 //
 func (self *Program) CMOVZ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CMOVZ r16, r16
     if isReg16(v0) && isReg16(v1) {
         self.require(ISA_CMOV)
@@ -6598,7 +6598,7 @@ func (self *Program) CMOVZ(v0 interface{}, v1 interface{}) *Instruction {
 //    * CMPB r8, m8
 //
 func (self *Program) CMPB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CMPB imm8, al
     if isImm8(v0) && v1 == AL {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -6674,7 +6674,7 @@ func (self *Program) CMPB(v0 interface{}, v1 interface{}) *Instruction {
 //    * CMPL r32, m32
 //
 func (self *Program) CMPL(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CMPL imm32, eax
     if isImm32(v0) && v1 == EAX {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -6763,7 +6763,7 @@ func (self *Program) CMPL(v0 interface{}, v1 interface{}) *Instruction {
 //    * CMPPD imm8, m128, xmm
 //
 func (self *Program) CMPPD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // CMPPD imm8, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_SSE2)
@@ -6804,7 +6804,7 @@ func (self *Program) CMPPD(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
 //    * CMPPS imm8, m128, xmm
 //
 func (self *Program) CMPPS(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // CMPPS imm8, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_SSE)
@@ -6848,7 +6848,7 @@ func (self *Program) CMPPS(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
 //    * CMPQ r64, m64
 //
 func (self *Program) CMPQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CMPQ imm32, rax
     if isImm32(v0) && v1 == RAX {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -6938,7 +6938,7 @@ func (self *Program) CMPQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * CMPSD imm8, m64, xmm
 //
 func (self *Program) CMPSD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // CMPSD imm8, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_SSE2)
@@ -6979,7 +6979,7 @@ func (self *Program) CMPSD(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
 //    * CMPSS imm8, m32, xmm
 //
 func (self *Program) CMPSS(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // CMPSS imm8, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_SSE)
@@ -7025,7 +7025,7 @@ func (self *Program) CMPSS(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
 //    * CMPW r16, m16
 //
 func (self *Program) CMPW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CMPW imm16, ax
     if isImm16(v0) && v1 == AX {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -7121,7 +7121,7 @@ func (self *Program) CMPW(v0 interface{}, v1 interface{}) *Instruction {
 //    * CMPXCHG16B m128
 //
 func (self *Program) CMPXCHG16B(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // CMPXCHG16B m128
     if isM128(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -7145,7 +7145,7 @@ func (self *Program) CMPXCHG16B(v0 interface{}) *Instruction {
 //    * CMPXCHG8B m64
 //
 func (self *Program) CMPXCHG8B(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // CMPXCHG8B m64
     if isM64(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -7170,7 +7170,7 @@ func (self *Program) CMPXCHG8B(v0 interface{}) *Instruction {
 //    * CMPXCHGB r8, m8
 //
 func (self *Program) CMPXCHGB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CMPXCHGB r8, r8
     if isReg8(v0) && isReg8(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -7204,7 +7204,7 @@ func (self *Program) CMPXCHGB(v0 interface{}, v1 interface{}) *Instruction {
 //    * CMPXCHGL r32, m32
 //
 func (self *Program) CMPXCHGL(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CMPXCHGL r32, r32
     if isReg32(v0) && isReg32(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -7238,7 +7238,7 @@ func (self *Program) CMPXCHGL(v0 interface{}, v1 interface{}) *Instruction {
 //    * CMPXCHGQ r64, m64
 //
 func (self *Program) CMPXCHGQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CMPXCHGQ r64, r64
     if isReg64(v0) && isReg64(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -7272,7 +7272,7 @@ func (self *Program) CMPXCHGQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * CMPXCHGW r16, m16
 //
 func (self *Program) CMPXCHGW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CMPXCHGW r16, r16
     if isReg16(v0) && isReg16(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -7309,7 +7309,7 @@ func (self *Program) CMPXCHGW(v0 interface{}, v1 interface{}) *Instruction {
 //    * COMISD m64, xmm
 //
 func (self *Program) COMISD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // COMISD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE2)
@@ -7348,7 +7348,7 @@ func (self *Program) COMISD(v0 interface{}, v1 interface{}) *Instruction {
 //    * COMISS m32, xmm
 //
 func (self *Program) COMISS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // COMISS xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE)
@@ -7384,7 +7384,7 @@ func (self *Program) COMISS(v0 interface{}, v1 interface{}) *Instruction {
 //    * CPUID
 //
 func (self *Program) CPUID() *Instruction {
-    p := self.alloc(0, [_MAX_ARGS]interface{}{})
+    p := self.alloc(0, Operands{})
     // CPUID
     self.require(ISA_CPUID)
     p.add(0, func(m *_Encoding, v []interface{}) {
@@ -7402,7 +7402,7 @@ func (self *Program) CPUID() *Instruction {
 //    * CQTO
 //
 func (self *Program) CQTO() *Instruction {
-    p := self.alloc(0, [_MAX_ARGS]interface{}{})
+    p := self.alloc(0, Operands{})
     // CQTO
     p.add(0, func(m *_Encoding, v []interface{}) {
         m.emit(0x48)
@@ -7423,7 +7423,7 @@ func (self *Program) CQTO() *Instruction {
 //    * CRC32B m8, r64
 //
 func (self *Program) CRC32B(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CRC32B r8, r32
     if isReg8(v0) && isReg32(v1) {
         self.require(ISA_SSE4_2)
@@ -7488,7 +7488,7 @@ func (self *Program) CRC32B(v0 interface{}, v1 interface{}) *Instruction {
 //    * CRC32L m32, r32
 //
 func (self *Program) CRC32L(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CRC32L r32, r32
     if isReg32(v0) && isReg32(v1) {
         self.require(ISA_SSE4_2)
@@ -7529,7 +7529,7 @@ func (self *Program) CRC32L(v0 interface{}, v1 interface{}) *Instruction {
 //    * CRC32Q m64, r64
 //
 func (self *Program) CRC32Q(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CRC32Q r64, r64
     if isReg64(v0) && isReg64(v1) {
         self.require(ISA_SSE4_2)
@@ -7570,7 +7570,7 @@ func (self *Program) CRC32Q(v0 interface{}, v1 interface{}) *Instruction {
 //    * CRC32W m16, r32
 //
 func (self *Program) CRC32W(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CRC32W r16, r32
     if isReg16(v0) && isReg32(v1) {
         self.require(ISA_SSE4_2)
@@ -7613,7 +7613,7 @@ func (self *Program) CRC32W(v0 interface{}, v1 interface{}) *Instruction {
 //    * CVTDQ2PD m64, xmm
 //
 func (self *Program) CVTDQ2PD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CVTDQ2PD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE2)
@@ -7652,7 +7652,7 @@ func (self *Program) CVTDQ2PD(v0 interface{}, v1 interface{}) *Instruction {
 //    * CVTDQ2PS m128, xmm
 //
 func (self *Program) CVTDQ2PS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CVTDQ2PS xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE2)
@@ -7689,7 +7689,7 @@ func (self *Program) CVTDQ2PS(v0 interface{}, v1 interface{}) *Instruction {
 //    * CVTPD2DQ m128, xmm
 //
 func (self *Program) CVTPD2DQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CVTPD2DQ xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE2)
@@ -7728,7 +7728,7 @@ func (self *Program) CVTPD2DQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * CVTPD2PI m128, mm
 //
 func (self *Program) CVTPD2PI(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CVTPD2PI xmm, mm
     if isXMM(v0) && isMM(v1) {
         self.require(ISA_SSE)
@@ -7767,7 +7767,7 @@ func (self *Program) CVTPD2PI(v0 interface{}, v1 interface{}) *Instruction {
 //    * CVTPD2PS m128, xmm
 //
 func (self *Program) CVTPD2PS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CVTPD2PS xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE2)
@@ -7806,7 +7806,7 @@ func (self *Program) CVTPD2PS(v0 interface{}, v1 interface{}) *Instruction {
 //    * CVTPI2PD m64, xmm
 //
 func (self *Program) CVTPI2PD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CVTPI2PD mm, xmm
     if isMM(v0) && isXMM(v1) {
         self.require(ISA_SSE2)
@@ -7845,7 +7845,7 @@ func (self *Program) CVTPI2PD(v0 interface{}, v1 interface{}) *Instruction {
 //    * CVTPI2PS m64, xmm
 //
 func (self *Program) CVTPI2PS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CVTPI2PS mm, xmm
     if isMM(v0) && isXMM(v1) {
         self.require(ISA_SSE)
@@ -7882,7 +7882,7 @@ func (self *Program) CVTPI2PS(v0 interface{}, v1 interface{}) *Instruction {
 //    * CVTPS2DQ m128, xmm
 //
 func (self *Program) CVTPS2DQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CVTPS2DQ xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE2)
@@ -7921,7 +7921,7 @@ func (self *Program) CVTPS2DQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * CVTPS2PD m64, xmm
 //
 func (self *Program) CVTPS2PD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CVTPS2PD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE2)
@@ -7958,7 +7958,7 @@ func (self *Program) CVTPS2PD(v0 interface{}, v1 interface{}) *Instruction {
 //    * CVTPS2PI m64, mm
 //
 func (self *Program) CVTPS2PI(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CVTPS2PI xmm, mm
     if isXMM(v0) && isMM(v1) {
         self.require(ISA_SSE)
@@ -7997,7 +7997,7 @@ func (self *Program) CVTPS2PI(v0 interface{}, v1 interface{}) *Instruction {
 //    * CVTSD2SI m64, r64
 //
 func (self *Program) CVTSD2SI(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CVTSD2SI xmm, r32
     if isXMM(v0) && isReg32(v1) {
         self.require(ISA_SSE2)
@@ -8058,7 +8058,7 @@ func (self *Program) CVTSD2SI(v0 interface{}, v1 interface{}) *Instruction {
 //    * CVTSD2SS m64, xmm
 //
 func (self *Program) CVTSD2SS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CVTSD2SS xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE2)
@@ -8099,7 +8099,7 @@ func (self *Program) CVTSD2SS(v0 interface{}, v1 interface{}) *Instruction {
 //    * CVTSI2SD m64, xmm
 //
 func (self *Program) CVTSI2SD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CVTSI2SD r32, xmm
     if isReg32(v0) && isXMM(v1) {
         self.require(ISA_SSE2)
@@ -8162,7 +8162,7 @@ func (self *Program) CVTSI2SD(v0 interface{}, v1 interface{}) *Instruction {
 //    * CVTSI2SS m64, xmm
 //
 func (self *Program) CVTSI2SS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CVTSI2SS r32, xmm
     if isReg32(v0) && isXMM(v1) {
         self.require(ISA_SSE)
@@ -8223,7 +8223,7 @@ func (self *Program) CVTSI2SS(v0 interface{}, v1 interface{}) *Instruction {
 //    * CVTSS2SD m32, xmm
 //
 func (self *Program) CVTSS2SD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CVTSS2SD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE2)
@@ -8264,7 +8264,7 @@ func (self *Program) CVTSS2SD(v0 interface{}, v1 interface{}) *Instruction {
 //    * CVTSS2SI m32, r64
 //
 func (self *Program) CVTSS2SI(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CVTSS2SI xmm, r32
     if isXMM(v0) && isReg32(v1) {
         self.require(ISA_SSE)
@@ -8325,7 +8325,7 @@ func (self *Program) CVTSS2SI(v0 interface{}, v1 interface{}) *Instruction {
 //    * CVTTPD2DQ m128, xmm
 //
 func (self *Program) CVTTPD2DQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CVTTPD2DQ xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE2)
@@ -8364,7 +8364,7 @@ func (self *Program) CVTTPD2DQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * CVTTPD2PI m128, mm
 //
 func (self *Program) CVTTPD2PI(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CVTTPD2PI xmm, mm
     if isXMM(v0) && isMM(v1) {
         self.require(ISA_SSE2)
@@ -8403,7 +8403,7 @@ func (self *Program) CVTTPD2PI(v0 interface{}, v1 interface{}) *Instruction {
 //    * CVTTPS2DQ m128, xmm
 //
 func (self *Program) CVTTPS2DQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CVTTPS2DQ xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE2)
@@ -8442,7 +8442,7 @@ func (self *Program) CVTTPS2DQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * CVTTPS2PI m64, mm
 //
 func (self *Program) CVTTPS2PI(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CVTTPS2PI xmm, mm
     if isXMM(v0) && isMM(v1) {
         self.require(ISA_SSE)
@@ -8481,7 +8481,7 @@ func (self *Program) CVTTPS2PI(v0 interface{}, v1 interface{}) *Instruction {
 //    * CVTTSD2SI m64, r64
 //
 func (self *Program) CVTTSD2SI(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CVTTSD2SI xmm, r32
     if isXMM(v0) && isReg32(v1) {
         self.require(ISA_SSE2)
@@ -8544,7 +8544,7 @@ func (self *Program) CVTTSD2SI(v0 interface{}, v1 interface{}) *Instruction {
 //    * CVTTSS2SI m32, r64
 //
 func (self *Program) CVTTSS2SI(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // CVTTSS2SI xmm, r32
     if isXMM(v0) && isReg32(v1) {
         self.require(ISA_SSE)
@@ -8603,7 +8603,7 @@ func (self *Program) CVTTSS2SI(v0 interface{}, v1 interface{}) *Instruction {
 //    * CWTD
 //
 func (self *Program) CWTD() *Instruction {
-    p := self.alloc(0, [_MAX_ARGS]interface{}{})
+    p := self.alloc(0, Operands{})
     // CWTD
     p.add(0, func(m *_Encoding, v []interface{}) {
         m.emit(0x66)
@@ -8620,7 +8620,7 @@ func (self *Program) CWTD() *Instruction {
 //    * CWTL
 //
 func (self *Program) CWTL() *Instruction {
-    p := self.alloc(0, [_MAX_ARGS]interface{}{})
+    p := self.alloc(0, Operands{})
     // CWTL
     p.add(0, func(m *_Encoding, v []interface{}) {
         m.emit(0x98)
@@ -8637,7 +8637,7 @@ func (self *Program) CWTL() *Instruction {
 //    * DECB m8
 //
 func (self *Program) DECB(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // DECB r8
     if isReg8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -8669,7 +8669,7 @@ func (self *Program) DECB(v0 interface{}) *Instruction {
 //    * DECL m32
 //
 func (self *Program) DECL(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // DECL r32
     if isReg32(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -8701,7 +8701,7 @@ func (self *Program) DECL(v0 interface{}) *Instruction {
 //    * DECQ m64
 //
 func (self *Program) DECQ(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // DECQ r64
     if isReg64(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -8733,7 +8733,7 @@ func (self *Program) DECQ(v0 interface{}) *Instruction {
 //    * DECW m16
 //
 func (self *Program) DECW(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // DECW r16
     if isReg16(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -8767,7 +8767,7 @@ func (self *Program) DECW(v0 interface{}) *Instruction {
 //    * DIVB m8
 //
 func (self *Program) DIVB(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // DIVB r8
     if isReg8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -8799,7 +8799,7 @@ func (self *Program) DIVB(v0 interface{}) *Instruction {
 //    * DIVL m32
 //
 func (self *Program) DIVL(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // DIVL r32
     if isReg32(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -8832,7 +8832,7 @@ func (self *Program) DIVL(v0 interface{}) *Instruction {
 //    * DIVPD m128, xmm
 //
 func (self *Program) DIVPD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // DIVPD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE2)
@@ -8871,7 +8871,7 @@ func (self *Program) DIVPD(v0 interface{}, v1 interface{}) *Instruction {
 //    * DIVPS m128, xmm
 //
 func (self *Program) DIVPS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // DIVPS xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE)
@@ -8907,7 +8907,7 @@ func (self *Program) DIVPS(v0 interface{}, v1 interface{}) *Instruction {
 //    * DIVQ m64
 //
 func (self *Program) DIVQ(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // DIVQ r64
     if isReg64(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -8940,7 +8940,7 @@ func (self *Program) DIVQ(v0 interface{}) *Instruction {
 //    * DIVSD m64, xmm
 //
 func (self *Program) DIVSD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // DIVSD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE2)
@@ -8979,7 +8979,7 @@ func (self *Program) DIVSD(v0 interface{}, v1 interface{}) *Instruction {
 //    * DIVSS m32, xmm
 //
 func (self *Program) DIVSS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // DIVSS xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE)
@@ -9017,7 +9017,7 @@ func (self *Program) DIVSS(v0 interface{}, v1 interface{}) *Instruction {
 //    * DIVW m16
 //
 func (self *Program) DIVW(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // DIVW r16
     if isReg16(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -9052,7 +9052,7 @@ func (self *Program) DIVW(v0 interface{}) *Instruction {
 //    * DPPD imm8, m128, xmm
 //
 func (self *Program) DPPD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // DPPD imm8, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_SSE4_1)
@@ -9095,7 +9095,7 @@ func (self *Program) DPPD(v0 interface{}, v1 interface{}, v2 interface{}) *Instr
 //    * DPPS imm8, m128, xmm
 //
 func (self *Program) DPPS(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // DPPS imm8, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_SSE4_1)
@@ -9137,7 +9137,7 @@ func (self *Program) DPPS(v0 interface{}, v1 interface{}, v2 interface{}) *Instr
 //    * EMMS
 //
 func (self *Program) EMMS() *Instruction {
-    p := self.alloc(0, [_MAX_ARGS]interface{}{})
+    p := self.alloc(0, Operands{})
     // EMMS
     self.require(ISA_MMX)
     p.add(0, func(m *_Encoding, v []interface{}) {
@@ -9157,7 +9157,7 @@ func (self *Program) EMMS() *Instruction {
 //    * EXTRACTPS imm8, xmm, m32
 //
 func (self *Program) EXTRACTPS(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // EXTRACTPS imm8, xmm, r32
     if isImm8(v0) && isXMM(v1) && isReg32(v2) {
         self.require(ISA_SSE4_1)
@@ -9202,8 +9202,8 @@ func (self *Program) EXTRACTPS(v0 interface{}, v1 interface{}, v2 interface{}) *
 func (self *Program) EXTRQ(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction EXTRQ takes 2 or 3 operands")
     }
     // EXTRQ xmm, xmm
@@ -9245,7 +9245,7 @@ func (self *Program) EXTRQ(v0 interface{}, v1 interface{}, vv ...interface{}) *I
 //    * FEMMS
 //
 func (self *Program) FEMMS() *Instruction {
-    p := self.alloc(0, [_MAX_ARGS]interface{}{})
+    p := self.alloc(0, Operands{})
     // FEMMS
     self.require(ISA_FEMMS)
     p.add(0, func(m *_Encoding, v []interface{}) {
@@ -9265,7 +9265,7 @@ func (self *Program) FEMMS() *Instruction {
 //    * HADDPD m128, xmm
 //
 func (self *Program) HADDPD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // HADDPD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE3)
@@ -9304,7 +9304,7 @@ func (self *Program) HADDPD(v0 interface{}, v1 interface{}) *Instruction {
 //    * HADDPS m128, xmm
 //
 func (self *Program) HADDPS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // HADDPS xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE3)
@@ -9343,7 +9343,7 @@ func (self *Program) HADDPS(v0 interface{}, v1 interface{}) *Instruction {
 //    * HSUBPD m128, xmm
 //
 func (self *Program) HSUBPD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // HSUBPD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE3)
@@ -9382,7 +9382,7 @@ func (self *Program) HSUBPD(v0 interface{}, v1 interface{}) *Instruction {
 //    * HSUBPS m128, xmm
 //
 func (self *Program) HSUBPS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // HSUBPS xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE3)
@@ -9420,7 +9420,7 @@ func (self *Program) HSUBPS(v0 interface{}, v1 interface{}) *Instruction {
 //    * IDIVB m8
 //
 func (self *Program) IDIVB(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // IDIVB r8
     if isReg8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -9452,7 +9452,7 @@ func (self *Program) IDIVB(v0 interface{}) *Instruction {
 //    * IDIVL m32
 //
 func (self *Program) IDIVL(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // IDIVL r32
     if isReg32(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -9484,7 +9484,7 @@ func (self *Program) IDIVL(v0 interface{}) *Instruction {
 //    * IDIVQ m64
 //
 func (self *Program) IDIVQ(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // IDIVQ r64
     if isReg64(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -9516,7 +9516,7 @@ func (self *Program) IDIVQ(v0 interface{}) *Instruction {
 //    * IDIVW m16
 //
 func (self *Program) IDIVW(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // IDIVW r16
     if isReg16(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -9550,7 +9550,7 @@ func (self *Program) IDIVW(v0 interface{}) *Instruction {
 //    * IMULB m8
 //
 func (self *Program) IMULB(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // IMULB r8
     if isReg8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -9590,9 +9590,9 @@ func (self *Program) IMULB(v0 interface{}) *Instruction {
 func (self *Program) IMULL(v0 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(1, [_MAX_ARGS]interface{}{v0})
-        case 1  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, vv[0]})
-        case 2  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, vv[0], vv[1]})
+        case 0  : p = self.alloc(1, Operands{v0})
+        case 1  : p = self.alloc(2, Operands{v0, vv[0]})
+        case 2  : p = self.alloc(3, Operands{v0, vv[0], vv[1]})
         default : panic("instruction IMULL takes 1 or 2 or 3 operands")
     }
     // IMULL r32
@@ -9688,9 +9688,9 @@ func (self *Program) IMULL(v0 interface{}, vv ...interface{}) *Instruction {
 func (self *Program) IMULQ(v0 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(1, [_MAX_ARGS]interface{}{v0})
-        case 1  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, vv[0]})
-        case 2  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, vv[0], vv[1]})
+        case 0  : p = self.alloc(1, Operands{v0})
+        case 1  : p = self.alloc(2, Operands{v0, vv[0]})
+        case 2  : p = self.alloc(3, Operands{v0, vv[0], vv[1]})
         default : panic("instruction IMULQ takes 1 or 2 or 3 operands")
     }
     // IMULQ r64
@@ -9786,9 +9786,9 @@ func (self *Program) IMULQ(v0 interface{}, vv ...interface{}) *Instruction {
 func (self *Program) IMULW(v0 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(1, [_MAX_ARGS]interface{}{v0})
-        case 1  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, vv[0]})
-        case 2  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, vv[0], vv[1]})
+        case 0  : p = self.alloc(1, Operands{v0})
+        case 1  : p = self.alloc(2, Operands{v0, vv[0]})
+        case 2  : p = self.alloc(3, Operands{v0, vv[0], vv[1]})
         default : panic("instruction IMULW takes 1 or 2 or 3 operands")
     }
     // IMULW r16
@@ -9884,7 +9884,7 @@ func (self *Program) IMULW(v0 interface{}, vv ...interface{}) *Instruction {
 //    * INCB m8
 //
 func (self *Program) INCB(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // INCB r8
     if isReg8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -9916,7 +9916,7 @@ func (self *Program) INCB(v0 interface{}) *Instruction {
 //    * INCL m32
 //
 func (self *Program) INCL(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // INCL r32
     if isReg32(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -9948,7 +9948,7 @@ func (self *Program) INCL(v0 interface{}) *Instruction {
 //    * INCQ m64
 //
 func (self *Program) INCQ(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // INCQ r64
     if isReg64(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -9980,7 +9980,7 @@ func (self *Program) INCQ(v0 interface{}) *Instruction {
 //    * INCW m16
 //
 func (self *Program) INCW(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // INCW r16
     if isReg16(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -10015,7 +10015,7 @@ func (self *Program) INCW(v0 interface{}) *Instruction {
 //    * INSERTPS imm8, m32, xmm
 //
 func (self *Program) INSERTPS(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // INSERTPS imm8, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_SSE4_1)
@@ -10060,8 +10060,8 @@ func (self *Program) INSERTPS(v0 interface{}, v1 interface{}, v2 interface{}) *I
 func (self *Program) INSERTQ(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 2  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, vv[0], vv[1]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 2  : p = self.alloc(4, Operands{v0, v1, vv[0], vv[1]})
         default : panic("instruction INSERTQ takes 2 or 4 operands")
     }
     // INSERTQ xmm, xmm
@@ -10103,7 +10103,7 @@ func (self *Program) INSERTQ(v0 interface{}, v1 interface{}, vv ...interface{}) 
 //    * INT imm8
 //
 func (self *Program) INT(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // INT 3
     if isConst3(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -10132,7 +10132,7 @@ func (self *Program) INT(v0 interface{}) *Instruction {
 //    * JA rel32
 //
 func (self *Program) JA(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     p.branch = true
     // JA rel8
     if isRel8(v0) {
@@ -10176,7 +10176,7 @@ func (self *Program) JA(v0 interface{}) *Instruction {
 //    * JAE rel32
 //
 func (self *Program) JAE(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     p.branch = true
     // JAE rel8
     if isRel8(v0) {
@@ -10220,7 +10220,7 @@ func (self *Program) JAE(v0 interface{}) *Instruction {
 //    * JB rel32
 //
 func (self *Program) JB(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     p.branch = true
     // JB rel8
     if isRel8(v0) {
@@ -10264,7 +10264,7 @@ func (self *Program) JB(v0 interface{}) *Instruction {
 //    * JBE rel32
 //
 func (self *Program) JBE(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     p.branch = true
     // JBE rel8
     if isRel8(v0) {
@@ -10308,7 +10308,7 @@ func (self *Program) JBE(v0 interface{}) *Instruction {
 //    * JC rel32
 //
 func (self *Program) JC(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     p.branch = true
     // JC rel8
     if isRel8(v0) {
@@ -10352,7 +10352,7 @@ func (self *Program) JC(v0 interface{}) *Instruction {
 //    * JE rel32
 //
 func (self *Program) JE(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     p.branch = true
     // JE rel8
     if isRel8(v0) {
@@ -10395,7 +10395,7 @@ func (self *Program) JE(v0 interface{}) *Instruction {
 //    * JECXZ rel8
 //
 func (self *Program) JECXZ(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     p.branch = true
     // JECXZ rel8
     if isRel8(v0) {
@@ -10426,7 +10426,7 @@ func (self *Program) JECXZ(v0 interface{}) *Instruction {
 //    * JG rel32
 //
 func (self *Program) JG(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     p.branch = true
     // JG rel8
     if isRel8(v0) {
@@ -10470,7 +10470,7 @@ func (self *Program) JG(v0 interface{}) *Instruction {
 //    * JGE rel32
 //
 func (self *Program) JGE(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     p.branch = true
     // JGE rel8
     if isRel8(v0) {
@@ -10514,7 +10514,7 @@ func (self *Program) JGE(v0 interface{}) *Instruction {
 //    * JL rel32
 //
 func (self *Program) JL(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     p.branch = true
     // JL rel8
     if isRel8(v0) {
@@ -10558,7 +10558,7 @@ func (self *Program) JL(v0 interface{}) *Instruction {
 //    * JLE rel32
 //
 func (self *Program) JLE(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     p.branch = true
     // JLE rel8
     if isRel8(v0) {
@@ -10602,7 +10602,7 @@ func (self *Program) JLE(v0 interface{}) *Instruction {
 //    * JMP rel32
 //
 func (self *Program) JMP(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     p.branch = true
     // JMP rel8
     if isRel8(v0) {
@@ -10644,7 +10644,7 @@ func (self *Program) JMP(v0 interface{}) *Instruction {
 //    * JMPQ m64
 //
 func (self *Program) JMPQ(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // JMPQ r64
     if isReg64(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -10676,7 +10676,7 @@ func (self *Program) JMPQ(v0 interface{}) *Instruction {
 //    * JNA rel32
 //
 func (self *Program) JNA(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     p.branch = true
     // JNA rel8
     if isRel8(v0) {
@@ -10720,7 +10720,7 @@ func (self *Program) JNA(v0 interface{}) *Instruction {
 //    * JNAE rel32
 //
 func (self *Program) JNAE(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     p.branch = true
     // JNAE rel8
     if isRel8(v0) {
@@ -10764,7 +10764,7 @@ func (self *Program) JNAE(v0 interface{}) *Instruction {
 //    * JNB rel32
 //
 func (self *Program) JNB(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     p.branch = true
     // JNB rel8
     if isRel8(v0) {
@@ -10808,7 +10808,7 @@ func (self *Program) JNB(v0 interface{}) *Instruction {
 //    * JNBE rel32
 //
 func (self *Program) JNBE(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     p.branch = true
     // JNBE rel8
     if isRel8(v0) {
@@ -10852,7 +10852,7 @@ func (self *Program) JNBE(v0 interface{}) *Instruction {
 //    * JNC rel32
 //
 func (self *Program) JNC(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     p.branch = true
     // JNC rel8
     if isRel8(v0) {
@@ -10896,7 +10896,7 @@ func (self *Program) JNC(v0 interface{}) *Instruction {
 //    * JNE rel32
 //
 func (self *Program) JNE(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     p.branch = true
     // JNE rel8
     if isRel8(v0) {
@@ -10940,7 +10940,7 @@ func (self *Program) JNE(v0 interface{}) *Instruction {
 //    * JNG rel32
 //
 func (self *Program) JNG(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     p.branch = true
     // JNG rel8
     if isRel8(v0) {
@@ -10984,7 +10984,7 @@ func (self *Program) JNG(v0 interface{}) *Instruction {
 //    * JNGE rel32
 //
 func (self *Program) JNGE(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     p.branch = true
     // JNGE rel8
     if isRel8(v0) {
@@ -11028,7 +11028,7 @@ func (self *Program) JNGE(v0 interface{}) *Instruction {
 //    * JNL rel32
 //
 func (self *Program) JNL(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     p.branch = true
     // JNL rel8
     if isRel8(v0) {
@@ -11072,7 +11072,7 @@ func (self *Program) JNL(v0 interface{}) *Instruction {
 //    * JNLE rel32
 //
 func (self *Program) JNLE(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     p.branch = true
     // JNLE rel8
     if isRel8(v0) {
@@ -11116,7 +11116,7 @@ func (self *Program) JNLE(v0 interface{}) *Instruction {
 //    * JNO rel32
 //
 func (self *Program) JNO(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     p.branch = true
     // JNO rel8
     if isRel8(v0) {
@@ -11160,7 +11160,7 @@ func (self *Program) JNO(v0 interface{}) *Instruction {
 //    * JNP rel32
 //
 func (self *Program) JNP(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     p.branch = true
     // JNP rel8
     if isRel8(v0) {
@@ -11204,7 +11204,7 @@ func (self *Program) JNP(v0 interface{}) *Instruction {
 //    * JNS rel32
 //
 func (self *Program) JNS(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     p.branch = true
     // JNS rel8
     if isRel8(v0) {
@@ -11248,7 +11248,7 @@ func (self *Program) JNS(v0 interface{}) *Instruction {
 //    * JNZ rel32
 //
 func (self *Program) JNZ(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     p.branch = true
     // JNZ rel8
     if isRel8(v0) {
@@ -11292,7 +11292,7 @@ func (self *Program) JNZ(v0 interface{}) *Instruction {
 //    * JO rel32
 //
 func (self *Program) JO(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     p.branch = true
     // JO rel8
     if isRel8(v0) {
@@ -11336,7 +11336,7 @@ func (self *Program) JO(v0 interface{}) *Instruction {
 //    * JP rel32
 //
 func (self *Program) JP(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     p.branch = true
     // JP rel8
     if isRel8(v0) {
@@ -11380,7 +11380,7 @@ func (self *Program) JP(v0 interface{}) *Instruction {
 //    * JPE rel32
 //
 func (self *Program) JPE(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     p.branch = true
     // JPE rel8
     if isRel8(v0) {
@@ -11424,7 +11424,7 @@ func (self *Program) JPE(v0 interface{}) *Instruction {
 //    * JPO rel32
 //
 func (self *Program) JPO(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     p.branch = true
     // JPO rel8
     if isRel8(v0) {
@@ -11467,7 +11467,7 @@ func (self *Program) JPO(v0 interface{}) *Instruction {
 //    * JRCXZ rel8
 //
 func (self *Program) JRCXZ(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     p.branch = true
     // JRCXZ rel8
     if isRel8(v0) {
@@ -11498,7 +11498,7 @@ func (self *Program) JRCXZ(v0 interface{}) *Instruction {
 //    * JS rel32
 //
 func (self *Program) JS(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     p.branch = true
     // JS rel8
     if isRel8(v0) {
@@ -11542,7 +11542,7 @@ func (self *Program) JS(v0 interface{}) *Instruction {
 //    * JZ rel32
 //
 func (self *Program) JZ(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     p.branch = true
     // JZ rel8
     if isRel8(v0) {
@@ -11586,7 +11586,7 @@ func (self *Program) JZ(v0 interface{}) *Instruction {
 //    * KADDB k, k, k
 //
 func (self *Program) KADDB(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // KADDB k, k, k
     if isK(v0) && isK(v1) && isK(v2) {
         self.require(ISA_AVX512DQ)
@@ -11611,7 +11611,7 @@ func (self *Program) KADDB(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
 //    * KADDD k, k, k
 //
 func (self *Program) KADDD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // KADDD k, k, k
     if isK(v0) && isK(v1) && isK(v2) {
         self.require(ISA_AVX512BW)
@@ -11638,7 +11638,7 @@ func (self *Program) KADDD(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
 //    * KADDQ k, k, k
 //
 func (self *Program) KADDQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // KADDQ k, k, k
     if isK(v0) && isK(v1) && isK(v2) {
         self.require(ISA_AVX512BW)
@@ -11665,7 +11665,7 @@ func (self *Program) KADDQ(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
 //    * KADDW k, k, k
 //
 func (self *Program) KADDW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // KADDW k, k, k
     if isK(v0) && isK(v1) && isK(v2) {
         self.require(ISA_AVX512DQ)
@@ -11690,7 +11690,7 @@ func (self *Program) KADDW(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
 //    * KANDB k, k, k
 //
 func (self *Program) KANDB(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // KANDB k, k, k
     if isK(v0) && isK(v1) && isK(v2) {
         self.require(ISA_AVX512DQ)
@@ -11715,7 +11715,7 @@ func (self *Program) KANDB(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
 //    * KANDD k, k, k
 //
 func (self *Program) KANDD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // KANDD k, k, k
     if isK(v0) && isK(v1) && isK(v2) {
         self.require(ISA_AVX512BW)
@@ -11742,7 +11742,7 @@ func (self *Program) KANDD(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
 //    * KANDNB k, k, k
 //
 func (self *Program) KANDNB(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // KANDNB k, k, k
     if isK(v0) && isK(v1) && isK(v2) {
         self.require(ISA_AVX512DQ)
@@ -11767,7 +11767,7 @@ func (self *Program) KANDNB(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * KANDND k, k, k
 //
 func (self *Program) KANDND(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // KANDND k, k, k
     if isK(v0) && isK(v1) && isK(v2) {
         self.require(ISA_AVX512BW)
@@ -11794,7 +11794,7 @@ func (self *Program) KANDND(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * KANDNQ k, k, k
 //
 func (self *Program) KANDNQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // KANDNQ k, k, k
     if isK(v0) && isK(v1) && isK(v2) {
         self.require(ISA_AVX512BW)
@@ -11821,7 +11821,7 @@ func (self *Program) KANDNQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * KANDNW k, k, k
 //
 func (self *Program) KANDNW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // KANDNW k, k, k
     if isK(v0) && isK(v1) && isK(v2) {
         self.require(ISA_AVX512F)
@@ -11846,7 +11846,7 @@ func (self *Program) KANDNW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * KANDQ k, k, k
 //
 func (self *Program) KANDQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // KANDQ k, k, k
     if isK(v0) && isK(v1) && isK(v2) {
         self.require(ISA_AVX512BW)
@@ -11873,7 +11873,7 @@ func (self *Program) KANDQ(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
 //    * KANDW k, k, k
 //
 func (self *Program) KANDW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // KANDW k, k, k
     if isK(v0) && isK(v1) && isK(v2) {
         self.require(ISA_AVX512F)
@@ -11902,7 +11902,7 @@ func (self *Program) KANDW(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
 //    * KMOVB k, m8
 //
 func (self *Program) KMOVB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // KMOVB k, k
     if isK(v0) && isK(v1) {
         self.require(ISA_AVX512DQ)
@@ -11967,7 +11967,7 @@ func (self *Program) KMOVB(v0 interface{}, v1 interface{}) *Instruction {
 //    * KMOVD k, m32
 //
 func (self *Program) KMOVD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // KMOVD k, k
     if isK(v0) && isK(v1) {
         self.require(ISA_AVX512BW)
@@ -12034,7 +12034,7 @@ func (self *Program) KMOVD(v0 interface{}, v1 interface{}) *Instruction {
 //    * KMOVQ k, m64
 //
 func (self *Program) KMOVQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // KMOVQ k, k
     if isK(v0) && isK(v1) {
         self.require(ISA_AVX512BW)
@@ -12105,7 +12105,7 @@ func (self *Program) KMOVQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * KMOVW k, m16
 //
 func (self *Program) KMOVW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // KMOVW k, k
     if isK(v0) && isK(v1) {
         self.require(ISA_AVX512F)
@@ -12166,7 +12166,7 @@ func (self *Program) KMOVW(v0 interface{}, v1 interface{}) *Instruction {
 //    * KNOTB k, k
 //
 func (self *Program) KNOTB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // KNOTB k, k
     if isK(v0) && isK(v1) {
         self.require(ISA_AVX512DQ)
@@ -12191,7 +12191,7 @@ func (self *Program) KNOTB(v0 interface{}, v1 interface{}) *Instruction {
 //    * KNOTD k, k
 //
 func (self *Program) KNOTD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // KNOTD k, k
     if isK(v0) && isK(v1) {
         self.require(ISA_AVX512BW)
@@ -12218,7 +12218,7 @@ func (self *Program) KNOTD(v0 interface{}, v1 interface{}) *Instruction {
 //    * KNOTQ k, k
 //
 func (self *Program) KNOTQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // KNOTQ k, k
     if isK(v0) && isK(v1) {
         self.require(ISA_AVX512BW)
@@ -12245,7 +12245,7 @@ func (self *Program) KNOTQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * KNOTW k, k
 //
 func (self *Program) KNOTW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // KNOTW k, k
     if isK(v0) && isK(v1) {
         self.require(ISA_AVX512F)
@@ -12270,7 +12270,7 @@ func (self *Program) KNOTW(v0 interface{}, v1 interface{}) *Instruction {
 //    * KORB k, k, k
 //
 func (self *Program) KORB(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // KORB k, k, k
     if isK(v0) && isK(v1) && isK(v2) {
         self.require(ISA_AVX512DQ)
@@ -12295,7 +12295,7 @@ func (self *Program) KORB(v0 interface{}, v1 interface{}, v2 interface{}) *Instr
 //    * KORD k, k, k
 //
 func (self *Program) KORD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // KORD k, k, k
     if isK(v0) && isK(v1) && isK(v2) {
         self.require(ISA_AVX512BW)
@@ -12322,7 +12322,7 @@ func (self *Program) KORD(v0 interface{}, v1 interface{}, v2 interface{}) *Instr
 //    * KORQ k, k, k
 //
 func (self *Program) KORQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // KORQ k, k, k
     if isK(v0) && isK(v1) && isK(v2) {
         self.require(ISA_AVX512BW)
@@ -12349,7 +12349,7 @@ func (self *Program) KORQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instr
 //    * KORTESTB k, k
 //
 func (self *Program) KORTESTB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // KORTESTB k, k
     if isK(v0) && isK(v1) {
         self.require(ISA_AVX512DQ)
@@ -12374,7 +12374,7 @@ func (self *Program) KORTESTB(v0 interface{}, v1 interface{}) *Instruction {
 //    * KORTESTD k, k
 //
 func (self *Program) KORTESTD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // KORTESTD k, k
     if isK(v0) && isK(v1) {
         self.require(ISA_AVX512BW)
@@ -12401,7 +12401,7 @@ func (self *Program) KORTESTD(v0 interface{}, v1 interface{}) *Instruction {
 //    * KORTESTQ k, k
 //
 func (self *Program) KORTESTQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // KORTESTQ k, k
     if isK(v0) && isK(v1) {
         self.require(ISA_AVX512BW)
@@ -12428,7 +12428,7 @@ func (self *Program) KORTESTQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * KORTESTW k, k
 //
 func (self *Program) KORTESTW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // KORTESTW k, k
     if isK(v0) && isK(v1) {
         self.require(ISA_AVX512F)
@@ -12453,7 +12453,7 @@ func (self *Program) KORTESTW(v0 interface{}, v1 interface{}) *Instruction {
 //    * KORW k, k, k
 //
 func (self *Program) KORW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // KORW k, k, k
     if isK(v0) && isK(v1) && isK(v2) {
         self.require(ISA_AVX512F)
@@ -12478,7 +12478,7 @@ func (self *Program) KORW(v0 interface{}, v1 interface{}, v2 interface{}) *Instr
 //    * KSHIFTLB imm8, k, k
 //
 func (self *Program) KSHIFTLB(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // KSHIFTLB imm8, k, k
     if isImm8(v0) && isK(v1) && isK(v2) {
         self.require(ISA_AVX512DQ)
@@ -12506,7 +12506,7 @@ func (self *Program) KSHIFTLB(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * KSHIFTLD imm8, k, k
 //
 func (self *Program) KSHIFTLD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // KSHIFTLD imm8, k, k
     if isImm8(v0) && isK(v1) && isK(v2) {
         self.require(ISA_AVX512BW)
@@ -12534,7 +12534,7 @@ func (self *Program) KSHIFTLD(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * KSHIFTLQ imm8, k, k
 //
 func (self *Program) KSHIFTLQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // KSHIFTLQ imm8, k, k
     if isImm8(v0) && isK(v1) && isK(v2) {
         self.require(ISA_AVX512BW)
@@ -12562,7 +12562,7 @@ func (self *Program) KSHIFTLQ(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * KSHIFTLW imm8, k, k
 //
 func (self *Program) KSHIFTLW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // KSHIFTLW imm8, k, k
     if isImm8(v0) && isK(v1) && isK(v2) {
         self.require(ISA_AVX512F)
@@ -12590,7 +12590,7 @@ func (self *Program) KSHIFTLW(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * KSHIFTRB imm8, k, k
 //
 func (self *Program) KSHIFTRB(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // KSHIFTRB imm8, k, k
     if isImm8(v0) && isK(v1) && isK(v2) {
         self.require(ISA_AVX512DQ)
@@ -12618,7 +12618,7 @@ func (self *Program) KSHIFTRB(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * KSHIFTRD imm8, k, k
 //
 func (self *Program) KSHIFTRD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // KSHIFTRD imm8, k, k
     if isImm8(v0) && isK(v1) && isK(v2) {
         self.require(ISA_AVX512BW)
@@ -12646,7 +12646,7 @@ func (self *Program) KSHIFTRD(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * KSHIFTRQ imm8, k, k
 //
 func (self *Program) KSHIFTRQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // KSHIFTRQ imm8, k, k
     if isImm8(v0) && isK(v1) && isK(v2) {
         self.require(ISA_AVX512BW)
@@ -12674,7 +12674,7 @@ func (self *Program) KSHIFTRQ(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * KSHIFTRW imm8, k, k
 //
 func (self *Program) KSHIFTRW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // KSHIFTRW imm8, k, k
     if isImm8(v0) && isK(v1) && isK(v2) {
         self.require(ISA_AVX512F)
@@ -12702,7 +12702,7 @@ func (self *Program) KSHIFTRW(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * KTESTB k, k
 //
 func (self *Program) KTESTB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // KTESTB k, k
     if isK(v0) && isK(v1) {
         self.require(ISA_AVX512DQ)
@@ -12727,7 +12727,7 @@ func (self *Program) KTESTB(v0 interface{}, v1 interface{}) *Instruction {
 //    * KTESTD k, k
 //
 func (self *Program) KTESTD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // KTESTD k, k
     if isK(v0) && isK(v1) {
         self.require(ISA_AVX512BW)
@@ -12754,7 +12754,7 @@ func (self *Program) KTESTD(v0 interface{}, v1 interface{}) *Instruction {
 //    * KTESTQ k, k
 //
 func (self *Program) KTESTQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // KTESTQ k, k
     if isK(v0) && isK(v1) {
         self.require(ISA_AVX512BW)
@@ -12781,7 +12781,7 @@ func (self *Program) KTESTQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * KTESTW k, k
 //
 func (self *Program) KTESTW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // KTESTW k, k
     if isK(v0) && isK(v1) {
         self.require(ISA_AVX512DQ)
@@ -12806,7 +12806,7 @@ func (self *Program) KTESTW(v0 interface{}, v1 interface{}) *Instruction {
 //    * KUNPCKBW k, k, k
 //
 func (self *Program) KUNPCKBW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // KUNPCKBW k, k, k
     if isK(v0) && isK(v1) && isK(v2) {
         self.require(ISA_AVX512F)
@@ -12831,7 +12831,7 @@ func (self *Program) KUNPCKBW(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * KUNPCKDQ k, k, k
 //
 func (self *Program) KUNPCKDQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // KUNPCKDQ k, k, k
     if isK(v0) && isK(v1) && isK(v2) {
         self.require(ISA_AVX512BW)
@@ -12858,7 +12858,7 @@ func (self *Program) KUNPCKDQ(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * KUNPCKWD k, k, k
 //
 func (self *Program) KUNPCKWD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // KUNPCKWD k, k, k
     if isK(v0) && isK(v1) && isK(v2) {
         self.require(ISA_AVX512BW)
@@ -12883,7 +12883,7 @@ func (self *Program) KUNPCKWD(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * KXNORB k, k, k
 //
 func (self *Program) KXNORB(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // KXNORB k, k, k
     if isK(v0) && isK(v1) && isK(v2) {
         self.require(ISA_AVX512DQ)
@@ -12908,7 +12908,7 @@ func (self *Program) KXNORB(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * KXNORD k, k, k
 //
 func (self *Program) KXNORD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // KXNORD k, k, k
     if isK(v0) && isK(v1) && isK(v2) {
         self.require(ISA_AVX512BW)
@@ -12935,7 +12935,7 @@ func (self *Program) KXNORD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * KXNORQ k, k, k
 //
 func (self *Program) KXNORQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // KXNORQ k, k, k
     if isK(v0) && isK(v1) && isK(v2) {
         self.require(ISA_AVX512BW)
@@ -12962,7 +12962,7 @@ func (self *Program) KXNORQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * KXNORW k, k, k
 //
 func (self *Program) KXNORW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // KXNORW k, k, k
     if isK(v0) && isK(v1) && isK(v2) {
         self.require(ISA_AVX512F)
@@ -12987,7 +12987,7 @@ func (self *Program) KXNORW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * KXORB k, k, k
 //
 func (self *Program) KXORB(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // KXORB k, k, k
     if isK(v0) && isK(v1) && isK(v2) {
         self.require(ISA_AVX512DQ)
@@ -13012,7 +13012,7 @@ func (self *Program) KXORB(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
 //    * KXORD k, k, k
 //
 func (self *Program) KXORD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // KXORD k, k, k
     if isK(v0) && isK(v1) && isK(v2) {
         self.require(ISA_AVX512BW)
@@ -13039,7 +13039,7 @@ func (self *Program) KXORD(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
 //    * KXORQ k, k, k
 //
 func (self *Program) KXORQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // KXORQ k, k, k
     if isK(v0) && isK(v1) && isK(v2) {
         self.require(ISA_AVX512BW)
@@ -13066,7 +13066,7 @@ func (self *Program) KXORQ(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
 //    * KXORW k, k, k
 //
 func (self *Program) KXORW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // KXORW k, k, k
     if isK(v0) && isK(v1) && isK(v2) {
         self.require(ISA_AVX512F)
@@ -13091,7 +13091,7 @@ func (self *Program) KXORW(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
 //    * LDDQU m128, xmm
 //
 func (self *Program) LDDQU(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // LDDQU m128, xmm
     if isM128(v0) && isXMM(v1) {
         self.require(ISA_SSE3)
@@ -13118,7 +13118,7 @@ func (self *Program) LDDQU(v0 interface{}, v1 interface{}) *Instruction {
 //    * LDMXCSR m32
 //
 func (self *Program) LDMXCSR(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // LDMXCSR m32
     if isM32(v0) {
         self.require(ISA_SSE)
@@ -13143,7 +13143,7 @@ func (self *Program) LDMXCSR(v0 interface{}) *Instruction {
 //    * LEAL m, r32
 //
 func (self *Program) LEAL(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // LEAL m, r32
     if isM(v0) && isReg32(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -13166,7 +13166,7 @@ func (self *Program) LEAL(v0 interface{}, v1 interface{}) *Instruction {
 //    * LEAQ m, r64
 //
 func (self *Program) LEAQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // LEAQ m, r64
     if isM(v0) && isReg64(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -13189,7 +13189,7 @@ func (self *Program) LEAQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * LEAW m, r16
 //
 func (self *Program) LEAW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // LEAW m, r16
     if isM(v0) && isReg16(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -13214,7 +13214,7 @@ func (self *Program) LEAW(v0 interface{}, v1 interface{}) *Instruction {
 //    * LFENCE
 //
 func (self *Program) LFENCE() *Instruction {
-    p := self.alloc(0, [_MAX_ARGS]interface{}{})
+    p := self.alloc(0, Operands{})
     // LFENCE
     self.require(ISA_SSE2)
     p.add(0, func(m *_Encoding, v []interface{}) {
@@ -13235,7 +13235,7 @@ func (self *Program) LFENCE() *Instruction {
 //    * LZCNTL m32, r32
 //
 func (self *Program) LZCNTL(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // LZCNTL r32, r32
     if isReg32(v0) && isReg32(v1) {
         self.require(ISA_LZCNT)
@@ -13274,7 +13274,7 @@ func (self *Program) LZCNTL(v0 interface{}, v1 interface{}) *Instruction {
 //    * LZCNTQ m64, r64
 //
 func (self *Program) LZCNTQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // LZCNTQ r64, r64
     if isReg64(v0) && isReg64(v1) {
         self.require(ISA_LZCNT)
@@ -13313,7 +13313,7 @@ func (self *Program) LZCNTQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * LZCNTW m16, r16
 //
 func (self *Program) LZCNTW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // LZCNTW r16, r16
     if isReg16(v0) && isReg16(v1) {
         self.require(ISA_LZCNT)
@@ -13353,7 +13353,7 @@ func (self *Program) LZCNTW(v0 interface{}, v1 interface{}) *Instruction {
 //    * MASKMOVDQU xmm, xmm
 //
 func (self *Program) MASKMOVDQU(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MASKMOVDQU xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE2)
@@ -13380,7 +13380,7 @@ func (self *Program) MASKMOVDQU(v0 interface{}, v1 interface{}) *Instruction {
 //    * MASKMOVQ mm, mm
 //
 func (self *Program) MASKMOVQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MASKMOVQ mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_MMX_PLUS)
@@ -13407,7 +13407,7 @@ func (self *Program) MASKMOVQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * MAXPD m128, xmm
 //
 func (self *Program) MAXPD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MAXPD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE2)
@@ -13446,7 +13446,7 @@ func (self *Program) MAXPD(v0 interface{}, v1 interface{}) *Instruction {
 //    * MAXPS m128, xmm
 //
 func (self *Program) MAXPS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MAXPS xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE)
@@ -13483,7 +13483,7 @@ func (self *Program) MAXPS(v0 interface{}, v1 interface{}) *Instruction {
 //    * MAXSD m64, xmm
 //
 func (self *Program) MAXSD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MAXSD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE2)
@@ -13522,7 +13522,7 @@ func (self *Program) MAXSD(v0 interface{}, v1 interface{}) *Instruction {
 //    * MAXSS m32, xmm
 //
 func (self *Program) MAXSS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MAXSS xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE)
@@ -13560,7 +13560,7 @@ func (self *Program) MAXSS(v0 interface{}, v1 interface{}) *Instruction {
 //    * MFENCE
 //
 func (self *Program) MFENCE() *Instruction {
-    p := self.alloc(0, [_MAX_ARGS]interface{}{})
+    p := self.alloc(0, Operands{})
     // MFENCE
     self.require(ISA_SSE2)
     p.add(0, func(m *_Encoding, v []interface{}) {
@@ -13581,7 +13581,7 @@ func (self *Program) MFENCE() *Instruction {
 //    * MINPD m128, xmm
 //
 func (self *Program) MINPD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MINPD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE2)
@@ -13620,7 +13620,7 @@ func (self *Program) MINPD(v0 interface{}, v1 interface{}) *Instruction {
 //    * MINPS m128, xmm
 //
 func (self *Program) MINPS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MINPS xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE)
@@ -13657,7 +13657,7 @@ func (self *Program) MINPS(v0 interface{}, v1 interface{}) *Instruction {
 //    * MINSD m64, xmm
 //
 func (self *Program) MINSD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MINSD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE2)
@@ -13696,7 +13696,7 @@ func (self *Program) MINSD(v0 interface{}, v1 interface{}) *Instruction {
 //    * MINSS m32, xmm
 //
 func (self *Program) MINSS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MINSS xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE)
@@ -13734,7 +13734,7 @@ func (self *Program) MINSS(v0 interface{}, v1 interface{}) *Instruction {
 //    * MONITOR
 //
 func (self *Program) MONITOR() *Instruction {
-    p := self.alloc(0, [_MAX_ARGS]interface{}{})
+    p := self.alloc(0, Operands{})
     // MONITOR
     self.require(ISA_MONITOR)
     p.add(0, func(m *_Encoding, v []interface{}) {
@@ -13754,7 +13754,7 @@ func (self *Program) MONITOR() *Instruction {
 //    * MONITORX
 //
 func (self *Program) MONITORX() *Instruction {
-    p := self.alloc(0, [_MAX_ARGS]interface{}{})
+    p := self.alloc(0, Operands{})
     // MONITORX
     self.require(ISA_MONITORX)
     p.add(0, func(m *_Encoding, v []interface{}) {
@@ -13776,7 +13776,7 @@ func (self *Program) MONITORX() *Instruction {
 //    * MOVAPD xmm, m128
 //
 func (self *Program) MOVAPD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVAPD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE2)
@@ -13834,7 +13834,7 @@ func (self *Program) MOVAPD(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVAPS xmm, m128
 //
 func (self *Program) MOVAPS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVAPS xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE)
@@ -13889,7 +13889,7 @@ func (self *Program) MOVAPS(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVB r8, m8
 //
 func (self *Program) MOVB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVB imm8, r8
     if isImm8(v0) && isReg8(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -13958,7 +13958,7 @@ func (self *Program) MOVB(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVBEL r32, m32
 //
 func (self *Program) MOVBEL(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVBEL m32, r32
     if isM32(v0) && isReg32(v1) {
         self.require(ISA_MOVBE)
@@ -13997,7 +13997,7 @@ func (self *Program) MOVBEL(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVBEQ r64, m64
 //
 func (self *Program) MOVBEQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVBEQ m64, r64
     if isM64(v0) && isReg64(v1) {
         self.require(ISA_MOVBE)
@@ -14036,7 +14036,7 @@ func (self *Program) MOVBEQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVBEW r16, m16
 //
 func (self *Program) MOVBEW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVBEW m16, r16
     if isM16(v0) && isReg16(v1) {
         self.require(ISA_MOVBE)
@@ -14083,7 +14083,7 @@ func (self *Program) MOVBEW(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVD xmm, m32
 //
 func (self *Program) MOVD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVD mm, r32
     if isMM(v0) && isReg32(v1) {
         self.require(ISA_MMX)
@@ -14184,7 +14184,7 @@ func (self *Program) MOVD(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVDDUP m64, xmm
 //
 func (self *Program) MOVDDUP(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVDDUP xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE3)
@@ -14222,7 +14222,7 @@ func (self *Program) MOVDDUP(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVDQ2Q xmm, mm
 //
 func (self *Program) MOVDQ2Q(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVDQ2Q xmm, mm
     if isXMM(v0) && isMM(v1) {
         self.require(ISA_SSE2)
@@ -14251,7 +14251,7 @@ func (self *Program) MOVDQ2Q(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVDQA xmm, m128
 //
 func (self *Program) MOVDQA(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVDQA xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE2)
@@ -14309,7 +14309,7 @@ func (self *Program) MOVDQA(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVDQU xmm, m128
 //
 func (self *Program) MOVDQU(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVDQU xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE2)
@@ -14365,7 +14365,7 @@ func (self *Program) MOVDQU(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVHLPS xmm, xmm
 //
 func (self *Program) MOVHLPS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVHLPS xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE)
@@ -14392,7 +14392,7 @@ func (self *Program) MOVHLPS(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVHPD xmm, m64
 //
 func (self *Program) MOVHPD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVHPD m64, xmm
     if isM64(v0) && isXMM(v1) {
         self.require(ISA_SSE2)
@@ -14431,7 +14431,7 @@ func (self *Program) MOVHPD(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVHPS xmm, m64
 //
 func (self *Program) MOVHPS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVHPS m64, xmm
     if isM64(v0) && isXMM(v1) {
         self.require(ISA_SSE)
@@ -14470,7 +14470,7 @@ func (self *Program) MOVHPS(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVL r32, m32
 //
 func (self *Program) MOVL(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVL imm32, r32
     if isImm32(v0) && isReg32(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -14538,7 +14538,7 @@ func (self *Program) MOVL(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVLHPS xmm, xmm
 //
 func (self *Program) MOVLHPS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVLHPS xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE)
@@ -14565,7 +14565,7 @@ func (self *Program) MOVLHPS(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVLPD xmm, m64
 //
 func (self *Program) MOVLPD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVLPD m64, xmm
     if isM64(v0) && isXMM(v1) {
         self.require(ISA_SSE2)
@@ -14604,7 +14604,7 @@ func (self *Program) MOVLPD(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVLPS xmm, m64
 //
 func (self *Program) MOVLPS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVLPS m64, xmm
     if isM64(v0) && isXMM(v1) {
         self.require(ISA_SSE)
@@ -14640,7 +14640,7 @@ func (self *Program) MOVLPS(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVMSKPD xmm, r32
 //
 func (self *Program) MOVMSKPD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVMSKPD xmm, r32
     if isXMM(v0) && isReg32(v1) {
         self.require(ISA_SSE2)
@@ -14667,7 +14667,7 @@ func (self *Program) MOVMSKPD(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVMSKPS xmm, r32
 //
 func (self *Program) MOVMSKPS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVMSKPS xmm, r32
     if isXMM(v0) && isReg32(v1) {
         self.require(ISA_SSE)
@@ -14693,7 +14693,7 @@ func (self *Program) MOVMSKPS(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVNTDQ xmm, m128
 //
 func (self *Program) MOVNTDQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVNTDQ xmm, m128
     if isXMM(v0) && isM128(v1) {
         self.require(ISA_SSE2)
@@ -14720,7 +14720,7 @@ func (self *Program) MOVNTDQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVNTDQA m128, xmm
 //
 func (self *Program) MOVNTDQA(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVNTDQA m128, xmm
     if isM128(v0) && isXMM(v1) {
         self.require(ISA_SSE4_1)
@@ -14748,7 +14748,7 @@ func (self *Program) MOVNTDQA(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVNTIL r32, m32
 //
 func (self *Program) MOVNTIL(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVNTIL r32, m32
     if isReg32(v0) && isM32(v1) {
         self.require(ISA_SSE2)
@@ -14774,7 +14774,7 @@ func (self *Program) MOVNTIL(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVNTIQ r64, m64
 //
 func (self *Program) MOVNTIQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVNTIQ r64, m64
     if isReg64(v0) && isM64(v1) {
         self.require(ISA_SSE2)
@@ -14800,7 +14800,7 @@ func (self *Program) MOVNTIQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVNTPD xmm, m128
 //
 func (self *Program) MOVNTPD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVNTPD xmm, m128
     if isXMM(v0) && isM128(v1) {
         self.require(ISA_SSE2)
@@ -14827,7 +14827,7 @@ func (self *Program) MOVNTPD(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVNTPS xmm, m128
 //
 func (self *Program) MOVNTPS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVNTPS xmm, m128
     if isXMM(v0) && isM128(v1) {
         self.require(ISA_SSE)
@@ -14853,7 +14853,7 @@ func (self *Program) MOVNTPS(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVNTQ mm, m64
 //
 func (self *Program) MOVNTQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVNTQ mm, m64
     if isMM(v0) && isM64(v1) {
         self.require(ISA_MMX_PLUS)
@@ -14879,7 +14879,7 @@ func (self *Program) MOVNTQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVNTSD xmm, m64
 //
 func (self *Program) MOVNTSD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVNTSD xmm, m64
     if isXMM(v0) && isM64(v1) {
         self.require(ISA_SSE4A)
@@ -14906,7 +14906,7 @@ func (self *Program) MOVNTSD(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVNTSS xmm, m32
 //
 func (self *Program) MOVNTSS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVNTSS xmm, m32
     if isXMM(v0) && isM32(v1) {
         self.require(ISA_SSE4A)
@@ -14948,7 +14948,7 @@ func (self *Program) MOVNTSS(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVQ xmm, m64
 //
 func (self *Program) MOVQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVQ imm32, r64
     if isImm32Ext(v0, 8) && isReg64(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -15163,7 +15163,7 @@ func (self *Program) MOVQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVQ2DQ mm, xmm
 //
 func (self *Program) MOVQ2DQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVQ2DQ mm, xmm
     if isMM(v0) && isXMM(v1) {
         self.require(ISA_SSE2)
@@ -15190,7 +15190,7 @@ func (self *Program) MOVQ2DQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVSBL m8, r32
 //
 func (self *Program) MOVSBL(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVSBL r8, r32
     if isReg8(v0) && isReg32(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -15224,7 +15224,7 @@ func (self *Program) MOVSBL(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVSBQ m8, r64
 //
 func (self *Program) MOVSBQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVSBQ r8, r64
     if isReg8(v0) && isReg64(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -15258,7 +15258,7 @@ func (self *Program) MOVSBQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVSBW m8, r16
 //
 func (self *Program) MOVSBW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVSBW r8, r16
     if isReg8(v0) && isReg16(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -15296,7 +15296,7 @@ func (self *Program) MOVSBW(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVSD xmm, m64
 //
 func (self *Program) MOVSD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVSD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE2)
@@ -15353,7 +15353,7 @@ func (self *Program) MOVSD(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVSHDUP m128, xmm
 //
 func (self *Program) MOVSHDUP(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVSHDUP xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE3)
@@ -15392,7 +15392,7 @@ func (self *Program) MOVSHDUP(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVSLDUP m128, xmm
 //
 func (self *Program) MOVSLDUP(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVSLDUP xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE3)
@@ -15430,7 +15430,7 @@ func (self *Program) MOVSLDUP(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVSLQ m32, r64
 //
 func (self *Program) MOVSLQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVSLQ r32, r64
     if isReg32(v0) && isReg64(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -15464,7 +15464,7 @@ func (self *Program) MOVSLQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVSS xmm, m32
 //
 func (self *Program) MOVSS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVSS xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE)
@@ -15520,7 +15520,7 @@ func (self *Program) MOVSS(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVSWL m16, r32
 //
 func (self *Program) MOVSWL(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVSWL r16, r32
     if isReg16(v0) && isReg32(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -15554,7 +15554,7 @@ func (self *Program) MOVSWL(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVSWQ m16, r64
 //
 func (self *Program) MOVSWQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVSWQ r16, r64
     if isReg16(v0) && isReg64(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -15590,7 +15590,7 @@ func (self *Program) MOVSWQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVUPD xmm, m128
 //
 func (self *Program) MOVUPD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVUPD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE2)
@@ -15648,7 +15648,7 @@ func (self *Program) MOVUPD(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVUPS xmm, m128
 //
 func (self *Program) MOVUPS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVUPS xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE)
@@ -15703,7 +15703,7 @@ func (self *Program) MOVUPS(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVW r16, m16
 //
 func (self *Program) MOVW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVW imm16, r16
     if isImm16(v0) && isReg16(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -15778,7 +15778,7 @@ func (self *Program) MOVW(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVZBL m8, r32
 //
 func (self *Program) MOVZBL(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVZBL r8, r32
     if isReg8(v0) && isReg32(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -15812,7 +15812,7 @@ func (self *Program) MOVZBL(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVZBQ m8, r64
 //
 func (self *Program) MOVZBQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVZBQ r8, r64
     if isReg8(v0) && isReg64(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -15846,7 +15846,7 @@ func (self *Program) MOVZBQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVZBW m8, r16
 //
 func (self *Program) MOVZBW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVZBW r8, r16
     if isReg8(v0) && isReg16(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -15882,7 +15882,7 @@ func (self *Program) MOVZBW(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVZWL m16, r32
 //
 func (self *Program) MOVZWL(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVZWL r16, r32
     if isReg16(v0) && isReg32(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -15916,7 +15916,7 @@ func (self *Program) MOVZWL(v0 interface{}, v1 interface{}) *Instruction {
 //    * MOVZWQ m16, r64
 //
 func (self *Program) MOVZWQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MOVZWQ r16, r64
     if isReg16(v0) && isReg64(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -15951,7 +15951,7 @@ func (self *Program) MOVZWQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * MPSADBW imm8, m128, xmm
 //
 func (self *Program) MPSADBW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // MPSADBW imm8, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_SSE4_1)
@@ -15993,7 +15993,7 @@ func (self *Program) MPSADBW(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * MULB m8
 //
 func (self *Program) MULB(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // MULB r8
     if isReg8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -16025,7 +16025,7 @@ func (self *Program) MULB(v0 interface{}) *Instruction {
 //    * MULL m32
 //
 func (self *Program) MULL(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // MULL r32
     if isReg32(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -16058,7 +16058,7 @@ func (self *Program) MULL(v0 interface{}) *Instruction {
 //    * MULPD m128, xmm
 //
 func (self *Program) MULPD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MULPD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE2)
@@ -16097,7 +16097,7 @@ func (self *Program) MULPD(v0 interface{}, v1 interface{}) *Instruction {
 //    * MULPS m128, xmm
 //
 func (self *Program) MULPS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MULPS xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE)
@@ -16133,7 +16133,7 @@ func (self *Program) MULPS(v0 interface{}, v1 interface{}) *Instruction {
 //    * MULQ m64
 //
 func (self *Program) MULQ(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // MULQ r64
     if isReg64(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -16166,7 +16166,7 @@ func (self *Program) MULQ(v0 interface{}) *Instruction {
 //    * MULSD m64, xmm
 //
 func (self *Program) MULSD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MULSD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE2)
@@ -16205,7 +16205,7 @@ func (self *Program) MULSD(v0 interface{}, v1 interface{}) *Instruction {
 //    * MULSS m32, xmm
 //
 func (self *Program) MULSS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // MULSS xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE)
@@ -16243,7 +16243,7 @@ func (self *Program) MULSS(v0 interface{}, v1 interface{}) *Instruction {
 //    * MULW m16
 //
 func (self *Program) MULW(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // MULW r16
     if isReg16(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -16278,7 +16278,7 @@ func (self *Program) MULW(v0 interface{}) *Instruction {
 //    * MULXL m32, r32, r32
 //
 func (self *Program) MULXL(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // MULXL r32, r32, r32
     if isReg32(v0) && isReg32(v1) && isReg32(v2) {
         self.require(ISA_BMI2)
@@ -16315,7 +16315,7 @@ func (self *Program) MULXL(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
 //    * MULXQ m64, r64, r64
 //
 func (self *Program) MULXQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // MULXQ r64, r64, r64
     if isReg64(v0) && isReg64(v1) && isReg64(v2) {
         self.require(ISA_BMI2)
@@ -16351,7 +16351,7 @@ func (self *Program) MULXQ(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
 //    * MWAIT
 //
 func (self *Program) MWAIT() *Instruction {
-    p := self.alloc(0, [_MAX_ARGS]interface{}{})
+    p := self.alloc(0, Operands{})
     // MWAIT
     self.require(ISA_MONITOR)
     p.add(0, func(m *_Encoding, v []interface{}) {
@@ -16371,7 +16371,7 @@ func (self *Program) MWAIT() *Instruction {
 //    * MWAITX
 //
 func (self *Program) MWAITX() *Instruction {
-    p := self.alloc(0, [_MAX_ARGS]interface{}{})
+    p := self.alloc(0, Operands{})
     // MWAITX
     self.require(ISA_MONITORX)
     p.add(0, func(m *_Encoding, v []interface{}) {
@@ -16391,7 +16391,7 @@ func (self *Program) MWAITX() *Instruction {
 //    * NEGB m8
 //
 func (self *Program) NEGB(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // NEGB r8
     if isReg8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -16423,7 +16423,7 @@ func (self *Program) NEGB(v0 interface{}) *Instruction {
 //    * NEGL m32
 //
 func (self *Program) NEGL(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // NEGL r32
     if isReg32(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -16455,7 +16455,7 @@ func (self *Program) NEGL(v0 interface{}) *Instruction {
 //    * NEGQ m64
 //
 func (self *Program) NEGQ(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // NEGQ r64
     if isReg64(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -16487,7 +16487,7 @@ func (self *Program) NEGQ(v0 interface{}) *Instruction {
 //    * NEGW m16
 //
 func (self *Program) NEGW(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // NEGW r16
     if isReg16(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -16520,7 +16520,7 @@ func (self *Program) NEGW(v0 interface{}) *Instruction {
 //    * NOP
 //
 func (self *Program) NOP() *Instruction {
-    p := self.alloc(0, [_MAX_ARGS]interface{}{})
+    p := self.alloc(0, Operands{})
     // NOP
     p.add(0, func(m *_Encoding, v []interface{}) {
         m.emit(0x90)
@@ -16537,7 +16537,7 @@ func (self *Program) NOP() *Instruction {
 //    * NOTB m8
 //
 func (self *Program) NOTB(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // NOTB r8
     if isReg8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -16569,7 +16569,7 @@ func (self *Program) NOTB(v0 interface{}) *Instruction {
 //    * NOTL m32
 //
 func (self *Program) NOTL(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // NOTL r32
     if isReg32(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -16601,7 +16601,7 @@ func (self *Program) NOTL(v0 interface{}) *Instruction {
 //    * NOTQ m64
 //
 func (self *Program) NOTQ(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // NOTQ r64
     if isReg64(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -16633,7 +16633,7 @@ func (self *Program) NOTQ(v0 interface{}) *Instruction {
 //    * NOTW m16
 //
 func (self *Program) NOTW(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // NOTW r16
     if isReg16(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -16671,7 +16671,7 @@ func (self *Program) NOTW(v0 interface{}) *Instruction {
 //    * ORB r8, m8
 //
 func (self *Program) ORB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // ORB imm8, al
     if isImm8(v0) && v1 == AL {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -16747,7 +16747,7 @@ func (self *Program) ORB(v0 interface{}, v1 interface{}) *Instruction {
 //    * ORL r32, m32
 //
 func (self *Program) ORL(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // ORL imm32, eax
     if isImm32(v0) && v1 == EAX {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -16836,7 +16836,7 @@ func (self *Program) ORL(v0 interface{}, v1 interface{}) *Instruction {
 //    * ORPD m128, xmm
 //
 func (self *Program) ORPD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // ORPD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE2)
@@ -16875,7 +16875,7 @@ func (self *Program) ORPD(v0 interface{}, v1 interface{}) *Instruction {
 //    * ORPS m128, xmm
 //
 func (self *Program) ORPS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // ORPS xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE)
@@ -16917,7 +16917,7 @@ func (self *Program) ORPS(v0 interface{}, v1 interface{}) *Instruction {
 //    * ORQ r64, m64
 //
 func (self *Program) ORQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // ORQ imm32, rax
     if isImm32(v0) && v1 == RAX {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -17012,7 +17012,7 @@ func (self *Program) ORQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * ORW r16, m16
 //
 func (self *Program) ORW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // ORW imm16, ax
     if isImm16(v0) && v1 == AX {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -17112,7 +17112,7 @@ func (self *Program) ORW(v0 interface{}, v1 interface{}) *Instruction {
 //    * PABSB m128, xmm
 //
 func (self *Program) PABSB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PABSB mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_SSSE3)
@@ -17177,7 +17177,7 @@ func (self *Program) PABSB(v0 interface{}, v1 interface{}) *Instruction {
 //    * PABSD m128, xmm
 //
 func (self *Program) PABSD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PABSD mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_SSSE3)
@@ -17242,7 +17242,7 @@ func (self *Program) PABSD(v0 interface{}, v1 interface{}) *Instruction {
 //    * PABSW m128, xmm
 //
 func (self *Program) PABSW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PABSW mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_SSSE3)
@@ -17307,7 +17307,7 @@ func (self *Program) PABSW(v0 interface{}, v1 interface{}) *Instruction {
 //    * PACKSSDW m128, xmm
 //
 func (self *Program) PACKSSDW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PACKSSDW mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_MMX)
@@ -17368,7 +17368,7 @@ func (self *Program) PACKSSDW(v0 interface{}, v1 interface{}) *Instruction {
 //    * PACKSSWB m128, xmm
 //
 func (self *Program) PACKSSWB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PACKSSWB mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_MMX)
@@ -17427,7 +17427,7 @@ func (self *Program) PACKSSWB(v0 interface{}, v1 interface{}) *Instruction {
 //    * PACKUSDW m128, xmm
 //
 func (self *Program) PACKUSDW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PACKUSDW xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE4_1)
@@ -17470,7 +17470,7 @@ func (self *Program) PACKUSDW(v0 interface{}, v1 interface{}) *Instruction {
 //    * PACKUSWB m128, xmm
 //
 func (self *Program) PACKUSWB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PACKUSWB mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_MMX)
@@ -17531,7 +17531,7 @@ func (self *Program) PACKUSWB(v0 interface{}, v1 interface{}) *Instruction {
 //    * PADDB m128, xmm
 //
 func (self *Program) PADDB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PADDB mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_MMX)
@@ -17592,7 +17592,7 @@ func (self *Program) PADDB(v0 interface{}, v1 interface{}) *Instruction {
 //    * PADDD m128, xmm
 //
 func (self *Program) PADDD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PADDD mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_MMX)
@@ -17653,7 +17653,7 @@ func (self *Program) PADDD(v0 interface{}, v1 interface{}) *Instruction {
 //    * PADDQ m128, xmm
 //
 func (self *Program) PADDQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PADDQ mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_SSE2)
@@ -17714,7 +17714,7 @@ func (self *Program) PADDQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * PADDSB m128, xmm
 //
 func (self *Program) PADDSB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PADDSB mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_MMX)
@@ -17775,7 +17775,7 @@ func (self *Program) PADDSB(v0 interface{}, v1 interface{}) *Instruction {
 //    * PADDSW m128, xmm
 //
 func (self *Program) PADDSW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PADDSW mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_MMX)
@@ -17836,7 +17836,7 @@ func (self *Program) PADDSW(v0 interface{}, v1 interface{}) *Instruction {
 //    * PADDUSB m128, xmm
 //
 func (self *Program) PADDUSB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PADDUSB mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_MMX)
@@ -17897,7 +17897,7 @@ func (self *Program) PADDUSB(v0 interface{}, v1 interface{}) *Instruction {
 //    * PADDUSW m128, xmm
 //
 func (self *Program) PADDUSW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PADDUSW mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_MMX)
@@ -17958,7 +17958,7 @@ func (self *Program) PADDUSW(v0 interface{}, v1 interface{}) *Instruction {
 //    * PADDW m128, xmm
 //
 func (self *Program) PADDW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PADDW mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_MMX)
@@ -18019,7 +18019,7 @@ func (self *Program) PADDW(v0 interface{}, v1 interface{}) *Instruction {
 //    * PALIGNR imm8, m128, xmm
 //
 func (self *Program) PALIGNR(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // PALIGNR imm8, mm, mm
     if isImm8(v0) && isMM(v1) && isMM(v2) {
         self.require(ISA_SSSE3)
@@ -18088,7 +18088,7 @@ func (self *Program) PALIGNR(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * PAND m128, xmm
 //
 func (self *Program) PAND(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PAND mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_MMX)
@@ -18149,7 +18149,7 @@ func (self *Program) PAND(v0 interface{}, v1 interface{}) *Instruction {
 //    * PANDN m128, xmm
 //
 func (self *Program) PANDN(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PANDN mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_MMX)
@@ -18206,7 +18206,7 @@ func (self *Program) PANDN(v0 interface{}, v1 interface{}) *Instruction {
 //    * PAUSE
 //
 func (self *Program) PAUSE() *Instruction {
-    p := self.alloc(0, [_MAX_ARGS]interface{}{})
+    p := self.alloc(0, Operands{})
     // PAUSE
     p.add(0, func(m *_Encoding, v []interface{}) {
         m.emit(0xf3)
@@ -18227,7 +18227,7 @@ func (self *Program) PAUSE() *Instruction {
 //    * PAVGB m128, xmm
 //
 func (self *Program) PAVGB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PAVGB mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_MMX_PLUS)
@@ -18286,7 +18286,7 @@ func (self *Program) PAVGB(v0 interface{}, v1 interface{}) *Instruction {
 //    * PAVGUSB m64, mm
 //
 func (self *Program) PAVGUSB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PAVGUSB mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_3DNOW)
@@ -18327,7 +18327,7 @@ func (self *Program) PAVGUSB(v0 interface{}, v1 interface{}) *Instruction {
 //    * PAVGW m128, xmm
 //
 func (self *Program) PAVGW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PAVGW mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_MMX_PLUS)
@@ -18386,7 +18386,7 @@ func (self *Program) PAVGW(v0 interface{}, v1 interface{}) *Instruction {
 //    * PBLENDVB xmm0, m128, xmm
 //
 func (self *Program) PBLENDVB(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // PBLENDVB xmm0, xmm, xmm
     if v0 == XMM0 && isXMM(v1) && isXMM(v2) {
         self.require(ISA_SSE4_1)
@@ -18427,7 +18427,7 @@ func (self *Program) PBLENDVB(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * PBLENDW imm8, m128, xmm
 //
 func (self *Program) PBLENDW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // PBLENDW imm8, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_SSE4_1)
@@ -18470,7 +18470,7 @@ func (self *Program) PBLENDW(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * PCLMULQDQ imm8, m128, xmm
 //
 func (self *Program) PCLMULQDQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // PCLMULQDQ imm8, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_PCLMULQDQ)
@@ -18515,7 +18515,7 @@ func (self *Program) PCLMULQDQ(v0 interface{}, v1 interface{}, v2 interface{}) *
 //    * PCMPEQB m128, xmm
 //
 func (self *Program) PCMPEQB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PCMPEQB mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_MMX)
@@ -18576,7 +18576,7 @@ func (self *Program) PCMPEQB(v0 interface{}, v1 interface{}) *Instruction {
 //    * PCMPEQD m128, xmm
 //
 func (self *Program) PCMPEQD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PCMPEQD mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_MMX)
@@ -18635,7 +18635,7 @@ func (self *Program) PCMPEQD(v0 interface{}, v1 interface{}) *Instruction {
 //    * PCMPEQQ m128, xmm
 //
 func (self *Program) PCMPEQQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PCMPEQQ xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE4_1)
@@ -18678,7 +18678,7 @@ func (self *Program) PCMPEQQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * PCMPEQW m128, xmm
 //
 func (self *Program) PCMPEQW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PCMPEQW mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_MMX)
@@ -18737,7 +18737,7 @@ func (self *Program) PCMPEQW(v0 interface{}, v1 interface{}) *Instruction {
 //    * PCMPESTRI imm8, m128, xmm
 //
 func (self *Program) PCMPESTRI(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // PCMPESTRI imm8, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_SSE4_2)
@@ -18780,7 +18780,7 @@ func (self *Program) PCMPESTRI(v0 interface{}, v1 interface{}, v2 interface{}) *
 //    * PCMPESTRM imm8, m128, xmm
 //
 func (self *Program) PCMPESTRM(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // PCMPESTRM imm8, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_SSE4_2)
@@ -18825,7 +18825,7 @@ func (self *Program) PCMPESTRM(v0 interface{}, v1 interface{}, v2 interface{}) *
 //    * PCMPGTB m128, xmm
 //
 func (self *Program) PCMPGTB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PCMPGTB mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_MMX)
@@ -18886,7 +18886,7 @@ func (self *Program) PCMPGTB(v0 interface{}, v1 interface{}) *Instruction {
 //    * PCMPGTD m128, xmm
 //
 func (self *Program) PCMPGTD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PCMPGTD mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_MMX)
@@ -18945,7 +18945,7 @@ func (self *Program) PCMPGTD(v0 interface{}, v1 interface{}) *Instruction {
 //    * PCMPGTQ m128, xmm
 //
 func (self *Program) PCMPGTQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PCMPGTQ xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE4_2)
@@ -18988,7 +18988,7 @@ func (self *Program) PCMPGTQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * PCMPGTW m128, xmm
 //
 func (self *Program) PCMPGTW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PCMPGTW mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_MMX)
@@ -19047,7 +19047,7 @@ func (self *Program) PCMPGTW(v0 interface{}, v1 interface{}) *Instruction {
 //    * PCMPISTRI imm8, m128, xmm
 //
 func (self *Program) PCMPISTRI(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // PCMPISTRI imm8, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_SSE4_2)
@@ -19090,7 +19090,7 @@ func (self *Program) PCMPISTRI(v0 interface{}, v1 interface{}, v2 interface{}) *
 //    * PCMPISTRM imm8, m128, xmm
 //
 func (self *Program) PCMPISTRM(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // PCMPISTRM imm8, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_SSE4_2)
@@ -19135,7 +19135,7 @@ func (self *Program) PCMPISTRM(v0 interface{}, v1 interface{}, v2 interface{}) *
 //    * PDEP m64, r64, r64
 //
 func (self *Program) PDEP(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // PDEP r32, r32, r32
     if isReg32(v0) && isReg32(v1) && isReg32(v2) {
         self.require(ISA_BMI2)
@@ -19194,7 +19194,7 @@ func (self *Program) PDEP(v0 interface{}, v1 interface{}, v2 interface{}) *Instr
 //    * PEXT m64, r64, r64
 //
 func (self *Program) PEXT(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // PEXT r32, r32, r32
     if isReg32(v0) && isReg32(v1) && isReg32(v2) {
         self.require(ISA_BMI2)
@@ -19251,7 +19251,7 @@ func (self *Program) PEXT(v0 interface{}, v1 interface{}, v2 interface{}) *Instr
 //    * PEXTRB imm8, xmm, m8
 //
 func (self *Program) PEXTRB(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // PEXTRB imm8, xmm, r32
     if isImm8(v0) && isXMM(v1) && isReg32(v2) {
         self.require(ISA_SSE4_1)
@@ -19294,7 +19294,7 @@ func (self *Program) PEXTRB(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * PEXTRD imm8, xmm, m32
 //
 func (self *Program) PEXTRD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // PEXTRD imm8, xmm, r32
     if isImm8(v0) && isXMM(v1) && isReg32(v2) {
         self.require(ISA_SSE4_1)
@@ -19337,7 +19337,7 @@ func (self *Program) PEXTRD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * PEXTRQ imm8, xmm, m64
 //
 func (self *Program) PEXTRQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // PEXTRQ imm8, xmm, r64
     if isImm8(v0) && isXMM(v1) && isReg64(v2) {
         self.require(ISA_SSE4_1)
@@ -19381,7 +19381,7 @@ func (self *Program) PEXTRQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * PEXTRW imm8, xmm, m16
 //
 func (self *Program) PEXTRW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // PEXTRW imm8, mm, r32
     if isImm8(v0) && isMM(v1) && isReg32(v2) {
         self.require(ISA_MMX_PLUS)
@@ -19443,7 +19443,7 @@ func (self *Program) PEXTRW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * PF2ID m64, mm
 //
 func (self *Program) PF2ID(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PF2ID mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_3DNOW)
@@ -19482,7 +19482,7 @@ func (self *Program) PF2ID(v0 interface{}, v1 interface{}) *Instruction {
 //    * PF2IW m64, mm
 //
 func (self *Program) PF2IW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PF2IW mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_3DNOW_PLUS)
@@ -19521,7 +19521,7 @@ func (self *Program) PF2IW(v0 interface{}, v1 interface{}) *Instruction {
 //    * PFACC m64, mm
 //
 func (self *Program) PFACC(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PFACC mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_3DNOW)
@@ -19560,7 +19560,7 @@ func (self *Program) PFACC(v0 interface{}, v1 interface{}) *Instruction {
 //    * PFADD m64, mm
 //
 func (self *Program) PFADD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PFADD mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_3DNOW)
@@ -19599,7 +19599,7 @@ func (self *Program) PFADD(v0 interface{}, v1 interface{}) *Instruction {
 //    * PFCMPEQ m64, mm
 //
 func (self *Program) PFCMPEQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PFCMPEQ mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_3DNOW)
@@ -19638,7 +19638,7 @@ func (self *Program) PFCMPEQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * PFCMPGE m64, mm
 //
 func (self *Program) PFCMPGE(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PFCMPGE mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_3DNOW)
@@ -19677,7 +19677,7 @@ func (self *Program) PFCMPGE(v0 interface{}, v1 interface{}) *Instruction {
 //    * PFCMPGT m64, mm
 //
 func (self *Program) PFCMPGT(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PFCMPGT mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_3DNOW)
@@ -19716,7 +19716,7 @@ func (self *Program) PFCMPGT(v0 interface{}, v1 interface{}) *Instruction {
 //    * PFMAX m64, mm
 //
 func (self *Program) PFMAX(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PFMAX mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_3DNOW)
@@ -19755,7 +19755,7 @@ func (self *Program) PFMAX(v0 interface{}, v1 interface{}) *Instruction {
 //    * PFMIN m64, mm
 //
 func (self *Program) PFMIN(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PFMIN mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_3DNOW)
@@ -19794,7 +19794,7 @@ func (self *Program) PFMIN(v0 interface{}, v1 interface{}) *Instruction {
 //    * PFMUL m64, mm
 //
 func (self *Program) PFMUL(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PFMUL mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_3DNOW)
@@ -19833,7 +19833,7 @@ func (self *Program) PFMUL(v0 interface{}, v1 interface{}) *Instruction {
 //    * PFNACC m64, mm
 //
 func (self *Program) PFNACC(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PFNACC mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_3DNOW_PLUS)
@@ -19872,7 +19872,7 @@ func (self *Program) PFNACC(v0 interface{}, v1 interface{}) *Instruction {
 //    * PFPNACC m64, mm
 //
 func (self *Program) PFPNACC(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PFPNACC mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_3DNOW_PLUS)
@@ -19911,7 +19911,7 @@ func (self *Program) PFPNACC(v0 interface{}, v1 interface{}) *Instruction {
 //    * PFRCP m64, mm
 //
 func (self *Program) PFRCP(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PFRCP mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_3DNOW)
@@ -19950,7 +19950,7 @@ func (self *Program) PFRCP(v0 interface{}, v1 interface{}) *Instruction {
 //    * PFRCPIT1 m64, mm
 //
 func (self *Program) PFRCPIT1(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PFRCPIT1 mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_3DNOW)
@@ -19989,7 +19989,7 @@ func (self *Program) PFRCPIT1(v0 interface{}, v1 interface{}) *Instruction {
 //    * PFRCPIT2 m64, mm
 //
 func (self *Program) PFRCPIT2(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PFRCPIT2 mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_3DNOW)
@@ -20028,7 +20028,7 @@ func (self *Program) PFRCPIT2(v0 interface{}, v1 interface{}) *Instruction {
 //    * PFRSQIT1 m64, mm
 //
 func (self *Program) PFRSQIT1(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PFRSQIT1 mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_3DNOW)
@@ -20067,7 +20067,7 @@ func (self *Program) PFRSQIT1(v0 interface{}, v1 interface{}) *Instruction {
 //    * PFRSQRT m64, mm
 //
 func (self *Program) PFRSQRT(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PFRSQRT mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_3DNOW)
@@ -20106,7 +20106,7 @@ func (self *Program) PFRSQRT(v0 interface{}, v1 interface{}) *Instruction {
 //    * PFSUB m64, mm
 //
 func (self *Program) PFSUB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PFSUB mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_3DNOW)
@@ -20145,7 +20145,7 @@ func (self *Program) PFSUB(v0 interface{}, v1 interface{}) *Instruction {
 //    * PFSUBR m64, mm
 //
 func (self *Program) PFSUBR(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PFSUBR mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_3DNOW)
@@ -20186,7 +20186,7 @@ func (self *Program) PFSUBR(v0 interface{}, v1 interface{}) *Instruction {
 //    * PHADDD m128, xmm
 //
 func (self *Program) PHADDD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PHADDD mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_SSSE3)
@@ -20251,7 +20251,7 @@ func (self *Program) PHADDD(v0 interface{}, v1 interface{}) *Instruction {
 //    * PHADDSW m128, xmm
 //
 func (self *Program) PHADDSW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PHADDSW mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_SSSE3)
@@ -20316,7 +20316,7 @@ func (self *Program) PHADDSW(v0 interface{}, v1 interface{}) *Instruction {
 //    * PHADDW m128, xmm
 //
 func (self *Program) PHADDW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PHADDW mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_SSSE3)
@@ -20379,7 +20379,7 @@ func (self *Program) PHADDW(v0 interface{}, v1 interface{}) *Instruction {
 //    * PHMINPOSUW m128, xmm
 //
 func (self *Program) PHMINPOSUW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PHMINPOSUW xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE4_1)
@@ -20422,7 +20422,7 @@ func (self *Program) PHMINPOSUW(v0 interface{}, v1 interface{}) *Instruction {
 //    * PHSUBD m128, xmm
 //
 func (self *Program) PHSUBD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PHSUBD mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_SSSE3)
@@ -20487,7 +20487,7 @@ func (self *Program) PHSUBD(v0 interface{}, v1 interface{}) *Instruction {
 //    * PHSUBSW m128, xmm
 //
 func (self *Program) PHSUBSW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PHSUBSW mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_SSSE3)
@@ -20552,7 +20552,7 @@ func (self *Program) PHSUBSW(v0 interface{}, v1 interface{}) *Instruction {
 //    * PHSUBW m128, xmm
 //
 func (self *Program) PHSUBW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PHSUBW mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_SSSE3)
@@ -20615,7 +20615,7 @@ func (self *Program) PHSUBW(v0 interface{}, v1 interface{}) *Instruction {
 //    * PI2FD m64, mm
 //
 func (self *Program) PI2FD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PI2FD mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_3DNOW)
@@ -20654,7 +20654,7 @@ func (self *Program) PI2FD(v0 interface{}, v1 interface{}) *Instruction {
 //    * PI2FW m64, mm
 //
 func (self *Program) PI2FW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PI2FW mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_3DNOW_PLUS)
@@ -20693,7 +20693,7 @@ func (self *Program) PI2FW(v0 interface{}, v1 interface{}) *Instruction {
 //    * PINSRB imm8, m8, xmm
 //
 func (self *Program) PINSRB(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // PINSRB imm8, r32, xmm
     if isImm8(v0) && isReg32(v1) && isXMM(v2) {
         self.require(ISA_SSE4_1)
@@ -20736,7 +20736,7 @@ func (self *Program) PINSRB(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * PINSRD imm8, m32, xmm
 //
 func (self *Program) PINSRD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // PINSRD imm8, r32, xmm
     if isImm8(v0) && isReg32(v1) && isXMM(v2) {
         self.require(ISA_SSE4_1)
@@ -20779,7 +20779,7 @@ func (self *Program) PINSRD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * PINSRQ imm8, m64, xmm
 //
 func (self *Program) PINSRQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // PINSRQ imm8, r64, xmm
     if isImm8(v0) && isReg64(v1) && isXMM(v2) {
         self.require(ISA_SSE4_1)
@@ -20824,7 +20824,7 @@ func (self *Program) PINSRQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * PINSRW imm8, m16, xmm
 //
 func (self *Program) PINSRW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // PINSRW imm8, r32, mm
     if isImm8(v0) && isReg32(v1) && isMM(v2) {
         self.require(ISA_MMX_PLUS)
@@ -20889,7 +20889,7 @@ func (self *Program) PINSRW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * PMADDUBSW m128, xmm
 //
 func (self *Program) PMADDUBSW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PMADDUBSW mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_SSSE3)
@@ -20954,7 +20954,7 @@ func (self *Program) PMADDUBSW(v0 interface{}, v1 interface{}) *Instruction {
 //    * PMADDWD m128, xmm
 //
 func (self *Program) PMADDWD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PMADDWD mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_MMX)
@@ -21013,7 +21013,7 @@ func (self *Program) PMADDWD(v0 interface{}, v1 interface{}) *Instruction {
 //    * PMAXSB m128, xmm
 //
 func (self *Program) PMAXSB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PMAXSB xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE4_1)
@@ -21054,7 +21054,7 @@ func (self *Program) PMAXSB(v0 interface{}, v1 interface{}) *Instruction {
 //    * PMAXSD m128, xmm
 //
 func (self *Program) PMAXSD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PMAXSD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE4_1)
@@ -21097,7 +21097,7 @@ func (self *Program) PMAXSD(v0 interface{}, v1 interface{}) *Instruction {
 //    * PMAXSW m128, xmm
 //
 func (self *Program) PMAXSW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PMAXSW mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_MMX_PLUS)
@@ -21158,7 +21158,7 @@ func (self *Program) PMAXSW(v0 interface{}, v1 interface{}) *Instruction {
 //    * PMAXUB m128, xmm
 //
 func (self *Program) PMAXUB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PMAXUB mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_MMX_PLUS)
@@ -21217,7 +21217,7 @@ func (self *Program) PMAXUB(v0 interface{}, v1 interface{}) *Instruction {
 //    * PMAXUD m128, xmm
 //
 func (self *Program) PMAXUD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PMAXUD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE4_1)
@@ -21258,7 +21258,7 @@ func (self *Program) PMAXUD(v0 interface{}, v1 interface{}) *Instruction {
 //    * PMAXUW m128, xmm
 //
 func (self *Program) PMAXUW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PMAXUW xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE4_1)
@@ -21299,7 +21299,7 @@ func (self *Program) PMAXUW(v0 interface{}, v1 interface{}) *Instruction {
 //    * PMINSB m128, xmm
 //
 func (self *Program) PMINSB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PMINSB xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE4_1)
@@ -21340,7 +21340,7 @@ func (self *Program) PMINSB(v0 interface{}, v1 interface{}) *Instruction {
 //    * PMINSD m128, xmm
 //
 func (self *Program) PMINSD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PMINSD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE4_1)
@@ -21383,7 +21383,7 @@ func (self *Program) PMINSD(v0 interface{}, v1 interface{}) *Instruction {
 //    * PMINSW m128, xmm
 //
 func (self *Program) PMINSW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PMINSW mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_MMX_PLUS)
@@ -21444,7 +21444,7 @@ func (self *Program) PMINSW(v0 interface{}, v1 interface{}) *Instruction {
 //    * PMINUB m128, xmm
 //
 func (self *Program) PMINUB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PMINUB mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_MMX_PLUS)
@@ -21503,7 +21503,7 @@ func (self *Program) PMINUB(v0 interface{}, v1 interface{}) *Instruction {
 //    * PMINUD m128, xmm
 //
 func (self *Program) PMINUD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PMINUD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE4_1)
@@ -21544,7 +21544,7 @@ func (self *Program) PMINUD(v0 interface{}, v1 interface{}) *Instruction {
 //    * PMINUW m128, xmm
 //
 func (self *Program) PMINUW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PMINUW xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE4_1)
@@ -21585,7 +21585,7 @@ func (self *Program) PMINUW(v0 interface{}, v1 interface{}) *Instruction {
 //    * PMOVMSKB xmm, r32
 //
 func (self *Program) PMOVMSKB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PMOVMSKB mm, r32
     if isMM(v0) && isReg32(v1) {
         self.require(ISA_MMX_PLUS)
@@ -21623,7 +21623,7 @@ func (self *Program) PMOVMSKB(v0 interface{}, v1 interface{}) *Instruction {
 //    * PMOVSXBD m32, xmm
 //
 func (self *Program) PMOVSXBD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PMOVSXBD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE4_1)
@@ -21664,7 +21664,7 @@ func (self *Program) PMOVSXBD(v0 interface{}, v1 interface{}) *Instruction {
 //    * PMOVSXBQ m16, xmm
 //
 func (self *Program) PMOVSXBQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PMOVSXBQ xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE4_1)
@@ -21705,7 +21705,7 @@ func (self *Program) PMOVSXBQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * PMOVSXBW m64, xmm
 //
 func (self *Program) PMOVSXBW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PMOVSXBW xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE4_1)
@@ -21746,7 +21746,7 @@ func (self *Program) PMOVSXBW(v0 interface{}, v1 interface{}) *Instruction {
 //    * PMOVSXDQ m64, xmm
 //
 func (self *Program) PMOVSXDQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PMOVSXDQ xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE4_1)
@@ -21787,7 +21787,7 @@ func (self *Program) PMOVSXDQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * PMOVSXWD m64, xmm
 //
 func (self *Program) PMOVSXWD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PMOVSXWD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE4_1)
@@ -21828,7 +21828,7 @@ func (self *Program) PMOVSXWD(v0 interface{}, v1 interface{}) *Instruction {
 //    * PMOVSXWQ m32, xmm
 //
 func (self *Program) PMOVSXWQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PMOVSXWQ xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE4_1)
@@ -21869,7 +21869,7 @@ func (self *Program) PMOVSXWQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * PMOVZXBD m32, xmm
 //
 func (self *Program) PMOVZXBD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PMOVZXBD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE4_1)
@@ -21910,7 +21910,7 @@ func (self *Program) PMOVZXBD(v0 interface{}, v1 interface{}) *Instruction {
 //    * PMOVZXBQ m16, xmm
 //
 func (self *Program) PMOVZXBQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PMOVZXBQ xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE4_1)
@@ -21951,7 +21951,7 @@ func (self *Program) PMOVZXBQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * PMOVZXBW m64, xmm
 //
 func (self *Program) PMOVZXBW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PMOVZXBW xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE4_1)
@@ -21992,7 +21992,7 @@ func (self *Program) PMOVZXBW(v0 interface{}, v1 interface{}) *Instruction {
 //    * PMOVZXDQ m64, xmm
 //
 func (self *Program) PMOVZXDQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PMOVZXDQ xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE4_1)
@@ -22033,7 +22033,7 @@ func (self *Program) PMOVZXDQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * PMOVZXWD m64, xmm
 //
 func (self *Program) PMOVZXWD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PMOVZXWD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE4_1)
@@ -22074,7 +22074,7 @@ func (self *Program) PMOVZXWD(v0 interface{}, v1 interface{}) *Instruction {
 //    * PMOVZXWQ m32, xmm
 //
 func (self *Program) PMOVZXWQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PMOVZXWQ xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE4_1)
@@ -22115,7 +22115,7 @@ func (self *Program) PMOVZXWQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * PMULDQ m128, xmm
 //
 func (self *Program) PMULDQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PMULDQ xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE4_1)
@@ -22158,7 +22158,7 @@ func (self *Program) PMULDQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * PMULHRSW m128, xmm
 //
 func (self *Program) PMULHRSW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PMULHRSW mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_SSSE3)
@@ -22221,7 +22221,7 @@ func (self *Program) PMULHRSW(v0 interface{}, v1 interface{}) *Instruction {
 //    * PMULHRW m64, mm
 //
 func (self *Program) PMULHRW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PMULHRW mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_3DNOW)
@@ -22262,7 +22262,7 @@ func (self *Program) PMULHRW(v0 interface{}, v1 interface{}) *Instruction {
 //    * PMULHUW m128, xmm
 //
 func (self *Program) PMULHUW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PMULHUW mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_MMX_PLUS)
@@ -22323,7 +22323,7 @@ func (self *Program) PMULHUW(v0 interface{}, v1 interface{}) *Instruction {
 //    * PMULHW m128, xmm
 //
 func (self *Program) PMULHW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PMULHW mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_MMX)
@@ -22382,7 +22382,7 @@ func (self *Program) PMULHW(v0 interface{}, v1 interface{}) *Instruction {
 //    * PMULLD m128, xmm
 //
 func (self *Program) PMULLD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PMULLD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE4_1)
@@ -22425,7 +22425,7 @@ func (self *Program) PMULLD(v0 interface{}, v1 interface{}) *Instruction {
 //    * PMULLW m128, xmm
 //
 func (self *Program) PMULLW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PMULLW mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_MMX)
@@ -22486,7 +22486,7 @@ func (self *Program) PMULLW(v0 interface{}, v1 interface{}) *Instruction {
 //    * PMULUDQ m128, xmm
 //
 func (self *Program) PMULUDQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PMULUDQ mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_SSE2)
@@ -22545,7 +22545,7 @@ func (self *Program) PMULUDQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * POPCNTL m32, r32
 //
 func (self *Program) POPCNTL(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // POPCNTL r32, r32
     if isReg32(v0) && isReg32(v1) {
         self.require(ISA_POPCNT)
@@ -22584,7 +22584,7 @@ func (self *Program) POPCNTL(v0 interface{}, v1 interface{}) *Instruction {
 //    * POPCNTQ m64, r64
 //
 func (self *Program) POPCNTQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // POPCNTQ r64, r64
     if isReg64(v0) && isReg64(v1) {
         self.require(ISA_POPCNT)
@@ -22623,7 +22623,7 @@ func (self *Program) POPCNTQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * POPCNTW m16, r16
 //
 func (self *Program) POPCNTW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // POPCNTW r16, r16
     if isReg16(v0) && isReg16(v1) {
         self.require(ISA_POPCNT)
@@ -22663,7 +22663,7 @@ func (self *Program) POPCNTW(v0 interface{}, v1 interface{}) *Instruction {
 //    * POPQ m64
 //
 func (self *Program) POPQ(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // POPQ r64
     if isReg64(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -22699,7 +22699,7 @@ func (self *Program) POPQ(v0 interface{}) *Instruction {
 //    * POPW m16
 //
 func (self *Program) POPW(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // POPW r16
     if isReg16(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -22741,7 +22741,7 @@ func (self *Program) POPW(v0 interface{}) *Instruction {
 //    * POR m128, xmm
 //
 func (self *Program) POR(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // POR mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_MMX)
@@ -22799,7 +22799,7 @@ func (self *Program) POR(v0 interface{}, v1 interface{}) *Instruction {
 //    * PREFETCH m8
 //
 func (self *Program) PREFETCH(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // PREFETCH m8
     if isM8(v0) {
         self.require(ISA_PREFETCH)
@@ -22825,7 +22825,7 @@ func (self *Program) PREFETCH(v0 interface{}) *Instruction {
 //    * PREFETCHNTA m8
 //
 func (self *Program) PREFETCHNTA(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // PREFETCHNTA m8
     if isM8(v0) {
         self.require(ISA_MMX_PLUS)
@@ -22851,7 +22851,7 @@ func (self *Program) PREFETCHNTA(v0 interface{}) *Instruction {
 //    * PREFETCHT0 m8
 //
 func (self *Program) PREFETCHT0(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // PREFETCHT0 m8
     if isM8(v0) {
         self.require(ISA_MMX_PLUS)
@@ -22877,7 +22877,7 @@ func (self *Program) PREFETCHT0(v0 interface{}) *Instruction {
 //    * PREFETCHT1 m8
 //
 func (self *Program) PREFETCHT1(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // PREFETCHT1 m8
     if isM8(v0) {
         self.require(ISA_MMX_PLUS)
@@ -22903,7 +22903,7 @@ func (self *Program) PREFETCHT1(v0 interface{}) *Instruction {
 //    * PREFETCHT2 m8
 //
 func (self *Program) PREFETCHT2(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // PREFETCHT2 m8
     if isM8(v0) {
         self.require(ISA_MMX_PLUS)
@@ -22929,7 +22929,7 @@ func (self *Program) PREFETCHT2(v0 interface{}) *Instruction {
 //    * PREFETCHW m8
 //
 func (self *Program) PREFETCHW(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // PREFETCHW m8
     if isM8(v0) {
         self.require(ISA_PREFETCHW)
@@ -22955,7 +22955,7 @@ func (self *Program) PREFETCHW(v0 interface{}) *Instruction {
 //    * PREFETCHWT1 m8
 //
 func (self *Program) PREFETCHWT1(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // PREFETCHWT1 m8
     if isM8(v0) {
         self.require(ISA_PREFETCHWT1)
@@ -22984,7 +22984,7 @@ func (self *Program) PREFETCHWT1(v0 interface{}) *Instruction {
 //    * PSADBW m128, xmm
 //
 func (self *Program) PSADBW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PSADBW mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_MMX_PLUS)
@@ -23045,7 +23045,7 @@ func (self *Program) PSADBW(v0 interface{}, v1 interface{}) *Instruction {
 //    * PSHUFB m128, xmm
 //
 func (self *Program) PSHUFB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PSHUFB mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_SSSE3)
@@ -23108,7 +23108,7 @@ func (self *Program) PSHUFB(v0 interface{}, v1 interface{}) *Instruction {
 //    * PSHUFD imm8, m128, xmm
 //
 func (self *Program) PSHUFD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // PSHUFD imm8, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_SSE2)
@@ -23149,7 +23149,7 @@ func (self *Program) PSHUFD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * PSHUFHW imm8, m128, xmm
 //
 func (self *Program) PSHUFHW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // PSHUFHW imm8, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_SSE2)
@@ -23190,7 +23190,7 @@ func (self *Program) PSHUFHW(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * PSHUFLW imm8, m128, xmm
 //
 func (self *Program) PSHUFLW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // PSHUFLW imm8, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_SSE2)
@@ -23231,7 +23231,7 @@ func (self *Program) PSHUFLW(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * PSHUFW imm8, m64, mm
 //
 func (self *Program) PSHUFW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // PSHUFW imm8, mm, mm
     if isImm8(v0) && isMM(v1) && isMM(v2) {
         self.require(ISA_MMX_PLUS)
@@ -23272,7 +23272,7 @@ func (self *Program) PSHUFW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * PSIGNB m128, xmm
 //
 func (self *Program) PSIGNB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PSIGNB mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_SSSE3)
@@ -23337,7 +23337,7 @@ func (self *Program) PSIGNB(v0 interface{}, v1 interface{}) *Instruction {
 //    * PSIGND m128, xmm
 //
 func (self *Program) PSIGND(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PSIGND mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_SSSE3)
@@ -23402,7 +23402,7 @@ func (self *Program) PSIGND(v0 interface{}, v1 interface{}) *Instruction {
 //    * PSIGNW m128, xmm
 //
 func (self *Program) PSIGNW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PSIGNW mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_SSSE3)
@@ -23469,7 +23469,7 @@ func (self *Program) PSIGNW(v0 interface{}, v1 interface{}) *Instruction {
 //    * PSLLD m128, xmm
 //
 func (self *Program) PSLLD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PSLLD imm8, mm
     if isImm8(v0) && isMM(v1) {
         self.require(ISA_MMX)
@@ -23550,7 +23550,7 @@ func (self *Program) PSLLD(v0 interface{}, v1 interface{}) *Instruction {
 //    * PSLLDQ imm8, xmm
 //
 func (self *Program) PSLLDQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PSLLDQ imm8, xmm
     if isImm8(v0) && isXMM(v1) {
         self.require(ISA_SSE2)
@@ -23583,7 +23583,7 @@ func (self *Program) PSLLDQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * PSLLQ m128, xmm
 //
 func (self *Program) PSLLQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PSLLQ imm8, mm
     if isImm8(v0) && isMM(v1) {
         self.require(ISA_MMX)
@@ -23669,7 +23669,7 @@ func (self *Program) PSLLQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * PSLLW m128, xmm
 //
 func (self *Program) PSLLW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PSLLW imm8, mm
     if isImm8(v0) && isMM(v1) {
         self.require(ISA_MMX)
@@ -23755,7 +23755,7 @@ func (self *Program) PSLLW(v0 interface{}, v1 interface{}) *Instruction {
 //    * PSRAD m128, xmm
 //
 func (self *Program) PSRAD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PSRAD imm8, mm
     if isImm8(v0) && isMM(v1) {
         self.require(ISA_MMX)
@@ -23841,7 +23841,7 @@ func (self *Program) PSRAD(v0 interface{}, v1 interface{}) *Instruction {
 //    * PSRAW m128, xmm
 //
 func (self *Program) PSRAW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PSRAW imm8, mm
     if isImm8(v0) && isMM(v1) {
         self.require(ISA_MMX)
@@ -23927,7 +23927,7 @@ func (self *Program) PSRAW(v0 interface{}, v1 interface{}) *Instruction {
 //    * PSRLD m128, xmm
 //
 func (self *Program) PSRLD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PSRLD imm8, mm
     if isImm8(v0) && isMM(v1) {
         self.require(ISA_MMX)
@@ -24008,7 +24008,7 @@ func (self *Program) PSRLD(v0 interface{}, v1 interface{}) *Instruction {
 //    * PSRLDQ imm8, xmm
 //
 func (self *Program) PSRLDQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PSRLDQ imm8, xmm
     if isImm8(v0) && isXMM(v1) {
         self.require(ISA_SSE2)
@@ -24041,7 +24041,7 @@ func (self *Program) PSRLDQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * PSRLQ m128, xmm
 //
 func (self *Program) PSRLQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PSRLQ imm8, mm
     if isImm8(v0) && isMM(v1) {
         self.require(ISA_MMX)
@@ -24127,7 +24127,7 @@ func (self *Program) PSRLQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * PSRLW m128, xmm
 //
 func (self *Program) PSRLW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PSRLW imm8, mm
     if isImm8(v0) && isMM(v1) {
         self.require(ISA_MMX)
@@ -24211,7 +24211,7 @@ func (self *Program) PSRLW(v0 interface{}, v1 interface{}) *Instruction {
 //    * PSUBB m128, xmm
 //
 func (self *Program) PSUBB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PSUBB mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_MMX)
@@ -24272,7 +24272,7 @@ func (self *Program) PSUBB(v0 interface{}, v1 interface{}) *Instruction {
 //    * PSUBD m128, xmm
 //
 func (self *Program) PSUBD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PSUBD mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_MMX)
@@ -24333,7 +24333,7 @@ func (self *Program) PSUBD(v0 interface{}, v1 interface{}) *Instruction {
 //    * PSUBQ m128, xmm
 //
 func (self *Program) PSUBQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PSUBQ mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_SSE2)
@@ -24394,7 +24394,7 @@ func (self *Program) PSUBQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * PSUBSB m128, xmm
 //
 func (self *Program) PSUBSB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PSUBSB mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_MMX)
@@ -24455,7 +24455,7 @@ func (self *Program) PSUBSB(v0 interface{}, v1 interface{}) *Instruction {
 //    * PSUBSW m128, xmm
 //
 func (self *Program) PSUBSW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PSUBSW mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_MMX)
@@ -24516,7 +24516,7 @@ func (self *Program) PSUBSW(v0 interface{}, v1 interface{}) *Instruction {
 //    * PSUBUSB m128, xmm
 //
 func (self *Program) PSUBUSB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PSUBUSB mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_MMX)
@@ -24577,7 +24577,7 @@ func (self *Program) PSUBUSB(v0 interface{}, v1 interface{}) *Instruction {
 //    * PSUBUSW m128, xmm
 //
 func (self *Program) PSUBUSW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PSUBUSW mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_MMX)
@@ -24638,7 +24638,7 @@ func (self *Program) PSUBUSW(v0 interface{}, v1 interface{}) *Instruction {
 //    * PSUBW m128, xmm
 //
 func (self *Program) PSUBW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PSUBW mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_MMX)
@@ -24697,7 +24697,7 @@ func (self *Program) PSUBW(v0 interface{}, v1 interface{}) *Instruction {
 //    * PSWAPD m64, mm
 //
 func (self *Program) PSWAPD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PSWAPD mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_3DNOW_PLUS)
@@ -24736,7 +24736,7 @@ func (self *Program) PSWAPD(v0 interface{}, v1 interface{}) *Instruction {
 //    * PTEST m128, xmm
 //
 func (self *Program) PTEST(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PTEST xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE4_1)
@@ -24779,7 +24779,7 @@ func (self *Program) PTEST(v0 interface{}, v1 interface{}) *Instruction {
 //    * PUNPCKHBW m128, xmm
 //
 func (self *Program) PUNPCKHBW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PUNPCKHBW mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_MMX)
@@ -24840,7 +24840,7 @@ func (self *Program) PUNPCKHBW(v0 interface{}, v1 interface{}) *Instruction {
 //    * PUNPCKHDQ m128, xmm
 //
 func (self *Program) PUNPCKHDQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PUNPCKHDQ mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_MMX)
@@ -24899,7 +24899,7 @@ func (self *Program) PUNPCKHDQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * PUNPCKHQDQ m128, xmm
 //
 func (self *Program) PUNPCKHQDQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PUNPCKHQDQ xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE2)
@@ -24940,7 +24940,7 @@ func (self *Program) PUNPCKHQDQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * PUNPCKHWD m128, xmm
 //
 func (self *Program) PUNPCKHWD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PUNPCKHWD mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_MMX)
@@ -25001,7 +25001,7 @@ func (self *Program) PUNPCKHWD(v0 interface{}, v1 interface{}) *Instruction {
 //    * PUNPCKLBW m128, xmm
 //
 func (self *Program) PUNPCKLBW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PUNPCKLBW mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_MMX)
@@ -25062,7 +25062,7 @@ func (self *Program) PUNPCKLBW(v0 interface{}, v1 interface{}) *Instruction {
 //    * PUNPCKLDQ m128, xmm
 //
 func (self *Program) PUNPCKLDQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PUNPCKLDQ mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_MMX)
@@ -25121,7 +25121,7 @@ func (self *Program) PUNPCKLDQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * PUNPCKLQDQ m128, xmm
 //
 func (self *Program) PUNPCKLQDQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PUNPCKLQDQ xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE2)
@@ -25162,7 +25162,7 @@ func (self *Program) PUNPCKLQDQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * PUNPCKLWD m128, xmm
 //
 func (self *Program) PUNPCKLWD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PUNPCKLWD mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_MMX)
@@ -25222,7 +25222,7 @@ func (self *Program) PUNPCKLWD(v0 interface{}, v1 interface{}) *Instruction {
 //    * PUSHQ m64
 //
 func (self *Program) PUSHQ(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // PUSHQ imm8
     if isImm8Ext(v0, 8) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -25272,7 +25272,7 @@ func (self *Program) PUSHQ(v0 interface{}) *Instruction {
 //    * PUSHW m16
 //
 func (self *Program) PUSHW(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // PUSHW r16
     if isReg16(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -25314,7 +25314,7 @@ func (self *Program) PUSHW(v0 interface{}) *Instruction {
 //    * PXOR m128, xmm
 //
 func (self *Program) PXOR(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // PXOR mm, mm
     if isMM(v0) && isMM(v1) {
         self.require(ISA_MMX)
@@ -25376,7 +25376,7 @@ func (self *Program) PXOR(v0 interface{}, v1 interface{}) *Instruction {
 //    * RCLB cl, m8
 //
 func (self *Program) RCLB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // RCLB 1, r8
     if isConst1(v0) && isReg8(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -25446,7 +25446,7 @@ func (self *Program) RCLB(v0 interface{}, v1 interface{}) *Instruction {
 //    * RCLL cl, m32
 //
 func (self *Program) RCLL(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // RCLL 1, r32
     if isConst1(v0) && isReg32(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -25516,7 +25516,7 @@ func (self *Program) RCLL(v0 interface{}, v1 interface{}) *Instruction {
 //    * RCLQ cl, m64
 //
 func (self *Program) RCLQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // RCLQ 1, r64
     if isConst1(v0) && isReg64(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -25586,7 +25586,7 @@ func (self *Program) RCLQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * RCLW cl, m16
 //
 func (self *Program) RCLW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // RCLW 1, r16
     if isConst1(v0) && isReg16(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -25659,7 +25659,7 @@ func (self *Program) RCLW(v0 interface{}, v1 interface{}) *Instruction {
 //    * RCPPS m128, xmm
 //
 func (self *Program) RCPPS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // RCPPS xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE)
@@ -25696,7 +25696,7 @@ func (self *Program) RCPPS(v0 interface{}, v1 interface{}) *Instruction {
 //    * RCPSS m32, xmm
 //
 func (self *Program) RCPSS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // RCPSS xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE)
@@ -25738,7 +25738,7 @@ func (self *Program) RCPSS(v0 interface{}, v1 interface{}) *Instruction {
 //    * RCRB cl, m8
 //
 func (self *Program) RCRB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // RCRB 1, r8
     if isConst1(v0) && isReg8(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -25808,7 +25808,7 @@ func (self *Program) RCRB(v0 interface{}, v1 interface{}) *Instruction {
 //    * RCRL cl, m32
 //
 func (self *Program) RCRL(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // RCRL 1, r32
     if isConst1(v0) && isReg32(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -25878,7 +25878,7 @@ func (self *Program) RCRL(v0 interface{}, v1 interface{}) *Instruction {
 //    * RCRQ cl, m64
 //
 func (self *Program) RCRQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // RCRQ 1, r64
     if isConst1(v0) && isReg64(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -25948,7 +25948,7 @@ func (self *Program) RCRQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * RCRW cl, m16
 //
 func (self *Program) RCRW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // RCRW 1, r16
     if isConst1(v0) && isReg16(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -26022,7 +26022,7 @@ func (self *Program) RCRW(v0 interface{}, v1 interface{}) *Instruction {
 //    * RDRAND r64
 //
 func (self *Program) RDRAND(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // RDRAND r16
     if isReg16(v0) {
         self.require(ISA_RDRAND)
@@ -26071,7 +26071,7 @@ func (self *Program) RDRAND(v0 interface{}) *Instruction {
 //    * RDSEED r64
 //
 func (self *Program) RDSEED(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // RDSEED r16
     if isReg16(v0) {
         self.require(ISA_RDSEED)
@@ -26118,7 +26118,7 @@ func (self *Program) RDSEED(v0 interface{}) *Instruction {
 //    * RDTSC
 //
 func (self *Program) RDTSC() *Instruction {
-    p := self.alloc(0, [_MAX_ARGS]interface{}{})
+    p := self.alloc(0, Operands{})
     // RDTSC
     self.require(ISA_RDTSC)
     p.add(0, func(m *_Encoding, v []interface{}) {
@@ -26137,7 +26137,7 @@ func (self *Program) RDTSC() *Instruction {
 //    * RDTSCP
 //
 func (self *Program) RDTSCP() *Instruction {
-    p := self.alloc(0, [_MAX_ARGS]interface{}{})
+    p := self.alloc(0, Operands{})
     // RDTSCP
     self.require(ISA_RDTSCP)
     p.add(0, func(m *_Encoding, v []interface{}) {
@@ -26159,8 +26159,8 @@ func (self *Program) RDTSCP() *Instruction {
 func (self *Program) RET(vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(0, [_MAX_ARGS]interface{}{})
-        case 1  : p = self.alloc(1, [_MAX_ARGS]interface{}{vv[0]})
+        case 0  : p = self.alloc(0, Operands{})
+        case 1  : p = self.alloc(1, Operands{vv[0]})
         default : panic("instruction RET takes 0 or 1 operands")
     }
     // RET
@@ -26195,7 +26195,7 @@ func (self *Program) RET(vv ...interface{}) *Instruction {
 //    * ROLB cl, m8
 //
 func (self *Program) ROLB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // ROLB 1, r8
     if isConst1(v0) && isReg8(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -26265,7 +26265,7 @@ func (self *Program) ROLB(v0 interface{}, v1 interface{}) *Instruction {
 //    * ROLL cl, m32
 //
 func (self *Program) ROLL(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // ROLL 1, r32
     if isConst1(v0) && isReg32(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -26335,7 +26335,7 @@ func (self *Program) ROLL(v0 interface{}, v1 interface{}) *Instruction {
 //    * ROLQ cl, m64
 //
 func (self *Program) ROLQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // ROLQ 1, r64
     if isConst1(v0) && isReg64(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -26405,7 +26405,7 @@ func (self *Program) ROLQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * ROLW cl, m16
 //
 func (self *Program) ROLW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // ROLW 1, r16
     if isConst1(v0) && isReg16(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -26481,7 +26481,7 @@ func (self *Program) ROLW(v0 interface{}, v1 interface{}) *Instruction {
 //    * RORB cl, m8
 //
 func (self *Program) RORB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // RORB 1, r8
     if isConst1(v0) && isReg8(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -26551,7 +26551,7 @@ func (self *Program) RORB(v0 interface{}, v1 interface{}) *Instruction {
 //    * RORL cl, m32
 //
 func (self *Program) RORL(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // RORL 1, r32
     if isConst1(v0) && isReg32(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -26621,7 +26621,7 @@ func (self *Program) RORL(v0 interface{}, v1 interface{}) *Instruction {
 //    * RORQ cl, m64
 //
 func (self *Program) RORQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // RORQ 1, r64
     if isConst1(v0) && isReg64(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -26691,7 +26691,7 @@ func (self *Program) RORQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * RORW cl, m16
 //
 func (self *Program) RORW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // RORW 1, r16
     if isConst1(v0) && isReg16(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -26764,7 +26764,7 @@ func (self *Program) RORW(v0 interface{}, v1 interface{}) *Instruction {
 //    * RORXL imm8, m32, r32
 //
 func (self *Program) RORXL(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // RORXL imm8, r32, r32
     if isImm8(v0) && isReg32(v1) && isReg32(v2) {
         self.require(ISA_BMI2)
@@ -26803,7 +26803,7 @@ func (self *Program) RORXL(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
 //    * RORXQ imm8, m64, r64
 //
 func (self *Program) RORXQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // RORXQ imm8, r64, r64
     if isImm8(v0) && isReg64(v1) && isReg64(v2) {
         self.require(ISA_BMI2)
@@ -26842,7 +26842,7 @@ func (self *Program) RORXQ(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
 //    * ROUNDPD imm8, m128, xmm
 //
 func (self *Program) ROUNDPD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // ROUNDPD imm8, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_SSE4_1)
@@ -26885,7 +26885,7 @@ func (self *Program) ROUNDPD(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * ROUNDPS imm8, m128, xmm
 //
 func (self *Program) ROUNDPS(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // ROUNDPS imm8, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_SSE4_1)
@@ -26928,7 +26928,7 @@ func (self *Program) ROUNDPS(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * ROUNDSD imm8, m64, xmm
 //
 func (self *Program) ROUNDSD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // ROUNDSD imm8, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_SSE4_1)
@@ -26971,7 +26971,7 @@ func (self *Program) ROUNDSD(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * ROUNDSS imm8, m32, xmm
 //
 func (self *Program) ROUNDSS(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // ROUNDSS imm8, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_SSE4_1)
@@ -27014,7 +27014,7 @@ func (self *Program) ROUNDSS(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * RSQRTPS m128, xmm
 //
 func (self *Program) RSQRTPS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // RSQRTPS xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE)
@@ -27051,7 +27051,7 @@ func (self *Program) RSQRTPS(v0 interface{}, v1 interface{}) *Instruction {
 //    * RSQRTSS m32, xmm
 //
 func (self *Program) RSQRTSS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // RSQRTSS xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE)
@@ -27093,7 +27093,7 @@ func (self *Program) RSQRTSS(v0 interface{}, v1 interface{}) *Instruction {
 //    * SALB cl, m8
 //
 func (self *Program) SALB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // SALB 1, r8
     if isConst1(v0) && isReg8(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -27163,7 +27163,7 @@ func (self *Program) SALB(v0 interface{}, v1 interface{}) *Instruction {
 //    * SALL cl, m32
 //
 func (self *Program) SALL(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // SALL 1, r32
     if isConst1(v0) && isReg32(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -27233,7 +27233,7 @@ func (self *Program) SALL(v0 interface{}, v1 interface{}) *Instruction {
 //    * SALQ cl, m64
 //
 func (self *Program) SALQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // SALQ 1, r64
     if isConst1(v0) && isReg64(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -27303,7 +27303,7 @@ func (self *Program) SALQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * SALW cl, m16
 //
 func (self *Program) SALW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // SALW 1, r16
     if isConst1(v0) && isReg16(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -27379,7 +27379,7 @@ func (self *Program) SALW(v0 interface{}, v1 interface{}) *Instruction {
 //    * SARB cl, m8
 //
 func (self *Program) SARB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // SARB 1, r8
     if isConst1(v0) && isReg8(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -27449,7 +27449,7 @@ func (self *Program) SARB(v0 interface{}, v1 interface{}) *Instruction {
 //    * SARL cl, m32
 //
 func (self *Program) SARL(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // SARL 1, r32
     if isConst1(v0) && isReg32(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -27519,7 +27519,7 @@ func (self *Program) SARL(v0 interface{}, v1 interface{}) *Instruction {
 //    * SARQ cl, m64
 //
 func (self *Program) SARQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // SARQ 1, r64
     if isConst1(v0) && isReg64(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -27589,7 +27589,7 @@ func (self *Program) SARQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * SARW cl, m16
 //
 func (self *Program) SARW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // SARW 1, r16
     if isConst1(v0) && isReg16(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -27662,7 +27662,7 @@ func (self *Program) SARW(v0 interface{}, v1 interface{}) *Instruction {
 //    * SARXL r32, m32, r32
 //
 func (self *Program) SARXL(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // SARXL r32, r32, r32
     if isReg32(v0) && isReg32(v1) && isReg32(v2) {
         self.require(ISA_BMI2)
@@ -27699,7 +27699,7 @@ func (self *Program) SARXL(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
 //    * SARXQ r64, m64, r64
 //
 func (self *Program) SARXQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // SARXQ r64, r64, r64
     if isReg64(v0) && isReg64(v1) && isReg64(v2) {
         self.require(ISA_BMI2)
@@ -27739,7 +27739,7 @@ func (self *Program) SARXQ(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
 //    * SBBB r8, m8
 //
 func (self *Program) SBBB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // SBBB imm8, al
     if isImm8(v0) && v1 == AL {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -27815,7 +27815,7 @@ func (self *Program) SBBB(v0 interface{}, v1 interface{}) *Instruction {
 //    * SBBL r32, m32
 //
 func (self *Program) SBBL(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // SBBL imm32, eax
     if isImm32(v0) && v1 == EAX {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -27909,7 +27909,7 @@ func (self *Program) SBBL(v0 interface{}, v1 interface{}) *Instruction {
 //    * SBBQ r64, m64
 //
 func (self *Program) SBBQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // SBBQ imm32, rax
     if isImm32(v0) && v1 == RAX {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -28004,7 +28004,7 @@ func (self *Program) SBBQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * SBBW r16, m16
 //
 func (self *Program) SBBW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // SBBW imm16, ax
     if isImm16(v0) && v1 == AX {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -28101,7 +28101,7 @@ func (self *Program) SBBW(v0 interface{}, v1 interface{}) *Instruction {
 //    * SETA m8
 //
 func (self *Program) SETA(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // SETA r8
     if isReg8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -28135,7 +28135,7 @@ func (self *Program) SETA(v0 interface{}) *Instruction {
 //    * SETAE m8
 //
 func (self *Program) SETAE(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // SETAE r8
     if isReg8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -28169,7 +28169,7 @@ func (self *Program) SETAE(v0 interface{}) *Instruction {
 //    * SETB m8
 //
 func (self *Program) SETB(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // SETB r8
     if isReg8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -28203,7 +28203,7 @@ func (self *Program) SETB(v0 interface{}) *Instruction {
 //    * SETBE m8
 //
 func (self *Program) SETBE(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // SETBE r8
     if isReg8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -28237,7 +28237,7 @@ func (self *Program) SETBE(v0 interface{}) *Instruction {
 //    * SETC m8
 //
 func (self *Program) SETC(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // SETC r8
     if isReg8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -28271,7 +28271,7 @@ func (self *Program) SETC(v0 interface{}) *Instruction {
 //    * SETE m8
 //
 func (self *Program) SETE(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // SETE r8
     if isReg8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -28305,7 +28305,7 @@ func (self *Program) SETE(v0 interface{}) *Instruction {
 //    * SETG m8
 //
 func (self *Program) SETG(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // SETG r8
     if isReg8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -28339,7 +28339,7 @@ func (self *Program) SETG(v0 interface{}) *Instruction {
 //    * SETGE m8
 //
 func (self *Program) SETGE(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // SETGE r8
     if isReg8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -28373,7 +28373,7 @@ func (self *Program) SETGE(v0 interface{}) *Instruction {
 //    * SETL m8
 //
 func (self *Program) SETL(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // SETL r8
     if isReg8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -28407,7 +28407,7 @@ func (self *Program) SETL(v0 interface{}) *Instruction {
 //    * SETLE m8
 //
 func (self *Program) SETLE(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // SETLE r8
     if isReg8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -28441,7 +28441,7 @@ func (self *Program) SETLE(v0 interface{}) *Instruction {
 //    * SETNA m8
 //
 func (self *Program) SETNA(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // SETNA r8
     if isReg8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -28475,7 +28475,7 @@ func (self *Program) SETNA(v0 interface{}) *Instruction {
 //    * SETNAE m8
 //
 func (self *Program) SETNAE(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // SETNAE r8
     if isReg8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -28509,7 +28509,7 @@ func (self *Program) SETNAE(v0 interface{}) *Instruction {
 //    * SETNB m8
 //
 func (self *Program) SETNB(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // SETNB r8
     if isReg8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -28543,7 +28543,7 @@ func (self *Program) SETNB(v0 interface{}) *Instruction {
 //    * SETNBE m8
 //
 func (self *Program) SETNBE(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // SETNBE r8
     if isReg8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -28577,7 +28577,7 @@ func (self *Program) SETNBE(v0 interface{}) *Instruction {
 //    * SETNC m8
 //
 func (self *Program) SETNC(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // SETNC r8
     if isReg8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -28611,7 +28611,7 @@ func (self *Program) SETNC(v0 interface{}) *Instruction {
 //    * SETNE m8
 //
 func (self *Program) SETNE(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // SETNE r8
     if isReg8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -28645,7 +28645,7 @@ func (self *Program) SETNE(v0 interface{}) *Instruction {
 //    * SETNG m8
 //
 func (self *Program) SETNG(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // SETNG r8
     if isReg8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -28679,7 +28679,7 @@ func (self *Program) SETNG(v0 interface{}) *Instruction {
 //    * SETNGE m8
 //
 func (self *Program) SETNGE(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // SETNGE r8
     if isReg8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -28713,7 +28713,7 @@ func (self *Program) SETNGE(v0 interface{}) *Instruction {
 //    * SETNL m8
 //
 func (self *Program) SETNL(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // SETNL r8
     if isReg8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -28747,7 +28747,7 @@ func (self *Program) SETNL(v0 interface{}) *Instruction {
 //    * SETNLE m8
 //
 func (self *Program) SETNLE(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // SETNLE r8
     if isReg8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -28781,7 +28781,7 @@ func (self *Program) SETNLE(v0 interface{}) *Instruction {
 //    * SETNO m8
 //
 func (self *Program) SETNO(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // SETNO r8
     if isReg8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -28815,7 +28815,7 @@ func (self *Program) SETNO(v0 interface{}) *Instruction {
 //    * SETNP m8
 //
 func (self *Program) SETNP(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // SETNP r8
     if isReg8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -28849,7 +28849,7 @@ func (self *Program) SETNP(v0 interface{}) *Instruction {
 //    * SETNS m8
 //
 func (self *Program) SETNS(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // SETNS r8
     if isReg8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -28883,7 +28883,7 @@ func (self *Program) SETNS(v0 interface{}) *Instruction {
 //    * SETNZ m8
 //
 func (self *Program) SETNZ(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // SETNZ r8
     if isReg8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -28917,7 +28917,7 @@ func (self *Program) SETNZ(v0 interface{}) *Instruction {
 //    * SETO m8
 //
 func (self *Program) SETO(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // SETO r8
     if isReg8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -28951,7 +28951,7 @@ func (self *Program) SETO(v0 interface{}) *Instruction {
 //    * SETP m8
 //
 func (self *Program) SETP(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // SETP r8
     if isReg8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -28985,7 +28985,7 @@ func (self *Program) SETP(v0 interface{}) *Instruction {
 //    * SETPE m8
 //
 func (self *Program) SETPE(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // SETPE r8
     if isReg8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -29019,7 +29019,7 @@ func (self *Program) SETPE(v0 interface{}) *Instruction {
 //    * SETPO m8
 //
 func (self *Program) SETPO(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // SETPO r8
     if isReg8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -29053,7 +29053,7 @@ func (self *Program) SETPO(v0 interface{}) *Instruction {
 //    * SETS m8
 //
 func (self *Program) SETS(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // SETS r8
     if isReg8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -29087,7 +29087,7 @@ func (self *Program) SETS(v0 interface{}) *Instruction {
 //    * SETZ m8
 //
 func (self *Program) SETZ(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // SETZ r8
     if isReg8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -29121,7 +29121,7 @@ func (self *Program) SETZ(v0 interface{}) *Instruction {
 //    * SFENCE
 //
 func (self *Program) SFENCE() *Instruction {
-    p := self.alloc(0, [_MAX_ARGS]interface{}{})
+    p := self.alloc(0, Operands{})
     // SFENCE
     self.require(ISA_MMX_PLUS)
     p.add(0, func(m *_Encoding, v []interface{}) {
@@ -29142,7 +29142,7 @@ func (self *Program) SFENCE() *Instruction {
 //    * SHA1MSG1 m128, xmm
 //
 func (self *Program) SHA1MSG1(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // SHA1MSG1 xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SHA)
@@ -29181,7 +29181,7 @@ func (self *Program) SHA1MSG1(v0 interface{}, v1 interface{}) *Instruction {
 //    * SHA1MSG2 m128, xmm
 //
 func (self *Program) SHA1MSG2(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // SHA1MSG2 xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SHA)
@@ -29220,7 +29220,7 @@ func (self *Program) SHA1MSG2(v0 interface{}, v1 interface{}) *Instruction {
 //    * SHA1NEXTE m128, xmm
 //
 func (self *Program) SHA1NEXTE(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // SHA1NEXTE xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SHA)
@@ -29259,7 +29259,7 @@ func (self *Program) SHA1NEXTE(v0 interface{}, v1 interface{}) *Instruction {
 //    * SHA1RNDS4 imm8, m128, xmm
 //
 func (self *Program) SHA1RNDS4(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // SHA1RNDS4 imm8, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_SHA)
@@ -29300,7 +29300,7 @@ func (self *Program) SHA1RNDS4(v0 interface{}, v1 interface{}, v2 interface{}) *
 //    * SHA256MSG1 m128, xmm
 //
 func (self *Program) SHA256MSG1(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // SHA256MSG1 xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SHA)
@@ -29339,7 +29339,7 @@ func (self *Program) SHA256MSG1(v0 interface{}, v1 interface{}) *Instruction {
 //    * SHA256MSG2 m128, xmm
 //
 func (self *Program) SHA256MSG2(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // SHA256MSG2 xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SHA)
@@ -29378,7 +29378,7 @@ func (self *Program) SHA256MSG2(v0 interface{}, v1 interface{}) *Instruction {
 //    * SHA256RNDS2 xmm0, m128, xmm
 //
 func (self *Program) SHA256RNDS2(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // SHA256RNDS2 xmm0, xmm, xmm
     if v0 == XMM0 && isXMM(v1) && isXMM(v2) {
         self.require(ISA_SHA)
@@ -29420,7 +29420,7 @@ func (self *Program) SHA256RNDS2(v0 interface{}, v1 interface{}, v2 interface{})
 //    * SHLB cl, m8
 //
 func (self *Program) SHLB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // SHLB 1, r8
     if isConst1(v0) && isReg8(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -29488,7 +29488,7 @@ func (self *Program) SHLB(v0 interface{}, v1 interface{}) *Instruction {
 //    * SHLDL cl, r32, m32
 //
 func (self *Program) SHLDL(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // SHLDL imm8, r32, r32
     if isImm8(v0) && isReg32(v1) && isReg32(v2) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -29544,7 +29544,7 @@ func (self *Program) SHLDL(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
 //    * SHLDQ cl, r64, m64
 //
 func (self *Program) SHLDQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // SHLDQ imm8, r64, r64
     if isImm8(v0) && isReg64(v1) && isReg64(v2) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -29600,7 +29600,7 @@ func (self *Program) SHLDQ(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
 //    * SHLDW cl, r16, m16
 //
 func (self *Program) SHLDW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // SHLDW imm8, r16, r16
     if isImm8(v0) && isReg16(v1) && isReg16(v2) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -29662,7 +29662,7 @@ func (self *Program) SHLDW(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
 //    * SHLL cl, m32
 //
 func (self *Program) SHLL(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // SHLL 1, r32
     if isConst1(v0) && isReg32(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -29732,7 +29732,7 @@ func (self *Program) SHLL(v0 interface{}, v1 interface{}) *Instruction {
 //    * SHLQ cl, m64
 //
 func (self *Program) SHLQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // SHLQ 1, r64
     if isConst1(v0) && isReg64(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -29802,7 +29802,7 @@ func (self *Program) SHLQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * SHLW cl, m16
 //
 func (self *Program) SHLW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // SHLW 1, r16
     if isConst1(v0) && isReg16(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -29875,7 +29875,7 @@ func (self *Program) SHLW(v0 interface{}, v1 interface{}) *Instruction {
 //    * SHLXL r32, m32, r32
 //
 func (self *Program) SHLXL(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // SHLXL r32, r32, r32
     if isReg32(v0) && isReg32(v1) && isReg32(v2) {
         self.require(ISA_BMI2)
@@ -29912,7 +29912,7 @@ func (self *Program) SHLXL(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
 //    * SHLXQ r64, m64, r64
 //
 func (self *Program) SHLXQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // SHLXQ r64, r64, r64
     if isReg64(v0) && isReg64(v1) && isReg64(v2) {
         self.require(ISA_BMI2)
@@ -29952,7 +29952,7 @@ func (self *Program) SHLXQ(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
 //    * SHRB cl, m8
 //
 func (self *Program) SHRB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // SHRB 1, r8
     if isConst1(v0) && isReg8(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -30020,7 +30020,7 @@ func (self *Program) SHRB(v0 interface{}, v1 interface{}) *Instruction {
 //    * SHRDL cl, r32, m32
 //
 func (self *Program) SHRDL(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // SHRDL imm8, r32, r32
     if isImm8(v0) && isReg32(v1) && isReg32(v2) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -30076,7 +30076,7 @@ func (self *Program) SHRDL(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
 //    * SHRDQ cl, r64, m64
 //
 func (self *Program) SHRDQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // SHRDQ imm8, r64, r64
     if isImm8(v0) && isReg64(v1) && isReg64(v2) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -30132,7 +30132,7 @@ func (self *Program) SHRDQ(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
 //    * SHRDW cl, r16, m16
 //
 func (self *Program) SHRDW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // SHRDW imm8, r16, r16
     if isImm8(v0) && isReg16(v1) && isReg16(v2) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -30194,7 +30194,7 @@ func (self *Program) SHRDW(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
 //    * SHRL cl, m32
 //
 func (self *Program) SHRL(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // SHRL 1, r32
     if isConst1(v0) && isReg32(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -30264,7 +30264,7 @@ func (self *Program) SHRL(v0 interface{}, v1 interface{}) *Instruction {
 //    * SHRQ cl, m64
 //
 func (self *Program) SHRQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // SHRQ 1, r64
     if isConst1(v0) && isReg64(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -30334,7 +30334,7 @@ func (self *Program) SHRQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * SHRW cl, m16
 //
 func (self *Program) SHRW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // SHRW 1, r16
     if isConst1(v0) && isReg16(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -30407,7 +30407,7 @@ func (self *Program) SHRW(v0 interface{}, v1 interface{}) *Instruction {
 //    * SHRXL r32, m32, r32
 //
 func (self *Program) SHRXL(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // SHRXL r32, r32, r32
     if isReg32(v0) && isReg32(v1) && isReg32(v2) {
         self.require(ISA_BMI2)
@@ -30444,7 +30444,7 @@ func (self *Program) SHRXL(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
 //    * SHRXQ r64, m64, r64
 //
 func (self *Program) SHRXQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // SHRXQ r64, r64, r64
     if isReg64(v0) && isReg64(v1) && isReg64(v2) {
         self.require(ISA_BMI2)
@@ -30481,7 +30481,7 @@ func (self *Program) SHRXQ(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
 //    * SHUFPD imm8, m128, xmm
 //
 func (self *Program) SHUFPD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // SHUFPD imm8, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_SSE2)
@@ -30522,7 +30522,7 @@ func (self *Program) SHUFPD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * SHUFPS imm8, m128, xmm
 //
 func (self *Program) SHUFPS(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // SHUFPS imm8, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_SSE)
@@ -30561,7 +30561,7 @@ func (self *Program) SHUFPS(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * SQRTPD m128, xmm
 //
 func (self *Program) SQRTPD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // SQRTPD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE2)
@@ -30600,7 +30600,7 @@ func (self *Program) SQRTPD(v0 interface{}, v1 interface{}) *Instruction {
 //    * SQRTPS m128, xmm
 //
 func (self *Program) SQRTPS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // SQRTPS xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE)
@@ -30637,7 +30637,7 @@ func (self *Program) SQRTPS(v0 interface{}, v1 interface{}) *Instruction {
 //    * SQRTSD m64, xmm
 //
 func (self *Program) SQRTSD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // SQRTSD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE2)
@@ -30676,7 +30676,7 @@ func (self *Program) SQRTSD(v0 interface{}, v1 interface{}) *Instruction {
 //    * SQRTSS m32, xmm
 //
 func (self *Program) SQRTSS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // SQRTSS xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE)
@@ -30713,7 +30713,7 @@ func (self *Program) SQRTSS(v0 interface{}, v1 interface{}) *Instruction {
 //    * STC
 //
 func (self *Program) STC() *Instruction {
-    p := self.alloc(0, [_MAX_ARGS]interface{}{})
+    p := self.alloc(0, Operands{})
     // STC
     p.add(0, func(m *_Encoding, v []interface{}) {
         m.emit(0xf9)
@@ -30729,7 +30729,7 @@ func (self *Program) STC() *Instruction {
 //    * STD
 //
 func (self *Program) STD() *Instruction {
-    p := self.alloc(0, [_MAX_ARGS]interface{}{})
+    p := self.alloc(0, Operands{})
     // STD
     p.add(0, func(m *_Encoding, v []interface{}) {
         m.emit(0xfd)
@@ -30746,7 +30746,7 @@ func (self *Program) STD() *Instruction {
 //    * STMXCSR m32
 //
 func (self *Program) STMXCSR(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // STMXCSR m32
     if isM32(v0) {
         self.require(ISA_SSE)
@@ -30776,7 +30776,7 @@ func (self *Program) STMXCSR(v0 interface{}) *Instruction {
 //    * SUBB r8, m8
 //
 func (self *Program) SUBB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // SUBB imm8, al
     if isImm8(v0) && v1 == AL {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -30852,7 +30852,7 @@ func (self *Program) SUBB(v0 interface{}, v1 interface{}) *Instruction {
 //    * SUBL r32, m32
 //
 func (self *Program) SUBL(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // SUBL imm32, eax
     if isImm32(v0) && v1 == EAX {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -30941,7 +30941,7 @@ func (self *Program) SUBL(v0 interface{}, v1 interface{}) *Instruction {
 //    * SUBPD m128, xmm
 //
 func (self *Program) SUBPD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // SUBPD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE2)
@@ -30980,7 +30980,7 @@ func (self *Program) SUBPD(v0 interface{}, v1 interface{}) *Instruction {
 //    * SUBPS m128, xmm
 //
 func (self *Program) SUBPS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // SUBPS xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE)
@@ -31022,7 +31022,7 @@ func (self *Program) SUBPS(v0 interface{}, v1 interface{}) *Instruction {
 //    * SUBQ r64, m64
 //
 func (self *Program) SUBQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // SUBQ imm32, rax
     if isImm32(v0) && v1 == RAX {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -31112,7 +31112,7 @@ func (self *Program) SUBQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * SUBSD m64, xmm
 //
 func (self *Program) SUBSD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // SUBSD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE2)
@@ -31151,7 +31151,7 @@ func (self *Program) SUBSD(v0 interface{}, v1 interface{}) *Instruction {
 //    * SUBSS m32, xmm
 //
 func (self *Program) SUBSS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // SUBSS xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE)
@@ -31195,7 +31195,7 @@ func (self *Program) SUBSS(v0 interface{}, v1 interface{}) *Instruction {
 //    * SUBW r16, m16
 //
 func (self *Program) SUBW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // SUBW imm16, ax
     if isImm16(v0) && v1 == AX {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -31291,7 +31291,7 @@ func (self *Program) SUBW(v0 interface{}, v1 interface{}) *Instruction {
 //    * SYSCALL
 //
 func (self *Program) SYSCALL() *Instruction {
-    p := self.alloc(0, [_MAX_ARGS]interface{}{})
+    p := self.alloc(0, Operands{})
     // SYSCALL
     p.add(0, func(m *_Encoding, v []interface{}) {
         m.emit(0x0f)
@@ -31312,7 +31312,7 @@ func (self *Program) SYSCALL() *Instruction {
 //    * T1MSKC m64, r64
 //
 func (self *Program) T1MSKC(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // T1MSKC r32, r32
     if isReg32(v0) && isReg32(v1) {
         self.require(ISA_TBM)
@@ -31371,7 +31371,7 @@ func (self *Program) T1MSKC(v0 interface{}, v1 interface{}) *Instruction {
 //    * TESTB r8, m8
 //
 func (self *Program) TESTB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // TESTB imm8, al
     if isImm8(v0) && v1 == AL {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -31431,7 +31431,7 @@ func (self *Program) TESTB(v0 interface{}, v1 interface{}) *Instruction {
 //    * TESTL r32, m32
 //
 func (self *Program) TESTL(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // TESTL imm32, eax
     if isImm32(v0) && v1 == EAX {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -31491,7 +31491,7 @@ func (self *Program) TESTL(v0 interface{}, v1 interface{}) *Instruction {
 //    * TESTQ r64, m64
 //
 func (self *Program) TESTQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // TESTQ imm32, rax
     if isImm32(v0) && v1 == RAX {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -31552,7 +31552,7 @@ func (self *Program) TESTQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * TESTW r16, m16
 //
 func (self *Program) TESTW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // TESTW imm16, ax
     if isImm16(v0) && v1 == AX {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -31615,7 +31615,7 @@ func (self *Program) TESTW(v0 interface{}, v1 interface{}) *Instruction {
 //    * TZCNTL m32, r32
 //
 func (self *Program) TZCNTL(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // TZCNTL r32, r32
     if isReg32(v0) && isReg32(v1) {
         self.require(ISA_BMI)
@@ -31654,7 +31654,7 @@ func (self *Program) TZCNTL(v0 interface{}, v1 interface{}) *Instruction {
 //    * TZCNTQ m64, r64
 //
 func (self *Program) TZCNTQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // TZCNTQ r64, r64
     if isReg64(v0) && isReg64(v1) {
         self.require(ISA_BMI)
@@ -31693,7 +31693,7 @@ func (self *Program) TZCNTQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * TZCNTW m16, r16
 //
 func (self *Program) TZCNTW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // TZCNTW r16, r16
     if isReg16(v0) && isReg16(v1) {
         self.require(ISA_BMI)
@@ -31736,7 +31736,7 @@ func (self *Program) TZCNTW(v0 interface{}, v1 interface{}) *Instruction {
 //    * TZMSK m64, r64
 //
 func (self *Program) TZMSK(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // TZMSK r32, r32
     if isReg32(v0) && isReg32(v1) {
         self.require(ISA_TBM)
@@ -31793,7 +31793,7 @@ func (self *Program) TZMSK(v0 interface{}, v1 interface{}) *Instruction {
 //    * UCOMISD m64, xmm
 //
 func (self *Program) UCOMISD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // UCOMISD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE2)
@@ -31832,7 +31832,7 @@ func (self *Program) UCOMISD(v0 interface{}, v1 interface{}) *Instruction {
 //    * UCOMISS m32, xmm
 //
 func (self *Program) UCOMISS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // UCOMISS xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE)
@@ -31867,7 +31867,7 @@ func (self *Program) UCOMISS(v0 interface{}, v1 interface{}) *Instruction {
 //    * UD2
 //
 func (self *Program) UD2() *Instruction {
-    p := self.alloc(0, [_MAX_ARGS]interface{}{})
+    p := self.alloc(0, Operands{})
     // UD2
     p.add(0, func(m *_Encoding, v []interface{}) {
         m.emit(0x0f)
@@ -31886,7 +31886,7 @@ func (self *Program) UD2() *Instruction {
 //    * UNPCKHPD m128, xmm
 //
 func (self *Program) UNPCKHPD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // UNPCKHPD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE2)
@@ -31925,7 +31925,7 @@ func (self *Program) UNPCKHPD(v0 interface{}, v1 interface{}) *Instruction {
 //    * UNPCKHPS m128, xmm
 //
 func (self *Program) UNPCKHPS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // UNPCKHPS xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE)
@@ -31962,7 +31962,7 @@ func (self *Program) UNPCKHPS(v0 interface{}, v1 interface{}) *Instruction {
 //    * UNPCKLPD m128, xmm
 //
 func (self *Program) UNPCKLPD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // UNPCKLPD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE2)
@@ -32001,7 +32001,7 @@ func (self *Program) UNPCKLPD(v0 interface{}, v1 interface{}) *Instruction {
 //    * UNPCKLPS m128, xmm
 //
 func (self *Program) UNPCKLPS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // UNPCKLPS xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE)
@@ -32049,8 +32049,8 @@ func (self *Program) UNPCKLPS(v0 interface{}, v1 interface{}) *Instruction {
 func (self *Program) VADDPD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VADDPD takes 3 or 4 operands")
     }
     // VADDPD m128/m64bcst, xmm, xmm{k}{z}
@@ -32191,8 +32191,8 @@ func (self *Program) VADDPD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
 func (self *Program) VADDPS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VADDPS takes 3 or 4 operands")
     }
     // VADDPS m128/m32bcst, xmm, xmm{k}{z}
@@ -32327,8 +32327,8 @@ func (self *Program) VADDPS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
 func (self *Program) VADDSD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VADDSD takes 3 or 4 operands")
     }
     // VADDSD m64, xmm, xmm{k}{z}
@@ -32403,8 +32403,8 @@ func (self *Program) VADDSD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
 func (self *Program) VADDSS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VADDSS takes 3 or 4 operands")
     }
     // VADDSS m32, xmm, xmm{k}{z}
@@ -32476,7 +32476,7 @@ func (self *Program) VADDSS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
 //    * VADDSUBPD m256, ymm, ymm
 //
 func (self *Program) VADDSUBPD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VADDSUBPD xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_AVX)
@@ -32531,7 +32531,7 @@ func (self *Program) VADDSUBPD(v0 interface{}, v1 interface{}, v2 interface{}) *
 //    * VADDSUBPS m256, ymm, ymm
 //
 func (self *Program) VADDSUBPS(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VADDSUBPS xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_AVX)
@@ -32584,7 +32584,7 @@ func (self *Program) VADDSUBPS(v0 interface{}, v1 interface{}, v2 interface{}) *
 //    * VAESDEC m128, xmm, xmm
 //
 func (self *Program) VAESDEC(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VAESDEC xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_AVX | ISA_AES)
@@ -32621,7 +32621,7 @@ func (self *Program) VAESDEC(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VAESDECLAST m128, xmm, xmm
 //
 func (self *Program) VAESDECLAST(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VAESDECLAST xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_AVX | ISA_AES)
@@ -32658,7 +32658,7 @@ func (self *Program) VAESDECLAST(v0 interface{}, v1 interface{}, v2 interface{})
 //    * VAESENC m128, xmm, xmm
 //
 func (self *Program) VAESENC(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VAESENC xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_AVX | ISA_AES)
@@ -32695,7 +32695,7 @@ func (self *Program) VAESENC(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VAESENCLAST m128, xmm, xmm
 //
 func (self *Program) VAESENCLAST(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VAESENCLAST xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_AVX | ISA_AES)
@@ -32732,7 +32732,7 @@ func (self *Program) VAESENCLAST(v0 interface{}, v1 interface{}, v2 interface{})
 //    * VAESIMC m128, xmm
 //
 func (self *Program) VAESIMC(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VAESIMC xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_AVX | ISA_AES)
@@ -32769,7 +32769,7 @@ func (self *Program) VAESIMC(v0 interface{}, v1 interface{}) *Instruction {
 //    * VAESKEYGENASSIST imm8, m128, xmm
 //
 func (self *Program) VAESKEYGENASSIST(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VAESKEYGENASSIST imm8, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_AVX | ISA_AES)
@@ -32812,7 +32812,7 @@ func (self *Program) VAESKEYGENASSIST(v0 interface{}, v1 interface{}, v2 interfa
 //    * VALIGND imm8, zmm, zmm, zmm{k}{z}
 //
 func (self *Program) VALIGND(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VALIGND imm8, m128/m32bcst, xmm, xmm{k}{z}
     if isImm8(v0) && isM128M32bcst(v1) && isEVEXXMM(v2) && isXMMkz(v3) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -32902,7 +32902,7 @@ func (self *Program) VALIGND(v0 interface{}, v1 interface{}, v2 interface{}, v3 
 //    * VALIGNQ imm8, zmm, zmm, zmm{k}{z}
 //
 func (self *Program) VALIGNQ(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VALIGNQ imm8, m128/m64bcst, xmm, xmm{k}{z}
     if isImm8(v0) && isM128M64bcst(v1) && isEVEXXMM(v2) && isXMMkz(v3) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -32996,7 +32996,7 @@ func (self *Program) VALIGNQ(v0 interface{}, v1 interface{}, v2 interface{}, v3 
 //    * VANDNPD m256, ymm, ymm
 //
 func (self *Program) VANDNPD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VANDNPD m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512DQ)
@@ -33120,7 +33120,7 @@ func (self *Program) VANDNPD(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VANDNPS m256, ymm, ymm
 //
 func (self *Program) VANDNPS(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VANDNPS m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512DQ)
@@ -33244,7 +33244,7 @@ func (self *Program) VANDNPS(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VANDPD m256, ymm, ymm
 //
 func (self *Program) VANDPD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VANDPD m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512DQ)
@@ -33368,7 +33368,7 @@ func (self *Program) VANDPD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VANDPS m256, ymm, ymm
 //
 func (self *Program) VANDPS(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VANDPS m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512DQ)
@@ -33488,7 +33488,7 @@ func (self *Program) VANDPS(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VBLENDMPD zmm, zmm, zmm{k}{z}
 //
 func (self *Program) VBLENDMPD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VBLENDMPD m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -33572,7 +33572,7 @@ func (self *Program) VBLENDMPD(v0 interface{}, v1 interface{}, v2 interface{}) *
 //    * VBLENDMPS zmm, zmm, zmm{k}{z}
 //
 func (self *Program) VBLENDMPS(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VBLENDMPS m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -33654,7 +33654,7 @@ func (self *Program) VBLENDMPS(v0 interface{}, v1 interface{}, v2 interface{}) *
 //    * VBLENDPD imm8, m256, ymm, ymm
 //
 func (self *Program) VBLENDPD(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VBLENDPD imm8, xmm, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_AVX)
@@ -33717,7 +33717,7 @@ func (self *Program) VBLENDPD(v0 interface{}, v1 interface{}, v2 interface{}, v3
 //    * VBLENDPS imm8, m256, ymm, ymm
 //
 func (self *Program) VBLENDPS(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VBLENDPS imm8, xmm, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_AVX)
@@ -33780,7 +33780,7 @@ func (self *Program) VBLENDPS(v0 interface{}, v1 interface{}, v2 interface{}, v3
 //    * VBLENDVPD ymm, m256, ymm, ymm
 //
 func (self *Program) VBLENDVPD(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VBLENDVPD xmm, xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_AVX)
@@ -33843,7 +33843,7 @@ func (self *Program) VBLENDVPD(v0 interface{}, v1 interface{}, v2 interface{}, v
 //    * VBLENDVPS ymm, m256, ymm, ymm
 //
 func (self *Program) VBLENDVPS(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VBLENDVPS xmm, xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_AVX)
@@ -33903,7 +33903,7 @@ func (self *Program) VBLENDVPS(v0 interface{}, v1 interface{}, v2 interface{}, v
 //    * VBROADCASTF128 m128, ymm
 //
 func (self *Program) VBROADCASTF128(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VBROADCASTF128 m128, ymm
     if isM128(v0) && isYMM(v1) {
         self.require(ISA_AVX)
@@ -33931,7 +33931,7 @@ func (self *Program) VBROADCASTF128(v0 interface{}, v1 interface{}) *Instruction
 //    * VBROADCASTF32X2 m64, zmm{k}{z}
 //
 func (self *Program) VBROADCASTF32X2(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VBROADCASTF32X2 xmm, ymm{k}{z}
     if isEVEXXMM(v0) && isYMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512DQ)
@@ -33990,7 +33990,7 @@ func (self *Program) VBROADCASTF32X2(v0 interface{}, v1 interface{}) *Instructio
 //    * VBROADCASTF32X4 m128, zmm{k}{z}
 //
 func (self *Program) VBROADCASTF32X4(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VBROADCASTF32X4 m128, ymm{k}{z}
     if isM128(v0) && isYMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -34024,7 +34024,7 @@ func (self *Program) VBROADCASTF32X4(v0 interface{}, v1 interface{}) *Instructio
 //    * VBROADCASTF32X8 m256, zmm{k}{z}
 //
 func (self *Program) VBROADCASTF32X8(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VBROADCASTF32X8 m256, zmm{k}{z}
     if isM256(v0) && isZMMkz(v1) {
         self.require(ISA_AVX512DQ)
@@ -34050,7 +34050,7 @@ func (self *Program) VBROADCASTF32X8(v0 interface{}, v1 interface{}) *Instructio
 //    * VBROADCASTF64X2 m128, zmm{k}{z}
 //
 func (self *Program) VBROADCASTF64X2(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VBROADCASTF64X2 m128, ymm{k}{z}
     if isM128(v0) && isYMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512DQ)
@@ -34084,7 +34084,7 @@ func (self *Program) VBROADCASTF64X2(v0 interface{}, v1 interface{}) *Instructio
 //    * VBROADCASTF64X4 m256, zmm{k}{z}
 //
 func (self *Program) VBROADCASTF64X4(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VBROADCASTF64X4 m256, zmm{k}{z}
     if isM256(v0) && isZMMkz(v1) {
         self.require(ISA_AVX512F)
@@ -34109,7 +34109,7 @@ func (self *Program) VBROADCASTF64X4(v0 interface{}, v1 interface{}) *Instructio
 //    * VBROADCASTI128 m128, ymm
 //
 func (self *Program) VBROADCASTI128(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VBROADCASTI128 m128, ymm
     if isM128(v0) && isYMM(v1) {
         self.require(ISA_AVX2)
@@ -34139,7 +34139,7 @@ func (self *Program) VBROADCASTI128(v0 interface{}, v1 interface{}) *Instruction
 //    * VBROADCASTI32X2 m64, zmm{k}{z}
 //
 func (self *Program) VBROADCASTI32X2(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VBROADCASTI32X2 xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512DQ)
@@ -34219,7 +34219,7 @@ func (self *Program) VBROADCASTI32X2(v0 interface{}, v1 interface{}) *Instructio
 //    * VBROADCASTI32X4 m128, zmm{k}{z}
 //
 func (self *Program) VBROADCASTI32X4(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VBROADCASTI32X4 m128, ymm{k}{z}
     if isM128(v0) && isYMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -34253,7 +34253,7 @@ func (self *Program) VBROADCASTI32X4(v0 interface{}, v1 interface{}) *Instructio
 //    * VBROADCASTI32X8 m256, zmm{k}{z}
 //
 func (self *Program) VBROADCASTI32X8(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VBROADCASTI32X8 m256, zmm{k}{z}
     if isM256(v0) && isZMMkz(v1) {
         self.require(ISA_AVX512DQ)
@@ -34279,7 +34279,7 @@ func (self *Program) VBROADCASTI32X8(v0 interface{}, v1 interface{}) *Instructio
 //    * VBROADCASTI64X2 m128, zmm{k}{z}
 //
 func (self *Program) VBROADCASTI64X2(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VBROADCASTI64X2 m128, ymm{k}{z}
     if isM128(v0) && isYMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512DQ)
@@ -34313,7 +34313,7 @@ func (self *Program) VBROADCASTI64X2(v0 interface{}, v1 interface{}) *Instructio
 //    * VBROADCASTI64X4 m256, zmm{k}{z}
 //
 func (self *Program) VBROADCASTI64X4(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VBROADCASTI64X4 m256, zmm{k}{z}
     if isM256(v0) && isZMMkz(v1) {
         self.require(ISA_AVX512F)
@@ -34343,7 +34343,7 @@ func (self *Program) VBROADCASTI64X4(v0 interface{}, v1 interface{}) *Instructio
 //    * VBROADCASTSD m64, ymm
 //
 func (self *Program) VBROADCASTSD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VBROADCASTSD xmm, ymm{k}{z}
     if isEVEXXMM(v0) && isYMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -34428,7 +34428,7 @@ func (self *Program) VBROADCASTSD(v0 interface{}, v1 interface{}) *Instruction {
 //    * VBROADCASTSS m32, ymm
 //
 func (self *Program) VBROADCASTSS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VBROADCASTSS xmm, ymm{k}{z}
     if isEVEXXMM(v0) && isYMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -34538,8 +34538,8 @@ func (self *Program) VBROADCASTSS(v0 interface{}, v1 interface{}) *Instruction {
 func (self *Program) VCMPPD(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
-        case 1  : p = self.alloc(5, [_MAX_ARGS]interface{}{v0, v1, v2, v3, vv[0]})
+        case 0  : p = self.alloc(4, Operands{v0, v1, v2, v3})
+        case 1  : p = self.alloc(5, Operands{v0, v1, v2, v3, vv[0]})
         default : panic("instruction VCMPPD takes 4 or 5 operands")
     }
     // VCMPPD imm8, m128/m64bcst, xmm, k{k}
@@ -34691,8 +34691,8 @@ func (self *Program) VCMPPD(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
 func (self *Program) VCMPPS(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
-        case 1  : p = self.alloc(5, [_MAX_ARGS]interface{}{v0, v1, v2, v3, vv[0]})
+        case 0  : p = self.alloc(4, Operands{v0, v1, v2, v3})
+        case 1  : p = self.alloc(5, Operands{v0, v1, v2, v3, vv[0]})
         default : panic("instruction VCMPPS takes 4 or 5 operands")
     }
     // VCMPPS imm8, m128/m32bcst, xmm, k{k}
@@ -34838,8 +34838,8 @@ func (self *Program) VCMPPS(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
 func (self *Program) VCMPSD(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
-        case 1  : p = self.alloc(5, [_MAX_ARGS]interface{}{v0, v1, v2, v3, vv[0]})
+        case 0  : p = self.alloc(4, Operands{v0, v1, v2, v3})
+        case 1  : p = self.alloc(5, Operands{v0, v1, v2, v3, vv[0]})
         default : panic("instruction VCMPSD takes 4 or 5 operands")
     }
     // VCMPSD imm8, m64, xmm, k{k}
@@ -34919,8 +34919,8 @@ func (self *Program) VCMPSD(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
 func (self *Program) VCMPSS(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
-        case 1  : p = self.alloc(5, [_MAX_ARGS]interface{}{v0, v1, v2, v3, vv[0]})
+        case 0  : p = self.alloc(4, Operands{v0, v1, v2, v3})
+        case 1  : p = self.alloc(5, Operands{v0, v1, v2, v3, vv[0]})
         default : panic("instruction VCMPSS takes 4 or 5 operands")
     }
     // VCMPSS imm8, m32, xmm, k{k}
@@ -35000,8 +35000,8 @@ func (self *Program) VCMPSS(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
 func (self *Program) VCOMISD(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VCOMISD takes 2 or 3 operands")
     }
     // VCOMISD xmm, xmm
@@ -35076,8 +35076,8 @@ func (self *Program) VCOMISD(v0 interface{}, v1 interface{}, vv ...interface{}) 
 func (self *Program) VCOMISS(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VCOMISS takes 2 or 3 operands")
     }
     // VCOMISS xmm, xmm
@@ -35151,7 +35151,7 @@ func (self *Program) VCOMISS(v0 interface{}, v1 interface{}, vv ...interface{}) 
 //    * VCOMPRESSPD zmm, m512{k}{z}
 //
 func (self *Program) VCOMPRESSPD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VCOMPRESSPD xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -35235,7 +35235,7 @@ func (self *Program) VCOMPRESSPD(v0 interface{}, v1 interface{}) *Instruction {
 //    * VCOMPRESSPS zmm, m512{k}{z}
 //
 func (self *Program) VCOMPRESSPS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VCOMPRESSPS xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -35323,7 +35323,7 @@ func (self *Program) VCOMPRESSPS(v0 interface{}, v1 interface{}) *Instruction {
 //    * VCVTDQ2PD m128, ymm
 //
 func (self *Program) VCVTDQ2PD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VCVTDQ2PD m64/m32bcst, xmm{k}{z}
     if isM64M32bcst(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -35450,8 +35450,8 @@ func (self *Program) VCVTDQ2PD(v0 interface{}, v1 interface{}) *Instruction {
 func (self *Program) VCVTDQ2PS(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VCVTDQ2PS takes 2 or 3 operands")
     }
     // VCVTDQ2PS m128/m32bcst, xmm{k}{z}
@@ -35592,8 +35592,8 @@ func (self *Program) VCVTDQ2PS(v0 interface{}, v1 interface{}, vv ...interface{}
 func (self *Program) VCVTPD2DQ(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VCVTPD2DQ takes 2 or 3 operands")
     }
     // VCVTPD2DQ m128/m64bcst, xmm{k}{z}
@@ -35734,8 +35734,8 @@ func (self *Program) VCVTPD2DQ(v0 interface{}, v1 interface{}, vv ...interface{}
 func (self *Program) VCVTPD2PS(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VCVTPD2PS takes 2 or 3 operands")
     }
     // VCVTPD2PS m128/m64bcst, xmm{k}{z}
@@ -35872,8 +35872,8 @@ func (self *Program) VCVTPD2PS(v0 interface{}, v1 interface{}, vv ...interface{}
 func (self *Program) VCVTPD2QQ(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VCVTPD2QQ takes 2 or 3 operands")
     }
     // VCVTPD2QQ m128/m64bcst, xmm{k}{z}
@@ -35974,8 +35974,8 @@ func (self *Program) VCVTPD2QQ(v0 interface{}, v1 interface{}, vv ...interface{}
 func (self *Program) VCVTPD2UDQ(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VCVTPD2UDQ takes 2 or 3 operands")
     }
     // VCVTPD2UDQ m128/m64bcst, xmm{k}{z}
@@ -36076,8 +36076,8 @@ func (self *Program) VCVTPD2UDQ(v0 interface{}, v1 interface{}, vv ...interface{
 func (self *Program) VCVTPD2UQQ(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VCVTPD2UQQ takes 2 or 3 operands")
     }
     // VCVTPD2UQQ m128/m64bcst, xmm{k}{z}
@@ -36182,8 +36182,8 @@ func (self *Program) VCVTPD2UQQ(v0 interface{}, v1 interface{}, vv ...interface{
 func (self *Program) VCVTPH2PS(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VCVTPH2PS takes 2 or 3 operands")
     }
     // VCVTPH2PS xmm, xmm{k}{z}
@@ -36328,8 +36328,8 @@ func (self *Program) VCVTPH2PS(v0 interface{}, v1 interface{}, vv ...interface{}
 func (self *Program) VCVTPS2DQ(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VCVTPS2DQ takes 2 or 3 operands")
     }
     // VCVTPS2DQ m128/m32bcst, xmm{k}{z}
@@ -36470,8 +36470,8 @@ func (self *Program) VCVTPS2DQ(v0 interface{}, v1 interface{}, vv ...interface{}
 func (self *Program) VCVTPS2PD(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VCVTPS2PD takes 2 or 3 operands")
     }
     // VCVTPS2PD m64/m32bcst, xmm{k}{z}
@@ -36612,8 +36612,8 @@ func (self *Program) VCVTPS2PD(v0 interface{}, v1 interface{}, vv ...interface{}
 func (self *Program) VCVTPS2PH(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VCVTPS2PH takes 3 or 4 operands")
     }
     // VCVTPS2PH imm8, xmm, xmm{k}{z}
@@ -36765,8 +36765,8 @@ func (self *Program) VCVTPS2PH(v0 interface{}, v1 interface{}, v2 interface{}, v
 func (self *Program) VCVTPS2QQ(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VCVTPS2QQ takes 2 or 3 operands")
     }
     // VCVTPS2QQ m64/m32bcst, xmm{k}{z}
@@ -36867,8 +36867,8 @@ func (self *Program) VCVTPS2QQ(v0 interface{}, v1 interface{}, vv ...interface{}
 func (self *Program) VCVTPS2UDQ(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VCVTPS2UDQ takes 2 or 3 operands")
     }
     // VCVTPS2UDQ m128/m32bcst, xmm{k}{z}
@@ -36969,8 +36969,8 @@ func (self *Program) VCVTPS2UDQ(v0 interface{}, v1 interface{}, vv ...interface{
 func (self *Program) VCVTPS2UQQ(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VCVTPS2UQQ takes 2 or 3 operands")
     }
     // VCVTPS2UQQ m64/m32bcst, xmm{k}{z}
@@ -37071,8 +37071,8 @@ func (self *Program) VCVTPS2UQQ(v0 interface{}, v1 interface{}, vv ...interface{
 func (self *Program) VCVTQQ2PD(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VCVTQQ2PD takes 2 or 3 operands")
     }
     // VCVTQQ2PD m128/m64bcst, xmm{k}{z}
@@ -37173,8 +37173,8 @@ func (self *Program) VCVTQQ2PD(v0 interface{}, v1 interface{}, vv ...interface{}
 func (self *Program) VCVTQQ2PS(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VCVTQQ2PS takes 2 or 3 operands")
     }
     // VCVTQQ2PS m128/m64bcst, xmm{k}{z}
@@ -37278,8 +37278,8 @@ func (self *Program) VCVTQQ2PS(v0 interface{}, v1 interface{}, vv ...interface{}
 func (self *Program) VCVTSD2SI(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VCVTSD2SI takes 2 or 3 operands")
     }
     // VCVTSD2SI xmm, r32
@@ -37407,8 +37407,8 @@ func (self *Program) VCVTSD2SI(v0 interface{}, v1 interface{}, vv ...interface{}
 func (self *Program) VCVTSD2SS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VCVTSD2SS takes 3 or 4 operands")
     }
     // VCVTSD2SS m64, xmm, xmm{k}{z}
@@ -37484,8 +37484,8 @@ func (self *Program) VCVTSD2SS(v0 interface{}, v1 interface{}, v2 interface{}, v
 func (self *Program) VCVTSD2USI(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VCVTSD2USI takes 2 or 3 operands")
     }
     // VCVTSD2USI m64, r32
@@ -37579,8 +37579,8 @@ func (self *Program) VCVTSD2USI(v0 interface{}, v1 interface{}, vv ...interface{
 func (self *Program) VCVTSI2SD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VCVTSI2SD takes 3 or 4 operands")
     }
     // VCVTSI2SD r32, xmm, xmm
@@ -37701,8 +37701,8 @@ func (self *Program) VCVTSI2SD(v0 interface{}, v1 interface{}, v2 interface{}, v
 func (self *Program) VCVTSI2SS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VCVTSI2SS takes 3 or 4 operands")
     }
     // VCVTSI2SS r32, xmm, xmm
@@ -37830,8 +37830,8 @@ func (self *Program) VCVTSI2SS(v0 interface{}, v1 interface{}, v2 interface{}, v
 func (self *Program) VCVTSS2SD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VCVTSS2SD takes 3 or 4 operands")
     }
     // VCVTSS2SD m32, xmm, xmm{k}{z}
@@ -37911,8 +37911,8 @@ func (self *Program) VCVTSS2SD(v0 interface{}, v1 interface{}, v2 interface{}, v
 func (self *Program) VCVTSS2SI(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VCVTSS2SI takes 2 or 3 operands")
     }
     // VCVTSS2SI xmm, r32
@@ -38041,8 +38041,8 @@ func (self *Program) VCVTSS2SI(v0 interface{}, v1 interface{}, vv ...interface{}
 func (self *Program) VCVTSS2USI(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VCVTSS2USI takes 2 or 3 operands")
     }
     // VCVTSS2USI m32, r32
@@ -38138,8 +38138,8 @@ func (self *Program) VCVTSS2USI(v0 interface{}, v1 interface{}, vv ...interface{
 func (self *Program) VCVTTPD2DQ(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VCVTTPD2DQ takes 2 or 3 operands")
     }
     // VCVTTPD2DQ m128/m64bcst, xmm{k}{z}
@@ -38276,8 +38276,8 @@ func (self *Program) VCVTTPD2DQ(v0 interface{}, v1 interface{}, vv ...interface{
 func (self *Program) VCVTTPD2QQ(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VCVTTPD2QQ takes 2 or 3 operands")
     }
     // VCVTTPD2QQ m128/m64bcst, xmm{k}{z}
@@ -38378,8 +38378,8 @@ func (self *Program) VCVTTPD2QQ(v0 interface{}, v1 interface{}, vv ...interface{
 func (self *Program) VCVTTPD2UDQ(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VCVTTPD2UDQ takes 2 or 3 operands")
     }
     // VCVTTPD2UDQ m128/m64bcst, xmm{k}{z}
@@ -38480,8 +38480,8 @@ func (self *Program) VCVTTPD2UDQ(v0 interface{}, v1 interface{}, vv ...interface
 func (self *Program) VCVTTPD2UQQ(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VCVTTPD2UQQ takes 2 or 3 operands")
     }
     // VCVTTPD2UQQ m128/m64bcst, xmm{k}{z}
@@ -38586,8 +38586,8 @@ func (self *Program) VCVTTPD2UQQ(v0 interface{}, v1 interface{}, vv ...interface
 func (self *Program) VCVTTPS2DQ(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VCVTTPS2DQ takes 2 or 3 operands")
     }
     // VCVTTPS2DQ m128/m32bcst, xmm{k}{z}
@@ -38724,8 +38724,8 @@ func (self *Program) VCVTTPS2DQ(v0 interface{}, v1 interface{}, vv ...interface{
 func (self *Program) VCVTTPS2QQ(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VCVTTPS2QQ takes 2 or 3 operands")
     }
     // VCVTTPS2QQ m64/m32bcst, xmm{k}{z}
@@ -38826,8 +38826,8 @@ func (self *Program) VCVTTPS2QQ(v0 interface{}, v1 interface{}, vv ...interface{
 func (self *Program) VCVTTPS2UDQ(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VCVTTPS2UDQ takes 2 or 3 operands")
     }
     // VCVTTPS2UDQ m128/m32bcst, xmm{k}{z}
@@ -38928,8 +38928,8 @@ func (self *Program) VCVTTPS2UDQ(v0 interface{}, v1 interface{}, vv ...interface
 func (self *Program) VCVTTPS2UQQ(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VCVTTPS2UQQ takes 2 or 3 operands")
     }
     // VCVTTPS2UQQ m64/m32bcst, xmm{k}{z}
@@ -39033,8 +39033,8 @@ func (self *Program) VCVTTPS2UQQ(v0 interface{}, v1 interface{}, vv ...interface
 func (self *Program) VCVTTSD2SI(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VCVTTSD2SI takes 2 or 3 operands")
     }
     // VCVTTSD2SI xmm, r32
@@ -39163,8 +39163,8 @@ func (self *Program) VCVTTSD2SI(v0 interface{}, v1 interface{}, vv ...interface{
 func (self *Program) VCVTTSD2USI(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VCVTTSD2USI takes 2 or 3 operands")
     }
     // VCVTTSD2USI m64, r32
@@ -39259,8 +39259,8 @@ func (self *Program) VCVTTSD2USI(v0 interface{}, v1 interface{}, vv ...interface
 func (self *Program) VCVTTSS2SI(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VCVTTSS2SI takes 2 or 3 operands")
     }
     // VCVTTSS2SI xmm, r32
@@ -39389,8 +39389,8 @@ func (self *Program) VCVTTSS2SI(v0 interface{}, v1 interface{}, vv ...interface{
 func (self *Program) VCVTTSS2USI(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VCVTTSS2USI takes 2 or 3 operands")
     }
     // VCVTTSS2USI m32, r32
@@ -39479,7 +39479,7 @@ func (self *Program) VCVTTSS2USI(v0 interface{}, v1 interface{}, vv ...interface
 //    * VCVTUDQ2PD ymm, zmm{k}{z}
 //
 func (self *Program) VCVTUDQ2PD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VCVTUDQ2PD m64/m32bcst, xmm{k}{z}
     if isM64M32bcst(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -39566,8 +39566,8 @@ func (self *Program) VCVTUDQ2PD(v0 interface{}, v1 interface{}) *Instruction {
 func (self *Program) VCVTUDQ2PS(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VCVTUDQ2PS takes 2 or 3 operands")
     }
     // VCVTUDQ2PS m128/m32bcst, xmm{k}{z}
@@ -39668,8 +39668,8 @@ func (self *Program) VCVTUDQ2PS(v0 interface{}, v1 interface{}, vv ...interface{
 func (self *Program) VCVTUQQ2PD(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VCVTUQQ2PD takes 2 or 3 operands")
     }
     // VCVTUQQ2PD m128/m64bcst, xmm{k}{z}
@@ -39770,8 +39770,8 @@ func (self *Program) VCVTUQQ2PD(v0 interface{}, v1 interface{}, vv ...interface{
 func (self *Program) VCVTUQQ2PS(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VCVTUQQ2PS takes 2 or 3 operands")
     }
     // VCVTUQQ2PS m128/m64bcst, xmm{k}{z}
@@ -39870,8 +39870,8 @@ func (self *Program) VCVTUQQ2PS(v0 interface{}, v1 interface{}, vv ...interface{
 func (self *Program) VCVTUSI2SD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VCVTUSI2SD takes 3 or 4 operands")
     }
     // VCVTUSI2SD r32, xmm, xmm
@@ -39950,8 +39950,8 @@ func (self *Program) VCVTUSI2SD(v0 interface{}, v1 interface{}, v2 interface{}, 
 func (self *Program) VCVTUSI2SS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VCVTUSI2SS takes 3 or 4 operands")
     }
     // VCVTUSI2SS m32, xmm, xmm
@@ -40040,7 +40040,7 @@ func (self *Program) VCVTUSI2SS(v0 interface{}, v1 interface{}, v2 interface{}, 
 //    * VDBPSADBW imm8, m512, zmm, zmm{k}{z}
 //
 func (self *Program) VDBPSADBW(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VDBPSADBW imm8, xmm, xmm, xmm{k}{z}
     if isImm8(v0) && isEVEXXMM(v1) && isEVEXXMM(v2) && isXMMkz(v3) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -40137,8 +40137,8 @@ func (self *Program) VDBPSADBW(v0 interface{}, v1 interface{}, v2 interface{}, v
 func (self *Program) VDIVPD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VDIVPD takes 3 or 4 operands")
     }
     // VDIVPD m128/m64bcst, xmm, xmm{k}{z}
@@ -40279,8 +40279,8 @@ func (self *Program) VDIVPD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
 func (self *Program) VDIVPS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VDIVPS takes 3 or 4 operands")
     }
     // VDIVPS m128/m32bcst, xmm, xmm{k}{z}
@@ -40415,8 +40415,8 @@ func (self *Program) VDIVPS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
 func (self *Program) VDIVSD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VDIVSD takes 3 or 4 operands")
     }
     // VDIVSD m64, xmm, xmm{k}{z}
@@ -40491,8 +40491,8 @@ func (self *Program) VDIVSD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
 func (self *Program) VDIVSS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VDIVSS takes 3 or 4 operands")
     }
     // VDIVSS m32, xmm, xmm{k}{z}
@@ -40562,7 +40562,7 @@ func (self *Program) VDIVSS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
 //    * VDPPD imm8, m128, xmm, xmm
 //
 func (self *Program) VDPPD(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VDPPD imm8, xmm, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_AVX)
@@ -40603,7 +40603,7 @@ func (self *Program) VDPPD(v0 interface{}, v1 interface{}, v2 interface{}, v3 in
 //    * VDPPS imm8, m256, ymm, ymm
 //
 func (self *Program) VDPPS(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VDPPS imm8, xmm, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_AVX)
@@ -40667,8 +40667,8 @@ func (self *Program) VDPPS(v0 interface{}, v1 interface{}, v2 interface{}, v3 in
 func (self *Program) VEXP2PD(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VEXP2PD takes 2 or 3 operands")
     }
     // VEXP2PD m512/m64bcst, zmm{k}{z}
@@ -40723,8 +40723,8 @@ func (self *Program) VEXP2PD(v0 interface{}, v1 interface{}, vv ...interface{}) 
 func (self *Program) VEXP2PS(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VEXP2PS takes 2 or 3 operands")
     }
     // VEXP2PS m512/m32bcst, zmm{k}{z}
@@ -40780,7 +40780,7 @@ func (self *Program) VEXP2PS(v0 interface{}, v1 interface{}, vv ...interface{}) 
 //    * VEXPANDPD m512, zmm{k}{z}
 //
 func (self *Program) VEXPANDPD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VEXPANDPD xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL)
@@ -40864,7 +40864,7 @@ func (self *Program) VEXPANDPD(v0 interface{}, v1 interface{}) *Instruction {
 //    * VEXPANDPS m512, zmm{k}{z}
 //
 func (self *Program) VEXPANDPS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VEXPANDPS xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -40944,7 +40944,7 @@ func (self *Program) VEXPANDPS(v0 interface{}, v1 interface{}) *Instruction {
 //    * VEXTRACTF128 imm8, ymm, m128
 //
 func (self *Program) VEXTRACTF128(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VEXTRACTF128 imm8, ymm, xmm
     if isImm8(v0) && isYMM(v1) && isXMM(v2) {
         self.require(ISA_AVX)
@@ -40985,7 +40985,7 @@ func (self *Program) VEXTRACTF128(v0 interface{}, v1 interface{}, v2 interface{}
 //    * VEXTRACTF32X4 imm8, zmm, m128{k}{z}
 //
 func (self *Program) VEXTRACTF32X4(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VEXTRACTF32X4 imm8, ymm, xmm{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -41048,7 +41048,7 @@ func (self *Program) VEXTRACTF32X4(v0 interface{}, v1 interface{}, v2 interface{
 //    * VEXTRACTF32X8 imm8, zmm, m256{k}{z}
 //
 func (self *Program) VEXTRACTF32X8(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VEXTRACTF32X8 imm8, zmm, ymm{k}{z}
     if isImm8(v0) && isZMM(v1) && isYMMkz(v2) {
         self.require(ISA_AVX512DQ)
@@ -41090,7 +41090,7 @@ func (self *Program) VEXTRACTF32X8(v0 interface{}, v1 interface{}, v2 interface{
 //    * VEXTRACTF64X2 imm8, zmm, m128{k}{z}
 //
 func (self *Program) VEXTRACTF64X2(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VEXTRACTF64X2 imm8, ymm, xmm{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512DQ)
@@ -41153,7 +41153,7 @@ func (self *Program) VEXTRACTF64X2(v0 interface{}, v1 interface{}, v2 interface{
 //    * VEXTRACTF64X4 imm8, zmm, m256{k}{z}
 //
 func (self *Program) VEXTRACTF64X4(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VEXTRACTF64X4 imm8, zmm, ymm{k}{z}
     if isImm8(v0) && isZMM(v1) && isYMMkz(v2) {
         self.require(ISA_AVX512F)
@@ -41193,7 +41193,7 @@ func (self *Program) VEXTRACTF64X4(v0 interface{}, v1 interface{}, v2 interface{
 //    * VEXTRACTI128 imm8, ymm, m128
 //
 func (self *Program) VEXTRACTI128(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VEXTRACTI128 imm8, ymm, xmm
     if isImm8(v0) && isYMM(v1) && isXMM(v2) {
         self.require(ISA_AVX2)
@@ -41234,7 +41234,7 @@ func (self *Program) VEXTRACTI128(v0 interface{}, v1 interface{}, v2 interface{}
 //    * VEXTRACTI32X4 imm8, zmm, m128{k}{z}
 //
 func (self *Program) VEXTRACTI32X4(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VEXTRACTI32X4 imm8, ymm, xmm{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -41297,7 +41297,7 @@ func (self *Program) VEXTRACTI32X4(v0 interface{}, v1 interface{}, v2 interface{
 //    * VEXTRACTI32X8 imm8, zmm, m256{k}{z}
 //
 func (self *Program) VEXTRACTI32X8(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VEXTRACTI32X8 imm8, zmm, ymm{k}{z}
     if isImm8(v0) && isZMM(v1) && isYMMkz(v2) {
         self.require(ISA_AVX512DQ)
@@ -41339,7 +41339,7 @@ func (self *Program) VEXTRACTI32X8(v0 interface{}, v1 interface{}, v2 interface{
 //    * VEXTRACTI64X2 imm8, zmm, m128{k}{z}
 //
 func (self *Program) VEXTRACTI64X2(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VEXTRACTI64X2 imm8, ymm, xmm{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512DQ)
@@ -41402,7 +41402,7 @@ func (self *Program) VEXTRACTI64X2(v0 interface{}, v1 interface{}, v2 interface{
 //    * VEXTRACTI64X4 imm8, zmm, m256{k}{z}
 //
 func (self *Program) VEXTRACTI64X4(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VEXTRACTI64X4 imm8, zmm, ymm{k}{z}
     if isImm8(v0) && isZMM(v1) && isYMMkz(v2) {
         self.require(ISA_AVX512F)
@@ -41444,7 +41444,7 @@ func (self *Program) VEXTRACTI64X4(v0 interface{}, v1 interface{}, v2 interface{
 //    * VEXTRACTPS imm8, xmm, m32
 //
 func (self *Program) VEXTRACTPS(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VEXTRACTPS imm8, xmm, r32
     if isImm8(v0) && isXMM(v1) && isReg32(v2) {
         self.require(ISA_AVX)
@@ -41513,8 +41513,8 @@ func (self *Program) VEXTRACTPS(v0 interface{}, v1 interface{}, v2 interface{}) 
 func (self *Program) VFIXUPIMMPD(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
-        case 1  : p = self.alloc(5, [_MAX_ARGS]interface{}{v0, v1, v2, v3, vv[0]})
+        case 0  : p = self.alloc(4, Operands{v0, v1, v2, v3})
+        case 1  : p = self.alloc(5, Operands{v0, v1, v2, v3, vv[0]})
         default : panic("instruction VFIXUPIMMPD takes 4 or 5 operands")
     }
     // VFIXUPIMMPD imm8, m128/m64bcst, xmm, xmm{k}{z}
@@ -41622,8 +41622,8 @@ func (self *Program) VFIXUPIMMPD(v0 interface{}, v1 interface{}, v2 interface{},
 func (self *Program) VFIXUPIMMPS(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
-        case 1  : p = self.alloc(5, [_MAX_ARGS]interface{}{v0, v1, v2, v3, vv[0]})
+        case 0  : p = self.alloc(4, Operands{v0, v1, v2, v3})
+        case 1  : p = self.alloc(5, Operands{v0, v1, v2, v3, vv[0]})
         default : panic("instruction VFIXUPIMMPS takes 4 or 5 operands")
     }
     // VFIXUPIMMPS imm8, m128/m32bcst, xmm, xmm{k}{z}
@@ -41727,8 +41727,8 @@ func (self *Program) VFIXUPIMMPS(v0 interface{}, v1 interface{}, v2 interface{},
 func (self *Program) VFIXUPIMMSD(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
-        case 1  : p = self.alloc(5, [_MAX_ARGS]interface{}{v0, v1, v2, v3, vv[0]})
+        case 0  : p = self.alloc(4, Operands{v0, v1, v2, v3})
+        case 1  : p = self.alloc(5, Operands{v0, v1, v2, v3, vv[0]})
         default : panic("instruction VFIXUPIMMSD takes 4 or 5 operands")
     }
     // VFIXUPIMMSD imm8, m64, xmm, xmm{k}{z}
@@ -41786,8 +41786,8 @@ func (self *Program) VFIXUPIMMSD(v0 interface{}, v1 interface{}, v2 interface{},
 func (self *Program) VFIXUPIMMSS(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
-        case 1  : p = self.alloc(5, [_MAX_ARGS]interface{}{v0, v1, v2, v3, vv[0]})
+        case 0  : p = self.alloc(4, Operands{v0, v1, v2, v3})
+        case 1  : p = self.alloc(5, Operands{v0, v1, v2, v3, vv[0]})
         default : panic("instruction VFIXUPIMMSS takes 4 or 5 operands")
     }
     // VFIXUPIMMSS imm8, m32, xmm, xmm{k}{z}
@@ -41853,8 +41853,8 @@ func (self *Program) VFIXUPIMMSS(v0 interface{}, v1 interface{}, v2 interface{},
 func (self *Program) VFMADD132PD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFMADD132PD takes 3 or 4 operands")
     }
     // VFMADD132PD m128/m64bcst, xmm, xmm{k}{z}
@@ -41999,8 +41999,8 @@ func (self *Program) VFMADD132PD(v0 interface{}, v1 interface{}, v2 interface{},
 func (self *Program) VFMADD132PS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFMADD132PS takes 3 or 4 operands")
     }
     // VFMADD132PS m128/m32bcst, xmm, xmm{k}{z}
@@ -42139,8 +42139,8 @@ func (self *Program) VFMADD132PS(v0 interface{}, v1 interface{}, v2 interface{},
 func (self *Program) VFMADD132SD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFMADD132SD takes 3 or 4 operands")
     }
     // VFMADD132SD m64, xmm, xmm{k}{z}
@@ -42217,8 +42217,8 @@ func (self *Program) VFMADD132SD(v0 interface{}, v1 interface{}, v2 interface{},
 func (self *Program) VFMADD132SS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFMADD132SS takes 3 or 4 operands")
     }
     // VFMADD132SS m32, xmm, xmm{k}{z}
@@ -42301,8 +42301,8 @@ func (self *Program) VFMADD132SS(v0 interface{}, v1 interface{}, v2 interface{},
 func (self *Program) VFMADD213PD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFMADD213PD takes 3 or 4 operands")
     }
     // VFMADD213PD m128/m64bcst, xmm, xmm{k}{z}
@@ -42447,8 +42447,8 @@ func (self *Program) VFMADD213PD(v0 interface{}, v1 interface{}, v2 interface{},
 func (self *Program) VFMADD213PS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFMADD213PS takes 3 or 4 operands")
     }
     // VFMADD213PS m128/m32bcst, xmm, xmm{k}{z}
@@ -42587,8 +42587,8 @@ func (self *Program) VFMADD213PS(v0 interface{}, v1 interface{}, v2 interface{},
 func (self *Program) VFMADD213SD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFMADD213SD takes 3 or 4 operands")
     }
     // VFMADD213SD m64, xmm, xmm{k}{z}
@@ -42665,8 +42665,8 @@ func (self *Program) VFMADD213SD(v0 interface{}, v1 interface{}, v2 interface{},
 func (self *Program) VFMADD213SS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFMADD213SS takes 3 or 4 operands")
     }
     // VFMADD213SS m32, xmm, xmm{k}{z}
@@ -42749,8 +42749,8 @@ func (self *Program) VFMADD213SS(v0 interface{}, v1 interface{}, v2 interface{},
 func (self *Program) VFMADD231PD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFMADD231PD takes 3 or 4 operands")
     }
     // VFMADD231PD m128/m64bcst, xmm, xmm{k}{z}
@@ -42895,8 +42895,8 @@ func (self *Program) VFMADD231PD(v0 interface{}, v1 interface{}, v2 interface{},
 func (self *Program) VFMADD231PS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFMADD231PS takes 3 or 4 operands")
     }
     // VFMADD231PS m128/m32bcst, xmm, xmm{k}{z}
@@ -43035,8 +43035,8 @@ func (self *Program) VFMADD231PS(v0 interface{}, v1 interface{}, v2 interface{},
 func (self *Program) VFMADD231SD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFMADD231SD takes 3 or 4 operands")
     }
     // VFMADD231SD m64, xmm, xmm{k}{z}
@@ -43113,8 +43113,8 @@ func (self *Program) VFMADD231SD(v0 interface{}, v1 interface{}, v2 interface{},
 func (self *Program) VFMADD231SS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFMADD231SS takes 3 or 4 operands")
     }
     // VFMADD231SS m32, xmm, xmm{k}{z}
@@ -43190,7 +43190,7 @@ func (self *Program) VFMADD231SS(v0 interface{}, v1 interface{}, v2 interface{},
 //    * VFMADDPD ymm, m256, ymm, ymm
 //
 func (self *Program) VFMADDPD(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VFMADDPD xmm, xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_FMA4)
@@ -43291,7 +43291,7 @@ func (self *Program) VFMADDPD(v0 interface{}, v1 interface{}, v2 interface{}, v3
 //    * VFMADDPS ymm, m256, ymm, ymm
 //
 func (self *Program) VFMADDPS(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VFMADDPS xmm, xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_FMA4)
@@ -43389,7 +43389,7 @@ func (self *Program) VFMADDPS(v0 interface{}, v1 interface{}, v2 interface{}, v3
 //    * VFMADDSD xmm, m64, xmm, xmm
 //
 func (self *Program) VFMADDSD(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VFMADDSD xmm, xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_FMA4)
@@ -43447,7 +43447,7 @@ func (self *Program) VFMADDSD(v0 interface{}, v1 interface{}, v2 interface{}, v3
 //    * VFMADDSS xmm, m32, xmm, xmm
 //
 func (self *Program) VFMADDSS(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VFMADDSS xmm, xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_FMA4)
@@ -43515,8 +43515,8 @@ func (self *Program) VFMADDSS(v0 interface{}, v1 interface{}, v2 interface{}, v3
 func (self *Program) VFMADDSUB132PD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFMADDSUB132PD takes 3 or 4 operands")
     }
     // VFMADDSUB132PD m128/m64bcst, xmm, xmm{k}{z}
@@ -43661,8 +43661,8 @@ func (self *Program) VFMADDSUB132PD(v0 interface{}, v1 interface{}, v2 interface
 func (self *Program) VFMADDSUB132PS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFMADDSUB132PS takes 3 or 4 operands")
     }
     // VFMADDSUB132PS m128/m32bcst, xmm, xmm{k}{z}
@@ -43807,8 +43807,8 @@ func (self *Program) VFMADDSUB132PS(v0 interface{}, v1 interface{}, v2 interface
 func (self *Program) VFMADDSUB213PD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFMADDSUB213PD takes 3 or 4 operands")
     }
     // VFMADDSUB213PD m128/m64bcst, xmm, xmm{k}{z}
@@ -43953,8 +43953,8 @@ func (self *Program) VFMADDSUB213PD(v0 interface{}, v1 interface{}, v2 interface
 func (self *Program) VFMADDSUB213PS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFMADDSUB213PS takes 3 or 4 operands")
     }
     // VFMADDSUB213PS m128/m32bcst, xmm, xmm{k}{z}
@@ -44099,8 +44099,8 @@ func (self *Program) VFMADDSUB213PS(v0 interface{}, v1 interface{}, v2 interface
 func (self *Program) VFMADDSUB231PD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFMADDSUB231PD takes 3 or 4 operands")
     }
     // VFMADDSUB231PD m128/m64bcst, xmm, xmm{k}{z}
@@ -44245,8 +44245,8 @@ func (self *Program) VFMADDSUB231PD(v0 interface{}, v1 interface{}, v2 interface
 func (self *Program) VFMADDSUB231PS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFMADDSUB231PS takes 3 or 4 operands")
     }
     // VFMADDSUB231PS m128/m32bcst, xmm, xmm{k}{z}
@@ -44384,7 +44384,7 @@ func (self *Program) VFMADDSUB231PS(v0 interface{}, v1 interface{}, v2 interface
 //    * VFMADDSUBPD ymm, m256, ymm, ymm
 //
 func (self *Program) VFMADDSUBPD(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VFMADDSUBPD xmm, xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_FMA4)
@@ -44485,7 +44485,7 @@ func (self *Program) VFMADDSUBPD(v0 interface{}, v1 interface{}, v2 interface{},
 //    * VFMADDSUBPS ymm, m256, ymm, ymm
 //
 func (self *Program) VFMADDSUBPS(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VFMADDSUBPS xmm, xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_FMA4)
@@ -44593,8 +44593,8 @@ func (self *Program) VFMADDSUBPS(v0 interface{}, v1 interface{}, v2 interface{},
 func (self *Program) VFMSUB132PD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFMSUB132PD takes 3 or 4 operands")
     }
     // VFMSUB132PD m128/m64bcst, xmm, xmm{k}{z}
@@ -44739,8 +44739,8 @@ func (self *Program) VFMSUB132PD(v0 interface{}, v1 interface{}, v2 interface{},
 func (self *Program) VFMSUB132PS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFMSUB132PS takes 3 or 4 operands")
     }
     // VFMSUB132PS m128/m32bcst, xmm, xmm{k}{z}
@@ -44879,8 +44879,8 @@ func (self *Program) VFMSUB132PS(v0 interface{}, v1 interface{}, v2 interface{},
 func (self *Program) VFMSUB132SD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFMSUB132SD takes 3 or 4 operands")
     }
     // VFMSUB132SD m64, xmm, xmm{k}{z}
@@ -44957,8 +44957,8 @@ func (self *Program) VFMSUB132SD(v0 interface{}, v1 interface{}, v2 interface{},
 func (self *Program) VFMSUB132SS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFMSUB132SS takes 3 or 4 operands")
     }
     // VFMSUB132SS m32, xmm, xmm{k}{z}
@@ -45041,8 +45041,8 @@ func (self *Program) VFMSUB132SS(v0 interface{}, v1 interface{}, v2 interface{},
 func (self *Program) VFMSUB213PD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFMSUB213PD takes 3 or 4 operands")
     }
     // VFMSUB213PD m128/m64bcst, xmm, xmm{k}{z}
@@ -45187,8 +45187,8 @@ func (self *Program) VFMSUB213PD(v0 interface{}, v1 interface{}, v2 interface{},
 func (self *Program) VFMSUB213PS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFMSUB213PS takes 3 or 4 operands")
     }
     // VFMSUB213PS m128/m32bcst, xmm, xmm{k}{z}
@@ -45327,8 +45327,8 @@ func (self *Program) VFMSUB213PS(v0 interface{}, v1 interface{}, v2 interface{},
 func (self *Program) VFMSUB213SD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFMSUB213SD takes 3 or 4 operands")
     }
     // VFMSUB213SD m64, xmm, xmm{k}{z}
@@ -45405,8 +45405,8 @@ func (self *Program) VFMSUB213SD(v0 interface{}, v1 interface{}, v2 interface{},
 func (self *Program) VFMSUB213SS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFMSUB213SS takes 3 or 4 operands")
     }
     // VFMSUB213SS m32, xmm, xmm{k}{z}
@@ -45489,8 +45489,8 @@ func (self *Program) VFMSUB213SS(v0 interface{}, v1 interface{}, v2 interface{},
 func (self *Program) VFMSUB231PD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFMSUB231PD takes 3 or 4 operands")
     }
     // VFMSUB231PD m128/m64bcst, xmm, xmm{k}{z}
@@ -45635,8 +45635,8 @@ func (self *Program) VFMSUB231PD(v0 interface{}, v1 interface{}, v2 interface{},
 func (self *Program) VFMSUB231PS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFMSUB231PS takes 3 or 4 operands")
     }
     // VFMSUB231PS m128/m32bcst, xmm, xmm{k}{z}
@@ -45775,8 +45775,8 @@ func (self *Program) VFMSUB231PS(v0 interface{}, v1 interface{}, v2 interface{},
 func (self *Program) VFMSUB231SD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFMSUB231SD takes 3 or 4 operands")
     }
     // VFMSUB231SD m64, xmm, xmm{k}{z}
@@ -45853,8 +45853,8 @@ func (self *Program) VFMSUB231SD(v0 interface{}, v1 interface{}, v2 interface{},
 func (self *Program) VFMSUB231SS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFMSUB231SS takes 3 or 4 operands")
     }
     // VFMSUB231SS m32, xmm, xmm{k}{z}
@@ -45937,8 +45937,8 @@ func (self *Program) VFMSUB231SS(v0 interface{}, v1 interface{}, v2 interface{},
 func (self *Program) VFMSUBADD132PD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFMSUBADD132PD takes 3 or 4 operands")
     }
     // VFMSUBADD132PD m128/m64bcst, xmm, xmm{k}{z}
@@ -46083,8 +46083,8 @@ func (self *Program) VFMSUBADD132PD(v0 interface{}, v1 interface{}, v2 interface
 func (self *Program) VFMSUBADD132PS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFMSUBADD132PS takes 3 or 4 operands")
     }
     // VFMSUBADD132PS m128/m32bcst, xmm, xmm{k}{z}
@@ -46229,8 +46229,8 @@ func (self *Program) VFMSUBADD132PS(v0 interface{}, v1 interface{}, v2 interface
 func (self *Program) VFMSUBADD213PD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFMSUBADD213PD takes 3 or 4 operands")
     }
     // VFMSUBADD213PD m128/m64bcst, xmm, xmm{k}{z}
@@ -46375,8 +46375,8 @@ func (self *Program) VFMSUBADD213PD(v0 interface{}, v1 interface{}, v2 interface
 func (self *Program) VFMSUBADD213PS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFMSUBADD213PS takes 3 or 4 operands")
     }
     // VFMSUBADD213PS m128/m32bcst, xmm, xmm{k}{z}
@@ -46521,8 +46521,8 @@ func (self *Program) VFMSUBADD213PS(v0 interface{}, v1 interface{}, v2 interface
 func (self *Program) VFMSUBADD231PD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFMSUBADD231PD takes 3 or 4 operands")
     }
     // VFMSUBADD231PD m128/m64bcst, xmm, xmm{k}{z}
@@ -46667,8 +46667,8 @@ func (self *Program) VFMSUBADD231PD(v0 interface{}, v1 interface{}, v2 interface
 func (self *Program) VFMSUBADD231PS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFMSUBADD231PS takes 3 or 4 operands")
     }
     // VFMSUBADD231PS m128/m32bcst, xmm, xmm{k}{z}
@@ -46806,7 +46806,7 @@ func (self *Program) VFMSUBADD231PS(v0 interface{}, v1 interface{}, v2 interface
 //    * VFMSUBADDPD ymm, m256, ymm, ymm
 //
 func (self *Program) VFMSUBADDPD(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VFMSUBADDPD xmm, xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_FMA4)
@@ -46907,7 +46907,7 @@ func (self *Program) VFMSUBADDPD(v0 interface{}, v1 interface{}, v2 interface{},
 //    * VFMSUBADDPS ymm, m256, ymm, ymm
 //
 func (self *Program) VFMSUBADDPS(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VFMSUBADDPS xmm, xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_FMA4)
@@ -47008,7 +47008,7 @@ func (self *Program) VFMSUBADDPS(v0 interface{}, v1 interface{}, v2 interface{},
 //    * VFMSUBPD ymm, m256, ymm, ymm
 //
 func (self *Program) VFMSUBPD(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VFMSUBPD xmm, xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_FMA4)
@@ -47109,7 +47109,7 @@ func (self *Program) VFMSUBPD(v0 interface{}, v1 interface{}, v2 interface{}, v3
 //    * VFMSUBPS ymm, m256, ymm, ymm
 //
 func (self *Program) VFMSUBPS(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VFMSUBPS xmm, xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_FMA4)
@@ -47207,7 +47207,7 @@ func (self *Program) VFMSUBPS(v0 interface{}, v1 interface{}, v2 interface{}, v3
 //    * VFMSUBSD xmm, m64, xmm, xmm
 //
 func (self *Program) VFMSUBSD(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VFMSUBSD xmm, xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_FMA4)
@@ -47265,7 +47265,7 @@ func (self *Program) VFMSUBSD(v0 interface{}, v1 interface{}, v2 interface{}, v3
 //    * VFMSUBSS xmm, m32, xmm, xmm
 //
 func (self *Program) VFMSUBSS(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VFMSUBSS xmm, xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_FMA4)
@@ -47333,8 +47333,8 @@ func (self *Program) VFMSUBSS(v0 interface{}, v1 interface{}, v2 interface{}, v3
 func (self *Program) VFNMADD132PD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFNMADD132PD takes 3 or 4 operands")
     }
     // VFNMADD132PD m128/m64bcst, xmm, xmm{k}{z}
@@ -47479,8 +47479,8 @@ func (self *Program) VFNMADD132PD(v0 interface{}, v1 interface{}, v2 interface{}
 func (self *Program) VFNMADD132PS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFNMADD132PS takes 3 or 4 operands")
     }
     // VFNMADD132PS m128/m32bcst, xmm, xmm{k}{z}
@@ -47619,8 +47619,8 @@ func (self *Program) VFNMADD132PS(v0 interface{}, v1 interface{}, v2 interface{}
 func (self *Program) VFNMADD132SD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFNMADD132SD takes 3 or 4 operands")
     }
     // VFNMADD132SD m64, xmm, xmm{k}{z}
@@ -47697,8 +47697,8 @@ func (self *Program) VFNMADD132SD(v0 interface{}, v1 interface{}, v2 interface{}
 func (self *Program) VFNMADD132SS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFNMADD132SS takes 3 or 4 operands")
     }
     // VFNMADD132SS m32, xmm, xmm{k}{z}
@@ -47781,8 +47781,8 @@ func (self *Program) VFNMADD132SS(v0 interface{}, v1 interface{}, v2 interface{}
 func (self *Program) VFNMADD213PD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFNMADD213PD takes 3 or 4 operands")
     }
     // VFNMADD213PD m128/m64bcst, xmm, xmm{k}{z}
@@ -47927,8 +47927,8 @@ func (self *Program) VFNMADD213PD(v0 interface{}, v1 interface{}, v2 interface{}
 func (self *Program) VFNMADD213PS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFNMADD213PS takes 3 or 4 operands")
     }
     // VFNMADD213PS m128/m32bcst, xmm, xmm{k}{z}
@@ -48067,8 +48067,8 @@ func (self *Program) VFNMADD213PS(v0 interface{}, v1 interface{}, v2 interface{}
 func (self *Program) VFNMADD213SD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFNMADD213SD takes 3 or 4 operands")
     }
     // VFNMADD213SD m64, xmm, xmm{k}{z}
@@ -48145,8 +48145,8 @@ func (self *Program) VFNMADD213SD(v0 interface{}, v1 interface{}, v2 interface{}
 func (self *Program) VFNMADD213SS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFNMADD213SS takes 3 or 4 operands")
     }
     // VFNMADD213SS m32, xmm, xmm{k}{z}
@@ -48229,8 +48229,8 @@ func (self *Program) VFNMADD213SS(v0 interface{}, v1 interface{}, v2 interface{}
 func (self *Program) VFNMADD231PD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFNMADD231PD takes 3 or 4 operands")
     }
     // VFNMADD231PD m128/m64bcst, xmm, xmm{k}{z}
@@ -48375,8 +48375,8 @@ func (self *Program) VFNMADD231PD(v0 interface{}, v1 interface{}, v2 interface{}
 func (self *Program) VFNMADD231PS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFNMADD231PS takes 3 or 4 operands")
     }
     // VFNMADD231PS m128/m32bcst, xmm, xmm{k}{z}
@@ -48515,8 +48515,8 @@ func (self *Program) VFNMADD231PS(v0 interface{}, v1 interface{}, v2 interface{}
 func (self *Program) VFNMADD231SD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFNMADD231SD takes 3 or 4 operands")
     }
     // VFNMADD231SD m64, xmm, xmm{k}{z}
@@ -48593,8 +48593,8 @@ func (self *Program) VFNMADD231SD(v0 interface{}, v1 interface{}, v2 interface{}
 func (self *Program) VFNMADD231SS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFNMADD231SS takes 3 or 4 operands")
     }
     // VFNMADD231SS m32, xmm, xmm{k}{z}
@@ -48670,7 +48670,7 @@ func (self *Program) VFNMADD231SS(v0 interface{}, v1 interface{}, v2 interface{}
 //    * VFNMADDPD ymm, m256, ymm, ymm
 //
 func (self *Program) VFNMADDPD(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VFNMADDPD xmm, xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_FMA4)
@@ -48771,7 +48771,7 @@ func (self *Program) VFNMADDPD(v0 interface{}, v1 interface{}, v2 interface{}, v
 //    * VFNMADDPS ymm, m256, ymm, ymm
 //
 func (self *Program) VFNMADDPS(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VFNMADDPS xmm, xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_FMA4)
@@ -48869,7 +48869,7 @@ func (self *Program) VFNMADDPS(v0 interface{}, v1 interface{}, v2 interface{}, v
 //    * VFNMADDSD xmm, m64, xmm, xmm
 //
 func (self *Program) VFNMADDSD(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VFNMADDSD xmm, xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_FMA4)
@@ -48927,7 +48927,7 @@ func (self *Program) VFNMADDSD(v0 interface{}, v1 interface{}, v2 interface{}, v
 //    * VFNMADDSS xmm, m32, xmm, xmm
 //
 func (self *Program) VFNMADDSS(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VFNMADDSS xmm, xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_FMA4)
@@ -48995,8 +48995,8 @@ func (self *Program) VFNMADDSS(v0 interface{}, v1 interface{}, v2 interface{}, v
 func (self *Program) VFNMSUB132PD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFNMSUB132PD takes 3 or 4 operands")
     }
     // VFNMSUB132PD m128/m64bcst, xmm, xmm{k}{z}
@@ -49141,8 +49141,8 @@ func (self *Program) VFNMSUB132PD(v0 interface{}, v1 interface{}, v2 interface{}
 func (self *Program) VFNMSUB132PS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFNMSUB132PS takes 3 or 4 operands")
     }
     // VFNMSUB132PS m128/m32bcst, xmm, xmm{k}{z}
@@ -49281,8 +49281,8 @@ func (self *Program) VFNMSUB132PS(v0 interface{}, v1 interface{}, v2 interface{}
 func (self *Program) VFNMSUB132SD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFNMSUB132SD takes 3 or 4 operands")
     }
     // VFNMSUB132SD m64, xmm, xmm{k}{z}
@@ -49359,8 +49359,8 @@ func (self *Program) VFNMSUB132SD(v0 interface{}, v1 interface{}, v2 interface{}
 func (self *Program) VFNMSUB132SS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFNMSUB132SS takes 3 or 4 operands")
     }
     // VFNMSUB132SS m32, xmm, xmm{k}{z}
@@ -49443,8 +49443,8 @@ func (self *Program) VFNMSUB132SS(v0 interface{}, v1 interface{}, v2 interface{}
 func (self *Program) VFNMSUB213PD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFNMSUB213PD takes 3 or 4 operands")
     }
     // VFNMSUB213PD m128/m64bcst, xmm, xmm{k}{z}
@@ -49589,8 +49589,8 @@ func (self *Program) VFNMSUB213PD(v0 interface{}, v1 interface{}, v2 interface{}
 func (self *Program) VFNMSUB213PS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFNMSUB213PS takes 3 or 4 operands")
     }
     // VFNMSUB213PS m128/m32bcst, xmm, xmm{k}{z}
@@ -49729,8 +49729,8 @@ func (self *Program) VFNMSUB213PS(v0 interface{}, v1 interface{}, v2 interface{}
 func (self *Program) VFNMSUB213SD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFNMSUB213SD takes 3 or 4 operands")
     }
     // VFNMSUB213SD m64, xmm, xmm{k}{z}
@@ -49807,8 +49807,8 @@ func (self *Program) VFNMSUB213SD(v0 interface{}, v1 interface{}, v2 interface{}
 func (self *Program) VFNMSUB213SS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFNMSUB213SS takes 3 or 4 operands")
     }
     // VFNMSUB213SS m32, xmm, xmm{k}{z}
@@ -49891,8 +49891,8 @@ func (self *Program) VFNMSUB213SS(v0 interface{}, v1 interface{}, v2 interface{}
 func (self *Program) VFNMSUB231PD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFNMSUB231PD takes 3 or 4 operands")
     }
     // VFNMSUB231PD m128/m64bcst, xmm, xmm{k}{z}
@@ -50037,8 +50037,8 @@ func (self *Program) VFNMSUB231PD(v0 interface{}, v1 interface{}, v2 interface{}
 func (self *Program) VFNMSUB231PS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFNMSUB231PS takes 3 or 4 operands")
     }
     // VFNMSUB231PS m128/m32bcst, xmm, xmm{k}{z}
@@ -50177,8 +50177,8 @@ func (self *Program) VFNMSUB231PS(v0 interface{}, v1 interface{}, v2 interface{}
 func (self *Program) VFNMSUB231SD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFNMSUB231SD takes 3 or 4 operands")
     }
     // VFNMSUB231SD m64, xmm, xmm{k}{z}
@@ -50255,8 +50255,8 @@ func (self *Program) VFNMSUB231SD(v0 interface{}, v1 interface{}, v2 interface{}
 func (self *Program) VFNMSUB231SS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VFNMSUB231SS takes 3 or 4 operands")
     }
     // VFNMSUB231SS m32, xmm, xmm{k}{z}
@@ -50332,7 +50332,7 @@ func (self *Program) VFNMSUB231SS(v0 interface{}, v1 interface{}, v2 interface{}
 //    * VFNMSUBPD ymm, m256, ymm, ymm
 //
 func (self *Program) VFNMSUBPD(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VFNMSUBPD xmm, xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_FMA4)
@@ -50433,7 +50433,7 @@ func (self *Program) VFNMSUBPD(v0 interface{}, v1 interface{}, v2 interface{}, v
 //    * VFNMSUBPS ymm, m256, ymm, ymm
 //
 func (self *Program) VFNMSUBPS(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VFNMSUBPS xmm, xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_FMA4)
@@ -50531,7 +50531,7 @@ func (self *Program) VFNMSUBPS(v0 interface{}, v1 interface{}, v2 interface{}, v
 //    * VFNMSUBSD xmm, m64, xmm, xmm
 //
 func (self *Program) VFNMSUBSD(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VFNMSUBSD xmm, xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_FMA4)
@@ -50589,7 +50589,7 @@ func (self *Program) VFNMSUBSD(v0 interface{}, v1 interface{}, v2 interface{}, v
 //    * VFNMSUBSS xmm, m32, xmm, xmm
 //
 func (self *Program) VFNMSUBSS(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VFNMSUBSS xmm, xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_FMA4)
@@ -50650,7 +50650,7 @@ func (self *Program) VFNMSUBSS(v0 interface{}, v1 interface{}, v2 interface{}, v
 //    * VFPCLASSPD imm8, zmm, k{k}
 //
 func (self *Program) VFPCLASSPD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VFPCLASSPD imm8, m128/m64bcst, k{k}
     if isImm8(v0) && isM128M64bcst(v1) && isKk(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512DQ)
@@ -50740,7 +50740,7 @@ func (self *Program) VFPCLASSPD(v0 interface{}, v1 interface{}, v2 interface{}) 
 //    * VFPCLASSPS imm8, zmm, k{k}
 //
 func (self *Program) VFPCLASSPS(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VFPCLASSPS imm8, m128/m32bcst, k{k}
     if isImm8(v0) && isM128M32bcst(v1) && isKk(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512DQ)
@@ -50826,7 +50826,7 @@ func (self *Program) VFPCLASSPS(v0 interface{}, v1 interface{}, v2 interface{}) 
 //    * VFPCLASSSD imm8, m64, k{k}
 //
 func (self *Program) VFPCLASSSD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VFPCLASSSD imm8, xmm, k{k}
     if isImm8(v0) && isEVEXXMM(v1) && isKk(v2) {
         self.require(ISA_AVX512DQ)
@@ -50866,7 +50866,7 @@ func (self *Program) VFPCLASSSD(v0 interface{}, v1 interface{}, v2 interface{}) 
 //    * VFPCLASSSS imm8, m32, k{k}
 //
 func (self *Program) VFPCLASSSS(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VFPCLASSSS imm8, xmm, k{k}
     if isImm8(v0) && isEVEXXMM(v1) && isKk(v2) {
         self.require(ISA_AVX512DQ)
@@ -50908,7 +50908,7 @@ func (self *Program) VFPCLASSSS(v0 interface{}, v1 interface{}, v2 interface{}) 
 //    * VFRCZPD m256, ymm
 //
 func (self *Program) VFRCZPD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VFRCZPD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_XOP)
@@ -50967,7 +50967,7 @@ func (self *Program) VFRCZPD(v0 interface{}, v1 interface{}) *Instruction {
 //    * VFRCZPS m256, ymm
 //
 func (self *Program) VFRCZPS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VFRCZPS xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_XOP)
@@ -51024,7 +51024,7 @@ func (self *Program) VFRCZPS(v0 interface{}, v1 interface{}) *Instruction {
 //    * VFRCZSD m64, xmm
 //
 func (self *Program) VFRCZSD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VFRCZSD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_XOP)
@@ -51061,7 +51061,7 @@ func (self *Program) VFRCZSD(v0 interface{}, v1 interface{}) *Instruction {
 //    * VFRCZSS m32, xmm
 //
 func (self *Program) VFRCZSS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VFRCZSS xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_XOP)
@@ -51103,8 +51103,8 @@ func (self *Program) VFRCZSS(v0 interface{}, v1 interface{}) *Instruction {
 func (self *Program) VGATHERDPD(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VGATHERDPD takes 2 or 3 operands")
     }
     // VGATHERDPD vm32x, xmm{k}
@@ -51173,8 +51173,8 @@ func (self *Program) VGATHERDPD(v0 interface{}, v1 interface{}, vv ...interface{
 func (self *Program) VGATHERDPS(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VGATHERDPS takes 2 or 3 operands")
     }
     // VGATHERDPS vm32x, xmm{k}
@@ -51237,7 +51237,7 @@ func (self *Program) VGATHERDPS(v0 interface{}, v1 interface{}, vv ...interface{
 //    * VGATHERPF0DPD vm32y{k}
 //
 func (self *Program) VGATHERPF0DPD(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // VGATHERPF0DPD vm32y{k}
     if isVMYk(v0) {
         self.require(ISA_AVX512PF)
@@ -51262,7 +51262,7 @@ func (self *Program) VGATHERPF0DPD(v0 interface{}) *Instruction {
 //    * VGATHERPF0DPS vm32z{k}
 //
 func (self *Program) VGATHERPF0DPS(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // VGATHERPF0DPS vm32z{k}
     if isVMZk(v0) {
         self.require(ISA_AVX512PF)
@@ -51287,7 +51287,7 @@ func (self *Program) VGATHERPF0DPS(v0 interface{}) *Instruction {
 //    * VGATHERPF0QPD vm64z{k}
 //
 func (self *Program) VGATHERPF0QPD(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // VGATHERPF0QPD vm64z{k}
     if isVMZk(v0) {
         self.require(ISA_AVX512PF)
@@ -51312,7 +51312,7 @@ func (self *Program) VGATHERPF0QPD(v0 interface{}) *Instruction {
 //    * VGATHERPF0QPS vm64z{k}
 //
 func (self *Program) VGATHERPF0QPS(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // VGATHERPF0QPS vm64z{k}
     if isVMZk(v0) {
         self.require(ISA_AVX512PF)
@@ -51337,7 +51337,7 @@ func (self *Program) VGATHERPF0QPS(v0 interface{}) *Instruction {
 //    * VGATHERPF1DPD vm32y{k}
 //
 func (self *Program) VGATHERPF1DPD(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // VGATHERPF1DPD vm32y{k}
     if isVMYk(v0) {
         self.require(ISA_AVX512PF)
@@ -51362,7 +51362,7 @@ func (self *Program) VGATHERPF1DPD(v0 interface{}) *Instruction {
 //    * VGATHERPF1DPS vm32z{k}
 //
 func (self *Program) VGATHERPF1DPS(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // VGATHERPF1DPS vm32z{k}
     if isVMZk(v0) {
         self.require(ISA_AVX512PF)
@@ -51387,7 +51387,7 @@ func (self *Program) VGATHERPF1DPS(v0 interface{}) *Instruction {
 //    * VGATHERPF1QPD vm64z{k}
 //
 func (self *Program) VGATHERPF1QPD(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // VGATHERPF1QPD vm64z{k}
     if isVMZk(v0) {
         self.require(ISA_AVX512PF)
@@ -51412,7 +51412,7 @@ func (self *Program) VGATHERPF1QPD(v0 interface{}) *Instruction {
 //    * VGATHERPF1QPS vm64z{k}
 //
 func (self *Program) VGATHERPF1QPS(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // VGATHERPF1QPS vm64z{k}
     if isVMZk(v0) {
         self.require(ISA_AVX512PF)
@@ -51443,8 +51443,8 @@ func (self *Program) VGATHERPF1QPS(v0 interface{}) *Instruction {
 func (self *Program) VGATHERQPD(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VGATHERQPD takes 2 or 3 operands")
     }
     // VGATHERQPD vm64x, xmm{k}
@@ -51513,8 +51513,8 @@ func (self *Program) VGATHERQPD(v0 interface{}, v1 interface{}, vv ...interface{
 func (self *Program) VGATHERQPS(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VGATHERQPS takes 2 or 3 operands")
     }
     // VGATHERQPS vm64x, xmm{k}
@@ -51585,8 +51585,8 @@ func (self *Program) VGATHERQPS(v0 interface{}, v1 interface{}, vv ...interface{
 func (self *Program) VGETEXPPD(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VGETEXPPD takes 2 or 3 operands")
     }
     // VGETEXPPD m128/m64bcst, xmm{k}{z}
@@ -51687,8 +51687,8 @@ func (self *Program) VGETEXPPD(v0 interface{}, v1 interface{}, vv ...interface{}
 func (self *Program) VGETEXPPS(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VGETEXPPS takes 2 or 3 operands")
     }
     // VGETEXPPS m128/m32bcst, xmm{k}{z}
@@ -51785,8 +51785,8 @@ func (self *Program) VGETEXPPS(v0 interface{}, v1 interface{}, vv ...interface{}
 func (self *Program) VGETEXPSD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VGETEXPSD takes 3 or 4 operands")
     }
     // VGETEXPSD m64, xmm, xmm{k}{z}
@@ -51841,8 +51841,8 @@ func (self *Program) VGETEXPSD(v0 interface{}, v1 interface{}, v2 interface{}, v
 func (self *Program) VGETEXPSS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VGETEXPSS takes 3 or 4 operands")
     }
     // VGETEXPSS m32, xmm, xmm{k}{z}
@@ -51901,8 +51901,8 @@ func (self *Program) VGETEXPSS(v0 interface{}, v1 interface{}, v2 interface{}, v
 func (self *Program) VGETMANTPD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VGETMANTPD takes 3 or 4 operands")
     }
     // VGETMANTPD imm8, m128/m64bcst, xmm{k}{z}
@@ -52010,8 +52010,8 @@ func (self *Program) VGETMANTPD(v0 interface{}, v1 interface{}, v2 interface{}, 
 func (self *Program) VGETMANTPS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VGETMANTPS takes 3 or 4 operands")
     }
     // VGETMANTPS imm8, m128/m32bcst, xmm{k}{z}
@@ -52115,8 +52115,8 @@ func (self *Program) VGETMANTPS(v0 interface{}, v1 interface{}, v2 interface{}, 
 func (self *Program) VGETMANTSD(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
-        case 1  : p = self.alloc(5, [_MAX_ARGS]interface{}{v0, v1, v2, v3, vv[0]})
+        case 0  : p = self.alloc(4, Operands{v0, v1, v2, v3})
+        case 1  : p = self.alloc(5, Operands{v0, v1, v2, v3, vv[0]})
         default : panic("instruction VGETMANTSD takes 4 or 5 operands")
     }
     // VGETMANTSD imm8, m64, xmm, xmm{k}{z}
@@ -52174,8 +52174,8 @@ func (self *Program) VGETMANTSD(v0 interface{}, v1 interface{}, v2 interface{}, 
 func (self *Program) VGETMANTSS(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
-        case 1  : p = self.alloc(5, [_MAX_ARGS]interface{}{v0, v1, v2, v3, vv[0]})
+        case 0  : p = self.alloc(4, Operands{v0, v1, v2, v3})
+        case 1  : p = self.alloc(5, Operands{v0, v1, v2, v3, vv[0]})
         default : panic("instruction VGETMANTSS takes 4 or 5 operands")
     }
     // VGETMANTSS imm8, m32, xmm, xmm{k}{z}
@@ -52232,7 +52232,7 @@ func (self *Program) VGETMANTSS(v0 interface{}, v1 interface{}, v2 interface{}, 
 //    * VHADDPD m256, ymm, ymm
 //
 func (self *Program) VHADDPD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VHADDPD xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_AVX)
@@ -52287,7 +52287,7 @@ func (self *Program) VHADDPD(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VHADDPS m256, ymm, ymm
 //
 func (self *Program) VHADDPS(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VHADDPS xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_AVX)
@@ -52342,7 +52342,7 @@ func (self *Program) VHADDPS(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VHSUBPD m256, ymm, ymm
 //
 func (self *Program) VHSUBPD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VHSUBPD xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_AVX)
@@ -52397,7 +52397,7 @@ func (self *Program) VHSUBPD(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VHSUBPS m256, ymm, ymm
 //
 func (self *Program) VHSUBPS(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VHSUBPS xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_AVX)
@@ -52450,7 +52450,7 @@ func (self *Program) VHSUBPS(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VINSERTF128 imm8, m128, ymm, ymm
 //
 func (self *Program) VINSERTF128(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VINSERTF128 imm8, xmm, ymm, ymm
     if isImm8(v0) && isXMM(v1) && isYMM(v2) && isYMM(v3) {
         self.require(ISA_AVX)
@@ -52491,7 +52491,7 @@ func (self *Program) VINSERTF128(v0 interface{}, v1 interface{}, v2 interface{},
 //    * VINSERTF32X4 imm8, m128, zmm, zmm{k}{z}
 //
 func (self *Program) VINSERTF32X4(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VINSERTF32X4 imm8, xmm, ymm, ymm{k}{z}
     if isImm8(v0) && isEVEXXMM(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -52554,7 +52554,7 @@ func (self *Program) VINSERTF32X4(v0 interface{}, v1 interface{}, v2 interface{}
 //    * VINSERTF32X8 imm8, m256, zmm, zmm{k}{z}
 //
 func (self *Program) VINSERTF32X8(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VINSERTF32X8 imm8, ymm, zmm, zmm{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isZMM(v2) && isZMMkz(v3) {
         self.require(ISA_AVX512DQ)
@@ -52596,7 +52596,7 @@ func (self *Program) VINSERTF32X8(v0 interface{}, v1 interface{}, v2 interface{}
 //    * VINSERTF64X2 imm8, m128, zmm, zmm{k}{z}
 //
 func (self *Program) VINSERTF64X2(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VINSERTF64X2 imm8, xmm, ymm, ymm{k}{z}
     if isImm8(v0) && isEVEXXMM(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
         self.require(ISA_AVX512VL | ISA_AVX512DQ)
@@ -52659,7 +52659,7 @@ func (self *Program) VINSERTF64X2(v0 interface{}, v1 interface{}, v2 interface{}
 //    * VINSERTF64X4 imm8, m256, zmm, zmm{k}{z}
 //
 func (self *Program) VINSERTF64X4(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VINSERTF64X4 imm8, ymm, zmm, zmm{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isZMM(v2) && isZMMkz(v3) {
         self.require(ISA_AVX512F)
@@ -52699,7 +52699,7 @@ func (self *Program) VINSERTF64X4(v0 interface{}, v1 interface{}, v2 interface{}
 //    * VINSERTI128 imm8, m128, ymm, ymm
 //
 func (self *Program) VINSERTI128(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VINSERTI128 imm8, xmm, ymm, ymm
     if isImm8(v0) && isXMM(v1) && isYMM(v2) && isYMM(v3) {
         self.require(ISA_AVX2)
@@ -52740,7 +52740,7 @@ func (self *Program) VINSERTI128(v0 interface{}, v1 interface{}, v2 interface{},
 //    * VINSERTI32X4 imm8, m128, zmm, zmm{k}{z}
 //
 func (self *Program) VINSERTI32X4(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VINSERTI32X4 imm8, xmm, ymm, ymm{k}{z}
     if isImm8(v0) && isEVEXXMM(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -52803,7 +52803,7 @@ func (self *Program) VINSERTI32X4(v0 interface{}, v1 interface{}, v2 interface{}
 //    * VINSERTI32X8 imm8, m256, zmm, zmm{k}{z}
 //
 func (self *Program) VINSERTI32X8(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VINSERTI32X8 imm8, ymm, zmm, zmm{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isZMM(v2) && isZMMkz(v3) {
         self.require(ISA_AVX512DQ)
@@ -52845,7 +52845,7 @@ func (self *Program) VINSERTI32X8(v0 interface{}, v1 interface{}, v2 interface{}
 //    * VINSERTI64X2 imm8, m128, zmm, zmm{k}{z}
 //
 func (self *Program) VINSERTI64X2(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VINSERTI64X2 imm8, xmm, ymm, ymm{k}{z}
     if isImm8(v0) && isEVEXXMM(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
         self.require(ISA_AVX512VL | ISA_AVX512DQ)
@@ -52908,7 +52908,7 @@ func (self *Program) VINSERTI64X2(v0 interface{}, v1 interface{}, v2 interface{}
 //    * VINSERTI64X4 imm8, m256, zmm, zmm{k}{z}
 //
 func (self *Program) VINSERTI64X4(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VINSERTI64X4 imm8, ymm, zmm, zmm{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isZMM(v2) && isZMMkz(v3) {
         self.require(ISA_AVX512F)
@@ -52950,7 +52950,7 @@ func (self *Program) VINSERTI64X4(v0 interface{}, v1 interface{}, v2 interface{}
 //    * VINSERTPS imm8, m32, xmm, xmm
 //
 func (self *Program) VINSERTPS(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VINSERTPS imm8, xmm, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_AVX)
@@ -53012,7 +53012,7 @@ func (self *Program) VINSERTPS(v0 interface{}, v1 interface{}, v2 interface{}, v
 //    * VLDDQU m256, ymm
 //
 func (self *Program) VLDDQU(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VLDDQU m128, xmm
     if isM128(v0) && isXMM(v1) {
         self.require(ISA_AVX)
@@ -53046,7 +53046,7 @@ func (self *Program) VLDDQU(v0 interface{}, v1 interface{}) *Instruction {
 //    * VLDMXCSR m32
 //
 func (self *Program) VLDMXCSR(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // VLDMXCSR m32
     if isM32(v0) {
         self.require(ISA_AVX)
@@ -53071,7 +53071,7 @@ func (self *Program) VLDMXCSR(v0 interface{}) *Instruction {
 //    * VMASKMOVDQU xmm, xmm
 //
 func (self *Program) VMASKMOVDQU(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VMASKMOVDQU xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_AVX)
@@ -53099,7 +53099,7 @@ func (self *Program) VMASKMOVDQU(v0 interface{}, v1 interface{}) *Instruction {
 //    * VMASKMOVPD ymm, ymm, m256
 //
 func (self *Program) VMASKMOVPD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VMASKMOVPD m128, xmm, xmm
     if isM128(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_AVX)
@@ -53154,7 +53154,7 @@ func (self *Program) VMASKMOVPD(v0 interface{}, v1 interface{}, v2 interface{}) 
 //    * VMASKMOVPS ymm, ymm, m256
 //
 func (self *Program) VMASKMOVPS(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VMASKMOVPS m128, xmm, xmm
     if isM128(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_AVX)
@@ -53218,8 +53218,8 @@ func (self *Program) VMASKMOVPS(v0 interface{}, v1 interface{}, v2 interface{}) 
 func (self *Program) VMAXPD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VMAXPD takes 3 or 4 operands")
     }
     // VMAXPD m128/m64bcst, xmm, xmm{k}{z}
@@ -53360,8 +53360,8 @@ func (self *Program) VMAXPD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
 func (self *Program) VMAXPS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VMAXPS takes 3 or 4 operands")
     }
     // VMAXPS m128/m32bcst, xmm, xmm{k}{z}
@@ -53496,8 +53496,8 @@ func (self *Program) VMAXPS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
 func (self *Program) VMAXSD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VMAXSD takes 3 or 4 operands")
     }
     // VMAXSD m64, xmm, xmm{k}{z}
@@ -53572,8 +53572,8 @@ func (self *Program) VMAXSD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
 func (self *Program) VMAXSS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VMAXSS takes 3 or 4 operands")
     }
     // VMAXSS m32, xmm, xmm{k}{z}
@@ -53654,8 +53654,8 @@ func (self *Program) VMAXSS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
 func (self *Program) VMINPD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VMINPD takes 3 or 4 operands")
     }
     // VMINPD m128/m64bcst, xmm, xmm{k}{z}
@@ -53796,8 +53796,8 @@ func (self *Program) VMINPD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
 func (self *Program) VMINPS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VMINPS takes 3 or 4 operands")
     }
     // VMINPS m128/m32bcst, xmm, xmm{k}{z}
@@ -53932,8 +53932,8 @@ func (self *Program) VMINPS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
 func (self *Program) VMINSD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VMINSD takes 3 or 4 operands")
     }
     // VMINSD m64, xmm, xmm{k}{z}
@@ -54008,8 +54008,8 @@ func (self *Program) VMINSD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
 func (self *Program) VMINSS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VMINSS takes 3 or 4 operands")
     }
     // VMINSS m32, xmm, xmm{k}{z}
@@ -54092,7 +54092,7 @@ func (self *Program) VMINSS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
 //    * VMOVAPD ymm, m256
 //
 func (self *Program) VMOVAPD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VMOVAPD xmm, m128{k}{z}
     if isEVEXXMM(v0) && isM128kz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -54300,7 +54300,7 @@ func (self *Program) VMOVAPD(v0 interface{}, v1 interface{}) *Instruction {
 //    * VMOVAPS ymm, m256
 //
 func (self *Program) VMOVAPS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VMOVAPS xmm, m128{k}{z}
     if isEVEXXMM(v0) && isM128kz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -54501,7 +54501,7 @@ func (self *Program) VMOVAPS(v0 interface{}, v1 interface{}) *Instruction {
 //    * VMOVD xmm, m32
 //
 func (self *Program) VMOVD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VMOVD xmm, r32
     if isXMM(v0) && isReg32(v1) {
         self.require(ISA_AVX)
@@ -54604,7 +54604,7 @@ func (self *Program) VMOVD(v0 interface{}, v1 interface{}) *Instruction {
 //    * VMOVDDUP m256, ymm
 //
 func (self *Program) VMOVDDUP(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VMOVDDUP xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -54724,7 +54724,7 @@ func (self *Program) VMOVDDUP(v0 interface{}, v1 interface{}) *Instruction {
 //    * VMOVDQA ymm, m256
 //
 func (self *Program) VMOVDQA(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VMOVDQA xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_AVX)
@@ -54812,7 +54812,7 @@ func (self *Program) VMOVDQA(v0 interface{}, v1 interface{}) *Instruction {
 //    * VMOVDQA32 m512, zmm{k}{z}
 //
 func (self *Program) VMOVDQA32(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VMOVDQA32 xmm, m128{k}{z}
     if isEVEXXMM(v0) && isM128kz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -54950,7 +54950,7 @@ func (self *Program) VMOVDQA32(v0 interface{}, v1 interface{}) *Instruction {
 //    * VMOVDQA64 m512, zmm{k}{z}
 //
 func (self *Program) VMOVDQA64(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VMOVDQA64 xmm, m128{k}{z}
     if isEVEXXMM(v0) && isM128kz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -55085,7 +55085,7 @@ func (self *Program) VMOVDQA64(v0 interface{}, v1 interface{}) *Instruction {
 //    * VMOVDQU ymm, m256
 //
 func (self *Program) VMOVDQU(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VMOVDQU xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_AVX)
@@ -55173,7 +55173,7 @@ func (self *Program) VMOVDQU(v0 interface{}, v1 interface{}) *Instruction {
 //    * VMOVDQU16 m512, zmm{k}{z}
 //
 func (self *Program) VMOVDQU16(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VMOVDQU16 xmm, m128{k}{z}
     if isEVEXXMM(v0) && isM128kz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -55311,7 +55311,7 @@ func (self *Program) VMOVDQU16(v0 interface{}, v1 interface{}) *Instruction {
 //    * VMOVDQU32 m512, zmm{k}{z}
 //
 func (self *Program) VMOVDQU32(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VMOVDQU32 xmm, m128{k}{z}
     if isEVEXXMM(v0) && isM128kz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -55449,7 +55449,7 @@ func (self *Program) VMOVDQU32(v0 interface{}, v1 interface{}) *Instruction {
 //    * VMOVDQU64 m512, zmm{k}{z}
 //
 func (self *Program) VMOVDQU64(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VMOVDQU64 xmm, m128{k}{z}
     if isEVEXXMM(v0) && isM128kz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -55587,7 +55587,7 @@ func (self *Program) VMOVDQU64(v0 interface{}, v1 interface{}) *Instruction {
 //    * VMOVDQU8 m512, zmm{k}{z}
 //
 func (self *Program) VMOVDQU8(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VMOVDQU8 xmm, m128{k}{z}
     if isEVEXXMM(v0) && isM128kz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -55718,7 +55718,7 @@ func (self *Program) VMOVDQU8(v0 interface{}, v1 interface{}) *Instruction {
 //    * VMOVHLPS xmm, xmm, xmm
 //
 func (self *Program) VMOVHLPS(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VMOVHLPS xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_AVX)
@@ -55760,8 +55760,8 @@ func (self *Program) VMOVHLPS(v0 interface{}, v1 interface{}, v2 interface{}) *I
 func (self *Program) VMOVHPD(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VMOVHPD takes 2 or 3 operands")
     }
     // VMOVHPD xmm, m64
@@ -55820,8 +55820,8 @@ func (self *Program) VMOVHPD(v0 interface{}, v1 interface{}, vv ...interface{}) 
 func (self *Program) VMOVHPS(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VMOVHPS takes 2 or 3 operands")
     }
     // VMOVHPS xmm, m64
@@ -55876,7 +55876,7 @@ func (self *Program) VMOVHPS(v0 interface{}, v1 interface{}, vv ...interface{}) 
 //    * VMOVLHPS xmm, xmm, xmm
 //
 func (self *Program) VMOVLHPS(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VMOVLHPS xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_AVX)
@@ -55918,8 +55918,8 @@ func (self *Program) VMOVLHPS(v0 interface{}, v1 interface{}, v2 interface{}) *I
 func (self *Program) VMOVLPD(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VMOVLPD takes 2 or 3 operands")
     }
     // VMOVLPD xmm, m64
@@ -55978,8 +55978,8 @@ func (self *Program) VMOVLPD(v0 interface{}, v1 interface{}, vv ...interface{}) 
 func (self *Program) VMOVLPS(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VMOVLPS takes 2 or 3 operands")
     }
     // VMOVLPS xmm, m64
@@ -56034,7 +56034,7 @@ func (self *Program) VMOVLPS(v0 interface{}, v1 interface{}, vv ...interface{}) 
 //    * VMOVMSKPD ymm, r32
 //
 func (self *Program) VMOVMSKPD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VMOVMSKPD xmm, r32
     if isXMM(v0) && isReg32(v1) {
         self.require(ISA_AVX)
@@ -56069,7 +56069,7 @@ func (self *Program) VMOVMSKPD(v0 interface{}, v1 interface{}) *Instruction {
 //    * VMOVMSKPS ymm, r32
 //
 func (self *Program) VMOVMSKPS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VMOVMSKPS xmm, r32
     if isXMM(v0) && isReg32(v1) {
         self.require(ISA_AVX)
@@ -56107,7 +56107,7 @@ func (self *Program) VMOVMSKPS(v0 interface{}, v1 interface{}) *Instruction {
 //    * VMOVNTDQ zmm, m512
 //
 func (self *Program) VMOVNTDQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VMOVNTDQ xmm, m128
     if isXMM(v0) && isM128(v1) {
         self.require(ISA_AVX)
@@ -56172,7 +56172,7 @@ func (self *Program) VMOVNTDQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * VMOVNTDQA m512, zmm
 //
 func (self *Program) VMOVNTDQA(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VMOVNTDQA m128, xmm
     if isM128(v0) && isXMM(v1) {
         self.require(ISA_AVX)
@@ -56237,7 +56237,7 @@ func (self *Program) VMOVNTDQA(v0 interface{}, v1 interface{}) *Instruction {
 //    * VMOVNTPD zmm, m512
 //
 func (self *Program) VMOVNTPD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VMOVNTPD xmm, m128
     if isXMM(v0) && isM128(v1) {
         self.require(ISA_AVX)
@@ -56302,7 +56302,7 @@ func (self *Program) VMOVNTPD(v0 interface{}, v1 interface{}) *Instruction {
 //    * VMOVNTPS zmm, m512
 //
 func (self *Program) VMOVNTPS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VMOVNTPS xmm, m128
     if isXMM(v0) && isM128(v1) {
         self.require(ISA_AVX)
@@ -56372,7 +56372,7 @@ func (self *Program) VMOVNTPS(v0 interface{}, v1 interface{}) *Instruction {
 //    * VMOVQ xmm, m64
 //
 func (self *Program) VMOVQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VMOVQ xmm, r64
     if isXMM(v0) && isReg64(v1) {
         self.require(ISA_AVX)
@@ -56531,8 +56531,8 @@ func (self *Program) VMOVQ(v0 interface{}, v1 interface{}) *Instruction {
 func (self *Program) VMOVSD(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VMOVSD takes 2 or 3 operands")
     }
     // VMOVSD xmm, m64{k}
@@ -56629,7 +56629,7 @@ func (self *Program) VMOVSD(v0 interface{}, v1 interface{}, vv ...interface{}) *
 //    * VMOVSHDUP m256, ymm
 //
 func (self *Program) VMOVSHDUP(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VMOVSHDUP xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -56753,7 +56753,7 @@ func (self *Program) VMOVSHDUP(v0 interface{}, v1 interface{}) *Instruction {
 //    * VMOVSLDUP m256, ymm
 //
 func (self *Program) VMOVSLDUP(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VMOVSLDUP xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -56875,8 +56875,8 @@ func (self *Program) VMOVSLDUP(v0 interface{}, v1 interface{}) *Instruction {
 func (self *Program) VMOVSS(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VMOVSS takes 2 or 3 operands")
     }
     // VMOVSS xmm, m32{k}
@@ -56978,7 +56978,7 @@ func (self *Program) VMOVSS(v0 interface{}, v1 interface{}, vv ...interface{}) *
 //    * VMOVUPD ymm, m256
 //
 func (self *Program) VMOVUPD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VMOVUPD xmm, m128{k}{z}
     if isEVEXXMM(v0) && isM128kz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -57186,7 +57186,7 @@ func (self *Program) VMOVUPD(v0 interface{}, v1 interface{}) *Instruction {
 //    * VMOVUPS ymm, m256
 //
 func (self *Program) VMOVUPS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VMOVUPS xmm, m128{k}{z}
     if isEVEXXMM(v0) && isM128kz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -57383,7 +57383,7 @@ func (self *Program) VMOVUPS(v0 interface{}, v1 interface{}) *Instruction {
 //    * VMPSADBW imm8, m256, ymm, ymm
 //
 func (self *Program) VMPSADBW(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VMPSADBW imm8, xmm, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_AVX)
@@ -57455,8 +57455,8 @@ func (self *Program) VMPSADBW(v0 interface{}, v1 interface{}, v2 interface{}, v3
 func (self *Program) VMULPD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VMULPD takes 3 or 4 operands")
     }
     // VMULPD m128/m64bcst, xmm, xmm{k}{z}
@@ -57597,8 +57597,8 @@ func (self *Program) VMULPD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
 func (self *Program) VMULPS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VMULPS takes 3 or 4 operands")
     }
     // VMULPS m128/m32bcst, xmm, xmm{k}{z}
@@ -57733,8 +57733,8 @@ func (self *Program) VMULPS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
 func (self *Program) VMULSD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VMULSD takes 3 or 4 operands")
     }
     // VMULSD m64, xmm, xmm{k}{z}
@@ -57809,8 +57809,8 @@ func (self *Program) VMULSD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
 func (self *Program) VMULSS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VMULSS takes 3 or 4 operands")
     }
     // VMULSS m32, xmm, xmm{k}{z}
@@ -57888,7 +57888,7 @@ func (self *Program) VMULSS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
 //    * VORPD m256, ymm, ymm
 //
 func (self *Program) VORPD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VORPD m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512DQ)
@@ -58012,7 +58012,7 @@ func (self *Program) VORPD(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
 //    * VORPS m256, ymm, ymm
 //
 func (self *Program) VORPS(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VORPS m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512DQ)
@@ -58136,7 +58136,7 @@ func (self *Program) VORPS(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
 //    * VPABSB m256, ymm
 //
 func (self *Program) VPABSB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPABSB xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -58264,7 +58264,7 @@ func (self *Program) VPABSB(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPABSD m256, ymm
 //
 func (self *Program) VPABSD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPABSD m128/m32bcst, xmm{k}{z}
     if isM128M32bcst(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -58388,7 +58388,7 @@ func (self *Program) VPABSD(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPABSQ zmm, zmm{k}{z}
 //
 func (self *Program) VPABSQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPABSQ m128/m64bcst, xmm{k}{z}
     if isM128M64bcst(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -58476,7 +58476,7 @@ func (self *Program) VPABSQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPABSW m256, ymm
 //
 func (self *Program) VPABSW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPABSW xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -58604,7 +58604,7 @@ func (self *Program) VPABSW(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPACKSSDW m256, ymm, ymm
 //
 func (self *Program) VPACKSSDW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPACKSSDW m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -58728,7 +58728,7 @@ func (self *Program) VPACKSSDW(v0 interface{}, v1 interface{}, v2 interface{}) *
 //    * VPACKSSWB m256, ymm, ymm
 //
 func (self *Program) VPACKSSWB(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPACKSSWB xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -58852,7 +58852,7 @@ func (self *Program) VPACKSSWB(v0 interface{}, v1 interface{}, v2 interface{}) *
 //    * VPACKUSDW m256, ymm, ymm
 //
 func (self *Program) VPACKUSDW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPACKUSDW m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -58980,7 +58980,7 @@ func (self *Program) VPACKUSDW(v0 interface{}, v1 interface{}, v2 interface{}) *
 //    * VPACKUSWB m256, ymm, ymm
 //
 func (self *Program) VPACKUSWB(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPACKUSWB xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -59104,7 +59104,7 @@ func (self *Program) VPACKUSWB(v0 interface{}, v1 interface{}, v2 interface{}) *
 //    * VPADDB m256, ymm, ymm
 //
 func (self *Program) VPADDB(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPADDB xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -59228,7 +59228,7 @@ func (self *Program) VPADDB(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VPADDD m256, ymm, ymm
 //
 func (self *Program) VPADDD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPADDD m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -59352,7 +59352,7 @@ func (self *Program) VPADDD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VPADDQ m256, ymm, ymm
 //
 func (self *Program) VPADDQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPADDQ m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -59476,7 +59476,7 @@ func (self *Program) VPADDQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VPADDSB m256, ymm, ymm
 //
 func (self *Program) VPADDSB(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPADDSB xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -59600,7 +59600,7 @@ func (self *Program) VPADDSB(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPADDSW m256, ymm, ymm
 //
 func (self *Program) VPADDSW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPADDSW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -59724,7 +59724,7 @@ func (self *Program) VPADDSW(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPADDUSB m256, ymm, ymm
 //
 func (self *Program) VPADDUSB(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPADDUSB xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -59848,7 +59848,7 @@ func (self *Program) VPADDUSB(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * VPADDUSW m256, ymm, ymm
 //
 func (self *Program) VPADDUSW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPADDUSW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -59972,7 +59972,7 @@ func (self *Program) VPADDUSW(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * VPADDW m256, ymm, ymm
 //
 func (self *Program) VPADDW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPADDW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -60096,7 +60096,7 @@ func (self *Program) VPADDW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VPALIGNR imm8, m256, ymm, ymm
 //
 func (self *Program) VPALIGNR(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VPALIGNR imm8, xmm, xmm, xmm{k}{z}
     if isImm8(v0) && isEVEXXMM(v1) && isEVEXXMM(v2) && isXMMkz(v3) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -60228,7 +60228,7 @@ func (self *Program) VPALIGNR(v0 interface{}, v1 interface{}, v2 interface{}, v3
 //    * VPAND m256, ymm, ymm
 //
 func (self *Program) VPAND(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPAND xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_AVX)
@@ -60285,7 +60285,7 @@ func (self *Program) VPAND(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
 //    * VPANDD zmm, zmm, zmm{k}{z}
 //
 func (self *Program) VPANDD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPANDD m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -60367,7 +60367,7 @@ func (self *Program) VPANDD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VPANDN m256, ymm, ymm
 //
 func (self *Program) VPANDN(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPANDN xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_AVX)
@@ -60424,7 +60424,7 @@ func (self *Program) VPANDN(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VPANDND zmm, zmm, zmm{k}{z}
 //
 func (self *Program) VPANDND(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPANDND m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -60508,7 +60508,7 @@ func (self *Program) VPANDND(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPANDNQ zmm, zmm, zmm{k}{z}
 //
 func (self *Program) VPANDNQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPANDNQ m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -60592,7 +60592,7 @@ func (self *Program) VPANDNQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPANDQ zmm, zmm, zmm{k}{z}
 //
 func (self *Program) VPANDQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPANDQ m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -60680,7 +60680,7 @@ func (self *Program) VPANDQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VPAVGB m256, ymm, ymm
 //
 func (self *Program) VPAVGB(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPAVGB xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -60804,7 +60804,7 @@ func (self *Program) VPAVGB(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VPAVGW m256, ymm, ymm
 //
 func (self *Program) VPAVGW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPAVGW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -60922,7 +60922,7 @@ func (self *Program) VPAVGW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VPBLENDD imm8, m256, ymm, ymm
 //
 func (self *Program) VPBLENDD(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VPBLENDD imm8, xmm, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_AVX2)
@@ -60987,7 +60987,7 @@ func (self *Program) VPBLENDD(v0 interface{}, v1 interface{}, v2 interface{}, v3
 //    * VPBLENDMB m512, zmm, zmm{k}{z}
 //
 func (self *Program) VPBLENDMB(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPBLENDMB xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -61071,7 +61071,7 @@ func (self *Program) VPBLENDMB(v0 interface{}, v1 interface{}, v2 interface{}) *
 //    * VPBLENDMD zmm, zmm, zmm{k}{z}
 //
 func (self *Program) VPBLENDMD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPBLENDMD m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -61155,7 +61155,7 @@ func (self *Program) VPBLENDMD(v0 interface{}, v1 interface{}, v2 interface{}) *
 //    * VPBLENDMQ zmm, zmm, zmm{k}{z}
 //
 func (self *Program) VPBLENDMQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPBLENDMQ m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -61239,7 +61239,7 @@ func (self *Program) VPBLENDMQ(v0 interface{}, v1 interface{}, v2 interface{}) *
 //    * VPBLENDMW m512, zmm, zmm{k}{z}
 //
 func (self *Program) VPBLENDMW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPBLENDMW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -61321,7 +61321,7 @@ func (self *Program) VPBLENDMW(v0 interface{}, v1 interface{}, v2 interface{}) *
 //    * VPBLENDVB ymm, m256, ymm, ymm
 //
 func (self *Program) VPBLENDVB(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VPBLENDVB xmm, xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_AVX)
@@ -61384,7 +61384,7 @@ func (self *Program) VPBLENDVB(v0 interface{}, v1 interface{}, v2 interface{}, v
 //    * VPBLENDW imm8, m256, ymm, ymm
 //
 func (self *Program) VPBLENDW(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VPBLENDW imm8, xmm, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_AVX)
@@ -61456,7 +61456,7 @@ func (self *Program) VPBLENDW(v0 interface{}, v1 interface{}, v2 interface{}, v3
 //    * VPBROADCASTB m8, ymm
 //
 func (self *Program) VPBROADCASTB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPBROADCASTB r32, xmm{k}{z}
     if isReg32(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -61623,7 +61623,7 @@ func (self *Program) VPBROADCASTB(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPBROADCASTD m32, ymm
 //
 func (self *Program) VPBROADCASTD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPBROADCASTD r32, xmm{k}{z}
     if isReg32(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -61780,7 +61780,7 @@ func (self *Program) VPBROADCASTD(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPBROADCASTMB2Q k, zmm
 //
 func (self *Program) VPBROADCASTMB2Q(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPBROADCASTMB2Q k, xmm
     if isK(v0) && isEVEXXMM(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512CD)
@@ -61834,7 +61834,7 @@ func (self *Program) VPBROADCASTMB2Q(v0 interface{}, v1 interface{}) *Instructio
 //    * VPBROADCASTMW2D k, zmm
 //
 func (self *Program) VPBROADCASTMW2D(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPBROADCASTMW2D k, xmm
     if isK(v0) && isEVEXXMM(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512CD)
@@ -61898,7 +61898,7 @@ func (self *Program) VPBROADCASTMW2D(v0 interface{}, v1 interface{}) *Instructio
 //    * VPBROADCASTQ m64, ymm
 //
 func (self *Program) VPBROADCASTQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPBROADCASTQ r64, xmm{k}{z}
     if isReg64(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -62065,7 +62065,7 @@ func (self *Program) VPBROADCASTQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPBROADCASTW m16, ymm
 //
 func (self *Program) VPBROADCASTW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPBROADCASTW r32, xmm{k}{z}
     if isReg32(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -62221,7 +62221,7 @@ func (self *Program) VPBROADCASTW(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPCLMULQDQ imm8, m128, xmm, xmm
 //
 func (self *Program) VPCLMULQDQ(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VPCLMULQDQ imm8, xmm, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_AVX | ISA_PCLMULQDQ)
@@ -62264,7 +62264,7 @@ func (self *Program) VPCLMULQDQ(v0 interface{}, v1 interface{}, v2 interface{}, 
 //    * VPCMOV ymm, m256, ymm, ymm
 //
 func (self *Program) VPCMOV(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VPCMOV xmm, xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_XOP)
@@ -62365,7 +62365,7 @@ func (self *Program) VPCMOV(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
 //    * VPCMPB imm8, m512, zmm, k{k}
 //
 func (self *Program) VPCMPB(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VPCMPB imm8, xmm, xmm, k{k}
     if isImm8(v0) && isEVEXXMM(v1) && isEVEXXMM(v2) && isKk(v3) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -62455,7 +62455,7 @@ func (self *Program) VPCMPB(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
 //    * VPCMPD imm8, zmm, zmm, k{k}
 //
 func (self *Program) VPCMPD(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VPCMPD imm8, m128/m32bcst, xmm, k{k}
     if isImm8(v0) && isM128M32bcst(v1) && isEVEXXMM(v2) && isKk(v3) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -62549,7 +62549,7 @@ func (self *Program) VPCMPD(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
 //    * VPCMPEQB m256, ymm, ymm
 //
 func (self *Program) VPCMPEQB(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPCMPEQB xmm, xmm, k{k}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isKk(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -62673,7 +62673,7 @@ func (self *Program) VPCMPEQB(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * VPCMPEQD m256, ymm, ymm
 //
 func (self *Program) VPCMPEQD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPCMPEQD m128/m32bcst, xmm, k{k}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isKk(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -62797,7 +62797,7 @@ func (self *Program) VPCMPEQD(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * VPCMPEQQ m256, ymm, ymm
 //
 func (self *Program) VPCMPEQQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPCMPEQQ m128/m64bcst, xmm, k{k}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isKk(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -62925,7 +62925,7 @@ func (self *Program) VPCMPEQQ(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * VPCMPEQW m256, ymm, ymm
 //
 func (self *Program) VPCMPEQW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPCMPEQW xmm, xmm, k{k}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isKk(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -63041,7 +63041,7 @@ func (self *Program) VPCMPEQW(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * VPCMPESTRI imm8, m128, xmm
 //
 func (self *Program) VPCMPESTRI(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPCMPESTRI imm8, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_AVX)
@@ -63080,7 +63080,7 @@ func (self *Program) VPCMPESTRI(v0 interface{}, v1 interface{}, v2 interface{}) 
 //    * VPCMPESTRM imm8, m128, xmm
 //
 func (self *Program) VPCMPESTRM(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPCMPESTRM imm8, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_AVX)
@@ -63127,7 +63127,7 @@ func (self *Program) VPCMPESTRM(v0 interface{}, v1 interface{}, v2 interface{}) 
 //    * VPCMPGTB m256, ymm, ymm
 //
 func (self *Program) VPCMPGTB(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPCMPGTB xmm, xmm, k{k}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isKk(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -63251,7 +63251,7 @@ func (self *Program) VPCMPGTB(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * VPCMPGTD m256, ymm, ymm
 //
 func (self *Program) VPCMPGTD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPCMPGTD m128/m32bcst, xmm, k{k}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isKk(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -63375,7 +63375,7 @@ func (self *Program) VPCMPGTD(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * VPCMPGTQ m256, ymm, ymm
 //
 func (self *Program) VPCMPGTQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPCMPGTQ m128/m64bcst, xmm, k{k}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isKk(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -63503,7 +63503,7 @@ func (self *Program) VPCMPGTQ(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * VPCMPGTW m256, ymm, ymm
 //
 func (self *Program) VPCMPGTW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPCMPGTW xmm, xmm, k{k}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isKk(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -63619,7 +63619,7 @@ func (self *Program) VPCMPGTW(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * VPCMPISTRI imm8, m128, xmm
 //
 func (self *Program) VPCMPISTRI(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPCMPISTRI imm8, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_AVX)
@@ -63658,7 +63658,7 @@ func (self *Program) VPCMPISTRI(v0 interface{}, v1 interface{}, v2 interface{}) 
 //    * VPCMPISTRM imm8, m128, xmm
 //
 func (self *Program) VPCMPISTRM(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPCMPISTRM imm8, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_AVX)
@@ -63701,7 +63701,7 @@ func (self *Program) VPCMPISTRM(v0 interface{}, v1 interface{}, v2 interface{}) 
 //    * VPCMPQ imm8, zmm, zmm, k{k}
 //
 func (self *Program) VPCMPQ(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VPCMPQ imm8, m128/m64bcst, xmm, k{k}
     if isImm8(v0) && isM128M64bcst(v1) && isEVEXXMM(v2) && isKk(v3) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -63791,7 +63791,7 @@ func (self *Program) VPCMPQ(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
 //    * VPCMPUB imm8, m512, zmm, k{k}
 //
 func (self *Program) VPCMPUB(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VPCMPUB imm8, xmm, xmm, k{k}
     if isImm8(v0) && isEVEXXMM(v1) && isEVEXXMM(v2) && isKk(v3) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -63881,7 +63881,7 @@ func (self *Program) VPCMPUB(v0 interface{}, v1 interface{}, v2 interface{}, v3 
 //    * VPCMPUD imm8, zmm, zmm, k{k}
 //
 func (self *Program) VPCMPUD(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VPCMPUD imm8, m128/m32bcst, xmm, k{k}
     if isImm8(v0) && isM128M32bcst(v1) && isEVEXXMM(v2) && isKk(v3) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -63971,7 +63971,7 @@ func (self *Program) VPCMPUD(v0 interface{}, v1 interface{}, v2 interface{}, v3 
 //    * VPCMPUQ imm8, zmm, zmm, k{k}
 //
 func (self *Program) VPCMPUQ(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VPCMPUQ imm8, m128/m64bcst, xmm, k{k}
     if isImm8(v0) && isM128M64bcst(v1) && isEVEXXMM(v2) && isKk(v3) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -64061,7 +64061,7 @@ func (self *Program) VPCMPUQ(v0 interface{}, v1 interface{}, v2 interface{}, v3 
 //    * VPCMPUW imm8, m512, zmm, k{k}
 //
 func (self *Program) VPCMPUW(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VPCMPUW imm8, xmm, xmm, k{k}
     if isImm8(v0) && isEVEXXMM(v1) && isEVEXXMM(v2) && isKk(v3) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -64151,7 +64151,7 @@ func (self *Program) VPCMPUW(v0 interface{}, v1 interface{}, v2 interface{}, v3 
 //    * VPCMPW imm8, m512, zmm, k{k}
 //
 func (self *Program) VPCMPW(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VPCMPW imm8, xmm, xmm, k{k}
     if isImm8(v0) && isEVEXXMM(v1) && isEVEXXMM(v2) && isKk(v3) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -64237,7 +64237,7 @@ func (self *Program) VPCMPW(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
 //    * VPCOMB imm8, m128, xmm, xmm
 //
 func (self *Program) VPCOMB(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VPCOMB imm8, xmm, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_XOP)
@@ -64276,7 +64276,7 @@ func (self *Program) VPCOMB(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
 //    * VPCOMD imm8, m128, xmm, xmm
 //
 func (self *Program) VPCOMD(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VPCOMD imm8, xmm, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_XOP)
@@ -64319,7 +64319,7 @@ func (self *Program) VPCOMD(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
 //    * VPCOMPRESSD zmm, m512{k}{z}
 //
 func (self *Program) VPCOMPRESSD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPCOMPRESSD xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -64403,7 +64403,7 @@ func (self *Program) VPCOMPRESSD(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPCOMPRESSQ zmm, m512{k}{z}
 //
 func (self *Program) VPCOMPRESSQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPCOMPRESSQ xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -64483,7 +64483,7 @@ func (self *Program) VPCOMPRESSQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPCOMQ imm8, m128, xmm, xmm
 //
 func (self *Program) VPCOMQ(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VPCOMQ imm8, xmm, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_XOP)
@@ -64522,7 +64522,7 @@ func (self *Program) VPCOMQ(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
 //    * VPCOMUB imm8, m128, xmm, xmm
 //
 func (self *Program) VPCOMUB(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VPCOMUB imm8, xmm, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_XOP)
@@ -64561,7 +64561,7 @@ func (self *Program) VPCOMUB(v0 interface{}, v1 interface{}, v2 interface{}, v3 
 //    * VPCOMUD imm8, m128, xmm, xmm
 //
 func (self *Program) VPCOMUD(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VPCOMUD imm8, xmm, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_XOP)
@@ -64600,7 +64600,7 @@ func (self *Program) VPCOMUD(v0 interface{}, v1 interface{}, v2 interface{}, v3 
 //    * VPCOMUQ imm8, m128, xmm, xmm
 //
 func (self *Program) VPCOMUQ(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VPCOMUQ imm8, xmm, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_XOP)
@@ -64639,7 +64639,7 @@ func (self *Program) VPCOMUQ(v0 interface{}, v1 interface{}, v2 interface{}, v3 
 //    * VPCOMUW imm8, m128, xmm, xmm
 //
 func (self *Program) VPCOMUW(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VPCOMUW imm8, xmm, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_XOP)
@@ -64678,7 +64678,7 @@ func (self *Program) VPCOMUW(v0 interface{}, v1 interface{}, v2 interface{}, v3 
 //    * VPCOMW imm8, m128, xmm, xmm
 //
 func (self *Program) VPCOMW(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VPCOMW imm8, xmm, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_XOP)
@@ -64721,7 +64721,7 @@ func (self *Program) VPCOMW(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
 //    * VPCONFLICTD zmm, zmm{k}{z}
 //
 func (self *Program) VPCONFLICTD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPCONFLICTD m128/m32bcst, xmm{k}{z}
     if isM128M32bcst(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512CD)
@@ -64805,7 +64805,7 @@ func (self *Program) VPCONFLICTD(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPCONFLICTQ zmm, zmm{k}{z}
 //
 func (self *Program) VPCONFLICTQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPCONFLICTQ m128/m64bcst, xmm{k}{z}
     if isM128M64bcst(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512CD)
@@ -64885,7 +64885,7 @@ func (self *Program) VPCONFLICTQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPERM2F128 imm8, m256, ymm, ymm
 //
 func (self *Program) VPERM2F128(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VPERM2F128 imm8, ymm, ymm, ymm
     if isImm8(v0) && isYMM(v1) && isYMM(v2) && isYMM(v3) {
         self.require(ISA_AVX)
@@ -64924,7 +64924,7 @@ func (self *Program) VPERM2F128(v0 interface{}, v1 interface{}, v2 interface{}, 
 //    * VPERM2I128 imm8, m256, ymm, ymm
 //
 func (self *Program) VPERM2I128(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VPERM2I128 imm8, ymm, ymm, ymm
     if isImm8(v0) && isYMM(v1) && isYMM(v2) && isYMM(v3) {
         self.require(ISA_AVX2)
@@ -64967,7 +64967,7 @@ func (self *Program) VPERM2I128(v0 interface{}, v1 interface{}, v2 interface{}, 
 //    * VPERMB m512, zmm, zmm{k}{z}
 //
 func (self *Program) VPERMB(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPERMB xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512VBMI)
@@ -65051,7 +65051,7 @@ func (self *Program) VPERMB(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VPERMD m256, ymm, ymm
 //
 func (self *Program) VPERMD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPERMD m256/m32bcst, ymm, ymm{k}{z}
     if isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -65134,7 +65134,7 @@ func (self *Program) VPERMD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VPERMI2B m512, zmm, zmm{k}{z}
 //
 func (self *Program) VPERMI2B(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPERMI2B xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512VBMI)
@@ -65218,7 +65218,7 @@ func (self *Program) VPERMI2B(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * VPERMI2D zmm, zmm, zmm{k}{z}
 //
 func (self *Program) VPERMI2D(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPERMI2D m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -65302,7 +65302,7 @@ func (self *Program) VPERMI2D(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * VPERMI2PD zmm, zmm, zmm{k}{z}
 //
 func (self *Program) VPERMI2PD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPERMI2PD m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -65386,7 +65386,7 @@ func (self *Program) VPERMI2PD(v0 interface{}, v1 interface{}, v2 interface{}) *
 //    * VPERMI2PS zmm, zmm, zmm{k}{z}
 //
 func (self *Program) VPERMI2PS(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPERMI2PS m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -65470,7 +65470,7 @@ func (self *Program) VPERMI2PS(v0 interface{}, v1 interface{}, v2 interface{}) *
 //    * VPERMI2Q zmm, zmm, zmm{k}{z}
 //
 func (self *Program) VPERMI2Q(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPERMI2Q m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -65554,7 +65554,7 @@ func (self *Program) VPERMI2Q(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * VPERMI2W m512, zmm, zmm{k}{z}
 //
 func (self *Program) VPERMI2W(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPERMI2W xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -65638,7 +65638,7 @@ func (self *Program) VPERMI2W(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * VPERMIL2PD imm4, ymm, m256, ymm, ymm
 //
 func (self *Program) VPERMIL2PD(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}, v4 interface{}) *Instruction {
-    p := self.alloc(5, [_MAX_ARGS]interface{}{v0, v1, v2, v3, v4})
+    p := self.alloc(5, Operands{v0, v1, v2, v3, v4})
     // VPERMIL2PD imm4, xmm, xmm, xmm, xmm
     if isImm4(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) && isXMM(v4) {
         self.require(ISA_XOP)
@@ -65739,7 +65739,7 @@ func (self *Program) VPERMIL2PD(v0 interface{}, v1 interface{}, v2 interface{}, 
 //    * VPERMIL2PS imm4, ymm, m256, ymm, ymm
 //
 func (self *Program) VPERMIL2PS(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}, v4 interface{}) *Instruction {
-    p := self.alloc(5, [_MAX_ARGS]interface{}{v0, v1, v2, v3, v4})
+    p := self.alloc(5, Operands{v0, v1, v2, v3, v4})
     // VPERMIL2PS imm4, xmm, xmm, xmm, xmm
     if isImm4(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) && isXMM(v4) {
         self.require(ISA_XOP)
@@ -65854,7 +65854,7 @@ func (self *Program) VPERMIL2PS(v0 interface{}, v1 interface{}, v2 interface{}, 
 //    * VPERMILPD imm8, m256, ymm
 //
 func (self *Program) VPERMILPD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPERMILPD imm8, m128/m64bcst, xmm{k}{z}
     if isImm8(v0) && isM128M64bcst(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -66105,7 +66105,7 @@ func (self *Program) VPERMILPD(v0 interface{}, v1 interface{}, v2 interface{}) *
 //    * VPERMILPS imm8, m256, ymm
 //
 func (self *Program) VPERMILPS(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPERMILPS imm8, m128/m32bcst, xmm{k}{z}
     if isImm8(v0) && isM128M32bcst(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -66346,7 +66346,7 @@ func (self *Program) VPERMILPS(v0 interface{}, v1 interface{}, v2 interface{}) *
 //    * VPERMPD imm8, m256, ymm
 //
 func (self *Program) VPERMPD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPERMPD imm8, m256/m64bcst, ymm{k}{z}
     if isImm8(v0) && isM256M64bcst(v1) && isYMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -66477,7 +66477,7 @@ func (self *Program) VPERMPD(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPERMPS m256, ymm, ymm
 //
 func (self *Program) VPERMPS(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPERMPS m256/m32bcst, ymm, ymm{k}{z}
     if isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -66564,7 +66564,7 @@ func (self *Program) VPERMPS(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPERMQ imm8, m256, ymm
 //
 func (self *Program) VPERMQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPERMQ imm8, m256/m64bcst, ymm{k}{z}
     if isImm8(v0) && isM256M64bcst(v1) && isYMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -66695,7 +66695,7 @@ func (self *Program) VPERMQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VPERMT2B m512, zmm, zmm{k}{z}
 //
 func (self *Program) VPERMT2B(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPERMT2B xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512VBMI)
@@ -66779,7 +66779,7 @@ func (self *Program) VPERMT2B(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * VPERMT2D zmm, zmm, zmm{k}{z}
 //
 func (self *Program) VPERMT2D(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPERMT2D m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -66863,7 +66863,7 @@ func (self *Program) VPERMT2D(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * VPERMT2PD zmm, zmm, zmm{k}{z}
 //
 func (self *Program) VPERMT2PD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPERMT2PD m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -66947,7 +66947,7 @@ func (self *Program) VPERMT2PD(v0 interface{}, v1 interface{}, v2 interface{}) *
 //    * VPERMT2PS zmm, zmm, zmm{k}{z}
 //
 func (self *Program) VPERMT2PS(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPERMT2PS m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -67031,7 +67031,7 @@ func (self *Program) VPERMT2PS(v0 interface{}, v1 interface{}, v2 interface{}) *
 //    * VPERMT2Q zmm, zmm, zmm{k}{z}
 //
 func (self *Program) VPERMT2Q(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPERMT2Q m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -67115,7 +67115,7 @@ func (self *Program) VPERMT2Q(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * VPERMT2W m512, zmm, zmm{k}{z}
 //
 func (self *Program) VPERMT2W(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPERMT2W xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -67199,7 +67199,7 @@ func (self *Program) VPERMT2W(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * VPERMW m512, zmm, zmm{k}{z}
 //
 func (self *Program) VPERMW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPERMW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -67283,7 +67283,7 @@ func (self *Program) VPERMW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VPEXPANDD m512, zmm{k}{z}
 //
 func (self *Program) VPEXPANDD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPEXPANDD xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -67367,7 +67367,7 @@ func (self *Program) VPEXPANDD(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPEXPANDQ m512, zmm{k}{z}
 //
 func (self *Program) VPEXPANDQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPEXPANDQ xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -67449,7 +67449,7 @@ func (self *Program) VPEXPANDQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPEXTRB imm8, xmm, m8
 //
 func (self *Program) VPEXTRB(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPEXTRB imm8, xmm, r32
     if isImm8(v0) && isXMM(v1) && isReg32(v2) {
         self.require(ISA_AVX)
@@ -67513,7 +67513,7 @@ func (self *Program) VPEXTRB(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPEXTRD imm8, xmm, m32
 //
 func (self *Program) VPEXTRD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPEXTRD imm8, xmm, r32
     if isImm8(v0) && isXMM(v1) && isReg32(v2) {
         self.require(ISA_AVX)
@@ -67577,7 +67577,7 @@ func (self *Program) VPEXTRD(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPEXTRQ imm8, xmm, m64
 //
 func (self *Program) VPEXTRQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPEXTRQ imm8, xmm, r64
     if isImm8(v0) && isXMM(v1) && isReg64(v2) {
         self.require(ISA_AVX)
@@ -67641,7 +67641,7 @@ func (self *Program) VPEXTRQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPEXTRW imm8, xmm, m16
 //
 func (self *Program) VPEXTRW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPEXTRW imm8, xmm, r32
     if isImm8(v0) && isXMM(v1) && isReg32(v2) {
         self.require(ISA_AVX)
@@ -67723,8 +67723,8 @@ func (self *Program) VPEXTRW(v0 interface{}, v1 interface{}, v2 interface{}) *In
 func (self *Program) VPGATHERDD(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VPGATHERDD takes 2 or 3 operands")
     }
     // VPGATHERDD vm32x, xmm{k}
@@ -67793,8 +67793,8 @@ func (self *Program) VPGATHERDD(v0 interface{}, v1 interface{}, vv ...interface{
 func (self *Program) VPGATHERDQ(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VPGATHERDQ takes 2 or 3 operands")
     }
     // VPGATHERDQ vm32x, xmm{k}
@@ -67863,8 +67863,8 @@ func (self *Program) VPGATHERDQ(v0 interface{}, v1 interface{}, vv ...interface{
 func (self *Program) VPGATHERQD(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VPGATHERQD takes 2 or 3 operands")
     }
     // VPGATHERQD vm64x, xmm{k}
@@ -67933,8 +67933,8 @@ func (self *Program) VPGATHERQD(v0 interface{}, v1 interface{}, vv ...interface{
 func (self *Program) VPGATHERQQ(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VPGATHERQQ takes 2 or 3 operands")
     }
     // VPGATHERQQ vm64x, xmm{k}
@@ -67998,7 +67998,7 @@ func (self *Program) VPGATHERQQ(v0 interface{}, v1 interface{}, vv ...interface{
 //    * VPHADDBD m128, xmm
 //
 func (self *Program) VPHADDBD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPHADDBD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_XOP)
@@ -68035,7 +68035,7 @@ func (self *Program) VPHADDBD(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPHADDBQ m128, xmm
 //
 func (self *Program) VPHADDBQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPHADDBQ xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_XOP)
@@ -68072,7 +68072,7 @@ func (self *Program) VPHADDBQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPHADDBW m128, xmm
 //
 func (self *Program) VPHADDBW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPHADDBW xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_XOP)
@@ -68111,7 +68111,7 @@ func (self *Program) VPHADDBW(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPHADDD m256, ymm, ymm
 //
 func (self *Program) VPHADDD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPHADDD xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_AVX)
@@ -68168,7 +68168,7 @@ func (self *Program) VPHADDD(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPHADDDQ m128, xmm
 //
 func (self *Program) VPHADDDQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPHADDDQ xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_XOP)
@@ -68207,7 +68207,7 @@ func (self *Program) VPHADDDQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPHADDSW m256, ymm, ymm
 //
 func (self *Program) VPHADDSW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPHADDSW xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_AVX)
@@ -68264,7 +68264,7 @@ func (self *Program) VPHADDSW(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * VPHADDUBD m128, xmm
 //
 func (self *Program) VPHADDUBD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPHADDUBD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_XOP)
@@ -68301,7 +68301,7 @@ func (self *Program) VPHADDUBD(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPHADDUBQ m128, xmm
 //
 func (self *Program) VPHADDUBQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPHADDUBQ xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_XOP)
@@ -68338,7 +68338,7 @@ func (self *Program) VPHADDUBQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPHADDUBW m128, xmm
 //
 func (self *Program) VPHADDUBW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPHADDUBW xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_XOP)
@@ -68375,7 +68375,7 @@ func (self *Program) VPHADDUBW(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPHADDUDQ m128, xmm
 //
 func (self *Program) VPHADDUDQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPHADDUDQ xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_XOP)
@@ -68412,7 +68412,7 @@ func (self *Program) VPHADDUDQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPHADDUWD m128, xmm
 //
 func (self *Program) VPHADDUWD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPHADDUWD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_XOP)
@@ -68449,7 +68449,7 @@ func (self *Program) VPHADDUWD(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPHADDUWQ m128, xmm
 //
 func (self *Program) VPHADDUWQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPHADDUWQ xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_XOP)
@@ -68488,7 +68488,7 @@ func (self *Program) VPHADDUWQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPHADDW m256, ymm, ymm
 //
 func (self *Program) VPHADDW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPHADDW xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_AVX)
@@ -68545,7 +68545,7 @@ func (self *Program) VPHADDW(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPHADDWD m128, xmm
 //
 func (self *Program) VPHADDWD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPHADDWD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_XOP)
@@ -68582,7 +68582,7 @@ func (self *Program) VPHADDWD(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPHADDWQ m128, xmm
 //
 func (self *Program) VPHADDWQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPHADDWQ xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_XOP)
@@ -68619,7 +68619,7 @@ func (self *Program) VPHADDWQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPHMINPOSUW m128, xmm
 //
 func (self *Program) VPHMINPOSUW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPHMINPOSUW xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_AVX)
@@ -68656,7 +68656,7 @@ func (self *Program) VPHMINPOSUW(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPHSUBBW m128, xmm
 //
 func (self *Program) VPHSUBBW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPHSUBBW xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_XOP)
@@ -68695,7 +68695,7 @@ func (self *Program) VPHSUBBW(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPHSUBD m256, ymm, ymm
 //
 func (self *Program) VPHSUBD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPHSUBD xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_AVX)
@@ -68752,7 +68752,7 @@ func (self *Program) VPHSUBD(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPHSUBDQ m128, xmm
 //
 func (self *Program) VPHSUBDQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPHSUBDQ xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_XOP)
@@ -68791,7 +68791,7 @@ func (self *Program) VPHSUBDQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPHSUBSW m256, ymm, ymm
 //
 func (self *Program) VPHSUBSW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPHSUBSW xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_AVX)
@@ -68850,7 +68850,7 @@ func (self *Program) VPHSUBSW(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * VPHSUBW m256, ymm, ymm
 //
 func (self *Program) VPHSUBW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPHSUBW xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_AVX)
@@ -68907,7 +68907,7 @@ func (self *Program) VPHSUBW(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPHSUBWD m128, xmm
 //
 func (self *Program) VPHSUBWD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPHSUBWD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_XOP)
@@ -68946,7 +68946,7 @@ func (self *Program) VPHSUBWD(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPINSRB imm8, m8, xmm, xmm
 //
 func (self *Program) VPINSRB(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VPINSRB imm8, r32, xmm, xmm
     if isImm8(v0) && isReg32(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_AVX)
@@ -69010,7 +69010,7 @@ func (self *Program) VPINSRB(v0 interface{}, v1 interface{}, v2 interface{}, v3 
 //    * VPINSRD imm8, m32, xmm, xmm
 //
 func (self *Program) VPINSRD(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VPINSRD imm8, r32, xmm, xmm
     if isImm8(v0) && isReg32(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_AVX)
@@ -69074,7 +69074,7 @@ func (self *Program) VPINSRD(v0 interface{}, v1 interface{}, v2 interface{}, v3 
 //    * VPINSRQ imm8, m64, xmm, xmm
 //
 func (self *Program) VPINSRQ(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VPINSRQ imm8, r64, xmm, xmm
     if isImm8(v0) && isReg64(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_AVX)
@@ -69138,7 +69138,7 @@ func (self *Program) VPINSRQ(v0 interface{}, v1 interface{}, v2 interface{}, v3 
 //    * VPINSRW imm8, m16, xmm, xmm
 //
 func (self *Program) VPINSRW(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VPINSRW imm8, r32, xmm, xmm
     if isImm8(v0) && isReg32(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_AVX)
@@ -69202,7 +69202,7 @@ func (self *Program) VPINSRW(v0 interface{}, v1 interface{}, v2 interface{}, v3 
 //    * VPLZCNTD zmm, zmm{k}{z}
 //
 func (self *Program) VPLZCNTD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPLZCNTD m128/m32bcst, xmm{k}{z}
     if isM128M32bcst(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512CD)
@@ -69286,7 +69286,7 @@ func (self *Program) VPLZCNTD(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPLZCNTQ zmm, zmm{k}{z}
 //
 func (self *Program) VPLZCNTQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPLZCNTQ m128/m64bcst, xmm{k}{z}
     if isM128M64bcst(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512CD)
@@ -69366,7 +69366,7 @@ func (self *Program) VPLZCNTQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPMACSDD xmm, m128, xmm, xmm
 //
 func (self *Program) VPMACSDD(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VPMACSDD xmm, xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_XOP)
@@ -69405,7 +69405,7 @@ func (self *Program) VPMACSDD(v0 interface{}, v1 interface{}, v2 interface{}, v3
 //    * VPMACSDQH xmm, m128, xmm, xmm
 //
 func (self *Program) VPMACSDQH(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VPMACSDQH xmm, xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_XOP)
@@ -69444,7 +69444,7 @@ func (self *Program) VPMACSDQH(v0 interface{}, v1 interface{}, v2 interface{}, v
 //    * VPMACSDQL xmm, m128, xmm, xmm
 //
 func (self *Program) VPMACSDQL(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VPMACSDQL xmm, xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_XOP)
@@ -69483,7 +69483,7 @@ func (self *Program) VPMACSDQL(v0 interface{}, v1 interface{}, v2 interface{}, v
 //    * VPMACSSDD xmm, m128, xmm, xmm
 //
 func (self *Program) VPMACSSDD(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VPMACSSDD xmm, xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_XOP)
@@ -69522,7 +69522,7 @@ func (self *Program) VPMACSSDD(v0 interface{}, v1 interface{}, v2 interface{}, v
 //    * VPMACSSDQH xmm, m128, xmm, xmm
 //
 func (self *Program) VPMACSSDQH(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VPMACSSDQH xmm, xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_XOP)
@@ -69561,7 +69561,7 @@ func (self *Program) VPMACSSDQH(v0 interface{}, v1 interface{}, v2 interface{}, 
 //    * VPMACSSDQL xmm, m128, xmm, xmm
 //
 func (self *Program) VPMACSSDQL(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VPMACSSDQL xmm, xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_XOP)
@@ -69600,7 +69600,7 @@ func (self *Program) VPMACSSDQL(v0 interface{}, v1 interface{}, v2 interface{}, 
 //    * VPMACSSWD xmm, m128, xmm, xmm
 //
 func (self *Program) VPMACSSWD(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VPMACSSWD xmm, xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_XOP)
@@ -69639,7 +69639,7 @@ func (self *Program) VPMACSSWD(v0 interface{}, v1 interface{}, v2 interface{}, v
 //    * VPMACSSWW xmm, m128, xmm, xmm
 //
 func (self *Program) VPMACSSWW(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VPMACSSWW xmm, xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_XOP)
@@ -69678,7 +69678,7 @@ func (self *Program) VPMACSSWW(v0 interface{}, v1 interface{}, v2 interface{}, v
 //    * VPMACSWD xmm, m128, xmm, xmm
 //
 func (self *Program) VPMACSWD(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VPMACSWD xmm, xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_XOP)
@@ -69717,7 +69717,7 @@ func (self *Program) VPMACSWD(v0 interface{}, v1 interface{}, v2 interface{}, v3
 //    * VPMACSWW xmm, m128, xmm, xmm
 //
 func (self *Program) VPMACSWW(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VPMACSWW xmm, xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_XOP)
@@ -69756,7 +69756,7 @@ func (self *Program) VPMACSWW(v0 interface{}, v1 interface{}, v2 interface{}, v3
 //    * VPMADCSSWD xmm, m128, xmm, xmm
 //
 func (self *Program) VPMADCSSWD(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VPMADCSSWD xmm, xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_XOP)
@@ -69795,7 +69795,7 @@ func (self *Program) VPMADCSSWD(v0 interface{}, v1 interface{}, v2 interface{}, 
 //    * VPMADCSWD xmm, m128, xmm, xmm
 //
 func (self *Program) VPMADCSWD(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VPMADCSWD xmm, xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_XOP)
@@ -69838,7 +69838,7 @@ func (self *Program) VPMADCSWD(v0 interface{}, v1 interface{}, v2 interface{}, v
 //    * VPMADD52HUQ zmm, zmm, zmm{k}{z}
 //
 func (self *Program) VPMADD52HUQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPMADD52HUQ m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512IFMA | ISA_AVX512VL)
@@ -69922,7 +69922,7 @@ func (self *Program) VPMADD52HUQ(v0 interface{}, v1 interface{}, v2 interface{})
 //    * VPMADD52LUQ zmm, zmm, zmm{k}{z}
 //
 func (self *Program) VPMADD52LUQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPMADD52LUQ m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512IFMA | ISA_AVX512VL)
@@ -70010,7 +70010,7 @@ func (self *Program) VPMADD52LUQ(v0 interface{}, v1 interface{}, v2 interface{})
 //    * VPMADDUBSW m256, ymm, ymm
 //
 func (self *Program) VPMADDUBSW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPMADDUBSW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -70138,7 +70138,7 @@ func (self *Program) VPMADDUBSW(v0 interface{}, v1 interface{}, v2 interface{}) 
 //    * VPMADDWD m256, ymm, ymm
 //
 func (self *Program) VPMADDWD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPMADDWD xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -70256,7 +70256,7 @@ func (self *Program) VPMADDWD(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * VPMASKMOVD ymm, ymm, m256
 //
 func (self *Program) VPMASKMOVD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPMASKMOVD m128, xmm, xmm
     if isM128(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_AVX2)
@@ -70311,7 +70311,7 @@ func (self *Program) VPMASKMOVD(v0 interface{}, v1 interface{}, v2 interface{}) 
 //    * VPMASKMOVQ ymm, ymm, m256
 //
 func (self *Program) VPMASKMOVQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPMASKMOVQ m128, xmm, xmm
     if isM128(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_AVX2)
@@ -70372,7 +70372,7 @@ func (self *Program) VPMASKMOVQ(v0 interface{}, v1 interface{}, v2 interface{}) 
 //    * VPMAXSB m256, ymm, ymm
 //
 func (self *Program) VPMAXSB(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPMAXSB xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -70500,7 +70500,7 @@ func (self *Program) VPMAXSB(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPMAXSD m256, ymm, ymm
 //
 func (self *Program) VPMAXSD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPMAXSD m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -70624,7 +70624,7 @@ func (self *Program) VPMAXSD(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPMAXSQ zmm, zmm, zmm{k}{z}
 //
 func (self *Program) VPMAXSQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPMAXSQ m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -70712,7 +70712,7 @@ func (self *Program) VPMAXSQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPMAXSW m256, ymm, ymm
 //
 func (self *Program) VPMAXSW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPMAXSW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -70836,7 +70836,7 @@ func (self *Program) VPMAXSW(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPMAXUB m256, ymm, ymm
 //
 func (self *Program) VPMAXUB(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPMAXUB xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -70960,7 +70960,7 @@ func (self *Program) VPMAXUB(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPMAXUD m256, ymm, ymm
 //
 func (self *Program) VPMAXUD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPMAXUD m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -71084,7 +71084,7 @@ func (self *Program) VPMAXUD(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPMAXUQ zmm, zmm, zmm{k}{z}
 //
 func (self *Program) VPMAXUQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPMAXUQ m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -71172,7 +71172,7 @@ func (self *Program) VPMAXUQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPMAXUW m256, ymm, ymm
 //
 func (self *Program) VPMAXUW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPMAXUW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -71300,7 +71300,7 @@ func (self *Program) VPMAXUW(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPMINSB m256, ymm, ymm
 //
 func (self *Program) VPMINSB(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPMINSB xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -71428,7 +71428,7 @@ func (self *Program) VPMINSB(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPMINSD m256, ymm, ymm
 //
 func (self *Program) VPMINSD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPMINSD m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -71552,7 +71552,7 @@ func (self *Program) VPMINSD(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPMINSQ zmm, zmm, zmm{k}{z}
 //
 func (self *Program) VPMINSQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPMINSQ m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -71640,7 +71640,7 @@ func (self *Program) VPMINSQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPMINSW m256, ymm, ymm
 //
 func (self *Program) VPMINSW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPMINSW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -71764,7 +71764,7 @@ func (self *Program) VPMINSW(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPMINUB m256, ymm, ymm
 //
 func (self *Program) VPMINUB(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPMINUB xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -71888,7 +71888,7 @@ func (self *Program) VPMINUB(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPMINUD m256, ymm, ymm
 //
 func (self *Program) VPMINUD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPMINUD m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -72012,7 +72012,7 @@ func (self *Program) VPMINUD(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPMINUQ zmm, zmm, zmm{k}{z}
 //
 func (self *Program) VPMINUQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPMINUQ m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -72100,7 +72100,7 @@ func (self *Program) VPMINUQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPMINUW m256, ymm, ymm
 //
 func (self *Program) VPMINUW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPMINUW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -72221,7 +72221,7 @@ func (self *Program) VPMINUW(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPMOVB2M zmm, k
 //
 func (self *Program) VPMOVB2M(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPMOVB2M xmm, k
     if isEVEXXMM(v0) && isK(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -72275,7 +72275,7 @@ func (self *Program) VPMOVB2M(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPMOVD2M zmm, k
 //
 func (self *Program) VPMOVD2M(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPMOVD2M xmm, k
     if isEVEXXMM(v0) && isK(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512DQ)
@@ -72332,7 +72332,7 @@ func (self *Program) VPMOVD2M(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPMOVDB zmm, m128{k}{z}
 //
 func (self *Program) VPMOVDB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPMOVDB xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -72416,7 +72416,7 @@ func (self *Program) VPMOVDB(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPMOVDW zmm, m256{k}{z}
 //
 func (self *Program) VPMOVDW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPMOVDW xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -72497,7 +72497,7 @@ func (self *Program) VPMOVDW(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPMOVM2B k, zmm
 //
 func (self *Program) VPMOVM2B(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPMOVM2B k, xmm
     if isK(v0) && isEVEXXMM(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -72551,7 +72551,7 @@ func (self *Program) VPMOVM2B(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPMOVM2D k, zmm
 //
 func (self *Program) VPMOVM2D(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPMOVM2D k, xmm
     if isK(v0) && isEVEXXMM(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512DQ)
@@ -72605,7 +72605,7 @@ func (self *Program) VPMOVM2D(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPMOVM2Q k, zmm
 //
 func (self *Program) VPMOVM2Q(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPMOVM2Q k, xmm
     if isK(v0) && isEVEXXMM(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512DQ)
@@ -72659,7 +72659,7 @@ func (self *Program) VPMOVM2Q(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPMOVM2W k, zmm
 //
 func (self *Program) VPMOVM2W(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPMOVM2W k, xmm
     if isK(v0) && isEVEXXMM(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -72712,7 +72712,7 @@ func (self *Program) VPMOVM2W(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPMOVMSKB ymm, r32
 //
 func (self *Program) VPMOVMSKB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPMOVMSKB xmm, r32
     if isXMM(v0) && isReg32(v1) {
         self.require(ISA_AVX)
@@ -72748,7 +72748,7 @@ func (self *Program) VPMOVMSKB(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPMOVQ2M zmm, k
 //
 func (self *Program) VPMOVQ2M(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPMOVQ2M xmm, k
     if isEVEXXMM(v0) && isK(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512DQ)
@@ -72805,7 +72805,7 @@ func (self *Program) VPMOVQ2M(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPMOVQB zmm, m64{k}{z}
 //
 func (self *Program) VPMOVQB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPMOVQB xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -72889,7 +72889,7 @@ func (self *Program) VPMOVQB(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPMOVQD zmm, m256{k}{z}
 //
 func (self *Program) VPMOVQD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPMOVQD xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -72973,7 +72973,7 @@ func (self *Program) VPMOVQD(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPMOVQW zmm, m128{k}{z}
 //
 func (self *Program) VPMOVQW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPMOVQW xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -73057,7 +73057,7 @@ func (self *Program) VPMOVQW(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPMOVSDB zmm, m128{k}{z}
 //
 func (self *Program) VPMOVSDB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPMOVSDB xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -73141,7 +73141,7 @@ func (self *Program) VPMOVSDB(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPMOVSDW zmm, m256{k}{z}
 //
 func (self *Program) VPMOVSDW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPMOVSDW xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -73225,7 +73225,7 @@ func (self *Program) VPMOVSDW(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPMOVSQB zmm, m64{k}{z}
 //
 func (self *Program) VPMOVSQB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPMOVSQB xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -73309,7 +73309,7 @@ func (self *Program) VPMOVSQB(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPMOVSQD zmm, m256{k}{z}
 //
 func (self *Program) VPMOVSQD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPMOVSQD xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -73393,7 +73393,7 @@ func (self *Program) VPMOVSQD(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPMOVSQW zmm, m128{k}{z}
 //
 func (self *Program) VPMOVSQW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPMOVSQW xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -73477,7 +73477,7 @@ func (self *Program) VPMOVSQW(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPMOVSWB zmm, m256{k}{z}
 //
 func (self *Program) VPMOVSWB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPMOVSWB xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -73565,7 +73565,7 @@ func (self *Program) VPMOVSWB(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPMOVSXBD m64, ymm
 //
 func (self *Program) VPMOVSXBD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPMOVSXBD xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -73693,7 +73693,7 @@ func (self *Program) VPMOVSXBD(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPMOVSXBQ m32, ymm
 //
 func (self *Program) VPMOVSXBQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPMOVSXBQ xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -73821,7 +73821,7 @@ func (self *Program) VPMOVSXBQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPMOVSXBW m128, ymm
 //
 func (self *Program) VPMOVSXBW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPMOVSXBW xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -73949,7 +73949,7 @@ func (self *Program) VPMOVSXBW(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPMOVSXDQ m128, ymm
 //
 func (self *Program) VPMOVSXDQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPMOVSXDQ xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -74077,7 +74077,7 @@ func (self *Program) VPMOVSXDQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPMOVSXWD m128, ymm
 //
 func (self *Program) VPMOVSXWD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPMOVSXWD xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -74205,7 +74205,7 @@ func (self *Program) VPMOVSXWD(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPMOVSXWQ m64, ymm
 //
 func (self *Program) VPMOVSXWQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPMOVSXWQ xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -74329,7 +74329,7 @@ func (self *Program) VPMOVSXWQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPMOVUSDB zmm, m128{k}{z}
 //
 func (self *Program) VPMOVUSDB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPMOVUSDB xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -74413,7 +74413,7 @@ func (self *Program) VPMOVUSDB(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPMOVUSDW zmm, m256{k}{z}
 //
 func (self *Program) VPMOVUSDW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPMOVUSDW xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -74497,7 +74497,7 @@ func (self *Program) VPMOVUSDW(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPMOVUSQB zmm, m64{k}{z}
 //
 func (self *Program) VPMOVUSQB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPMOVUSQB xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -74581,7 +74581,7 @@ func (self *Program) VPMOVUSQB(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPMOVUSQD zmm, m256{k}{z}
 //
 func (self *Program) VPMOVUSQD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPMOVUSQD xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -74665,7 +74665,7 @@ func (self *Program) VPMOVUSQD(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPMOVUSQW zmm, m128{k}{z}
 //
 func (self *Program) VPMOVUSQW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPMOVUSQW xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -74749,7 +74749,7 @@ func (self *Program) VPMOVUSQW(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPMOVUSWB zmm, m256{k}{z}
 //
 func (self *Program) VPMOVUSWB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPMOVUSWB xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -74830,7 +74830,7 @@ func (self *Program) VPMOVUSWB(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPMOVW2M zmm, k
 //
 func (self *Program) VPMOVW2M(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPMOVW2M xmm, k
     if isEVEXXMM(v0) && isK(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -74887,7 +74887,7 @@ func (self *Program) VPMOVW2M(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPMOVWB zmm, m256{k}{z}
 //
 func (self *Program) VPMOVWB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPMOVWB xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -74975,7 +74975,7 @@ func (self *Program) VPMOVWB(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPMOVZXBD m64, ymm
 //
 func (self *Program) VPMOVZXBD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPMOVZXBD xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -75103,7 +75103,7 @@ func (self *Program) VPMOVZXBD(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPMOVZXBQ m32, ymm
 //
 func (self *Program) VPMOVZXBQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPMOVZXBQ xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -75231,7 +75231,7 @@ func (self *Program) VPMOVZXBQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPMOVZXBW m128, ymm
 //
 func (self *Program) VPMOVZXBW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPMOVZXBW xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -75359,7 +75359,7 @@ func (self *Program) VPMOVZXBW(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPMOVZXDQ m128, ymm
 //
 func (self *Program) VPMOVZXDQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPMOVZXDQ xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -75487,7 +75487,7 @@ func (self *Program) VPMOVZXDQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPMOVZXWD m128, ymm
 //
 func (self *Program) VPMOVZXWD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPMOVZXWD xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -75615,7 +75615,7 @@ func (self *Program) VPMOVZXWD(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPMOVZXWQ m64, ymm
 //
 func (self *Program) VPMOVZXWQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPMOVZXWQ xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -75743,7 +75743,7 @@ func (self *Program) VPMOVZXWQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPMULDQ m256, ymm, ymm
 //
 func (self *Program) VPMULDQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPMULDQ m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -75871,7 +75871,7 @@ func (self *Program) VPMULDQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPMULHRSW m256, ymm, ymm
 //
 func (self *Program) VPMULHRSW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPMULHRSW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -75999,7 +75999,7 @@ func (self *Program) VPMULHRSW(v0 interface{}, v1 interface{}, v2 interface{}) *
 //    * VPMULHUW m256, ymm, ymm
 //
 func (self *Program) VPMULHUW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPMULHUW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -76123,7 +76123,7 @@ func (self *Program) VPMULHUW(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * VPMULHW m256, ymm, ymm
 //
 func (self *Program) VPMULHW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPMULHW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -76247,7 +76247,7 @@ func (self *Program) VPMULHW(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPMULLD m256, ymm, ymm
 //
 func (self *Program) VPMULLD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPMULLD m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -76371,7 +76371,7 @@ func (self *Program) VPMULLD(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPMULLQ zmm, zmm, zmm{k}{z}
 //
 func (self *Program) VPMULLQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPMULLQ m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512DQ)
@@ -76459,7 +76459,7 @@ func (self *Program) VPMULLQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPMULLW m256, ymm, ymm
 //
 func (self *Program) VPMULLW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPMULLW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -76579,7 +76579,7 @@ func (self *Program) VPMULLW(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPMULTISHIFTQB zmm, zmm, zmm{k}{z}
 //
 func (self *Program) VPMULTISHIFTQB(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPMULTISHIFTQB m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VBMI | ISA_AVX512VL)
@@ -76667,7 +76667,7 @@ func (self *Program) VPMULTISHIFTQB(v0 interface{}, v1 interface{}, v2 interface
 //    * VPMULUDQ m256, ymm, ymm
 //
 func (self *Program) VPMULUDQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPMULUDQ m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -76783,7 +76783,7 @@ func (self *Program) VPMULUDQ(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * VPOPCNTD zmm, zmm{k}{z}
 //
 func (self *Program) VPOPCNTD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPOPCNTD m512/m32bcst, zmm{k}{z}
     if isM512M32bcst(v0) && isZMMkz(v1) {
         self.require(ISA_AVX512VPOPCNTDQ)
@@ -76821,7 +76821,7 @@ func (self *Program) VPOPCNTD(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPOPCNTQ zmm, zmm{k}{z}
 //
 func (self *Program) VPOPCNTQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPOPCNTQ m512/m64bcst, zmm{k}{z}
     if isM512M64bcst(v0) && isZMMkz(v1) {
         self.require(ISA_AVX512VPOPCNTDQ)
@@ -76861,7 +76861,7 @@ func (self *Program) VPOPCNTQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPOR m256, ymm, ymm
 //
 func (self *Program) VPOR(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPOR xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_AVX)
@@ -76918,7 +76918,7 @@ func (self *Program) VPOR(v0 interface{}, v1 interface{}, v2 interface{}) *Instr
 //    * VPORD zmm, zmm, zmm{k}{z}
 //
 func (self *Program) VPORD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPORD m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -77002,7 +77002,7 @@ func (self *Program) VPORD(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
 //    * VPORQ zmm, zmm, zmm{k}{z}
 //
 func (self *Program) VPORQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPORQ m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -77083,7 +77083,7 @@ func (self *Program) VPORQ(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
 //    * VPPERM xmm, m128, xmm, xmm
 //
 func (self *Program) VPPERM(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VPPERM xmm, xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_XOP)
@@ -77144,7 +77144,7 @@ func (self *Program) VPPERM(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
 //    * VPROLD imm8, zmm, zmm{k}{z}
 //
 func (self *Program) VPROLD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPROLD imm8, m128/m32bcst, xmm{k}{z}
     if isImm8(v0) && isM128M32bcst(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -77234,7 +77234,7 @@ func (self *Program) VPROLD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VPROLQ imm8, zmm, zmm{k}{z}
 //
 func (self *Program) VPROLQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPROLQ imm8, m128/m64bcst, xmm{k}{z}
     if isImm8(v0) && isM128M64bcst(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -77324,7 +77324,7 @@ func (self *Program) VPROLQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VPROLVD zmm, zmm, zmm{k}{z}
 //
 func (self *Program) VPROLVD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPROLVD m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -77408,7 +77408,7 @@ func (self *Program) VPROLVD(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPROLVQ zmm, zmm, zmm{k}{z}
 //
 func (self *Program) VPROLVQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPROLVQ m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -77492,7 +77492,7 @@ func (self *Program) VPROLVQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPRORD imm8, zmm, zmm{k}{z}
 //
 func (self *Program) VPRORD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPRORD imm8, m128/m32bcst, xmm{k}{z}
     if isImm8(v0) && isM128M32bcst(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -77582,7 +77582,7 @@ func (self *Program) VPRORD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VPRORQ imm8, zmm, zmm{k}{z}
 //
 func (self *Program) VPRORQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPRORQ imm8, m128/m64bcst, xmm{k}{z}
     if isImm8(v0) && isM128M64bcst(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -77672,7 +77672,7 @@ func (self *Program) VPRORQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VPRORVD zmm, zmm, zmm{k}{z}
 //
 func (self *Program) VPRORVD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPRORVD m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -77756,7 +77756,7 @@ func (self *Program) VPRORVD(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPRORVQ zmm, zmm, zmm{k}{z}
 //
 func (self *Program) VPRORVQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPRORVQ m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -77839,7 +77839,7 @@ func (self *Program) VPRORVQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPROTB xmm, m128, xmm
 //
 func (self *Program) VPROTB(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPROTB imm8, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_XOP)
@@ -77917,7 +77917,7 @@ func (self *Program) VPROTB(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VPROTD xmm, m128, xmm
 //
 func (self *Program) VPROTD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPROTD imm8, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_XOP)
@@ -77995,7 +77995,7 @@ func (self *Program) VPROTD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VPROTQ xmm, m128, xmm
 //
 func (self *Program) VPROTQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPROTQ imm8, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_XOP)
@@ -78073,7 +78073,7 @@ func (self *Program) VPROTQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VPROTW xmm, m128, xmm
 //
 func (self *Program) VPROTW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPROTW imm8, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_XOP)
@@ -78156,7 +78156,7 @@ func (self *Program) VPROTW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VPSADBW m512, zmm, zmm
 //
 func (self *Program) VPSADBW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPSADBW xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_AVX)
@@ -78273,7 +78273,7 @@ func (self *Program) VPSADBW(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPSCATTERDD zmm, vm32z{k}
 //
 func (self *Program) VPSCATTERDD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPSCATTERDD xmm, vm32x{k}
     if isEVEXXMM(v0) && isVMXk(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -78318,7 +78318,7 @@ func (self *Program) VPSCATTERDD(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPSCATTERDQ zmm, vm32y{k}
 //
 func (self *Program) VPSCATTERDQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPSCATTERDQ xmm, vm32x{k}
     if isEVEXXMM(v0) && isVMXk(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -78363,7 +78363,7 @@ func (self *Program) VPSCATTERDQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPSCATTERQD ymm, vm64z{k}
 //
 func (self *Program) VPSCATTERQD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPSCATTERQD xmm, vm64x{k}
     if isEVEXXMM(v0) && isVMXk(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -78408,7 +78408,7 @@ func (self *Program) VPSCATTERQD(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPSCATTERQQ zmm, vm64z{k}
 //
 func (self *Program) VPSCATTERQQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPSCATTERQQ xmm, vm64x{k}
     if isEVEXXMM(v0) && isVMXk(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -78453,7 +78453,7 @@ func (self *Program) VPSCATTERQQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPSHAB xmm, m128, xmm
 //
 func (self *Program) VPSHAB(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPSHAB xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_XOP)
@@ -78507,7 +78507,7 @@ func (self *Program) VPSHAB(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VPSHAD xmm, m128, xmm
 //
 func (self *Program) VPSHAD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPSHAD xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_XOP)
@@ -78561,7 +78561,7 @@ func (self *Program) VPSHAD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VPSHAQ xmm, m128, xmm
 //
 func (self *Program) VPSHAQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPSHAQ xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_XOP)
@@ -78615,7 +78615,7 @@ func (self *Program) VPSHAQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VPSHAW xmm, m128, xmm
 //
 func (self *Program) VPSHAW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPSHAW xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_XOP)
@@ -78669,7 +78669,7 @@ func (self *Program) VPSHAW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VPSHLB xmm, m128, xmm
 //
 func (self *Program) VPSHLB(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPSHLB xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_XOP)
@@ -78723,7 +78723,7 @@ func (self *Program) VPSHLB(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VPSHLD xmm, m128, xmm
 //
 func (self *Program) VPSHLD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPSHLD xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_XOP)
@@ -78777,7 +78777,7 @@ func (self *Program) VPSHLD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VPSHLQ xmm, m128, xmm
 //
 func (self *Program) VPSHLQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPSHLQ xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_XOP)
@@ -78831,7 +78831,7 @@ func (self *Program) VPSHLQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VPSHLW xmm, m128, xmm
 //
 func (self *Program) VPSHLW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPSHLW xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_XOP)
@@ -78892,7 +78892,7 @@ func (self *Program) VPSHLW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VPSHUFB m256, ymm, ymm
 //
 func (self *Program) VPSHUFB(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPSHUFB xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -79020,7 +79020,7 @@ func (self *Program) VPSHUFB(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPSHUFD imm8, m256, ymm
 //
 func (self *Program) VPSHUFD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPSHUFD imm8, m128/m32bcst, xmm{k}{z}
     if isImm8(v0) && isM128M32bcst(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -79154,7 +79154,7 @@ func (self *Program) VPSHUFD(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPSHUFHW imm8, m256, ymm
 //
 func (self *Program) VPSHUFHW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPSHUFHW imm8, xmm, xmm{k}{z}
     if isImm8(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -79288,7 +79288,7 @@ func (self *Program) VPSHUFHW(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * VPSHUFLW imm8, m256, ymm
 //
 func (self *Program) VPSHUFLW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPSHUFLW imm8, xmm, xmm{k}{z}
     if isImm8(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -79416,7 +79416,7 @@ func (self *Program) VPSHUFLW(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * VPSIGNB m256, ymm, ymm
 //
 func (self *Program) VPSIGNB(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPSIGNB xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_AVX)
@@ -79475,7 +79475,7 @@ func (self *Program) VPSIGNB(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPSIGND m256, ymm, ymm
 //
 func (self *Program) VPSIGND(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPSIGND xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_AVX)
@@ -79534,7 +79534,7 @@ func (self *Program) VPSIGND(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPSIGNW m256, ymm, ymm
 //
 func (self *Program) VPSIGNW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPSIGNW xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_AVX)
@@ -79607,7 +79607,7 @@ func (self *Program) VPSIGNW(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPSLLD m128, ymm, ymm
 //
 func (self *Program) VPSLLD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPSLLD imm8, m128/m32bcst, xmm{k}{z}
     if isImm8(v0) && isM128M32bcst(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -79818,7 +79818,7 @@ func (self *Program) VPSLLD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VPSLLDQ imm8, m512, zmm
 //
 func (self *Program) VPSLLDQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPSLLDQ imm8, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_AVX)
@@ -79940,7 +79940,7 @@ func (self *Program) VPSLLDQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPSLLQ m128, ymm, ymm
 //
 func (self *Program) VPSLLQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPSLLQ imm8, m128/m64bcst, xmm{k}{z}
     if isImm8(v0) && isM128M64bcst(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -80153,7 +80153,7 @@ func (self *Program) VPSLLQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VPSLLVD m256, ymm, ymm
 //
 func (self *Program) VPSLLVD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPSLLVD m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -80281,7 +80281,7 @@ func (self *Program) VPSLLVD(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPSLLVQ m256, ymm, ymm
 //
 func (self *Program) VPSLLVQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPSLLVQ m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -80405,7 +80405,7 @@ func (self *Program) VPSLLVQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPSLLVW m512, zmm, zmm{k}{z}
 //
 func (self *Program) VPSLLVW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPSLLVW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -80501,7 +80501,7 @@ func (self *Program) VPSLLVW(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPSLLW m128, ymm, ymm
 //
 func (self *Program) VPSLLW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPSLLW imm8, xmm, xmm{k}{z}
     if isImm8(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -80722,7 +80722,7 @@ func (self *Program) VPSLLW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VPSRAD m128, ymm, ymm
 //
 func (self *Program) VPSRAD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPSRAD imm8, m128/m32bcst, xmm{k}{z}
     if isImm8(v0) && isM128M32bcst(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -80937,7 +80937,7 @@ func (self *Program) VPSRAD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VPSRAQ m128, zmm, zmm{k}{z}
 //
 func (self *Program) VPSRAQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPSRAQ imm8, m128/m64bcst, xmm{k}{z}
     if isImm8(v0) && isM128M64bcst(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -81094,7 +81094,7 @@ func (self *Program) VPSRAQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VPSRAVD m256, ymm, ymm
 //
 func (self *Program) VPSRAVD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPSRAVD m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -81218,7 +81218,7 @@ func (self *Program) VPSRAVD(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPSRAVQ zmm, zmm, zmm{k}{z}
 //
 func (self *Program) VPSRAVQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPSRAVQ m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -81302,7 +81302,7 @@ func (self *Program) VPSRAVQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPSRAVW m512, zmm, zmm{k}{z}
 //
 func (self *Program) VPSRAVW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPSRAVW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -81398,7 +81398,7 @@ func (self *Program) VPSRAVW(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPSRAW m128, ymm, ymm
 //
 func (self *Program) VPSRAW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPSRAW imm8, xmm, xmm{k}{z}
     if isImm8(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -81619,7 +81619,7 @@ func (self *Program) VPSRAW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VPSRLD m128, ymm, ymm
 //
 func (self *Program) VPSRLD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPSRLD imm8, m128/m32bcst, xmm{k}{z}
     if isImm8(v0) && isM128M32bcst(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -81830,7 +81830,7 @@ func (self *Program) VPSRLD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VPSRLDQ imm8, m512, zmm
 //
 func (self *Program) VPSRLDQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPSRLDQ imm8, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_AVX)
@@ -81952,7 +81952,7 @@ func (self *Program) VPSRLDQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPSRLQ m128, ymm, ymm
 //
 func (self *Program) VPSRLQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPSRLQ imm8, m128/m64bcst, xmm{k}{z}
     if isImm8(v0) && isM128M64bcst(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -82165,7 +82165,7 @@ func (self *Program) VPSRLQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VPSRLVD m256, ymm, ymm
 //
 func (self *Program) VPSRLVD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPSRLVD m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -82293,7 +82293,7 @@ func (self *Program) VPSRLVD(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPSRLVQ m256, ymm, ymm
 //
 func (self *Program) VPSRLVQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPSRLVQ m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -82417,7 +82417,7 @@ func (self *Program) VPSRLVQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPSRLVW m512, zmm, zmm{k}{z}
 //
 func (self *Program) VPSRLVW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPSRLVW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -82513,7 +82513,7 @@ func (self *Program) VPSRLVW(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPSRLW m128, ymm, ymm
 //
 func (self *Program) VPSRLW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPSRLW imm8, xmm, xmm{k}{z}
     if isImm8(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -82726,7 +82726,7 @@ func (self *Program) VPSRLW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VPSUBB m256, ymm, ymm
 //
 func (self *Program) VPSUBB(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPSUBB xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -82850,7 +82850,7 @@ func (self *Program) VPSUBB(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VPSUBD m256, ymm, ymm
 //
 func (self *Program) VPSUBD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPSUBD m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -82974,7 +82974,7 @@ func (self *Program) VPSUBD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VPSUBQ m256, ymm, ymm
 //
 func (self *Program) VPSUBQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPSUBQ m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -83098,7 +83098,7 @@ func (self *Program) VPSUBQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VPSUBSB m256, ymm, ymm
 //
 func (self *Program) VPSUBSB(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPSUBSB xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -83222,7 +83222,7 @@ func (self *Program) VPSUBSB(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPSUBSW m256, ymm, ymm
 //
 func (self *Program) VPSUBSW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPSUBSW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -83346,7 +83346,7 @@ func (self *Program) VPSUBSW(v0 interface{}, v1 interface{}, v2 interface{}) *In
 //    * VPSUBUSB m256, ymm, ymm
 //
 func (self *Program) VPSUBUSB(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPSUBUSB xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -83470,7 +83470,7 @@ func (self *Program) VPSUBUSB(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * VPSUBUSW m256, ymm, ymm
 //
 func (self *Program) VPSUBUSW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPSUBUSW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -83594,7 +83594,7 @@ func (self *Program) VPSUBUSW(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * VPSUBW m256, ymm, ymm
 //
 func (self *Program) VPSUBW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPSUBW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -83714,7 +83714,7 @@ func (self *Program) VPSUBW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VPTERNLOGD imm8, zmm, zmm, zmm{k}{z}
 //
 func (self *Program) VPTERNLOGD(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VPTERNLOGD imm8, m128/m32bcst, xmm, xmm{k}{z}
     if isImm8(v0) && isM128M32bcst(v1) && isEVEXXMM(v2) && isXMMkz(v3) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -83804,7 +83804,7 @@ func (self *Program) VPTERNLOGD(v0 interface{}, v1 interface{}, v2 interface{}, 
 //    * VPTERNLOGQ imm8, zmm, zmm, zmm{k}{z}
 //
 func (self *Program) VPTERNLOGQ(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VPTERNLOGQ imm8, m128/m64bcst, xmm, xmm{k}{z}
     if isImm8(v0) && isM128M64bcst(v1) && isEVEXXMM(v2) && isXMMkz(v3) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -83892,7 +83892,7 @@ func (self *Program) VPTERNLOGQ(v0 interface{}, v1 interface{}, v2 interface{}, 
 //    * VPTEST m256, ymm
 //
 func (self *Program) VPTEST(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VPTEST xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_AVX)
@@ -83953,7 +83953,7 @@ func (self *Program) VPTEST(v0 interface{}, v1 interface{}) *Instruction {
 //    * VPTESTMB m512, zmm, k{k}
 //
 func (self *Program) VPTESTMB(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPTESTMB xmm, xmm, k{k}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isKk(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -84037,7 +84037,7 @@ func (self *Program) VPTESTMB(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * VPTESTMD zmm, zmm, k{k}
 //
 func (self *Program) VPTESTMD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPTESTMD m128/m32bcst, xmm, k{k}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isKk(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -84121,7 +84121,7 @@ func (self *Program) VPTESTMD(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * VPTESTMQ zmm, zmm, k{k}
 //
 func (self *Program) VPTESTMQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPTESTMQ m128/m64bcst, xmm, k{k}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isKk(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -84205,7 +84205,7 @@ func (self *Program) VPTESTMQ(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * VPTESTMW m512, zmm, k{k}
 //
 func (self *Program) VPTESTMW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPTESTMW xmm, xmm, k{k}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isKk(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -84289,7 +84289,7 @@ func (self *Program) VPTESTMW(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * VPTESTNMB m512, zmm, k{k}
 //
 func (self *Program) VPTESTNMB(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPTESTNMB xmm, xmm, k{k}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isKk(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -84373,7 +84373,7 @@ func (self *Program) VPTESTNMB(v0 interface{}, v1 interface{}, v2 interface{}) *
 //    * VPTESTNMD zmm, zmm, k{k}
 //
 func (self *Program) VPTESTNMD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPTESTNMD m128/m32bcst, xmm, k{k}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isKk(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -84457,7 +84457,7 @@ func (self *Program) VPTESTNMD(v0 interface{}, v1 interface{}, v2 interface{}) *
 //    * VPTESTNMQ zmm, zmm, k{k}
 //
 func (self *Program) VPTESTNMQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPTESTNMQ m128/m64bcst, xmm, k{k}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isKk(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -84541,7 +84541,7 @@ func (self *Program) VPTESTNMQ(v0 interface{}, v1 interface{}, v2 interface{}) *
 //    * VPTESTNMW m512, zmm, k{k}
 //
 func (self *Program) VPTESTNMW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPTESTNMW xmm, xmm, k{k}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isKk(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -84629,7 +84629,7 @@ func (self *Program) VPTESTNMW(v0 interface{}, v1 interface{}, v2 interface{}) *
 //    * VPUNPCKHBW m256, ymm, ymm
 //
 func (self *Program) VPUNPCKHBW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPUNPCKHBW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -84753,7 +84753,7 @@ func (self *Program) VPUNPCKHBW(v0 interface{}, v1 interface{}, v2 interface{}) 
 //    * VPUNPCKHDQ m256, ymm, ymm
 //
 func (self *Program) VPUNPCKHDQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPUNPCKHDQ m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -84877,7 +84877,7 @@ func (self *Program) VPUNPCKHDQ(v0 interface{}, v1 interface{}, v2 interface{}) 
 //    * VPUNPCKHQDQ m256, ymm, ymm
 //
 func (self *Program) VPUNPCKHQDQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPUNPCKHQDQ m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -85001,7 +85001,7 @@ func (self *Program) VPUNPCKHQDQ(v0 interface{}, v1 interface{}, v2 interface{})
 //    * VPUNPCKHWD m256, ymm, ymm
 //
 func (self *Program) VPUNPCKHWD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPUNPCKHWD xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -85125,7 +85125,7 @@ func (self *Program) VPUNPCKHWD(v0 interface{}, v1 interface{}, v2 interface{}) 
 //    * VPUNPCKLBW m256, ymm, ymm
 //
 func (self *Program) VPUNPCKLBW(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPUNPCKLBW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -85249,7 +85249,7 @@ func (self *Program) VPUNPCKLBW(v0 interface{}, v1 interface{}, v2 interface{}) 
 //    * VPUNPCKLDQ m256, ymm, ymm
 //
 func (self *Program) VPUNPCKLDQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPUNPCKLDQ m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -85373,7 +85373,7 @@ func (self *Program) VPUNPCKLDQ(v0 interface{}, v1 interface{}, v2 interface{}) 
 //    * VPUNPCKLQDQ m256, ymm, ymm
 //
 func (self *Program) VPUNPCKLQDQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPUNPCKLQDQ m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -85497,7 +85497,7 @@ func (self *Program) VPUNPCKLQDQ(v0 interface{}, v1 interface{}, v2 interface{})
 //    * VPUNPCKLWD m256, ymm, ymm
 //
 func (self *Program) VPUNPCKLWD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPUNPCKLWD xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512BW)
@@ -85615,7 +85615,7 @@ func (self *Program) VPUNPCKLWD(v0 interface{}, v1 interface{}, v2 interface{}) 
 //    * VPXOR m256, ymm, ymm
 //
 func (self *Program) VPXOR(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPXOR xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_AVX)
@@ -85672,7 +85672,7 @@ func (self *Program) VPXOR(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
 //    * VPXORD zmm, zmm, zmm{k}{z}
 //
 func (self *Program) VPXORD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPXORD m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -85756,7 +85756,7 @@ func (self *Program) VPXORD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VPXORQ zmm, zmm, zmm{k}{z}
 //
 func (self *Program) VPXORQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VPXORQ m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -85843,8 +85843,8 @@ func (self *Program) VPXORQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 func (self *Program) VRANGEPD(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
-        case 1  : p = self.alloc(5, [_MAX_ARGS]interface{}{v0, v1, v2, v3, vv[0]})
+        case 0  : p = self.alloc(4, Operands{v0, v1, v2, v3})
+        case 1  : p = self.alloc(5, Operands{v0, v1, v2, v3, vv[0]})
         default : panic("instruction VRANGEPD takes 4 or 5 operands")
     }
     // VRANGEPD imm8, m128/m64bcst, xmm, xmm{k}{z}
@@ -85952,8 +85952,8 @@ func (self *Program) VRANGEPD(v0 interface{}, v1 interface{}, v2 interface{}, v3
 func (self *Program) VRANGEPS(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
-        case 1  : p = self.alloc(5, [_MAX_ARGS]interface{}{v0, v1, v2, v3, vv[0]})
+        case 0  : p = self.alloc(4, Operands{v0, v1, v2, v3})
+        case 1  : p = self.alloc(5, Operands{v0, v1, v2, v3, vv[0]})
         default : panic("instruction VRANGEPS takes 4 or 5 operands")
     }
     // VRANGEPS imm8, m128/m32bcst, xmm, xmm{k}{z}
@@ -86057,8 +86057,8 @@ func (self *Program) VRANGEPS(v0 interface{}, v1 interface{}, v2 interface{}, v3
 func (self *Program) VRANGESD(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
-        case 1  : p = self.alloc(5, [_MAX_ARGS]interface{}{v0, v1, v2, v3, vv[0]})
+        case 0  : p = self.alloc(4, Operands{v0, v1, v2, v3})
+        case 1  : p = self.alloc(5, Operands{v0, v1, v2, v3, vv[0]})
         default : panic("instruction VRANGESD takes 4 or 5 operands")
     }
     // VRANGESD imm8, m64, xmm, xmm{k}{z}
@@ -86116,8 +86116,8 @@ func (self *Program) VRANGESD(v0 interface{}, v1 interface{}, v2 interface{}, v3
 func (self *Program) VRANGESS(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
-        case 1  : p = self.alloc(5, [_MAX_ARGS]interface{}{v0, v1, v2, v3, vv[0]})
+        case 0  : p = self.alloc(4, Operands{v0, v1, v2, v3})
+        case 1  : p = self.alloc(5, Operands{v0, v1, v2, v3, vv[0]})
         default : panic("instruction VRANGESS takes 4 or 5 operands")
     }
     // VRANGESS imm8, m32, xmm, xmm{k}{z}
@@ -86176,7 +86176,7 @@ func (self *Program) VRANGESS(v0 interface{}, v1 interface{}, v2 interface{}, v3
 //    * VRCP14PD zmm, zmm{k}{z}
 //
 func (self *Program) VRCP14PD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VRCP14PD m128/m64bcst, xmm{k}{z}
     if isM128M64bcst(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -86260,7 +86260,7 @@ func (self *Program) VRCP14PD(v0 interface{}, v1 interface{}) *Instruction {
 //    * VRCP14PS zmm, zmm{k}{z}
 //
 func (self *Program) VRCP14PS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VRCP14PS m128/m32bcst, xmm{k}{z}
     if isM128M32bcst(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -86340,7 +86340,7 @@ func (self *Program) VRCP14PS(v0 interface{}, v1 interface{}) *Instruction {
 //    * VRCP14SD m64, xmm, xmm{k}{z}
 //
 func (self *Program) VRCP14SD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VRCP14SD xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512F)
@@ -86378,7 +86378,7 @@ func (self *Program) VRCP14SD(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * VRCP14SS m32, xmm, xmm{k}{z}
 //
 func (self *Program) VRCP14SS(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VRCP14SS xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512F)
@@ -86419,8 +86419,8 @@ func (self *Program) VRCP14SS(v0 interface{}, v1 interface{}, v2 interface{}) *I
 func (self *Program) VRCP28PD(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VRCP28PD takes 2 or 3 operands")
     }
     // VRCP28PD m512/m64bcst, zmm{k}{z}
@@ -86475,8 +86475,8 @@ func (self *Program) VRCP28PD(v0 interface{}, v1 interface{}, vv ...interface{})
 func (self *Program) VRCP28PS(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VRCP28PS takes 2 or 3 operands")
     }
     // VRCP28PS m512/m32bcst, zmm{k}{z}
@@ -86531,8 +86531,8 @@ func (self *Program) VRCP28PS(v0 interface{}, v1 interface{}, vv ...interface{})
 func (self *Program) VRCP28SD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VRCP28SD takes 3 or 4 operands")
     }
     // VRCP28SD m64, xmm, xmm{k}{z}
@@ -86587,8 +86587,8 @@ func (self *Program) VRCP28SD(v0 interface{}, v1 interface{}, v2 interface{}, vv
 func (self *Program) VRCP28SS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VRCP28SS takes 3 or 4 operands")
     }
     // VRCP28SS m32, xmm, xmm{k}{z}
@@ -86642,7 +86642,7 @@ func (self *Program) VRCP28SS(v0 interface{}, v1 interface{}, v2 interface{}, vv
 //    * VRCPPS m256, ymm
 //
 func (self *Program) VRCPPS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VRCPPS xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_AVX)
@@ -86695,7 +86695,7 @@ func (self *Program) VRCPPS(v0 interface{}, v1 interface{}) *Instruction {
 //    * VRCPSS m32, xmm, xmm
 //
 func (self *Program) VRCPSS(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VRCPSS xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_AVX)
@@ -86734,7 +86734,7 @@ func (self *Program) VRCPSS(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VREDUCEPD imm8, zmm, zmm{k}{z}
 //
 func (self *Program) VREDUCEPD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VREDUCEPD imm8, m128/m64bcst, xmm{k}{z}
     if isImm8(v0) && isM128M64bcst(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512DQ)
@@ -86824,7 +86824,7 @@ func (self *Program) VREDUCEPD(v0 interface{}, v1 interface{}, v2 interface{}) *
 //    * VREDUCEPS imm8, zmm, zmm{k}{z}
 //
 func (self *Program) VREDUCEPS(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VREDUCEPS imm8, m128/m32bcst, xmm{k}{z}
     if isImm8(v0) && isM128M32bcst(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512DQ)
@@ -86910,7 +86910,7 @@ func (self *Program) VREDUCEPS(v0 interface{}, v1 interface{}, v2 interface{}) *
 //    * VREDUCESD imm8, m64, xmm, xmm{k}{z}
 //
 func (self *Program) VREDUCESD(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VREDUCESD imm8, xmm, xmm, xmm{k}{z}
     if isImm8(v0) && isEVEXXMM(v1) && isEVEXXMM(v2) && isXMMkz(v3) {
         self.require(ISA_AVX512DQ)
@@ -86950,7 +86950,7 @@ func (self *Program) VREDUCESD(v0 interface{}, v1 interface{}, v2 interface{}, v
 //    * VREDUCESS imm8, m32, xmm, xmm{k}{z}
 //
 func (self *Program) VREDUCESS(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VREDUCESS imm8, xmm, xmm, xmm{k}{z}
     if isImm8(v0) && isEVEXXMM(v1) && isEVEXXMM(v2) && isXMMkz(v3) {
         self.require(ISA_AVX512DQ)
@@ -86997,8 +86997,8 @@ func (self *Program) VREDUCESS(v0 interface{}, v1 interface{}, v2 interface{}, v
 func (self *Program) VRNDSCALEPD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VRNDSCALEPD takes 3 or 4 operands")
     }
     // VRNDSCALEPD imm8, m128/m64bcst, xmm{k}{z}
@@ -87106,8 +87106,8 @@ func (self *Program) VRNDSCALEPD(v0 interface{}, v1 interface{}, v2 interface{},
 func (self *Program) VRNDSCALEPS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VRNDSCALEPS takes 3 or 4 operands")
     }
     // VRNDSCALEPS imm8, m128/m32bcst, xmm{k}{z}
@@ -87211,8 +87211,8 @@ func (self *Program) VRNDSCALEPS(v0 interface{}, v1 interface{}, v2 interface{},
 func (self *Program) VRNDSCALESD(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
-        case 1  : p = self.alloc(5, [_MAX_ARGS]interface{}{v0, v1, v2, v3, vv[0]})
+        case 0  : p = self.alloc(4, Operands{v0, v1, v2, v3})
+        case 1  : p = self.alloc(5, Operands{v0, v1, v2, v3, vv[0]})
         default : panic("instruction VRNDSCALESD takes 4 or 5 operands")
     }
     // VRNDSCALESD imm8, m64, xmm, xmm{k}{z}
@@ -87270,8 +87270,8 @@ func (self *Program) VRNDSCALESD(v0 interface{}, v1 interface{}, v2 interface{},
 func (self *Program) VRNDSCALESS(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
-        case 1  : p = self.alloc(5, [_MAX_ARGS]interface{}{v0, v1, v2, v3, vv[0]})
+        case 0  : p = self.alloc(4, Operands{v0, v1, v2, v3})
+        case 1  : p = self.alloc(5, Operands{v0, v1, v2, v3, vv[0]})
         default : panic("instruction VRNDSCALESS takes 4 or 5 operands")
     }
     // VRNDSCALESS imm8, m32, xmm, xmm{k}{z}
@@ -87328,7 +87328,7 @@ func (self *Program) VRNDSCALESS(v0 interface{}, v1 interface{}, v2 interface{},
 //    * VROUNDPD imm8, m256, ymm
 //
 func (self *Program) VROUNDPD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VROUNDPD imm8, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_AVX)
@@ -87391,7 +87391,7 @@ func (self *Program) VROUNDPD(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * VROUNDPS imm8, m256, ymm
 //
 func (self *Program) VROUNDPS(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VROUNDPS imm8, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_AVX)
@@ -87452,7 +87452,7 @@ func (self *Program) VROUNDPS(v0 interface{}, v1 interface{}, v2 interface{}) *I
 //    * VROUNDSD imm8, m64, xmm, xmm
 //
 func (self *Program) VROUNDSD(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VROUNDSD imm8, xmm, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_AVX)
@@ -87491,7 +87491,7 @@ func (self *Program) VROUNDSD(v0 interface{}, v1 interface{}, v2 interface{}, v3
 //    * VROUNDSS imm8, m32, xmm, xmm
 //
 func (self *Program) VROUNDSS(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VROUNDSS imm8, xmm, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
         self.require(ISA_AVX)
@@ -87534,7 +87534,7 @@ func (self *Program) VROUNDSS(v0 interface{}, v1 interface{}, v2 interface{}, v3
 //    * VRSQRT14PD zmm, zmm{k}{z}
 //
 func (self *Program) VRSQRT14PD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VRSQRT14PD m128/m64bcst, xmm{k}{z}
     if isM128M64bcst(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -87618,7 +87618,7 @@ func (self *Program) VRSQRT14PD(v0 interface{}, v1 interface{}) *Instruction {
 //    * VRSQRT14PS zmm, zmm{k}{z}
 //
 func (self *Program) VRSQRT14PS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VRSQRT14PS m128/m32bcst, xmm{k}{z}
     if isM128M32bcst(v0) && isXMMkz(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -87698,7 +87698,7 @@ func (self *Program) VRSQRT14PS(v0 interface{}, v1 interface{}) *Instruction {
 //    * VRSQRT14SD m64, xmm, xmm{k}{z}
 //
 func (self *Program) VRSQRT14SD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VRSQRT14SD xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512F)
@@ -87736,7 +87736,7 @@ func (self *Program) VRSQRT14SD(v0 interface{}, v1 interface{}, v2 interface{}) 
 //    * VRSQRT14SS m32, xmm, xmm{k}{z}
 //
 func (self *Program) VRSQRT14SS(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VRSQRT14SS xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512F)
@@ -87777,8 +87777,8 @@ func (self *Program) VRSQRT14SS(v0 interface{}, v1 interface{}, v2 interface{}) 
 func (self *Program) VRSQRT28PD(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VRSQRT28PD takes 2 or 3 operands")
     }
     // VRSQRT28PD m512/m64bcst, zmm{k}{z}
@@ -87833,8 +87833,8 @@ func (self *Program) VRSQRT28PD(v0 interface{}, v1 interface{}, vv ...interface{
 func (self *Program) VRSQRT28PS(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VRSQRT28PS takes 2 or 3 operands")
     }
     // VRSQRT28PS m512/m32bcst, zmm{k}{z}
@@ -87889,8 +87889,8 @@ func (self *Program) VRSQRT28PS(v0 interface{}, v1 interface{}, vv ...interface{
 func (self *Program) VRSQRT28SD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VRSQRT28SD takes 3 or 4 operands")
     }
     // VRSQRT28SD m64, xmm, xmm{k}{z}
@@ -87945,8 +87945,8 @@ func (self *Program) VRSQRT28SD(v0 interface{}, v1 interface{}, v2 interface{}, 
 func (self *Program) VRSQRT28SS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VRSQRT28SS takes 3 or 4 operands")
     }
     // VRSQRT28SS m32, xmm, xmm{k}{z}
@@ -88000,7 +88000,7 @@ func (self *Program) VRSQRT28SS(v0 interface{}, v1 interface{}, v2 interface{}, 
 //    * VRSQRTPS m256, ymm
 //
 func (self *Program) VRSQRTPS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VRSQRTPS xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_AVX)
@@ -88053,7 +88053,7 @@ func (self *Program) VRSQRTPS(v0 interface{}, v1 interface{}) *Instruction {
 //    * VRSQRTSS m32, xmm, xmm
 //
 func (self *Program) VRSQRTSS(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VRSQRTSS xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) {
         self.require(ISA_AVX)
@@ -88095,8 +88095,8 @@ func (self *Program) VRSQRTSS(v0 interface{}, v1 interface{}, v2 interface{}) *I
 func (self *Program) VSCALEFPD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VSCALEFPD takes 3 or 4 operands")
     }
     // VSCALEFPD m128/m64bcst, xmm, xmm{k}{z}
@@ -88197,8 +88197,8 @@ func (self *Program) VSCALEFPD(v0 interface{}, v1 interface{}, v2 interface{}, v
 func (self *Program) VSCALEFPS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VSCALEFPS takes 3 or 4 operands")
     }
     // VSCALEFPS m128/m32bcst, xmm, xmm{k}{z}
@@ -88295,8 +88295,8 @@ func (self *Program) VSCALEFPS(v0 interface{}, v1 interface{}, v2 interface{}, v
 func (self *Program) VSCALEFSD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VSCALEFSD takes 3 or 4 operands")
     }
     // VSCALEFSD m64, xmm, xmm{k}{z}
@@ -88351,8 +88351,8 @@ func (self *Program) VSCALEFSD(v0 interface{}, v1 interface{}, v2 interface{}, v
 func (self *Program) VSCALEFSS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VSCALEFSS takes 3 or 4 operands")
     }
     // VSCALEFSS m32, xmm, xmm{k}{z}
@@ -88405,7 +88405,7 @@ func (self *Program) VSCALEFSS(v0 interface{}, v1 interface{}, v2 interface{}, v
 //    * VSCATTERDPD zmm, vm32y{k}
 //
 func (self *Program) VSCATTERDPD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VSCATTERDPD xmm, vm32x{k}
     if isEVEXXMM(v0) && isVMXk(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -88450,7 +88450,7 @@ func (self *Program) VSCATTERDPD(v0 interface{}, v1 interface{}) *Instruction {
 //    * VSCATTERDPS zmm, vm32z{k}
 //
 func (self *Program) VSCATTERDPS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VSCATTERDPS xmm, vm32x{k}
     if isEVEXXMM(v0) && isVMXk(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -88493,7 +88493,7 @@ func (self *Program) VSCATTERDPS(v0 interface{}, v1 interface{}) *Instruction {
 //    * VSCATTERPF0DPD vm32y{k}
 //
 func (self *Program) VSCATTERPF0DPD(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // VSCATTERPF0DPD vm32y{k}
     if isVMYk(v0) {
         self.require(ISA_AVX512PF)
@@ -88518,7 +88518,7 @@ func (self *Program) VSCATTERPF0DPD(v0 interface{}) *Instruction {
 //    * VSCATTERPF0DPS vm32z{k}
 //
 func (self *Program) VSCATTERPF0DPS(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // VSCATTERPF0DPS vm32z{k}
     if isVMZk(v0) {
         self.require(ISA_AVX512PF)
@@ -88543,7 +88543,7 @@ func (self *Program) VSCATTERPF0DPS(v0 interface{}) *Instruction {
 //    * VSCATTERPF0QPD vm64z{k}
 //
 func (self *Program) VSCATTERPF0QPD(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // VSCATTERPF0QPD vm64z{k}
     if isVMZk(v0) {
         self.require(ISA_AVX512PF)
@@ -88568,7 +88568,7 @@ func (self *Program) VSCATTERPF0QPD(v0 interface{}) *Instruction {
 //    * VSCATTERPF0QPS vm64z{k}
 //
 func (self *Program) VSCATTERPF0QPS(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // VSCATTERPF0QPS vm64z{k}
     if isVMZk(v0) {
         self.require(ISA_AVX512PF)
@@ -88593,7 +88593,7 @@ func (self *Program) VSCATTERPF0QPS(v0 interface{}) *Instruction {
 //    * VSCATTERPF1DPD vm32y{k}
 //
 func (self *Program) VSCATTERPF1DPD(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // VSCATTERPF1DPD vm32y{k}
     if isVMYk(v0) {
         self.require(ISA_AVX512PF)
@@ -88618,7 +88618,7 @@ func (self *Program) VSCATTERPF1DPD(v0 interface{}) *Instruction {
 //    * VSCATTERPF1DPS vm32z{k}
 //
 func (self *Program) VSCATTERPF1DPS(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // VSCATTERPF1DPS vm32z{k}
     if isVMZk(v0) {
         self.require(ISA_AVX512PF)
@@ -88643,7 +88643,7 @@ func (self *Program) VSCATTERPF1DPS(v0 interface{}) *Instruction {
 //    * VSCATTERPF1QPD vm64z{k}
 //
 func (self *Program) VSCATTERPF1QPD(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // VSCATTERPF1QPD vm64z{k}
     if isVMZk(v0) {
         self.require(ISA_AVX512PF)
@@ -88668,7 +88668,7 @@ func (self *Program) VSCATTERPF1QPD(v0 interface{}) *Instruction {
 //    * VSCATTERPF1QPS vm64z{k}
 //
 func (self *Program) VSCATTERPF1QPS(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // VSCATTERPF1QPS vm64z{k}
     if isVMZk(v0) {
         self.require(ISA_AVX512PF)
@@ -88695,7 +88695,7 @@ func (self *Program) VSCATTERPF1QPS(v0 interface{}) *Instruction {
 //    * VSCATTERQPD zmm, vm64z{k}
 //
 func (self *Program) VSCATTERQPD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VSCATTERQPD xmm, vm64x{k}
     if isEVEXXMM(v0) && isVMXk(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -88740,7 +88740,7 @@ func (self *Program) VSCATTERQPD(v0 interface{}, v1 interface{}) *Instruction {
 //    * VSCATTERQPS ymm, vm64z{k}
 //
 func (self *Program) VSCATTERQPS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VSCATTERQPS xmm, vm64x{k}
     if isEVEXXMM(v0) && isVMXk(v1) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -88786,7 +88786,7 @@ func (self *Program) VSCATTERQPS(v0 interface{}, v1 interface{}) *Instruction {
 //    * VSHUFF32X4 imm8, zmm, zmm, zmm{k}{z}
 //
 func (self *Program) VSHUFF32X4(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VSHUFF32X4 imm8, m256/m32bcst, ymm, ymm{k}{z}
     if isImm8(v0) && isM256M32bcst(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -88851,7 +88851,7 @@ func (self *Program) VSHUFF32X4(v0 interface{}, v1 interface{}, v2 interface{}, 
 //    * VSHUFF64X2 imm8, zmm, zmm, zmm{k}{z}
 //
 func (self *Program) VSHUFF64X2(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VSHUFF64X2 imm8, m256/m64bcst, ymm, ymm{k}{z}
     if isImm8(v0) && isM256M64bcst(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -88916,7 +88916,7 @@ func (self *Program) VSHUFF64X2(v0 interface{}, v1 interface{}, v2 interface{}, 
 //    * VSHUFI32X4 imm8, zmm, zmm, zmm{k}{z}
 //
 func (self *Program) VSHUFI32X4(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VSHUFI32X4 imm8, m256/m32bcst, ymm, ymm{k}{z}
     if isImm8(v0) && isM256M32bcst(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -88981,7 +88981,7 @@ func (self *Program) VSHUFI32X4(v0 interface{}, v1 interface{}, v2 interface{}, 
 //    * VSHUFI64X2 imm8, zmm, zmm, zmm{k}{z}
 //
 func (self *Program) VSHUFI64X2(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VSHUFI64X2 imm8, m256/m64bcst, ymm, ymm{k}{z}
     if isImm8(v0) && isM256M64bcst(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -89052,7 +89052,7 @@ func (self *Program) VSHUFI64X2(v0 interface{}, v1 interface{}, v2 interface{}, 
 //    * VSHUFPD imm8, m256, ymm, ymm
 //
 func (self *Program) VSHUFPD(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VSHUFPD imm8, m128/m64bcst, xmm, xmm{k}{z}
     if isImm8(v0) && isM128M64bcst(v1) && isEVEXXMM(v2) && isXMMkz(v3) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -89186,7 +89186,7 @@ func (self *Program) VSHUFPD(v0 interface{}, v1 interface{}, v2 interface{}, v3 
 //    * VSHUFPS imm8, m256, ymm, ymm
 //
 func (self *Program) VSHUFPS(v0 interface{}, v1 interface{}, v2 interface{}, v3 interface{}) *Instruction {
-    p := self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, v3})
+    p := self.alloc(4, Operands{v0, v1, v2, v3})
     // VSHUFPS imm8, m128/m32bcst, xmm, xmm{k}{z}
     if isImm8(v0) && isM128M32bcst(v1) && isEVEXXMM(v2) && isXMMkz(v3) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -89323,8 +89323,8 @@ func (self *Program) VSHUFPS(v0 interface{}, v1 interface{}, v2 interface{}, v3 
 func (self *Program) VSQRTPD(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VSQRTPD takes 2 or 3 operands")
     }
     // VSQRTPD m128/m32bcst, xmm{k}{z}
@@ -89465,8 +89465,8 @@ func (self *Program) VSQRTPD(v0 interface{}, v1 interface{}, vv ...interface{}) 
 func (self *Program) VSQRTPS(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VSQRTPS takes 2 or 3 operands")
     }
     // VSQRTPS m128/m32bcst, xmm{k}{z}
@@ -89601,8 +89601,8 @@ func (self *Program) VSQRTPS(v0 interface{}, v1 interface{}, vv ...interface{}) 
 func (self *Program) VSQRTSD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VSQRTSD takes 3 or 4 operands")
     }
     // VSQRTSD m64, xmm, xmm{k}{z}
@@ -89677,8 +89677,8 @@ func (self *Program) VSQRTSD(v0 interface{}, v1 interface{}, v2 interface{}, vv 
 func (self *Program) VSQRTSS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VSQRTSS takes 3 or 4 operands")
     }
     // VSQRTSS m32, xmm, xmm{k}{z}
@@ -89747,7 +89747,7 @@ func (self *Program) VSQRTSS(v0 interface{}, v1 interface{}, v2 interface{}, vv 
 //    * VSTMXCSR m32
 //
 func (self *Program) VSTMXCSR(v0 interface{}) *Instruction {
-    p := self.alloc(1, [_MAX_ARGS]interface{}{v0})
+    p := self.alloc(1, Operands{v0})
     // VSTMXCSR m32
     if isM32(v0) {
         self.require(ISA_AVX)
@@ -89784,8 +89784,8 @@ func (self *Program) VSTMXCSR(v0 interface{}) *Instruction {
 func (self *Program) VSUBPD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VSUBPD takes 3 or 4 operands")
     }
     // VSUBPD m128/m64bcst, xmm, xmm{k}{z}
@@ -89926,8 +89926,8 @@ func (self *Program) VSUBPD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
 func (self *Program) VSUBPS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VSUBPS takes 3 or 4 operands")
     }
     // VSUBPS m128/m32bcst, xmm, xmm{k}{z}
@@ -90062,8 +90062,8 @@ func (self *Program) VSUBPS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
 func (self *Program) VSUBSD(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VSUBSD takes 3 or 4 operands")
     }
     // VSUBSD m64, xmm, xmm{k}{z}
@@ -90138,8 +90138,8 @@ func (self *Program) VSUBSD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
 func (self *Program) VSUBSS(v0 interface{}, v1 interface{}, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
-        case 1  : p = self.alloc(4, [_MAX_ARGS]interface{}{v0, v1, v2, vv[0]})
+        case 0  : p = self.alloc(3, Operands{v0, v1, v2})
+        case 1  : p = self.alloc(4, Operands{v0, v1, v2, vv[0]})
         default : panic("instruction VSUBSS takes 3 or 4 operands")
     }
     // VSUBSS m32, xmm, xmm{k}{z}
@@ -90211,7 +90211,7 @@ func (self *Program) VSUBSS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
 //    * VTESTPD m256, ymm
 //
 func (self *Program) VTESTPD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VTESTPD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_AVX)
@@ -90270,7 +90270,7 @@ func (self *Program) VTESTPD(v0 interface{}, v1 interface{}) *Instruction {
 //    * VTESTPS m256, ymm
 //
 func (self *Program) VTESTPS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // VTESTPS xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_AVX)
@@ -90332,8 +90332,8 @@ func (self *Program) VTESTPS(v0 interface{}, v1 interface{}) *Instruction {
 func (self *Program) VUCOMISD(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VUCOMISD takes 2 or 3 operands")
     }
     // VUCOMISD xmm, xmm
@@ -90408,8 +90408,8 @@ func (self *Program) VUCOMISD(v0 interface{}, v1 interface{}, vv ...interface{})
 func (self *Program) VUCOMISS(v0 interface{}, v1 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
     switch len(vv) {
-        case 0  : p = self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
-        case 1  : p = self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, vv[0]})
+        case 0  : p = self.alloc(2, Operands{v0, v1})
+        case 1  : p = self.alloc(3, Operands{v0, v1, vv[0]})
         default : panic("instruction VUCOMISS takes 2 or 3 operands")
     }
     // VUCOMISS xmm, xmm
@@ -90487,7 +90487,7 @@ func (self *Program) VUCOMISS(v0 interface{}, v1 interface{}, vv ...interface{})
 //    * VUNPCKHPD m256, ymm, ymm
 //
 func (self *Program) VUNPCKHPD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VUNPCKHPD m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -90611,7 +90611,7 @@ func (self *Program) VUNPCKHPD(v0 interface{}, v1 interface{}, v2 interface{}) *
 //    * VUNPCKHPS m256, ymm, ymm
 //
 func (self *Program) VUNPCKHPS(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VUNPCKHPS m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -90735,7 +90735,7 @@ func (self *Program) VUNPCKHPS(v0 interface{}, v1 interface{}, v2 interface{}) *
 //    * VUNPCKLPD m256, ymm, ymm
 //
 func (self *Program) VUNPCKLPD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VUNPCKLPD m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -90859,7 +90859,7 @@ func (self *Program) VUNPCKLPD(v0 interface{}, v1 interface{}, v2 interface{}) *
 //    * VUNPCKLPS m256, ymm, ymm
 //
 func (self *Program) VUNPCKLPS(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VUNPCKLPS m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512F)
@@ -90983,7 +90983,7 @@ func (self *Program) VUNPCKLPS(v0 interface{}, v1 interface{}, v2 interface{}) *
 //    * VXORPD m256, ymm, ymm
 //
 func (self *Program) VXORPD(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VXORPD m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512DQ)
@@ -91107,7 +91107,7 @@ func (self *Program) VXORPD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VXORPS m256, ymm, ymm
 //
 func (self *Program) VXORPS(v0 interface{}, v1 interface{}, v2 interface{}) *Instruction {
-    p := self.alloc(3, [_MAX_ARGS]interface{}{v0, v1, v2})
+    p := self.alloc(3, Operands{v0, v1, v2})
     // VXORPS m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
         self.require(ISA_AVX512VL | ISA_AVX512DQ)
@@ -91222,7 +91222,7 @@ func (self *Program) VXORPS(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
 //    * VZEROALL
 //
 func (self *Program) VZEROALL() *Instruction {
-    p := self.alloc(0, [_MAX_ARGS]interface{}{})
+    p := self.alloc(0, Operands{})
     // VZEROALL
     self.require(ISA_AVX)
     p.add(0, func(m *_Encoding, v []interface{}) {
@@ -91241,7 +91241,7 @@ func (self *Program) VZEROALL() *Instruction {
 //    * VZEROUPPER
 //
 func (self *Program) VZEROUPPER() *Instruction {
-    p := self.alloc(0, [_MAX_ARGS]interface{}{})
+    p := self.alloc(0, Operands{})
     // VZEROUPPER
     self.require(ISA_AVX)
     p.add(0, func(m *_Encoding, v []interface{}) {
@@ -91260,7 +91260,7 @@ func (self *Program) VZEROUPPER() *Instruction {
 //    * XADDB r8, m8
 //
 func (self *Program) XADDB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // XADDB r8, r8
     if isReg8(v0) && isReg8(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -91294,7 +91294,7 @@ func (self *Program) XADDB(v0 interface{}, v1 interface{}) *Instruction {
 //    * XADDL r32, m32
 //
 func (self *Program) XADDL(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // XADDL r32, r32
     if isReg32(v0) && isReg32(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -91328,7 +91328,7 @@ func (self *Program) XADDL(v0 interface{}, v1 interface{}) *Instruction {
 //    * XADDQ r64, m64
 //
 func (self *Program) XADDQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // XADDQ r64, r64
     if isReg64(v0) && isReg64(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -91362,7 +91362,7 @@ func (self *Program) XADDQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * XADDW r16, m16
 //
 func (self *Program) XADDW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // XADDW r16, r16
     if isReg16(v0) && isReg16(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -91399,7 +91399,7 @@ func (self *Program) XADDW(v0 interface{}, v1 interface{}) *Instruction {
 //    * XCHGB r8, m8
 //
 func (self *Program) XCHGB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // XCHGB r8, r8
     if isReg8(v0) && isReg8(v1) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -91447,7 +91447,7 @@ func (self *Program) XCHGB(v0 interface{}, v1 interface{}) *Instruction {
 //    * XCHGL r32, m32
 //
 func (self *Program) XCHGL(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // XCHGL r32, eax
     if isReg32(v0) && v1 == EAX {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -91509,7 +91509,7 @@ func (self *Program) XCHGL(v0 interface{}, v1 interface{}) *Instruction {
 //    * XCHGQ r64, m64
 //
 func (self *Program) XCHGQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // XCHGQ r64, rax
     if isReg64(v0) && v1 == RAX {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -91571,7 +91571,7 @@ func (self *Program) XCHGQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * XCHGW r16, m16
 //
 func (self *Program) XCHGW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // XCHGW r16, ax
     if isReg16(v0) && v1 == AX {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -91635,7 +91635,7 @@ func (self *Program) XCHGW(v0 interface{}, v1 interface{}) *Instruction {
 //    * XGETBV
 //
 func (self *Program) XGETBV() *Instruction {
-    p := self.alloc(0, [_MAX_ARGS]interface{}{})
+    p := self.alloc(0, Operands{})
     // XGETBV
     p.add(0, func(m *_Encoding, v []interface{}) {
         m.emit(0x0f)
@@ -91654,7 +91654,7 @@ func (self *Program) XGETBV() *Instruction {
 //    * XLATB
 //
 func (self *Program) XLATB() *Instruction {
-    p := self.alloc(0, [_MAX_ARGS]interface{}{})
+    p := self.alloc(0, Operands{})
     // XLATB
     p.add(0, func(m *_Encoding, v []interface{}) {
         m.emit(0xd7)
@@ -91680,7 +91680,7 @@ func (self *Program) XLATB() *Instruction {
 //    * XORB r8, m8
 //
 func (self *Program) XORB(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // XORB imm8, al
     if isImm8(v0) && v1 == AL {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -91756,7 +91756,7 @@ func (self *Program) XORB(v0 interface{}, v1 interface{}) *Instruction {
 //    * XORL r32, m32
 //
 func (self *Program) XORL(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // XORL imm32, eax
     if isImm32(v0) && v1 == EAX {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -91845,7 +91845,7 @@ func (self *Program) XORL(v0 interface{}, v1 interface{}) *Instruction {
 //    * XORPD m128, xmm
 //
 func (self *Program) XORPD(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // XORPD xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE2)
@@ -91884,7 +91884,7 @@ func (self *Program) XORPD(v0 interface{}, v1 interface{}) *Instruction {
 //    * XORPS m128, xmm
 //
 func (self *Program) XORPS(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // XORPS xmm, xmm
     if isXMM(v0) && isXMM(v1) {
         self.require(ISA_SSE)
@@ -91926,7 +91926,7 @@ func (self *Program) XORPS(v0 interface{}, v1 interface{}) *Instruction {
 //    * XORQ r64, m64
 //
 func (self *Program) XORQ(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // XORQ imm32, rax
     if isImm32(v0) && v1 == RAX {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -92021,7 +92021,7 @@ func (self *Program) XORQ(v0 interface{}, v1 interface{}) *Instruction {
 //    * XORW r16, m16
 //
 func (self *Program) XORW(v0 interface{}, v1 interface{}) *Instruction {
-    p := self.alloc(2, [_MAX_ARGS]interface{}{v0, v1})
+    p := self.alloc(2, Operands{v0, v1})
     // XORW imm16, ax
     if isImm16(v0) && v1 == AX {
         p.add(0, func(m *_Encoding, v []interface{}) {

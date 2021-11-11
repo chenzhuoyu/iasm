@@ -609,14 +609,14 @@ for name, (ins, desc, forms) in sorted(instrs.items()):
     with CodeBlock(cc):
         base = ['v%d' % i for i in range(nfix)]
         if len(nops) == 1:
-            cc.line('p := self.alloc(%d, [_MAX_ARGS]interface{}{%s})' % (nfix, ', '.join(base)))
+            cc.line('p := self.alloc(%d, Operands{%s})' % (nfix, ', '.join(base)))
         else:
             cc.line('var p *Instruction')
             cc.line('switch len(vv) {')
             with CodeBlock(cc):
                 for argc in sorted(nops):
                     args = base[:] + ['vv[%d]' % i for i in range(argc - nfix)]
-                    cc.line('case %d  : p = self.alloc(%d, [_MAX_ARGS]interface{}{%s})' % (argc - nfix, argc, ', '.join(args)))
+                    cc.line('case %d  : p = self.alloc(%d, Operands{%s})' % (argc - nfix, argc, ', '.join(args)))
                 cc.line('default : panic("instruction %s takes %s operands")' % (name, ' or '.join(map(str, sorted(nops)))))
             cc.line('}')
         if name in BRANCHES:
