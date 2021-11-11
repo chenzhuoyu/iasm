@@ -76,11 +76,11 @@ type Label struct {
     Dest *Instruction
 }
 
-func (self *Label) offset(p int, n int) RelativeOffset {
+func (self *Label) offset(p uintptr, n int) RelativeOffset {
     if self.Dest == nil {
         panic("unresolved label: " + self.Name)
     } else {
-        return RelativeOffset(self.Dest.pc - p - n)
+        return RelativeOffset(self.Dest.pc - p - uintptr(n))
     }
 }
 

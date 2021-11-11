@@ -40,7 +40,7 @@ func (self *_Pseudo) free() {
     }
 }
 
-func (self *_Pseudo) encode(m *[]byte, pc int) int {
+func (self *_Pseudo) encode(m *[]byte, pc uintptr) int {
     switch self.kind {
         case _PSEUDO_NOP   : return 0
         case _PSEUDO_BYTE  : self.encodeByte(m)      ; return 1
@@ -63,11 +63,11 @@ func (self *_Pseudo) evalExpr(low int64, high uint64) int64 {
     }
 }
 
-func (self *_Pseudo) alignSize(pc int) int {
+func (self *_Pseudo) alignSize(pc uintptr) int {
     if !ispow2(self.uint) {
         panic(fmt.Sprintf("aligment should be a power of 2, not %d", self.uint))
     } else {
-        return align(pc, bits.TrailingZeros64(self.uint)) - pc
+        return align(int(pc), bits.TrailingZeros64(self.uint)) - int(pc)
     }
 }
 
@@ -101,7 +101,7 @@ func (self *_Pseudo) encodeQuad(m *[]byte) {
     }
 }
 
-func (self *_Pseudo) encodeAlign(m *[]byte, pc int) {
+func (self *_Pseudo) encodeAlign(m *[]byte, pc uintptr) {
     if m != nil {
         if self.expr == nil {
             expandmm(m, self.alignSize(pc), 0)
@@ -117,7 +117,7 @@ type Operands [_MAX_ARGS]interface{}
 // Instruction represents an unencoded instruction.
 type Instruction struct {
     next   *Instruction
-    pc     int
+    pc     uintptr
     nb     int
     len    int
     argc   int
@@ -301,28 +301,28 @@ func (self *Program) Link(p *Label) {
 }
 
 // Assemble assembles and links the entire program into machine code.
-func (self *Program) Assemble(pc int) (ret []byte) {
-    offs := 0
+func (self *Program) Assemble(pc uintptr) (ret []byte) {
     orig := pc
     next := true
+    offs := uintptr(0)
 
     /* Pass 0: PC-precompute, assume all labeled branches are far-branches. */
     for p := self.head; p != nil; p = p.next {
         if p.pc = pc; p.branch && isLabel(p.argv[0]) {
             pc += _NB_FAR
         } else {
-            pc += p.encode(nil)
+            pc += uintptr(p.encode(nil))
         }
     }
 
     /* allocate space for the machine code */
-    nb := pc - orig
+    nb := int(pc - orig)
     ret = make([]byte, 0, nb)
 
     /* Pass 1: adjust all the jumps */
     for next {
-        offs = 0
         next = false
+        offs = uintptr(0)
 
         /* scan all the branches */
         for p := self.head; p != nil; p = p.next {
@@ -332,7 +332,7 @@ func (self *Program) Assemble(pc int) (ret []byte) {
             /* re-calculate the alignment here */
             if nb = p.nb; p.pseudo.kind == _PSEUDO_ALIGN {
                 p.pc -= offs
-                offs += nb - p.encode(nil)
+                offs += uintptr(nb - p.encode(nil))
                 continue
             }
 

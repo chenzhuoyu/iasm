@@ -1093,9 +1093,9 @@ type _Command struct {
 // Assembler assembles the entire assembly program and generates the corresponding
 // machine code representations.
 type Assembler struct {
-    pc   int
     cc   int
     ps   Parser
+    pc   uintptr
     buf  []byte
     main string
     prog Program
@@ -1308,7 +1308,7 @@ func (self *Assembler) assembleCommandOrg(argv []ParsedCommandArg) error {
     }
 
     /* set the initial program counter */
-    self.pc = int(val)
+    self.pc = uintptr(val)
     return nil
 }
 
@@ -1420,7 +1420,7 @@ func (self *Assembler) assembleCommandAsciz(argv []ParsedCommandArg) error {
 }
 
 // Base returns the origin.
-func (self *Assembler) Base() int {
+func (self *Assembler) Base() uintptr {
     return self.pc
 }
 
@@ -1430,11 +1430,11 @@ func (self *Assembler) Code() []byte {
 }
 
 // Entry returns the address of the specified entry point, or the origin if not specified.
-func (self *Assembler) Entry() int {
+func (self *Assembler) Entry() uintptr {
     if self.main == "" {
         return self.pc
     } else if val, err := self.repo.findOrCreate(self.main).Evaluate(); err == nil {
-        return int(val)
+        return uintptr(val)
     } else {
         panic(err)
     }
