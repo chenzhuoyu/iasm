@@ -314,7 +314,7 @@ func (self *_Tokenizer) next() (tk _Token) {
     }
 }
 
-// LabelKind indicates the type of a label reference.
+// LabelKind indicates the type of label reference.
 type LabelKind int
 
 // OperandKind indicates the type of the operand.
@@ -410,7 +410,7 @@ func (self *ParsedInstruction) reference(v string) {
     })
 }
 
-// LineKind indicates the type of a ParsedLine.
+// LineKind indicates the type of ParsedLine.
 type LineKind int
 
 const (
@@ -747,13 +747,13 @@ func (self *Parser) feed(line string) *ParsedLine {
                 continue
             }
 
-            /* otherwise it must be an RIP-relative addressing operand */
+            /* ... otherwise it must be an RIP-relative addressing operand */
             self.relx(tk)
             ret.Instruction.reference(ts)
             continue
         }
 
-        /* otherwise it must be a punctuation */
+        /* ... otherwise it must be a punctuation */
         if tt != _T_punc {
             panic(self.err(tk.pos, "'$', '%', '-' or '(' expected"))
         }

@@ -53,7 +53,7 @@ func (ExceptionControl) String() string {
     return "sae"
 }
 
-// AddressType indicates which kind of value that an Addressable contains.
+// AddressType indicates which kind of value that an Addressable object contains.
 type AddressType uint
 
 const (
@@ -93,7 +93,7 @@ func (self *Label) Evaluate() (int64, error) {
     }
 }
 
-// Addressable is an union to represent an addressable operand.
+// Addressable is a union to represent an addressable operand.
 type Addressable struct {
     Type      AddressType
     Memory    MemoryAddress
