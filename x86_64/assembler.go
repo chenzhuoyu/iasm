@@ -1076,7 +1076,7 @@ func (self *_LabelRepo) findOrCreate(name string) *Label {
 // _Command describes an assembler command.
 //
 // The _Command.args describes both the arity and argument type with characters,
-// the length is the number of arguments, the character it self represents the
+// the length is the number of arguments, the character itself represents the
 // argument type.
 //
 // Possible values are:
