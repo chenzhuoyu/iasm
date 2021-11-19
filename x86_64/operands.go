@@ -4,6 +4,7 @@ import (
     `errors`
     `math`
     `reflect`
+    `sync/atomic`
 )
 
 // RelativeOffset represents an RIP-relative offset.
@@ -70,8 +71,14 @@ const (
     Reference
 )
 
+// Disposable is a type of object that can be Free'd manually.
+type Disposable interface {
+    Free()
+}
+
 // Label represents a location within the program.
 type Label struct {
+    refs int64
     Name string
     Dest *Instruction
 }
@@ -82,6 +89,20 @@ func (self *Label) offset(p uintptr, n int) RelativeOffset {
     } else {
         return RelativeOffset(self.Dest.pc - p - uintptr(n))
     }
+}
+
+// Free decreases the reference count of a Label, if the
+// refcount drops to 0, the Label will be recycled.
+func (self *Label) Free() {
+    if atomic.AddInt64(&self.refs, -1) == 0 {
+        freeLabel(self)
+    }
+}
+
+// Retain increases the reference count of a Label.
+func (self *Label) Retain() *Label {
+    atomic.AddInt64(&self.refs, 1)
+    return self
 }
 
 // Evaluate implements the interface expr.Term.
@@ -103,6 +124,7 @@ type Addressable struct {
 
 // MemoryOperand represents a memory operand for an instruction.
 type MemoryOperand struct {
+    refs      int64
     Size      int
     Addr      Addressable
     Mask      RegisterMask
@@ -168,6 +190,20 @@ func (self *MemoryOperand) ensureBroadcastValid() {
     if (_Sizes & (1 << self.Broadcast)) == 0 {
         panic("invalid memory operand broadcast")
     }
+}
+
+// Free decreases the reference count of a MemoryOperand, if the
+// refcount drops to 0, the Label will be recycled.
+func (self *MemoryOperand) Free() {
+    if atomic.AddInt64(&self.refs, -1) == 0 {
+        freeMemoryOperand(self)
+    }
+}
+
+// Retain increases the reference count of a MemoryOperand.
+func (self *MemoryOperand) Retain() *MemoryOperand {
+    atomic.AddInt64(&self.refs, 1)
+    return self
 }
 
 // EnsureValid checks if the memory operand is valid, if not, it panics.

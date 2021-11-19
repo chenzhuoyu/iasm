@@ -141,8 +141,9 @@ func (self *Instruction) free() {
 
 func (self *Instruction) clear() {
     for i := 0; i < self.argc; i++ {
-        freeLabel(self.argv[i])
-        freeMemoryOperand(self.argv[i])
+        if v, ok := self.argv[i].(Disposable); ok {
+            v.Free()
+        }
     }
 }
 

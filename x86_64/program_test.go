@@ -27,7 +27,7 @@ func TestProgram_Assemble(t *testing.T) {
     p.JMPQ   (RAX)
     p.Align  (32, expr.Int(0xcc))
     p.Link   (s)
-    p.Long   (expr.Ref(s).Sub(expr.Ref(j)))
-    p.Long   (expr.Ref(s).Sub(expr.Ref(b)))
+    p.Long   (expr.Ref(s.Retain()).Sub(expr.Ref(j.Retain())))
+    p.Long   (expr.Ref(s.Retain()).Sub(expr.Ref(b.Retain())))
     spew.Dump(p.Assemble(0))
 }

@@ -128,15 +128,17 @@ func Int(v int64) (p *Expr) {
     return
 }
 
+func (self *Expr) clear() {
+    if self.Term != nil  { self.Term.Free() }
+    if self.Left != nil  { self.Left.Free() }
+    if self.Right != nil { self.Right.Free() }
+}
+
 // Free returns the Expr into pool.
 // Any operation performed after Free is undefined behavior.
 func (self *Expr) Free() {
-    if self != nil {
-        self.Term = nil
-        self.Left.Free()
-        self.Right.Free()
-        freeExpression(self)
-    }
+    self.clear()
+    freeExpression(self)
 }
 
 // Evaluate evaluates the expression into an integer.

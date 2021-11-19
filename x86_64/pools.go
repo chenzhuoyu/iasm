@@ -11,14 +11,13 @@ var (
     memoryOperandPool sync.Pool
 )
 
-func freeLabel(v interface{}) {
-    if _, ok := v.(*Label); ok {
-        labelPool.Put(v)
-    }
+func freeLabel(v *Label) {
+    labelPool.Put(v)
 }
 
 func allocLabel(name string) *Label {
     return &Label {
+        refs: 1,
         Dest: nil,
         Name: name,
     }
@@ -96,10 +95,13 @@ func resetInstruction(argc int, argv Operands, instr *Instruction) *Instruction 
     return instr
 }
 
-func freeMemoryOperand(m interface{}) {
-    if _, ok := m.(*MemoryOperand); ok {
-        memoryOperandPool.Put(m)
-    }
+func freeMemoryOperand(m *MemoryOperand) {
+    memoryOperandPool.Put(m)
+}
+
+func resetMemoryOperand(m *MemoryOperand) *MemoryOperand {
+    *m = MemoryOperand{}
+    return m
 }
 
 // CreateMemoryOperand creates a new MemoryOperand, it may allocate a new one or grab one from a pool.
@@ -109,11 +111,12 @@ func CreateMemoryOperand() *MemoryOperand {
 
     /* attempt to grab from the pool */
     if v = memoryOperandPool.Get(); v == nil {
-        return new(MemoryOperand)
+        m = new(MemoryOperand)
+    } else {
+        m = resetMemoryOperand(v.(*MemoryOperand))
     }
 
-    /* clear and reuse the operand */
-    m = v.(*MemoryOperand)
-    *m = MemoryOperand{}
+    /* reset the reference counter to 1 */
+    m.refs = 1
     return m
 }
