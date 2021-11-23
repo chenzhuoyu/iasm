@@ -2,13 +2,25 @@ package x86_64
 
 import (
     `errors`
+    `fmt`
     `math`
     `reflect`
+    `strconv`
+    `strings`
     `sync/atomic`
 )
 
 // RelativeOffset represents an RIP-relative offset.
 type RelativeOffset int32
+
+// String implements the fmt.Stringer interface.
+func (self RelativeOffset) String() string {
+    if self == 0 {
+        return "(%rip)"
+    } else {
+        return fmt.Sprintf("%d(%%rip)", self)
+    }
+}
 
 // RoundingControl represents a floating-point rounding option.
 type RoundingControl uint8
@@ -99,6 +111,15 @@ func (self *Label) Free() {
     }
 }
 
+// String implements the fmt.Stringer interface.
+func (self *Label) String() string {
+    if self.Dest == nil {
+        return fmt.Sprintf("%s(%%rip)", self.Name)
+    } else {
+        return fmt.Sprintf("%s(%%rip)@%#x", self.Name, self.Dest.pc)
+    }
+}
+
 // Retain increases the reference count of a Label.
 func (self *Label) Retain() *Label {
     atomic.AddInt64(&self.refs, 1)
@@ -120,6 +141,17 @@ type Addressable struct {
     Memory    MemoryAddress
     Offset    RelativeOffset
     Reference *Label
+}
+
+// String implements the fmt.Stringer interface.
+func (self *Addressable) String() string {
+    switch self.Type {
+        case None      : return "(not addressable)"
+        case Memory    : return self.Memory.String()
+        case Offset    : return self.Offset.String()
+        case Reference : return self.Reference.String()
+        default        : return "(invalid addressable)"
+    }
 }
 
 // MemoryOperand represents a memory operand for an instruction.
@@ -170,6 +202,22 @@ func (self *MemoryOperand) isBroadcast(n int, b uint8) bool {
     return self.Size == n && self.Broadcast == b
 }
 
+func (self *MemoryOperand) formatMask() string {
+    if !self.Masked {
+        return ""
+    } else {
+        return self.Mask.String()
+    }
+}
+
+func (self *MemoryOperand) formatBroadcast() string {
+    if self.Broadcast == 0 {
+        return ""
+    } else {
+        return fmt.Sprintf("{1to%d}", self.Broadcast)
+    }
+}
+
 func (self *MemoryOperand) ensureAddrValid() {
     switch self.Addr.Type {
         case None      : break
@@ -198,6 +246,11 @@ func (self *MemoryOperand) Free() {
     if atomic.AddInt64(&self.refs, -1) == 0 {
         freeMemoryOperand(self)
     }
+}
+
+// String implements the fmt.Stringer interface.
+func (self *MemoryOperand) String() string {
+    return self.Addr.String() + self.formatMask() + self.formatBroadcast()
 }
 
 // Retain increases the reference count of a MemoryOperand.
@@ -246,6 +299,39 @@ func (self *MemoryAddress) isMemBase() bool {
            (self.Base == nil || isReg64(self.Base)) &&  // `Base` must be 64-bit if present
            (self.Scale == 0) == (self.Index == nil) &&  // `Scale` and `Index` depends on each other
            (_Scales & (1 << self.Scale)) != 0           // `Scale` can only be 0, 1, 2, 4 or 8
+}
+
+// String implements the fmt.Stringer interface.
+func (self *MemoryAddress) String() string {
+    var dp int
+    var sb strings.Builder
+
+    /* the displacement part */
+    if dp = int(self.Displacement); dp != 0 {
+        sb.WriteString(strconv.Itoa(dp))
+    }
+
+    /* the base register */
+    if sb.WriteByte('('); self.Base != nil {
+        sb.WriteByte('%')
+        sb.WriteString(self.Base.String())
+    }
+
+    /* index is optional */
+    if self.Index != nil {
+        sb.WriteString(",%")
+        sb.WriteString(self.Index.String())
+
+        /* scale is also optional */
+        if self.Scale >= 2 {
+            sb.WriteByte(',')
+            sb.WriteString(strconv.Itoa(int(self.Scale)))
+        }
+    }
+
+    /* close the bracket */
+    sb.WriteByte(')')
+    return sb.String()
 }
 
 // EnsureValid checks if the memory address is valid, if not, it panics.

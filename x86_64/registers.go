@@ -1,7 +1,12 @@
 package x86_64
 
+import (
+    `fmt`
+)
+
 // Register represents a hardware register.
 type Register interface {
+    fmt.Stringer
     implRegister()
 }
 
@@ -26,10 +31,24 @@ type RegisterMask struct {
     K KRegister
 }
 
+// String implements the fmt.Stringer interface.
+func (self RegisterMask) String() string {
+    if !self.Z {
+        return fmt.Sprintf("{%%%s}", self.K)
+    } else {
+        return fmt.Sprintf("{%%%s}{z}", self.K)
+    }
+}
+
 // MaskedRegister is a Register masked by a RegisterMask.
 type MaskedRegister struct {
     Reg  Register
     Mask RegisterMask
+}
+
+// String implements the fmt.Stringer interface.
+func (self MaskedRegister) String() string {
+    return self.Reg.String() + self.Mask.String()
 }
 
 const (
@@ -253,6 +272,17 @@ func (self XMMRegister) implRegister() {}
 func (self YMMRegister) implRegister() {}
 func (self ZMMRegister) implRegister() {}
 
+func (self Register8)  String() string { if int(self) >= len(r8names)  { return "???" } else { return r8names[self]  } }
+func (self Register16) String() string { if int(self) >= len(r16names) { return "???" } else { return r16names[self] } }
+func (self Register32) String() string { if int(self) >= len(r32names) { return "???" } else { return r32names[self] } }
+func (self Register64) String() string { if int(self) >= len(r64names) { return "???" } else { return r64names[self] } }
+
+func (self KRegister)   String() string { if int(self) >= len(knames)   { return "???" } else { return knames[self]   } }
+func (self MMRegister)  String() string { if int(self) >= len(mmnames)  { return "???" } else { return mmnames[self]  } }
+func (self XMMRegister) String() string { if int(self) >= len(xmmnames) { return "???" } else { return xmmnames[self] } }
+func (self YMMRegister) String() string { if int(self) >= len(ymmnames) { return "???" } else { return ymmnames[self] } }
+func (self ZMMRegister) String() string { if int(self) >= len(zmmnames) { return "???" } else { return zmmnames[self] } }
+
 // Registers maps register name into Register instances.
 var Registers = map[string]Register {
     "al"    : AL,
@@ -435,4 +465,213 @@ var Registers = map[string]Register {
     "zmm29" : ZMM29,
     "zmm30" : ZMM30,
     "zmm31" : ZMM31,
+}
+
+/** Register Name Tables **/
+
+var r8names = [...]string {
+    AL   : "al",
+    CL   : "cl",
+    DL   : "dl",
+    BL   : "bl",
+    SPL  : "spl",
+    BPL  : "bpl",
+    SIL  : "sil",
+    DIL  : "dil",
+    R8b  : "r8b",
+    R9b  : "r9b",
+    R10b : "r10b",
+    R11b : "r11b",
+    R12b : "r12b",
+    R13b : "r13b",
+    R14b : "r14b",
+    R15b : "r15b",
+    AH   : "ah",
+    CH   : "ch",
+    DH   : "dh",
+    BH   : "bh",
+}
+
+var r16names = [...]string {
+    AX   : "ax",
+    CX   : "cx",
+    DX   : "dx",
+    BX   : "bx",
+    SP   : "sp",
+    BP   : "bp",
+    SI   : "si",
+    DI   : "di",
+    R8w  : "r8w",
+    R9w  : "r9w",
+    R10w : "r10w",
+    R11w : "r11w",
+    R12w : "r12w",
+    R13w : "r13w",
+    R14w : "r14w",
+    R15w : "r15w",
+}
+
+var r32names = [...]string {
+    EAX  : "eax",
+    ECX  : "ecx",
+    EDX  : "edx",
+    EBX  : "ebx",
+    ESP  : "esp",
+    EBP  : "ebp",
+    ESI  : "esi",
+    EDI  : "edi",
+    R8d  : "r8d",
+    R9d  : "r9d",
+    R10d : "r10d",
+    R11d : "r11d",
+    R12d : "r12d",
+    R13d : "r13d",
+    R14d : "r14d",
+    R15d : "r15d",
+}
+
+var r64names = [...]string {
+    RAX : "rax",
+    RCX : "rcx",
+    RDX : "rdx",
+    RBX : "rbx",
+    RSP : "rsp",
+    RBP : "rbp",
+    RSI : "rsi",
+    RDI : "rdi",
+    R8  : "r8",
+    R9  : "r9",
+    R10 : "r10",
+    R11 : "r11",
+    R12 : "r12",
+    R13 : "r13",
+    R14 : "r14",
+    R15 : "r15",
+}
+
+var knames = [...]string {
+    K0: "k0",
+    K1: "k1",
+    K2: "k2",
+    K3: "k3",
+    K4: "k4",
+    K5: "k5",
+    K6: "k6",
+    K7: "k7",
+}
+
+var mmnames = [...]string {
+    MM0: "mm0",
+    MM1: "mm1",
+    MM2: "mm2",
+    MM3: "mm3",
+    MM4: "mm4",
+    MM5: "mm5",
+    MM6: "mm6",
+    MM7: "mm7",
+}
+
+var xmmnames = [...]string {
+    XMM0  : "xmm0",
+    XMM1  : "xmm1",
+    XMM2  : "xmm2",
+    XMM3  : "xmm3",
+    XMM4  : "xmm4",
+    XMM5  : "xmm5",
+    XMM6  : "xmm6",
+    XMM7  : "xmm7",
+    XMM8  : "xmm8",
+    XMM9  : "xmm9",
+    XMM10 : "xmm10",
+    XMM11 : "xmm11",
+    XMM12 : "xmm12",
+    XMM13 : "xmm13",
+    XMM14 : "xmm14",
+    XMM15 : "xmm15",
+    XMM16 : "xmm16",
+    XMM17 : "xmm17",
+    XMM18 : "xmm18",
+    XMM19 : "xmm19",
+    XMM20 : "xmm20",
+    XMM21 : "xmm21",
+    XMM22 : "xmm22",
+    XMM23 : "xmm23",
+    XMM24 : "xmm24",
+    XMM25 : "xmm25",
+    XMM26 : "xmm26",
+    XMM27 : "xmm27",
+    XMM28 : "xmm28",
+    XMM29 : "xmm29",
+    XMM30 : "xmm30",
+    XMM31 : "xmm31",
+}
+
+var ymmnames = [...]string {
+    YMM0  : "ymm0",
+    YMM1  : "ymm1",
+    YMM2  : "ymm2",
+    YMM3  : "ymm3",
+    YMM4  : "ymm4",
+    YMM5  : "ymm5",
+    YMM6  : "ymm6",
+    YMM7  : "ymm7",
+    YMM8  : "ymm8",
+    YMM9  : "ymm9",
+    YMM10 : "ymm10",
+    YMM11 : "ymm11",
+    YMM12 : "ymm12",
+    YMM13 : "ymm13",
+    YMM14 : "ymm14",
+    YMM15 : "ymm15",
+    YMM16 : "ymm16",
+    YMM17 : "ymm17",
+    YMM18 : "ymm18",
+    YMM19 : "ymm19",
+    YMM20 : "ymm20",
+    YMM21 : "ymm21",
+    YMM22 : "ymm22",
+    YMM23 : "ymm23",
+    YMM24 : "ymm24",
+    YMM25 : "ymm25",
+    YMM26 : "ymm26",
+    YMM27 : "ymm27",
+    YMM28 : "ymm28",
+    YMM29 : "ymm29",
+    YMM30 : "ymm30",
+    YMM31 : "ymm31",
+}
+
+var zmmnames = [...]string {
+    ZMM0  : "zmm0",
+    ZMM1  : "zmm1",
+    ZMM2  : "zmm2",
+    ZMM3  : "zmm3",
+    ZMM4  : "zmm4",
+    ZMM5  : "zmm5",
+    ZMM6  : "zmm6",
+    ZMM7  : "zmm7",
+    ZMM8  : "zmm8",
+    ZMM9  : "zmm9",
+    ZMM10 : "zmm10",
+    ZMM11 : "zmm11",
+    ZMM12 : "zmm12",
+    ZMM13 : "zmm13",
+    ZMM14 : "zmm14",
+    ZMM15 : "zmm15",
+    ZMM16 : "zmm16",
+    ZMM17 : "zmm17",
+    ZMM18 : "zmm18",
+    ZMM19 : "zmm19",
+    ZMM20 : "zmm20",
+    ZMM21 : "zmm21",
+    ZMM22 : "zmm22",
+    ZMM23 : "zmm23",
+    ZMM24 : "zmm24",
+    ZMM25 : "zmm25",
+    ZMM26 : "zmm26",
+    ZMM27 : "zmm27",
+    ZMM28 : "zmm28",
+    ZMM29 : "zmm29",
+    ZMM30 : "zmm30",
+    ZMM31 : "zmm31",
 }
