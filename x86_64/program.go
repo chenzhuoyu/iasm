@@ -201,7 +201,8 @@ const (
 )
 
 func (self *Program) clear() {
-    for p := self.head; p != nil; p = p.next {
+    for p, q := self.head, self.head; p != nil; p = q {
+        q = p.next
         p.free()
     }
 }
