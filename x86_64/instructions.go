@@ -10133,7 +10133,7 @@ func (self *Program) INT(v0 interface{}) *Instruction {
 //
 func (self *Program) JA(v0 interface{}) *Instruction {
     p := self.alloc(1, Operands{v0})
-    p.branch = true
+    p.branch = _BranchConditional
     // JA rel8
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -10177,7 +10177,7 @@ func (self *Program) JA(v0 interface{}) *Instruction {
 //
 func (self *Program) JAE(v0 interface{}) *Instruction {
     p := self.alloc(1, Operands{v0})
-    p.branch = true
+    p.branch = _BranchConditional
     // JAE rel8
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -10221,7 +10221,7 @@ func (self *Program) JAE(v0 interface{}) *Instruction {
 //
 func (self *Program) JB(v0 interface{}) *Instruction {
     p := self.alloc(1, Operands{v0})
-    p.branch = true
+    p.branch = _BranchConditional
     // JB rel8
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -10265,7 +10265,7 @@ func (self *Program) JB(v0 interface{}) *Instruction {
 //
 func (self *Program) JBE(v0 interface{}) *Instruction {
     p := self.alloc(1, Operands{v0})
-    p.branch = true
+    p.branch = _BranchConditional
     // JBE rel8
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -10309,7 +10309,7 @@ func (self *Program) JBE(v0 interface{}) *Instruction {
 //
 func (self *Program) JC(v0 interface{}) *Instruction {
     p := self.alloc(1, Operands{v0})
-    p.branch = true
+    p.branch = _BranchConditional
     // JC rel8
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -10353,7 +10353,7 @@ func (self *Program) JC(v0 interface{}) *Instruction {
 //
 func (self *Program) JE(v0 interface{}) *Instruction {
     p := self.alloc(1, Operands{v0})
-    p.branch = true
+    p.branch = _BranchConditional
     // JE rel8
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -10396,7 +10396,7 @@ func (self *Program) JE(v0 interface{}) *Instruction {
 //
 func (self *Program) JECXZ(v0 interface{}) *Instruction {
     p := self.alloc(1, Operands{v0})
-    p.branch = true
+    p.branch = _BranchConditional
     // JECXZ rel8
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -10427,7 +10427,7 @@ func (self *Program) JECXZ(v0 interface{}) *Instruction {
 //
 func (self *Program) JG(v0 interface{}) *Instruction {
     p := self.alloc(1, Operands{v0})
-    p.branch = true
+    p.branch = _BranchConditional
     // JG rel8
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -10471,7 +10471,7 @@ func (self *Program) JG(v0 interface{}) *Instruction {
 //
 func (self *Program) JGE(v0 interface{}) *Instruction {
     p := self.alloc(1, Operands{v0})
-    p.branch = true
+    p.branch = _BranchConditional
     // JGE rel8
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -10515,7 +10515,7 @@ func (self *Program) JGE(v0 interface{}) *Instruction {
 //
 func (self *Program) JL(v0 interface{}) *Instruction {
     p := self.alloc(1, Operands{v0})
-    p.branch = true
+    p.branch = _BranchConditional
     // JL rel8
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -10559,7 +10559,7 @@ func (self *Program) JL(v0 interface{}) *Instruction {
 //
 func (self *Program) JLE(v0 interface{}) *Instruction {
     p := self.alloc(1, Operands{v0})
-    p.branch = true
+    p.branch = _BranchConditional
     // JLE rel8
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -10603,7 +10603,7 @@ func (self *Program) JLE(v0 interface{}) *Instruction {
 //
 func (self *Program) JMP(v0 interface{}) *Instruction {
     p := self.alloc(1, Operands{v0})
-    p.branch = true
+    p.branch = _BranchUnconditional
     // JMP rel8
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -10677,7 +10677,7 @@ func (self *Program) JMPQ(v0 interface{}) *Instruction {
 //
 func (self *Program) JNA(v0 interface{}) *Instruction {
     p := self.alloc(1, Operands{v0})
-    p.branch = true
+    p.branch = _BranchConditional
     // JNA rel8
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -10721,7 +10721,7 @@ func (self *Program) JNA(v0 interface{}) *Instruction {
 //
 func (self *Program) JNAE(v0 interface{}) *Instruction {
     p := self.alloc(1, Operands{v0})
-    p.branch = true
+    p.branch = _BranchConditional
     // JNAE rel8
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -10765,7 +10765,7 @@ func (self *Program) JNAE(v0 interface{}) *Instruction {
 //
 func (self *Program) JNB(v0 interface{}) *Instruction {
     p := self.alloc(1, Operands{v0})
-    p.branch = true
+    p.branch = _BranchConditional
     // JNB rel8
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -10809,7 +10809,7 @@ func (self *Program) JNB(v0 interface{}) *Instruction {
 //
 func (self *Program) JNBE(v0 interface{}) *Instruction {
     p := self.alloc(1, Operands{v0})
-    p.branch = true
+    p.branch = _BranchConditional
     // JNBE rel8
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -10853,7 +10853,7 @@ func (self *Program) JNBE(v0 interface{}) *Instruction {
 //
 func (self *Program) JNC(v0 interface{}) *Instruction {
     p := self.alloc(1, Operands{v0})
-    p.branch = true
+    p.branch = _BranchConditional
     // JNC rel8
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -10897,7 +10897,7 @@ func (self *Program) JNC(v0 interface{}) *Instruction {
 //
 func (self *Program) JNE(v0 interface{}) *Instruction {
     p := self.alloc(1, Operands{v0})
-    p.branch = true
+    p.branch = _BranchConditional
     // JNE rel8
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -10941,7 +10941,7 @@ func (self *Program) JNE(v0 interface{}) *Instruction {
 //
 func (self *Program) JNG(v0 interface{}) *Instruction {
     p := self.alloc(1, Operands{v0})
-    p.branch = true
+    p.branch = _BranchConditional
     // JNG rel8
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -10985,7 +10985,7 @@ func (self *Program) JNG(v0 interface{}) *Instruction {
 //
 func (self *Program) JNGE(v0 interface{}) *Instruction {
     p := self.alloc(1, Operands{v0})
-    p.branch = true
+    p.branch = _BranchConditional
     // JNGE rel8
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -11029,7 +11029,7 @@ func (self *Program) JNGE(v0 interface{}) *Instruction {
 //
 func (self *Program) JNL(v0 interface{}) *Instruction {
     p := self.alloc(1, Operands{v0})
-    p.branch = true
+    p.branch = _BranchConditional
     // JNL rel8
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -11073,7 +11073,7 @@ func (self *Program) JNL(v0 interface{}) *Instruction {
 //
 func (self *Program) JNLE(v0 interface{}) *Instruction {
     p := self.alloc(1, Operands{v0})
-    p.branch = true
+    p.branch = _BranchConditional
     // JNLE rel8
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -11117,7 +11117,7 @@ func (self *Program) JNLE(v0 interface{}) *Instruction {
 //
 func (self *Program) JNO(v0 interface{}) *Instruction {
     p := self.alloc(1, Operands{v0})
-    p.branch = true
+    p.branch = _BranchConditional
     // JNO rel8
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -11161,7 +11161,7 @@ func (self *Program) JNO(v0 interface{}) *Instruction {
 //
 func (self *Program) JNP(v0 interface{}) *Instruction {
     p := self.alloc(1, Operands{v0})
-    p.branch = true
+    p.branch = _BranchConditional
     // JNP rel8
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -11205,7 +11205,7 @@ func (self *Program) JNP(v0 interface{}) *Instruction {
 //
 func (self *Program) JNS(v0 interface{}) *Instruction {
     p := self.alloc(1, Operands{v0})
-    p.branch = true
+    p.branch = _BranchConditional
     // JNS rel8
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -11249,7 +11249,7 @@ func (self *Program) JNS(v0 interface{}) *Instruction {
 //
 func (self *Program) JNZ(v0 interface{}) *Instruction {
     p := self.alloc(1, Operands{v0})
-    p.branch = true
+    p.branch = _BranchConditional
     // JNZ rel8
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -11293,7 +11293,7 @@ func (self *Program) JNZ(v0 interface{}) *Instruction {
 //
 func (self *Program) JO(v0 interface{}) *Instruction {
     p := self.alloc(1, Operands{v0})
-    p.branch = true
+    p.branch = _BranchConditional
     // JO rel8
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -11337,7 +11337,7 @@ func (self *Program) JO(v0 interface{}) *Instruction {
 //
 func (self *Program) JP(v0 interface{}) *Instruction {
     p := self.alloc(1, Operands{v0})
-    p.branch = true
+    p.branch = _BranchConditional
     // JP rel8
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -11381,7 +11381,7 @@ func (self *Program) JP(v0 interface{}) *Instruction {
 //
 func (self *Program) JPE(v0 interface{}) *Instruction {
     p := self.alloc(1, Operands{v0})
-    p.branch = true
+    p.branch = _BranchConditional
     // JPE rel8
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -11425,7 +11425,7 @@ func (self *Program) JPE(v0 interface{}) *Instruction {
 //
 func (self *Program) JPO(v0 interface{}) *Instruction {
     p := self.alloc(1, Operands{v0})
-    p.branch = true
+    p.branch = _BranchConditional
     // JPO rel8
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -11468,7 +11468,7 @@ func (self *Program) JPO(v0 interface{}) *Instruction {
 //
 func (self *Program) JRCXZ(v0 interface{}) *Instruction {
     p := self.alloc(1, Operands{v0})
-    p.branch = true
+    p.branch = _BranchConditional
     // JRCXZ rel8
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -11499,7 +11499,7 @@ func (self *Program) JRCXZ(v0 interface{}) *Instruction {
 //
 func (self *Program) JS(v0 interface{}) *Instruction {
     p := self.alloc(1, Operands{v0})
-    p.branch = true
+    p.branch = _BranchConditional
     // JS rel8
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {
@@ -11543,7 +11543,7 @@ func (self *Program) JS(v0 interface{}) *Instruction {
 //
 func (self *Program) JZ(v0 interface{}) *Instruction {
     p := self.alloc(1, Operands{v0})
-    p.branch = true
+    p.branch = _BranchConditional
     // JZ rel8
     if isRel8(v0) {
         p.add(0, func(m *_Encoding, v []interface{}) {

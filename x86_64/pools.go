@@ -90,8 +90,8 @@ func resetInstruction(argc int, argv Operands, instr *Instruction) *Instruction 
     instr.len = 0
     instr.argc = argc
     instr.argv = argv
-    instr.branch = false
     instr.pseudo = _Pseudo{}
+    instr.branch = _BranchNone
     return instr
 }
 

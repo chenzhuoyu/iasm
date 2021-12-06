@@ -114,6 +114,14 @@ func (self *_Pseudo) encodeAlign(m *[]byte, pc uintptr) {
 // Operands represents a sequence of operand required by an instruction.
 type Operands [_MAX_ARGS]interface{}
 
+type _BranchType uint8
+
+const (
+    _BranchNone _BranchType = iota
+    _BranchConditional
+    _BranchUnconditional
+)
+
 // Instruction represents an unencoded instruction.
 type Instruction struct {
     next   *Instruction
@@ -121,10 +129,10 @@ type Instruction struct {
     nb     int
     len    int
     argc   int
-    argv   [_MAX_ARGS]interface{}
+    argv   Operands
     forms  [_MAX_FORMS]_Encoding
     pseudo _Pseudo
-    branch bool
+    branch _BranchType
 }
 
 func (self *Instruction) add(flags int, encoder func(m *_Encoding, v []interface{})) {
@@ -195,9 +203,9 @@ type Program struct {
 }
 
 const (
-    _NB_FAR  = 5    // far-branch takes 5 bytes to encode
-    _NB_NEAR = 2    // near-branch (-128 ~ +127) takes 2 bytes to encode
-    _NB_DIFF = _NB_FAR - _NB_NEAR
+    _NB_NEAR       = 2  // near-branch (-128 ~ +127) takes 2 bytes to encode
+    _NB_FAR_COND   = 6  // conditional far-branch takes 6 bytes to encode
+    _NB_FAR_UNCOND = 5  // unconditional far-branch takes 5 bytes to encode
 )
 
 func (self *Program) clear() {
@@ -232,6 +240,15 @@ func (self *Program) pseudo(kind _PseudoType) (p *Instruction) {
 func (self *Program) require(isa ISA) {
     if !self.arch.HasISA(isa) {
         panic("ISA '" + isa.String() + "' was not enabled")
+    }
+}
+
+func (self *Program) branchSize(p *Instruction) int {
+    switch p.branch {
+        case _BranchNone          : panic("p is not a branch")
+        case _BranchConditional   : return _NB_FAR_COND
+        case _BranchUnconditional : return _NB_FAR_UNCOND
+        default                   : panic("invalid instruction")
     }
 }
 
@@ -310,10 +327,10 @@ func (self *Program) Assemble(pc uintptr) (ret []byte) {
 
     /* Pass 0: PC-precompute, assume all labeled branches are far-branches. */
     for p := self.head; p != nil; p = p.next {
-        if p.pc = pc; p.branch && isLabel(p.argv[0]) {
-            pc += _NB_FAR
-        } else {
+        if p.pc = pc; !isLabel(p.argv[0]) || p.branch == _BranchNone {
             pc += uintptr(p.encode(nil))
+        } else {
+            pc += uintptr(self.branchSize(p))
         }
     }
 
@@ -339,7 +356,7 @@ func (self *Program) Assemble(pc uintptr) (ret []byte) {
             }
 
             /* only care about branches */
-            if !p.branch {
+            if p.branch == _BranchNone {
                 p.pc -= offs
                 continue
             }
@@ -352,7 +369,8 @@ func (self *Program) Assemble(pc uintptr) (ret []byte) {
 
             /* calculate the jump offset */
             p.pc -= offs
-            diff := lb.offset(p.pc, _NB_FAR)
+            size := self.branchSize(p)
+            diff := lb.offset(p.pc, size)
 
             /* this is already a near jump */
             if p.nb == _NB_NEAR {
@@ -361,7 +379,7 @@ func (self *Program) Assemble(pc uintptr) (ret []byte) {
 
             /* too far to be a near jump */
             if diff > 127 || diff < -128 {
-                p.nb = _NB_FAR
+                p.nb = size
                 continue
             }
 
@@ -369,7 +387,7 @@ func (self *Program) Assemble(pc uintptr) (ret []byte) {
              * the PC adjustment value and assemble again */
             next = true
             p.nb = _NB_NEAR
-            offs += _NB_DIFF
+            offs += uintptr(size - _NB_NEAR)
         }
     }
 

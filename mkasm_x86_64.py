@@ -184,7 +184,7 @@ ISAMAPPING = {
     'MONITORX'        : 'ISA_MONITORX',
 }
 
-BRANCHES = {
+CONDITIONAL_BRANCHES = {
     'JA'    , 'JNA',
     'JAE'   , 'JNAE',
     'JB'    , 'JNB',
@@ -619,8 +619,10 @@ for name, (ins, desc, forms) in sorted(instrs.items()):
                     cc.line('case %d  : p = self.alloc(%d, Operands{%s})' % (argc - nfix, argc, ', '.join(args)))
                 cc.line('default : panic("instruction %s takes %s operands")' % (name, ' or '.join(map(str, sorted(nops)))))
             cc.line('}')
-        if name in BRANCHES:
-            cc.line('p.branch = true')
+        if name == 'JMP':
+            cc.line('p.branch = _BranchUnconditional')
+        elif name in CONDITIONAL_BRANCHES:
+            cc.line('p.branch = _BranchConditional')
         is_labeled = False
         must_success = False
         for form in forms:
