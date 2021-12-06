@@ -355,27 +355,18 @@ func (self *Program) Assemble(pc uintptr) (ret []byte) {
                 continue
             }
 
-            /* only care about branches */
-            if p.branch == _BranchNone {
-                p.pc -= offs
-                continue
-            }
+            /* adjust the program counter */
+            p.pc -= offs
+            lb, ok = p.argv[0].(*Label)
 
-            /* check for labeled branches */
-            if lb, ok = p.argv[0].(*Label); !ok {
-                p.pc -= offs
+            /* only care about labeled far-branches */
+            if !ok || p.nb == _NB_NEAR || p.branch == _BranchNone {
                 continue
             }
 
             /* calculate the jump offset */
-            p.pc -= offs
             size := self.branchSize(p)
             diff := lb.offset(p.pc, size)
-
-            /* this is already a near jump */
-            if p.nb == _NB_NEAR {
-                continue
-            }
 
             /* too far to be a near jump */
             if diff > 127 || diff < -128 {
