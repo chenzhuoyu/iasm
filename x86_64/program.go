@@ -53,10 +53,10 @@ func (self *_Pseudo) encode(m *[]byte, pc uintptr) int {
     }
 }
 
-func (self *_Pseudo) evalExpr(low int64, high uint64) int64 {
+func (self *_Pseudo) evalExpr(low int64, high int64) int64 {
     if v, err := self.expr.Evaluate(); err != nil {
         panic(err)
-    } else if v < low || uint64(v) > high {
+    } else if v < low || v > high {
         panic(fmt.Sprintf("expression out of range [%d, %d]: %d", low, high, v))
     } else {
         return v
@@ -97,7 +97,11 @@ func (self *_Pseudo) encodeLong(m *[]byte) {
 
 func (self *_Pseudo) encodeQuad(m *[]byte) {
     if m != nil {
-        append64(m, uint64(self.evalExpr(math.MinInt64, math.MaxUint64)))
+        if v, err := self.expr.Evaluate(); err != nil {
+            panic(err)
+        } else {
+            append64(m, uint64(v))
+        }
     }
 }
 
