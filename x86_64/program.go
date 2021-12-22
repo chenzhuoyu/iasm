@@ -423,3 +423,10 @@ func (self *Program) Assemble(pc uintptr) (ret []byte) {
     /* all done */
     return ret
 }
+
+// AssembleAndFree is like Assemble, but it frees the Program after assembling.
+func (self *Program) AssembleAndFree(pc uintptr) (ret []byte) {
+    ret = self.Assemble(pc)
+    self.Free()
+    return
+}

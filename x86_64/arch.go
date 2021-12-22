@@ -204,6 +204,9 @@ type Arch struct {
     isa ISA
 }
 
+// DefaultArch is the default architecture with all ISA enabled.
+var DefaultArch = CreateArch()
+
 // CreateArch creates a new Arch with all ISA enabled.
 func CreateArch() *Arch {
     return new(Arch).EnableISA(ISA_ALL)

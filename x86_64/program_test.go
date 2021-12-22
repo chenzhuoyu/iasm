@@ -29,5 +29,5 @@ func TestProgram_Assemble(t *testing.T) {
     p.Link   (s)
     p.Long   (expr.Ref(s.Retain()).Sub(expr.Ref(j.Retain())))
     p.Long   (expr.Ref(s.Retain()).Sub(expr.Ref(b.Retain())))
-    spew.Dump(p.Assemble(0))
+    spew.Dump(p.AssembleAndFree(0))
 }

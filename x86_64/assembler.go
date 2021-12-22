@@ -1087,7 +1087,7 @@ func (self *_LabelRepo) findOrCreate(name string) *Label {
 //
 type _Command struct {
     args    string
-    handler func(*Assembler, []ParsedCommandArg) error
+    handler func(*Assembler, *Program, []ParsedCommandArg) error
 }
 
 // Assembler assembles the entire assembly program and generates the corresponding
@@ -1098,7 +1098,6 @@ type Assembler struct {
     pc   uintptr
     buf  []byte
     main string
-    prog Program
     repo _LabelRepo
     expr expr.Parser
     line *ParsedLine
@@ -1146,12 +1145,12 @@ func (self *Assembler) checkArgs(i int, n int, v *ParsedCommand, isString bool) 
     }
 }
 
-func (self *Assembler) assembleLabel(lb *ParsedLabel) error {
-    self.prog.Link(self.repo.findOrCreate(lb.Name))
+func (self *Assembler) assembleLabel(p *Program, lb *ParsedLabel) error {
+    p.Link(self.repo.findOrCreate(lb.Name))
     return nil
 }
 
-func (self *Assembler) assembleInstr(line *ParsedInstruction) (err error) {
+func (self *Assembler) assembleInstr(p *Program, line *ParsedInstruction) (err error) {
     var ok  bool
     var ops []interface{}
     var enc _InstructionEncoder
@@ -1180,7 +1179,7 @@ func (self *Assembler) assembleInstr(line *ParsedInstruction) (err error) {
     }()
 
     /* encode the instruction */
-    enc(&self.prog, ops...)
+    enc(p, ops...)
     return nil
 }
 
@@ -1217,7 +1216,7 @@ func (self *Assembler) assembleInstrLabel(ops *[]interface{}, label ParsedLabel)
     })
 }
 
-func (self *Assembler) assembleCommand(line *ParsedCommand) error {
+func (self *Assembler) assembleCommand(p *Program, line *ParsedCommand) error {
     var iv int
     var cc rune
     var ok bool
@@ -1246,7 +1245,7 @@ func (self *Assembler) assembleCommand(line *ParsedCommand) error {
     /* simple case: non-variadic command */
     if !va {
         if argc == argx {
-            return fn.handler(self, line.Args)
+            return fn.handler(self, p, line.Args)
         } else {
             return self.err(fmt.Sprintf("command %s takes exact %d arguments", strconv.Quote(line.Cmd), argx))
         }
@@ -1268,13 +1267,13 @@ func (self *Assembler) assembleCommand(line *ParsedCommand) error {
 
     /* check argument count */
     if argc == argx - 1 || argc == argx - 2 {
-        return fn.handler(self, line.Args)
+        return fn.handler(self, p, line.Args)
     } else {
         return self.err(fmt.Sprintf("command %s takes %d or %d arguments", strconv.Quote(line.Cmd), argx - 2, argx - 1))
     }
 }
 
-func (self *Assembler) assembleCommandInt(argv []ParsedCommandArg, addfn func(*Program, *expr.Expr) *Instruction) error {
+func (self *Assembler) assembleCommandInt(p *Program, argv []ParsedCommandArg, addfn func(*Program, *expr.Expr) *Instruction) error {
     var err error
     var val *expr.Expr
 
@@ -1284,11 +1283,11 @@ func (self *Assembler) assembleCommandInt(argv []ParsedCommandArg, addfn func(*P
     }
 
     /* add to the program */
-    addfn(&self.prog, val)
+    addfn(p, val)
     return nil
 }
 
-func (self *Assembler) assembleCommandOrg(argv []ParsedCommandArg) error {
+func (self *Assembler) assembleCommandOrg(_ *Program, argv []ParsedCommandArg) error {
     var err error
     var val int64
 
@@ -1312,23 +1311,23 @@ func (self *Assembler) assembleCommandOrg(argv []ParsedCommandArg) error {
     return nil
 }
 
-func (self *Assembler) assembleCommandByte(argv []ParsedCommandArg) error {
-    return self.assembleCommandInt(argv, (*Program).Byte)
+func (self *Assembler) assembleCommandByte(p *Program, argv []ParsedCommandArg) error {
+    return self.assembleCommandInt(p, argv, (*Program).Byte)
 }
 
-func (self *Assembler) assembleCommandWord(argv []ParsedCommandArg) error {
-    return self.assembleCommandInt(argv, (*Program).Word)
+func (self *Assembler) assembleCommandWord(p *Program, argv []ParsedCommandArg) error {
+    return self.assembleCommandInt(p, argv, (*Program).Word)
 }
 
-func (self *Assembler) assembleCommandLong(argv []ParsedCommandArg) error {
-    return self.assembleCommandInt(argv, (*Program).Long)
+func (self *Assembler) assembleCommandLong(p *Program, argv []ParsedCommandArg) error {
+    return self.assembleCommandInt(p, argv, (*Program).Long)
 }
 
-func (self *Assembler) assembleCommandQuad(argv []ParsedCommandArg) error {
-    return self.assembleCommandInt(argv, (*Program).Quad)
+func (self *Assembler) assembleCommandQuad(p *Program, argv []ParsedCommandArg) error {
+    return self.assembleCommandInt(p, argv, (*Program).Quad)
 }
 
-func (self *Assembler) assembleCommandFill(argv []ParsedCommandArg) error {
+func (self *Assembler) assembleCommandFill(p *Program, argv []ParsedCommandArg) error {
     var fv byte
     var nb int64
     var ex error
@@ -1355,11 +1354,11 @@ func (self *Assembler) assembleCommandFill(argv []ParsedCommandArg) error {
     }
 
     /* fill with specified byte */
-    self.prog.Data(bytes.Repeat([]byte{fv}, int(nb)))
+    p.Data(bytes.Repeat([]byte{fv}, int(nb)))
     return nil
 }
 
-func (self *Assembler) assembleCommandAlign(argv []ParsedCommandArg) error {
+func (self *Assembler) assembleCommandAlign(p *Program, argv []ParsedCommandArg) error {
     var nb int64
     var ex error
     var fv *expr.Expr
@@ -1381,19 +1380,19 @@ func (self *Assembler) assembleCommandAlign(argv []ParsedCommandArg) error {
 
     /* check for optional filling value */
     if len(argv) == 2 {
-        if p, err := self.expr.SetSource(argv[1].Value).Parse(&self.repo); err == nil {
-            fv = p
+        if v, err := self.expr.SetSource(argv[1].Value).Parse(&self.repo); err == nil {
+            fv = v
         } else {
             return err
         }
     }
 
     /* fill with specified byte, default to 0 if not specified */
-    self.prog.Align(uint64(nb), fv)
+    p.Align(uint64(nb), fv)
     return nil
 }
 
-func (self *Assembler) assembleCommandEntry(argv []ParsedCommandArg) error {
+func (self *Assembler) assembleCommandEntry(_ *Program, argv []ParsedCommandArg) error {
     name := argv[0].Value
     rbuf := []rune(name)
 
@@ -1409,13 +1408,13 @@ func (self *Assembler) assembleCommandEntry(argv []ParsedCommandArg) error {
     return nil
 }
 
-func (self *Assembler) assembleCommandAscii(argv []ParsedCommandArg) error {
-    self.prog.Data([]byte(argv[0].Value))
+func (self *Assembler) assembleCommandAscii(p *Program, argv []ParsedCommandArg) error {
+    p.Data([]byte(argv[0].Value))
     return nil
 }
 
-func (self *Assembler) assembleCommandAsciz(argv []ParsedCommandArg) error {
-    self.prog.Data(append([]byte(argv[0].Value), 0))
+func (self *Assembler) assembleCommandAsciz(p *Program, argv []ParsedCommandArg) error {
+    p.Data(append([]byte(argv[0].Value), 0))
     return nil
 }
 
@@ -1440,7 +1439,7 @@ func (self *Assembler) Entry() uintptr {
     }
 }
 
-// Assemble assembles the assembly source and save the machine code to buf.
+// Assemble assembles the assembly source and save the machine code to internal buffer.
 func (self *Assembler) Assemble(src string) error {
     var err error
     var buf []*ParsedLine
@@ -1450,17 +1449,21 @@ func (self *Assembler) Assemble(src string) error {
         return err
     }
 
+    /* create a new program */
+    p := DefaultArch.CreateProgram()
+    defer p.Free()
+
     /* process every line */
     for _, self.line = range buf {
         switch self.cc++; self.line.Kind {
-            case LineLabel   : if err = self.assembleLabel(&self.line.Label)       ; err != nil { return err }
-            case LineInstr   : if err = self.assembleInstr(&self.line.Instruction) ; err != nil { return err }
-            case LineCommand : if err = self.assembleCommand(&self.line.Command)   ; err != nil { return err }
+            case LineLabel   : if err = self.assembleLabel(p, &self.line.Label)       ; err != nil { return err }
+            case LineInstr   : if err = self.assembleInstr(p, &self.line.Instruction) ; err != nil { return err }
+            case LineCommand : if err = self.assembleCommand(p, &self.line.Command)   ; err != nil { return err }
             default          : panic("parser yields an invalid line kind")
         }
     }
 
     /* assemble the program */
-    self.buf = self.prog.Assemble(self.pc)
+    self.buf = p.Assemble(self.pc)
     return nil
 }
