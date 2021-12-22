@@ -9,20 +9,18 @@ var (
 )
 
 func newExpression() *Expr {
-    var v *Expr
-    var p interface{}
-
-    /* attemt to grab from pool */
-    if p = expressionPool.Get(); p == nil {
+    if v := expressionPool.Get(); v == nil {
         return new(Expr)
+    } else {
+        return resetExpression(v.(*Expr))
     }
-
-    /* clear the expression */
-    v = p.(*Expr)
-    *v = Expr{}
-    return v
 }
 
 func freeExpression(p *Expr) {
     expressionPool.Put(p)
+}
+
+func resetExpression(p *Expr) *Expr {
+    *p = Expr{}
+    return p
 }

@@ -24,8 +24,7 @@ func allocLabel(name string) *Label {
 }
 
 func resetLabel(name string, label *Label) *Label {
-    label.Dest = nil
-    label.Name = name
+    *label = Label{Name: name}
     return label
 }
 
@@ -59,9 +58,7 @@ func allocProgram(arch *Arch) *Program {
 }
 
 func resetProgram(arch *Arch, prog *Program) *Program {
-    prog.head = nil
-    prog.tail = nil
-    prog.arch = arch
+    *prog = Program{arch: arch}
     return prog
 }
 
@@ -85,13 +82,7 @@ func allocInstruction(argc int, argv Operands) *Instruction {
 }
 
 func resetInstruction(argc int, argv Operands, instr *Instruction) *Instruction {
-    instr.pc = 0
-    instr.nb = 0
-    instr.len = 0
-    instr.argc = argc
-    instr.argv = argv
-    instr.pseudo = _Pseudo{}
-    instr.branch = _BranchNone
+    *instr = Instruction{argc: argc, argv: argv}
     return instr
 }
 
