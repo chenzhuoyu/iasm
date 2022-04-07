@@ -76,8 +76,8 @@ func freeInstruction(v *Instruction) {
 
 func allocInstruction(argc int, argv Operands) *Instruction {
     return &Instruction {
-        argc : argc,
-        argv : argv,
+        argc: argc,
+        argv: argv,
     }
 }
 
