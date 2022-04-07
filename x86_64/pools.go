@@ -15,82 +15,85 @@ func freeLabel(v *Label) {
     labelPool.Put(v)
 }
 
-func allocLabel(name string) *Label {
-    return &Label {
-        refs: 1,
-        Dest: nil,
-        Name: name,
-    }
-}
-
-func resetLabel(name string, label *Label) *Label {
-    *label = Label{Name: name}
-    return label
+func clearLabel(p *Label) *Label {
+    *p = Label{}
+    return p
 }
 
 // CreateLabel creates a new Label, it may allocate a new one or grab one from a pool.
 func CreateLabel(name string) *Label {
-    if p := labelPool.Get(); p == nil {
-        return allocLabel(name)
+    var p *Label
+    var v interface{}
+
+    /* attempt to grab from the pool */
+    if v = labelPool.Get(); v == nil {
+        p = new(Label)
     } else {
-        return resetLabel(name, p.(*Label))
+        p = clearLabel(v.(*Label))
     }
+
+    /* initialize the label */
+    p.refs = 1
+    p.Name = name
+    return p
 }
 
 func newProgram(arch *Arch) *Program {
-    if p := programPool.Get(); p == nil {
-        return allocProgram(arch)
+    var p *Program
+    var v interface{}
+
+    /* attempt to grab from the pool */
+    if v = programPool.Get(); v == nil {
+        p = new(Program)
     } else {
-        return resetProgram(arch, p.(*Program))
+        p = clearProgram(v.(*Program))
     }
+
+    /* initialize the program */
+    p.arch = arch
+    return p
 }
 
 func freeProgram(p *Program) {
     programPool.Put(p)
 }
 
-func allocProgram(arch *Arch) *Program {
-    return &Program {
-        arch: arch,
-        head: nil,
-        tail: nil,
-    }
-}
-
-func resetProgram(arch *Arch, prog *Program) *Program {
-    *prog = Program{arch: arch}
-    return prog
+func clearProgram(p *Program) *Program {
+    *p = Program{}
+    return p
 }
 
 func newInstruction(argc int, argv Operands) *Instruction {
-    if v := instructionPool.Get(); v == nil {
-        return allocInstruction(argc, argv)
+    var v interface{}
+    var p *Instruction
+
+    /* attempt to grab from the pool */
+    if v = instructionPool.Get(); v == nil {
+        p = new(Instruction)
     } else {
-        return resetInstruction(argc, argv, v.(*Instruction))
+        p = clearInstruction(v.(*Instruction))
     }
+
+    /* initialize the instruction */
+    p.argc = argc
+    p.argv = argv
+    return p
 }
 
 func freeInstruction(v *Instruction) {
     instructionPool.Put(v)
 }
 
-func allocInstruction(argc int, argv Operands) *Instruction {
-    return &Instruction {
-        argc: argc,
-        argv: argv,
-    }
-}
-
-func resetInstruction(argc int, argv Operands, instr *Instruction) *Instruction {
-    *instr = Instruction{argc: argc, argv: argv}
-    return instr
+func clearInstruction(p *Instruction) *Instruction {
+    *p = Instruction{}
+    return p
 }
 
 func freeMemoryOperand(m *MemoryOperand) {
     memoryOperandPool.Put(m)
 }
 
-func resetMemoryOperand(m *MemoryOperand) *MemoryOperand {
+func clearMemoryOperand(m *MemoryOperand) *MemoryOperand {
     *m = MemoryOperand{}
     return m
 }
@@ -98,16 +101,16 @@ func resetMemoryOperand(m *MemoryOperand) *MemoryOperand {
 // CreateMemoryOperand creates a new MemoryOperand, it may allocate a new one or grab one from a pool.
 func CreateMemoryOperand() *MemoryOperand {
     var v interface{}
-    var m *MemoryOperand
+    var p *MemoryOperand
 
     /* attempt to grab from the pool */
     if v = memoryOperandPool.Get(); v == nil {
-        m = new(MemoryOperand)
+        p = new(MemoryOperand)
     } else {
-        m = resetMemoryOperand(v.(*MemoryOperand))
+        p = clearMemoryOperand(v.(*MemoryOperand))
     }
 
-    /* reset the reference counter to 1 */
-    m.refs = 1
-    return m
+    /* initialize the memory operand */
+    p.refs = 1
+    return p
 }
