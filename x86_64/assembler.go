@@ -13,7 +13,7 @@ import (
 )
 
 type (
-	_TokenKind   int
+    _TokenKind   int
     _Punctuation int
 )
 
@@ -1456,9 +1456,9 @@ func (self *Assembler) Assemble(src string) error {
     /* process every line */
     for _, self.line = range buf {
         switch self.cc++; self.line.Kind {
-            case LineLabel   : if err = self.assembleLabel(p, &self.line.Label)       ; err != nil { return err }
-            case LineInstr   : if err = self.assembleInstr(p, &self.line.Instruction) ; err != nil { return err }
-            case LineCommand : if err = self.assembleCommand(p, &self.line.Command)   ; err != nil { return err }
+            case LineLabel   : if err = self.assembleLabel   (p, &self.line.Label)       ; err != nil { return err }
+            case LineInstr   : if err = self.assembleInstr   (p, &self.line.Instruction) ; err != nil { return err }
+            case LineCommand : if err = self.assembleCommand (p, &self.line.Command)     ; err != nil { return err }
             default          : panic("parser yields an invalid line kind")
         }
     }
