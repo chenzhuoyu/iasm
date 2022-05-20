@@ -5,7 +5,7 @@ import (
 )
 
 var (
-	expressionPool sync.Pool
+    expressionPool sync.Pool
 )
 
 func newExpression() *Expr {

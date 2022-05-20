@@ -275,7 +275,7 @@ type MemoryAddress struct {
 }
 
 const (
-	_Scales = 0b100010111   // bit-mask for valid scales (0, 1, 2, 4, 8)
+    _Scales = 0b100010111   // bit-mask for valid scales (0, 1, 2, 4, 8)
 )
 
 func (self *MemoryAddress) isVMX(evex bool) bool {

@@ -9,7 +9,7 @@ import (
 )
 
 type (
-	_PseudoType         int
+    _PseudoType         int
     _InstructionEncoder func(*Program, ...interface{}) *Instruction
 )
 
