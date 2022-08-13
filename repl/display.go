@@ -2,6 +2,7 @@ package repl
 
 import (
     `fmt`
+    `math`
     `strings`
     `unicode`
 )
@@ -49,10 +50,12 @@ func asmdump(m []byte, pos uintptr, src string) string {
 
     /* convert all the bytes */
     for i, v := range m {
-        if pos++; i % 7 != 0 {
+        if i % 7 != 0 {
             ret[row] = ret[row] + fmt.Sprintf(" %02x", v)
+        } else if pos == math.MaxUint64 {
+            ret, row = append(ret, fmt.Sprintf("%02x", v)), row + 1
         } else {
-            ret, row = append(ret, fmt.Sprintf("(%#x) %02x", pos - 1, v)), row + 1
+            ret, row = append(ret, fmt.Sprintf("(%#x) %02x", pos + uintptr(i), v)), row + 1
         }
     }
 

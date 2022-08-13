@@ -39,7 +39,9 @@ const (
     _P_tilde
     _P_lbrk
     _P_rbrk
+    _P_dot
     _P_comma
+    _P_colon
     _P_dollar
     _P_hash
 )
@@ -58,7 +60,9 @@ var _PUNC_NAME = map[_Punctuation]string {
     _P_tilde   : "~",
     _P_lbrk    : "(",
     _P_rbrk    : ")",
+    _P_dot     : ".",
     _P_comma   : ",",
+    _P_colon   : ":",
     _P_dollar  : "$",
     _P_hash    : "#",
 }
@@ -179,6 +183,53 @@ func (self *_Tokenizer) err(pos int, msg string) *SyntaxError {
     }
 }
 
+type _TrimState int
+
+const (
+    _TS_normal _TrimState = iota
+    _TS_slcomm
+    _TS_hscomm
+    _TS_string
+    _TS_escape
+    _TS_accept
+    _TS_nolast
+)
+
+func (self *_Tokenizer) init(src string) {
+    var i int
+    var ch rune
+    var st _TrimState
+
+    /* set the source */
+    self.pos = 0
+    self.src = []rune(src)
+
+    /* remove commends, including "//" and "##" */
+    loop: for i, ch = range self.src {
+        switch {
+            case st == _TS_normal && ch == '/'  : st = _TS_slcomm
+            case st == _TS_normal && ch == '"'  : st = _TS_string
+            case st == _TS_normal && ch == ';'  : st = _TS_accept; break loop
+            case st == _TS_normal && ch == '#'  : st = _TS_hscomm
+            case st == _TS_slcomm && ch == '/'  : st = _TS_nolast; break loop
+            case st == _TS_slcomm               : st = _TS_normal
+            case st == _TS_hscomm && ch == '#'  : st = _TS_nolast; break loop
+            case st == _TS_hscomm               : st = _TS_normal
+            case st == _TS_string && ch == '"'  : st = _TS_normal
+            case st == _TS_string && ch == '\\' : st = _TS_escape
+            case st == _TS_escape               : st = _TS_string
+        }
+    }
+
+    /* check for errors */
+    switch st {
+        case _TS_accept: self.src = self.src[:i]
+        case _TS_nolast: self.src = self.src[:i - 1]
+        case _TS_string: panic(self.err(i, "string is not terminated"))
+        case _TS_escape: panic(self.err(i, "escape sequence is not terminated"))
+    }
+}
+
 func (self *_Tokenizer) skip(check func(v rune) bool) {
     for !self.eof() && check(self.ch()) {
         self.pos++
@@ -294,7 +345,9 @@ func (self *_Tokenizer) read() _Token {
         case '~'  : t = tokenPunc(p, _P_tilde)
         case '('  : t = tokenPunc(p, _P_lbrk)
         case ')'  : t = tokenPunc(p, _P_rbrk)
+        case '.'  : t = tokenPunc(p, _P_dot)
         case ','  : t = tokenPunc(p, _P_comma)
+        case ':'  : t = tokenPunc(p, _P_colon)
         case '$'  : t = tokenPunc(p, _P_dollar)
         case '#'  : t = tokenPunc(p, _P_hash)
         case '\'' : t = self.chrv(p)
@@ -356,7 +409,7 @@ type ParsedLabel struct {
 
 // ParsedOperand represents an operand of an instruction in the source.
 type ParsedOperand struct {
-    Kind   OperandKind
+    Op     OperandKind
     Imm    int64
     Reg    Register
     Label  ParsedLabel
@@ -371,28 +424,28 @@ type ParsedInstruction struct {
 
 func (self *ParsedInstruction) imm(v int64) {
     self.Operands = append(self.Operands, ParsedOperand {
-        Imm  : v,
-        Kind : OpImm,
+        Op  : OpImm,
+        Imm : v,
     })
 }
 
 func (self *ParsedInstruction) reg(v Register) {
     self.Operands = append(self.Operands, ParsedOperand {
-        Reg  : v,
-        Kind : OpReg,
+        Op  : OpReg,
+        Reg : v,
     })
 }
 
 func (self *ParsedInstruction) mem(v MemoryAddress) {
     self.Operands = append(self.Operands, ParsedOperand {
-        Kind   : OpMem,
+        Op     : OpMem,
         Memory : v,
     })
 }
 
 func (self *ParsedInstruction) target(v string) {
     self.Operands = append(self.Operands, ParsedOperand {
-        Kind  : OpLabel,
+        Op    : OpLabel,
         Label : ParsedLabel {
             Name: v,
             Kind: BranchTarget,
@@ -402,7 +455,7 @@ func (self *ParsedInstruction) target(v string) {
 
 func (self *ParsedInstruction) reference(v string) {
     self.Operands = append(self.Operands, ParsedOperand {
-        Kind  : OpLabel,
+        Op    : OpLabel,
         Label : ParsedLabel {
             Name: v,
             Kind: RelativeAddress,
@@ -448,8 +501,6 @@ type ParsedCommandArg struct {
 
 // Parser parses the source, and generates a sequence of ParsedInstruction's.
 type Parser struct {
-    row int
-    src []rune
     lex _Tokenizer
     exp expr.Parser
 }
@@ -457,6 +508,13 @@ type Parser struct {
 const (
     rip Register64 = 0xff
 )
+
+var _RegBranch = map[string]bool {
+    "jmp"   : true,
+    "jmpq"  : true,
+    "call"  : true,
+    "callq" : true,
+}
 
 func (self *Parser) i32(tk _Token, v int64) int32 {
     if v >= math.MinInt32 && v <= math.MaxUint32 {
@@ -469,8 +527,8 @@ func (self *Parser) i32(tk _Token, v int64) int32 {
 func (self *Parser) err(pos int, msg string) *SyntaxError {
     return &SyntaxError {
         Pos    : pos,
-        Row    : self.row,
-        Src    : self.src,
+        Row    : self.lex.row,
+        Src    : self.lex.src,
         Reason : msg,
     }
 }
@@ -609,7 +667,7 @@ func (self *Parser) base(tk _Token, disp int32) MemoryAddress {
     } else if nk.punc() == _P_comma {
         return self.index(rr, disp)
     } else if nk.punc() == _P_rbrk {
-        return MemoryAddress{Base: rr, Displacement: disp}
+        return MemoryAddress { Base: rr, Displacement: disp }
     } else {
         panic(self.err(nk.pos, "',' or ')' expected"))
     }
@@ -630,7 +688,7 @@ func (self *Parser) index(base Register, disp int32) MemoryAddress {
     } else if nk.punc() == _P_comma {
         return self.scale(base, rr, disp)
     } else if nk.punc() == _P_rbrk {
-        return MemoryAddress{Base: base, Index: rr, Scale: 1, Displacement: disp}
+        return MemoryAddress { Base: base, Index: rr, Scale: 1, Displacement: disp }
     } else {
         panic(self.err(nk.pos, "',' or ')' expected"))
     }
@@ -669,41 +727,95 @@ func (self *Parser) scale(base Register, index Register, disp int32) MemoryAddre
     }
 }
 
+func (self *Parser) cmds() *ParsedLine {
+    cmd := ""
+    pos := self.lex.pos
+    buf := []ParsedCommandArg(nil)
+
+    /* find the end of command */
+    for p := pos; pos < len(self.lex.src); pos++ {
+        if unicode.IsSpace(self.lex.src[pos]) {
+            cmd = string(self.lex.src[p:pos])
+            break
+        }
+    }
+
+    /* parse the arguments */
+    loop: for {
+        switch self.next(&pos) {
+            case 0   : break loop
+            case '#' : break loop
+            case '"' : pos = self.strings(&buf, pos)
+            default  : pos = self.expressions(&buf, pos)
+        }
+    }
+
+    /* construct the line */
+    return &ParsedLine {
+        Row     : self.lex.row,
+        Src     : self.lex.src,
+        Kind    : LineCommand,
+        Command : ParsedCommand {
+            Cmd  : cmd,
+            Args : buf,
+        },
+    }
+}
+
 func (self *Parser) feed(line string) *ParsedLine {
-    self.row++
-    self.src = []rune(line)
+    ff := true
+    rr := false
 
-    /* check for directives */
-    if strings.HasPrefix(strings.TrimSpace(line), ".") {
-        return self.cmds(line)
-    }
-
-    /* check for labels */
-    if strings.HasSuffix(strings.TrimSpace(line), ":") {
-        return self.labels(line)
-    }
-
-    /* it must be instructions now */
-    self.lex.pos = 0
-    self.lex.row = self.row
-    self.lex.src = self.src
+    /* reset the lexer */
+    self.lex.row++
+    self.lex.init(line)
 
     /* parse the first token */
     tk := self.lex.next()
     tt := tk.tag
-    ff := true
 
-    /* the first token must be the mnemonic */
+    /* it is a directive if it starts with a dot */
+    if tk.tag == _T_punc && tk.punc() == _P_dot {
+        return self.cmds()
+    }
+
+    /* otherwise it could be labels or instructions */
     if tt != _T_name {
-        panic(self.err(tk.pos, "mnemonic expected"))
+        panic(self.err(tk.pos, "identifier expected"))
+    }
+
+    /* peek the next token */
+    lex := self.lex
+    tkx := lex.next()
+
+    /* check for labels */
+    if tkx.tag == _T_punc && tkx.punc() == _P_colon {
+        tkx = lex.next()
+        ttx := tkx.tag
+
+        /* the line must end here */
+        if ttx != _T_end {
+            panic(self.err(tkx.pos, "garbage after label definition"))
+        }
+
+        /* construct the label */
+        return &ParsedLine {
+            Row   : self.lex.row,
+            Src   : self.lex.src,
+            Kind  : LineLabel,
+            Label : ParsedLabel {
+                Kind: Declaration,
+                Name: tk.str,
+            },
+        }
     }
 
     /* set the line kind and mnemonic */
     ret := &ParsedLine {
-        Row         : self.row,
-        Src         : self.src,
+        Row         : self.lex.row,
+        Src         : self.lex.src,
         Kind        : LineInstr,
-        Instruction : ParsedInstruction{Mnemonic: tk.str},
+        Instruction : ParsedInstruction { Mnemonic: strings.ToLower(tk.str) },
     }
 
     /* parse all the operands */
@@ -713,7 +825,7 @@ func (self *Parser) feed(line string) *ParsedLine {
 
         /* check for end of line */
         if tt == _T_end {
-            return ret
+            break
         }
 
         /* expect a comma if not the first operand */
@@ -753,6 +865,13 @@ func (self *Parser) feed(line string) *ParsedLine {
             continue
         }
 
+        /* certain instructions may have a "*" before operands */
+        if tt == _T_punc && tk.punc() == _P_star {
+            tk = self.lex.next()
+            tt = tk.tag
+            rr = true
+        }
+
         /* ... otherwise it must be a punctuation */
         if tt != _T_punc {
             panic(self.err(tk.pos, "'$', '%', '-' or '(' expected"))
@@ -783,55 +902,24 @@ func (self *Parser) feed(line string) *ParsedLine {
             ret.Instruction.mem(self.disp(self.i32(tk, self.eval(tk.pos))))
         }
     }
-}
 
-func (self *Parser) cmds(line string) *ParsedLine {
-    pos := 0
-    cmd := ""
-    src := []rune(line)
-    buf := []ParsedCommandArg(nil)
-
-    /* sanity check */
-    if self.next(src, &pos) != '.' {
-        panic("invalid command: " + strconv.Quote(line))
-    }
-
-    /* find the end of command */
-    for p := pos; pos < len(src); pos++ {
-        if unicode.IsSpace(src[pos]) {
-            cmd = string(src[p + 1:pos])
-            break
-        }
-    }
-
-    /* parse the arguments */
-    for {
-        if cc := self.next(src, &pos); cc == 0 {
-            break
-        } else if cc == '"' {
-            pos = self.strings(&buf, src, pos)
-        } else {
-            pos = self.expressions(&buf, src, pos)
-        }
-    }
-
-    /* construct the line */
-    return &ParsedLine {
-        Row     : self.row,
-        Src     : self.src,
-        Kind    : LineCommand,
-        Command : ParsedCommand {
-            Cmd  : cmd,
-            Args : buf,
-        },
+    /* check "jmp" and "call" instructions */
+    if !_RegBranch[ret.Instruction.Mnemonic] {
+        return ret
+    } else if len(ret.Instruction.Operands) != 1 {
+        panic(self.err(tk.pos, fmt.Sprintf(`"%s" requires exact 1 argument`, ret.Instruction.Mnemonic)))
+    } else if !rr && ret.Instruction.Operands[0].Op != OpLabel {
+        panic(self.err(tk.pos, fmt.Sprintf(`invalid operand for "%s" instruction`, ret.Instruction.Mnemonic)))
+    } else {
+        return ret
     }
 }
 
-func (self *Parser) next(line []rune, p *int) rune {
+func (self *Parser) next(p *int) rune {
     for {
-        if *p >= len(line) {
+        if *p >= len(self.lex.src) {
             return 0
-        } else if cc := line[*p]; !unicode.IsSpace(cc) {
+        } else if cc := self.lex.src[*p]; !unicode.IsSpace(cc) {
             return cc
         } else {
             *p++
@@ -839,8 +927,8 @@ func (self *Parser) next(line []rune, p *int) rune {
     }
 }
 
-func (self *Parser) delim(line []rune, p int) int {
-    if cc := self.next(line, &p); cc == 0 {
+func (self *Parser) delim(p int) int {
+    if cc := self.next(&p); cc == 0 {
         return p
     } else if cc == ',' {
         return p + 1
@@ -849,57 +937,45 @@ func (self *Parser) delim(line []rune, p int) int {
     }
 }
 
-func (self *Parser) labels(line string) *ParsedLine {
-    return &ParsedLine {
-        Row   : self.row,
-        Src   : self.src,
-        Kind  : LineLabel,
-        Label : ParsedLabel {
-            Kind: Declaration,
-            Name: strings.TrimSuffix(strings.TrimSpace(line), ":"),
-        },
-    }
-}
-
-func (self *Parser) strings(argv *[]ParsedCommandArg, line []rune, p int) int {
+func (self *Parser) strings(argv *[]ParsedCommandArg, p int) int {
     var i int
     var e error
     var v string
 
     /* find the end of string */
-    for i = p + 1; i < len(line) && line[i] != '"'; i++ {
-        if line[i] == '\\' {
+    for i = p + 1; i < len(self.lex.src) && self.lex.src[i] != '"'; i++ {
+        if self.lex.src[i] == '\\' {
             i++
         }
     }
 
     /* check for EOF */
-    if i == len(line) {
+    if i == len(self.lex.src) {
         panic(self.err(i, "unexpected EOF when scanning strings"))
     }
 
     /* unquote the string */
-    if v, e = strconv.Unquote(string(line[p:i + 1])); e != nil {
+    if v, e = strconv.Unquote(string(self.lex.src[p:i + 1])); e != nil {
         panic(self.err(p, "invalid string: " + e.Error()))
     }
 
     /* add the argument to buffer */
-    *argv = append(*argv, ParsedCommandArg{Value: v, IsString: true})
-    return self.delim(line, i + 1)
+    *argv = append(*argv, ParsedCommandArg { Value: v, IsString: true })
+    return self.delim(i + 1)
 }
 
 func (self *Parser) directives(line string) {
-    self.row++
-    self.src = []rune(line)
-
-    /* initialize the lexer */
-    self.lex.pos = 0
-    self.lex.row = self.row
-    self.lex.src = self.src
+    self.lex.row++
+    self.lex.init(line)
 
     /* parse the first token */
     tk := self.lex.next()
     tt := tk.tag
+
+    /* check for EOF */
+    if tt == _T_end {
+        return
+    }
 
     /* must be a directive */
     if tt != _T_punc || tk.punc() != _P_hash {
@@ -914,18 +990,18 @@ func (self *Parser) directives(line string) {
     if tt != _T_int {
         panic(self.err(tk.pos, "line number expected"))
     } else {
-        self.row = int(tk.u64) - 1
+        self.lex.row = int(tk.u64) - 1
     }
 }
 
-func (self *Parser) expressions(argv *[]ParsedCommandArg, line []rune, p int) int {
+func (self *Parser) expressions(argv *[]ParsedCommandArg, p int) int {
     var i int
     var n int
     var s int
 
     /* scan until the first standalone ',' or EOF */
-    loop: for i = p; i < len(line); i++ {
-        switch line[i] {
+    loop: for i = p; i < len(self.lex.src); i++ {
+        switch self.lex.src[i] {
             case ','           : if s == 0 { if n == 0 { break loop } }
             case ']', '}', '>' : if s == 0 { if n == 0 { break loop } else { n-- } }
             case '[', '{', '<' : if s == 0 { n++ }
@@ -946,8 +1022,8 @@ func (self *Parser) expressions(argv *[]ParsedCommandArg, line []rune, p int) in
     }
 
     /* add the argument to buffer */
-    *argv = append(*argv, ParsedCommandArg{Value: string(line[p:i])})
-    return self.delim(line, i)
+    *argv = append(*argv, ParsedCommandArg { Value: string(self.lex.src[p:i]) })
+    return self.delim(i)
 }
 
 // Feed feeds the parser with one more line, and the parser
@@ -1005,7 +1081,7 @@ func (self *Parser) Parse(src string) (ret []*ParsedLine, err error) {
     /* feed every line */
     for _, line := range strings.Split(src, "\n") {
         if ss = strings.TrimSpace(line); ss == "" || strings.HasPrefix(ss, "//") {
-            self.row++
+            self.lex.row++
         } else if ss[0] == '#' {
             self.directives(line)
         } else {
@@ -1014,6 +1090,7 @@ func (self *Parser) Parse(src string) (ret []*ParsedLine, err error) {
     }
 
     /* all done */
+    err = nil
     return
 }
 
@@ -1042,21 +1119,30 @@ func (self *Parser) Directive(line string) (err error) {
     return
 }
 
-type _LabelRepo struct {
-    labels map[string]*Label
+type _TermRepo struct {
+    terms map[string]expr.Term
 }
 
-func (self *_LabelRepo) Get(name string) (expr.Term, error) {
-    return self.findOrCreate(name), nil
+func (self *_TermRepo) Get(name string) (expr.Term, error) {
+    if ret, ok := self.terms[name]; ok {
+        return ret, nil
+    } else {
+        return nil, errors.New("undefined name: " + name)
+    }
 }
 
-func (self *_LabelRepo) findOrCreate(name string) *Label {
+func (self *_TermRepo) label(name string) (*Label, error) {
     var ok bool
     var lb *Label
+    var tr expr.Term
 
-    /* check for existing labels */
-    if lb, ok = self.labels[name]; ok {
-        return lb
+    /* check for existing terms */
+    if tr, ok = self.terms[name]; ok {
+        if lb, ok = tr.(*Label); ok {
+            return lb, nil
+        } else {
+            return nil, errors.New("name is not a label: " + name)
+        }
     }
 
     /* create a new one as needed */
@@ -1064,13 +1150,32 @@ func (self *_LabelRepo) findOrCreate(name string) *Label {
     lb.Name = name
 
     /* create the map if needed */
-    if self.labels == nil {
-        self.labels = make(map[string]*Label, 1)
+    if self.terms == nil {
+        self.terms = make(map[string]expr.Term, 1)
     }
 
     /* register the label */
-    self.labels[name] = lb
-    return lb
+    self.terms[name] = lb
+    return lb, nil
+}
+
+func (self *_TermRepo) define(name string, term expr.Term) {
+    var ok bool
+    var tr expr.Term
+
+    /* create the map if needed */
+    if self.terms == nil {
+        self.terms = make(map[string]expr.Term, 1)
+    }
+
+    /* check for existing terms */
+    if tr, ok = self.terms[name]; !ok {
+        self.terms[name] = term
+    } else if _, ok = tr.(*Label); !ok {
+        self.terms[name] = term
+    } else {
+        panic("conflicting term types: " + name)
+    }
 }
 
 // _Command describes an assembler command.
@@ -1090,6 +1195,17 @@ type _Command struct {
     handler func(*Assembler, *Program, []ParsedCommandArg) error
 }
 
+// Options controls the behavior of Assembler.
+type Options struct {
+    // InstructionAliasing specifies whether to enable instruction aliasing.
+    // Set to true enables instruction aliasing, and the Assembler will try harder to find instructions.
+    InstructionAliasing bool
+
+    // IgnoreUnknownDirectives specifies whether to report errors when encountered unknown directives.
+    // Set to true ignores all unknwon directives silently, useful for parsing generated assembly.
+    IgnoreUnknownDirectives bool
+}
+
 // Assembler assembles the entire assembly program and generates the corresponding
 // machine code representations.
 type Assembler struct {
@@ -1098,22 +1214,26 @@ type Assembler struct {
     pc   uintptr
     buf  []byte
     main string
-    repo _LabelRepo
+    opts Options
+    repo _TermRepo
     expr expr.Parser
     line *ParsedLine
 }
 
 var asmCommands = map[string]_Command {
-    "org"   : { "e"   , (*Assembler).assembleCommandOrg   },
-    "byte"  : { "e"   , (*Assembler).assembleCommandByte  },
-    "word"  : { "e"   , (*Assembler).assembleCommandWord  },
-    "long"  : { "e"   , (*Assembler).assembleCommandLong  },
-    "quad"  : { "e"   , (*Assembler).assembleCommandQuad  },
-    "fill"  : { "e?e" , (*Assembler).assembleCommandFill  },
-    "align" : { "e?e" , (*Assembler).assembleCommandAlign },
-    "entry" : { "e"   , (*Assembler).assembleCommandEntry },
-    "ascii" : { "s"   , (*Assembler).assembleCommandAscii },
-    "asciz" : { "s"   , (*Assembler).assembleCommandAsciz },
+    "org"     : { "e"   , (*Assembler).assembleCommandOrg     },
+    "set"     : { "ee"  , (*Assembler).assembleCommandSet     },
+    "byte"    : { "e"   , (*Assembler).assembleCommandByte    },
+    "word"    : { "e"   , (*Assembler).assembleCommandWord    },
+    "long"    : { "e"   , (*Assembler).assembleCommandLong    },
+    "quad"    : { "e"   , (*Assembler).assembleCommandQuad    },
+    "fill"    : { "e?e" , (*Assembler).assembleCommandFill    },
+    "space"   : { "e?e" , (*Assembler).assembleCommandFill    },
+    "align"   : { "e?e" , (*Assembler).assembleCommandAlign   },
+    "entry"   : { "e"   , (*Assembler).assembleCommandEntry   },
+    "ascii"   : { "s"   , (*Assembler).assembleCommandAscii   },
+    "asciz"   : { "s"   , (*Assembler).assembleCommandAsciz   },
+    "p2align" : { "e?e" , (*Assembler).assembleCommandP2Align },
 }
 
 func (self *Assembler) err(msg string) *SyntaxError {
@@ -1146,8 +1266,12 @@ func (self *Assembler) checkArgs(i int, n int, v *ParsedCommand, isString bool) 
 }
 
 func (self *Assembler) assembleLabel(p *Program, lb *ParsedLabel) error {
-    p.Link(self.repo.findOrCreate(lb.Name))
-    return nil
+    if v, err := self.repo.label(lb.Name); err != nil {
+        return err
+    } else {
+        p.Link(v)
+        return nil
+    }
 }
 
 func (self *Assembler) assembleInstr(p *Program, line *ParsedInstruction) (err error) {
@@ -1155,14 +1279,49 @@ func (self *Assembler) assembleInstr(p *Program, line *ParsedInstruction) (err e
     var ops []interface{}
     var enc _InstructionEncoder
 
-    /* find the instruction encoder */
-    if enc, ok = Instructions[strings.ToLower(line.Mnemonic)]; !ok {
-        return self.err("no such instruction: " + strconv.Quote(line.Mnemonic))
+    /* convert to lower-case */
+    opts := self.opts
+    name := strings.ToLower(line.Mnemonic)
+
+    /* fix register-addressing branches if needed */
+    if opts.InstructionAliasing && len(line.Operands) == 1 {
+        switch {
+            case name == "retq"                                    : name = "ret"
+            case name == "movabsq"                                 : name = "movq"
+            case name == "jmp"   && line.Operands[0].Op != OpLabel : name = "jmpq"
+            case name == "jmpq"  && line.Operands[0].Op == OpLabel : name = "jmp"
+            case name == "call"  && line.Operands[0].Op != OpLabel : name = "callq"
+            case name == "callq" && line.Operands[0].Op == OpLabel : name = "call"
+        }
+    }
+
+    /* lookup from the alias table if needed */
+    if opts.InstructionAliasing {
+        enc, ok = _InstructionAliases[name]
+    }
+
+    /* lookup from the instruction table */
+    if !ok {
+        enc, ok = Instructions[name]
+    }
+
+    /* remove size suffix if possible */
+    if !ok && opts.InstructionAliasing {
+        switch i := len(name) - 1; name[i] {
+            case 'b', 'w', 'l', 'q': {
+                enc, ok = Instructions[name[:i]]
+            }
+        }
+    }
+
+    /* check for instruction name */
+    if !ok {
+        return self.err("no such instruction: " + strconv.Quote(name))
     }
 
     /* convert the operands */
     for _, op := range line.Operands {
-        switch op.Kind {
+        switch op.Op {
             case OpImm   : ops = append(ops, op.Imm)
             case OpReg   : ops = append(ops, op.Reg)
             case OpMem   : self.assembleInstrMem(&ops, op.Memory)  
@@ -1199,11 +1358,16 @@ func (self *Assembler) assembleInstrMem(ops *[]interface{}, addr MemoryAddress) 
 
 func (self *Assembler) assembleInstrLabel(ops *[]interface{}, label ParsedLabel) {
     vk := label.Kind
-    lb := self.repo.findOrCreate(label.Name)
+    tr, err := self.repo.label(label.Name)
+
+    /* check for errors */
+    if err != nil {
+        panic(err)
+    }
 
     /* check for branch target */
     if vk == BranchTarget {
-        *ops = append(*ops, lb)
+        *ops = append(*ops, tr)
         return
     }
 
@@ -1211,7 +1375,7 @@ func (self *Assembler) assembleInstrLabel(ops *[]interface{}, label ParsedLabel)
     *ops = append(*ops, &MemoryOperand {
         Addr: Addressable {
             Type      : Reference,
-            Reference : lb,
+            Reference : tr,
         },
     })
 }
@@ -1225,7 +1389,11 @@ func (self *Assembler) assembleCommand(p *Program, line *ParsedCommand) error {
 
     /* find the command */
     if fn, ok = asmCommands[line.Cmd]; !ok {
-        return self.err("no such command: " + strconv.Quote(line.Cmd))
+        if self.opts.IgnoreUnknownDirectives {
+            return nil
+        } else {
+            return self.err("no such command: " + strconv.Quote(line.Cmd))
+        }
     }
 
     /* expected & real argument count */
@@ -1311,6 +1479,20 @@ func (self *Assembler) assembleCommandOrg(_ *Program, argv []ParsedCommandArg) e
     return nil
 }
 
+func (self *Assembler) assembleCommandSet(_ *Program, argv []ParsedCommandArg) error {
+    var err error
+    var val *expr.Expr
+
+    /* parse the expression */
+    if val, err = self.expr.SetSource(argv[1].Value).Parse(&self.repo); err != nil {
+        return err
+    }
+
+    /* define the new identifier */
+    self.repo.define(argv[0].Value, val)
+    return nil
+}
+
 func (self *Assembler) assembleCommandByte(p *Program, argv []ParsedCommandArg) error {
     return self.assembleCommandInt(p, argv, (*Program).Byte)
 }
@@ -1354,7 +1536,7 @@ func (self *Assembler) assembleCommandFill(p *Program, argv []ParsedCommandArg) 
     }
 
     /* fill with specified byte */
-    p.Data(bytes.Repeat([]byte{fv}, int(nb)))
+    p.Data(bytes.Repeat([]byte { fv }, int(nb)))
     return nil
 }
 
@@ -1418,6 +1600,35 @@ func (self *Assembler) assembleCommandAsciz(p *Program, argv []ParsedCommandArg)
     return nil
 }
 
+func (self *Assembler) assembleCommandP2Align(p *Program, argv []ParsedCommandArg) error {
+    var nb int64
+    var ex error
+    var fv *expr.Expr
+
+    /* evaluate the size */
+    if nb, ex = self.eval(argv[0].Value); ex != nil {
+        return ex
+    }
+
+    /* check for alignment value */
+    if nb <= 0 {
+        return self.err(fmt.Sprintf("zero or negative alignment: %d", nb))
+    }
+
+    /* check for optional filling value */
+    if len(argv) == 2 {
+        if v, err := self.expr.SetSource(argv[1].Value).Parse(&self.repo); err == nil {
+            fv = v
+        } else {
+            return err
+        }
+    }
+
+    /* fill with specified byte, default to 0 if not specified */
+    p.Align(1 << nb, fv)
+    return nil
+}
+
 // Base returns the origin.
 func (self *Assembler) Base() uintptr {
     return self.pc
@@ -1432,11 +1643,18 @@ func (self *Assembler) Code() []byte {
 func (self *Assembler) Entry() uintptr {
     if self.main == "" {
         return self.pc
-    } else if val, err := self.repo.findOrCreate(self.main).Evaluate(); err == nil {
-        return uintptr(val)
-    } else {
+    } else if tr, err := self.repo.Get(self.main); err != nil {
         panic(err)
+    } else if val, err := tr.Evaluate(); err != nil {
+        panic(err)
+    } else {
+        return uintptr(val)
     }
+}
+
+// Options returns the internal options reference, changing it WILL affect this Assembler instance.
+func (self *Assembler) Options() *Options {
+    return &self.opts
 }
 
 // Assemble assembles the assembly source and save the machine code to internal buffer.

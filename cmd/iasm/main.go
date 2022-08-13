@@ -29,13 +29,14 @@ func usage() {
     println()
     println("General Options:")
     println(`    -D DEF, --define=DEF        Passing the defination to preprocessor`)
-    println("    -f FMT, --format=FMT        Select output binary format")
+    println("    -f FMT, --format=FMT        Select output format")
     println("       bin                          Flat raw binary (default)")
     println("       macho                        Mach-O executable")
     println("       elf                          ELF executable")
     println()
     println("    -h, --help                  This help message")
     println("    -o FILE, --output=FILE      Output file name")
+    println("    -s, --gas-compat            GAS compatible mode")
     println()
     println("Environment Variables:")
     println("    CPP                         The C Preprocessor")
@@ -51,10 +52,11 @@ func compile() {
 
     /* options list */
     opts := []optparse.Option {
-        { "help"  , 'h', optparse.KindNone     },
-        { "define", 'D', optparse.KindRequired },
-        { "format", 'f', optparse.KindRequired },
-        { "output", 'o', optparse.KindRequired },
+        { "help"       , 'h', optparse.KindNone     },
+        { "define"     , 'D', optparse.KindRequired },
+        { "format"     , 'f', optparse.KindRequired },
+        { "output"     , 'o', optparse.KindRequired },
+        { "gas-compat" , 's', optparse.KindNone     },
     }
 
     /* parse the options */
@@ -65,6 +67,7 @@ func compile() {
 
     /* default values */
     help := false
+    mgas := false
     ffmt := "bin"
     fout := "a.out"
     defs := []string(nil)
@@ -73,6 +76,7 @@ func compile() {
     for _, vv := range ret {
         switch vv.Short {
             case 'h': help = true
+            case 's': mgas = true
             case 'f': ffmt = vv.Optarg
             case 'o': fout = vv.Optarg
             case 'D': defs = append(defs, vv.Optarg)
@@ -106,6 +110,12 @@ func compile() {
     if src, err = preprocess(rem[0], defs); err != nil {
         println("iasm: error: failed to run preprocessor: " + err.Error())
         os.Exit(1)
+    }
+
+    /* check for GAS compatible mode */
+    if mgas {
+        asm.Options().InstructionAliasing = true
+        asm.Options().IgnoreUnknownDirectives = true
     }
 
     /* assemble the source */

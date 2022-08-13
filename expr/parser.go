@@ -160,9 +160,9 @@ func (self *Parser) name(p int, ss []rune) _Token {
 
 func (self *Parser) read(p int, ch rune) (_Token, error) {
     if isdigit(ch) {
-        return self.int(p, []rune{ch})
+        return self.int(p, []rune { ch })
     } else if isident0(ch) {
-        return self.name(p, []rune{ch}), nil
+        return self.name(p, []rune { ch }), nil
     } else if isop2ch(ch) && !self.eof() && self.ch() == ch {
         return tokenPunc(p, _OP2 | self.rch()), nil
     } else if isop1ch(ch) {
@@ -195,7 +195,7 @@ func (self *Parser) next() (_Token, error) {
 
 func (self *Parser) grab(tk _Token, repo Repository) (*Expr, error) {
     if repo == nil {
-        return nil, newSyntaxError(tk.pos, "unresolved symbol: "+tk.str())
+        return nil, newSyntaxError(tk.pos, "unresolved symbol: " + tk.str())
     } else if term, err := repo.Get(tk.str()); err != nil {
         return nil, err
     } else {

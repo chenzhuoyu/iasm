@@ -14,14 +14,27 @@ type (
 )
 
 const (
-    _PSEUDO_NOP _PseudoType = iota + 1
-    _PSEUDO_BYTE
-    _PSEUDO_WORD
-    _PSEUDO_LONG
-    _PSEUDO_QUAD
-    _PSEUDO_DATA
-    _PSEUDO_ALIGN
+    _PseudoNop _PseudoType = iota + 1
+    _PseudoByte
+    _PseudoWord
+    _PseudoLong
+    _PseudoQuad
+    _PseudoData
+    _PseudoAlign
 )
+
+func (self _PseudoType) String() string {
+    switch self {
+        case _PseudoNop   : return ".nop"
+        case _PseudoByte  : return ".byte"
+        case _PseudoWord  : return ".word"
+        case _PseudoLong  : return ".long"
+        case _PseudoQuad  : return ".quad"
+        case _PseudoData  : return ".data"
+        case _PseudoAlign : return ".align"
+        default           : panic("unreachable")
+    }
+}
 
 type _Pseudo struct {
     kind _PseudoType
@@ -31,25 +44,21 @@ type _Pseudo struct {
 }
 
 func (self *_Pseudo) free() {
-    switch self.kind {
-        case _PSEUDO_BYTE  : fallthrough
-        case _PSEUDO_WORD  : fallthrough
-        case _PSEUDO_LONG  : fallthrough
-        case _PSEUDO_QUAD  : fallthrough
-        case _PSEUDO_ALIGN : self.expr.Free()
+    if self.expr != nil {
+        self.expr.Free()
     }
 }
 
 func (self *_Pseudo) encode(m *[]byte, pc uintptr) int {
     switch self.kind {
-        case _PSEUDO_NOP   : return 0
-        case _PSEUDO_BYTE  : self.encodeByte(m)      ; return 1
-        case _PSEUDO_WORD  : self.encodeWord(m)      ; return 2
-        case _PSEUDO_LONG  : self.encodeLong(m)      ; return 4
-        case _PSEUDO_QUAD  : self.encodeQuad(m)      ; return 8
-        case _PSEUDO_DATA  : self.encodeData(m)      ; return len(self.data)
-        case _PSEUDO_ALIGN : self.encodeAlign(m, pc) ; return self.alignSize(pc)
-        default            : panic("invalid pseudo instruction")
+        case _PseudoNop   : return 0
+        case _PseudoByte  : self.encodeByte(m)      ; return 1
+        case _PseudoWord  : self.encodeWord(m)      ; return 2
+        case _PseudoLong  : self.encodeLong(m)      ; return 4
+        case _PseudoQuad  : self.encodeQuad(m)      ; return 8
+        case _PseudoData  : self.encodeData(m)      ; return len(self.data)
+        case _PseudoAlign : self.encodeAlign(m, pc) ; return self.alignSize(pc)
+        default           : panic("invalid pseudo instruction")
     }
 }
 
@@ -116,14 +125,29 @@ func (self *_Pseudo) encodeAlign(m *[]byte, pc uintptr) {
 }
 
 // Operands represents a sequence of operand required by an instruction.
-type Operands [_MAX_ARGS]interface{}
+type Operands [_N_args]interface{}
+
+// InstructionDomain represents the domain of an instruction.
+type InstructionDomain uint8
+
+const (
+    DomainGeneric InstructionDomain = iota
+    DomainMMXSSE
+    DomainAVX
+    DomainFMA
+    DomainCrypto
+    DomainMask
+    DomainAMDSpecific
+    DomainMisc
+    DomainPseudo
+)
 
 type _BranchType uint8
 
 const (
-    _BranchNone _BranchType = iota
-    _BranchConditional
-    _BranchUnconditional
+    _B_none _BranchType = iota
+    _B_conditional
+    _B_unconditional
 )
 
 // Instruction represents an unencoded instruction.
@@ -133,10 +157,12 @@ type Instruction struct {
     nb     int
     len    int
     argc   int
+    name   string
     argv   Operands
-    forms  [_MAX_FORMS]_Encoding
+    forms  [_N_forms]_Encoding
     pseudo _Pseudo
     branch _BranchType
+    domain InstructionDomain
 }
 
 func (self *Instruction) add(flags int, encoder func(m *_Encoding, v []interface{})) {
@@ -160,9 +186,9 @@ func (self *Instruction) clear() {
 }
 
 func (self *Instruction) check(e *_Encoding) bool {
-    if (e.flags & _REL1) != 0 {
+    if (e.flags & _F_rel1) != 0 {
         return isRel8(self.argv[0])
-    } else if (e.flags & _REL4) != 0 {
+    } else if (e.flags & _F_rel4) != 0 {
         return isRel32(self.argv[0]) || isLabel(self.argv[0])
     } else {
         return true
@@ -199,6 +225,21 @@ func (self *Instruction) encode(m *[]byte) int {
     return n
 }
 
+// Name returns the instruction name.
+func (self *Instruction) Name() string {
+    return self.name
+}
+
+// Domain returns the domain of this instruction.
+func (self *Instruction) Domain() InstructionDomain {
+    return self.domain
+}
+
+// Operands returns the operands of this instruction.
+func (self *Instruction) Operands() []interface{} {
+    return self.argv[:self.argc]
+}
+
 // Program represents a sequence of instructions.
 type Program struct {
     arch *Arch
@@ -207,9 +248,9 @@ type Program struct {
 }
 
 const (
-    _NB_NEAR       = 2  // near-branch (-128 ~ +127) takes 2 bytes to encode
-    _NB_FAR_COND   = 6  // conditional far-branch takes 6 bytes to encode
-    _NB_FAR_UNCOND = 5  // unconditional far-branch takes 5 bytes to encode
+    _N_near       = 2 // near-branch (-128 ~ +127) takes 2 bytes to encode
+    _N_far_cond   = 6 // conditional far-branch takes 6 bytes to encode
+    _N_far_uncond = 5 // unconditional far-branch takes 5 bytes to encode
 )
 
 func (self *Program) clear() {
@@ -219,9 +260,9 @@ func (self *Program) clear() {
     }
 }
 
-func (self *Program) alloc(argc int, argv Operands) *Instruction {
+func (self *Program) alloc(name string, argc int, argv Operands) *Instruction {
     p := self.tail
-    q := newInstruction(argc, argv)
+    q := newInstruction(name, argc, argv)
 
     /* attach to tail if any */
     if p != nil {
@@ -236,7 +277,8 @@ func (self *Program) alloc(argc int, argv Operands) *Instruction {
 }
 
 func (self *Program) pseudo(kind _PseudoType) (p *Instruction) {
-    p = self.alloc(0, Operands{})
+    p = self.alloc(kind.String(), 0, Operands{})
+    p.domain = DomainPseudo
     p.pseudo.kind = kind
     return
 }
@@ -249,10 +291,10 @@ func (self *Program) require(isa ISA) {
 
 func (self *Program) branchSize(p *Instruction) int {
     switch p.branch {
-        case _BranchNone          : panic("p is not a branch")
-        case _BranchConditional   : return _NB_FAR_COND
-        case _BranchUnconditional : return _NB_FAR_UNCOND
-        default                   : panic("invalid instruction")
+        case _B_none          : panic("p is not a branch")
+        case _B_conditional   : return _N_far_cond
+        case _B_unconditional : return _N_far_uncond
+        default               : panic("invalid instruction")
     }
 }
 
@@ -260,42 +302,42 @@ func (self *Program) branchSize(p *Instruction) int {
 
 // Byte is a pseudo-instruction to add raw byte to the assembled code.
 func (self *Program) Byte(v *expr.Expr) (p *Instruction) {
-    p = self.pseudo(_PSEUDO_BYTE)
+    p = self.pseudo(_PseudoByte)
     p.pseudo.expr = v
     return
 }
 
 // Word is a pseudo-instruction to add raw uint16 as little-endian to the assembled code.
 func (self *Program) Word(v *expr.Expr) (p *Instruction) {
-    p = self.pseudo(_PSEUDO_WORD)
+    p = self.pseudo(_PseudoWord)
     p.pseudo.expr = v
     return
 }
 
 // Long is a pseudo-instruction to add raw uint32 as little-endian to the assembled code.
 func (self *Program) Long(v *expr.Expr) (p *Instruction) {
-    p = self.pseudo(_PSEUDO_LONG)
+    p = self.pseudo(_PseudoLong)
     p.pseudo.expr = v
     return
 }
 
 // Quad is a pseudo-instruction to add raw uint64 as little-endian to the assembled code.
 func (self *Program) Quad(v *expr.Expr) (p *Instruction) {
-    p = self.pseudo(_PSEUDO_QUAD)
+    p = self.pseudo(_PseudoQuad)
     p.pseudo.expr = v
     return
 }
 
 // Data is a pseudo-instruction to add raw bytes to the assembled code.
 func (self *Program) Data(v []byte) (p *Instruction) {
-    p = self.pseudo(_PSEUDO_DATA)
+    p = self.pseudo(_PseudoData)
     p.pseudo.data = v
     return
 }
 
 // Align is a pseudo-instruction to ensure the PC is aligned to a certain value.
 func (self *Program) Align(align uint64, padding *expr.Expr) (p *Instruction) {
-    p = self.pseudo(_PSEUDO_ALIGN)
+    p = self.pseudo(_PseudoAlign)
     p.pseudo.uint = align
     p.pseudo.expr = padding
     return
@@ -319,7 +361,7 @@ func (self *Program) Link(p *Label) {
     if p.Dest != nil {
         panic("lable was alreay linked")
     } else {
-        p.Dest = self.pseudo(_PSEUDO_NOP)
+        p.Dest = self.pseudo(_PseudoNop)
     }
 }
 
@@ -331,7 +373,7 @@ func (self *Program) Assemble(pc uintptr) (ret []byte) {
 
     /* Pass 0: PC-precompute, assume all labeled branches are far-branches. */
     for p := self.head; p != nil; p = p.next {
-        if p.pc = pc; !isLabel(p.argv[0]) || p.branch == _BranchNone {
+        if p.pc = pc; !isLabel(p.argv[0]) || p.branch == _B_none {
             pc += uintptr(p.encode(nil))
         } else {
             pc += uintptr(self.branchSize(p))
@@ -353,7 +395,7 @@ func (self *Program) Assemble(pc uintptr) (ret []byte) {
             var lb *Label
 
             /* re-calculate the alignment here */
-            if nb = p.nb; p.pseudo.kind == _PSEUDO_ALIGN {
+            if nb = p.nb; p.pseudo.kind == _PseudoAlign {
                 p.pc -= offs
                 offs += uintptr(nb - p.encode(nil))
                 continue
@@ -364,7 +406,7 @@ func (self *Program) Assemble(pc uintptr) (ret []byte) {
             lb, ok = p.argv[0].(*Label)
 
             /* only care about labeled far-branches */
-            if !ok || p.nb == _NB_NEAR || p.branch == _BranchNone {
+            if !ok || p.nb == _N_near || p.branch == _B_none {
                 continue
             }
 
@@ -381,8 +423,8 @@ func (self *Program) Assemble(pc uintptr) (ret []byte) {
             /* a far jump becomes a near jump, calculate
              * the PC adjustment value and assemble again */
             next = true
-            p.nb = _NB_NEAR
-            offs += uintptr(size - _NB_NEAR)
+            p.nb = _N_near
+            offs += uintptr(size - _N_near)
         }
     }
 

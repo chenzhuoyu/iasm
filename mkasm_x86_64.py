@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import os
 import copy
+import json
 
 from typing import List
 from typing import Tuple
@@ -26,7 +28,14 @@ def instruction_set():
         ins.forms.extend(fv)
         yield ins
 
+def instruction_domains():
+    with open(os.path.join(os.path.dirname(__file__), 'domains_x86_64.json')) as fp:
+        domains = json.load(fp)
+        return { ins: dom for dom, insv in domains.items() for ins in insv }
+
 instrs = {}
+domains = instruction_domains()
+
 for instr in instruction_set():
     for form in instr.forms:
         if all([v.type not in ('r8l', 'r16l', 'r32l', 'moffs32', 'moffs64') for v in form.operands]):
@@ -34,6 +43,9 @@ for instr in instruction_set():
             if name not in instrs:
                 instrs[name] = (instr.name, instr.summary, [])
             instrs[name][2].append(form)
+
+for _, _, forms in instrs.values():
+    forms.sort(key = lambda f: max([x.score for x in f.isa_extensions], default = 0))
 
 OPCHECKS = {
     '1'             : 'isConst1(%s)',
@@ -184,7 +196,18 @@ ISAMAPPING = {
     'MONITORX'        : 'ISA_MONITORX',
 }
 
-CONDITIONAL_BRANCHES = {
+DOMAIN_MAP = {
+    'generic' : 'DomainGeneric',
+    'mmxsse'  : 'DomainMMXSSE',
+    'avx'     : 'DomainAVX',
+    'fma'     : 'DomainFMA',
+    'crypto'  : 'DomainCrypto',
+    'mask'    : 'DomainMask',
+    'amd'     : 'DomainAMDSpecific',
+    'misc'    : 'DomainMisc',
+}
+
+BRANCH_INSTRUCTIONS = {
     'JA'    , 'JNA',
     'JAE'   , 'JNAE',
     'JB'    , 'JNB',
@@ -463,11 +486,11 @@ def generate_encoding(enc: x86_64.Encoding, ops: List[x86_64.Operand], gen_branc
             if item.size == 1:
                 buf.append('m.imm1(relv(v[%d]))' % ops.index(item.value))
                 if gen_branch:
-                    flags.append('_REL1')
+                    flags.append('_F_rel1')
             elif item.size == 4:
                 buf.append('m.imm4(relv(v[%d]))' % ops.index(item.value))
                 if gen_branch:
-                    flags.append('_REL4')
+                    flags.append('_F_rel4')
             else:
                 raise RuntimeError('invalid code offset size: ' + repr(item.size))
         else:
@@ -528,8 +551,8 @@ for name, (_, _, forms) in instrs.items():
 
 cc.line('const (')
 with CodeBlock(cc):
-    cc.line('_MAX_ARGS  = %d' % nargs)
-    cc.line('_MAX_FORMS = %d' % nforms)
+    cc.line('_N_args  = %d' % nargs)
+    cc.line('_N_forms = %d' % nforms)
 cc.line(')')
 cc.line()
 cc.line('// Instructions maps all the instruction name to it\'s encoder function.')
@@ -563,7 +586,7 @@ for name in sorted(instrs):
                 if argc == 0:
                     cc.line('panic("instruction %s takes no operands")' % name)
                 elif argc == 1:
-                    cc.line('panic("instruction %s takes exactly operands")' % name)
+                    cc.line('panic("instruction %s takes exactly 1 operand")' % name)
                 else:
                     cc.line('panic("instruction %s takes exactly %d operands")' % (name, argc))
             cc.line('}')
@@ -588,18 +611,19 @@ cc.line('package x86_64')
 cc.line()
 
 for name, (ins, desc, forms) in sorted(instrs.items()):
-    isax = set(v.name for f in forms for v in f.isa_extensions)
     cc.line('// %s performs "%s".' % (name, desc))
     cc.line('//')
     cc.line('// Mnemonic        : ' + ins)
-    if isax:
-        cc.line('// ISA extensions  : ' + ', '.join(sorted(isax)))
     cc.line('// Supported forms : (%d form%s)' % (len(forms), '' if len(forms) == 1 else 's'))
     cc.line('//')
     nops = set()
+    fwidth = max(map(len, map(dump_form, forms)))
     for form in forms:
         nops.add(len(form.operands))
-        cc.line('//    * ' + dump_form(form))
+        if not form.isa_extensions:
+            cc.line('//    * ' + dump_form(form))
+        else:
+            cc.line('//    * %-*s    [%s]' % (fwidth, dump_form(form), ','.join(sorted(v.name for v in form.isa_extensions))))
     nfix = min(nops)
     args = ['v%d interface{}' % i for i in range(nfix)]
     if len(nops) != 1:
@@ -609,20 +633,20 @@ for name, (ins, desc, forms) in sorted(instrs.items()):
     with CodeBlock(cc):
         base = ['v%d' % i for i in range(nfix)]
         if len(nops) == 1:
-            cc.line('p := self.alloc(%d, Operands{%s})' % (nfix, ', '.join(base)))
+            cc.line('p := self.alloc("%s", %d, Operands { %s })' % (name, nfix, ', '.join(base)))
         else:
             cc.line('var p *Instruction')
             cc.line('switch len(vv) {')
             with CodeBlock(cc):
                 for argc in sorted(nops):
                     args = base[:] + ['vv[%d]' % i for i in range(argc - nfix)]
-                    cc.line('case %d  : p = self.alloc(%d, Operands{%s})' % (argc - nfix, argc, ', '.join(args)))
+                    cc.line('case %d  : p = self.alloc("%s", %d, Operands { %s })' % (argc - nfix, name, argc, ', '.join(args)))
                 cc.line('default : panic("instruction %s takes %s operands")' % (name, ' or '.join(map(str, sorted(nops)))))
             cc.line('}')
         if name == 'JMP':
-            cc.line('p.branch = _BranchUnconditional')
-        elif name in CONDITIONAL_BRANCHES:
-            cc.line('p.branch = _BranchConditional')
+            cc.line('p.branch = _B_unconditional')
+        elif name in BRANCH_INSTRUCTIONS:
+            cc.line('p.branch = _B_conditional')
         is_labeled = False
         must_success = False
         for form in forms:
@@ -641,6 +665,7 @@ for name, (ins, desc, forms) in sorted(instrs.items()):
                 must_success = True
             if form.isa_extensions:
                 cc.line('self.require(%s)' % require_isa(form.isa_extensions))
+            cc.line('p.domain = ' + DOMAIN_MAP[domains.get(form.name, 'misc')])
             for enc in form.encodings:
                 flags, instr = generate_encoding(enc, ops, gen_branch = False)
                 cc.line('p.add(%s, func(m *_Encoding, v []interface{}) {' % flags)

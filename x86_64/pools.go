@@ -63,7 +63,7 @@ func clearProgram(p *Program) *Program {
     return p
 }
 
-func newInstruction(argc int, argv Operands) *Instruction {
+func newInstruction(name string, argc int, argv Operands) *Instruction {
     var v interface{}
     var p *Instruction
 
@@ -75,6 +75,7 @@ func newInstruction(argc int, argv Operands) *Instruction {
     }
 
     /* initialize the instruction */
+    p.name = name
     p.argc = argc
     p.argv = argv
     return p

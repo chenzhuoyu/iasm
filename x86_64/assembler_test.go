@@ -96,5 +96,5 @@ func TestAssembler_RIPRelative(t *testing.T) {
     e := p.Assemble(`leaq 0x1b(%rip), %rsi`)
     require.NoError(t, e)
     spew.Dump(p.Code())
-    require.Equal(t, []byte{0x48, 0x8d, 0x35, 0x1b, 0x00, 0x00, 0x00}, p.Code())
+    require.Equal(t, []byte { 0x48, 0x8d, 0x35, 0x1b, 0x00, 0x00, 0x00 }, p.Code())
 }

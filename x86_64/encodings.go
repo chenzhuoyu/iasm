@@ -56,7 +56,7 @@ func kcode(v interface{}) byte {
         case ZMMRegister    : return 0
         case RegisterMask   : return byte(r.K)
         case MaskedRegister : return byte(r.Mask.K)
-        case MemoryOperand  : return toKcodeMem(r)
+        case *MemoryOperand : return toKcodeMem(r)
         default             : panic("v is not a maskable operand")
     }
 }
@@ -69,7 +69,7 @@ func zcode(v interface{}) byte {
         case ZMMRegister    : return 0
         case RegisterMask   : return toZcodeRegM(r)
         case MaskedRegister : return toZcodeRegM(r.Mask)
-        case MemoryOperand  : return toZcodeMem(r)
+        case *MemoryOperand : return toZcodeMem(r)
         default             : panic("v is not a maskable operand")
     }
 }
@@ -179,7 +179,7 @@ func toEcodeVMM(v interface{}, x byte) byte {
     }
 }
 
-func toKcodeMem(v MemoryOperand) byte {
+func toKcodeMem(v *MemoryOperand) byte {
     if !v.Masked {
         return 0
     } else {
@@ -187,7 +187,7 @@ func toKcodeMem(v MemoryOperand) byte {
     }
 }
 
-func toZcodeMem(v MemoryOperand) byte {
+func toZcodeMem(v *MemoryOperand) byte {
     if !v.Masked || v.Mask.Z {
         return 0
     } else {
@@ -216,24 +216,24 @@ func toHLcodeReg8(v Register8) byte {
 /** Instruction Encoding Helpers **/
 
 const (
-    _REL1 = 1 << iota
-    _REL4
+    _N_inst = 16
 )
 
 const (
-    _MAX_INST = 16
+    _F_rel1 = 1 << iota
+    _F_rel4
 )
 
 type _Encoding struct {
     len     int
     flags   int
-    bytes   [_MAX_INST]byte
+    bytes   [_N_inst]byte
     encoder func(m *_Encoding, v []interface{})
 }
 
 // buf ensures len + n <= len(bytes).
 func (self *_Encoding) buf(n int) []byte {
-    if i := self.len; i + n > _MAX_INST {
+    if i := self.len; i + n > _N_inst {
         panic("instruction too long")
     } else {
         return self.bytes[i:]
@@ -309,7 +309,7 @@ func (self *_Encoding) vex2(lpp byte, r byte, rm interface{}, vvvv byte) {
     }
 
     /* VEX.vvvv must be a 4-bit mask */
-    if vvvv &^ 0b111 != 0 {
+    if vvvv &^ 0b1111 != 0 {
         panic("VEX.vvvv must be a 4-bit mask")
     }
 
@@ -329,7 +329,7 @@ func (self *_Encoding) vex2(lpp byte, r byte, rm interface{}, vvvv byte) {
         self.emit(0xc5)
         self.emit(0xf8 ^ (r << 7) ^ (vvvv << 3) ^ lpp)
     } else {
-        self.emit(0xc6)
+        self.emit(0xc4)
         self.emit(0xe1 ^ (r << 7) ^ (x << 6) ^ (b << 5))
         self.emit(0x78 ^ (vvvv << 3) ^ lpp)
     }
@@ -360,7 +360,7 @@ func (self *_Encoding) vex3(esc byte, mmmmm byte, wlpp byte, r byte, rm interfac
     }
 
     /* VEX.vvvv must be a 4-bit mask */
-    if vvvv &^ 0b111 != 0 {
+    if vvvv &^ 0b1111 != 0 {
         panic("VEX.vvvv must be a 4-bit mask")
     }
 
@@ -424,12 +424,12 @@ func (self *_Encoding) evex(mm byte, w1pp byte, ll byte, rr byte, rm interface{}
     }
 
     /* EVEX.aaa must be a 3-bit mask */
-    if aaa &^ 0b111 == 0 {
+    if aaa &^ 0b111 != 0 {
         panic("EVEX.aaa must be a 3-bit mask")
     }
 
     /* EVEX.v'vvvv must be a 5-bit mask */
-    if vvvvv &^ 0b11111 == 0 {
+    if vvvvv &^ 0b11111 != 0 {
         panic("EVEX.v'vvvv must be a 5-bit mask")
     }
 

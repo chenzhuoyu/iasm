@@ -3,8 +3,8 @@
 package x86_64
 
 const (
-    _MAX_ARGS  = 5
-    _MAX_FORMS = 23
+    _N_args  = 5
+    _N_forms = 23
 )
 
 // Instructions maps all the instruction name to it's encoder function.
@@ -1819,7 +1819,7 @@ func __asm_proxy_BSWAPL__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.BSWAPL(v[0])
     } else {
-        panic("instruction BSWAPL takes exactly operands")
+        panic("instruction BSWAPL takes exactly 1 operand")
     }
 }
 
@@ -1827,7 +1827,7 @@ func __asm_proxy_BSWAPQ__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.BSWAPQ(v[0])
     } else {
-        panic("instruction BSWAPQ takes exactly operands")
+        panic("instruction BSWAPQ takes exactly 1 operand")
     }
 }
 
@@ -1939,7 +1939,7 @@ func __asm_proxy_CALL__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.CALL(v[0])
     } else {
-        panic("instruction CALL takes exactly operands")
+        panic("instruction CALL takes exactly 1 operand")
     }
 }
 
@@ -1947,7 +1947,7 @@ func __asm_proxy_CALLQ__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.CALLQ(v[0])
     } else {
-        panic("instruction CALLQ takes exactly operands")
+        panic("instruction CALLQ takes exactly 1 operand")
     }
 }
 
@@ -1979,7 +1979,7 @@ func __asm_proxy_CLFLUSH__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.CLFLUSH(v[0])
     } else {
-        panic("instruction CLFLUSH takes exactly operands")
+        panic("instruction CLFLUSH takes exactly 1 operand")
     }
 }
 
@@ -1987,7 +1987,7 @@ func __asm_proxy_CLFLUSHOPT__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.CLFLUSHOPT(v[0])
     } else {
-        panic("instruction CLFLUSHOPT takes exactly operands")
+        panic("instruction CLFLUSHOPT takes exactly 1 operand")
     }
 }
 
@@ -2011,7 +2011,7 @@ func __asm_proxy_CLWB__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.CLWB(v[0])
     } else {
-        panic("instruction CLWB takes exactly operands")
+        panic("instruction CLWB takes exactly 1 operand")
     }
 }
 
@@ -2339,7 +2339,7 @@ func __asm_proxy_CMPXCHG16B__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.CMPXCHG16B(v[0])
     } else {
-        panic("instruction CMPXCHG16B takes exactly operands")
+        panic("instruction CMPXCHG16B takes exactly 1 operand")
     }
 }
 
@@ -2347,7 +2347,7 @@ func __asm_proxy_CMPXCHG8B__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.CMPXCHG8B(v[0])
     } else {
-        panic("instruction CMPXCHG8B takes exactly operands")
+        panic("instruction CMPXCHG8B takes exactly 1 operand")
     }
 }
 
@@ -2643,7 +2643,7 @@ func __asm_proxy_DECB__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.DECB(v[0])
     } else {
-        panic("instruction DECB takes exactly operands")
+        panic("instruction DECB takes exactly 1 operand")
     }
 }
 
@@ -2651,7 +2651,7 @@ func __asm_proxy_DECL__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.DECL(v[0])
     } else {
-        panic("instruction DECL takes exactly operands")
+        panic("instruction DECL takes exactly 1 operand")
     }
 }
 
@@ -2659,7 +2659,7 @@ func __asm_proxy_DECQ__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.DECQ(v[0])
     } else {
-        panic("instruction DECQ takes exactly operands")
+        panic("instruction DECQ takes exactly 1 operand")
     }
 }
 
@@ -2667,7 +2667,7 @@ func __asm_proxy_DECW__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.DECW(v[0])
     } else {
-        panic("instruction DECW takes exactly operands")
+        panic("instruction DECW takes exactly 1 operand")
     }
 }
 
@@ -2675,7 +2675,7 @@ func __asm_proxy_DIVB__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.DIVB(v[0])
     } else {
-        panic("instruction DIVB takes exactly operands")
+        panic("instruction DIVB takes exactly 1 operand")
     }
 }
 
@@ -2683,7 +2683,7 @@ func __asm_proxy_DIVL__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.DIVL(v[0])
     } else {
-        panic("instruction DIVL takes exactly operands")
+        panic("instruction DIVL takes exactly 1 operand")
     }
 }
 
@@ -2707,7 +2707,7 @@ func __asm_proxy_DIVQ__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.DIVQ(v[0])
     } else {
-        panic("instruction DIVQ takes exactly operands")
+        panic("instruction DIVQ takes exactly 1 operand")
     }
 }
 
@@ -2731,7 +2731,7 @@ func __asm_proxy_DIVW__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.DIVW(v[0])
     } else {
-        panic("instruction DIVW takes exactly operands")
+        panic("instruction DIVW takes exactly 1 operand")
     }
 }
 
@@ -2819,7 +2819,7 @@ func __asm_proxy_IDIVB__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.IDIVB(v[0])
     } else {
-        panic("instruction IDIVB takes exactly operands")
+        panic("instruction IDIVB takes exactly 1 operand")
     }
 }
 
@@ -2827,7 +2827,7 @@ func __asm_proxy_IDIVL__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.IDIVL(v[0])
     } else {
-        panic("instruction IDIVL takes exactly operands")
+        panic("instruction IDIVL takes exactly 1 operand")
     }
 }
 
@@ -2835,7 +2835,7 @@ func __asm_proxy_IDIVQ__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.IDIVQ(v[0])
     } else {
-        panic("instruction IDIVQ takes exactly operands")
+        panic("instruction IDIVQ takes exactly 1 operand")
     }
 }
 
@@ -2843,7 +2843,7 @@ func __asm_proxy_IDIVW__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.IDIVW(v[0])
     } else {
-        panic("instruction IDIVW takes exactly operands")
+        panic("instruction IDIVW takes exactly 1 operand")
     }
 }
 
@@ -2851,7 +2851,7 @@ func __asm_proxy_IMULB__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.IMULB(v[0])
     } else {
-        panic("instruction IMULB takes exactly operands")
+        panic("instruction IMULB takes exactly 1 operand")
     }
 }
 
@@ -2886,7 +2886,7 @@ func __asm_proxy_INCB__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.INCB(v[0])
     } else {
-        panic("instruction INCB takes exactly operands")
+        panic("instruction INCB takes exactly 1 operand")
     }
 }
 
@@ -2894,7 +2894,7 @@ func __asm_proxy_INCL__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.INCL(v[0])
     } else {
-        panic("instruction INCL takes exactly operands")
+        panic("instruction INCL takes exactly 1 operand")
     }
 }
 
@@ -2902,7 +2902,7 @@ func __asm_proxy_INCQ__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.INCQ(v[0])
     } else {
-        panic("instruction INCQ takes exactly operands")
+        panic("instruction INCQ takes exactly 1 operand")
     }
 }
 
@@ -2910,7 +2910,7 @@ func __asm_proxy_INCW__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.INCW(v[0])
     } else {
-        panic("instruction INCW takes exactly operands")
+        panic("instruction INCW takes exactly 1 operand")
     }
 }
 
@@ -2934,7 +2934,7 @@ func __asm_proxy_INT__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.INT(v[0])
     } else {
-        panic("instruction INT takes exactly operands")
+        panic("instruction INT takes exactly 1 operand")
     }
 }
 
@@ -2942,7 +2942,7 @@ func __asm_proxy_JA__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.JA(v[0])
     } else {
-        panic("instruction JA takes exactly operands")
+        panic("instruction JA takes exactly 1 operand")
     }
 }
 
@@ -2950,7 +2950,7 @@ func __asm_proxy_JAE__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.JAE(v[0])
     } else {
-        panic("instruction JAE takes exactly operands")
+        panic("instruction JAE takes exactly 1 operand")
     }
 }
 
@@ -2958,7 +2958,7 @@ func __asm_proxy_JB__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.JB(v[0])
     } else {
-        panic("instruction JB takes exactly operands")
+        panic("instruction JB takes exactly 1 operand")
     }
 }
 
@@ -2966,7 +2966,7 @@ func __asm_proxy_JBE__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.JBE(v[0])
     } else {
-        panic("instruction JBE takes exactly operands")
+        panic("instruction JBE takes exactly 1 operand")
     }
 }
 
@@ -2974,7 +2974,7 @@ func __asm_proxy_JC__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.JC(v[0])
     } else {
-        panic("instruction JC takes exactly operands")
+        panic("instruction JC takes exactly 1 operand")
     }
 }
 
@@ -2982,7 +2982,7 @@ func __asm_proxy_JE__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.JE(v[0])
     } else {
-        panic("instruction JE takes exactly operands")
+        panic("instruction JE takes exactly 1 operand")
     }
 }
 
@@ -2990,7 +2990,7 @@ func __asm_proxy_JECXZ__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.JECXZ(v[0])
     } else {
-        panic("instruction JECXZ takes exactly operands")
+        panic("instruction JECXZ takes exactly 1 operand")
     }
 }
 
@@ -2998,7 +2998,7 @@ func __asm_proxy_JG__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.JG(v[0])
     } else {
-        panic("instruction JG takes exactly operands")
+        panic("instruction JG takes exactly 1 operand")
     }
 }
 
@@ -3006,7 +3006,7 @@ func __asm_proxy_JGE__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.JGE(v[0])
     } else {
-        panic("instruction JGE takes exactly operands")
+        panic("instruction JGE takes exactly 1 operand")
     }
 }
 
@@ -3014,7 +3014,7 @@ func __asm_proxy_JL__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.JL(v[0])
     } else {
-        panic("instruction JL takes exactly operands")
+        panic("instruction JL takes exactly 1 operand")
     }
 }
 
@@ -3022,7 +3022,7 @@ func __asm_proxy_JLE__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.JLE(v[0])
     } else {
-        panic("instruction JLE takes exactly operands")
+        panic("instruction JLE takes exactly 1 operand")
     }
 }
 
@@ -3030,7 +3030,7 @@ func __asm_proxy_JMP__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.JMP(v[0])
     } else {
-        panic("instruction JMP takes exactly operands")
+        panic("instruction JMP takes exactly 1 operand")
     }
 }
 
@@ -3038,7 +3038,7 @@ func __asm_proxy_JMPQ__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.JMPQ(v[0])
     } else {
-        panic("instruction JMPQ takes exactly operands")
+        panic("instruction JMPQ takes exactly 1 operand")
     }
 }
 
@@ -3046,7 +3046,7 @@ func __asm_proxy_JNA__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.JNA(v[0])
     } else {
-        panic("instruction JNA takes exactly operands")
+        panic("instruction JNA takes exactly 1 operand")
     }
 }
 
@@ -3054,7 +3054,7 @@ func __asm_proxy_JNAE__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.JNAE(v[0])
     } else {
-        panic("instruction JNAE takes exactly operands")
+        panic("instruction JNAE takes exactly 1 operand")
     }
 }
 
@@ -3062,7 +3062,7 @@ func __asm_proxy_JNB__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.JNB(v[0])
     } else {
-        panic("instruction JNB takes exactly operands")
+        panic("instruction JNB takes exactly 1 operand")
     }
 }
 
@@ -3070,7 +3070,7 @@ func __asm_proxy_JNBE__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.JNBE(v[0])
     } else {
-        panic("instruction JNBE takes exactly operands")
+        panic("instruction JNBE takes exactly 1 operand")
     }
 }
 
@@ -3078,7 +3078,7 @@ func __asm_proxy_JNC__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.JNC(v[0])
     } else {
-        panic("instruction JNC takes exactly operands")
+        panic("instruction JNC takes exactly 1 operand")
     }
 }
 
@@ -3086,7 +3086,7 @@ func __asm_proxy_JNE__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.JNE(v[0])
     } else {
-        panic("instruction JNE takes exactly operands")
+        panic("instruction JNE takes exactly 1 operand")
     }
 }
 
@@ -3094,7 +3094,7 @@ func __asm_proxy_JNG__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.JNG(v[0])
     } else {
-        panic("instruction JNG takes exactly operands")
+        panic("instruction JNG takes exactly 1 operand")
     }
 }
 
@@ -3102,7 +3102,7 @@ func __asm_proxy_JNGE__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.JNGE(v[0])
     } else {
-        panic("instruction JNGE takes exactly operands")
+        panic("instruction JNGE takes exactly 1 operand")
     }
 }
 
@@ -3110,7 +3110,7 @@ func __asm_proxy_JNL__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.JNL(v[0])
     } else {
-        panic("instruction JNL takes exactly operands")
+        panic("instruction JNL takes exactly 1 operand")
     }
 }
 
@@ -3118,7 +3118,7 @@ func __asm_proxy_JNLE__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.JNLE(v[0])
     } else {
-        panic("instruction JNLE takes exactly operands")
+        panic("instruction JNLE takes exactly 1 operand")
     }
 }
 
@@ -3126,7 +3126,7 @@ func __asm_proxy_JNO__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.JNO(v[0])
     } else {
-        panic("instruction JNO takes exactly operands")
+        panic("instruction JNO takes exactly 1 operand")
     }
 }
 
@@ -3134,7 +3134,7 @@ func __asm_proxy_JNP__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.JNP(v[0])
     } else {
-        panic("instruction JNP takes exactly operands")
+        panic("instruction JNP takes exactly 1 operand")
     }
 }
 
@@ -3142,7 +3142,7 @@ func __asm_proxy_JNS__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.JNS(v[0])
     } else {
-        panic("instruction JNS takes exactly operands")
+        panic("instruction JNS takes exactly 1 operand")
     }
 }
 
@@ -3150,7 +3150,7 @@ func __asm_proxy_JNZ__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.JNZ(v[0])
     } else {
-        panic("instruction JNZ takes exactly operands")
+        panic("instruction JNZ takes exactly 1 operand")
     }
 }
 
@@ -3158,7 +3158,7 @@ func __asm_proxy_JO__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.JO(v[0])
     } else {
-        panic("instruction JO takes exactly operands")
+        panic("instruction JO takes exactly 1 operand")
     }
 }
 
@@ -3166,7 +3166,7 @@ func __asm_proxy_JP__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.JP(v[0])
     } else {
-        panic("instruction JP takes exactly operands")
+        panic("instruction JP takes exactly 1 operand")
     }
 }
 
@@ -3174,7 +3174,7 @@ func __asm_proxy_JPE__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.JPE(v[0])
     } else {
-        panic("instruction JPE takes exactly operands")
+        panic("instruction JPE takes exactly 1 operand")
     }
 }
 
@@ -3182,7 +3182,7 @@ func __asm_proxy_JPO__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.JPO(v[0])
     } else {
-        panic("instruction JPO takes exactly operands")
+        panic("instruction JPO takes exactly 1 operand")
     }
 }
 
@@ -3190,7 +3190,7 @@ func __asm_proxy_JRCXZ__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.JRCXZ(v[0])
     } else {
-        panic("instruction JRCXZ takes exactly operands")
+        panic("instruction JRCXZ takes exactly 1 operand")
     }
 }
 
@@ -3198,7 +3198,7 @@ func __asm_proxy_JS__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.JS(v[0])
     } else {
-        panic("instruction JS takes exactly operands")
+        panic("instruction JS takes exactly 1 operand")
     }
 }
 
@@ -3206,7 +3206,7 @@ func __asm_proxy_JZ__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.JZ(v[0])
     } else {
-        panic("instruction JZ takes exactly operands")
+        panic("instruction JZ takes exactly 1 operand")
     }
 }
 
@@ -3630,7 +3630,7 @@ func __asm_proxy_LDMXCSR__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.LDMXCSR(v[0])
     } else {
-        panic("instruction LDMXCSR takes exactly operands")
+        panic("instruction LDMXCSR takes exactly 1 operand")
     }
 }
 
@@ -4198,7 +4198,7 @@ func __asm_proxy_MULB__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.MULB(v[0])
     } else {
-        panic("instruction MULB takes exactly operands")
+        panic("instruction MULB takes exactly 1 operand")
     }
 }
 
@@ -4206,7 +4206,7 @@ func __asm_proxy_MULL__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.MULL(v[0])
     } else {
-        panic("instruction MULL takes exactly operands")
+        panic("instruction MULL takes exactly 1 operand")
     }
 }
 
@@ -4230,7 +4230,7 @@ func __asm_proxy_MULQ__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.MULQ(v[0])
     } else {
-        panic("instruction MULQ takes exactly operands")
+        panic("instruction MULQ takes exactly 1 operand")
     }
 }
 
@@ -4254,7 +4254,7 @@ func __asm_proxy_MULW__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.MULW(v[0])
     } else {
-        panic("instruction MULW takes exactly operands")
+        panic("instruction MULW takes exactly 1 operand")
     }
 }
 
@@ -4294,7 +4294,7 @@ func __asm_proxy_NEGB__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.NEGB(v[0])
     } else {
-        panic("instruction NEGB takes exactly operands")
+        panic("instruction NEGB takes exactly 1 operand")
     }
 }
 
@@ -4302,7 +4302,7 @@ func __asm_proxy_NEGL__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.NEGL(v[0])
     } else {
-        panic("instruction NEGL takes exactly operands")
+        panic("instruction NEGL takes exactly 1 operand")
     }
 }
 
@@ -4310,7 +4310,7 @@ func __asm_proxy_NEGQ__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.NEGQ(v[0])
     } else {
-        panic("instruction NEGQ takes exactly operands")
+        panic("instruction NEGQ takes exactly 1 operand")
     }
 }
 
@@ -4318,7 +4318,7 @@ func __asm_proxy_NEGW__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.NEGW(v[0])
     } else {
-        panic("instruction NEGW takes exactly operands")
+        panic("instruction NEGW takes exactly 1 operand")
     }
 }
 
@@ -4334,7 +4334,7 @@ func __asm_proxy_NOTB__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.NOTB(v[0])
     } else {
-        panic("instruction NOTB takes exactly operands")
+        panic("instruction NOTB takes exactly 1 operand")
     }
 }
 
@@ -4342,7 +4342,7 @@ func __asm_proxy_NOTL__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.NOTL(v[0])
     } else {
-        panic("instruction NOTL takes exactly operands")
+        panic("instruction NOTL takes exactly 1 operand")
     }
 }
 
@@ -4350,7 +4350,7 @@ func __asm_proxy_NOTQ__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.NOTQ(v[0])
     } else {
-        panic("instruction NOTQ takes exactly operands")
+        panic("instruction NOTQ takes exactly 1 operand")
     }
 }
 
@@ -4358,7 +4358,7 @@ func __asm_proxy_NOTW__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.NOTW(v[0])
     } else {
-        panic("instruction NOTW takes exactly operands")
+        panic("instruction NOTW takes exactly 1 operand")
     }
 }
 
@@ -5318,7 +5318,7 @@ func __asm_proxy_POPQ__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.POPQ(v[0])
     } else {
-        panic("instruction POPQ takes exactly operands")
+        panic("instruction POPQ takes exactly 1 operand")
     }
 }
 
@@ -5326,7 +5326,7 @@ func __asm_proxy_POPW__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.POPW(v[0])
     } else {
-        panic("instruction POPW takes exactly operands")
+        panic("instruction POPW takes exactly 1 operand")
     }
 }
 
@@ -5342,7 +5342,7 @@ func __asm_proxy_PREFETCH__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.PREFETCH(v[0])
     } else {
-        panic("instruction PREFETCH takes exactly operands")
+        panic("instruction PREFETCH takes exactly 1 operand")
     }
 }
 
@@ -5350,7 +5350,7 @@ func __asm_proxy_PREFETCHNTA__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.PREFETCHNTA(v[0])
     } else {
-        panic("instruction PREFETCHNTA takes exactly operands")
+        panic("instruction PREFETCHNTA takes exactly 1 operand")
     }
 }
 
@@ -5358,7 +5358,7 @@ func __asm_proxy_PREFETCHT0__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.PREFETCHT0(v[0])
     } else {
-        panic("instruction PREFETCHT0 takes exactly operands")
+        panic("instruction PREFETCHT0 takes exactly 1 operand")
     }
 }
 
@@ -5366,7 +5366,7 @@ func __asm_proxy_PREFETCHT1__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.PREFETCHT1(v[0])
     } else {
-        panic("instruction PREFETCHT1 takes exactly operands")
+        panic("instruction PREFETCHT1 takes exactly 1 operand")
     }
 }
 
@@ -5374,7 +5374,7 @@ func __asm_proxy_PREFETCHT2__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.PREFETCHT2(v[0])
     } else {
-        panic("instruction PREFETCHT2 takes exactly operands")
+        panic("instruction PREFETCHT2 takes exactly 1 operand")
     }
 }
 
@@ -5382,7 +5382,7 @@ func __asm_proxy_PREFETCHW__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.PREFETCHW(v[0])
     } else {
-        panic("instruction PREFETCHW takes exactly operands")
+        panic("instruction PREFETCHW takes exactly 1 operand")
     }
 }
 
@@ -5390,7 +5390,7 @@ func __asm_proxy_PREFETCHWT1__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.PREFETCHWT1(v[0])
     } else {
-        panic("instruction PREFETCHWT1 takes exactly operands")
+        panic("instruction PREFETCHWT1 takes exactly 1 operand")
     }
 }
 
@@ -5694,7 +5694,7 @@ func __asm_proxy_PUSHQ__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.PUSHQ(v[0])
     } else {
-        panic("instruction PUSHQ takes exactly operands")
+        panic("instruction PUSHQ takes exactly 1 operand")
     }
 }
 
@@ -5702,7 +5702,7 @@ func __asm_proxy_PUSHW__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.PUSHW(v[0])
     } else {
-        panic("instruction PUSHW takes exactly operands")
+        panic("instruction PUSHW takes exactly 1 operand")
     }
 }
 
@@ -5798,7 +5798,7 @@ func __asm_proxy_RDRAND__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.RDRAND(v[0])
     } else {
-        panic("instruction RDRAND takes exactly operands")
+        panic("instruction RDRAND takes exactly 1 operand")
     }
 }
 
@@ -5806,7 +5806,7 @@ func __asm_proxy_RDSEED__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.RDSEED(v[0])
     } else {
-        panic("instruction RDSEED takes exactly operands")
+        panic("instruction RDSEED takes exactly 1 operand")
     }
 }
 
@@ -6078,7 +6078,7 @@ func __asm_proxy_SETA__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.SETA(v[0])
     } else {
-        panic("instruction SETA takes exactly operands")
+        panic("instruction SETA takes exactly 1 operand")
     }
 }
 
@@ -6086,7 +6086,7 @@ func __asm_proxy_SETAE__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.SETAE(v[0])
     } else {
-        panic("instruction SETAE takes exactly operands")
+        panic("instruction SETAE takes exactly 1 operand")
     }
 }
 
@@ -6094,7 +6094,7 @@ func __asm_proxy_SETB__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.SETB(v[0])
     } else {
-        panic("instruction SETB takes exactly operands")
+        panic("instruction SETB takes exactly 1 operand")
     }
 }
 
@@ -6102,7 +6102,7 @@ func __asm_proxy_SETBE__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.SETBE(v[0])
     } else {
-        panic("instruction SETBE takes exactly operands")
+        panic("instruction SETBE takes exactly 1 operand")
     }
 }
 
@@ -6110,7 +6110,7 @@ func __asm_proxy_SETC__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.SETC(v[0])
     } else {
-        panic("instruction SETC takes exactly operands")
+        panic("instruction SETC takes exactly 1 operand")
     }
 }
 
@@ -6118,7 +6118,7 @@ func __asm_proxy_SETE__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.SETE(v[0])
     } else {
-        panic("instruction SETE takes exactly operands")
+        panic("instruction SETE takes exactly 1 operand")
     }
 }
 
@@ -6126,7 +6126,7 @@ func __asm_proxy_SETG__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.SETG(v[0])
     } else {
-        panic("instruction SETG takes exactly operands")
+        panic("instruction SETG takes exactly 1 operand")
     }
 }
 
@@ -6134,7 +6134,7 @@ func __asm_proxy_SETGE__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.SETGE(v[0])
     } else {
-        panic("instruction SETGE takes exactly operands")
+        panic("instruction SETGE takes exactly 1 operand")
     }
 }
 
@@ -6142,7 +6142,7 @@ func __asm_proxy_SETL__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.SETL(v[0])
     } else {
-        panic("instruction SETL takes exactly operands")
+        panic("instruction SETL takes exactly 1 operand")
     }
 }
 
@@ -6150,7 +6150,7 @@ func __asm_proxy_SETLE__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.SETLE(v[0])
     } else {
-        panic("instruction SETLE takes exactly operands")
+        panic("instruction SETLE takes exactly 1 operand")
     }
 }
 
@@ -6158,7 +6158,7 @@ func __asm_proxy_SETNA__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.SETNA(v[0])
     } else {
-        panic("instruction SETNA takes exactly operands")
+        panic("instruction SETNA takes exactly 1 operand")
     }
 }
 
@@ -6166,7 +6166,7 @@ func __asm_proxy_SETNAE__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.SETNAE(v[0])
     } else {
-        panic("instruction SETNAE takes exactly operands")
+        panic("instruction SETNAE takes exactly 1 operand")
     }
 }
 
@@ -6174,7 +6174,7 @@ func __asm_proxy_SETNB__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.SETNB(v[0])
     } else {
-        panic("instruction SETNB takes exactly operands")
+        panic("instruction SETNB takes exactly 1 operand")
     }
 }
 
@@ -6182,7 +6182,7 @@ func __asm_proxy_SETNBE__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.SETNBE(v[0])
     } else {
-        panic("instruction SETNBE takes exactly operands")
+        panic("instruction SETNBE takes exactly 1 operand")
     }
 }
 
@@ -6190,7 +6190,7 @@ func __asm_proxy_SETNC__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.SETNC(v[0])
     } else {
-        panic("instruction SETNC takes exactly operands")
+        panic("instruction SETNC takes exactly 1 operand")
     }
 }
 
@@ -6198,7 +6198,7 @@ func __asm_proxy_SETNE__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.SETNE(v[0])
     } else {
-        panic("instruction SETNE takes exactly operands")
+        panic("instruction SETNE takes exactly 1 operand")
     }
 }
 
@@ -6206,7 +6206,7 @@ func __asm_proxy_SETNG__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.SETNG(v[0])
     } else {
-        panic("instruction SETNG takes exactly operands")
+        panic("instruction SETNG takes exactly 1 operand")
     }
 }
 
@@ -6214,7 +6214,7 @@ func __asm_proxy_SETNGE__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.SETNGE(v[0])
     } else {
-        panic("instruction SETNGE takes exactly operands")
+        panic("instruction SETNGE takes exactly 1 operand")
     }
 }
 
@@ -6222,7 +6222,7 @@ func __asm_proxy_SETNL__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.SETNL(v[0])
     } else {
-        panic("instruction SETNL takes exactly operands")
+        panic("instruction SETNL takes exactly 1 operand")
     }
 }
 
@@ -6230,7 +6230,7 @@ func __asm_proxy_SETNLE__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.SETNLE(v[0])
     } else {
-        panic("instruction SETNLE takes exactly operands")
+        panic("instruction SETNLE takes exactly 1 operand")
     }
 }
 
@@ -6238,7 +6238,7 @@ func __asm_proxy_SETNO__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.SETNO(v[0])
     } else {
-        panic("instruction SETNO takes exactly operands")
+        panic("instruction SETNO takes exactly 1 operand")
     }
 }
 
@@ -6246,7 +6246,7 @@ func __asm_proxy_SETNP__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.SETNP(v[0])
     } else {
-        panic("instruction SETNP takes exactly operands")
+        panic("instruction SETNP takes exactly 1 operand")
     }
 }
 
@@ -6254,7 +6254,7 @@ func __asm_proxy_SETNS__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.SETNS(v[0])
     } else {
-        panic("instruction SETNS takes exactly operands")
+        panic("instruction SETNS takes exactly 1 operand")
     }
 }
 
@@ -6262,7 +6262,7 @@ func __asm_proxy_SETNZ__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.SETNZ(v[0])
     } else {
-        panic("instruction SETNZ takes exactly operands")
+        panic("instruction SETNZ takes exactly 1 operand")
     }
 }
 
@@ -6270,7 +6270,7 @@ func __asm_proxy_SETO__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.SETO(v[0])
     } else {
-        panic("instruction SETO takes exactly operands")
+        panic("instruction SETO takes exactly 1 operand")
     }
 }
 
@@ -6278,7 +6278,7 @@ func __asm_proxy_SETP__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.SETP(v[0])
     } else {
-        panic("instruction SETP takes exactly operands")
+        panic("instruction SETP takes exactly 1 operand")
     }
 }
 
@@ -6286,7 +6286,7 @@ func __asm_proxy_SETPE__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.SETPE(v[0])
     } else {
-        panic("instruction SETPE takes exactly operands")
+        panic("instruction SETPE takes exactly 1 operand")
     }
 }
 
@@ -6294,7 +6294,7 @@ func __asm_proxy_SETPO__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.SETPO(v[0])
     } else {
-        panic("instruction SETPO takes exactly operands")
+        panic("instruction SETPO takes exactly 1 operand")
     }
 }
 
@@ -6302,7 +6302,7 @@ func __asm_proxy_SETS__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.SETS(v[0])
     } else {
-        panic("instruction SETS takes exactly operands")
+        panic("instruction SETS takes exactly 1 operand")
     }
 }
 
@@ -6310,7 +6310,7 @@ func __asm_proxy_SETZ__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.SETZ(v[0])
     } else {
-        panic("instruction SETZ takes exactly operands")
+        panic("instruction SETZ takes exactly 1 operand")
     }
 }
 
@@ -6590,7 +6590,7 @@ func __asm_proxy_STMXCSR__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.STMXCSR(v[0])
     } else {
-        panic("instruction STMXCSR takes exactly operands")
+        panic("instruction STMXCSR takes exactly 1 operand")
     }
 }
 
@@ -8430,7 +8430,7 @@ func __asm_proxy_VGATHERPF0DPD__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.VGATHERPF0DPD(v[0])
     } else {
-        panic("instruction VGATHERPF0DPD takes exactly operands")
+        panic("instruction VGATHERPF0DPD takes exactly 1 operand")
     }
 }
 
@@ -8438,7 +8438,7 @@ func __asm_proxy_VGATHERPF0DPS__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.VGATHERPF0DPS(v[0])
     } else {
-        panic("instruction VGATHERPF0DPS takes exactly operands")
+        panic("instruction VGATHERPF0DPS takes exactly 1 operand")
     }
 }
 
@@ -8446,7 +8446,7 @@ func __asm_proxy_VGATHERPF0QPD__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.VGATHERPF0QPD(v[0])
     } else {
-        panic("instruction VGATHERPF0QPD takes exactly operands")
+        panic("instruction VGATHERPF0QPD takes exactly 1 operand")
     }
 }
 
@@ -8454,7 +8454,7 @@ func __asm_proxy_VGATHERPF0QPS__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.VGATHERPF0QPS(v[0])
     } else {
-        panic("instruction VGATHERPF0QPS takes exactly operands")
+        panic("instruction VGATHERPF0QPS takes exactly 1 operand")
     }
 }
 
@@ -8462,7 +8462,7 @@ func __asm_proxy_VGATHERPF1DPD__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.VGATHERPF1DPD(v[0])
     } else {
-        panic("instruction VGATHERPF1DPD takes exactly operands")
+        panic("instruction VGATHERPF1DPD takes exactly 1 operand")
     }
 }
 
@@ -8470,7 +8470,7 @@ func __asm_proxy_VGATHERPF1DPS__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.VGATHERPF1DPS(v[0])
     } else {
-        panic("instruction VGATHERPF1DPS takes exactly operands")
+        panic("instruction VGATHERPF1DPS takes exactly 1 operand")
     }
 }
 
@@ -8478,7 +8478,7 @@ func __asm_proxy_VGATHERPF1QPD__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.VGATHERPF1QPD(v[0])
     } else {
-        panic("instruction VGATHERPF1QPD takes exactly operands")
+        panic("instruction VGATHERPF1QPD takes exactly 1 operand")
     }
 }
 
@@ -8486,7 +8486,7 @@ func __asm_proxy_VGATHERPF1QPS__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.VGATHERPF1QPS(v[0])
     } else {
-        panic("instruction VGATHERPF1QPS takes exactly operands")
+        panic("instruction VGATHERPF1QPS takes exactly 1 operand")
     }
 }
 
@@ -8702,7 +8702,7 @@ func __asm_proxy_VLDMXCSR__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.VLDMXCSR(v[0])
     } else {
-        panic("instruction VLDMXCSR takes exactly operands")
+        panic("instruction VLDMXCSR takes exactly 1 operand")
     }
 }
 
@@ -11870,7 +11870,7 @@ func __asm_proxy_VSCATTERPF0DPD__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.VSCATTERPF0DPD(v[0])
     } else {
-        panic("instruction VSCATTERPF0DPD takes exactly operands")
+        panic("instruction VSCATTERPF0DPD takes exactly 1 operand")
     }
 }
 
@@ -11878,7 +11878,7 @@ func __asm_proxy_VSCATTERPF0DPS__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.VSCATTERPF0DPS(v[0])
     } else {
-        panic("instruction VSCATTERPF0DPS takes exactly operands")
+        panic("instruction VSCATTERPF0DPS takes exactly 1 operand")
     }
 }
 
@@ -11886,7 +11886,7 @@ func __asm_proxy_VSCATTERPF0QPD__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.VSCATTERPF0QPD(v[0])
     } else {
-        panic("instruction VSCATTERPF0QPD takes exactly operands")
+        panic("instruction VSCATTERPF0QPD takes exactly 1 operand")
     }
 }
 
@@ -11894,7 +11894,7 @@ func __asm_proxy_VSCATTERPF0QPS__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.VSCATTERPF0QPS(v[0])
     } else {
-        panic("instruction VSCATTERPF0QPS takes exactly operands")
+        panic("instruction VSCATTERPF0QPS takes exactly 1 operand")
     }
 }
 
@@ -11902,7 +11902,7 @@ func __asm_proxy_VSCATTERPF1DPD__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.VSCATTERPF1DPD(v[0])
     } else {
-        panic("instruction VSCATTERPF1DPD takes exactly operands")
+        panic("instruction VSCATTERPF1DPD takes exactly 1 operand")
     }
 }
 
@@ -11910,7 +11910,7 @@ func __asm_proxy_VSCATTERPF1DPS__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.VSCATTERPF1DPS(v[0])
     } else {
-        panic("instruction VSCATTERPF1DPS takes exactly operands")
+        panic("instruction VSCATTERPF1DPS takes exactly 1 operand")
     }
 }
 
@@ -11918,7 +11918,7 @@ func __asm_proxy_VSCATTERPF1QPD__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.VSCATTERPF1QPD(v[0])
     } else {
-        panic("instruction VSCATTERPF1QPD takes exactly operands")
+        panic("instruction VSCATTERPF1QPD takes exactly 1 operand")
     }
 }
 
@@ -11926,7 +11926,7 @@ func __asm_proxy_VSCATTERPF1QPS__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.VSCATTERPF1QPS(v[0])
     } else {
-        panic("instruction VSCATTERPF1QPS takes exactly operands")
+        panic("instruction VSCATTERPF1QPS takes exactly 1 operand")
     }
 }
 
@@ -12030,7 +12030,7 @@ func __asm_proxy_VSTMXCSR__(p *Program, v ...interface{}) *Instruction {
     if len(v) == 1 {
         return p.VSTMXCSR(v[0])
     } else {
-        panic("instruction VSTMXCSR takes exactly operands")
+        panic("instruction VSTMXCSR takes exactly 1 operand")
     }
 }
 

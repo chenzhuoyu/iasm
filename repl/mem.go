@@ -42,7 +42,7 @@ func mmap(nb uint64) (_Memory, error) {
     if err != 0 {
         return _Memory{}, err
     } else {
-        return _Memory{addr: mm, size: nb}, nil
+        return _Memory { addr: mm, size: nb }, nil
     }
 }
 

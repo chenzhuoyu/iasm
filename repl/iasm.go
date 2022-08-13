@@ -107,7 +107,7 @@ func (self *IASM) handleError() {
     switch v := recover(); v {
         case nil    : break
         case io.EOF : self.handleEOF()
-        default     : panic(v)
+        default     : println(fmt.Sprintf("iasm: %v", v))
     }
 }
 
@@ -136,26 +136,36 @@ func (self *IASM) handleCommand(cmd string) {
         }
     }()
 
-    /* call the command, if any */
-    if fnv = _CMDS[cmd[:pos]]; fnv != nil {
+    /* assembly immediately or call the command, if any */
+    if cmd[0] != '.' {
+        self.handleAsmImmediate(cmd)
+    } else if fnv = _CMDS[cmd[1:pos]]; fnv != nil {
         fnv(self, strings.TrimSpace(cmd[pos:]))
     } else {
         println("iasm: unknown command: " + cmd)
     }
 }
 
+func (self *IASM) handleAsmImmediate(asm string) {
+    if buf, err := self.ias.doasm(0, asm); err != nil {
+        println("iasm: " + err.Error())
+    } else {
+        println(asmdump(buf, math.MaxUint64, asm))
+    }
+}
+
 var _CMDS = map[string]func(*IASM, string) {
-    ".free"   : (*IASM)._cmd_free,
-    ".malloc" : (*IASM)._cmd_malloc,
-    ".info"   : (*IASM)._cmd_info,
-    ".read"   : (*IASM)._cmd_read,
-    ".write"  : (*IASM)._cmd_write,
-    ".fill"   : (*IASM)._cmd_fill,
-    ".regs"   : (*IASM)._cmd_regs,
-    ".asm"    : (*IASM)._cmd_asm,
-    ".sys"    : (*IASM)._cmd_sys,
-    ".exit"   : (*IASM)._cmd_exit,
-    ".help"   : (*IASM)._cmd_help,
+    "free"   : (*IASM)._cmd_free,
+    "malloc" : (*IASM)._cmd_malloc,
+    "info"   : (*IASM)._cmd_info,
+    "read"   : (*IASM)._cmd_read,
+    "write"  : (*IASM)._cmd_write,
+    "fill"   : (*IASM)._cmd_fill,
+    "regs"   : (*IASM)._cmd_regs,
+    "asm"    : (*IASM)._cmd_asm,
+    "sys"    : (*IASM)._cmd_sys,
+    "exit"   : (*IASM)._cmd_exit,
+    "help"   : (*IASM)._cmd_help,
 }
 
 func (self *IASM) _cmd_free(v string) {
