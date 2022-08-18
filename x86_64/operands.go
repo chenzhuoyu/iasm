@@ -295,8 +295,7 @@ func (self *MemoryAddress) isMem() bool {
 }
 
 func (self *MemoryAddress) isMemBase() bool {
-    return (self.Base != nil || self.Index != nil) &&   // must have at least one of `Base` or `Index`
-           (self.Base == nil || isReg64(self.Base)) &&  // `Base` must be 64-bit if present
+    return (self.Base == nil || isReg64(self.Base)) &&  // `Base` must be 64-bit if present
            (self.Scale == 0) == (self.Index == nil) &&  // `Scale` and `Index` depends on each other
            (_Scales & (1 << self.Scale)) != 0           // `Scale` can only be 0, 1, 2, 4 or 8
 }
@@ -347,6 +346,11 @@ func Ref(ref *Label) (v *MemoryOperand) {
     v.Addr.Type = Reference
     v.Addr.Reference = ref
     return
+}
+
+// Abs construct a simple memory address that represents absolute addressing.
+func Abs(disp int32) *MemoryOperand {
+    return Sib(nil, nil, 0, disp)
 }
 
 // Ptr constructs a simple memory operand with base and displacement.

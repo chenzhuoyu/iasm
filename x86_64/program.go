@@ -142,7 +142,9 @@ const (
     DomainPseudo
 )
 
-type _BranchType uint8
+type (
+	_BranchType uint8
+)
 
 const (
     _B_none _BranchType = iota
@@ -163,6 +165,7 @@ type Instruction struct {
     pseudo _Pseudo
     branch _BranchType
     domain InstructionDomain
+    prefix []byte
 }
 
 func (self *Instruction) add(flags int, encoder func(m *_Encoding, v []interface{})) {
@@ -199,9 +202,14 @@ func (self *Instruction) encode(m *[]byte) int {
     n := math.MaxInt64
     p := (*_Encoding)(nil)
 
+    /* encode prefixes if any */
+    if self.nb = len(self.prefix); m != nil {
+        *m = append(*m, self.prefix...)
+    }
+
     /* check for pseudo-instructions */
     if self.pseudo.kind != 0 {
-        self.nb = self.pseudo.encode(m, self.pc)
+        self.nb += self.pseudo.encode(m, self.pc)
         return self.nb
     }
 
@@ -221,9 +229,58 @@ func (self *Instruction) encode(m *[]byte) int {
     }
 
     /* update the instruction length */
-    self.nb = n
-    return n
+    self.nb += n
+    return self.nb
 }
+
+/** Instruction Prefixes **/
+
+// CS overrides the memory operation of this instruction to CS.
+func (self *Instruction) CS() *Instruction {
+    self.prefix = append(self.prefix, 0x2e)
+    return self
+}
+
+// DS overrides the memory operation of this instruction to DS.
+func (self *Instruction) DS() *Instruction {
+    self.prefix = append(self.prefix, 0x3e)
+    return self
+}
+
+// ES overrides the memory operation of this instruction to ES.
+func (self *Instruction) ES() *Instruction {
+    self.prefix = append(self.prefix, 0x26)
+    return self
+}
+
+// FS overrides the memory operation of this instruction to FS.
+func (self *Instruction) FS() *Instruction {
+    self.prefix = append(self.prefix, 0x64)
+    return self
+}
+
+// GS overrides the memory operation of this instruction to GS.
+func (self *Instruction) GS() *Instruction {
+    self.prefix = append(self.prefix, 0x65)
+    return self
+}
+
+// SS overrides the memory operation of this instruction to SS.
+func (self *Instruction) SS() *Instruction {
+    self.prefix = append(self.prefix, 0x36)
+    return self
+}
+
+// LOCK causes the processor's LOCK# signal to be asserted during execution of
+// the accompanying instruction (turns the instruction into an atomic instruction).
+// In a multiprocessor environment, the LOCK# signal insures that the processor
+// has exclusive use of any shared memory while the signal is asserted.
+func (self *Instruction) LOCK() *Instruction {
+    self.prefix = append(self.prefix, 0xf0)
+    return self
+}
+
+/** Basic Instruction Properties **/
 
 // Name returns the instruction name.
 func (self *Instruction) Name() string {

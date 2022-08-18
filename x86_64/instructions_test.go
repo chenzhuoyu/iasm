@@ -14,6 +14,14 @@ func TestInstr_Encode(t *testing.T) {
     spew.Dump(m)
 }
 
+func TestInstr_EncodeSegment(t *testing.T) {
+    m := []byte(nil)
+    a := CreateArch()
+    p := a.CreateProgram()
+    p.MOVQ(Abs(0x30), RCX).GS().encode(&m)
+    spew.Dump(m)
+}
+
 func BenchmarkInstr_Encode(b *testing.B) {
     a := CreateArch()
     m := make([]byte, 0, 16)

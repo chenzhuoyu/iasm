@@ -573,9 +573,12 @@ func (self *_Encoding) mrsd(reg byte, rm interface{}, disp8v int32) {
         panic("rm must be a memory address")
     }
 
-    /* global addressing is not yet supported */
+    /* absolute addressing, encoded as disp(%rbp,%rsp,1) */
     if mm.Base == nil && mm.Index == nil {
-        panic("global addressing is not yet supported")
+        self.emit(0x04 | (reg << 3))
+        self.emit(0x25)
+        self.imm4(int64(mm.Displacement))
+        return
     }
 
     /* no SIB byte */
