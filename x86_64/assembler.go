@@ -373,6 +373,9 @@ type LabelKind int
 // OperandKind indicates the type of the operand.
 type OperandKind int
 
+// InstructionPrefix indicates the prefix bytes prepended to the instruction.
+type InstructionPrefix byte
+
 const (
     // OpImm means the operand is an immediate value.
     OpImm OperandKind = 1 << iota
@@ -400,6 +403,33 @@ const (
     RelativeAddress
 )
 
+const (
+    // PrefixLock causes the processor's LOCK# signal to be asserted during execution of
+    // the accompanying instruction (turns the instruction into an atomic instruction).
+    // In a multiprocessor environment, the LOCK# signal insures that the processor
+    // has exclusive use of any shared memory while the signal is asserted.
+    PrefixLock InstructionPrefix = iota
+
+    // PrefixSegmentCS overrides the memory operation of this instruction to CS (Code Segment).
+    PrefixSegmentCS
+
+    // PrefixSegmentDS overrides the memory operation of this instruction to DS (Data Segment),
+    // this is the default section for most instructions if not specified.
+    PrefixSegmentDS
+
+    // PrefixSegmentES overrides the memory operation of this instruction to ES (Extra Segment).
+    PrefixSegmentES
+
+    // PrefixSegmentFS overrides the memory operation of this instruction to FS.
+    PrefixSegmentFS
+
+    // PrefixSegmentGS overrides the memory operation of this instruction to GS.
+    PrefixSegmentGS
+
+    // PrefixSegmentSS overrides the memory operation of this instruction to SS (Stack Segment).
+    PrefixSegmentSS
+)
+
 // ParsedLabel represents a label in the source, either a jump target or
 // an RIP-relative addressing.
 type ParsedLabel struct {
@@ -420,6 +450,7 @@ type ParsedOperand struct {
 type ParsedInstruction struct {
     Mnemonic string
     Operands []ParsedOperand
+    Prefixes []InstructionPrefix
 }
 
 func (self *ParsedInstruction) imm(v int64) {
@@ -514,6 +545,15 @@ var _RegBranch = map[string]bool {
     "jmpq"  : true,
     "call"  : true,
     "callq" : true,
+}
+
+var _SegPrefix = map[string]InstructionPrefix {
+    "cs": PrefixSegmentCS,
+    "ds": PrefixSegmentDS,
+    "es": PrefixSegmentES,
+    "fs": PrefixSegmentFS,
+    "gs": PrefixSegmentGS,
+    "ss": PrefixSegmentSS,
 }
 
 func (self *Parser) i32(tk _Token, v int64) int32 {
@@ -630,12 +670,26 @@ func (self *Parser) regv(tk _Token) Register {
 }
 
 func (self *Parser) disp(vv int32) MemoryAddress {
-    tk := self.lex.next()
-    tt := tk.tag
+    switch tk := self.lex.next(); tk.tag {
+        case _T_end  : return MemoryAddress { Displacement: vv }
+        case _T_punc : return self.relm(tk, vv)
+        default      : panic(self.err(tk.pos, "',' or '(' expected"))
+    }
+}
 
-    /* must be an opening '(' */
-    if tt != _T_punc || tk.punc() != _P_lbrk {
-        panic(self.err(tk.pos, "'(' expected"))
+func (self *Parser) relm(tv _Token, disp int32) MemoryAddress {
+    var tk _Token
+    var tt _TokenKind
+
+    /* check for absolute addressing */
+    if tv.punc() == _P_comma {
+        self.lex.pos--
+        return MemoryAddress { Displacement: disp }
+    }
+
+    /* must be '(' now */
+    if tv.punc() != _P_lbrk {
+        panic(self.err(tv.pos, "',' or '(' expected"))
     }
 
     /* read the next token */
@@ -649,8 +703,8 @@ func (self *Parser) disp(vv int32) MemoryAddress {
 
     /* check for base */
     switch tk.punc() {
-        case _P_percent : return self.base(tk, vv)
-        case _P_comma   : return self.index(nil, vv)
+        case _P_percent : return self.base(tk, disp)
+        case _P_comma   : return self.index(nil, disp)
         default         : panic(self.err(tk.pos, "'%' or ',' expected"))
     }
 }
@@ -765,6 +819,7 @@ func (self *Parser) cmds() *ParsedLine {
 func (self *Parser) feed(line string) *ParsedLine {
     ff := true
     rr := false
+    lk := false
 
     /* reset the lexer */
     self.lex.row++
@@ -810,12 +865,28 @@ func (self *Parser) feed(line string) *ParsedLine {
         }
     }
 
+    /* special case for the "lock" prefix */
+    if tk.tag == _T_name && strings.ToLower(tk.str) == "lock" {
+        lk = true
+        tk = self.lex.next()
+
+        /* must be an instruction */
+        if tk.tag != _T_name {
+            panic(self.err(tk.pos, "identifier expected"))
+        }
+    }
+
     /* set the line kind and mnemonic */
     ret := &ParsedLine {
         Row         : self.lex.row,
         Src         : self.lex.src,
         Kind        : LineInstr,
         Instruction : ParsedInstruction { Mnemonic: strings.ToLower(tk.str) },
+    }
+
+    /* check for LOCK prefix */
+    if lk {
+        ret.Instruction.Prefixes = append(ret.Instruction.Prefixes, PrefixLock)
     }
 
     /* parse all the operands */
@@ -847,7 +918,7 @@ func (self *Parser) feed(line string) *ParsedLine {
             continue
         }
 
-        /* encountered an identifier, maybe an expression or a jump target */
+        /* encountered an identifier, maybe an expression or a jump target, or a segment override prefix */
         if tt == _T_name {
             ts := tk.str
             tp := self.lex.pos
@@ -859,10 +930,29 @@ func (self *Parser) feed(line string) *ParsedLine {
                 continue
             }
 
-            /* ... otherwise it must be an RIP-relative addressing operand */
-            self.relx(tk)
-            ret.Instruction.reference(ts)
-            continue
+            /* if it is a colon, it's a segment override prefix, otherwise it must be an RIP-relative addressing operand */
+            if tk.tag != _T_punc || tk.punc() != _P_colon {
+                self.relx(tk)
+                ret.Instruction.reference(ts)
+                continue
+            }
+
+            /* lookup segment prefixes */
+            if p, ok := _SegPrefix[strings.ToLower(ts)]; !ok {
+                panic(self.err(tk.pos, "invalid segment name"))
+            } else {
+                ret.Instruction.Prefixes = append(ret.Instruction.Prefixes, p)
+            }
+
+            /* read the next token */
+            tk = self.lex.next()
+            tt = tk.tag
+
+            /* encountered an integer, must be a SIB memory address */
+            if tt == _T_int {
+                ret.Instruction.mem(self.disp(self.i32(tk, int64(tk.u64))))
+                continue
+            }
         }
 
         /* certain instructions may have a "*" before operands */
@@ -1276,6 +1366,7 @@ func (self *Assembler) assembleLabel(p *Program, lb *ParsedLabel) error {
 
 func (self *Assembler) assembleInstr(p *Program, line *ParsedInstruction) (err error) {
     var ok  bool
+    var pfx []byte
     var ops []interface{}
     var enc _InstructionEncoder
 
@@ -1319,6 +1410,25 @@ func (self *Assembler) assembleInstr(p *Program, line *ParsedInstruction) (err e
         return self.err("no such instruction: " + strconv.Quote(name))
     }
 
+    /* allocate memory for prefix if any */
+    if len(line.Prefixes) != 0 {
+        pfx = make([]byte, len(line.Prefixes))
+    }
+
+    /* convert the prefixes */
+    for i, v := range line.Prefixes {
+        switch v {
+            case PrefixLock      : pfx[i] = _P_lock
+            case PrefixSegmentCS : pfx[i] = _P_cs
+            case PrefixSegmentDS : pfx[i] = _P_ds
+            case PrefixSegmentES : pfx[i] = _P_es
+            case PrefixSegmentFS : pfx[i] = _P_fs
+            case PrefixSegmentGS : pfx[i] = _P_gs
+            case PrefixSegmentSS : pfx[i] = _P_ss
+            default              : panic("unreachable: invalid segment prefix")
+        }
+    }
+
     /* convert the operands */
     for _, op := range line.Operands {
         switch op.Op {
@@ -1338,7 +1448,7 @@ func (self *Assembler) assembleInstr(p *Program, line *ParsedInstruction) (err e
     }()
 
     /* encode the instruction */
-    enc(p, ops...)
+    enc(p, ops...).prefix = pfx
     return nil
 }
 

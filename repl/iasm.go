@@ -19,6 +19,7 @@ import (
 // IASM is the interactive REPL.
 type IASM struct {
     run bool
+    off uintptr
     efd libedit.EditLine
     ias _IASMArchSpecific
     mem map[uint64]_Memory
@@ -45,6 +46,7 @@ func (self *IASM) Start() {
     }
 
     /* initialize IASM */
+    self.off = 0
     self.efd = efd
     self.run = true
     self.mem = map[uint64]_Memory{}
@@ -147,11 +149,18 @@ func (self *IASM) handleCommand(cmd string) {
 }
 
 func (self *IASM) handleAsmImmediate(asm string) {
-    if buf, err := self.ias.doasm(0, asm); err != nil {
+    var err error
+    var buf []byte
+
+    /* assemble the instruction */
+    if buf, err = self.ias.doasm(self.off, asm); err != nil {
         println("iasm: " + err.Error())
-    } else {
-        println(asmdump(buf, math.MaxUint64, asm))
+        return
     }
+
+    /* dump the instruction, and adjust the display offset */
+    println(asmdump(buf, self.off, asm))
+    self.off += uintptr(len(buf))
 }
 
 var _CMDS = map[string]func(*IASM, string) {
@@ -164,6 +173,7 @@ var _CMDS = map[string]func(*IASM, string) {
     "regs"   : (*IASM)._cmd_regs,
     "asm"    : (*IASM)._cmd_asm,
     "sys"    : (*IASM)._cmd_sys,
+    "base"   : (*IASM)._cmd_base,
     "exit"   : (*IASM)._cmd_exit,
     "help"   : (*IASM)._cmd_help,
 }
@@ -200,10 +210,15 @@ func (self *IASM) _cmd_malloc(v string) {
     var mem _Memory
 
     /* parse the memory ID and size */
-    scan  (v).
-    uint  (&mid).
-    uint  (&nbs).
-    close ()
+    scan    (v).
+    uint    (&mid).
+    uintopt (&nbs).
+    close   ()
+
+    /* default to one page of memory */
+    if nbs == 0 {
+        nbs = _PageSize
+    }
 
     /* check for duplicaded IDs */
     if _, ok := self.mem[mid]; ok {
@@ -488,6 +503,10 @@ func (self *IASM) _cmd_sys(v string) {
     }
 }
 
+func (self *IASM) _cmd_base(v string) {
+    scan(v).uint((*uint64)(unsafe.Pointer(&self.off))).close()
+}
+
 func (self *IASM) _cmd_exit(_ string) {
     self.run = false
 }
@@ -495,8 +514,10 @@ func (self *IASM) _cmd_exit(_ string) {
 func (self *IASM) _cmd_help(_ string) {
     println("Supported commands:")
     println("    .free   ID ........................ Free a block of memory with ID.")
-    println("    .malloc ID SIZE ................... Allocate a block of memory with ID of")
-    println("                                        SIZE bytes.")
+    println()
+    println("    .malloc ID [SIZE] ................. Allocate a block of memory with ID of")
+    println("                                        SIZE bytes if specified, or one page of")
+    println("                                        memory if SIZE is not present.")
     println()
     println("    .info   ID ........................ Print basic informations of a memory")
     println("                                        block identified by ID.")
@@ -523,6 +544,9 @@ func (self *IASM) _cmd_help(_ string) {
     println()
     println("    .sys    ID[+OFF] .................. Execute code in memory block identified")
     println("                                        by ID[+OFF] with the CALL instruction.")
+    println()
+    println("    .base   [BASE] .................... Set the base address for immediate")
+    println("                                        assembling mode, just for display.")
     println()
     println("    .exit ............................. Exit Interactive Assembler.")
     println("    .help ............................. This help message.")

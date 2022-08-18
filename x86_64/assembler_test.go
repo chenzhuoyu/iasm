@@ -98,3 +98,41 @@ func TestAssembler_RIPRelative(t *testing.T) {
     spew.Dump(p.Code())
     require.Equal(t, []byte { 0x48, 0x8d, 0x35, 0x1b, 0x00, 0x00, 0x00 }, p.Code())
 }
+
+func TestAssembler_AbsoluteAddressing(t *testing.T) {
+    p := new(Assembler)
+    e := p.Assemble(`
+movq 0x1234, %rbx
+movq %rcx, 0x1234
+`)
+    require.NoError(t, e)
+    spew.Dump(p.Code())
+    require.Equal(t, []byte {
+        0x48, 0x8b, 0x1c, 0x25, 0x34, 0x12, 0x00, 0x00,
+        0x48, 0x89, 0x0c, 0x25, 0x34, 0x12, 0x00, 0x00,
+    }, p.Code())
+}
+
+func TestAssembler_LockPrefix(t *testing.T) {
+    p := new(Assembler)
+    e := p.Assemble(`lock cmpxchgq %r9, (%rbx)`)
+    require.NoError(t, e)
+    spew.Dump(p.Code())
+    require.Equal(t, []byte { 0xf0, 0x4c, 0x0f, 0xb1, 0x0b }, p.Code())
+}
+
+func TestAssembler_SegmentOverride(t *testing.T) {
+    p := new(Assembler)
+    e := p.Assemble(`
+movq gs:0x30, %rcx
+movq gs:10(%rax), %rcx
+movq fs:(%r9), %rcx
+`)
+    require.NoError(t, e)
+    spew.Dump(p.Code())
+    require.Equal(t, []byte {
+        0x65, 0x48, 0x8b, 0x0c, 0x25, 0x30, 0x00, 0x00, 0x00,
+        0x65, 0x48, 0x8b, 0x48, 0x0a,
+        0x64, 0x49, 0x8b, 0x09,
+    }, p.Code())
+}

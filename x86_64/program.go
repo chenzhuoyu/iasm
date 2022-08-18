@@ -235,39 +235,50 @@ func (self *Instruction) encode(m *[]byte) int {
 
 /** Instruction Prefixes **/
 
+const (
+    _P_cs   = 0x2e
+    _P_ds   = 0x3e
+    _P_es   = 0x26
+    _P_fs   = 0x64
+    _P_gs   = 0x65
+    _P_ss   = 0x36
+    _P_lock = 0xf0
+)
+
 // CS overrides the memory operation of this instruction to CS.
 func (self *Instruction) CS() *Instruction {
-    self.prefix = append(self.prefix, 0x2e)
+    self.prefix = append(self.prefix, _P_cs)
     return self
 }
 
-// DS overrides the memory operation of this instruction to DS.
+// DS overrides the memory operation of this instruction to DS,
+// this is the default section for most instructions if not specified.
 func (self *Instruction) DS() *Instruction {
-    self.prefix = append(self.prefix, 0x3e)
+    self.prefix = append(self.prefix, _P_ds)
     return self
 }
 
 // ES overrides the memory operation of this instruction to ES.
 func (self *Instruction) ES() *Instruction {
-    self.prefix = append(self.prefix, 0x26)
+    self.prefix = append(self.prefix, _P_es)
     return self
 }
 
 // FS overrides the memory operation of this instruction to FS.
 func (self *Instruction) FS() *Instruction {
-    self.prefix = append(self.prefix, 0x64)
+    self.prefix = append(self.prefix, _P_fs)
     return self
 }
 
 // GS overrides the memory operation of this instruction to GS.
 func (self *Instruction) GS() *Instruction {
-    self.prefix = append(self.prefix, 0x65)
+    self.prefix = append(self.prefix, _P_gs)
     return self
 }
 
 // SS overrides the memory operation of this instruction to SS.
 func (self *Instruction) SS() *Instruction {
-    self.prefix = append(self.prefix, 0x36)
+    self.prefix = append(self.prefix, _P_ss)
     return self
 }
 
@@ -276,7 +287,7 @@ func (self *Instruction) SS() *Instruction {
 // In a multiprocessor environment, the LOCK# signal insures that the processor
 // has exclusive use of any shared memory while the signal is asserted.
 func (self *Instruction) LOCK() *Instruction {
-    self.prefix = append(self.prefix, 0xf0)
+    self.prefix = append(self.prefix, _P_lock)
     return self
 }
 
