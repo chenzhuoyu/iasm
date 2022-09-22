@@ -998,7 +998,7 @@ func (self *Parser) feed(line string) *ParsedLine {
         return ret
     } else if len(ret.Instruction.Operands) != 1 {
         panic(self.err(tk.pos, fmt.Sprintf(`"%s" requires exact 1 argument`, ret.Instruction.Mnemonic)))
-    } else if !rr && ret.Instruction.Operands[0].Op != OpLabel {
+    } else if !rr && ret.Instruction.Operands[0].Op != OpReg && ret.Instruction.Operands[0].Op != OpLabel {
         panic(self.err(tk.pos, fmt.Sprintf(`invalid operand for "%s" instruction`, ret.Instruction.Mnemonic)))
     } else {
         return ret
@@ -1765,6 +1765,12 @@ func (self *Assembler) Entry() uintptr {
 // Options returns the internal options reference, changing it WILL affect this Assembler instance.
 func (self *Assembler) Options() *Options {
     return &self.opts
+}
+
+// WithBase resets the origin to pc.
+func (self *Assembler) WithBase(pc uintptr) *Assembler {
+    self.pc = pc
+    return self
 }
 
 // Assemble assembles the assembly source and save the machine code to internal buffer.

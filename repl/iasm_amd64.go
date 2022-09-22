@@ -2,7 +2,6 @@ package repl
 
 import (
     `errors`
-    `fmt`
 
     `github.com/chenzhuoyu/iasm/x86_64`
 )
@@ -27,7 +26,7 @@ func (self *_IASMArchSpecific) doasm(addr uintptr, line string) ([]byte, error) 
     }
 
     /* assemble the line */
-    if err = asm.Assemble(fmt.Sprintf(".org %#x\n%s", addr, line)); err != nil {
+    if err = asm.WithBase(addr).Assemble(line); err != nil {
         return nil, err
     } else {
         return asm.Code(), nil
