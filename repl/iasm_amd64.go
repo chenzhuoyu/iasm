@@ -3,7 +3,7 @@ package repl
 import (
     `errors`
 
-    `github.com/chenzhuoyu/iasm/x86_64`
+    `github.com/chenzhuoyu/iasm/arch/x86_64`
 )
 
 type _IASMArchSpecific struct {
