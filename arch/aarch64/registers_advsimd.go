@@ -6,43 +6,17 @@ import (
     `fmt`
 )
 
+// SIMDVector represents a SIMD vector.
+type SIMDVector interface {
+    String() string
+    Arrangement() SIMDVectorArrangement
+}
+
 // SIMDRegister represents an Advanced SIMD hardware register.
 type SIMDRegister interface {
     Register
     Bits() uint8
 }
-
-type (
-    SIMDRegister8    uint8
-    SIMDRegister16   uint8
-    SIMDRegister32   uint8
-    SIMDRegister64   uint8
-    SIMDRegister128  uint8
-    SIMDRegister128u uint8
-    SIMDRegister128v uint8
-)
-
-func (SIMDRegister8)    Bits() uint8 { return 8 }
-func (SIMDRegister16)   Bits() uint8 { return 16 }
-func (SIMDRegister32)   Bits() uint8 { return 32 }
-func (SIMDRegister64)   Bits() uint8 { return 64 }
-func (SIMDRegister128)  Bits() uint8 { return 128 }
-func (SIMDRegister128v) Bits() uint8 { return 128 }
-
-func (self SIMDRegister8)    ID() uint8 { return uint8(self) & 0b11111 }
-func (self SIMDRegister16)   ID() uint8 { return uint8(self) & 0b11111 }
-func (self SIMDRegister32)   ID() uint8 { return uint8(self) & 0b11111 }
-func (self SIMDRegister64)   ID() uint8 { return uint8(self) & 0b11111 }
-func (self SIMDRegister128)  ID() uint8 { return uint8(self) & 0b11111 }
-func (self SIMDRegister128v) ID() uint8 { return uint8(self) & 0b11111 }
-
-func (self SIMDRegister8)    String() string { return fmt.Sprintf("b%d", self.ID()) }
-func (self SIMDRegister16)   String() string { return fmt.Sprintf("h%d", self.ID()) }
-func (self SIMDRegister32)   String() string { return fmt.Sprintf("s%d", self.ID()) }
-func (self SIMDRegister64)   String() string { return fmt.Sprintf("d%d", self.ID()) }
-func (self SIMDRegister128)  String() string { return fmt.Sprintf("q%d", self.ID()) }
-func (self SIMDRegister128u) String() string { return fmt.Sprintf("v%d", self) }
-func (self SIMDRegister128v) String() string { return fmt.Sprintf("v%d.%s", self.ID(), self.Arrangement()) }
 
 // SIMDVectorArrangement represents the data arrangement of a V register.
 type SIMDVectorArrangement uint8
@@ -88,7 +62,106 @@ func (self SIMDVectorArrangement) String() string {
     }
 }
 
-func (self SIMDRegister128u) B(n byte) SIMDRegister128v {
+// SIMDVector1 represents an unarranged SIMD vector with a single register.
+type SIMDVector1 [1]SIMDRegister128v
+
+// SIMDVector2 represents an unarranged SIMD vector with two registers that share the the same arrangement.
+type SIMDVector2 [2]SIMDRegister128v
+
+// SIMDVector3 represents an unarranged SIMD vector with three registers that share the the same arrangement.
+type SIMDVector3 [3]SIMDRegister128v
+
+// SIMDVector4 represents an unarranged SIMD vector with four registers that share the the same arrangement.
+type SIMDVector4 [4]SIMDRegister128v
+
+func Vec1(v0             SIMDRegister128v) SIMDVector1 { return SIMDVector1 { v0             } }
+func Vec2(v0, v1         SIMDRegister128v) SIMDVector2 { return SIMDVector2 { v0, v1         } }
+func Vec3(v0, v1, v2     SIMDRegister128v) SIMDVector3 { return SIMDVector3 { v0, v1, v2     } }
+func Vec4(v0, v1, v2, v3 SIMDRegister128v) SIMDVector4 { return SIMDVector4 { v0, v1, v2, v3 } }
+
+func (self SIMDVector1) As(v SIMDVectorArrangement) SIMDVector1r { return SIMDVector1r { self, v } }
+func (self SIMDVector2) As(v SIMDVectorArrangement) SIMDVector2r { return SIMDVector2r { self, v } }
+func (self SIMDVector3) As(v SIMDVectorArrangement) SIMDVector3r { return SIMDVector3r { self, v } }
+func (self SIMDVector4) As(v SIMDVectorArrangement) SIMDVector4r { return SIMDVector4r { self, v } }
+
+func (self SIMDVector1) String() string {
+    return fmt.Sprintf("{ %s }", self[0])
+}
+
+func (self SIMDVector2) String() string {
+    return fmt.Sprintf("{ %s, %s }", self[0], self[1])
+}
+
+func (self SIMDVector3) String() string {
+    return fmt.Sprintf("{ %s, %s, %s }", self[0], self[1], self[2])
+}
+
+func (self SIMDVector4) String() string {
+    return fmt.Sprintf("{ %s, %s, %s, %s }", self[0], self[1], self[2], self[3])
+}
+
+
+type (
+    SIMDVector1r struct { V SIMDVector1; A SIMDVectorArrangement }
+    SIMDVector2r struct { V SIMDVector2; A SIMDVectorArrangement }
+    SIMDVector3r struct { V SIMDVector3; A SIMDVectorArrangement }
+    SIMDVector4r struct { V SIMDVector4; A SIMDVectorArrangement }
+)
+
+func (self SIMDVector1r) String() string {
+    return fmt.Sprintf("{ %s }.%s", self.V[0], self.A)
+}
+
+func (self SIMDVector2r) String() string {
+    return fmt.Sprintf("{ %s, %s }.%s", self.V[0], self.V[1], self.A)
+}
+
+func (self SIMDVector3r) String() string {
+    return fmt.Sprintf("{ %s, %s, %s }.%s", self.V[0], self.V[1], self.V[2], self.A)
+}
+
+func (self SIMDVector4r) String() string {
+    return fmt.Sprintf("{ %s, %s, %s, %s }.%s", self.V[0], self.V[1], self.V[2], self.V[3], self.A)
+}
+
+func (self SIMDVector1r) Arrangement() SIMDVectorArrangement { return self.A }
+func (self SIMDVector2r) Arrangement() SIMDVectorArrangement { return self.A }
+func (self SIMDVector3r) Arrangement() SIMDVectorArrangement { return self.A }
+func (self SIMDVector4r) Arrangement() SIMDVectorArrangement { return self.A }
+
+type (
+    SIMDRegister8    uint8
+    SIMDRegister16   uint8
+    SIMDRegister32   uint8
+    SIMDRegister64   uint8
+    SIMDRegister128  uint8
+    SIMDRegister128v uint8
+    SIMDRegister128r uint8
+)
+
+func (SIMDRegister8)    Bits() uint8 { return 8 }
+func (SIMDRegister16)   Bits() uint8 { return 16 }
+func (SIMDRegister32)   Bits() uint8 { return 32 }
+func (SIMDRegister64)   Bits() uint8 { return 64 }
+func (SIMDRegister128)  Bits() uint8 { return 128 }
+func (SIMDRegister128r) Bits() uint8 { return 128 }
+
+func (self SIMDRegister8)    ID() uint8 { return uint8(self) & 0b11111 }
+func (self SIMDRegister16)   ID() uint8 { return uint8(self) & 0b11111 }
+func (self SIMDRegister32)   ID() uint8 { return uint8(self) & 0b11111 }
+func (self SIMDRegister64)   ID() uint8 { return uint8(self) & 0b11111 }
+func (self SIMDRegister128)  ID() uint8 { return uint8(self) & 0b11111 }
+func (self SIMDRegister128r) ID() uint8 { return uint8(self) & 0b11111 }
+
+func (self SIMDRegister8)    String() string { return fmt.Sprintf("b%d", self.ID()) }
+func (self SIMDRegister16)   String() string { return fmt.Sprintf("h%d", self.ID()) }
+func (self SIMDRegister32)   String() string { return fmt.Sprintf("s%d", self.ID()) }
+func (self SIMDRegister64)   String() string { return fmt.Sprintf("d%d", self.ID()) }
+func (self SIMDRegister128)  String() string { return fmt.Sprintf("q%d", self.ID()) }
+func (self SIMDRegister128v) String() string { return fmt.Sprintf("v%d", self) }
+func (self SIMDRegister128r) String() string { return fmt.Sprintf("v%d.%s", self.ID(), self.Arrangement()) }
+
+func (self SIMDRegister128v) B(n byte) SIMDRegister128r {
     switch n {
         case 8  : return self.As(Vec8B)
         case 16 : return self.As(Vec16B)
@@ -96,7 +169,7 @@ func (self SIMDRegister128u) B(n byte) SIMDRegister128v {
     }
 }
 
-func (self SIMDRegister128u) H(n byte) SIMDRegister128v {
+func (self SIMDRegister128v) H(n byte) SIMDRegister128r {
     switch n {
         case 4  : return self.As(Vec4H)
         case 8  : return self.As(Vec8H)
@@ -104,7 +177,7 @@ func (self SIMDRegister128u) H(n byte) SIMDRegister128v {
     }
 }
 
-func (self SIMDRegister128u) S(n byte) SIMDRegister128v {
+func (self SIMDRegister128v) S(n byte) SIMDRegister128r {
     switch n {
         case 2  : return self.As(Vec2S)
         case 4  : return self.As(Vec4S)
@@ -112,7 +185,7 @@ func (self SIMDRegister128u) S(n byte) SIMDRegister128v {
     }
 }
 
-func (self SIMDRegister128u) D(n byte) SIMDRegister128v {
+func (self SIMDRegister128v) D(n byte) SIMDRegister128r {
     switch n {
         case 1  : return self.As(Vec1D)
         case 2  : return self.As(Vec2D)
@@ -120,15 +193,15 @@ func (self SIMDRegister128u) D(n byte) SIMDRegister128v {
     }
 }
 
-func (self SIMDRegister128u) As(v SIMDVectorArrangement) SIMDRegister128v {
+func (self SIMDRegister128v) As(v SIMDVectorArrangement) SIMDRegister128r {
     if self &^ 0b11111 != 0 {
         panic("aarch64: invalid unarranged vector register")
     } else {
-        return SIMDRegister128v(uint8(v) << 5 | uint8(self))
+        return SIMDRegister128r(uint8(v) << 5 | uint8(self))
     }
 }
 
-func (self SIMDRegister128v) Arrangement() SIMDVectorArrangement {
+func (self SIMDRegister128r) Arrangement() SIMDVectorArrangement {
     return SIMDVectorArrangement(self >> 5)
 }
 
@@ -308,7 +381,7 @@ const (
 )
 
 const (
-    V0 SIMDRegister128u = iota
+    V0 SIMDRegister128v = iota
     V1
     V2
     V3

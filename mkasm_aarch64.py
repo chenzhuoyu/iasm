@@ -45,6 +45,14 @@ cc.line("`fmt`")
 cc.dedent()
 cc.line(")")
 cc.line()
+cc.line('// SIMDVector represents a SIMD vector.')
+cc.line('type SIMDVector interface {')
+cc.indent()
+cc.line('String() string')
+cc.line('Arrangement() SIMDVectorArrangement')
+cc.dedent()
+cc.line('}')
+cc.line()
 cc.line('// SIMDRegister represents an Advanced SIMD hardware register.')
 cc.line('type SIMDRegister interface {')
 cc.indent()
@@ -52,47 +60,6 @@ cc.line('Register')
 cc.line('Bits() uint8')
 cc.dedent()
 cc.line('}')
-cc.line()
-cc.line('type (')
-cc.indent()
-
-for i in range(5):
-    cc.line('SIMDRegister%-3d  uint8' % (8 << i))
-
-cc.line('SIMDRegister128u uint8')
-cc.line('SIMDRegister128v uint8')
-cc.dedent()
-cc.line(')')
-cc.line()
-
-for i in range(5):
-    cc.line('func (SIMDRegister%-4s  Bits() uint8 { return %d }' % ('%d)' % (8 << i), 8 << i))
-
-cc.line('func (SIMDRegister128v) Bits() uint8 { return 128 }')
-cc.line()
-
-for i in range(5):
-    cc.line('func (self SIMDRegister%-4s  ID() uint8 { return uint8(self) & 0b11111 }' % ('%d)' % (8 << i)))
-
-cc.line('func (self SIMDRegister128v) ID() uint8 { return uint8(self) & 0b11111 }')
-cc.line()
-
-REG_PREFIX_TAB = [
-    'B',
-    'H',
-    'S',
-    'D',
-    'Q',
-]
-
-for i in range(5):
-    cc.line('func (self SIMDRegister%-4s  String() string { return fmt.Sprintf("%c%%d", self.ID()) }' % (
-        '%d)' % (8 << i),
-        REG_PREFIX_TAB[i].lower(),
-    ))
-
-cc.line('func (self SIMDRegister128u) String() string { return fmt.Sprintf("v%d", self) }')
-cc.line('func (self SIMDRegister128v) String() string { return fmt.Sprintf("v%d.%s", self.ID(), self.Arrangement()) }')
 cc.line()
 
 cc.line('// SIMDVectorArrangement represents the data arrangement of a V register.')
@@ -152,6 +119,113 @@ cc.dedent()
 cc.line('}')
 cc.line()
 
+cc.line('// SIMDVector1 represents an unarranged SIMD vector with a single register.')
+cc.line('type SIMDVector1 [1]SIMDRegister128v')
+cc.line()
+cc.line('// SIMDVector2 represents an unarranged SIMD vector with two registers that share the the same arrangement.')
+cc.line('type SIMDVector2 [2]SIMDRegister128v')
+cc.line()
+cc.line('// SIMDVector3 represents an unarranged SIMD vector with three registers that share the the same arrangement.')
+cc.line('type SIMDVector3 [3]SIMDRegister128v')
+cc.line()
+cc.line('// SIMDVector4 represents an unarranged SIMD vector with four registers that share the the same arrangement.')
+cc.line('type SIMDVector4 [4]SIMDRegister128v')
+cc.line()
+
+for n in range(1, 5):
+    ax = ', '.join('v%d' % i for i in range(n)).ljust(14)
+    cc.line('func Vec%d(%s SIMDRegister128v) SIMDVector%d { return SIMDVector%d { %s } }' % (n, ax, n, n, ax))
+else:
+    cc.line()
+
+for n in range(1, 5):
+    cc.line('func (self SIMDVector%d) As(v SIMDVectorArrangement) SIMDVector%dr { return SIMDVector%dr { self, v } }' % (n, n, n))
+else:
+    cc.line()
+
+for n in range(1, 5):
+    cc.line('func (self SIMDVector%d) String() string {' % n)
+    cc.indent()
+
+    cc.line('return fmt.Sprintf("{ %s }", %s)' % (
+        ', '.join(['%s'] * n),
+        ', '.join('self[%d]' % i for i in range(n)))
+    )
+
+    cc.dedent()
+    cc.line('}')
+    cc.line()
+
+cc.line()
+cc.line('type (')
+cc.indent()
+
+for n in range(1, 5):
+    cc.line('SIMDVector%dr struct { V SIMDVector%d; A SIMDVectorArrangement }' % (n, n))
+
+cc.dedent()
+cc.line(')')
+cc.line()
+
+for n in range(1, 5):
+    cc.line('func (self SIMDVector%dr) String() string {' % n)
+    cc.indent()
+
+    cc.line('return fmt.Sprintf("{ %s }.%%s", %s, self.A)' % (
+        ', '.join(['%s'] * n),
+        ', '.join('self.V[%d]' % i for i in range(n)))
+    )
+
+    cc.dedent()
+    cc.line('}')
+    cc.line()
+
+for n in range(1, 5):
+    cc.line('func (self SIMDVector%dr) Arrangement() SIMDVectorArrangement { return self.A }' % n)
+
+cc.line()
+cc.line('type (')
+cc.indent()
+
+for i in range(5):
+    cc.line('SIMDRegister%-3d  uint8' % (8 << i))
+
+cc.line('SIMDRegister128v uint8')
+cc.line('SIMDRegister128r uint8')
+cc.dedent()
+cc.line(')')
+cc.line()
+
+for i in range(5):
+    cc.line('func (SIMDRegister%-4s  Bits() uint8 { return %d }' % ('%d)' % (8 << i), 8 << i))
+
+cc.line('func (SIMDRegister128r) Bits() uint8 { return 128 }')
+cc.line()
+
+for i in range(5):
+    cc.line('func (self SIMDRegister%-4s  ID() uint8 { return uint8(self) & 0b11111 }' % ('%d)' % (8 << i)))
+
+cc.line('func (self SIMDRegister128r) ID() uint8 { return uint8(self) & 0b11111 }')
+cc.line()
+
+REG_PREFIX_TAB = [
+    'B',
+    'H',
+    'S',
+    'D',
+    'Q',
+]
+
+for i in range(5):
+    cc.line('func (self SIMDRegister%-4s  String() string { return fmt.Sprintf("%c%%d", self.ID()) }' % (
+        '%d)' % (8 << i),
+        REG_PREFIX_TAB[i].lower(),
+    ))
+
+cc.line('func (self SIMDRegister128v) String() string { return fmt.Sprintf("v%d", self) }')
+cc.line('func (self SIMDRegister128r) String() string { return fmt.Sprintf("v%d.%s", self.ID(), self.Arrangement()) }')
+cc.line()
+
 ARRANGEMENTS = [
     ('B', (8, 16)),
     ('H', (4, 8)),
@@ -160,7 +234,7 @@ ARRANGEMENTS = [
 ]
 
 for k, (v1, v2) in ARRANGEMENTS:
-    cc.line('func (self SIMDRegister128u) %s(n byte) SIMDRegister128v {' % k)
+    cc.line('func (self SIMDRegister128v) %s(n byte) SIMDRegister128r {' % k)
     cc.indent()
     cc.line('switch n {')
     cc.indent()
@@ -173,7 +247,7 @@ for k, (v1, v2) in ARRANGEMENTS:
     cc.line('}')
     cc.line()
 
-cc.line('func (self SIMDRegister128u) As(v SIMDVectorArrangement) SIMDRegister128v {')
+cc.line('func (self SIMDRegister128v) As(v SIMDVectorArrangement) SIMDRegister128r {')
 cc.indent()
 cc.line('if self &^ 0b11111 != 0 {')
 cc.indent()
@@ -181,14 +255,14 @@ cc.line('panic("aarch64: invalid unarranged vector register")')
 cc.dedent()
 cc.line('} else {')
 cc.indent()
-cc.line('return SIMDRegister128v(uint8(v) << 5 | uint8(self))')
+cc.line('return SIMDRegister128r(uint8(v) << 5 | uint8(self))')
 cc.dedent()
 cc.line('}')
 cc.dedent()
 cc.line('}')
 cc.line()
 
-cc.line('func (self SIMDRegister128v) Arrangement() SIMDVectorArrangement {')
+cc.line('func (self SIMDRegister128r) Arrangement() SIMDVectorArrangement {')
 cc.indent()
 cc.line('return SIMDVectorArrangement(self >> 5)')
 cc.dedent()
@@ -209,7 +283,7 @@ for i in range(5):
 
 cc.line('const (')
 cc.indent()
-cc.line('V0 SIMDRegister128u = iota')
+cc.line('V0 SIMDRegister128v = iota')
 
 for j in range(1, 32):
     cc.line('V%d' % j)
@@ -458,8 +532,8 @@ for name, entry in sorted(instab.items(), key = lambda v: v[0]):
 
             # TODO: remove this
             # if encname != 'CASPAL_CP32_ldstexcl':
-            # if iformfile != 'tbnz.xml':
-            #     continue
+            if iformfile != 'ld1_advsimd_mult.xml':
+                continue
 
             assert iformfile, 'missing iform files for ' + name
             assert iformname is not None, 'missing iform names for ' + name
@@ -1164,137 +1238,313 @@ def parse_symdef(defs: Element) -> dict[str, set[str]]:
     else:
         return rets
 
-def main():
-    cc = CodeGen()
-    cc.line('// Code generated by "mkasm_aarch64.py", DO NOT EDIT.')
-    cc.line()
-    cc.line('package aarch64')
-    cc.line()
+ARG_CHECK_TAB = {
+    '2'           : None,
+    'amount'      : None,
+    'amount_1'    : None,
+    'amount_2'    : None,
+    'amount_3'    : None,
+    'amount_4'    : None,
+    'at_op'       : None,
+    'bt'          : None,
+    'cm'          : None,
+    'cn'          : None,
+    'cond'        : None,
+    'cond_1'      : None,
+    'const'       : None,
+    'd'           : None,
+    'da'          : None,
+    'dc_op'       : None,
+    'dd'          : None,
+    'dm'          : None,
+    'dn'          : None,
+    'dn_1'        : None,
+    'dt'          : None,
+    'dt1'         : None,
+    'dt2'         : None,
+    'extend'      : None,
+    'extend_1'    : None,
+    'fbits'       : None,
+    'fbits_1'     : None,
+    'ha'          : None,
+    'hd'          : None,
+    'hm'          : None,
+    'hn'          : None,
+    'hn_1'        : None,
+    'ht'          : None,
+    'ic_op'       : None,
+    'imm'         : None,
+    'imm1'        : None,
+    'imm2'        : None,
+    'imm5'        : None,
+    'imm6'        : None,
+    'imm8'        : None,
+    'imm_1'       : None,
+    'imm_2'       : None,
+    'imm_3'       : None,
+    'imm_4'       : None,
+    'imm_5'       : None,
+    'immr'        : None,
+    'immr_1'      : None,
+    'imms'        : None,
+    'imms_1'      : None,
+    'index'       : None,
+    'index1'      : None,
+    'index2'      : None,
+    'index_1'     : None,
+    'index_2'     : None,
+    'index_3'     : None,
+    'label'       : None,
+    'lsb'         : None,
+    'lsb_1'       : None,
+    'lsb_2'       : None,
+    'lsb_3'       : None,
+    'm'           : None,
+    'mask'        : None,
+    'mod'         : None,
+    'n'           : None,
+    'n_sp'        : None,
+    'nzcv'        : None,
+    'op0'         : None,
+    'op1'         : None,
+    'op2'         : None,
+    'option'      : None,
+    'pattern'     : None,
+    'pd'          : None,
+    'pdm'         : None,
+    'pdn'         : None,
+    'pg'          : None,
+    'pimm'        : None,
+    'pimm_1'      : None,
+    'pimm_2'      : None,
+    'pimm_3'      : None,
+    'pimm_4'      : None,
+    'pm'          : None,
+    'pn'          : None,
+    'prfop'       : None,
+    'pstatefield' : None,
+    'pt'          : None,
+    'qd'          : None,
+    'qn'          : None,
+    'qt'          : None,
+    'qt1'         : None,
+    'qt2'         : None,
+    'r'           : None,
+    'rotate'      : None,
+    'sa'          : None,
+    'sd'          : None,
+    'shift'       : None,
+    'shift_1'     : None,
+    'shift_2'     : None,
+    'shift_3'     : None,
+    'simm'        : None,
+    'sm'          : None,
+    'sn'          : None,
+    'sn_1'        : None,
+    'st'          : None,
+    'st1'         : None,
+    'st2'         : None,
+    'systemreg'   : None,
+    't'           : None,
+    't_1'         : None,
+    't_2'         : None,
+    'ta'          : None,
+    'targets'     : None,
+    'tb'          : None,
+    'tlbi_op'     : None,
+    'ts'          : None,
+    'ts_1'        : None,
+    'uimm4'       : None,
+    'uimm6'       : None,
+    'v'           : None,
+    'v_1'         : None,
+    'va'          : None,
+    'vb'          : None,
+    'vd'          : None,
+    'vm'          : None,
+    'vm_1'        : None,
+    'vn'          : None,
+    'vn_1'        : None,
+    'vn_plus_1'   : None,
+    'vn_plus_2'   : None,
+    'vn_plus_3'   : None,
+    'vt'          : None,
+    'vt2'         : None,
+    'vt3'         : None,
+    'vt4'         : None,
+    'w_s_plus_1'  : None,
+    'w_t_plus_1'  : None,
+    'wa'          : None,
+    'wd'          : None,
+    'wd_wsp'      : None,
+    'wdn'         : None,
+    'width'       : None,
+    'width_1'     : None,
+    'wm'          : None,
+    'wm_1'        : None,
+    'wn'          : None,
+    'wn_1'        : None,
+    'wn_wsp'      : None,
+    'ws'          : None,
+    'wt'          : None,
+    'wt1'         : None,
+    'wt2'         : None,
+    'x_s_plus_1'  : None,
+    'x_t_plus_1'  : None,
+    'xa'          : None,
+    'xd'          : None,
+    'xd_sp'       : None,
+    'xdn'         : None,
+    'xm'          : None,
+    'xm_1'        : None,
+    'xm_sp'       : None,
+    'xn'          : None,
+    'xn_1'        : None,
+    'xn_sp'       : None,
+    'xs'          : None,
+    'xt'          : None,
+    'xt1'         : None,
+    'xt2'         : None,
+    'xt_1'        : None,
+    'xt_sp'       : None,
+    'za'          : None,
+    'zd'          : None,
+    'zda'         : None,
+    'zdn'         : None,
+    'zm'          : None,
+    'zm_1'        : None,
+    'zn'          : None,
+    'zt'          : None,
+    'zt1'         : None,
+    'zt2'         : None,
+    'zt3'         : None,
+    'zt4'         : None,
+}
 
-    formtab = {}
-    fieldtab = {}
+cc = CodeGen()
+cc.line('// Code generated by "mkasm_aarch64.py", DO NOT EDIT.')
+cc.line()
+cc.line('package aarch64')
+cc.line()
 
-    for expl in isadocs.findall('.//explanation'):
-        symbol = expl.find('symbol')
-        symacc = expl.find('account')
-        symdef = expl.find('definition')
+formtab = {}
+fieldtab = {}
 
-        if symbol is None or (symacc is None) is (symdef is None):
-            raise AssertionError('invalid explanation')
+for expl in isadocs.findall('.//explanation'):
+    symbol = expl.find('symbol')
+    symacc = expl.find('account')
+    symdef = expl.find('definition')
 
-        desc = symbol.text or ''
-        name = symbol.attrib['link']
+    if symbol is None or (symacc is None) is (symdef is None):
+        raise AssertionError('invalid explanation')
 
-        if symacc is not None:
-            assert symdef is None
-            defs = Account(symacc.attrib['encodedin'], desc)
+    desc = symbol.text or ''
+    name = symbol.attrib['link']
+
+    if symacc is not None:
+        assert symdef is None
+        defs = Account(symacc.attrib['encodedin'], desc)
+    else:
+        assert isinstance(symdef, Element)
+        defs = Definition(symdef.attrib['encodedin'], desc, parse_symdef(symdef))
+
+    for enc in expl.attrib['enclist'].split(','):
+        tab = fieldtab.setdefault(enc.strip(), {})
+        tab[name] = defs
+
+for encdata in sorted(enctab.values(), key = lambda x: x.name):
+    node = isadocs.find('.//iclass/encoding[@name="%s"]' % encdata.name)
+    assert node is not None, 'encoding %s does not exists' % repr(encdata.name)
+
+    tokens = node.findall('asmtemplate/*')
+    assert tokens, 'encoding %s does not have an assembly syntax' % repr(encdata.name)
+
+    args = []
+    opts = {}
+    bits = Instruction(encdata.bits)
+    inst = AsmTemplate.parse(tokens)
+
+    parse_props(opts, node)
+    parse_boxes(bits, node.findall('box'))
+
+    vals = list(bits.refs.items())
+    vals.sort(key = lambda x: x[1], reverse = True)
+
+    for v, (p, n) in vals:
+        if None in bits.bits[p:p + n]:
+            args.append(v)
         else:
-            assert isinstance(symdef, Element)
-            defs = Definition(symdef.attrib['encodedin'], desc, parse_symdef(symdef))
+            args.append(str(int(''.join(map(str, bits.bits[p:p + n])), 2)))
 
-        for enc in expl.attrib['enclist'].split(','):
-            tab = fieldtab.setdefault(enc.strip(), {})
-            tab[name] = defs
+    print('-----------------------------------')
+    print(inst)
+    import pprint
+    pprint.pprint(opts)
+    print(bits)
+    print(fieldtab.get(encdata.name, {}))
+    print(opts['mnemonic'], '/', len(inst.operands), encdata.func, args)
 
-    for encdata in sorted(enctab.values(), key = lambda x: x.name):
-        node = isadocs.find('.//iclass/encoding[@name="%s"]' % encdata.name)
-        assert node is not None, 'encoding %s does not exists' % repr(encdata.name)
+# data = ElementTree.parse(os.path.join(sys.argv[1], 'onebigfile.xml'))
+# instrs = data.findall('.//sect1[@id="iformpages"]//file/instructionsection[@type="instruction"]')
 
-        tokens = node.findall('asmtemplate/*')
-        assert tokens, 'encoding %s does not have an assembly syntax' % repr(encdata.name)
+# for instr in instrs:
+#     opts = {}
+#     fields = {}
 
-        args = []
-        opts = {}
-        bits = Instruction(encdata.bits)
-        inst = AsmTemplate.parse(tokens)
+#     print('>>>>> %(id)s: %(title)s' % instr.attrib)
+#     parse_props(opts, instr)
 
-        # TODO: remove this
-        print(inst)
-        continue
+#     # TODO: implement SVE instructions
+#     if opts.get('instr-class') == 'sve':
+#         continue
 
-        parse_props(opts, node)
-        parse_boxes(bits, node.findall('box'))
+#     for expl in instr.findall('explanations/explanation'):
+#         symbol = expl.find('symbol')
+#         symacc = expl.find('account')
+#         symdef = expl.find('definition')
 
-        vals = list(bits.refs.items())
-        vals.sort(key = lambda x: x[1], reverse = True)
+#         if symbol is None or (symacc is None) is (symdef is None):
+#             raise AssertionError('invalid explanation')
 
-        for v, (p, n) in vals:
-            if None in bits.bits[p:p + n]:
-                args.append(v)
-            else:
-                args.append(str(int(''.join(map(str, bits.bits[p:p + n])), 2)))
+#         desc = symbol.text or ''
+#         name = symbol.attrib['link']
 
-        import pprint
-        pprint.pprint(opts)
-        print(bits)
-        print(fieldtab[encdata.name])
-        print(inst)
-        print(opts['mnemonic'], encdata.func, args)
+#         if symacc is not None:
+#             assert symdef is None
+#             defs = Account(symacc.attrib['encodedin'], desc)
+#         else:
+#             assert isinstance(symdef, Element)
+#             defs = Definition(symdef.attrib['encodedin'], desc, parse_symdef(symdef))
 
-    # data = ElementTree.parse(os.path.join(sys.argv[1], 'onebigfile.xml'))
-    # instrs = data.findall('.//sect1[@id="iformpages"]//file/instructionsection[@type="instruction"]')
+#         for enc in expl.attrib['enclist'].split(','):
+#             tab = fields.setdefault(enc.strip(), {})
+#             tab[name] = defs
 
-    # for instr in instrs:
-    #     opts = {}
-    #     fields = {}
+#     # # TODO: remove this
+#     if 'CASPAL_CP32_ldstexcl' not in fields:
+#         continue
 
-    #     print('>>>>> %(id)s: %(title)s' % instr.attrib)
-    #     parse_props(opts, instr)
+#     for iclass in instr.findall('classes/iclass'):
+#         attrs = dict(opts)
+#         proto = Instruction(insdata.bits)
 
-    #     # TODO: implement SVE instructions
-    #     if opts.get('instr-class') == 'sve':
-    #         continue
+#         parse_props(attrs, iclass)
+#         parse_boxes(proto, iclass.findall('regdiagram/box'))
 
-    #     for expl in instr.findall('explanations/explanation'):
-    #         symbol = expl.find('symbol')
-    #         symacc = expl.find('account')
-    #         symdef = expl.find('definition')
+#         for encoding in iclass.findall('encoding'):
+#             props = dict(attrs)
+#             instr = Instruction(proto)
+#             lexer = TokenStream.parse(encoding.attrib['name'], encoding.findall('asmtemplate/*'))
 
-    #         if symbol is None or (symacc is None) is (symdef is None):
-    #             raise AssertionError('invalid explanation')
+#             parse_props(props, encoding)
+#             parse_boxes(instr, encoding.findall('box'))
 
-    #         desc = symbol.text or ''
-    #         name = symbol.attrib['link']
-
-    #         if symacc is not None:
-    #             assert symdef is None
-    #             defs = Account(symacc.attrib['encodedin'], desc)
-    #         else:
-    #             assert isinstance(symdef, Element)
-    #             defs = Definition(symdef.attrib['encodedin'], desc, parse_symdef(symdef))
-
-    #         for enc in expl.attrib['enclist'].split(','):
-    #             tab = fields.setdefault(enc.strip(), {})
-    #             tab[name] = defs
-
-    #     # # TODO: remove this
-    #     if 'CASPAL_CP32_ldstexcl' not in fields:
-    #         continue
-
-    #     for iclass in instr.findall('classes/iclass'):
-    #         attrs = dict(opts)
-    #         proto = Instruction(insdata.bits)
-
-    #         parse_props(attrs, iclass)
-    #         parse_boxes(proto, iclass.findall('regdiagram/box'))
-
-    #         for encoding in iclass.findall('encoding'):
-    #             props = dict(attrs)
-    #             instr = Instruction(proto)
-    #             lexer = TokenStream.parse(encoding.attrib['name'], encoding.findall('asmtemplate/*'))
-
-    #             parse_props(props, encoding)
-    #             parse_boxes(instr, encoding.findall('box'))
-
-    #             print('-------- %s --------' % lexer.name)
-    #             print('Mnemonic :', props['mnemonic'])
-    #             print('Syntax   :', ' '.join(map(repr, lexer)))
-    #             import pprint
-    #             print('Fields   :', end = ' ')
-    #             pprint.pprint(fields.get(lexer.name, {}), compact = True, sort_dicts = True)
-    #             print('Encoding :')
-    #             print(instr)
-    #             print()
-
-if __name__ == '__main__':
-    main()
+#             print('-------- %s --------' % lexer.name)
+#             print('Mnemonic :', props['mnemonic'])
+#             print('Syntax   :', ' '.join(map(repr, lexer)))
+#             import pprint
+#             print('Fields   :', end = ' ')
+#             pprint.pprint(fields.get(lexer.name, {}), compact = True, sort_dicts = True)
+#             print('Encoding :')
+#             print(instr)
+#             print()
