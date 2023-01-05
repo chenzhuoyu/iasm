@@ -4,10 +4,10 @@ import (
     `fmt`
 )
 
-// Register represents a hardware register.
+// Register represents a generic hardware register.
 type Register interface {
     fmt.Stringer
-    register()
+    ID() uint8
 }
 
 type (
@@ -15,14 +15,27 @@ type (
     Register64 uint8
 )
 
-func (Register32) register() {}
-func (Register64) register() {}
+func (self Register32) ID() uint8 {
+    switch {
+        case self == WSP          : return uint8(WZR)
+        case self &^ 0b11111 == 0 : return uint8(self)
+        default                   : panic("aarch64: invalid generic 32-bit register")
+    }
+}
+
+func (self Register64) ID() uint8 {
+    switch {
+        case self == SP           : return uint8(XZR)
+        case self &^ 0b11111 == 0 : return uint8(self)
+        default                   : panic("aarch64: invalid generic 64-bit register")
+    }
+}
 
 func (self Register32) String() string {
     switch self {
         case WSP : return "wsp"
         case WZR : return "wzr"
-        default  : return fmt.Sprintf("w%d", self)
+        default  : return fmt.Sprintf("w%d", self.ID())
     }
 }
 
@@ -31,7 +44,7 @@ func (self Register64) String() string {
         case LR  : return "lr"
         case SP  : return "sp"
         case XZR : return "xzr"
-        default  : return fmt.Sprintf("x%d", self)
+        default  : return fmt.Sprintf("x%d", self.ID())
     }
 }
 

@@ -182,16 +182,18 @@ def parse_boxes(ins: Instruction, boxes: list[Element]):
 
         for i, item in enumerate(box.findall('c')):
             match item.text:
-                case None  : pass
-                case ''    : pass
-                case 'x'   : pass
-                case 'N'   : pass
-                case 'z'   : ins.bits[hibit - i] = 0
-                case '0'   : ins.bits[hibit - i] = 0
-                case '1'   : ins.bits[hibit - i] = 1
-                case '(0)' : ins.bits[hibit - i] = 0
-                case '(1)' : ins.bits[hibit - i] = 1
-                case v     : raise RuntimeError('invalid cell value: ' + repr(v))
+                case None      : pass
+                case ''        : pass
+                case 'x'       : pass
+                case 'N'       : pass
+                case 'Z'       : pass
+                case '!= 0000' : pass
+                case 'z'       : ins.bits[hibit - i] = 0
+                case '0'       : ins.bits[hibit - i] = 0
+                case '1'       : ins.bits[hibit - i] = 1
+                case '(0)'     : ins.bits[hibit - i] = 0
+                case '(1)'     : ins.bits[hibit - i] = 1
+                case v         : raise RuntimeError('invalid cell value: ' + repr(v))
 
         if box.attrib.get('usename') == '1':
             ins.refs[box.attrib['name']] = (hibit - width + 1, width)
