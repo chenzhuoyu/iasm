@@ -36,8 +36,15 @@ func (*Label) Sealed(tag.Tag) {}
 func (*Label) EnsureValid()   {}
 func (*Label) Addressable()   {}
 
+func (self *Label) drop() {
+    if self.Dest != nil {
+        self.Dest.Free()
+    }
+}
+
 func (self *Label) Free() {
     if atomic.AddInt64(&self.refs, -1) == 0 {
+        self.drop()
         freeLabel(self)
     }
 }

@@ -47,6 +47,7 @@ func newInstruction(name string, argc int, argv Operands) *Instruction {
     }
 
     /* initialize the instruction */
+    p.refs = 1
     p.name = name
     p.argc = argc
     p.argv = argv

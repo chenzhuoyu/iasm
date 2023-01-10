@@ -1457,21 +1457,14 @@ func (self *Assembler) assembleInstrMem(ops *[]interface{}, addr asm.MemoryAddre
     if addr.Base != rip {
         *ops = append(*ops, Mem(addr))
     } else {
-        *ops = append(*ops, asm.RelativeOffset(addr.Offset))
+        *ops = append(*ops, Mem(asm.RelativeOffset(addr.Offset)))
     }
 }
 
 func (self *Assembler) assembleInstrLabel(ops *[]interface{}, label ParsedLabel) {
-    vk := label.Kind
-    tr, err := self.repo.label(label.Name)
-
-    /* check for errors */
-    if err != nil {
+    if tr, err := self.repo.label(label.Name); err != nil {
         panic(err)
-    }
-
-    /* check for branch target */
-    if vk == BranchTarget {
+    } else if label.Kind == BranchTarget {
         *ops = append(*ops, tr)
     } else {
         *ops = append(*ops, Mem(tr))

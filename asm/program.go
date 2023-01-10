@@ -9,6 +9,7 @@ type Instruction interface {
     tag.Disposable
     PC() uintptr
     Name() string
+    Retain() Instruction
     Operands() []interface{}
 }
 

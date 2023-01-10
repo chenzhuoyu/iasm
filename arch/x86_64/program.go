@@ -4,6 +4,7 @@ import (
     `fmt`
     `math`
     `math/bits`
+    `sync/atomic`
 
     `github.com/chenzhuoyu/iasm/asm`
     `github.com/chenzhuoyu/iasm/expr`
@@ -157,6 +158,7 @@ const (
 // Instruction represents an unencoded instruction.
 type Instruction struct {
     next   *Instruction
+    refs   int64
     pc     uintptr
     nb     int
     len    int
@@ -175,9 +177,28 @@ func (self *Instruction) PC() uintptr {
 }
 
 func (self *Instruction) Free() {
-    self.clear()
-    self.pseudo.free()
-    freeInstruction(self)
+    if atomic.AddInt64(&self.refs, -1) == 0 {
+        self.clear()
+        self.pseudo.free()
+        freeInstruction(self)
+    }
+}
+
+func (self *Instruction) Name() string {
+    return self.name
+}
+
+func (self *Instruction) Retain() asm.Instruction {
+    atomic.AddInt64(&self.refs, 1)
+    return self
+}
+
+func (self *Instruction) Domain() InstructionDomain {
+    return self.domain
+}
+
+func (self *Instruction) Operands() []interface{} {
+    return self.argv[:self.argc]
 }
 
 func (self *Instruction) add(flags int, encoder func(m *_Encoding, v []interface{})) {
@@ -295,23 +316,6 @@ func (self *Instruction) SS() *Instruction {
 func (self *Instruction) LOCK() *Instruction {
     self.prefix = append(self.prefix, _P_lock)
     return self
-}
-
-/** Basic Instruction Properties **/
-
-// Name returns the instruction name.
-func (self *Instruction) Name() string {
-    return self.name
-}
-
-// Domain returns the domain of this instruction.
-func (self *Instruction) Domain() InstructionDomain {
-    return self.domain
-}
-
-// Operands returns the operands of this instruction.
-func (self *Instruction) Operands() []interface{} {
-    return self.argv[:self.argc]
 }
 
 // Program represents a sequence of instructions.
@@ -435,7 +439,7 @@ func (self *Program) Link(p *asm.Label) {
     if p.Dest != nil {
         panic("lable was alreay linked")
     } else {
-        p.Dest = self.pseudo(_PseudoNop)
+        p.Dest = self.pseudo(_PseudoNop).Retain()
     }
 }
 
