@@ -5,7 +5,9 @@ import (
     `math`
     `math/bits`
 
+    `github.com/chenzhuoyu/iasm/asm`
     `github.com/chenzhuoyu/iasm/expr`
+    `github.com/chenzhuoyu/iasm/internal/tag`
 )
 
 type (
@@ -143,7 +145,7 @@ const (
 )
 
 type (
-	_BranchType uint8
+    _BranchType uint8
 )
 
 const (
@@ -168,21 +170,25 @@ type Instruction struct {
     prefix []byte
 }
 
+func (self *Instruction) PC() uintptr {
+    return self.pc
+}
+
+func (self *Instruction) Free() {
+    self.clear()
+    self.pseudo.free()
+    freeInstruction(self)
+}
+
 func (self *Instruction) add(flags int, encoder func(m *_Encoding, v []interface{})) {
     self.forms[self.len].flags = flags
     self.forms[self.len].encoder = encoder
     self.len++
 }
 
-func (self *Instruction) free() {
-    self.clear()
-    self.pseudo.free()
-    freeInstruction(self)
-}
-
 func (self *Instruction) clear() {
     for i := 0; i < self.argc; i++ {
-        if v, ok := self.argv[i].(Disposable); ok {
+        if v, ok := self.argv[i].(tag.Disposable); ok {
             v.Free()
         }
     }
@@ -324,7 +330,7 @@ const (
 func (self *Program) clear() {
     for p, q := self.head, self.head; p != nil; p = q {
         q = p.next
-        p.free()
+        p.Free()
     }
 }
 
@@ -425,7 +431,7 @@ func (self *Program) Free() {
 }
 
 // Link pins a label at the current position.
-func (self *Program) Link(p *Label) {
+func (self *Program) Link(p *asm.Label) {
     if p.Dest != nil {
         panic("lable was alreay linked")
     } else {
@@ -460,7 +466,7 @@ func (self *Program) Assemble(pc uintptr) (ret []byte) {
         /* scan all the branches */
         for p := self.head; p != nil; p = p.next {
             var ok bool
-            var lb *Label
+            var lb *asm.Label
 
             /* re-calculate the alignment here */
             if nb = p.nb; p.pseudo.kind == _PseudoAlign {
@@ -471,7 +477,7 @@ func (self *Program) Assemble(pc uintptr) (ret []byte) {
 
             /* adjust the program counter */
             p.pc -= offs
-            lb, ok = p.argv[0].(*Label)
+            lb, ok = p.argv[0].(*asm.Label)
 
             /* only care about labeled far-branches */
             if !ok || p.nb == _N_near || p.branch == _B_none {
@@ -480,7 +486,7 @@ func (self *Program) Assemble(pc uintptr) (ret []byte) {
 
             /* calculate the jump offset */
             size := self.branchSize(p)
-            diff := lb.offset(p.pc, size)
+            diff := asm.ComputeOffset(lb, p.pc, size)
 
             /* too far to be a near jump */
             if diff > 127 || diff < -128 {
@@ -500,28 +506,21 @@ func (self *Program) Assemble(pc uintptr) (ret []byte) {
     for p := self.head; p != nil; p = p.next {
         for i := 0; i < p.argc; i++ {
             var ok bool
-            var lb *Label
-            var op *MemoryOperand
+            var lb *asm.Label
+            var op *asm.MemoryOperand
 
             /* resolve labels */
-            if lb, ok = p.argv[i].(*Label); ok {
-                p.argv[i] = lb.offset(p.pc, p.nb)
+            if lb, ok = p.argv[i].(*asm.Label); ok {
+                p.argv[i] = asm.ComputeOffset(lb, p.pc, p.nb)
                 continue
             }
 
-            /* check for memory operands */
-            if op, ok = p.argv[i].(*MemoryOperand); !ok {
-                continue
+            /* resolve references in memory operands */
+            if op, ok = p.argv[i].(*asm.MemoryOperand); ok {
+                if lb, ok = op.Addr.(*asm.Label); ok {
+                    op.Addr = asm.ComputeOffset(lb, p.pc, p.nb)
+                }
             }
-
-            /* check for label references */
-            if op.Addr.Type != Reference {
-                continue
-            }
-
-            /* replace the label with the real offset */
-            op.Addr.Type = Offset
-            op.Addr.Offset = op.Addr.Reference.offset(p.pc, p.nb)
         }
     }
 
@@ -532,11 +531,4 @@ func (self *Program) Assemble(pc uintptr) (ret []byte) {
 
     /* all done */
     return ret
-}
-
-// AssembleAndFree is like Assemble, but it frees the Program after assembling.
-func (self *Program) AssembleAndFree(pc uintptr) (ret []byte) {
-    ret = self.Assemble(pc)
-    self.Free()
-    return
 }

@@ -4,15 +4,16 @@ import (
     `bytes`
     `testing`
 
+    `github.com/chenzhuoyu/iasm/asm`
     `github.com/chenzhuoyu/iasm/expr`
     `github.com/davecgh/go-spew/spew`
 )
 
 func TestProgram_Assemble(t *testing.T) {
     a := CreateArch()
-    b := CreateLabel("bak")
-    s := CreateLabel("tab")
-    j := CreateLabel("jmp")
+    b := asm.CreateLabel("bak")
+    s := asm.CreateLabel("tab")
+    j := asm.CreateLabel("jmp")
     p := a.CreateProgram()
     p.JMP    (j)
     p.JMP    (j)
@@ -21,7 +22,7 @@ func TestProgram_Assemble(t *testing.T) {
     p.Data   ([]byte { 0x0f, 0x1f, 0x00 })
     p.JMP    (b)
     p.Link   (j)
-    p.LEAQ   (Ref(s), RDI)
+    p.LEAQ   (Mem(s), RDI)
     p.MOVSLQ (Sib(RDI, RAX, 4, -4), RAX)
     p.ADDQ   (RDI, RAX)
     p.JMPQ   (RAX)
@@ -29,5 +30,5 @@ func TestProgram_Assemble(t *testing.T) {
     p.Link   (s)
     p.Long   (expr.Ref(s.Retain()).Sub(expr.Ref(j.Retain())))
     p.Long   (expr.Ref(s.Retain()).Sub(expr.Ref(b.Retain())))
-    spew.Dump(p.AssembleAndFree(0))
+    spew.Dump(asm.AssembleAndFree(p, 0))
 }

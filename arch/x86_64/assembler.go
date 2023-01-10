@@ -9,6 +9,7 @@ import (
     `strings`
     `unicode`
 
+    `github.com/chenzhuoyu/iasm/asm`
     `github.com/chenzhuoyu/iasm/expr`
 )
 
@@ -441,9 +442,9 @@ type ParsedLabel struct {
 type ParsedOperand struct {
     Op     OperandKind
     Imm    int64
-    Reg    Register
+    Reg    asm.Register
     Label  ParsedLabel
-    Memory MemoryAddress
+    Memory asm.MemoryAddress
 }
 
 // ParsedInstruction represents an instruction in the source.
@@ -460,14 +461,14 @@ func (self *ParsedInstruction) imm(v int64) {
     })
 }
 
-func (self *ParsedInstruction) reg(v Register) {
+func (self *ParsedInstruction) reg(v asm.Register) {
     self.Operands = append(self.Operands, ParsedOperand {
         Op  : OpReg,
         Reg : v,
     })
 }
 
-func (self *ParsedInstruction) mem(v MemoryAddress) {
+func (self *ParsedInstruction) mem(v asm.MemoryAddress) {
     self.Operands = append(self.Operands, ParsedOperand {
         Op     : OpMem,
         Memory : v,
@@ -647,7 +648,7 @@ func (self *Parser) immx(tk _Token) int64 {
     }
 }
 
-func (self *Parser) regx(tk _Token) Register {
+func (self *Parser) regx(tk _Token) asm.Register {
     if tk.tag != _T_punc || tk.punc() != _P_percent {
         panic(self.err(tk.pos, "'%' expected for registers"))
     } else if tk = self.lex.read(); tk.tag != _T_name {
@@ -661,7 +662,7 @@ func (self *Parser) regx(tk _Token) Register {
     }
 }
 
-func (self *Parser) regv(tk _Token) Register {
+func (self *Parser) regv(tk _Token) asm.Register {
     if reg := self.regx(tk); reg == rip {
         panic(self.err(tk.pos, "%rip is not accessable as a dedicated register"))
     } else {
@@ -669,22 +670,22 @@ func (self *Parser) regv(tk _Token) Register {
     }
 }
 
-func (self *Parser) disp(vv int32) MemoryAddress {
+func (self *Parser) disp(vv int32) asm.MemoryAddress {
     switch tk := self.lex.next(); tk.tag {
-        case _T_end  : return MemoryAddress { Displacement: vv }
+        case _T_end  : return MemoryAddress(nil, nil, 0, vv)
         case _T_punc : return self.relm(tk, vv)
         default      : panic(self.err(tk.pos, "',' or '(' expected"))
     }
 }
 
-func (self *Parser) relm(tv _Token, disp int32) MemoryAddress {
+func (self *Parser) relm(tv _Token, disp int32) asm.MemoryAddress {
     var tk _Token
     var tt _TokenKind
 
     /* check for absolute addressing */
     if tv.punc() == _P_comma {
         self.lex.pos--
-        return MemoryAddress { Displacement: disp }
+        return MemoryAddress(nil, nil, 0, disp)
     }
 
     /* must be '(' now */
@@ -709,7 +710,7 @@ func (self *Parser) relm(tv _Token, disp int32) MemoryAddress {
     }
 }
 
-func (self *Parser) base(tk _Token, disp int32) MemoryAddress {
+func (self *Parser) base(tk _Token, disp int32) asm.MemoryAddress {
     rr := self.regx(tk)
     nk := self.lex.next()
 
@@ -721,13 +722,13 @@ func (self *Parser) base(tk _Token, disp int32) MemoryAddress {
     } else if nk.punc() == _P_comma {
         return self.index(rr, disp)
     } else if nk.punc() == _P_rbrk {
-        return MemoryAddress { Base: rr, Displacement: disp }
+        return MemoryAddress(rr, nil, 0, disp)
     } else {
         panic(self.err(nk.pos, "',' or ')' expected"))
     }
 }
 
-func (self *Parser) index(base Register, disp int32) MemoryAddress {
+func (self *Parser) index(base asm.Register, disp int32) asm.MemoryAddress {
     tk := self.lex.next()
     rr := self.regx(tk)
     nk := self.lex.next()
@@ -742,13 +743,13 @@ func (self *Parser) index(base Register, disp int32) MemoryAddress {
     } else if nk.punc() == _P_comma {
         return self.scale(base, rr, disp)
     } else if nk.punc() == _P_rbrk {
-        return MemoryAddress { Base: base, Index: rr, Scale: 1, Displacement: disp }
+        return MemoryAddress(base, rr, 1, disp)
     } else {
         panic(self.err(nk.pos, "',' or ')' expected"))
     }
 }
 
-func (self *Parser) scale(base Register, index Register, disp int32) MemoryAddress {
+func (self *Parser) scale(base asm.Register, index asm.Register, disp int32) asm.MemoryAddress {
     tk := self.lex.next()
     tt := tk.tag
     tv := tk.u64
@@ -773,12 +774,12 @@ func (self *Parser) scale(base Register, index Register, disp int32) MemoryAddre
     }
 
     /* construct the memory address */
-    return MemoryAddress {
-        Base         : base,
-        Index        : index,
-        Scale        : uint8(tv),
-        Displacement : disp,
-    }
+    return MemoryAddress(
+        base,
+        index,
+        uint8(tv),
+        disp,
+    )
 }
 
 func (self *Parser) cmds() *ParsedLine {
@@ -1221,14 +1222,14 @@ func (self *_TermRepo) Get(name string) (expr.Term, error) {
     }
 }
 
-func (self *_TermRepo) label(name string) (*Label, error) {
+func (self *_TermRepo) label(name string) (*asm.Label, error) {
     var ok bool
-    var lb *Label
+    var lb *asm.Label
     var tr expr.Term
 
     /* check for existing terms */
     if tr, ok = self.terms[name]; ok {
-        if lb, ok = tr.(*Label); ok {
+        if lb, ok = tr.(*asm.Label); ok {
             return lb, nil
         } else {
             return nil, errors.New("name is not a label: " + name)
@@ -1236,7 +1237,7 @@ func (self *_TermRepo) label(name string) (*Label, error) {
     }
 
     /* create a new one as needed */
-    lb = new(Label)
+    lb = new(asm.Label)
     lb.Name = name
 
     /* create the map if needed */
@@ -1261,7 +1262,7 @@ func (self *_TermRepo) define(name string, term expr.Term) {
     /* check for existing terms */
     if tr, ok = self.terms[name]; !ok {
         self.terms[name] = term
-    } else if _, ok = tr.(*Label); !ok {
+    } else if _, ok = tr.(*asm.Label); !ok {
         self.terms[name] = term
     } else {
         panic("conflicting term types: " + name)
@@ -1452,17 +1453,11 @@ func (self *Assembler) assembleInstr(p *Program, line *ParsedInstruction) (err e
     return nil
 }
 
-func (self *Assembler) assembleInstrMem(ops *[]interface{}, addr MemoryAddress) {
-    mem := new(MemoryOperand)
-    *ops = append(*ops, mem)
-
-    /* check for RIP-relative addressing */
+func (self *Assembler) assembleInstrMem(ops *[]interface{}, addr asm.MemoryAddress) {
     if addr.Base != rip {
-        mem.Addr.Type = Memory
-        mem.Addr.Memory = addr
+        *ops = append(*ops, Mem(addr))
     } else {
-        mem.Addr.Type = Offset
-        mem.Addr.Offset = RelativeOffset(addr.Displacement)
+        *ops = append(*ops, asm.RelativeOffset(addr.Offset))
     }
 }
 
@@ -1478,16 +1473,9 @@ func (self *Assembler) assembleInstrLabel(ops *[]interface{}, label ParsedLabel)
     /* check for branch target */
     if vk == BranchTarget {
         *ops = append(*ops, tr)
-        return
+    } else {
+        *ops = append(*ops, Mem(tr))
     }
-
-    /* add to ops */
-    *ops = append(*ops, &MemoryOperand {
-        Addr: Addressable {
-            Type      : Reference,
-            Reference : tr,
-        },
-    })
 }
 
 func (self *Assembler) assembleCommand(p *Program, line *ParsedCommand) error {

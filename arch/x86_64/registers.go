@@ -2,13 +2,10 @@ package x86_64
 
 import (
     `fmt`
-)
 
-// Register represents a hardware register.
-type Register interface {
-    fmt.Stringer
-    implRegister()
-}
+    `github.com/chenzhuoyu/iasm/asm`
+    `github.com/chenzhuoyu/iasm/internal/tag`
+)
 
 type (
     Register8  byte
@@ -42,7 +39,7 @@ func (self RegisterMask) String() string {
 
 // MaskedRegister is a Register masked by a RegisterMask.
 type MaskedRegister struct {
-    Reg  Register
+    Reg  asm.Register
     Mask RegisterMask
 }
 
@@ -261,16 +258,27 @@ const (
     ZMM31
 )
 
-func (self Register8)  implRegister() {}
-func (self Register16) implRegister() {}
-func (self Register32) implRegister() {}
-func (self Register64) implRegister() {}
+func (Register8)  Sealed(tag.Tag) {}
+func (Register16) Sealed(tag.Tag) {}
+func (Register32) Sealed(tag.Tag) {}
+func (Register64) Sealed(tag.Tag) {}
 
-func (self KRegister)   implRegister() {}
-func (self MMRegister)  implRegister() {}
-func (self XMMRegister) implRegister() {}
-func (self YMMRegister) implRegister() {}
-func (self ZMMRegister) implRegister() {}
+func (KRegister)   Sealed(tag.Tag) {}
+func (MMRegister)  Sealed(tag.Tag) {}
+func (XMMRegister) Sealed(tag.Tag) {}
+func (YMMRegister) Sealed(tag.Tag) {}
+func (ZMMRegister) Sealed(tag.Tag) {}
+
+func (self Register8)  ID() uint8 { return uint8(self) }
+func (self Register16) ID() uint8 { return uint8(self) }
+func (self Register32) ID() uint8 { return uint8(self) }
+func (self Register64) ID() uint8 { return uint8(self) }
+
+func (self KRegister)   ID() uint8 { return uint8(self) }
+func (self MMRegister)  ID() uint8 { return uint8(self) }
+func (self XMMRegister) ID() uint8 { return uint8(self) }
+func (self YMMRegister) ID() uint8 { return uint8(self) }
+func (self ZMMRegister) ID() uint8 { return uint8(self) }
 
 func (self Register8)  String() string { if int(self) >= len(r8names)  { return "???" } else { return r8names[self]  } }
 func (self Register16) String() string { if int(self) >= len(r16names) { return "???" } else { return r16names[self] } }
@@ -284,7 +292,7 @@ func (self YMMRegister) String() string { if int(self) >= len(ymmnames) { return
 func (self ZMMRegister) String() string { if int(self) >= len(zmmnames) { return "???" } else { return zmmnames[self] } }
 
 // Registers maps register name into Register instances.
-var Registers = map[string]Register {
+var Registers = map[string]asm.Register {
     "al"    : AL,
     "cl"    : CL,
     "dl"    : DL,

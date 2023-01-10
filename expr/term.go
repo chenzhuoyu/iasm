@@ -1,7 +1,11 @@
 package expr
 
+import (
+    `github.com/chenzhuoyu/iasm/internal/tag`
+)
+
 // Term represents a value that can Evaluate() into an integer.
 type Term interface {
-    Free()
+    tag.Disposable
     Evaluate() (int64, error)
 }

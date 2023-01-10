@@ -2,18 +2,17 @@ package aarch64
 
 import (
     `fmt`
-)
 
-// Register represents a generic hardware register.
-type Register interface {
-    fmt.Stringer
-    ID() uint8
-}
+    `github.com/chenzhuoyu/iasm/internal/tag`
+)
 
 type (
     Register32 uint8
     Register64 uint8
 )
+
+func (Register32) Sealed(tag.Tag) {}
+func (Register64) Sealed(tag.Tag) {}
 
 func (self Register32) ID() uint8 {
     switch {

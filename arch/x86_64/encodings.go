@@ -3,6 +3,8 @@ package x86_64
 import (
     `encoding/binary`
     `math`
+
+    `github.com/chenzhuoyu/iasm/asm`
 )
 
 /** Operand Encoding Helpers **/
@@ -13,25 +15,20 @@ func imml(v interface{}) byte {
 
 func relv(v interface{}) int64 {
     switch r := v.(type) {
-        case *Label         : return 0
-        case RelativeOffset : return int64(r)
-        default             : panic("invalid relative offset")
+        case *asm.Label         : return 0
+        case asm.RelativeOffset : return int64(r)
+        default                 : panic("invalid relative offset")
     }
 }
 
 func addr(v interface{}) interface{} {
-    switch a := v.(*MemoryOperand).Addr; a.Type {
-        case Memory    : return a.Memory
-        case Offset    : return a.Offset
-        case Reference : return a.Reference
-        default        : panic("invalid memory operand type")
-    }
+    return v.(*asm.MemoryOperand).Addr
 }
 
 func bcode(v interface{}) byte {
-    if m, ok := v.(*MemoryOperand); !ok {
+    if _, x, ok := asMemOp(v); !ok {
         panic("v is not a memory operand")
-    } else if m.Broadcast == 0 {
+    } else if x.Broadcast == 0 {
         return 0
     } else {
         return 1
@@ -50,27 +47,27 @@ func vcode(v interface{}) byte {
 
 func kcode(v interface{}) byte {
     switch r := v.(type) {
-        case KRegister      : return byte(r)
-        case XMMRegister    : return 0
-        case YMMRegister    : return 0
-        case ZMMRegister    : return 0
-        case RegisterMask   : return byte(r.K)
-        case MaskedRegister : return byte(r.Mask.K)
-        case *MemoryOperand : return toKcodeMem(r)
-        default             : panic("v is not a maskable operand")
+        case KRegister          : return byte(r)
+        case XMMRegister        : return 0
+        case YMMRegister        : return 0
+        case ZMMRegister        : return 0
+        case RegisterMask       : return byte(r.K)
+        case MaskedRegister     : return byte(r.Mask.K)
+        case *asm.MemoryOperand : return toKcodeMem(r)
+        default                 : panic("v is not a maskable operand")
     }
 }
 
 func zcode(v interface{}) byte {
     switch r := v.(type) {
-        case KRegister      : return 0
-        case XMMRegister    : return 0
-        case YMMRegister    : return 0
-        case ZMMRegister    : return 0
-        case RegisterMask   : return toZcodeRegM(r)
-        case MaskedRegister : return toZcodeRegM(r.Mask)
-        case *MemoryOperand : return toZcodeMem(r)
-        default             : panic("v is not a maskable operand")
+        case KRegister          : return 0
+        case XMMRegister        : return 0
+        case YMMRegister        : return 0
+        case ZMMRegister        : return 0
+        case RegisterMask       : return toZcodeRegM(r)
+        case MaskedRegister     : return toZcodeRegM(r.Mask)
+        case *asm.MemoryOperand : return toZcodeMem(r)
+        default                 : panic("v is not a maskable operand")
     }
 }
 
@@ -179,16 +176,16 @@ func toEcodeVMM(v interface{}, x byte) byte {
     }
 }
 
-func toKcodeMem(v *MemoryOperand) byte {
-    if !v.Masked {
+func toKcodeMem(v *asm.MemoryOperand) byte {
+    if x := v.Ext.(*MemoryOperandExtension); !x.Masked {
         return 0
     } else {
-        return byte(v.Mask.K)
+        return byte(x.Mask.K)
     }
 }
 
-func toZcodeMem(v *MemoryOperand) byte {
-    if !v.Masked || v.Mask.Z {
+func toZcodeMem(v *asm.MemoryOperand) byte {
+    if x := v.Ext.(*MemoryOperandExtension); !x.Masked || x.Mask.Z {
         return 0
     } else {
         return 1
@@ -316,11 +313,11 @@ func (self *_Encoding) vex2(lpp byte, r byte, rm interface{}, vvvv byte) {
     /* encode the RM bits if any */
     if rm != nil {
         switch v := rm.(type) {
-            case *Label         : break
-            case Register       : b = hcode(v)
-            case MemoryAddress  : b, x = toHcodeOpt(v.Base), toHcodeOpt(v.Index)
-            case RelativeOffset : break
-            default             : panic("rm is expected to be a register or a memory address")
+            case *asm.Label         : break
+            case asm.Register       : b = hcode(v)
+            case asm.MemoryAddress  : b, x = toHcodeOpt(v.Base), toHcodeOpt(v.Index)
+            case asm.RelativeOffset : break
+            default                 : panic("rm is expected to be a register or a memory address")
         }
     }
 
@@ -381,10 +378,10 @@ func (self *_Encoding) vex3(esc byte, mmmmm byte, wlpp byte, r byte, rm interfac
 
     /* encode the RM bits */
     switch v := rm.(type) {
-        case *Label         : break
-        case MemoryAddress  : b, x = toHcodeOpt(v.Base), toHcodeOpt(v.Index)
-        case RelativeOffset : break
-        default             : panic("rm is expected to be a register or a memory address")
+        case *asm.Label         : break
+        case asm.MemoryAddress  : b, x = toHcodeOpt(v.Base), toHcodeOpt(v.Index)
+        case asm.RelativeOffset : break
+        default                 : panic("rm is expected to be a register or a memory address")
     }
 
     /* encode the 3-byte VEX or XOP prefix */
@@ -445,11 +442,11 @@ func (self *_Encoding) evex(mm byte, w1pp byte, ll byte, rr byte, rm interface{}
     /* encode the RM bits if any */
     if rm != nil {
         switch m := rm.(type) {
-            case *Label         : break
-            case Register       : b, x = hcode(m), ecode(m)
-            case MemoryAddress  : b, x, v1 = toHcodeOpt(m.Base), toHcodeOpt(m.Index), toEcodeVMM(m.Index, v1)
-            case RelativeOffset : break
-            default             : panic("rm is expected to be a register or a memory address")
+            case *asm.Label         : break
+            case asm.Register       : b, x = hcode(m), ecode(m)
+            case asm.MemoryAddress  : b, x, v1 = toHcodeOpt(m.Base), toHcodeOpt(m.Index), toEcodeVMM(m.Index, v1)
+            case asm.RelativeOffset : break
+            default                 : panic("rm is expected to be a register or a memory address")
         }
     }
 
@@ -484,10 +481,10 @@ func (self *_Encoding) rexm(w byte, r byte, rm interface{}) {
 
     /* encode the RM bits */
     switch v := rm.(type) {
-        case *Label         : break
-        case MemoryAddress  : b, x = toHcodeOpt(v.Base), toHcodeOpt(v.Index)
-        case RelativeOffset : break
-        default             : panic("rm is expected to be a register or a memory address")
+        case *asm.Label         : break
+        case asm.MemoryAddress  : b, x = toHcodeOpt(v.Base), toHcodeOpt(v.Index)
+        case asm.RelativeOffset : break
+        default                 : panic("rm is expected to be a register or a memory address")
     }
 
     /* encode the REX prefix */
@@ -506,11 +503,11 @@ func (self *_Encoding) rexo(r byte, rm interface{}, force bool) {
 
     /* encode the RM bits */
     switch v := rm.(type) {
-        case *Label         : break
-        case Register       : b = hcode(v)
-        case MemoryAddress  : b, x = toHcodeOpt(v.Base), toHcodeOpt(v.Index)
-        case RelativeOffset : break
-        default             : panic("rm is expected to be a register or a memory address")
+        case *asm.Label         : break
+        case asm.Register       : b = hcode(v)
+        case asm.MemoryAddress  : b, x = toHcodeOpt(v.Base), toHcodeOpt(v.Index)
+        case asm.RelativeOffset : break
+        default                 : panic("rm is expected to be a register or a memory address")
     }
 
     /* if REX.R, REX.X, and REX.B are all zeroes, REX prefix can be omitted */
@@ -533,8 +530,8 @@ func (self *_Encoding) rexo(r byte, rm interface{}, force bool) {
 //
 func (self *_Encoding) mrsd(reg byte, rm interface{}, disp8v int32) {
     var ok bool
-    var mm MemoryAddress
-    var ro RelativeOffset
+    var mm asm.MemoryAddress
+    var ro asm.RelativeOffset
 
     /* ModRM encodes the lower 3-bit of the register */
     if reg > 7 {
@@ -554,7 +551,7 @@ func (self *_Encoding) mrsd(reg byte, rm interface{}, disp8v int32) {
     }
 
     /* special case: unresolved labels, assuming a zero offset */
-    if _, ok = rm.(*Label); ok {
+    if _, ok = rm.(*asm.Label); ok {
         self.emit(0x05 | (reg << 3))
         self.imm4(0)
         return
@@ -562,14 +559,14 @@ func (self *_Encoding) mrsd(reg byte, rm interface{}, disp8v int32) {
 
     /* special case: RIP-relative offset
      * ModRM.Mode == 0 and ModeRM.R/M == 5 indicates (rip + disp32) addressing */
-    if ro, ok = rm.(RelativeOffset); ok {
+    if ro, ok = rm.(asm.RelativeOffset); ok {
         self.emit(0x05 | (reg << 3))
         self.imm4(int64(ro))
         return
     }
 
     /* must be a generic memory address */
-    if mm, ok = rm.(MemoryAddress); !ok {
+    if mm, ok = rm.(asm.MemoryAddress); !ok {
         panic("rm must be a memory address")
     }
 
@@ -577,14 +574,14 @@ func (self *_Encoding) mrsd(reg byte, rm interface{}, disp8v int32) {
     if mm.Base == nil && mm.Index == nil {
         self.emit(0x04 | (reg << 3))
         self.emit(0x25)
-        self.imm4(int64(mm.Displacement))
+        self.imm4(int64(mm.Offset))
         return
     }
 
     /* no SIB byte */
     if mm.Index == nil && lcode(mm.Base) != 0b100 {
+        dv := mm.Offset
         cc := lcode(mm.Base)
-        dv := mm.Displacement
 
         /* ModRM.Mode == 0 (no displacement) */
         if dv == 0 && mm.Base != RBP && mm.Base != R13 {
@@ -605,7 +602,7 @@ func (self *_Encoding) mrsd(reg byte, rm interface{}, disp8v int32) {
 
         /* ModRM.Mode == 2 (32-bit displacement) */
         self.emit(0x80 | (reg << 3) | cc)
-        self.imm4(int64(mm.Displacement))
+        self.imm4(int64(mm.Offset))
         return
     }
 
@@ -619,14 +616,13 @@ func (self *_Encoding) mrsd(reg byte, rm interface{}, disp8v int32) {
     var index byte = 0x04
 
     /* encode the scale byte */
-    if mm.Scale != 0 {
-        switch mm.Scale {
-            case 1  : scale = 0
-            case 2  : scale = 1
-            case 4  : scale = 2
-            case 8  : scale = 3
-            default : panic("invalid scale value")
-        }
+    switch mm.Ext.(Scale) {
+        case 0  : break
+        case 1  : scale = 0
+        case 2  : scale = 1
+        case 4  : scale = 2
+        case 8  : scale = 3
+        default : panic("invalid scale value")
     }
 
     /* encode the index byte */
@@ -638,13 +634,13 @@ func (self *_Encoding) mrsd(reg byte, rm interface{}, disp8v int32) {
     if mm.Base == nil {
         self.emit((reg << 3) | 0b100)
         self.emit((scale << 6) | (index << 3) | 0b101)
-        self.imm4(int64(mm.Displacement))
+        self.imm4(int64(mm.Offset))
         return
     }
 
     /* base L-code & displacement value */
+    dv := mm.Offset
     cc := lcode(mm.Base)
-    dv := mm.Displacement
 
     /* ModRM.Mode == 0 (no displacement) */
     if dv == 0 && cc != 0b101 {
@@ -664,7 +660,7 @@ func (self *_Encoding) mrsd(reg byte, rm interface{}, disp8v int32) {
     /* ModRM.Mode == 2 (32-bit displacement) */
     self.emit(0x84 | (reg << 3))
     self.emit((scale << 6) | (index << 3) | cc)
-    self.imm4(int64(mm.Displacement))
+    self.imm4(int64(mm.Offset))
 }
 
 // encode invokes the encoder to encode this instruction.

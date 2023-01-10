@@ -4,18 +4,21 @@ package aarch64
 
 import (
     `fmt`
+    
+    `github.com/chenzhuoyu/iasm/asm`
+    `github.com/chenzhuoyu/iasm/internal/tag`
 )
 
 // SIMDVector represents a SIMD vector.
 type SIMDVector interface {
-    String() string
+    fmt.Stringer
     Arrangement() SIMDVectorArrangement
 }
 
 // SIMDRegister represents an Advanced SIMD hardware register.
 type SIMDRegister interface {
-    Register
-    Bits() uint8
+    asm.Register
+    ItemWidth() uint8
 }
 
 // SIMDVectorArrangement represents the data arrangement of a V register.
@@ -100,7 +103,6 @@ func (self SIMDVector4) String() string {
     return fmt.Sprintf("{ %s, %s, %s, %s }", self[0], self[1], self[2], self[3])
 }
 
-
 type (
     SIMDVector1r struct { V SIMDVector1; A SIMDVectorArrangement }
     SIMDVector2r struct { V SIMDVector2; A SIMDVectorArrangement }
@@ -139,12 +141,19 @@ type (
     SIMDRegister128r uint8
 )
 
-func (SIMDRegister8)    Bits() uint8 { return 8 }
-func (SIMDRegister16)   Bits() uint8 { return 16 }
-func (SIMDRegister32)   Bits() uint8 { return 32 }
-func (SIMDRegister64)   Bits() uint8 { return 64 }
-func (SIMDRegister128)  Bits() uint8 { return 128 }
-func (SIMDRegister128r) Bits() uint8 { return 128 }
+func (SIMDRegister8)    Sealed(tag.Tag) {}
+func (SIMDRegister16)   Sealed(tag.Tag) {}
+func (SIMDRegister32)   Sealed(tag.Tag) {}
+func (SIMDRegister64)   Sealed(tag.Tag) {}
+func (SIMDRegister128)  Sealed(tag.Tag) {}
+func (SIMDRegister128r) Sealed(tag.Tag) {}
+
+func (SIMDRegister8)    ItemWidth() uint8 { return 8 }
+func (SIMDRegister16)   ItemWidth() uint8 { return 16 }
+func (SIMDRegister32)   ItemWidth() uint8 { return 32 }
+func (SIMDRegister64)   ItemWidth() uint8 { return 64 }
+func (SIMDRegister128)  ItemWidth() uint8 { return 128 }
+func (SIMDRegister128r) ItemWidth() uint8 { return 128 }
 
 func (self SIMDRegister8)    ID() uint8 { return uint8(self) & 0b11111 }
 func (self SIMDRegister16)   ID() uint8 { return uint8(self) & 0b11111 }
@@ -160,38 +169,6 @@ func (self SIMDRegister64)   String() string { return fmt.Sprintf("d%d", self.ID
 func (self SIMDRegister128)  String() string { return fmt.Sprintf("q%d", self.ID()) }
 func (self SIMDRegister128v) String() string { return fmt.Sprintf("v%d", self) }
 func (self SIMDRegister128r) String() string { return fmt.Sprintf("v%d.%s", self.ID(), self.Arrangement()) }
-
-func (self SIMDRegister128v) B(n byte) SIMDRegister128r {
-    switch n {
-        case 8  : return self.As(Vec8B)
-        case 16 : return self.As(Vec16B)
-        default : panic("aarch64: invalid element count for unit size B")
-    }
-}
-
-func (self SIMDRegister128v) H(n byte) SIMDRegister128r {
-    switch n {
-        case 4  : return self.As(Vec4H)
-        case 8  : return self.As(Vec8H)
-        default : panic("aarch64: invalid element count for unit size H")
-    }
-}
-
-func (self SIMDRegister128v) S(n byte) SIMDRegister128r {
-    switch n {
-        case 2  : return self.As(Vec2S)
-        case 4  : return self.As(Vec4S)
-        default : panic("aarch64: invalid element count for unit size S")
-    }
-}
-
-func (self SIMDRegister128v) D(n byte) SIMDRegister128r {
-    switch n {
-        case 1  : return self.As(Vec1D)
-        case 2  : return self.As(Vec2D)
-        default : panic("aarch64: invalid element count for unit size D")
-    }
-}
 
 func (self SIMDRegister128v) As(v SIMDVectorArrangement) SIMDRegister128r {
     if self &^ 0b11111 != 0 {
