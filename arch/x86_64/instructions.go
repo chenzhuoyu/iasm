@@ -76,8 +76,8 @@ func (self *Program) ADCB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for ADCB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for ADCB")
     }
     return p
 }
@@ -178,8 +178,8 @@ func (self *Program) ADCL(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for ADCL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for ADCL")
     }
     return p
 }
@@ -281,8 +281,8 @@ func (self *Program) ADCQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for ADCQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for ADCQ")
     }
     return p
 }
@@ -392,8 +392,8 @@ func (self *Program) ADCW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for ADCW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for ADCW")
     }
     return p
 }
@@ -434,8 +434,8 @@ func (self *Program) ADCXL(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for ADCXL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for ADCXL")
     }
     return p
 }
@@ -476,8 +476,8 @@ func (self *Program) ADCXQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for ADCXQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for ADCXQ")
     }
     return p
 }
@@ -556,8 +556,8 @@ func (self *Program) ADDB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for ADDB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for ADDB")
     }
     return p
 }
@@ -658,8 +658,8 @@ func (self *Program) ADDL(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for ADDL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for ADDL")
     }
     return p
 }
@@ -698,8 +698,8 @@ func (self *Program) ADDPD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for ADDPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for ADDPD")
     }
     return p
 }
@@ -736,8 +736,8 @@ func (self *Program) ADDPS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for ADDPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for ADDPS")
     }
     return p
 }
@@ -839,8 +839,8 @@ func (self *Program) ADDQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for ADDQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for ADDQ")
     }
     return p
 }
@@ -879,8 +879,8 @@ func (self *Program) ADDSD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for ADDSD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for ADDSD")
     }
     return p
 }
@@ -919,8 +919,8 @@ func (self *Program) ADDSS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for ADDSS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for ADDSS")
     }
     return p
 }
@@ -959,8 +959,8 @@ func (self *Program) ADDSUBPD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for ADDSUBPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for ADDSUBPD")
     }
     return p
 }
@@ -999,8 +999,8 @@ func (self *Program) ADDSUBPS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for ADDSUBPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for ADDSUBPS")
     }
     return p
 }
@@ -1110,8 +1110,8 @@ func (self *Program) ADDW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for ADDW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for ADDW")
     }
     return p
 }
@@ -1152,8 +1152,8 @@ func (self *Program) ADOXL(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for ADOXL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for ADOXL")
     }
     return p
 }
@@ -1194,8 +1194,8 @@ func (self *Program) ADOXQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for ADOXQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for ADOXQ")
     }
     return p
 }
@@ -1236,8 +1236,8 @@ func (self *Program) AESDEC(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for AESDEC")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for AESDEC")
     }
     return p
 }
@@ -1278,8 +1278,8 @@ func (self *Program) AESDECLAST(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for AESDECLAST")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for AESDECLAST")
     }
     return p
 }
@@ -1320,8 +1320,8 @@ func (self *Program) AESENC(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for AESENC")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for AESENC")
     }
     return p
 }
@@ -1362,8 +1362,8 @@ func (self *Program) AESENCLAST(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for AESENCLAST")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for AESENCLAST")
     }
     return p
 }
@@ -1404,8 +1404,8 @@ func (self *Program) AESIMC(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for AESIMC")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for AESIMC")
     }
     return p
 }
@@ -1448,8 +1448,8 @@ func (self *Program) AESKEYGENASSIST(v0 interface{}, v1 interface{}, v2 interfac
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for AESKEYGENASSIST")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for AESKEYGENASSIST")
     }
     return p
 }
@@ -1528,8 +1528,8 @@ func (self *Program) ANDB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for ANDB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for ANDB")
     }
     return p
 }
@@ -1630,8 +1630,8 @@ func (self *Program) ANDL(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for ANDL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for ANDL")
     }
     return p
 }
@@ -1668,8 +1668,8 @@ func (self *Program) ANDNL(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
             m.mrsd(lcode(v[2]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for ANDNL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for ANDNL")
     }
     return p
 }
@@ -1708,8 +1708,8 @@ func (self *Program) ANDNPD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for ANDNPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for ANDNPD")
     }
     return p
 }
@@ -1746,8 +1746,8 @@ func (self *Program) ANDNPS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for ANDNPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for ANDNPS")
     }
     return p
 }
@@ -1784,8 +1784,8 @@ func (self *Program) ANDNQ(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
             m.mrsd(lcode(v[2]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for ANDNQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for ANDNQ")
     }
     return p
 }
@@ -1824,8 +1824,8 @@ func (self *Program) ANDPD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for ANDPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for ANDPD")
     }
     return p
 }
@@ -1862,8 +1862,8 @@ func (self *Program) ANDPS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for ANDPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for ANDPS")
     }
     return p
 }
@@ -1965,8 +1965,8 @@ func (self *Program) ANDQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for ANDQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for ANDQ")
     }
     return p
 }
@@ -2076,8 +2076,8 @@ func (self *Program) ANDW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for ANDW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for ANDW")
     }
     return p
 }
@@ -2190,8 +2190,8 @@ func (self *Program) BEXTR(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
             m.mrsd(lcode(v[2]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for BEXTR")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for BEXTR")
     }
     return p
 }
@@ -2252,8 +2252,8 @@ func (self *Program) BLCFILL(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(1, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for BLCFILL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for BLCFILL")
     }
     return p
 }
@@ -2314,8 +2314,8 @@ func (self *Program) BLCI(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(6, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for BLCI")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for BLCI")
     }
     return p
 }
@@ -2376,8 +2376,8 @@ func (self *Program) BLCIC(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(5, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for BLCIC")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for BLCIC")
     }
     return p
 }
@@ -2438,8 +2438,8 @@ func (self *Program) BLCMSK(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(1, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for BLCMSK")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for BLCMSK")
     }
     return p
 }
@@ -2500,8 +2500,8 @@ func (self *Program) BLCS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(3, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for BLCS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for BLCS")
     }
     return p
 }
@@ -2544,8 +2544,8 @@ func (self *Program) BLENDPD(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for BLENDPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for BLENDPD")
     }
     return p
 }
@@ -2588,8 +2588,8 @@ func (self *Program) BLENDPS(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for BLENDPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for BLENDPS")
     }
     return p
 }
@@ -2630,8 +2630,8 @@ func (self *Program) BLENDVPD(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.mrsd(lcode(v[2]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for BLENDVPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for BLENDVPD")
     }
     return p
 }
@@ -2672,8 +2672,8 @@ func (self *Program) BLENDVPS(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.mrsd(lcode(v[2]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for BLENDVPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for BLENDVPS")
     }
     return p
 }
@@ -2734,8 +2734,8 @@ func (self *Program) BLSFILL(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(2, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for BLSFILL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for BLSFILL")
     }
     return p
 }
@@ -2796,8 +2796,8 @@ func (self *Program) BLSI(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(3, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for BLSI")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for BLSI")
     }
     return p
 }
@@ -2858,8 +2858,8 @@ func (self *Program) BLSIC(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(6, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for BLSIC")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for BLSIC")
     }
     return p
 }
@@ -2920,8 +2920,8 @@ func (self *Program) BLSMSK(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(2, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for BLSMSK")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for BLSMSK")
     }
     return p
 }
@@ -2982,8 +2982,8 @@ func (self *Program) BLSR(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(1, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for BLSR")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for BLSR")
     }
     return p
 }
@@ -3018,8 +3018,8 @@ func (self *Program) BSFL(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for BSFL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for BSFL")
     }
     return p
 }
@@ -3054,8 +3054,8 @@ func (self *Program) BSFQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for BSFQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for BSFQ")
     }
     return p
 }
@@ -3092,8 +3092,8 @@ func (self *Program) BSFW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for BSFW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for BSFW")
     }
     return p
 }
@@ -3128,8 +3128,8 @@ func (self *Program) BSRL(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for BSRL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for BSRL")
     }
     return p
 }
@@ -3164,8 +3164,8 @@ func (self *Program) BSRQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for BSRQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for BSRQ")
     }
     return p
 }
@@ -3202,8 +3202,8 @@ func (self *Program) BSRW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for BSRW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for BSRW")
     }
     return p
 }
@@ -3226,8 +3226,8 @@ func (self *Program) BSWAPL(v0 interface{}) *Instruction {
             m.emit(0xc8 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for BSWAPL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for BSWAPL")
     }
     return p
 }
@@ -3250,8 +3250,8 @@ func (self *Program) BSWAPQ(v0 interface{}) *Instruction {
             m.emit(0xc8 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for BSWAPQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for BSWAPQ")
     }
     return p
 }
@@ -3310,8 +3310,8 @@ func (self *Program) BTCL(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for BTCL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for BTCL")
     }
     return p
 }
@@ -3370,8 +3370,8 @@ func (self *Program) BTCQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for BTCQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for BTCQ")
     }
     return p
 }
@@ -3434,8 +3434,8 @@ func (self *Program) BTCW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for BTCW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for BTCW")
     }
     return p
 }
@@ -3494,8 +3494,8 @@ func (self *Program) BTL(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for BTL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for BTL")
     }
     return p
 }
@@ -3554,8 +3554,8 @@ func (self *Program) BTQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for BTQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for BTQ")
     }
     return p
 }
@@ -3614,8 +3614,8 @@ func (self *Program) BTRL(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for BTRL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for BTRL")
     }
     return p
 }
@@ -3674,8 +3674,8 @@ func (self *Program) BTRQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for BTRQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for BTRQ")
     }
     return p
 }
@@ -3738,8 +3738,8 @@ func (self *Program) BTRW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for BTRW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for BTRW")
     }
     return p
 }
@@ -3798,8 +3798,8 @@ func (self *Program) BTSL(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for BTSL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for BTSL")
     }
     return p
 }
@@ -3858,8 +3858,8 @@ func (self *Program) BTSQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for BTSQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for BTSQ")
     }
     return p
 }
@@ -3922,8 +3922,8 @@ func (self *Program) BTSW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for BTSW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for BTSW")
     }
     return p
 }
@@ -3986,8 +3986,8 @@ func (self *Program) BTW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for BTW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for BTW")
     }
     return p
 }
@@ -4048,8 +4048,8 @@ func (self *Program) BZHI(v0 interface{}, v1 interface{}, v2 interface{}) *Instr
             m.mrsd(lcode(v[2]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for BZHI")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for BZHI")
     }
     return p
 }
@@ -4078,8 +4078,8 @@ func (self *Program) CALL(v0 interface{}) *Instruction {
             m.imm4(relv(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CALL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CALL")
     }
     return p
 }
@@ -4112,8 +4112,8 @@ func (self *Program) CALLQ(v0 interface{}) *Instruction {
             m.mrsd(2, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CALLQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CALLQ")
     }
     return p
 }
@@ -4190,8 +4190,8 @@ func (self *Program) CLFLUSH(v0 interface{}) *Instruction {
             m.mrsd(7, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CLFLUSH")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CLFLUSH")
     }
     return p
 }
@@ -4217,8 +4217,8 @@ func (self *Program) CLFLUSHOPT(v0 interface{}) *Instruction {
             m.mrsd(7, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CLFLUSHOPT")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CLFLUSHOPT")
     }
     return p
 }
@@ -4279,8 +4279,8 @@ func (self *Program) CLWB(v0 interface{}) *Instruction {
             m.mrsd(6, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CLWB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CLWB")
     }
     return p
 }
@@ -4404,8 +4404,8 @@ func (self *Program) CMOVA(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CMOVA")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CMOVA")
     }
     return p
 }
@@ -4492,8 +4492,8 @@ func (self *Program) CMOVAE(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CMOVAE")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CMOVAE")
     }
     return p
 }
@@ -4580,8 +4580,8 @@ func (self *Program) CMOVB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CMOVB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CMOVB")
     }
     return p
 }
@@ -4668,8 +4668,8 @@ func (self *Program) CMOVBE(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CMOVBE")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CMOVBE")
     }
     return p
 }
@@ -4756,8 +4756,8 @@ func (self *Program) CMOVC(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CMOVC")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CMOVC")
     }
     return p
 }
@@ -4844,8 +4844,8 @@ func (self *Program) CMOVE(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CMOVE")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CMOVE")
     }
     return p
 }
@@ -4932,8 +4932,8 @@ func (self *Program) CMOVG(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CMOVG")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CMOVG")
     }
     return p
 }
@@ -5020,8 +5020,8 @@ func (self *Program) CMOVGE(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CMOVGE")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CMOVGE")
     }
     return p
 }
@@ -5108,8 +5108,8 @@ func (self *Program) CMOVL(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CMOVL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CMOVL")
     }
     return p
 }
@@ -5196,8 +5196,8 @@ func (self *Program) CMOVLE(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CMOVLE")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CMOVLE")
     }
     return p
 }
@@ -5284,8 +5284,8 @@ func (self *Program) CMOVNA(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CMOVNA")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CMOVNA")
     }
     return p
 }
@@ -5372,8 +5372,8 @@ func (self *Program) CMOVNAE(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CMOVNAE")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CMOVNAE")
     }
     return p
 }
@@ -5460,8 +5460,8 @@ func (self *Program) CMOVNB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CMOVNB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CMOVNB")
     }
     return p
 }
@@ -5548,8 +5548,8 @@ func (self *Program) CMOVNBE(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CMOVNBE")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CMOVNBE")
     }
     return p
 }
@@ -5636,8 +5636,8 @@ func (self *Program) CMOVNC(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CMOVNC")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CMOVNC")
     }
     return p
 }
@@ -5724,8 +5724,8 @@ func (self *Program) CMOVNE(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CMOVNE")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CMOVNE")
     }
     return p
 }
@@ -5812,8 +5812,8 @@ func (self *Program) CMOVNG(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CMOVNG")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CMOVNG")
     }
     return p
 }
@@ -5900,8 +5900,8 @@ func (self *Program) CMOVNGE(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CMOVNGE")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CMOVNGE")
     }
     return p
 }
@@ -5988,8 +5988,8 @@ func (self *Program) CMOVNL(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CMOVNL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CMOVNL")
     }
     return p
 }
@@ -6076,8 +6076,8 @@ func (self *Program) CMOVNLE(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CMOVNLE")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CMOVNLE")
     }
     return p
 }
@@ -6164,8 +6164,8 @@ func (self *Program) CMOVNO(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CMOVNO")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CMOVNO")
     }
     return p
 }
@@ -6252,8 +6252,8 @@ func (self *Program) CMOVNP(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CMOVNP")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CMOVNP")
     }
     return p
 }
@@ -6340,8 +6340,8 @@ func (self *Program) CMOVNS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CMOVNS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CMOVNS")
     }
     return p
 }
@@ -6428,8 +6428,8 @@ func (self *Program) CMOVNZ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CMOVNZ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CMOVNZ")
     }
     return p
 }
@@ -6516,8 +6516,8 @@ func (self *Program) CMOVO(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CMOVO")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CMOVO")
     }
     return p
 }
@@ -6604,8 +6604,8 @@ func (self *Program) CMOVP(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CMOVP")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CMOVP")
     }
     return p
 }
@@ -6692,8 +6692,8 @@ func (self *Program) CMOVPE(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CMOVPE")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CMOVPE")
     }
     return p
 }
@@ -6780,8 +6780,8 @@ func (self *Program) CMOVPO(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CMOVPO")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CMOVPO")
     }
     return p
 }
@@ -6868,8 +6868,8 @@ func (self *Program) CMOVS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CMOVS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CMOVS")
     }
     return p
 }
@@ -6956,8 +6956,8 @@ func (self *Program) CMOVZ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CMOVZ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CMOVZ")
     }
     return p
 }
@@ -7036,8 +7036,8 @@ func (self *Program) CMPB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CMPB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CMPB")
     }
     return p
 }
@@ -7138,8 +7138,8 @@ func (self *Program) CMPL(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CMPL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CMPL")
     }
     return p
 }
@@ -7180,8 +7180,8 @@ func (self *Program) CMPPD(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CMPPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CMPPD")
     }
     return p
 }
@@ -7220,8 +7220,8 @@ func (self *Program) CMPPS(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CMPPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CMPPS")
     }
     return p
 }
@@ -7323,8 +7323,8 @@ func (self *Program) CMPQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CMPQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CMPQ")
     }
     return p
 }
@@ -7365,8 +7365,8 @@ func (self *Program) CMPSD(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CMPSD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CMPSD")
     }
     return p
 }
@@ -7407,8 +7407,8 @@ func (self *Program) CMPSS(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CMPSS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CMPSS")
     }
     return p
 }
@@ -7518,8 +7518,8 @@ func (self *Program) CMPW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CMPW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CMPW")
     }
     return p
 }
@@ -7543,8 +7543,8 @@ func (self *Program) CMPXCHG16B(v0 interface{}) *Instruction {
             m.mrsd(1, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CMPXCHG16B")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CMPXCHG16B")
     }
     return p
 }
@@ -7568,8 +7568,8 @@ func (self *Program) CMPXCHG8B(v0 interface{}) *Instruction {
             m.mrsd(1, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CMPXCHG8B")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CMPXCHG8B")
     }
     return p
 }
@@ -7604,8 +7604,8 @@ func (self *Program) CMPXCHGB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CMPXCHGB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CMPXCHGB")
     }
     return p
 }
@@ -7640,8 +7640,8 @@ func (self *Program) CMPXCHGL(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CMPXCHGL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CMPXCHGL")
     }
     return p
 }
@@ -7676,8 +7676,8 @@ func (self *Program) CMPXCHGQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CMPXCHGQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CMPXCHGQ")
     }
     return p
 }
@@ -7714,8 +7714,8 @@ func (self *Program) CMPXCHGW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CMPXCHGW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CMPXCHGW")
     }
     return p
 }
@@ -7754,8 +7754,8 @@ func (self *Program) COMISD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for COMISD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for COMISD")
     }
     return p
 }
@@ -7792,8 +7792,8 @@ func (self *Program) COMISS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for COMISS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for COMISS")
     }
     return p
 }
@@ -7899,8 +7899,8 @@ func (self *Program) CRC32B(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CRC32B")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CRC32B")
     }
     return p
 }
@@ -7941,8 +7941,8 @@ func (self *Program) CRC32L(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CRC32L")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CRC32L")
     }
     return p
 }
@@ -7983,8 +7983,8 @@ func (self *Program) CRC32Q(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CRC32Q")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CRC32Q")
     }
     return p
 }
@@ -8027,8 +8027,8 @@ func (self *Program) CRC32W(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CRC32W")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CRC32W")
     }
     return p
 }
@@ -8067,8 +8067,8 @@ func (self *Program) CVTDQ2PD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CVTDQ2PD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CVTDQ2PD")
     }
     return p
 }
@@ -8105,8 +8105,8 @@ func (self *Program) CVTDQ2PS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CVTDQ2PS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CVTDQ2PS")
     }
     return p
 }
@@ -8145,8 +8145,8 @@ func (self *Program) CVTPD2DQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CVTPD2DQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CVTPD2DQ")
     }
     return p
 }
@@ -8185,8 +8185,8 @@ func (self *Program) CVTPD2PI(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CVTPD2PI")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CVTPD2PI")
     }
     return p
 }
@@ -8225,8 +8225,8 @@ func (self *Program) CVTPD2PS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CVTPD2PS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CVTPD2PS")
     }
     return p
 }
@@ -8265,8 +8265,8 @@ func (self *Program) CVTPI2PD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CVTPI2PD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CVTPI2PD")
     }
     return p
 }
@@ -8303,8 +8303,8 @@ func (self *Program) CVTPI2PS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CVTPI2PS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CVTPI2PS")
     }
     return p
 }
@@ -8343,8 +8343,8 @@ func (self *Program) CVTPS2DQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CVTPS2DQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CVTPS2DQ")
     }
     return p
 }
@@ -8381,8 +8381,8 @@ func (self *Program) CVTPS2PD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CVTPS2PD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CVTPS2PD")
     }
     return p
 }
@@ -8419,8 +8419,8 @@ func (self *Program) CVTPS2PI(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CVTPS2PI")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CVTPS2PI")
     }
     return p
 }
@@ -8485,8 +8485,8 @@ func (self *Program) CVTSD2SI(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CVTSD2SI")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CVTSD2SI")
     }
     return p
 }
@@ -8525,8 +8525,8 @@ func (self *Program) CVTSD2SS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CVTSD2SS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CVTSD2SS")
     }
     return p
 }
@@ -8591,8 +8591,8 @@ func (self *Program) CVTSI2SD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CVTSI2SD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CVTSI2SD")
     }
     return p
 }
@@ -8657,8 +8657,8 @@ func (self *Program) CVTSI2SS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CVTSI2SS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CVTSI2SS")
     }
     return p
 }
@@ -8697,8 +8697,8 @@ func (self *Program) CVTSS2SD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CVTSS2SD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CVTSS2SD")
     }
     return p
 }
@@ -8763,8 +8763,8 @@ func (self *Program) CVTSS2SI(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CVTSS2SI")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CVTSS2SI")
     }
     return p
 }
@@ -8803,8 +8803,8 @@ func (self *Program) CVTTPD2DQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CVTTPD2DQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CVTTPD2DQ")
     }
     return p
 }
@@ -8843,8 +8843,8 @@ func (self *Program) CVTTPD2PI(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CVTTPD2PI")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CVTTPD2PI")
     }
     return p
 }
@@ -8883,8 +8883,8 @@ func (self *Program) CVTTPS2DQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CVTTPS2DQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CVTTPS2DQ")
     }
     return p
 }
@@ -8921,8 +8921,8 @@ func (self *Program) CVTTPS2PI(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CVTTPS2PI")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CVTTPS2PI")
     }
     return p
 }
@@ -8987,8 +8987,8 @@ func (self *Program) CVTTSD2SI(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CVTTSD2SI")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CVTTSD2SI")
     }
     return p
 }
@@ -9053,8 +9053,8 @@ func (self *Program) CVTTSS2SI(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for CVTTSS2SI")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for CVTTSS2SI")
     }
     return p
 }
@@ -9122,8 +9122,8 @@ func (self *Program) DECB(v0 interface{}) *Instruction {
             m.mrsd(1, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for DECB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for DECB")
     }
     return p
 }
@@ -9156,8 +9156,8 @@ func (self *Program) DECL(v0 interface{}) *Instruction {
             m.mrsd(1, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for DECL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for DECL")
     }
     return p
 }
@@ -9190,8 +9190,8 @@ func (self *Program) DECQ(v0 interface{}) *Instruction {
             m.mrsd(1, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for DECQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for DECQ")
     }
     return p
 }
@@ -9226,8 +9226,8 @@ func (self *Program) DECW(v0 interface{}) *Instruction {
             m.mrsd(1, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for DECW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for DECW")
     }
     return p
 }
@@ -9260,8 +9260,8 @@ func (self *Program) DIVB(v0 interface{}) *Instruction {
             m.mrsd(6, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for DIVB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for DIVB")
     }
     return p
 }
@@ -9294,8 +9294,8 @@ func (self *Program) DIVL(v0 interface{}) *Instruction {
             m.mrsd(6, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for DIVL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for DIVL")
     }
     return p
 }
@@ -9334,8 +9334,8 @@ func (self *Program) DIVPD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for DIVPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for DIVPD")
     }
     return p
 }
@@ -9372,8 +9372,8 @@ func (self *Program) DIVPS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for DIVPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for DIVPS")
     }
     return p
 }
@@ -9406,8 +9406,8 @@ func (self *Program) DIVQ(v0 interface{}) *Instruction {
             m.mrsd(6, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for DIVQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for DIVQ")
     }
     return p
 }
@@ -9446,8 +9446,8 @@ func (self *Program) DIVSD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for DIVSD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for DIVSD")
     }
     return p
 }
@@ -9486,8 +9486,8 @@ func (self *Program) DIVSS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for DIVSS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for DIVSS")
     }
     return p
 }
@@ -9522,8 +9522,8 @@ func (self *Program) DIVW(v0 interface{}) *Instruction {
             m.mrsd(6, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for DIVW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for DIVW")
     }
     return p
 }
@@ -9566,8 +9566,8 @@ func (self *Program) DPPD(v0 interface{}, v1 interface{}, v2 interface{}) *Instr
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for DPPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for DPPD")
     }
     return p
 }
@@ -9610,8 +9610,8 @@ func (self *Program) DPPS(v0 interface{}, v1 interface{}, v2 interface{}) *Instr
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for DPPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for DPPS")
     }
     return p
 }
@@ -9673,8 +9673,8 @@ func (self *Program) EXTRACTPS(v0 interface{}, v1 interface{}, v2 interface{}) *
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for EXTRACTPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for EXTRACTPS")
     }
     return p
 }
@@ -9720,8 +9720,8 @@ func (self *Program) EXTRQ(v0 interface{}, v1 interface{}, vv ...interface{}) *I
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for EXTRQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for EXTRQ")
     }
     return p
 }
@@ -9779,8 +9779,8 @@ func (self *Program) HADDPD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for HADDPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for HADDPD")
     }
     return p
 }
@@ -9819,8 +9819,8 @@ func (self *Program) HADDPS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for HADDPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for HADDPS")
     }
     return p
 }
@@ -9859,8 +9859,8 @@ func (self *Program) HSUBPD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for HSUBPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for HSUBPD")
     }
     return p
 }
@@ -9899,8 +9899,8 @@ func (self *Program) HSUBPS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for HSUBPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for HSUBPS")
     }
     return p
 }
@@ -9933,8 +9933,8 @@ func (self *Program) IDIVB(v0 interface{}) *Instruction {
             m.mrsd(7, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for IDIVB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for IDIVB")
     }
     return p
 }
@@ -9967,8 +9967,8 @@ func (self *Program) IDIVL(v0 interface{}) *Instruction {
             m.mrsd(7, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for IDIVL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for IDIVL")
     }
     return p
 }
@@ -10001,8 +10001,8 @@ func (self *Program) IDIVQ(v0 interface{}) *Instruction {
             m.mrsd(7, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for IDIVQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for IDIVQ")
     }
     return p
 }
@@ -10037,8 +10037,8 @@ func (self *Program) IDIVW(v0 interface{}) *Instruction {
             m.mrsd(7, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for IDIVW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for IDIVW")
     }
     return p
 }
@@ -10071,8 +10071,8 @@ func (self *Program) IMULB(v0 interface{}) *Instruction {
             m.mrsd(5, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for IMULB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for IMULB")
     }
     return p
 }
@@ -10177,8 +10177,8 @@ func (self *Program) IMULL(v0 interface{}, vv ...interface{}) *Instruction {
             m.imm4(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for IMULL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for IMULL")
     }
     return p
 }
@@ -10283,8 +10283,8 @@ func (self *Program) IMULQ(v0 interface{}, vv ...interface{}) *Instruction {
             m.imm4(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for IMULQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for IMULQ")
     }
     return p
 }
@@ -10397,8 +10397,8 @@ func (self *Program) IMULW(v0 interface{}, vv ...interface{}) *Instruction {
             m.imm2(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for IMULW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for IMULW")
     }
     return p
 }
@@ -10431,8 +10431,8 @@ func (self *Program) INCB(v0 interface{}) *Instruction {
             m.mrsd(0, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for INCB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for INCB")
     }
     return p
 }
@@ -10465,8 +10465,8 @@ func (self *Program) INCL(v0 interface{}) *Instruction {
             m.mrsd(0, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for INCL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for INCL")
     }
     return p
 }
@@ -10499,8 +10499,8 @@ func (self *Program) INCQ(v0 interface{}) *Instruction {
             m.mrsd(0, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for INCQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for INCQ")
     }
     return p
 }
@@ -10535,8 +10535,8 @@ func (self *Program) INCW(v0 interface{}) *Instruction {
             m.mrsd(0, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for INCW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for INCW")
     }
     return p
 }
@@ -10579,8 +10579,8 @@ func (self *Program) INSERTPS(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for INSERTPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for INSERTPS")
     }
     return p
 }
@@ -10626,8 +10626,8 @@ func (self *Program) INSERTQ(v0 interface{}, v1 interface{}, vv ...interface{}) 
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for INSERTQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for INSERTQ")
     }
     return p
 }
@@ -10657,8 +10657,8 @@ func (self *Program) INT(v0 interface{}) *Instruction {
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for INT")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for INT")
     }
     return p
 }
@@ -10703,8 +10703,8 @@ func (self *Program) JA(v0 interface{}) *Instruction {
             m.imm4(relv(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for JA")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for JA")
     }
     return p
 }
@@ -10749,8 +10749,8 @@ func (self *Program) JAE(v0 interface{}) *Instruction {
             m.imm4(relv(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for JAE")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for JAE")
     }
     return p
 }
@@ -10795,8 +10795,8 @@ func (self *Program) JB(v0 interface{}) *Instruction {
             m.imm4(relv(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for JB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for JB")
     }
     return p
 }
@@ -10841,8 +10841,8 @@ func (self *Program) JBE(v0 interface{}) *Instruction {
             m.imm4(relv(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for JBE")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for JBE")
     }
     return p
 }
@@ -10887,8 +10887,8 @@ func (self *Program) JC(v0 interface{}) *Instruction {
             m.imm4(relv(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for JC")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for JC")
     }
     return p
 }
@@ -10933,8 +10933,8 @@ func (self *Program) JE(v0 interface{}) *Instruction {
             m.imm4(relv(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for JE")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for JE")
     }
     return p
 }
@@ -10964,8 +10964,8 @@ func (self *Program) JECXZ(v0 interface{}) *Instruction {
             m.imm1(relv(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for JECXZ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for JECXZ")
     }
     return p
 }
@@ -11010,8 +11010,8 @@ func (self *Program) JG(v0 interface{}) *Instruction {
             m.imm4(relv(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for JG")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for JG")
     }
     return p
 }
@@ -11056,8 +11056,8 @@ func (self *Program) JGE(v0 interface{}) *Instruction {
             m.imm4(relv(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for JGE")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for JGE")
     }
     return p
 }
@@ -11102,8 +11102,8 @@ func (self *Program) JL(v0 interface{}) *Instruction {
             m.imm4(relv(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for JL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for JL")
     }
     return p
 }
@@ -11148,8 +11148,8 @@ func (self *Program) JLE(v0 interface{}) *Instruction {
             m.imm4(relv(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for JLE")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for JLE")
     }
     return p
 }
@@ -11192,8 +11192,8 @@ func (self *Program) JMP(v0 interface{}) *Instruction {
             m.imm4(relv(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for JMP")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for JMP")
     }
     return p
 }
@@ -11226,8 +11226,8 @@ func (self *Program) JMPQ(v0 interface{}) *Instruction {
             m.mrsd(4, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for JMPQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for JMPQ")
     }
     return p
 }
@@ -11272,8 +11272,8 @@ func (self *Program) JNA(v0 interface{}) *Instruction {
             m.imm4(relv(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for JNA")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for JNA")
     }
     return p
 }
@@ -11318,8 +11318,8 @@ func (self *Program) JNAE(v0 interface{}) *Instruction {
             m.imm4(relv(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for JNAE")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for JNAE")
     }
     return p
 }
@@ -11364,8 +11364,8 @@ func (self *Program) JNB(v0 interface{}) *Instruction {
             m.imm4(relv(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for JNB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for JNB")
     }
     return p
 }
@@ -11410,8 +11410,8 @@ func (self *Program) JNBE(v0 interface{}) *Instruction {
             m.imm4(relv(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for JNBE")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for JNBE")
     }
     return p
 }
@@ -11456,8 +11456,8 @@ func (self *Program) JNC(v0 interface{}) *Instruction {
             m.imm4(relv(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for JNC")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for JNC")
     }
     return p
 }
@@ -11502,8 +11502,8 @@ func (self *Program) JNE(v0 interface{}) *Instruction {
             m.imm4(relv(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for JNE")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for JNE")
     }
     return p
 }
@@ -11548,8 +11548,8 @@ func (self *Program) JNG(v0 interface{}) *Instruction {
             m.imm4(relv(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for JNG")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for JNG")
     }
     return p
 }
@@ -11594,8 +11594,8 @@ func (self *Program) JNGE(v0 interface{}) *Instruction {
             m.imm4(relv(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for JNGE")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for JNGE")
     }
     return p
 }
@@ -11640,8 +11640,8 @@ func (self *Program) JNL(v0 interface{}) *Instruction {
             m.imm4(relv(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for JNL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for JNL")
     }
     return p
 }
@@ -11686,8 +11686,8 @@ func (self *Program) JNLE(v0 interface{}) *Instruction {
             m.imm4(relv(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for JNLE")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for JNLE")
     }
     return p
 }
@@ -11732,8 +11732,8 @@ func (self *Program) JNO(v0 interface{}) *Instruction {
             m.imm4(relv(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for JNO")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for JNO")
     }
     return p
 }
@@ -11778,8 +11778,8 @@ func (self *Program) JNP(v0 interface{}) *Instruction {
             m.imm4(relv(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for JNP")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for JNP")
     }
     return p
 }
@@ -11824,8 +11824,8 @@ func (self *Program) JNS(v0 interface{}) *Instruction {
             m.imm4(relv(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for JNS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for JNS")
     }
     return p
 }
@@ -11870,8 +11870,8 @@ func (self *Program) JNZ(v0 interface{}) *Instruction {
             m.imm4(relv(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for JNZ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for JNZ")
     }
     return p
 }
@@ -11916,8 +11916,8 @@ func (self *Program) JO(v0 interface{}) *Instruction {
             m.imm4(relv(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for JO")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for JO")
     }
     return p
 }
@@ -11962,8 +11962,8 @@ func (self *Program) JP(v0 interface{}) *Instruction {
             m.imm4(relv(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for JP")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for JP")
     }
     return p
 }
@@ -12008,8 +12008,8 @@ func (self *Program) JPE(v0 interface{}) *Instruction {
             m.imm4(relv(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for JPE")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for JPE")
     }
     return p
 }
@@ -12054,8 +12054,8 @@ func (self *Program) JPO(v0 interface{}) *Instruction {
             m.imm4(relv(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for JPO")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for JPO")
     }
     return p
 }
@@ -12085,8 +12085,8 @@ func (self *Program) JRCXZ(v0 interface{}) *Instruction {
             m.imm1(relv(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for JRCXZ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for JRCXZ")
     }
     return p
 }
@@ -12131,8 +12131,8 @@ func (self *Program) JS(v0 interface{}) *Instruction {
             m.imm4(relv(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for JS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for JS")
     }
     return p
 }
@@ -12177,8 +12177,8 @@ func (self *Program) JZ(v0 interface{}) *Instruction {
             m.imm4(relv(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for JZ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for JZ")
     }
     return p
 }
@@ -12202,8 +12202,8 @@ func (self *Program) KADDB(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KADDB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KADDB")
     }
     return p
 }
@@ -12229,8 +12229,8 @@ func (self *Program) KADDD(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KADDD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KADDD")
     }
     return p
 }
@@ -12256,8 +12256,8 @@ func (self *Program) KADDQ(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KADDQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KADDQ")
     }
     return p
 }
@@ -12281,8 +12281,8 @@ func (self *Program) KADDW(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KADDW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KADDW")
     }
     return p
 }
@@ -12306,8 +12306,8 @@ func (self *Program) KANDB(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KANDB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KANDB")
     }
     return p
 }
@@ -12333,8 +12333,8 @@ func (self *Program) KANDD(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KANDD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KANDD")
     }
     return p
 }
@@ -12358,8 +12358,8 @@ func (self *Program) KANDNB(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KANDNB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KANDNB")
     }
     return p
 }
@@ -12385,8 +12385,8 @@ func (self *Program) KANDND(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KANDND")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KANDND")
     }
     return p
 }
@@ -12412,8 +12412,8 @@ func (self *Program) KANDNQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KANDNQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KANDNQ")
     }
     return p
 }
@@ -12437,8 +12437,8 @@ func (self *Program) KANDNW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KANDNW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KANDNW")
     }
     return p
 }
@@ -12464,8 +12464,8 @@ func (self *Program) KANDQ(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KANDQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KANDQ")
     }
     return p
 }
@@ -12489,8 +12489,8 @@ func (self *Program) KANDW(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KANDW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KANDW")
     }
     return p
 }
@@ -12558,8 +12558,8 @@ func (self *Program) KMOVB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KMOVB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KMOVB")
     }
     return p
 }
@@ -12629,8 +12629,8 @@ func (self *Program) KMOVD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KMOVD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KMOVD")
     }
     return p
 }
@@ -12704,8 +12704,8 @@ func (self *Program) KMOVQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KMOVQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KMOVQ")
     }
     return p
 }
@@ -12773,8 +12773,8 @@ func (self *Program) KMOVW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KMOVW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KMOVW")
     }
     return p
 }
@@ -12798,8 +12798,8 @@ func (self *Program) KNOTB(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KNOTB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KNOTB")
     }
     return p
 }
@@ -12825,8 +12825,8 @@ func (self *Program) KNOTD(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KNOTD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KNOTD")
     }
     return p
 }
@@ -12852,8 +12852,8 @@ func (self *Program) KNOTQ(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KNOTQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KNOTQ")
     }
     return p
 }
@@ -12877,8 +12877,8 @@ func (self *Program) KNOTW(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KNOTW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KNOTW")
     }
     return p
 }
@@ -12902,8 +12902,8 @@ func (self *Program) KORB(v0 interface{}, v1 interface{}, v2 interface{}) *Instr
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KORB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KORB")
     }
     return p
 }
@@ -12929,8 +12929,8 @@ func (self *Program) KORD(v0 interface{}, v1 interface{}, v2 interface{}) *Instr
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KORD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KORD")
     }
     return p
 }
@@ -12956,8 +12956,8 @@ func (self *Program) KORQ(v0 interface{}, v1 interface{}, v2 interface{}) *Instr
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KORQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KORQ")
     }
     return p
 }
@@ -12981,8 +12981,8 @@ func (self *Program) KORTESTB(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KORTESTB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KORTESTB")
     }
     return p
 }
@@ -13008,8 +13008,8 @@ func (self *Program) KORTESTD(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KORTESTD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KORTESTD")
     }
     return p
 }
@@ -13035,8 +13035,8 @@ func (self *Program) KORTESTQ(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KORTESTQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KORTESTQ")
     }
     return p
 }
@@ -13060,8 +13060,8 @@ func (self *Program) KORTESTW(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KORTESTW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KORTESTW")
     }
     return p
 }
@@ -13085,8 +13085,8 @@ func (self *Program) KORW(v0 interface{}, v1 interface{}, v2 interface{}) *Instr
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KORW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KORW")
     }
     return p
 }
@@ -13113,8 +13113,8 @@ func (self *Program) KSHIFTLB(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KSHIFTLB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KSHIFTLB")
     }
     return p
 }
@@ -13141,8 +13141,8 @@ func (self *Program) KSHIFTLD(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KSHIFTLD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KSHIFTLD")
     }
     return p
 }
@@ -13169,8 +13169,8 @@ func (self *Program) KSHIFTLQ(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KSHIFTLQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KSHIFTLQ")
     }
     return p
 }
@@ -13197,8 +13197,8 @@ func (self *Program) KSHIFTLW(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KSHIFTLW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KSHIFTLW")
     }
     return p
 }
@@ -13225,8 +13225,8 @@ func (self *Program) KSHIFTRB(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KSHIFTRB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KSHIFTRB")
     }
     return p
 }
@@ -13253,8 +13253,8 @@ func (self *Program) KSHIFTRD(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KSHIFTRD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KSHIFTRD")
     }
     return p
 }
@@ -13281,8 +13281,8 @@ func (self *Program) KSHIFTRQ(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KSHIFTRQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KSHIFTRQ")
     }
     return p
 }
@@ -13309,8 +13309,8 @@ func (self *Program) KSHIFTRW(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KSHIFTRW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KSHIFTRW")
     }
     return p
 }
@@ -13334,8 +13334,8 @@ func (self *Program) KTESTB(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KTESTB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KTESTB")
     }
     return p
 }
@@ -13361,8 +13361,8 @@ func (self *Program) KTESTD(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KTESTD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KTESTD")
     }
     return p
 }
@@ -13388,8 +13388,8 @@ func (self *Program) KTESTQ(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KTESTQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KTESTQ")
     }
     return p
 }
@@ -13413,8 +13413,8 @@ func (self *Program) KTESTW(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KTESTW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KTESTW")
     }
     return p
 }
@@ -13438,8 +13438,8 @@ func (self *Program) KUNPCKBW(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KUNPCKBW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KUNPCKBW")
     }
     return p
 }
@@ -13465,8 +13465,8 @@ func (self *Program) KUNPCKDQ(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KUNPCKDQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KUNPCKDQ")
     }
     return p
 }
@@ -13490,8 +13490,8 @@ func (self *Program) KUNPCKWD(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KUNPCKWD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KUNPCKWD")
     }
     return p
 }
@@ -13515,8 +13515,8 @@ func (self *Program) KXNORB(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KXNORB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KXNORB")
     }
     return p
 }
@@ -13542,8 +13542,8 @@ func (self *Program) KXNORD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KXNORD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KXNORD")
     }
     return p
 }
@@ -13569,8 +13569,8 @@ func (self *Program) KXNORQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KXNORQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KXNORQ")
     }
     return p
 }
@@ -13594,8 +13594,8 @@ func (self *Program) KXNORW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KXNORW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KXNORW")
     }
     return p
 }
@@ -13619,8 +13619,8 @@ func (self *Program) KXORB(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KXORB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KXORB")
     }
     return p
 }
@@ -13646,8 +13646,8 @@ func (self *Program) KXORD(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KXORD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KXORD")
     }
     return p
 }
@@ -13673,8 +13673,8 @@ func (self *Program) KXORQ(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KXORQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KXORQ")
     }
     return p
 }
@@ -13698,8 +13698,8 @@ func (self *Program) KXORW(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for KXORW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for KXORW")
     }
     return p
 }
@@ -13725,8 +13725,8 @@ func (self *Program) LDDQU(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for LDDQU")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for LDDQU")
     }
     return p
 }
@@ -13751,8 +13751,8 @@ func (self *Program) LDMXCSR(v0 interface{}) *Instruction {
             m.mrsd(2, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for LDMXCSR")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for LDMXCSR")
     }
     return p
 }
@@ -13775,8 +13775,8 @@ func (self *Program) LEAL(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for LEAL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for LEAL")
     }
     return p
 }
@@ -13799,8 +13799,8 @@ func (self *Program) LEAQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for LEAQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for LEAQ")
     }
     return p
 }
@@ -13824,8 +13824,8 @@ func (self *Program) LEAW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for LEAW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for LEAW")
     }
     return p
 }
@@ -13884,8 +13884,8 @@ func (self *Program) LZCNTL(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for LZCNTL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for LZCNTL")
     }
     return p
 }
@@ -13924,8 +13924,8 @@ func (self *Program) LZCNTQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for LZCNTQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for LZCNTQ")
     }
     return p
 }
@@ -13966,8 +13966,8 @@ func (self *Program) LZCNTW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for LZCNTW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for LZCNTW")
     }
     return p
 }
@@ -13993,8 +13993,8 @@ func (self *Program) MASKMOVDQU(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MASKMOVDQU")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MASKMOVDQU")
     }
     return p
 }
@@ -14019,8 +14019,8 @@ func (self *Program) MASKMOVQ(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MASKMOVQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MASKMOVQ")
     }
     return p
 }
@@ -14059,8 +14059,8 @@ func (self *Program) MAXPD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MAXPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MAXPD")
     }
     return p
 }
@@ -14097,8 +14097,8 @@ func (self *Program) MAXPS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MAXPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MAXPS")
     }
     return p
 }
@@ -14137,8 +14137,8 @@ func (self *Program) MAXSD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MAXSD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MAXSD")
     }
     return p
 }
@@ -14177,8 +14177,8 @@ func (self *Program) MAXSS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MAXSS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MAXSS")
     }
     return p
 }
@@ -14237,8 +14237,8 @@ func (self *Program) MINPD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MINPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MINPD")
     }
     return p
 }
@@ -14275,8 +14275,8 @@ func (self *Program) MINPS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MINPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MINPS")
     }
     return p
 }
@@ -14315,8 +14315,8 @@ func (self *Program) MINSD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MINSD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MINSD")
     }
     return p
 }
@@ -14355,8 +14355,8 @@ func (self *Program) MINSS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MINSS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MINSS")
     }
     return p
 }
@@ -14455,8 +14455,8 @@ func (self *Program) MOVAPD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVAPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVAPD")
     }
     return p
 }
@@ -14511,8 +14511,8 @@ func (self *Program) MOVAPS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVAPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVAPS")
     }
     return p
 }
@@ -14587,8 +14587,8 @@ func (self *Program) MOVB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVB")
     }
     return p
 }
@@ -14627,8 +14627,8 @@ func (self *Program) MOVBEL(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVBEL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVBEL")
     }
     return p
 }
@@ -14667,8 +14667,8 @@ func (self *Program) MOVBEQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVBEQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVBEQ")
     }
     return p
 }
@@ -14709,8 +14709,8 @@ func (self *Program) MOVBEW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVBEW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVBEW")
     }
     return p
 }
@@ -14823,8 +14823,8 @@ func (self *Program) MOVD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVD")
     }
     return p
 }
@@ -14863,8 +14863,8 @@ func (self *Program) MOVDDUP(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVDDUP")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVDDUP")
     }
     return p
 }
@@ -14890,8 +14890,8 @@ func (self *Program) MOVDQ2Q(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVDQ2Q")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVDQ2Q")
     }
     return p
 }
@@ -14950,8 +14950,8 @@ func (self *Program) MOVDQA(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVDQA")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVDQA")
     }
     return p
 }
@@ -15010,8 +15010,8 @@ func (self *Program) MOVDQU(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVDQU")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVDQU")
     }
     return p
 }
@@ -15036,8 +15036,8 @@ func (self *Program) MOVHLPS(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVHLPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVHLPS")
     }
     return p
 }
@@ -15076,8 +15076,8 @@ func (self *Program) MOVHPD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVHPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVHPD")
     }
     return p
 }
@@ -15114,8 +15114,8 @@ func (self *Program) MOVHPS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVHPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVHPS")
     }
     return p
 }
@@ -15190,8 +15190,8 @@ func (self *Program) MOVL(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVL")
     }
     return p
 }
@@ -15216,8 +15216,8 @@ func (self *Program) MOVLHPS(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVLHPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVLHPS")
     }
     return p
 }
@@ -15256,8 +15256,8 @@ func (self *Program) MOVLPD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVLPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVLPD")
     }
     return p
 }
@@ -15294,8 +15294,8 @@ func (self *Program) MOVLPS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVLPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVLPS")
     }
     return p
 }
@@ -15321,8 +15321,8 @@ func (self *Program) MOVMSKPD(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVMSKPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVMSKPD")
     }
     return p
 }
@@ -15347,8 +15347,8 @@ func (self *Program) MOVMSKPS(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVMSKPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVMSKPS")
     }
     return p
 }
@@ -15374,8 +15374,8 @@ func (self *Program) MOVNTDQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVNTDQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVNTDQ")
     }
     return p
 }
@@ -15402,8 +15402,8 @@ func (self *Program) MOVNTDQA(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVNTDQA")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVNTDQA")
     }
     return p
 }
@@ -15428,8 +15428,8 @@ func (self *Program) MOVNTIL(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVNTIL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVNTIL")
     }
     return p
 }
@@ -15454,8 +15454,8 @@ func (self *Program) MOVNTIQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVNTIQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVNTIQ")
     }
     return p
 }
@@ -15481,8 +15481,8 @@ func (self *Program) MOVNTPD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVNTPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVNTPD")
     }
     return p
 }
@@ -15507,8 +15507,8 @@ func (self *Program) MOVNTPS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVNTPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVNTPS")
     }
     return p
 }
@@ -15533,8 +15533,8 @@ func (self *Program) MOVNTQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVNTQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVNTQ")
     }
     return p
 }
@@ -15560,8 +15560,8 @@ func (self *Program) MOVNTSD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVNTSD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVNTSD")
     }
     return p
 }
@@ -15587,8 +15587,8 @@ func (self *Program) MOVNTSS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVNTSS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVNTSS")
     }
     return p
 }
@@ -15832,8 +15832,8 @@ func (self *Program) MOVQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVQ")
     }
     return p
 }
@@ -15859,8 +15859,8 @@ func (self *Program) MOVQ2DQ(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVQ2DQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVQ2DQ")
     }
     return p
 }
@@ -15895,8 +15895,8 @@ func (self *Program) MOVSBL(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVSBL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVSBL")
     }
     return p
 }
@@ -15931,8 +15931,8 @@ func (self *Program) MOVSBQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVSBQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVSBQ")
     }
     return p
 }
@@ -15969,8 +15969,8 @@ func (self *Program) MOVSBW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVSBW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVSBW")
     }
     return p
 }
@@ -16029,8 +16029,8 @@ func (self *Program) MOVSD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVSD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVSD")
     }
     return p
 }
@@ -16069,8 +16069,8 @@ func (self *Program) MOVSHDUP(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVSHDUP")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVSHDUP")
     }
     return p
 }
@@ -16109,8 +16109,8 @@ func (self *Program) MOVSLDUP(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVSLDUP")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVSLDUP")
     }
     return p
 }
@@ -16143,8 +16143,8 @@ func (self *Program) MOVSLQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVSLQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVSLQ")
     }
     return p
 }
@@ -16203,8 +16203,8 @@ func (self *Program) MOVSS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVSS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVSS")
     }
     return p
 }
@@ -16239,8 +16239,8 @@ func (self *Program) MOVSWL(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVSWL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVSWL")
     }
     return p
 }
@@ -16275,8 +16275,8 @@ func (self *Program) MOVSWQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVSWQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVSWQ")
     }
     return p
 }
@@ -16335,8 +16335,8 @@ func (self *Program) MOVUPD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVUPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVUPD")
     }
     return p
 }
@@ -16391,8 +16391,8 @@ func (self *Program) MOVUPS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVUPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVUPS")
     }
     return p
 }
@@ -16474,8 +16474,8 @@ func (self *Program) MOVW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVW")
     }
     return p
 }
@@ -16510,8 +16510,8 @@ func (self *Program) MOVZBL(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVZBL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVZBL")
     }
     return p
 }
@@ -16546,8 +16546,8 @@ func (self *Program) MOVZBQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVZBQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVZBQ")
     }
     return p
 }
@@ -16584,8 +16584,8 @@ func (self *Program) MOVZBW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVZBW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVZBW")
     }
     return p
 }
@@ -16620,8 +16620,8 @@ func (self *Program) MOVZWL(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVZWL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVZWL")
     }
     return p
 }
@@ -16656,8 +16656,8 @@ func (self *Program) MOVZWQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MOVZWQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MOVZWQ")
     }
     return p
 }
@@ -16700,8 +16700,8 @@ func (self *Program) MPSADBW(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MPSADBW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MPSADBW")
     }
     return p
 }
@@ -16734,8 +16734,8 @@ func (self *Program) MULB(v0 interface{}) *Instruction {
             m.mrsd(4, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MULB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MULB")
     }
     return p
 }
@@ -16768,8 +16768,8 @@ func (self *Program) MULL(v0 interface{}) *Instruction {
             m.mrsd(4, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MULL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MULL")
     }
     return p
 }
@@ -16808,8 +16808,8 @@ func (self *Program) MULPD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MULPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MULPD")
     }
     return p
 }
@@ -16846,8 +16846,8 @@ func (self *Program) MULPS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MULPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MULPS")
     }
     return p
 }
@@ -16880,8 +16880,8 @@ func (self *Program) MULQ(v0 interface{}) *Instruction {
             m.mrsd(4, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MULQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MULQ")
     }
     return p
 }
@@ -16920,8 +16920,8 @@ func (self *Program) MULSD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MULSD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MULSD")
     }
     return p
 }
@@ -16960,8 +16960,8 @@ func (self *Program) MULSS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MULSS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MULSS")
     }
     return p
 }
@@ -16996,8 +16996,8 @@ func (self *Program) MULW(v0 interface{}) *Instruction {
             m.mrsd(4, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MULW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MULW")
     }
     return p
 }
@@ -17034,8 +17034,8 @@ func (self *Program) MULXL(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
             m.mrsd(lcode(v[2]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MULXL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MULXL")
     }
     return p
 }
@@ -17072,8 +17072,8 @@ func (self *Program) MULXQ(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
             m.mrsd(lcode(v[2]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for MULXQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for MULXQ")
     }
     return p
 }
@@ -17146,8 +17146,8 @@ func (self *Program) NEGB(v0 interface{}) *Instruction {
             m.mrsd(3, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for NEGB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for NEGB")
     }
     return p
 }
@@ -17180,8 +17180,8 @@ func (self *Program) NEGL(v0 interface{}) *Instruction {
             m.mrsd(3, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for NEGL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for NEGL")
     }
     return p
 }
@@ -17214,8 +17214,8 @@ func (self *Program) NEGQ(v0 interface{}) *Instruction {
             m.mrsd(3, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for NEGQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for NEGQ")
     }
     return p
 }
@@ -17250,8 +17250,8 @@ func (self *Program) NEGW(v0 interface{}) *Instruction {
             m.mrsd(3, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for NEGW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for NEGW")
     }
     return p
 }
@@ -17301,8 +17301,8 @@ func (self *Program) NOTB(v0 interface{}) *Instruction {
             m.mrsd(2, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for NOTB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for NOTB")
     }
     return p
 }
@@ -17335,8 +17335,8 @@ func (self *Program) NOTL(v0 interface{}) *Instruction {
             m.mrsd(2, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for NOTL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for NOTL")
     }
     return p
 }
@@ -17369,8 +17369,8 @@ func (self *Program) NOTQ(v0 interface{}) *Instruction {
             m.mrsd(2, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for NOTQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for NOTQ")
     }
     return p
 }
@@ -17405,8 +17405,8 @@ func (self *Program) NOTW(v0 interface{}) *Instruction {
             m.mrsd(2, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for NOTW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for NOTW")
     }
     return p
 }
@@ -17485,8 +17485,8 @@ func (self *Program) ORB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for ORB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for ORB")
     }
     return p
 }
@@ -17587,8 +17587,8 @@ func (self *Program) ORL(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for ORL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for ORL")
     }
     return p
 }
@@ -17627,8 +17627,8 @@ func (self *Program) ORPD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for ORPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for ORPD")
     }
     return p
 }
@@ -17665,8 +17665,8 @@ func (self *Program) ORPS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for ORPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for ORPS")
     }
     return p
 }
@@ -17768,8 +17768,8 @@ func (self *Program) ORQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for ORQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for ORQ")
     }
     return p
 }
@@ -17879,8 +17879,8 @@ func (self *Program) ORW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for ORW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for ORW")
     }
     return p
 }
@@ -17947,8 +17947,8 @@ func (self *Program) PABSB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PABSB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PABSB")
     }
     return p
 }
@@ -18015,8 +18015,8 @@ func (self *Program) PABSD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PABSD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PABSD")
     }
     return p
 }
@@ -18083,8 +18083,8 @@ func (self *Program) PABSW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PABSW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PABSW")
     }
     return p
 }
@@ -18147,8 +18147,8 @@ func (self *Program) PACKSSDW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PACKSSDW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PACKSSDW")
     }
     return p
 }
@@ -18211,8 +18211,8 @@ func (self *Program) PACKSSWB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PACKSSWB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PACKSSWB")
     }
     return p
 }
@@ -18253,8 +18253,8 @@ func (self *Program) PACKUSDW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PACKUSDW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PACKUSDW")
     }
     return p
 }
@@ -18317,8 +18317,8 @@ func (self *Program) PACKUSWB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PACKUSWB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PACKUSWB")
     }
     return p
 }
@@ -18381,8 +18381,8 @@ func (self *Program) PADDB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PADDB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PADDB")
     }
     return p
 }
@@ -18445,8 +18445,8 @@ func (self *Program) PADDD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PADDD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PADDD")
     }
     return p
 }
@@ -18509,8 +18509,8 @@ func (self *Program) PADDQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PADDQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PADDQ")
     }
     return p
 }
@@ -18573,8 +18573,8 @@ func (self *Program) PADDSB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PADDSB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PADDSB")
     }
     return p
 }
@@ -18637,8 +18637,8 @@ func (self *Program) PADDSW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PADDSW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PADDSW")
     }
     return p
 }
@@ -18701,8 +18701,8 @@ func (self *Program) PADDUSB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PADDUSB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PADDUSB")
     }
     return p
 }
@@ -18765,8 +18765,8 @@ func (self *Program) PADDUSW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PADDUSW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PADDUSW")
     }
     return p
 }
@@ -18829,8 +18829,8 @@ func (self *Program) PADDW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PADDW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PADDW")
     }
     return p
 }
@@ -18901,8 +18901,8 @@ func (self *Program) PALIGNR(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PALIGNR")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PALIGNR")
     }
     return p
 }
@@ -18965,8 +18965,8 @@ func (self *Program) PAND(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PAND")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PAND")
     }
     return p
 }
@@ -19029,8 +19029,8 @@ func (self *Program) PANDN(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PANDN")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PANDN")
     }
     return p
 }
@@ -19111,8 +19111,8 @@ func (self *Program) PAVGB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PAVGB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PAVGB")
     }
     return p
 }
@@ -19151,8 +19151,8 @@ func (self *Program) PAVGUSB(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xbf)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PAVGUSB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PAVGUSB")
     }
     return p
 }
@@ -19215,8 +19215,8 @@ func (self *Program) PAVGW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PAVGW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PAVGW")
     }
     return p
 }
@@ -19257,8 +19257,8 @@ func (self *Program) PBLENDVB(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.mrsd(lcode(v[2]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PBLENDVB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PBLENDVB")
     }
     return p
 }
@@ -19301,8 +19301,8 @@ func (self *Program) PBLENDW(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PBLENDW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PBLENDW")
     }
     return p
 }
@@ -19345,8 +19345,8 @@ func (self *Program) PCLMULQDQ(v0 interface{}, v1 interface{}, v2 interface{}) *
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PCLMULQDQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PCLMULQDQ")
     }
     return p
 }
@@ -19409,8 +19409,8 @@ func (self *Program) PCMPEQB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PCMPEQB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PCMPEQB")
     }
     return p
 }
@@ -19473,8 +19473,8 @@ func (self *Program) PCMPEQD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PCMPEQD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PCMPEQD")
     }
     return p
 }
@@ -19515,8 +19515,8 @@ func (self *Program) PCMPEQQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PCMPEQQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PCMPEQQ")
     }
     return p
 }
@@ -19579,8 +19579,8 @@ func (self *Program) PCMPEQW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PCMPEQW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PCMPEQW")
     }
     return p
 }
@@ -19623,8 +19623,8 @@ func (self *Program) PCMPESTRI(v0 interface{}, v1 interface{}, v2 interface{}) *
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PCMPESTRI")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PCMPESTRI")
     }
     return p
 }
@@ -19667,8 +19667,8 @@ func (self *Program) PCMPESTRM(v0 interface{}, v1 interface{}, v2 interface{}) *
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PCMPESTRM")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PCMPESTRM")
     }
     return p
 }
@@ -19731,8 +19731,8 @@ func (self *Program) PCMPGTB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PCMPGTB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PCMPGTB")
     }
     return p
 }
@@ -19795,8 +19795,8 @@ func (self *Program) PCMPGTD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PCMPGTD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PCMPGTD")
     }
     return p
 }
@@ -19837,8 +19837,8 @@ func (self *Program) PCMPGTQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PCMPGTQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PCMPGTQ")
     }
     return p
 }
@@ -19901,8 +19901,8 @@ func (self *Program) PCMPGTW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PCMPGTW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PCMPGTW")
     }
     return p
 }
@@ -19945,8 +19945,8 @@ func (self *Program) PCMPISTRI(v0 interface{}, v1 interface{}, v2 interface{}) *
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PCMPISTRI")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PCMPISTRI")
     }
     return p
 }
@@ -19989,8 +19989,8 @@ func (self *Program) PCMPISTRM(v0 interface{}, v1 interface{}, v2 interface{}) *
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PCMPISTRM")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PCMPISTRM")
     }
     return p
 }
@@ -20051,8 +20051,8 @@ func (self *Program) PDEP(v0 interface{}, v1 interface{}, v2 interface{}) *Instr
             m.mrsd(lcode(v[2]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PDEP")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PDEP")
     }
     return p
 }
@@ -20113,8 +20113,8 @@ func (self *Program) PEXT(v0 interface{}, v1 interface{}, v2 interface{}) *Instr
             m.mrsd(lcode(v[2]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PEXT")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PEXT")
     }
     return p
 }
@@ -20157,8 +20157,8 @@ func (self *Program) PEXTRB(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PEXTRB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PEXTRB")
     }
     return p
 }
@@ -20201,8 +20201,8 @@ func (self *Program) PEXTRD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PEXTRD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PEXTRD")
     }
     return p
 }
@@ -20245,8 +20245,8 @@ func (self *Program) PEXTRQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PEXTRQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PEXTRQ")
     }
     return p
 }
@@ -20310,8 +20310,8 @@ func (self *Program) PEXTRW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PEXTRW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PEXTRW")
     }
     return p
 }
@@ -20350,8 +20350,8 @@ func (self *Program) PF2ID(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0x1d)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PF2ID")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PF2ID")
     }
     return p
 }
@@ -20390,8 +20390,8 @@ func (self *Program) PF2IW(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0x1c)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PF2IW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PF2IW")
     }
     return p
 }
@@ -20430,8 +20430,8 @@ func (self *Program) PFACC(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xae)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PFACC")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PFACC")
     }
     return p
 }
@@ -20470,8 +20470,8 @@ func (self *Program) PFADD(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0x9e)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PFADD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PFADD")
     }
     return p
 }
@@ -20510,8 +20510,8 @@ func (self *Program) PFCMPEQ(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xb0)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PFCMPEQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PFCMPEQ")
     }
     return p
 }
@@ -20550,8 +20550,8 @@ func (self *Program) PFCMPGE(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0x90)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PFCMPGE")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PFCMPGE")
     }
     return p
 }
@@ -20590,8 +20590,8 @@ func (self *Program) PFCMPGT(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xa0)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PFCMPGT")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PFCMPGT")
     }
     return p
 }
@@ -20630,8 +20630,8 @@ func (self *Program) PFMAX(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xa4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PFMAX")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PFMAX")
     }
     return p
 }
@@ -20670,8 +20670,8 @@ func (self *Program) PFMIN(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0x94)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PFMIN")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PFMIN")
     }
     return p
 }
@@ -20710,8 +20710,8 @@ func (self *Program) PFMUL(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xb4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PFMUL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PFMUL")
     }
     return p
 }
@@ -20750,8 +20750,8 @@ func (self *Program) PFNACC(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0x8a)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PFNACC")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PFNACC")
     }
     return p
 }
@@ -20790,8 +20790,8 @@ func (self *Program) PFPNACC(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0x8e)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PFPNACC")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PFPNACC")
     }
     return p
 }
@@ -20830,8 +20830,8 @@ func (self *Program) PFRCP(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0x96)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PFRCP")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PFRCP")
     }
     return p
 }
@@ -20870,8 +20870,8 @@ func (self *Program) PFRCPIT1(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xa6)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PFRCPIT1")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PFRCPIT1")
     }
     return p
 }
@@ -20910,8 +20910,8 @@ func (self *Program) PFRCPIT2(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xb6)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PFRCPIT2")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PFRCPIT2")
     }
     return p
 }
@@ -20950,8 +20950,8 @@ func (self *Program) PFRSQIT1(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xa7)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PFRSQIT1")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PFRSQIT1")
     }
     return p
 }
@@ -20990,8 +20990,8 @@ func (self *Program) PFRSQRT(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0x97)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PFRSQRT")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PFRSQRT")
     }
     return p
 }
@@ -21030,8 +21030,8 @@ func (self *Program) PFSUB(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0x9a)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PFSUB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PFSUB")
     }
     return p
 }
@@ -21070,8 +21070,8 @@ func (self *Program) PFSUBR(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xaa)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PFSUBR")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PFSUBR")
     }
     return p
 }
@@ -21138,8 +21138,8 @@ func (self *Program) PHADDD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PHADDD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PHADDD")
     }
     return p
 }
@@ -21206,8 +21206,8 @@ func (self *Program) PHADDSW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PHADDSW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PHADDSW")
     }
     return p
 }
@@ -21274,8 +21274,8 @@ func (self *Program) PHADDW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PHADDW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PHADDW")
     }
     return p
 }
@@ -21316,8 +21316,8 @@ func (self *Program) PHMINPOSUW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PHMINPOSUW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PHMINPOSUW")
     }
     return p
 }
@@ -21384,8 +21384,8 @@ func (self *Program) PHSUBD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PHSUBD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PHSUBD")
     }
     return p
 }
@@ -21452,8 +21452,8 @@ func (self *Program) PHSUBSW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PHSUBSW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PHSUBSW")
     }
     return p
 }
@@ -21520,8 +21520,8 @@ func (self *Program) PHSUBW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PHSUBW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PHSUBW")
     }
     return p
 }
@@ -21560,8 +21560,8 @@ func (self *Program) PI2FD(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0x0d)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PI2FD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PI2FD")
     }
     return p
 }
@@ -21600,8 +21600,8 @@ func (self *Program) PI2FW(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0x0c)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PI2FW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PI2FW")
     }
     return p
 }
@@ -21644,8 +21644,8 @@ func (self *Program) PINSRB(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PINSRB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PINSRB")
     }
     return p
 }
@@ -21688,8 +21688,8 @@ func (self *Program) PINSRD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PINSRD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PINSRD")
     }
     return p
 }
@@ -21732,8 +21732,8 @@ func (self *Program) PINSRQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PINSRQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PINSRQ")
     }
     return p
 }
@@ -21800,8 +21800,8 @@ func (self *Program) PINSRW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PINSRW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PINSRW")
     }
     return p
 }
@@ -21868,8 +21868,8 @@ func (self *Program) PMADDUBSW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PMADDUBSW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PMADDUBSW")
     }
     return p
 }
@@ -21932,8 +21932,8 @@ func (self *Program) PMADDWD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PMADDWD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PMADDWD")
     }
     return p
 }
@@ -21974,8 +21974,8 @@ func (self *Program) PMAXSB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PMAXSB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PMAXSB")
     }
     return p
 }
@@ -22016,8 +22016,8 @@ func (self *Program) PMAXSD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PMAXSD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PMAXSD")
     }
     return p
 }
@@ -22080,8 +22080,8 @@ func (self *Program) PMAXSW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PMAXSW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PMAXSW")
     }
     return p
 }
@@ -22144,8 +22144,8 @@ func (self *Program) PMAXUB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PMAXUB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PMAXUB")
     }
     return p
 }
@@ -22186,8 +22186,8 @@ func (self *Program) PMAXUD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PMAXUD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PMAXUD")
     }
     return p
 }
@@ -22228,8 +22228,8 @@ func (self *Program) PMAXUW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PMAXUW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PMAXUW")
     }
     return p
 }
@@ -22270,8 +22270,8 @@ func (self *Program) PMINSB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PMINSB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PMINSB")
     }
     return p
 }
@@ -22312,8 +22312,8 @@ func (self *Program) PMINSD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PMINSD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PMINSD")
     }
     return p
 }
@@ -22376,8 +22376,8 @@ func (self *Program) PMINSW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PMINSW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PMINSW")
     }
     return p
 }
@@ -22440,8 +22440,8 @@ func (self *Program) PMINUB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PMINUB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PMINUB")
     }
     return p
 }
@@ -22482,8 +22482,8 @@ func (self *Program) PMINUD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PMINUD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PMINUD")
     }
     return p
 }
@@ -22524,8 +22524,8 @@ func (self *Program) PMINUW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PMINUW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PMINUW")
     }
     return p
 }
@@ -22563,8 +22563,8 @@ func (self *Program) PMOVMSKB(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PMOVMSKB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PMOVMSKB")
     }
     return p
 }
@@ -22605,8 +22605,8 @@ func (self *Program) PMOVSXBD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PMOVSXBD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PMOVSXBD")
     }
     return p
 }
@@ -22647,8 +22647,8 @@ func (self *Program) PMOVSXBQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PMOVSXBQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PMOVSXBQ")
     }
     return p
 }
@@ -22689,8 +22689,8 @@ func (self *Program) PMOVSXBW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PMOVSXBW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PMOVSXBW")
     }
     return p
 }
@@ -22731,8 +22731,8 @@ func (self *Program) PMOVSXDQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PMOVSXDQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PMOVSXDQ")
     }
     return p
 }
@@ -22773,8 +22773,8 @@ func (self *Program) PMOVSXWD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PMOVSXWD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PMOVSXWD")
     }
     return p
 }
@@ -22815,8 +22815,8 @@ func (self *Program) PMOVSXWQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PMOVSXWQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PMOVSXWQ")
     }
     return p
 }
@@ -22857,8 +22857,8 @@ func (self *Program) PMOVZXBD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PMOVZXBD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PMOVZXBD")
     }
     return p
 }
@@ -22899,8 +22899,8 @@ func (self *Program) PMOVZXBQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PMOVZXBQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PMOVZXBQ")
     }
     return p
 }
@@ -22941,8 +22941,8 @@ func (self *Program) PMOVZXBW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PMOVZXBW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PMOVZXBW")
     }
     return p
 }
@@ -22983,8 +22983,8 @@ func (self *Program) PMOVZXDQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PMOVZXDQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PMOVZXDQ")
     }
     return p
 }
@@ -23025,8 +23025,8 @@ func (self *Program) PMOVZXWD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PMOVZXWD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PMOVZXWD")
     }
     return p
 }
@@ -23067,8 +23067,8 @@ func (self *Program) PMOVZXWQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PMOVZXWQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PMOVZXWQ")
     }
     return p
 }
@@ -23109,8 +23109,8 @@ func (self *Program) PMULDQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PMULDQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PMULDQ")
     }
     return p
 }
@@ -23177,8 +23177,8 @@ func (self *Program) PMULHRSW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PMULHRSW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PMULHRSW")
     }
     return p
 }
@@ -23217,8 +23217,8 @@ func (self *Program) PMULHRW(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xb7)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PMULHRW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PMULHRW")
     }
     return p
 }
@@ -23281,8 +23281,8 @@ func (self *Program) PMULHUW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PMULHUW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PMULHUW")
     }
     return p
 }
@@ -23345,8 +23345,8 @@ func (self *Program) PMULHW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PMULHW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PMULHW")
     }
     return p
 }
@@ -23387,8 +23387,8 @@ func (self *Program) PMULLD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PMULLD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PMULLD")
     }
     return p
 }
@@ -23451,8 +23451,8 @@ func (self *Program) PMULLW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PMULLW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PMULLW")
     }
     return p
 }
@@ -23515,8 +23515,8 @@ func (self *Program) PMULUDQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PMULUDQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PMULUDQ")
     }
     return p
 }
@@ -23555,8 +23555,8 @@ func (self *Program) POPCNTL(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for POPCNTL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for POPCNTL")
     }
     return p
 }
@@ -23595,8 +23595,8 @@ func (self *Program) POPCNTQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for POPCNTQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for POPCNTQ")
     }
     return p
 }
@@ -23637,8 +23637,8 @@ func (self *Program) POPCNTW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for POPCNTW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for POPCNTW")
     }
     return p
 }
@@ -23675,8 +23675,8 @@ func (self *Program) POPQ(v0 interface{}) *Instruction {
             m.mrsd(0, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for POPQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for POPQ")
     }
     return p
 }
@@ -23716,8 +23716,8 @@ func (self *Program) POPW(v0 interface{}) *Instruction {
             m.mrsd(0, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for POPW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for POPW")
     }
     return p
 }
@@ -23780,8 +23780,8 @@ func (self *Program) POR(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for POR")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for POR")
     }
     return p
 }
@@ -23806,8 +23806,8 @@ func (self *Program) PREFETCH(v0 interface{}) *Instruction {
             m.mrsd(0, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PREFETCH")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PREFETCH")
     }
     return p
 }
@@ -23832,8 +23832,8 @@ func (self *Program) PREFETCHNTA(v0 interface{}) *Instruction {
             m.mrsd(0, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PREFETCHNTA")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PREFETCHNTA")
     }
     return p
 }
@@ -23858,8 +23858,8 @@ func (self *Program) PREFETCHT0(v0 interface{}) *Instruction {
             m.mrsd(1, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PREFETCHT0")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PREFETCHT0")
     }
     return p
 }
@@ -23884,8 +23884,8 @@ func (self *Program) PREFETCHT1(v0 interface{}) *Instruction {
             m.mrsd(2, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PREFETCHT1")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PREFETCHT1")
     }
     return p
 }
@@ -23910,8 +23910,8 @@ func (self *Program) PREFETCHT2(v0 interface{}) *Instruction {
             m.mrsd(3, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PREFETCHT2")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PREFETCHT2")
     }
     return p
 }
@@ -23936,8 +23936,8 @@ func (self *Program) PREFETCHW(v0 interface{}) *Instruction {
             m.mrsd(1, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PREFETCHW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PREFETCHW")
     }
     return p
 }
@@ -23962,8 +23962,8 @@ func (self *Program) PREFETCHWT1(v0 interface{}) *Instruction {
             m.mrsd(2, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PREFETCHWT1")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PREFETCHWT1")
     }
     return p
 }
@@ -24026,8 +24026,8 @@ func (self *Program) PSADBW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PSADBW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PSADBW")
     }
     return p
 }
@@ -24094,8 +24094,8 @@ func (self *Program) PSHUFB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PSHUFB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PSHUFB")
     }
     return p
 }
@@ -24136,8 +24136,8 @@ func (self *Program) PSHUFD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PSHUFD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PSHUFD")
     }
     return p
 }
@@ -24178,8 +24178,8 @@ func (self *Program) PSHUFHW(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PSHUFHW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PSHUFHW")
     }
     return p
 }
@@ -24220,8 +24220,8 @@ func (self *Program) PSHUFLW(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PSHUFLW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PSHUFLW")
     }
     return p
 }
@@ -24260,8 +24260,8 @@ func (self *Program) PSHUFW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PSHUFW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PSHUFW")
     }
     return p
 }
@@ -24328,8 +24328,8 @@ func (self *Program) PSIGNB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PSIGNB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PSIGNB")
     }
     return p
 }
@@ -24396,8 +24396,8 @@ func (self *Program) PSIGND(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PSIGND")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PSIGND")
     }
     return p
 }
@@ -24464,8 +24464,8 @@ func (self *Program) PSIGNW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PSIGNW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PSIGNW")
     }
     return p
 }
@@ -24555,8 +24555,8 @@ func (self *Program) PSLLD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PSLLD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PSLLD")
     }
     return p
 }
@@ -24583,8 +24583,8 @@ func (self *Program) PSLLDQ(v0 interface{}, v1 interface{}) *Instruction {
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PSLLDQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PSLLDQ")
     }
     return p
 }
@@ -24674,8 +24674,8 @@ func (self *Program) PSLLQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PSLLQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PSLLQ")
     }
     return p
 }
@@ -24765,8 +24765,8 @@ func (self *Program) PSLLW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PSLLW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PSLLW")
     }
     return p
 }
@@ -24856,8 +24856,8 @@ func (self *Program) PSRAD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PSRAD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PSRAD")
     }
     return p
 }
@@ -24947,8 +24947,8 @@ func (self *Program) PSRAW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PSRAW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PSRAW")
     }
     return p
 }
@@ -25038,8 +25038,8 @@ func (self *Program) PSRLD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PSRLD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PSRLD")
     }
     return p
 }
@@ -25066,8 +25066,8 @@ func (self *Program) PSRLDQ(v0 interface{}, v1 interface{}) *Instruction {
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PSRLDQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PSRLDQ")
     }
     return p
 }
@@ -25157,8 +25157,8 @@ func (self *Program) PSRLQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PSRLQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PSRLQ")
     }
     return p
 }
@@ -25248,8 +25248,8 @@ func (self *Program) PSRLW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PSRLW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PSRLW")
     }
     return p
 }
@@ -25312,8 +25312,8 @@ func (self *Program) PSUBB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PSUBB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PSUBB")
     }
     return p
 }
@@ -25376,8 +25376,8 @@ func (self *Program) PSUBD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PSUBD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PSUBD")
     }
     return p
 }
@@ -25440,8 +25440,8 @@ func (self *Program) PSUBQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PSUBQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PSUBQ")
     }
     return p
 }
@@ -25504,8 +25504,8 @@ func (self *Program) PSUBSB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PSUBSB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PSUBSB")
     }
     return p
 }
@@ -25568,8 +25568,8 @@ func (self *Program) PSUBSW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PSUBSW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PSUBSW")
     }
     return p
 }
@@ -25632,8 +25632,8 @@ func (self *Program) PSUBUSB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PSUBUSB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PSUBUSB")
     }
     return p
 }
@@ -25696,8 +25696,8 @@ func (self *Program) PSUBUSW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PSUBUSW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PSUBUSW")
     }
     return p
 }
@@ -25760,8 +25760,8 @@ func (self *Program) PSUBW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PSUBW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PSUBW")
     }
     return p
 }
@@ -25800,8 +25800,8 @@ func (self *Program) PSWAPD(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xbb)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PSWAPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PSWAPD")
     }
     return p
 }
@@ -25842,8 +25842,8 @@ func (self *Program) PTEST(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PTEST")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PTEST")
     }
     return p
 }
@@ -25906,8 +25906,8 @@ func (self *Program) PUNPCKHBW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PUNPCKHBW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PUNPCKHBW")
     }
     return p
 }
@@ -25970,8 +25970,8 @@ func (self *Program) PUNPCKHDQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PUNPCKHDQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PUNPCKHDQ")
     }
     return p
 }
@@ -26010,8 +26010,8 @@ func (self *Program) PUNPCKHQDQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PUNPCKHQDQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PUNPCKHQDQ")
     }
     return p
 }
@@ -26074,8 +26074,8 @@ func (self *Program) PUNPCKHWD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PUNPCKHWD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PUNPCKHWD")
     }
     return p
 }
@@ -26138,8 +26138,8 @@ func (self *Program) PUNPCKLBW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PUNPCKLBW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PUNPCKLBW")
     }
     return p
 }
@@ -26202,8 +26202,8 @@ func (self *Program) PUNPCKLDQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PUNPCKLDQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PUNPCKLDQ")
     }
     return p
 }
@@ -26242,8 +26242,8 @@ func (self *Program) PUNPCKLQDQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PUNPCKLQDQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PUNPCKLQDQ")
     }
     return p
 }
@@ -26306,8 +26306,8 @@ func (self *Program) PUNPCKLWD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PUNPCKLWD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PUNPCKLWD")
     }
     return p
 }
@@ -26362,8 +26362,8 @@ func (self *Program) PUSHQ(v0 interface{}) *Instruction {
             m.mrsd(6, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PUSHQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PUSHQ")
     }
     return p
 }
@@ -26403,8 +26403,8 @@ func (self *Program) PUSHW(v0 interface{}) *Instruction {
             m.mrsd(6, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PUSHW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PUSHW")
     }
     return p
 }
@@ -26467,8 +26467,8 @@ func (self *Program) PXOR(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for PXOR")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for PXOR")
     }
     return p
 }
@@ -26543,8 +26543,8 @@ func (self *Program) RCLB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(2, addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for RCLB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for RCLB")
     }
     return p
 }
@@ -26619,8 +26619,8 @@ func (self *Program) RCLL(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(2, addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for RCLL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for RCLL")
     }
     return p
 }
@@ -26695,8 +26695,8 @@ func (self *Program) RCLQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(2, addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for RCLQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for RCLQ")
     }
     return p
 }
@@ -26777,8 +26777,8 @@ func (self *Program) RCLW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(2, addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for RCLW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for RCLW")
     }
     return p
 }
@@ -26815,8 +26815,8 @@ func (self *Program) RCPPS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for RCPPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for RCPPS")
     }
     return p
 }
@@ -26855,8 +26855,8 @@ func (self *Program) RCPSS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for RCPSS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for RCPSS")
     }
     return p
 }
@@ -26931,8 +26931,8 @@ func (self *Program) RCRB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(3, addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for RCRB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for RCRB")
     }
     return p
 }
@@ -27007,8 +27007,8 @@ func (self *Program) RCRL(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(3, addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for RCRL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for RCRL")
     }
     return p
 }
@@ -27083,8 +27083,8 @@ func (self *Program) RCRQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(3, addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for RCRQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for RCRQ")
     }
     return p
 }
@@ -27165,8 +27165,8 @@ func (self *Program) RCRW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(3, addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for RCRW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for RCRW")
     }
     return p
 }
@@ -27216,8 +27216,8 @@ func (self *Program) RDRAND(v0 interface{}) *Instruction {
             m.emit(0xf0 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for RDRAND")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for RDRAND")
     }
     return p
 }
@@ -27267,8 +27267,8 @@ func (self *Program) RDSEED(v0 interface{}) *Instruction {
             m.emit(0xf8 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for RDSEED")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for RDSEED")
     }
     return p
 }
@@ -27342,8 +27342,8 @@ func (self *Program) RET(vv ...interface{}) *Instruction {
             m.imm2(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for RET")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for RET")
     }
     return p
 }
@@ -27418,8 +27418,8 @@ func (self *Program) ROLB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(0, addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for ROLB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for ROLB")
     }
     return p
 }
@@ -27494,8 +27494,8 @@ func (self *Program) ROLL(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(0, addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for ROLL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for ROLL")
     }
     return p
 }
@@ -27570,8 +27570,8 @@ func (self *Program) ROLQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(0, addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for ROLQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for ROLQ")
     }
     return p
 }
@@ -27652,8 +27652,8 @@ func (self *Program) ROLW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(0, addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for ROLW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for ROLW")
     }
     return p
 }
@@ -27728,8 +27728,8 @@ func (self *Program) RORB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(1, addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for RORB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for RORB")
     }
     return p
 }
@@ -27804,8 +27804,8 @@ func (self *Program) RORL(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(1, addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for RORL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for RORL")
     }
     return p
 }
@@ -27880,8 +27880,8 @@ func (self *Program) RORQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(1, addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for RORQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for RORQ")
     }
     return p
 }
@@ -27962,8 +27962,8 @@ func (self *Program) RORW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(1, addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for RORW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for RORW")
     }
     return p
 }
@@ -28002,8 +28002,8 @@ func (self *Program) RORXL(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for RORXL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for RORXL")
     }
     return p
 }
@@ -28042,8 +28042,8 @@ func (self *Program) RORXQ(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for RORXQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for RORXQ")
     }
     return p
 }
@@ -28086,8 +28086,8 @@ func (self *Program) ROUNDPD(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for ROUNDPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for ROUNDPD")
     }
     return p
 }
@@ -28130,8 +28130,8 @@ func (self *Program) ROUNDPS(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for ROUNDPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for ROUNDPS")
     }
     return p
 }
@@ -28174,8 +28174,8 @@ func (self *Program) ROUNDSD(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for ROUNDSD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for ROUNDSD")
     }
     return p
 }
@@ -28218,8 +28218,8 @@ func (self *Program) ROUNDSS(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for ROUNDSS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for ROUNDSS")
     }
     return p
 }
@@ -28256,8 +28256,8 @@ func (self *Program) RSQRTPS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for RSQRTPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for RSQRTPS")
     }
     return p
 }
@@ -28296,8 +28296,8 @@ func (self *Program) RSQRTSS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for RSQRTSS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for RSQRTSS")
     }
     return p
 }
@@ -28372,8 +28372,8 @@ func (self *Program) SALB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(4, addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SALB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SALB")
     }
     return p
 }
@@ -28448,8 +28448,8 @@ func (self *Program) SALL(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(4, addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SALL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SALL")
     }
     return p
 }
@@ -28524,8 +28524,8 @@ func (self *Program) SALQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(4, addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SALQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SALQ")
     }
     return p
 }
@@ -28606,8 +28606,8 @@ func (self *Program) SALW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(4, addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SALW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SALW")
     }
     return p
 }
@@ -28682,8 +28682,8 @@ func (self *Program) SARB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(7, addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SARB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SARB")
     }
     return p
 }
@@ -28758,8 +28758,8 @@ func (self *Program) SARL(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(7, addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SARL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SARL")
     }
     return p
 }
@@ -28834,8 +28834,8 @@ func (self *Program) SARQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(7, addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SARQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SARQ")
     }
     return p
 }
@@ -28916,8 +28916,8 @@ func (self *Program) SARW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(7, addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SARW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SARW")
     }
     return p
 }
@@ -28954,8 +28954,8 @@ func (self *Program) SARXL(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
             m.mrsd(lcode(v[2]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SARXL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SARXL")
     }
     return p
 }
@@ -28992,8 +28992,8 @@ func (self *Program) SARXQ(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
             m.mrsd(lcode(v[2]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SARXQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SARXQ")
     }
     return p
 }
@@ -29072,8 +29072,8 @@ func (self *Program) SBBB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SBBB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SBBB")
     }
     return p
 }
@@ -29174,8 +29174,8 @@ func (self *Program) SBBL(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SBBL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SBBL")
     }
     return p
 }
@@ -29277,8 +29277,8 @@ func (self *Program) SBBQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SBBQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SBBQ")
     }
     return p
 }
@@ -29388,8 +29388,8 @@ func (self *Program) SBBW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SBBW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SBBW")
     }
     return p
 }
@@ -29424,8 +29424,8 @@ func (self *Program) SETA(v0 interface{}) *Instruction {
             m.mrsd(0, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SETA")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SETA")
     }
     return p
 }
@@ -29460,8 +29460,8 @@ func (self *Program) SETAE(v0 interface{}) *Instruction {
             m.mrsd(0, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SETAE")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SETAE")
     }
     return p
 }
@@ -29496,8 +29496,8 @@ func (self *Program) SETB(v0 interface{}) *Instruction {
             m.mrsd(0, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SETB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SETB")
     }
     return p
 }
@@ -29532,8 +29532,8 @@ func (self *Program) SETBE(v0 interface{}) *Instruction {
             m.mrsd(0, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SETBE")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SETBE")
     }
     return p
 }
@@ -29568,8 +29568,8 @@ func (self *Program) SETC(v0 interface{}) *Instruction {
             m.mrsd(0, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SETC")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SETC")
     }
     return p
 }
@@ -29604,8 +29604,8 @@ func (self *Program) SETE(v0 interface{}) *Instruction {
             m.mrsd(0, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SETE")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SETE")
     }
     return p
 }
@@ -29640,8 +29640,8 @@ func (self *Program) SETG(v0 interface{}) *Instruction {
             m.mrsd(0, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SETG")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SETG")
     }
     return p
 }
@@ -29676,8 +29676,8 @@ func (self *Program) SETGE(v0 interface{}) *Instruction {
             m.mrsd(0, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SETGE")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SETGE")
     }
     return p
 }
@@ -29712,8 +29712,8 @@ func (self *Program) SETL(v0 interface{}) *Instruction {
             m.mrsd(0, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SETL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SETL")
     }
     return p
 }
@@ -29748,8 +29748,8 @@ func (self *Program) SETLE(v0 interface{}) *Instruction {
             m.mrsd(0, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SETLE")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SETLE")
     }
     return p
 }
@@ -29784,8 +29784,8 @@ func (self *Program) SETNA(v0 interface{}) *Instruction {
             m.mrsd(0, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SETNA")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SETNA")
     }
     return p
 }
@@ -29820,8 +29820,8 @@ func (self *Program) SETNAE(v0 interface{}) *Instruction {
             m.mrsd(0, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SETNAE")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SETNAE")
     }
     return p
 }
@@ -29856,8 +29856,8 @@ func (self *Program) SETNB(v0 interface{}) *Instruction {
             m.mrsd(0, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SETNB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SETNB")
     }
     return p
 }
@@ -29892,8 +29892,8 @@ func (self *Program) SETNBE(v0 interface{}) *Instruction {
             m.mrsd(0, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SETNBE")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SETNBE")
     }
     return p
 }
@@ -29928,8 +29928,8 @@ func (self *Program) SETNC(v0 interface{}) *Instruction {
             m.mrsd(0, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SETNC")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SETNC")
     }
     return p
 }
@@ -29964,8 +29964,8 @@ func (self *Program) SETNE(v0 interface{}) *Instruction {
             m.mrsd(0, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SETNE")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SETNE")
     }
     return p
 }
@@ -30000,8 +30000,8 @@ func (self *Program) SETNG(v0 interface{}) *Instruction {
             m.mrsd(0, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SETNG")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SETNG")
     }
     return p
 }
@@ -30036,8 +30036,8 @@ func (self *Program) SETNGE(v0 interface{}) *Instruction {
             m.mrsd(0, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SETNGE")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SETNGE")
     }
     return p
 }
@@ -30072,8 +30072,8 @@ func (self *Program) SETNL(v0 interface{}) *Instruction {
             m.mrsd(0, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SETNL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SETNL")
     }
     return p
 }
@@ -30108,8 +30108,8 @@ func (self *Program) SETNLE(v0 interface{}) *Instruction {
             m.mrsd(0, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SETNLE")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SETNLE")
     }
     return p
 }
@@ -30144,8 +30144,8 @@ func (self *Program) SETNO(v0 interface{}) *Instruction {
             m.mrsd(0, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SETNO")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SETNO")
     }
     return p
 }
@@ -30180,8 +30180,8 @@ func (self *Program) SETNP(v0 interface{}) *Instruction {
             m.mrsd(0, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SETNP")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SETNP")
     }
     return p
 }
@@ -30216,8 +30216,8 @@ func (self *Program) SETNS(v0 interface{}) *Instruction {
             m.mrsd(0, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SETNS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SETNS")
     }
     return p
 }
@@ -30252,8 +30252,8 @@ func (self *Program) SETNZ(v0 interface{}) *Instruction {
             m.mrsd(0, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SETNZ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SETNZ")
     }
     return p
 }
@@ -30288,8 +30288,8 @@ func (self *Program) SETO(v0 interface{}) *Instruction {
             m.mrsd(0, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SETO")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SETO")
     }
     return p
 }
@@ -30324,8 +30324,8 @@ func (self *Program) SETP(v0 interface{}) *Instruction {
             m.mrsd(0, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SETP")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SETP")
     }
     return p
 }
@@ -30360,8 +30360,8 @@ func (self *Program) SETPE(v0 interface{}) *Instruction {
             m.mrsd(0, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SETPE")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SETPE")
     }
     return p
 }
@@ -30396,8 +30396,8 @@ func (self *Program) SETPO(v0 interface{}) *Instruction {
             m.mrsd(0, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SETPO")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SETPO")
     }
     return p
 }
@@ -30432,8 +30432,8 @@ func (self *Program) SETS(v0 interface{}) *Instruction {
             m.mrsd(0, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SETS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SETS")
     }
     return p
 }
@@ -30468,8 +30468,8 @@ func (self *Program) SETZ(v0 interface{}) *Instruction {
             m.mrsd(0, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SETZ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SETZ")
     }
     return p
 }
@@ -30528,8 +30528,8 @@ func (self *Program) SHA1MSG1(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SHA1MSG1")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SHA1MSG1")
     }
     return p
 }
@@ -30568,8 +30568,8 @@ func (self *Program) SHA1MSG2(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SHA1MSG2")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SHA1MSG2")
     }
     return p
 }
@@ -30608,8 +30608,8 @@ func (self *Program) SHA1NEXTE(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SHA1NEXTE")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SHA1NEXTE")
     }
     return p
 }
@@ -30650,8 +30650,8 @@ func (self *Program) SHA1RNDS4(v0 interface{}, v1 interface{}, v2 interface{}) *
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SHA1RNDS4")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SHA1RNDS4")
     }
     return p
 }
@@ -30690,8 +30690,8 @@ func (self *Program) SHA256MSG1(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SHA256MSG1")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SHA256MSG1")
     }
     return p
 }
@@ -30730,8 +30730,8 @@ func (self *Program) SHA256MSG2(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SHA256MSG2")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SHA256MSG2")
     }
     return p
 }
@@ -30770,8 +30770,8 @@ func (self *Program) SHA256RNDS2(v0 interface{}, v1 interface{}, v2 interface{})
             m.mrsd(lcode(v[2]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SHA256RNDS2")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SHA256RNDS2")
     }
     return p
 }
@@ -30846,8 +30846,8 @@ func (self *Program) SHLB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(4, addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SHLB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SHLB")
     }
     return p
 }
@@ -30906,8 +30906,8 @@ func (self *Program) SHLDL(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
             m.mrsd(lcode(v[1]), addr(v[2]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SHLDL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SHLDL")
     }
     return p
 }
@@ -30966,8 +30966,8 @@ func (self *Program) SHLDQ(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
             m.mrsd(lcode(v[1]), addr(v[2]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SHLDQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SHLDQ")
     }
     return p
 }
@@ -31030,8 +31030,8 @@ func (self *Program) SHLDW(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
             m.mrsd(lcode(v[1]), addr(v[2]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SHLDW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SHLDW")
     }
     return p
 }
@@ -31106,8 +31106,8 @@ func (self *Program) SHLL(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(4, addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SHLL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SHLL")
     }
     return p
 }
@@ -31182,8 +31182,8 @@ func (self *Program) SHLQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(4, addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SHLQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SHLQ")
     }
     return p
 }
@@ -31264,8 +31264,8 @@ func (self *Program) SHLW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(4, addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SHLW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SHLW")
     }
     return p
 }
@@ -31302,8 +31302,8 @@ func (self *Program) SHLXL(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
             m.mrsd(lcode(v[2]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SHLXL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SHLXL")
     }
     return p
 }
@@ -31340,8 +31340,8 @@ func (self *Program) SHLXQ(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
             m.mrsd(lcode(v[2]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SHLXQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SHLXQ")
     }
     return p
 }
@@ -31416,8 +31416,8 @@ func (self *Program) SHRB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(5, addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SHRB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SHRB")
     }
     return p
 }
@@ -31476,8 +31476,8 @@ func (self *Program) SHRDL(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
             m.mrsd(lcode(v[1]), addr(v[2]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SHRDL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SHRDL")
     }
     return p
 }
@@ -31536,8 +31536,8 @@ func (self *Program) SHRDQ(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
             m.mrsd(lcode(v[1]), addr(v[2]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SHRDQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SHRDQ")
     }
     return p
 }
@@ -31600,8 +31600,8 @@ func (self *Program) SHRDW(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
             m.mrsd(lcode(v[1]), addr(v[2]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SHRDW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SHRDW")
     }
     return p
 }
@@ -31676,8 +31676,8 @@ func (self *Program) SHRL(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(5, addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SHRL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SHRL")
     }
     return p
 }
@@ -31752,8 +31752,8 @@ func (self *Program) SHRQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(5, addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SHRQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SHRQ")
     }
     return p
 }
@@ -31834,8 +31834,8 @@ func (self *Program) SHRW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(5, addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SHRW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SHRW")
     }
     return p
 }
@@ -31872,8 +31872,8 @@ func (self *Program) SHRXL(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
             m.mrsd(lcode(v[2]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SHRXL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SHRXL")
     }
     return p
 }
@@ -31910,8 +31910,8 @@ func (self *Program) SHRXQ(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
             m.mrsd(lcode(v[2]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SHRXQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SHRXQ")
     }
     return p
 }
@@ -31952,8 +31952,8 @@ func (self *Program) SHUFPD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SHUFPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SHUFPD")
     }
     return p
 }
@@ -31992,8 +31992,8 @@ func (self *Program) SHUFPS(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SHUFPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SHUFPS")
     }
     return p
 }
@@ -32032,8 +32032,8 @@ func (self *Program) SQRTPD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SQRTPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SQRTPD")
     }
     return p
 }
@@ -32070,8 +32070,8 @@ func (self *Program) SQRTPS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SQRTPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SQRTPS")
     }
     return p
 }
@@ -32110,8 +32110,8 @@ func (self *Program) SQRTSD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SQRTSD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SQRTSD")
     }
     return p
 }
@@ -32150,8 +32150,8 @@ func (self *Program) SQRTSS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SQRTSS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SQRTSS")
     }
     return p
 }
@@ -32210,8 +32210,8 @@ func (self *Program) STMXCSR(v0 interface{}) *Instruction {
             m.mrsd(3, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for STMXCSR")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for STMXCSR")
     }
     return p
 }
@@ -32290,8 +32290,8 @@ func (self *Program) SUBB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SUBB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SUBB")
     }
     return p
 }
@@ -32392,8 +32392,8 @@ func (self *Program) SUBL(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SUBL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SUBL")
     }
     return p
 }
@@ -32432,8 +32432,8 @@ func (self *Program) SUBPD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SUBPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SUBPD")
     }
     return p
 }
@@ -32470,8 +32470,8 @@ func (self *Program) SUBPS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SUBPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SUBPS")
     }
     return p
 }
@@ -32573,8 +32573,8 @@ func (self *Program) SUBQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SUBQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SUBQ")
     }
     return p
 }
@@ -32613,8 +32613,8 @@ func (self *Program) SUBSD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SUBSD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SUBSD")
     }
     return p
 }
@@ -32653,8 +32653,8 @@ func (self *Program) SUBSS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SUBSS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SUBSS")
     }
     return p
 }
@@ -32764,8 +32764,8 @@ func (self *Program) SUBW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for SUBW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for SUBW")
     }
     return p
 }
@@ -32844,8 +32844,8 @@ func (self *Program) T1MSKC(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(7, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for T1MSKC")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for T1MSKC")
     }
     return p
 }
@@ -32909,8 +32909,8 @@ func (self *Program) TESTB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for TESTB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for TESTB")
     }
     return p
 }
@@ -32974,8 +32974,8 @@ func (self *Program) TESTL(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for TESTL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for TESTL")
     }
     return p
 }
@@ -33040,8 +33040,8 @@ func (self *Program) TESTQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for TESTQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for TESTQ")
     }
     return p
 }
@@ -33110,8 +33110,8 @@ func (self *Program) TESTW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for TESTW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for TESTW")
     }
     return p
 }
@@ -33150,8 +33150,8 @@ func (self *Program) TZCNTL(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for TZCNTL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for TZCNTL")
     }
     return p
 }
@@ -33190,8 +33190,8 @@ func (self *Program) TZCNTQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for TZCNTQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for TZCNTQ")
     }
     return p
 }
@@ -33232,8 +33232,8 @@ func (self *Program) TZCNTW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for TZCNTW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for TZCNTW")
     }
     return p
 }
@@ -33294,8 +33294,8 @@ func (self *Program) TZMSK(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(4, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for TZMSK")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for TZMSK")
     }
     return p
 }
@@ -33334,8 +33334,8 @@ func (self *Program) UCOMISD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for UCOMISD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for UCOMISD")
     }
     return p
 }
@@ -33372,8 +33372,8 @@ func (self *Program) UCOMISS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for UCOMISS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for UCOMISS")
     }
     return p
 }
@@ -33430,8 +33430,8 @@ func (self *Program) UNPCKHPD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for UNPCKHPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for UNPCKHPD")
     }
     return p
 }
@@ -33468,8 +33468,8 @@ func (self *Program) UNPCKHPS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for UNPCKHPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for UNPCKHPS")
     }
     return p
 }
@@ -33508,8 +33508,8 @@ func (self *Program) UNPCKLPD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for UNPCKLPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for UNPCKLPD")
     }
     return p
 }
@@ -33546,8 +33546,8 @@ func (self *Program) UNPCKLPS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for UNPCKLPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for UNPCKLPS")
     }
     return p
 }
@@ -33698,8 +33698,8 @@ func (self *Program) VADDPD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VADDPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VADDPD")
     }
     return p
 }
@@ -33850,8 +33850,8 @@ func (self *Program) VADDPS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VADDPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VADDPS")
     }
     return p
 }
@@ -33930,8 +33930,8 @@ func (self *Program) VADDSD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VADDSD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VADDSD")
     }
     return p
 }
@@ -34010,8 +34010,8 @@ func (self *Program) VADDSS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VADDSS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VADDSS")
     }
     return p
 }
@@ -34068,8 +34068,8 @@ func (self *Program) VADDSUBPD(v0 interface{}, v1 interface{}, v2 interface{}) *
             m.mrsd(lcode(v[2]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VADDSUBPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VADDSUBPD")
     }
     return p
 }
@@ -34126,8 +34126,8 @@ func (self *Program) VADDSUBPS(v0 interface{}, v1 interface{}, v2 interface{}) *
             m.mrsd(lcode(v[2]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VADDSUBPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VADDSUBPS")
     }
     return p
 }
@@ -34164,8 +34164,8 @@ func (self *Program) VAESDEC(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.mrsd(lcode(v[2]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VAESDEC")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VAESDEC")
     }
     return p
 }
@@ -34202,8 +34202,8 @@ func (self *Program) VAESDECLAST(v0 interface{}, v1 interface{}, v2 interface{})
             m.mrsd(lcode(v[2]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VAESDECLAST")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VAESDECLAST")
     }
     return p
 }
@@ -34240,8 +34240,8 @@ func (self *Program) VAESENC(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.mrsd(lcode(v[2]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VAESENC")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VAESENC")
     }
     return p
 }
@@ -34278,8 +34278,8 @@ func (self *Program) VAESENCLAST(v0 interface{}, v1 interface{}, v2 interface{})
             m.mrsd(lcode(v[2]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VAESENCLAST")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VAESENCLAST")
     }
     return p
 }
@@ -34316,8 +34316,8 @@ func (self *Program) VAESIMC(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VAESIMC")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VAESIMC")
     }
     return p
 }
@@ -34356,8 +34356,8 @@ func (self *Program) VAESKEYGENASSIST(v0 interface{}, v1 interface{}, v2 interfa
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VAESKEYGENASSIST")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VAESKEYGENASSIST")
     }
     return p
 }
@@ -34451,8 +34451,8 @@ func (self *Program) VALIGND(v0 interface{}, v1 interface{}, v2 interface{}, v3 
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VALIGND")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VALIGND")
     }
     return p
 }
@@ -34546,8 +34546,8 @@ func (self *Program) VALIGNQ(v0 interface{}, v1 interface{}, v2 interface{}, v3 
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VALIGNQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VALIGNQ")
     }
     return p
 }
@@ -34679,8 +34679,8 @@ func (self *Program) VANDNPD(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VANDNPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VANDNPD")
     }
     return p
 }
@@ -34812,8 +34812,8 @@ func (self *Program) VANDNPS(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VANDNPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VANDNPS")
     }
     return p
 }
@@ -34945,8 +34945,8 @@ func (self *Program) VANDPD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VANDPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VANDPD")
     }
     return p
 }
@@ -35078,8 +35078,8 @@ func (self *Program) VANDPS(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VANDPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VANDPS")
     }
     return p
 }
@@ -35167,8 +35167,8 @@ func (self *Program) VBLENDMPD(v0 interface{}, v1 interface{}, v2 interface{}) *
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VBLENDMPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VBLENDMPD")
     }
     return p
 }
@@ -35256,8 +35256,8 @@ func (self *Program) VBLENDMPS(v0 interface{}, v1 interface{}, v2 interface{}) *
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VBLENDMPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VBLENDMPS")
     }
     return p
 }
@@ -35322,8 +35322,8 @@ func (self *Program) VBLENDPD(v0 interface{}, v1 interface{}, v2 interface{}, v3
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VBLENDPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VBLENDPD")
     }
     return p
 }
@@ -35388,8 +35388,8 @@ func (self *Program) VBLENDPS(v0 interface{}, v1 interface{}, v2 interface{}, v3
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VBLENDPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VBLENDPS")
     }
     return p
 }
@@ -35454,8 +35454,8 @@ func (self *Program) VBLENDVPD(v0 interface{}, v1 interface{}, v2 interface{}, v
             m.emit(hlcode(v[0]) << 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VBLENDVPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VBLENDVPD")
     }
     return p
 }
@@ -35520,8 +35520,8 @@ func (self *Program) VBLENDVPS(v0 interface{}, v1 interface{}, v2 interface{}, v
             m.emit(hlcode(v[0]) << 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VBLENDVPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VBLENDVPS")
     }
     return p
 }
@@ -35545,8 +35545,8 @@ func (self *Program) VBROADCASTF128(v0 interface{}, v1 interface{}) *Instruction
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VBROADCASTF128")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VBROADCASTF128")
     }
     return p
 }
@@ -35609,8 +35609,8 @@ func (self *Program) VBROADCASTF32X2(v0 interface{}, v1 interface{}) *Instructio
             m.mrsd(lcode(v[1]), addr(v[0]), 8)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VBROADCASTF32X2")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VBROADCASTF32X2")
     }
     return p
 }
@@ -35645,8 +35645,8 @@ func (self *Program) VBROADCASTF32X4(v0 interface{}, v1 interface{}) *Instructio
             m.mrsd(lcode(v[1]), addr(v[0]), 16)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VBROADCASTF32X4")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VBROADCASTF32X4")
     }
     return p
 }
@@ -35670,8 +35670,8 @@ func (self *Program) VBROADCASTF32X8(v0 interface{}, v1 interface{}) *Instructio
             m.mrsd(lcode(v[1]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VBROADCASTF32X8")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VBROADCASTF32X8")
     }
     return p
 }
@@ -35706,8 +35706,8 @@ func (self *Program) VBROADCASTF64X2(v0 interface{}, v1 interface{}) *Instructio
             m.mrsd(lcode(v[1]), addr(v[0]), 16)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VBROADCASTF64X2")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VBROADCASTF64X2")
     }
     return p
 }
@@ -35731,8 +35731,8 @@ func (self *Program) VBROADCASTF64X4(v0 interface{}, v1 interface{}) *Instructio
             m.mrsd(lcode(v[1]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VBROADCASTF64X4")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VBROADCASTF64X4")
     }
     return p
 }
@@ -35756,8 +35756,8 @@ func (self *Program) VBROADCASTI128(v0 interface{}, v1 interface{}) *Instruction
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VBROADCASTI128")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VBROADCASTI128")
     }
     return p
 }
@@ -35845,8 +35845,8 @@ func (self *Program) VBROADCASTI32X2(v0 interface{}, v1 interface{}) *Instructio
             m.mrsd(lcode(v[1]), addr(v[0]), 8)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VBROADCASTI32X2")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VBROADCASTI32X2")
     }
     return p
 }
@@ -35881,8 +35881,8 @@ func (self *Program) VBROADCASTI32X4(v0 interface{}, v1 interface{}) *Instructio
             m.mrsd(lcode(v[1]), addr(v[0]), 16)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VBROADCASTI32X4")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VBROADCASTI32X4")
     }
     return p
 }
@@ -35906,8 +35906,8 @@ func (self *Program) VBROADCASTI32X8(v0 interface{}, v1 interface{}) *Instructio
             m.mrsd(lcode(v[1]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VBROADCASTI32X8")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VBROADCASTI32X8")
     }
     return p
 }
@@ -35942,8 +35942,8 @@ func (self *Program) VBROADCASTI64X2(v0 interface{}, v1 interface{}) *Instructio
             m.mrsd(lcode(v[1]), addr(v[0]), 16)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VBROADCASTI64X2")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VBROADCASTI64X2")
     }
     return p
 }
@@ -35967,8 +35967,8 @@ func (self *Program) VBROADCASTI64X4(v0 interface{}, v1 interface{}) *Instructio
             m.mrsd(lcode(v[1]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VBROADCASTI64X4")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VBROADCASTI64X4")
     }
     return p
 }
@@ -36055,8 +36055,8 @@ func (self *Program) VBROADCASTSD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 8)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VBROADCASTSD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VBROADCASTSD")
     }
     return p
 }
@@ -36167,8 +36167,8 @@ func (self *Program) VBROADCASTSS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VBROADCASTSS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VBROADCASTSS")
     }
     return p
 }
@@ -36330,8 +36330,8 @@ func (self *Program) VCMPPD(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCMPPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCMPPD")
     }
     return p
 }
@@ -36493,8 +36493,8 @@ func (self *Program) VCMPPS(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCMPPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCMPPS")
     }
     return p
 }
@@ -36578,8 +36578,8 @@ func (self *Program) VCMPSD(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCMPSD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCMPSD")
     }
     return p
 }
@@ -36663,8 +36663,8 @@ func (self *Program) VCMPSS(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCMPSS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCMPSS")
     }
     return p
 }
@@ -36743,8 +36743,8 @@ func (self *Program) VCOMISD(v0 interface{}, v1 interface{}, vv ...interface{}) 
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCOMISD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCOMISD")
     }
     return p
 }
@@ -36823,8 +36823,8 @@ func (self *Program) VCOMISS(v0 interface{}, v1 interface{}, vv ...interface{}) 
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCOMISS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCOMISS")
     }
     return p
 }
@@ -36912,8 +36912,8 @@ func (self *Program) VCOMPRESSPD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 8)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCOMPRESSPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCOMPRESSPD")
     }
     return p
 }
@@ -37001,8 +37001,8 @@ func (self *Program) VCOMPRESSPS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCOMPRESSPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCOMPRESSPS")
     }
     return p
 }
@@ -37134,8 +37134,8 @@ func (self *Program) VCVTDQ2PD(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCVTDQ2PD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCVTDQ2PD")
     }
     return p
 }
@@ -37286,8 +37286,8 @@ func (self *Program) VCVTDQ2PS(v0 interface{}, v1 interface{}, vv ...interface{}
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCVTDQ2PS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCVTDQ2PS")
     }
     return p
 }
@@ -37438,8 +37438,8 @@ func (self *Program) VCVTPD2DQ(v0 interface{}, v1 interface{}, vv ...interface{}
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCVTPD2DQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCVTPD2DQ")
     }
     return p
 }
@@ -37590,8 +37590,8 @@ func (self *Program) VCVTPD2PS(v0 interface{}, v1 interface{}, vv ...interface{}
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCVTPD2PS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCVTPD2PS")
     }
     return p
 }
@@ -37698,8 +37698,8 @@ func (self *Program) VCVTPD2QQ(v0 interface{}, v1 interface{}, vv ...interface{}
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCVTPD2QQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCVTPD2QQ")
     }
     return p
 }
@@ -37806,8 +37806,8 @@ func (self *Program) VCVTPD2UDQ(v0 interface{}, v1 interface{}, vv ...interface{
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCVTPD2UDQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCVTPD2UDQ")
     }
     return p
 }
@@ -37914,8 +37914,8 @@ func (self *Program) VCVTPD2UQQ(v0 interface{}, v1 interface{}, vv ...interface{
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCVTPD2UQQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCVTPD2UQQ")
     }
     return p
 }
@@ -38070,8 +38070,8 @@ func (self *Program) VCVTPH2PS(v0 interface{}, v1 interface{}, vv ...interface{}
             m.mrsd(lcode(v[1]), addr(v[0]), 16)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCVTPH2PS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCVTPH2PS")
     }
     return p
 }
@@ -38222,8 +38222,8 @@ func (self *Program) VCVTPS2DQ(v0 interface{}, v1 interface{}, vv ...interface{}
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCVTPS2DQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCVTPS2DQ")
     }
     return p
 }
@@ -38374,8 +38374,8 @@ func (self *Program) VCVTPS2PD(v0 interface{}, v1 interface{}, vv ...interface{}
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCVTPS2PD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCVTPS2PD")
     }
     return p
 }
@@ -38541,8 +38541,8 @@ func (self *Program) VCVTPS2PH(v0 interface{}, v1 interface{}, v2 interface{}, v
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCVTPS2PH")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCVTPS2PH")
     }
     return p
 }
@@ -38649,8 +38649,8 @@ func (self *Program) VCVTPS2QQ(v0 interface{}, v1 interface{}, vv ...interface{}
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCVTPS2QQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCVTPS2QQ")
     }
     return p
 }
@@ -38757,8 +38757,8 @@ func (self *Program) VCVTPS2UDQ(v0 interface{}, v1 interface{}, vv ...interface{
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCVTPS2UDQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCVTPS2UDQ")
     }
     return p
 }
@@ -38865,8 +38865,8 @@ func (self *Program) VCVTPS2UQQ(v0 interface{}, v1 interface{}, vv ...interface{
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCVTPS2UQQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCVTPS2UQQ")
     }
     return p
 }
@@ -38973,8 +38973,8 @@ func (self *Program) VCVTQQ2PD(v0 interface{}, v1 interface{}, vv ...interface{}
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCVTQQ2PD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCVTQQ2PD")
     }
     return p
 }
@@ -39081,8 +39081,8 @@ func (self *Program) VCVTQQ2PS(v0 interface{}, v1 interface{}, vv ...interface{}
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCVTQQ2PS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCVTQQ2PS")
     }
     return p
 }
@@ -39224,8 +39224,8 @@ func (self *Program) VCVTSD2SI(v0 interface{}, v1 interface{}, vv ...interface{}
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCVTSD2SI")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCVTSD2SI")
     }
     return p
 }
@@ -39304,8 +39304,8 @@ func (self *Program) VCVTSD2SS(v0 interface{}, v1 interface{}, v2 interface{}, v
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCVTSD2SS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCVTSD2SS")
     }
     return p
 }
@@ -39401,8 +39401,8 @@ func (self *Program) VCVTSD2USI(v0 interface{}, v1 interface{}, vv ...interface{
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCVTSD2USI")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCVTSD2USI")
     }
     return p
 }
@@ -39530,8 +39530,8 @@ func (self *Program) VCVTSI2SD(v0 interface{}, v1 interface{}, v2 interface{}, v
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCVTSI2SD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCVTSI2SD")
     }
     return p
 }
@@ -39673,8 +39673,8 @@ func (self *Program) VCVTSI2SS(v0 interface{}, v1 interface{}, v2 interface{}, v
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCVTSI2SS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCVTSI2SS")
     }
     return p
 }
@@ -39753,8 +39753,8 @@ func (self *Program) VCVTSS2SD(v0 interface{}, v1 interface{}, v2 interface{}, v
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCVTSS2SD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCVTSS2SD")
     }
     return p
 }
@@ -39896,8 +39896,8 @@ func (self *Program) VCVTSS2SI(v0 interface{}, v1 interface{}, vv ...interface{}
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCVTSS2SI")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCVTSS2SI")
     }
     return p
 }
@@ -39993,8 +39993,8 @@ func (self *Program) VCVTSS2USI(v0 interface{}, v1 interface{}, vv ...interface{
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCVTSS2USI")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCVTSS2USI")
     }
     return p
 }
@@ -40145,8 +40145,8 @@ func (self *Program) VCVTTPD2DQ(v0 interface{}, v1 interface{}, vv ...interface{
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCVTTPD2DQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCVTTPD2DQ")
     }
     return p
 }
@@ -40253,8 +40253,8 @@ func (self *Program) VCVTTPD2QQ(v0 interface{}, v1 interface{}, vv ...interface{
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCVTTPD2QQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCVTTPD2QQ")
     }
     return p
 }
@@ -40361,8 +40361,8 @@ func (self *Program) VCVTTPD2UDQ(v0 interface{}, v1 interface{}, vv ...interface
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCVTTPD2UDQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCVTTPD2UDQ")
     }
     return p
 }
@@ -40469,8 +40469,8 @@ func (self *Program) VCVTTPD2UQQ(v0 interface{}, v1 interface{}, vv ...interface
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCVTTPD2UQQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCVTTPD2UQQ")
     }
     return p
 }
@@ -40621,8 +40621,8 @@ func (self *Program) VCVTTPS2DQ(v0 interface{}, v1 interface{}, vv ...interface{
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCVTTPS2DQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCVTTPS2DQ")
     }
     return p
 }
@@ -40729,8 +40729,8 @@ func (self *Program) VCVTTPS2QQ(v0 interface{}, v1 interface{}, vv ...interface{
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCVTTPS2QQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCVTTPS2QQ")
     }
     return p
 }
@@ -40837,8 +40837,8 @@ func (self *Program) VCVTTPS2UDQ(v0 interface{}, v1 interface{}, vv ...interface
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCVTTPS2UDQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCVTTPS2UDQ")
     }
     return p
 }
@@ -40945,8 +40945,8 @@ func (self *Program) VCVTTPS2UQQ(v0 interface{}, v1 interface{}, vv ...interface
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCVTTPS2UQQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCVTTPS2UQQ")
     }
     return p
 }
@@ -41088,8 +41088,8 @@ func (self *Program) VCVTTSD2SI(v0 interface{}, v1 interface{}, vv ...interface{
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCVTTSD2SI")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCVTTSD2SI")
     }
     return p
 }
@@ -41185,8 +41185,8 @@ func (self *Program) VCVTTSD2USI(v0 interface{}, v1 interface{}, vv ...interface
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCVTTSD2USI")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCVTTSD2USI")
     }
     return p
 }
@@ -41328,8 +41328,8 @@ func (self *Program) VCVTTSS2SI(v0 interface{}, v1 interface{}, vv ...interface{
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCVTTSS2SI")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCVTTSS2SI")
     }
     return p
 }
@@ -41425,8 +41425,8 @@ func (self *Program) VCVTTSS2USI(v0 interface{}, v1 interface{}, vv ...interface
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCVTTSS2USI")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCVTTSS2USI")
     }
     return p
 }
@@ -41514,8 +41514,8 @@ func (self *Program) VCVTUDQ2PD(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCVTUDQ2PD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCVTUDQ2PD")
     }
     return p
 }
@@ -41622,8 +41622,8 @@ func (self *Program) VCVTUDQ2PS(v0 interface{}, v1 interface{}, vv ...interface{
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCVTUDQ2PS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCVTUDQ2PS")
     }
     return p
 }
@@ -41730,8 +41730,8 @@ func (self *Program) VCVTUQQ2PD(v0 interface{}, v1 interface{}, vv ...interface{
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCVTUQQ2PD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCVTUQQ2PD")
     }
     return p
 }
@@ -41838,8 +41838,8 @@ func (self *Program) VCVTUQQ2PS(v0 interface{}, v1 interface{}, vv ...interface{
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCVTUQQ2PS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCVTUQQ2PS")
     }
     return p
 }
@@ -41921,8 +41921,8 @@ func (self *Program) VCVTUSI2SD(v0 interface{}, v1 interface{}, v2 interface{}, 
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCVTUSI2SD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCVTUSI2SD")
     }
     return p
 }
@@ -42018,8 +42018,8 @@ func (self *Program) VCVTUSI2SS(v0 interface{}, v1 interface{}, v2 interface{}, 
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VCVTUSI2SS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VCVTUSI2SS")
     }
     return p
 }
@@ -42113,8 +42113,8 @@ func (self *Program) VDBPSADBW(v0 interface{}, v1 interface{}, v2 interface{}, v
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VDBPSADBW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VDBPSADBW")
     }
     return p
 }
@@ -42265,8 +42265,8 @@ func (self *Program) VDIVPD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VDIVPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VDIVPD")
     }
     return p
 }
@@ -42417,8 +42417,8 @@ func (self *Program) VDIVPS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VDIVPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VDIVPS")
     }
     return p
 }
@@ -42497,8 +42497,8 @@ func (self *Program) VDIVSD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VDIVSD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VDIVSD")
     }
     return p
 }
@@ -42577,8 +42577,8 @@ func (self *Program) VDIVSS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VDIVSS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VDIVSS")
     }
     return p
 }
@@ -42617,8 +42617,8 @@ func (self *Program) VDPPD(v0 interface{}, v1 interface{}, v2 interface{}, v3 in
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VDPPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VDPPD")
     }
     return p
 }
@@ -42683,8 +42683,8 @@ func (self *Program) VDPPS(v0 interface{}, v1 interface{}, v2 interface{}, v3 in
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VDPPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VDPPS")
     }
     return p
 }
@@ -42741,8 +42741,8 @@ func (self *Program) VEXP2PD(v0 interface{}, v1 interface{}, vv ...interface{}) 
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VEXP2PD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VEXP2PD")
     }
     return p
 }
@@ -42799,8 +42799,8 @@ func (self *Program) VEXP2PS(v0 interface{}, v1 interface{}, vv ...interface{}) 
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VEXP2PS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VEXP2PS")
     }
     return p
 }
@@ -42888,8 +42888,8 @@ func (self *Program) VEXPANDPD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 8)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VEXPANDPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VEXPANDPD")
     }
     return p
 }
@@ -42977,8 +42977,8 @@ func (self *Program) VEXPANDPS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VEXPANDPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VEXPANDPS")
     }
     return p
 }
@@ -43017,8 +43017,8 @@ func (self *Program) VEXTRACTF128(v0 interface{}, v1 interface{}, v2 interface{}
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VEXTRACTF128")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VEXTRACTF128")
     }
     return p
 }
@@ -43085,8 +43085,8 @@ func (self *Program) VEXTRACTF32X4(v0 interface{}, v1 interface{}, v2 interface{
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VEXTRACTF32X4")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VEXTRACTF32X4")
     }
     return p
 }
@@ -43126,8 +43126,8 @@ func (self *Program) VEXTRACTF32X8(v0 interface{}, v1 interface{}, v2 interface{
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VEXTRACTF32X8")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VEXTRACTF32X8")
     }
     return p
 }
@@ -43194,8 +43194,8 @@ func (self *Program) VEXTRACTF64X2(v0 interface{}, v1 interface{}, v2 interface{
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VEXTRACTF64X2")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VEXTRACTF64X2")
     }
     return p
 }
@@ -43235,8 +43235,8 @@ func (self *Program) VEXTRACTF64X4(v0 interface{}, v1 interface{}, v2 interface{
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VEXTRACTF64X4")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VEXTRACTF64X4")
     }
     return p
 }
@@ -43275,8 +43275,8 @@ func (self *Program) VEXTRACTI128(v0 interface{}, v1 interface{}, v2 interface{}
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VEXTRACTI128")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VEXTRACTI128")
     }
     return p
 }
@@ -43343,8 +43343,8 @@ func (self *Program) VEXTRACTI32X4(v0 interface{}, v1 interface{}, v2 interface{
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VEXTRACTI32X4")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VEXTRACTI32X4")
     }
     return p
 }
@@ -43384,8 +43384,8 @@ func (self *Program) VEXTRACTI32X8(v0 interface{}, v1 interface{}, v2 interface{
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VEXTRACTI32X8")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VEXTRACTI32X8")
     }
     return p
 }
@@ -43452,8 +43452,8 @@ func (self *Program) VEXTRACTI64X2(v0 interface{}, v1 interface{}, v2 interface{
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VEXTRACTI64X2")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VEXTRACTI64X2")
     }
     return p
 }
@@ -43493,8 +43493,8 @@ func (self *Program) VEXTRACTI64X4(v0 interface{}, v1 interface{}, v2 interface{
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VEXTRACTI64X4")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VEXTRACTI64X4")
     }
     return p
 }
@@ -43560,8 +43560,8 @@ func (self *Program) VEXTRACTPS(v0 interface{}, v1 interface{}, v2 interface{}) 
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VEXTRACTPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VEXTRACTPS")
     }
     return p
 }
@@ -43675,8 +43675,8 @@ func (self *Program) VFIXUPIMMPD(v0 interface{}, v1 interface{}, v2 interface{},
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFIXUPIMMPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFIXUPIMMPD")
     }
     return p
 }
@@ -43790,8 +43790,8 @@ func (self *Program) VFIXUPIMMPS(v0 interface{}, v1 interface{}, v2 interface{},
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFIXUPIMMPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFIXUPIMMPS")
     }
     return p
 }
@@ -43851,8 +43851,8 @@ func (self *Program) VFIXUPIMMSD(v0 interface{}, v1 interface{}, v2 interface{},
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFIXUPIMMSD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFIXUPIMMSD")
     }
     return p
 }
@@ -43912,8 +43912,8 @@ func (self *Program) VFIXUPIMMSS(v0 interface{}, v1 interface{}, v2 interface{},
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFIXUPIMMSS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFIXUPIMMSS")
     }
     return p
 }
@@ -44068,8 +44068,8 @@ func (self *Program) VFMADD132PD(v0 interface{}, v1 interface{}, v2 interface{},
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMADD132PD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMADD132PD")
     }
     return p
 }
@@ -44224,8 +44224,8 @@ func (self *Program) VFMADD132PS(v0 interface{}, v1 interface{}, v2 interface{},
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMADD132PS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMADD132PS")
     }
     return p
 }
@@ -44306,8 +44306,8 @@ func (self *Program) VFMADD132SD(v0 interface{}, v1 interface{}, v2 interface{},
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMADD132SD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMADD132SD")
     }
     return p
 }
@@ -44388,8 +44388,8 @@ func (self *Program) VFMADD132SS(v0 interface{}, v1 interface{}, v2 interface{},
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMADD132SS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMADD132SS")
     }
     return p
 }
@@ -44544,8 +44544,8 @@ func (self *Program) VFMADD213PD(v0 interface{}, v1 interface{}, v2 interface{},
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMADD213PD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMADD213PD")
     }
     return p
 }
@@ -44700,8 +44700,8 @@ func (self *Program) VFMADD213PS(v0 interface{}, v1 interface{}, v2 interface{},
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMADD213PS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMADD213PS")
     }
     return p
 }
@@ -44782,8 +44782,8 @@ func (self *Program) VFMADD213SD(v0 interface{}, v1 interface{}, v2 interface{},
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMADD213SD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMADD213SD")
     }
     return p
 }
@@ -44864,8 +44864,8 @@ func (self *Program) VFMADD213SS(v0 interface{}, v1 interface{}, v2 interface{},
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMADD213SS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMADD213SS")
     }
     return p
 }
@@ -45020,8 +45020,8 @@ func (self *Program) VFMADD231PD(v0 interface{}, v1 interface{}, v2 interface{},
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMADD231PD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMADD231PD")
     }
     return p
 }
@@ -45176,8 +45176,8 @@ func (self *Program) VFMADD231PS(v0 interface{}, v1 interface{}, v2 interface{},
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMADD231PS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMADD231PS")
     }
     return p
 }
@@ -45258,8 +45258,8 @@ func (self *Program) VFMADD231SD(v0 interface{}, v1 interface{}, v2 interface{},
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMADD231SD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMADD231SD")
     }
     return p
 }
@@ -45340,8 +45340,8 @@ func (self *Program) VFMADD231SS(v0 interface{}, v1 interface{}, v2 interface{},
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMADD231SS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMADD231SS")
     }
     return p
 }
@@ -45446,8 +45446,8 @@ func (self *Program) VFMADDPD(v0 interface{}, v1 interface{}, v2 interface{}, v3
             m.emit(hlcode(v[0]) << 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMADDPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMADDPD")
     }
     return p
 }
@@ -45552,8 +45552,8 @@ func (self *Program) VFMADDPS(v0 interface{}, v1 interface{}, v2 interface{}, v3
             m.emit(hlcode(v[0]) << 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMADDPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMADDPS")
     }
     return p
 }
@@ -45612,8 +45612,8 @@ func (self *Program) VFMADDSD(v0 interface{}, v1 interface{}, v2 interface{}, v3
             m.emit(hlcode(v[0]) << 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMADDSD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMADDSD")
     }
     return p
 }
@@ -45672,8 +45672,8 @@ func (self *Program) VFMADDSS(v0 interface{}, v1 interface{}, v2 interface{}, v3
             m.emit(hlcode(v[0]) << 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMADDSS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMADDSS")
     }
     return p
 }
@@ -45828,8 +45828,8 @@ func (self *Program) VFMADDSUB132PD(v0 interface{}, v1 interface{}, v2 interface
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMADDSUB132PD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMADDSUB132PD")
     }
     return p
 }
@@ -45984,8 +45984,8 @@ func (self *Program) VFMADDSUB132PS(v0 interface{}, v1 interface{}, v2 interface
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMADDSUB132PS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMADDSUB132PS")
     }
     return p
 }
@@ -46140,8 +46140,8 @@ func (self *Program) VFMADDSUB213PD(v0 interface{}, v1 interface{}, v2 interface
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMADDSUB213PD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMADDSUB213PD")
     }
     return p
 }
@@ -46296,8 +46296,8 @@ func (self *Program) VFMADDSUB213PS(v0 interface{}, v1 interface{}, v2 interface
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMADDSUB213PS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMADDSUB213PS")
     }
     return p
 }
@@ -46452,8 +46452,8 @@ func (self *Program) VFMADDSUB231PD(v0 interface{}, v1 interface{}, v2 interface
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMADDSUB231PD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMADDSUB231PD")
     }
     return p
 }
@@ -46608,8 +46608,8 @@ func (self *Program) VFMADDSUB231PS(v0 interface{}, v1 interface{}, v2 interface
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMADDSUB231PS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMADDSUB231PS")
     }
     return p
 }
@@ -46714,8 +46714,8 @@ func (self *Program) VFMADDSUBPD(v0 interface{}, v1 interface{}, v2 interface{},
             m.emit(hlcode(v[0]) << 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMADDSUBPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMADDSUBPD")
     }
     return p
 }
@@ -46820,8 +46820,8 @@ func (self *Program) VFMADDSUBPS(v0 interface{}, v1 interface{}, v2 interface{},
             m.emit(hlcode(v[0]) << 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMADDSUBPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMADDSUBPS")
     }
     return p
 }
@@ -46976,8 +46976,8 @@ func (self *Program) VFMSUB132PD(v0 interface{}, v1 interface{}, v2 interface{},
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMSUB132PD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMSUB132PD")
     }
     return p
 }
@@ -47132,8 +47132,8 @@ func (self *Program) VFMSUB132PS(v0 interface{}, v1 interface{}, v2 interface{},
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMSUB132PS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMSUB132PS")
     }
     return p
 }
@@ -47214,8 +47214,8 @@ func (self *Program) VFMSUB132SD(v0 interface{}, v1 interface{}, v2 interface{},
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMSUB132SD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMSUB132SD")
     }
     return p
 }
@@ -47296,8 +47296,8 @@ func (self *Program) VFMSUB132SS(v0 interface{}, v1 interface{}, v2 interface{},
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMSUB132SS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMSUB132SS")
     }
     return p
 }
@@ -47452,8 +47452,8 @@ func (self *Program) VFMSUB213PD(v0 interface{}, v1 interface{}, v2 interface{},
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMSUB213PD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMSUB213PD")
     }
     return p
 }
@@ -47608,8 +47608,8 @@ func (self *Program) VFMSUB213PS(v0 interface{}, v1 interface{}, v2 interface{},
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMSUB213PS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMSUB213PS")
     }
     return p
 }
@@ -47690,8 +47690,8 @@ func (self *Program) VFMSUB213SD(v0 interface{}, v1 interface{}, v2 interface{},
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMSUB213SD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMSUB213SD")
     }
     return p
 }
@@ -47772,8 +47772,8 @@ func (self *Program) VFMSUB213SS(v0 interface{}, v1 interface{}, v2 interface{},
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMSUB213SS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMSUB213SS")
     }
     return p
 }
@@ -47928,8 +47928,8 @@ func (self *Program) VFMSUB231PD(v0 interface{}, v1 interface{}, v2 interface{},
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMSUB231PD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMSUB231PD")
     }
     return p
 }
@@ -48084,8 +48084,8 @@ func (self *Program) VFMSUB231PS(v0 interface{}, v1 interface{}, v2 interface{},
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMSUB231PS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMSUB231PS")
     }
     return p
 }
@@ -48166,8 +48166,8 @@ func (self *Program) VFMSUB231SD(v0 interface{}, v1 interface{}, v2 interface{},
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMSUB231SD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMSUB231SD")
     }
     return p
 }
@@ -48248,8 +48248,8 @@ func (self *Program) VFMSUB231SS(v0 interface{}, v1 interface{}, v2 interface{},
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMSUB231SS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMSUB231SS")
     }
     return p
 }
@@ -48404,8 +48404,8 @@ func (self *Program) VFMSUBADD132PD(v0 interface{}, v1 interface{}, v2 interface
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMSUBADD132PD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMSUBADD132PD")
     }
     return p
 }
@@ -48560,8 +48560,8 @@ func (self *Program) VFMSUBADD132PS(v0 interface{}, v1 interface{}, v2 interface
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMSUBADD132PS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMSUBADD132PS")
     }
     return p
 }
@@ -48716,8 +48716,8 @@ func (self *Program) VFMSUBADD213PD(v0 interface{}, v1 interface{}, v2 interface
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMSUBADD213PD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMSUBADD213PD")
     }
     return p
 }
@@ -48872,8 +48872,8 @@ func (self *Program) VFMSUBADD213PS(v0 interface{}, v1 interface{}, v2 interface
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMSUBADD213PS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMSUBADD213PS")
     }
     return p
 }
@@ -49028,8 +49028,8 @@ func (self *Program) VFMSUBADD231PD(v0 interface{}, v1 interface{}, v2 interface
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMSUBADD231PD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMSUBADD231PD")
     }
     return p
 }
@@ -49184,8 +49184,8 @@ func (self *Program) VFMSUBADD231PS(v0 interface{}, v1 interface{}, v2 interface
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMSUBADD231PS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMSUBADD231PS")
     }
     return p
 }
@@ -49290,8 +49290,8 @@ func (self *Program) VFMSUBADDPD(v0 interface{}, v1 interface{}, v2 interface{},
             m.emit(hlcode(v[0]) << 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMSUBADDPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMSUBADDPD")
     }
     return p
 }
@@ -49396,8 +49396,8 @@ func (self *Program) VFMSUBADDPS(v0 interface{}, v1 interface{}, v2 interface{},
             m.emit(hlcode(v[0]) << 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMSUBADDPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMSUBADDPS")
     }
     return p
 }
@@ -49502,8 +49502,8 @@ func (self *Program) VFMSUBPD(v0 interface{}, v1 interface{}, v2 interface{}, v3
             m.emit(hlcode(v[0]) << 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMSUBPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMSUBPD")
     }
     return p
 }
@@ -49608,8 +49608,8 @@ func (self *Program) VFMSUBPS(v0 interface{}, v1 interface{}, v2 interface{}, v3
             m.emit(hlcode(v[0]) << 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMSUBPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMSUBPS")
     }
     return p
 }
@@ -49668,8 +49668,8 @@ func (self *Program) VFMSUBSD(v0 interface{}, v1 interface{}, v2 interface{}, v3
             m.emit(hlcode(v[0]) << 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMSUBSD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMSUBSD")
     }
     return p
 }
@@ -49728,8 +49728,8 @@ func (self *Program) VFMSUBSS(v0 interface{}, v1 interface{}, v2 interface{}, v3
             m.emit(hlcode(v[0]) << 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFMSUBSS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFMSUBSS")
     }
     return p
 }
@@ -49884,8 +49884,8 @@ func (self *Program) VFNMADD132PD(v0 interface{}, v1 interface{}, v2 interface{}
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFNMADD132PD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFNMADD132PD")
     }
     return p
 }
@@ -50040,8 +50040,8 @@ func (self *Program) VFNMADD132PS(v0 interface{}, v1 interface{}, v2 interface{}
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFNMADD132PS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFNMADD132PS")
     }
     return p
 }
@@ -50122,8 +50122,8 @@ func (self *Program) VFNMADD132SD(v0 interface{}, v1 interface{}, v2 interface{}
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFNMADD132SD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFNMADD132SD")
     }
     return p
 }
@@ -50204,8 +50204,8 @@ func (self *Program) VFNMADD132SS(v0 interface{}, v1 interface{}, v2 interface{}
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFNMADD132SS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFNMADD132SS")
     }
     return p
 }
@@ -50360,8 +50360,8 @@ func (self *Program) VFNMADD213PD(v0 interface{}, v1 interface{}, v2 interface{}
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFNMADD213PD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFNMADD213PD")
     }
     return p
 }
@@ -50516,8 +50516,8 @@ func (self *Program) VFNMADD213PS(v0 interface{}, v1 interface{}, v2 interface{}
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFNMADD213PS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFNMADD213PS")
     }
     return p
 }
@@ -50598,8 +50598,8 @@ func (self *Program) VFNMADD213SD(v0 interface{}, v1 interface{}, v2 interface{}
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFNMADD213SD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFNMADD213SD")
     }
     return p
 }
@@ -50680,8 +50680,8 @@ func (self *Program) VFNMADD213SS(v0 interface{}, v1 interface{}, v2 interface{}
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFNMADD213SS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFNMADD213SS")
     }
     return p
 }
@@ -50836,8 +50836,8 @@ func (self *Program) VFNMADD231PD(v0 interface{}, v1 interface{}, v2 interface{}
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFNMADD231PD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFNMADD231PD")
     }
     return p
 }
@@ -50992,8 +50992,8 @@ func (self *Program) VFNMADD231PS(v0 interface{}, v1 interface{}, v2 interface{}
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFNMADD231PS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFNMADD231PS")
     }
     return p
 }
@@ -51074,8 +51074,8 @@ func (self *Program) VFNMADD231SD(v0 interface{}, v1 interface{}, v2 interface{}
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFNMADD231SD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFNMADD231SD")
     }
     return p
 }
@@ -51156,8 +51156,8 @@ func (self *Program) VFNMADD231SS(v0 interface{}, v1 interface{}, v2 interface{}
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFNMADD231SS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFNMADD231SS")
     }
     return p
 }
@@ -51262,8 +51262,8 @@ func (self *Program) VFNMADDPD(v0 interface{}, v1 interface{}, v2 interface{}, v
             m.emit(hlcode(v[0]) << 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFNMADDPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFNMADDPD")
     }
     return p
 }
@@ -51368,8 +51368,8 @@ func (self *Program) VFNMADDPS(v0 interface{}, v1 interface{}, v2 interface{}, v
             m.emit(hlcode(v[0]) << 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFNMADDPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFNMADDPS")
     }
     return p
 }
@@ -51428,8 +51428,8 @@ func (self *Program) VFNMADDSD(v0 interface{}, v1 interface{}, v2 interface{}, v
             m.emit(hlcode(v[0]) << 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFNMADDSD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFNMADDSD")
     }
     return p
 }
@@ -51488,8 +51488,8 @@ func (self *Program) VFNMADDSS(v0 interface{}, v1 interface{}, v2 interface{}, v
             m.emit(hlcode(v[0]) << 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFNMADDSS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFNMADDSS")
     }
     return p
 }
@@ -51644,8 +51644,8 @@ func (self *Program) VFNMSUB132PD(v0 interface{}, v1 interface{}, v2 interface{}
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFNMSUB132PD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFNMSUB132PD")
     }
     return p
 }
@@ -51800,8 +51800,8 @@ func (self *Program) VFNMSUB132PS(v0 interface{}, v1 interface{}, v2 interface{}
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFNMSUB132PS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFNMSUB132PS")
     }
     return p
 }
@@ -51882,8 +51882,8 @@ func (self *Program) VFNMSUB132SD(v0 interface{}, v1 interface{}, v2 interface{}
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFNMSUB132SD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFNMSUB132SD")
     }
     return p
 }
@@ -51964,8 +51964,8 @@ func (self *Program) VFNMSUB132SS(v0 interface{}, v1 interface{}, v2 interface{}
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFNMSUB132SS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFNMSUB132SS")
     }
     return p
 }
@@ -52120,8 +52120,8 @@ func (self *Program) VFNMSUB213PD(v0 interface{}, v1 interface{}, v2 interface{}
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFNMSUB213PD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFNMSUB213PD")
     }
     return p
 }
@@ -52276,8 +52276,8 @@ func (self *Program) VFNMSUB213PS(v0 interface{}, v1 interface{}, v2 interface{}
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFNMSUB213PS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFNMSUB213PS")
     }
     return p
 }
@@ -52358,8 +52358,8 @@ func (self *Program) VFNMSUB213SD(v0 interface{}, v1 interface{}, v2 interface{}
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFNMSUB213SD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFNMSUB213SD")
     }
     return p
 }
@@ -52440,8 +52440,8 @@ func (self *Program) VFNMSUB213SS(v0 interface{}, v1 interface{}, v2 interface{}
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFNMSUB213SS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFNMSUB213SS")
     }
     return p
 }
@@ -52596,8 +52596,8 @@ func (self *Program) VFNMSUB231PD(v0 interface{}, v1 interface{}, v2 interface{}
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFNMSUB231PD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFNMSUB231PD")
     }
     return p
 }
@@ -52752,8 +52752,8 @@ func (self *Program) VFNMSUB231PS(v0 interface{}, v1 interface{}, v2 interface{}
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFNMSUB231PS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFNMSUB231PS")
     }
     return p
 }
@@ -52834,8 +52834,8 @@ func (self *Program) VFNMSUB231SD(v0 interface{}, v1 interface{}, v2 interface{}
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFNMSUB231SD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFNMSUB231SD")
     }
     return p
 }
@@ -52916,8 +52916,8 @@ func (self *Program) VFNMSUB231SS(v0 interface{}, v1 interface{}, v2 interface{}
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFNMSUB231SS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFNMSUB231SS")
     }
     return p
 }
@@ -53022,8 +53022,8 @@ func (self *Program) VFNMSUBPD(v0 interface{}, v1 interface{}, v2 interface{}, v
             m.emit(hlcode(v[0]) << 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFNMSUBPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFNMSUBPD")
     }
     return p
 }
@@ -53128,8 +53128,8 @@ func (self *Program) VFNMSUBPS(v0 interface{}, v1 interface{}, v2 interface{}, v
             m.emit(hlcode(v[0]) << 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFNMSUBPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFNMSUBPS")
     }
     return p
 }
@@ -53188,8 +53188,8 @@ func (self *Program) VFNMSUBSD(v0 interface{}, v1 interface{}, v2 interface{}, v
             m.emit(hlcode(v[0]) << 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFNMSUBSD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFNMSUBSD")
     }
     return p
 }
@@ -53248,8 +53248,8 @@ func (self *Program) VFNMSUBSS(v0 interface{}, v1 interface{}, v2 interface{}, v
             m.emit(hlcode(v[0]) << 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFNMSUBSS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFNMSUBSS")
     }
     return p
 }
@@ -53343,8 +53343,8 @@ func (self *Program) VFPCLASSPD(v0 interface{}, v1 interface{}, v2 interface{}) 
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFPCLASSPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFPCLASSPD")
     }
     return p
 }
@@ -53438,8 +53438,8 @@ func (self *Program) VFPCLASSPS(v0 interface{}, v1 interface{}, v2 interface{}) 
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFPCLASSPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFPCLASSPS")
     }
     return p
 }
@@ -53479,8 +53479,8 @@ func (self *Program) VFPCLASSSD(v0 interface{}, v1 interface{}, v2 interface{}) 
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFPCLASSSD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFPCLASSSD")
     }
     return p
 }
@@ -53520,8 +53520,8 @@ func (self *Program) VFPCLASSSS(v0 interface{}, v1 interface{}, v2 interface{}) 
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFPCLASSSS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFPCLASSSS")
     }
     return p
 }
@@ -53582,8 +53582,8 @@ func (self *Program) VFRCZPD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFRCZPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFRCZPD")
     }
     return p
 }
@@ -53644,8 +53644,8 @@ func (self *Program) VFRCZPS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFRCZPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFRCZPS")
     }
     return p
 }
@@ -53682,8 +53682,8 @@ func (self *Program) VFRCZSD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFRCZSD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFRCZSD")
     }
     return p
 }
@@ -53720,8 +53720,8 @@ func (self *Program) VFRCZSS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VFRCZSS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VFRCZSS")
     }
     return p
 }
@@ -53794,8 +53794,8 @@ func (self *Program) VGATHERDPD(v0 interface{}, v1 interface{}, vv ...interface{
             m.mrsd(lcode(v[1]), addr(v[0]), 8)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VGATHERDPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VGATHERDPD")
     }
     return p
 }
@@ -53868,8 +53868,8 @@ func (self *Program) VGATHERDPS(v0 interface{}, v1 interface{}, vv ...interface{
             m.mrsd(lcode(v[1]), addr(v[0]), 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VGATHERDPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VGATHERDPS")
     }
     return p
 }
@@ -53893,8 +53893,8 @@ func (self *Program) VGATHERPF0DPD(v0 interface{}) *Instruction {
             m.mrsd(1, addr(v[0]), 8)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VGATHERPF0DPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VGATHERPF0DPD")
     }
     return p
 }
@@ -53918,8 +53918,8 @@ func (self *Program) VGATHERPF0DPS(v0 interface{}) *Instruction {
             m.mrsd(1, addr(v[0]), 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VGATHERPF0DPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VGATHERPF0DPS")
     }
     return p
 }
@@ -53943,8 +53943,8 @@ func (self *Program) VGATHERPF0QPD(v0 interface{}) *Instruction {
             m.mrsd(1, addr(v[0]), 8)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VGATHERPF0QPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VGATHERPF0QPD")
     }
     return p
 }
@@ -53968,8 +53968,8 @@ func (self *Program) VGATHERPF0QPS(v0 interface{}) *Instruction {
             m.mrsd(1, addr(v[0]), 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VGATHERPF0QPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VGATHERPF0QPS")
     }
     return p
 }
@@ -53993,8 +53993,8 @@ func (self *Program) VGATHERPF1DPD(v0 interface{}) *Instruction {
             m.mrsd(2, addr(v[0]), 8)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VGATHERPF1DPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VGATHERPF1DPD")
     }
     return p
 }
@@ -54018,8 +54018,8 @@ func (self *Program) VGATHERPF1DPS(v0 interface{}) *Instruction {
             m.mrsd(2, addr(v[0]), 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VGATHERPF1DPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VGATHERPF1DPS")
     }
     return p
 }
@@ -54043,8 +54043,8 @@ func (self *Program) VGATHERPF1QPD(v0 interface{}) *Instruction {
             m.mrsd(2, addr(v[0]), 8)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VGATHERPF1QPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VGATHERPF1QPD")
     }
     return p
 }
@@ -54068,8 +54068,8 @@ func (self *Program) VGATHERPF1QPS(v0 interface{}) *Instruction {
             m.mrsd(2, addr(v[0]), 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VGATHERPF1QPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VGATHERPF1QPS")
     }
     return p
 }
@@ -54142,8 +54142,8 @@ func (self *Program) VGATHERQPD(v0 interface{}, v1 interface{}, vv ...interface{
             m.mrsd(lcode(v[1]), addr(v[0]), 8)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VGATHERQPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VGATHERQPD")
     }
     return p
 }
@@ -54216,8 +54216,8 @@ func (self *Program) VGATHERQPS(v0 interface{}, v1 interface{}, vv ...interface{
             m.mrsd(lcode(v[1]), addr(v[0]), 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VGATHERQPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VGATHERQPS")
     }
     return p
 }
@@ -54324,8 +54324,8 @@ func (self *Program) VGETEXPPD(v0 interface{}, v1 interface{}, vv ...interface{}
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VGETEXPPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VGETEXPPD")
     }
     return p
 }
@@ -54432,8 +54432,8 @@ func (self *Program) VGETEXPPS(v0 interface{}, v1 interface{}, vv ...interface{}
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VGETEXPPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VGETEXPPS")
     }
     return p
 }
@@ -54490,8 +54490,8 @@ func (self *Program) VGETEXPSD(v0 interface{}, v1 interface{}, v2 interface{}, v
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VGETEXPSD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VGETEXPSD")
     }
     return p
 }
@@ -54548,8 +54548,8 @@ func (self *Program) VGETEXPSS(v0 interface{}, v1 interface{}, v2 interface{}, v
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VGETEXPSS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VGETEXPSS")
     }
     return p
 }
@@ -54663,8 +54663,8 @@ func (self *Program) VGETMANTPD(v0 interface{}, v1 interface{}, v2 interface{}, 
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VGETMANTPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VGETMANTPD")
     }
     return p
 }
@@ -54778,8 +54778,8 @@ func (self *Program) VGETMANTPS(v0 interface{}, v1 interface{}, v2 interface{}, 
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VGETMANTPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VGETMANTPS")
     }
     return p
 }
@@ -54839,8 +54839,8 @@ func (self *Program) VGETMANTSD(v0 interface{}, v1 interface{}, v2 interface{}, 
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VGETMANTSD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VGETMANTSD")
     }
     return p
 }
@@ -54900,8 +54900,8 @@ func (self *Program) VGETMANTSS(v0 interface{}, v1 interface{}, v2 interface{}, 
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VGETMANTSS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VGETMANTSS")
     }
     return p
 }
@@ -54958,8 +54958,8 @@ func (self *Program) VHADDPD(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.mrsd(lcode(v[2]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VHADDPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VHADDPD")
     }
     return p
 }
@@ -55016,8 +55016,8 @@ func (self *Program) VHADDPS(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.mrsd(lcode(v[2]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VHADDPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VHADDPS")
     }
     return p
 }
@@ -55074,8 +55074,8 @@ func (self *Program) VHSUBPD(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.mrsd(lcode(v[2]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VHSUBPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VHSUBPD")
     }
     return p
 }
@@ -55132,8 +55132,8 @@ func (self *Program) VHSUBPS(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.mrsd(lcode(v[2]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VHSUBPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VHSUBPS")
     }
     return p
 }
@@ -55172,8 +55172,8 @@ func (self *Program) VINSERTF128(v0 interface{}, v1 interface{}, v2 interface{},
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VINSERTF128")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VINSERTF128")
     }
     return p
 }
@@ -55240,8 +55240,8 @@ func (self *Program) VINSERTF32X4(v0 interface{}, v1 interface{}, v2 interface{}
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VINSERTF32X4")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VINSERTF32X4")
     }
     return p
 }
@@ -55281,8 +55281,8 @@ func (self *Program) VINSERTF32X8(v0 interface{}, v1 interface{}, v2 interface{}
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VINSERTF32X8")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VINSERTF32X8")
     }
     return p
 }
@@ -55349,8 +55349,8 @@ func (self *Program) VINSERTF64X2(v0 interface{}, v1 interface{}, v2 interface{}
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VINSERTF64X2")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VINSERTF64X2")
     }
     return p
 }
@@ -55390,8 +55390,8 @@ func (self *Program) VINSERTF64X4(v0 interface{}, v1 interface{}, v2 interface{}
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VINSERTF64X4")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VINSERTF64X4")
     }
     return p
 }
@@ -55430,8 +55430,8 @@ func (self *Program) VINSERTI128(v0 interface{}, v1 interface{}, v2 interface{},
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VINSERTI128")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VINSERTI128")
     }
     return p
 }
@@ -55498,8 +55498,8 @@ func (self *Program) VINSERTI32X4(v0 interface{}, v1 interface{}, v2 interface{}
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VINSERTI32X4")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VINSERTI32X4")
     }
     return p
 }
@@ -55539,8 +55539,8 @@ func (self *Program) VINSERTI32X8(v0 interface{}, v1 interface{}, v2 interface{}
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VINSERTI32X8")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VINSERTI32X8")
     }
     return p
 }
@@ -55607,8 +55607,8 @@ func (self *Program) VINSERTI64X2(v0 interface{}, v1 interface{}, v2 interface{}
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VINSERTI64X2")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VINSERTI64X2")
     }
     return p
 }
@@ -55648,8 +55648,8 @@ func (self *Program) VINSERTI64X4(v0 interface{}, v1 interface{}, v2 interface{}
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VINSERTI64X4")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VINSERTI64X4")
     }
     return p
 }
@@ -55715,8 +55715,8 @@ func (self *Program) VINSERTPS(v0 interface{}, v1 interface{}, v2 interface{}, v
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VINSERTPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VINSERTPS")
     }
     return p
 }
@@ -55751,8 +55751,8 @@ func (self *Program) VLDDQU(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VLDDQU")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VLDDQU")
     }
     return p
 }
@@ -55776,8 +55776,8 @@ func (self *Program) VLDMXCSR(v0 interface{}) *Instruction {
             m.mrsd(2, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VLDMXCSR")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VLDMXCSR")
     }
     return p
 }
@@ -55801,8 +55801,8 @@ func (self *Program) VMASKMOVDQU(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VMASKMOVDQU")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VMASKMOVDQU")
     }
     return p
 }
@@ -55859,8 +55859,8 @@ func (self *Program) VMASKMOVPD(v0 interface{}, v1 interface{}, v2 interface{}) 
             m.mrsd(lcode(v[0]), addr(v[2]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VMASKMOVPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VMASKMOVPD")
     }
     return p
 }
@@ -55917,8 +55917,8 @@ func (self *Program) VMASKMOVPS(v0 interface{}, v1 interface{}, v2 interface{}) 
             m.mrsd(lcode(v[0]), addr(v[2]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VMASKMOVPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VMASKMOVPS")
     }
     return p
 }
@@ -56069,8 +56069,8 @@ func (self *Program) VMAXPD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VMAXPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VMAXPD")
     }
     return p
 }
@@ -56221,8 +56221,8 @@ func (self *Program) VMAXPS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VMAXPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VMAXPS")
     }
     return p
 }
@@ -56301,8 +56301,8 @@ func (self *Program) VMAXSD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VMAXSD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VMAXSD")
     }
     return p
 }
@@ -56381,8 +56381,8 @@ func (self *Program) VMAXSS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VMAXSS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VMAXSS")
     }
     return p
 }
@@ -56533,8 +56533,8 @@ func (self *Program) VMINPD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VMINPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VMINPD")
     }
     return p
 }
@@ -56685,8 +56685,8 @@ func (self *Program) VMINPS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VMINPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VMINPS")
     }
     return p
 }
@@ -56765,8 +56765,8 @@ func (self *Program) VMINSD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VMINSD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VMINSD")
     }
     return p
 }
@@ -56845,8 +56845,8 @@ func (self *Program) VMINSS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VMINSS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VMINSS")
     }
     return p
 }
@@ -57067,8 +57067,8 @@ func (self *Program) VMOVAPD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VMOVAPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VMOVAPD")
     }
     return p
 }
@@ -57289,8 +57289,8 @@ func (self *Program) VMOVAPS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VMOVAPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VMOVAPS")
     }
     return p
 }
@@ -57397,8 +57397,8 @@ func (self *Program) VMOVD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VMOVD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VMOVD")
     }
     return p
 }
@@ -57530,8 +57530,8 @@ func (self *Program) VMOVDDUP(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VMOVDDUP")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VMOVDDUP")
     }
     return p
 }
@@ -57620,8 +57620,8 @@ func (self *Program) VMOVDQA(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VMOVDQA")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VMOVDQA")
     }
     return p
 }
@@ -57766,8 +57766,8 @@ func (self *Program) VMOVDQA32(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VMOVDQA32")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VMOVDQA32")
     }
     return p
 }
@@ -57912,8 +57912,8 @@ func (self *Program) VMOVDQA64(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VMOVDQA64")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VMOVDQA64")
     }
     return p
 }
@@ -58002,8 +58002,8 @@ func (self *Program) VMOVDQU(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VMOVDQU")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VMOVDQU")
     }
     return p
 }
@@ -58148,8 +58148,8 @@ func (self *Program) VMOVDQU16(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VMOVDQU16")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VMOVDQU16")
     }
     return p
 }
@@ -58294,8 +58294,8 @@ func (self *Program) VMOVDQU32(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VMOVDQU32")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VMOVDQU32")
     }
     return p
 }
@@ -58440,8 +58440,8 @@ func (self *Program) VMOVDQU64(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VMOVDQU64")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VMOVDQU64")
     }
     return p
 }
@@ -58586,8 +58586,8 @@ func (self *Program) VMOVDQU8(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VMOVDQU8")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VMOVDQU8")
     }
     return p
 }
@@ -58625,8 +58625,8 @@ func (self *Program) VMOVHLPS(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VMOVHLPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VMOVHLPS")
     }
     return p
 }
@@ -58688,8 +58688,8 @@ func (self *Program) VMOVHPD(v0 interface{}, v1 interface{}, vv ...interface{}) 
             m.mrsd(lcode(v[2]), addr(v[0]), 8)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VMOVHPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VMOVHPD")
     }
     return p
 }
@@ -58751,8 +58751,8 @@ func (self *Program) VMOVHPS(v0 interface{}, v1 interface{}, vv ...interface{}) 
             m.mrsd(lcode(v[2]), addr(v[0]), 8)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VMOVHPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VMOVHPS")
     }
     return p
 }
@@ -58790,8 +58790,8 @@ func (self *Program) VMOVLHPS(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VMOVLHPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VMOVLHPS")
     }
     return p
 }
@@ -58853,8 +58853,8 @@ func (self *Program) VMOVLPD(v0 interface{}, v1 interface{}, vv ...interface{}) 
             m.mrsd(lcode(v[2]), addr(v[0]), 8)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VMOVLPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VMOVLPD")
     }
     return p
 }
@@ -58916,8 +58916,8 @@ func (self *Program) VMOVLPS(v0 interface{}, v1 interface{}, vv ...interface{}) 
             m.mrsd(lcode(v[2]), addr(v[0]), 8)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VMOVLPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VMOVLPS")
     }
     return p
 }
@@ -58952,8 +58952,8 @@ func (self *Program) VMOVMSKPD(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VMOVMSKPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VMOVMSKPD")
     }
     return p
 }
@@ -58988,8 +58988,8 @@ func (self *Program) VMOVMSKPS(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VMOVMSKPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VMOVMSKPS")
     }
     return p
 }
@@ -59057,8 +59057,8 @@ func (self *Program) VMOVNTDQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VMOVNTDQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VMOVNTDQ")
     }
     return p
 }
@@ -59126,8 +59126,8 @@ func (self *Program) VMOVNTDQA(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VMOVNTDQA")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VMOVNTDQA")
     }
     return p
 }
@@ -59195,8 +59195,8 @@ func (self *Program) VMOVNTPD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VMOVNTPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VMOVNTPD")
     }
     return p
 }
@@ -59264,8 +59264,8 @@ func (self *Program) VMOVNTPS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VMOVNTPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VMOVNTPS")
     }
     return p
 }
@@ -59434,8 +59434,8 @@ func (self *Program) VMOVQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 8)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VMOVQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VMOVQ")
     }
     return p
 }
@@ -59535,8 +59535,8 @@ func (self *Program) VMOVSD(v0 interface{}, v1 interface{}, vv ...interface{}) *
             m.emit(0xc0 | lcode(v[0]) << 3 | lcode(v[2]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VMOVSD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VMOVSD")
     }
     return p
 }
@@ -59668,8 +59668,8 @@ func (self *Program) VMOVSHDUP(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VMOVSHDUP")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VMOVSHDUP")
     }
     return p
 }
@@ -59801,8 +59801,8 @@ func (self *Program) VMOVSLDUP(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VMOVSLDUP")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VMOVSLDUP")
     }
     return p
 }
@@ -59902,8 +59902,8 @@ func (self *Program) VMOVSS(v0 interface{}, v1 interface{}, vv ...interface{}) *
             m.emit(0xc0 | lcode(v[0]) << 3 | lcode(v[2]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VMOVSS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VMOVSS")
     }
     return p
 }
@@ -60124,8 +60124,8 @@ func (self *Program) VMOVUPD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VMOVUPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VMOVUPD")
     }
     return p
 }
@@ -60346,8 +60346,8 @@ func (self *Program) VMOVUPS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VMOVUPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VMOVUPS")
     }
     return p
 }
@@ -60412,8 +60412,8 @@ func (self *Program) VMPSADBW(v0 interface{}, v1 interface{}, v2 interface{}, v3
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VMPSADBW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VMPSADBW")
     }
     return p
 }
@@ -60564,8 +60564,8 @@ func (self *Program) VMULPD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VMULPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VMULPD")
     }
     return p
 }
@@ -60716,8 +60716,8 @@ func (self *Program) VMULPS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VMULPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VMULPS")
     }
     return p
 }
@@ -60796,8 +60796,8 @@ func (self *Program) VMULSD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VMULSD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VMULSD")
     }
     return p
 }
@@ -60876,8 +60876,8 @@ func (self *Program) VMULSS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VMULSS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VMULSS")
     }
     return p
 }
@@ -61009,8 +61009,8 @@ func (self *Program) VORPD(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VORPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VORPD")
     }
     return p
 }
@@ -61142,8 +61142,8 @@ func (self *Program) VORPS(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VORPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VORPS")
     }
     return p
 }
@@ -61279,8 +61279,8 @@ func (self *Program) VPABSB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPABSB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPABSB")
     }
     return p
 }
@@ -61416,8 +61416,8 @@ func (self *Program) VPABSD(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPABSD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPABSD")
     }
     return p
 }
@@ -61505,8 +61505,8 @@ func (self *Program) VPABSQ(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPABSQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPABSQ")
     }
     return p
 }
@@ -61642,8 +61642,8 @@ func (self *Program) VPABSW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPABSW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPABSW")
     }
     return p
 }
@@ -61775,8 +61775,8 @@ func (self *Program) VPACKSSDW(v0 interface{}, v1 interface{}, v2 interface{}) *
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPACKSSDW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPACKSSDW")
     }
     return p
 }
@@ -61908,8 +61908,8 @@ func (self *Program) VPACKSSWB(v0 interface{}, v1 interface{}, v2 interface{}) *
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPACKSSWB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPACKSSWB")
     }
     return p
 }
@@ -62045,8 +62045,8 @@ func (self *Program) VPACKUSDW(v0 interface{}, v1 interface{}, v2 interface{}) *
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPACKUSDW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPACKUSDW")
     }
     return p
 }
@@ -62178,8 +62178,8 @@ func (self *Program) VPACKUSWB(v0 interface{}, v1 interface{}, v2 interface{}) *
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPACKUSWB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPACKUSWB")
     }
     return p
 }
@@ -62311,8 +62311,8 @@ func (self *Program) VPADDB(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPADDB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPADDB")
     }
     return p
 }
@@ -62444,8 +62444,8 @@ func (self *Program) VPADDD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPADDD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPADDD")
     }
     return p
 }
@@ -62577,8 +62577,8 @@ func (self *Program) VPADDQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPADDQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPADDQ")
     }
     return p
 }
@@ -62710,8 +62710,8 @@ func (self *Program) VPADDSB(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPADDSB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPADDSB")
     }
     return p
 }
@@ -62843,8 +62843,8 @@ func (self *Program) VPADDSW(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPADDSW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPADDSW")
     }
     return p
 }
@@ -62976,8 +62976,8 @@ func (self *Program) VPADDUSB(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPADDUSB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPADDUSB")
     }
     return p
 }
@@ -63109,8 +63109,8 @@ func (self *Program) VPADDUSW(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPADDUSW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPADDUSW")
     }
     return p
 }
@@ -63242,8 +63242,8 @@ func (self *Program) VPADDW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPADDW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPADDW")
     }
     return p
 }
@@ -63389,8 +63389,8 @@ func (self *Program) VPALIGNR(v0 interface{}, v1 interface{}, v2 interface{}, v3
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPALIGNR")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPALIGNR")
     }
     return p
 }
@@ -63447,8 +63447,8 @@ func (self *Program) VPAND(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
             m.mrsd(lcode(v[2]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPAND")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPAND")
     }
     return p
 }
@@ -63536,8 +63536,8 @@ func (self *Program) VPANDD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPANDD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPANDD")
     }
     return p
 }
@@ -63594,8 +63594,8 @@ func (self *Program) VPANDN(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.mrsd(lcode(v[2]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPANDN")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPANDN")
     }
     return p
 }
@@ -63683,8 +63683,8 @@ func (self *Program) VPANDND(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPANDND")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPANDND")
     }
     return p
 }
@@ -63772,8 +63772,8 @@ func (self *Program) VPANDNQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPANDNQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPANDNQ")
     }
     return p
 }
@@ -63861,8 +63861,8 @@ func (self *Program) VPANDQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPANDQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPANDQ")
     }
     return p
 }
@@ -63994,8 +63994,8 @@ func (self *Program) VPAVGB(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPAVGB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPAVGB")
     }
     return p
 }
@@ -64127,8 +64127,8 @@ func (self *Program) VPAVGW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPAVGW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPAVGW")
     }
     return p
 }
@@ -64193,8 +64193,8 @@ func (self *Program) VPBLENDD(v0 interface{}, v1 interface{}, v2 interface{}, v3
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPBLENDD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPBLENDD")
     }
     return p
 }
@@ -64282,8 +64282,8 @@ func (self *Program) VPBLENDMB(v0 interface{}, v1 interface{}, v2 interface{}) *
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPBLENDMB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPBLENDMB")
     }
     return p
 }
@@ -64371,8 +64371,8 @@ func (self *Program) VPBLENDMD(v0 interface{}, v1 interface{}, v2 interface{}) *
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPBLENDMD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPBLENDMD")
     }
     return p
 }
@@ -64460,8 +64460,8 @@ func (self *Program) VPBLENDMQ(v0 interface{}, v1 interface{}, v2 interface{}) *
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPBLENDMQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPBLENDMQ")
     }
     return p
 }
@@ -64549,8 +64549,8 @@ func (self *Program) VPBLENDMW(v0 interface{}, v1 interface{}, v2 interface{}) *
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPBLENDMW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPBLENDMW")
     }
     return p
 }
@@ -64615,8 +64615,8 @@ func (self *Program) VPBLENDVB(v0 interface{}, v1 interface{}, v2 interface{}, v
             m.emit(hlcode(v[0]) << 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPBLENDVB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPBLENDVB")
     }
     return p
 }
@@ -64681,8 +64681,8 @@ func (self *Program) VPBLENDW(v0 interface{}, v1 interface{}, v2 interface{}, v3
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPBLENDW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPBLENDW")
     }
     return p
 }
@@ -64860,8 +64860,8 @@ func (self *Program) VPBROADCASTB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPBROADCASTB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPBROADCASTB")
     }
     return p
 }
@@ -65039,8 +65039,8 @@ func (self *Program) VPBROADCASTD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPBROADCASTD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPBROADCASTD")
     }
     return p
 }
@@ -65095,8 +65095,8 @@ func (self *Program) VPBROADCASTMB2Q(v0 interface{}, v1 interface{}) *Instructio
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPBROADCASTMB2Q")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPBROADCASTMB2Q")
     }
     return p
 }
@@ -65151,8 +65151,8 @@ func (self *Program) VPBROADCASTMW2D(v0 interface{}, v1 interface{}) *Instructio
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPBROADCASTMW2D")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPBROADCASTMW2D")
     }
     return p
 }
@@ -65330,8 +65330,8 @@ func (self *Program) VPBROADCASTQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 8)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPBROADCASTQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPBROADCASTQ")
     }
     return p
 }
@@ -65509,8 +65509,8 @@ func (self *Program) VPBROADCASTW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 2)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPBROADCASTW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPBROADCASTW")
     }
     return p
 }
@@ -65549,8 +65549,8 @@ func (self *Program) VPCLMULQDQ(v0 interface{}, v1 interface{}, v2 interface{}, 
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPCLMULQDQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPCLMULQDQ")
     }
     return p
 }
@@ -65655,8 +65655,8 @@ func (self *Program) VPCMOV(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
             m.emit(hlcode(v[0]) << 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPCMOV")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPCMOV")
     }
     return p
 }
@@ -65750,8 +65750,8 @@ func (self *Program) VPCMPB(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPCMPB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPCMPB")
     }
     return p
 }
@@ -65845,8 +65845,8 @@ func (self *Program) VPCMPD(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPCMPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPCMPD")
     }
     return p
 }
@@ -65978,8 +65978,8 @@ func (self *Program) VPCMPEQB(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPCMPEQB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPCMPEQB")
     }
     return p
 }
@@ -66111,8 +66111,8 @@ func (self *Program) VPCMPEQD(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPCMPEQD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPCMPEQD")
     }
     return p
 }
@@ -66248,8 +66248,8 @@ func (self *Program) VPCMPEQQ(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPCMPEQQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPCMPEQQ")
     }
     return p
 }
@@ -66381,8 +66381,8 @@ func (self *Program) VPCMPEQW(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPCMPEQW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPCMPEQW")
     }
     return p
 }
@@ -66421,8 +66421,8 @@ func (self *Program) VPCMPESTRI(v0 interface{}, v1 interface{}, v2 interface{}) 
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPCMPESTRI")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPCMPESTRI")
     }
     return p
 }
@@ -66461,8 +66461,8 @@ func (self *Program) VPCMPESTRM(v0 interface{}, v1 interface{}, v2 interface{}) 
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPCMPESTRM")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPCMPESTRM")
     }
     return p
 }
@@ -66594,8 +66594,8 @@ func (self *Program) VPCMPGTB(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPCMPGTB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPCMPGTB")
     }
     return p
 }
@@ -66727,8 +66727,8 @@ func (self *Program) VPCMPGTD(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPCMPGTD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPCMPGTD")
     }
     return p
 }
@@ -66864,8 +66864,8 @@ func (self *Program) VPCMPGTQ(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPCMPGTQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPCMPGTQ")
     }
     return p
 }
@@ -66997,8 +66997,8 @@ func (self *Program) VPCMPGTW(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPCMPGTW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPCMPGTW")
     }
     return p
 }
@@ -67037,8 +67037,8 @@ func (self *Program) VPCMPISTRI(v0 interface{}, v1 interface{}, v2 interface{}) 
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPCMPISTRI")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPCMPISTRI")
     }
     return p
 }
@@ -67077,8 +67077,8 @@ func (self *Program) VPCMPISTRM(v0 interface{}, v1 interface{}, v2 interface{}) 
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPCMPISTRM")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPCMPISTRM")
     }
     return p
 }
@@ -67172,8 +67172,8 @@ func (self *Program) VPCMPQ(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPCMPQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPCMPQ")
     }
     return p
 }
@@ -67267,8 +67267,8 @@ func (self *Program) VPCMPUB(v0 interface{}, v1 interface{}, v2 interface{}, v3 
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPCMPUB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPCMPUB")
     }
     return p
 }
@@ -67362,8 +67362,8 @@ func (self *Program) VPCMPUD(v0 interface{}, v1 interface{}, v2 interface{}, v3 
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPCMPUD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPCMPUD")
     }
     return p
 }
@@ -67457,8 +67457,8 @@ func (self *Program) VPCMPUQ(v0 interface{}, v1 interface{}, v2 interface{}, v3 
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPCMPUQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPCMPUQ")
     }
     return p
 }
@@ -67552,8 +67552,8 @@ func (self *Program) VPCMPUW(v0 interface{}, v1 interface{}, v2 interface{}, v3 
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPCMPUW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPCMPUW")
     }
     return p
 }
@@ -67647,8 +67647,8 @@ func (self *Program) VPCMPW(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPCMPW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPCMPW")
     }
     return p
 }
@@ -67687,8 +67687,8 @@ func (self *Program) VPCOMB(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPCOMB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPCOMB")
     }
     return p
 }
@@ -67727,8 +67727,8 @@ func (self *Program) VPCOMD(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPCOMD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPCOMD")
     }
     return p
 }
@@ -67816,8 +67816,8 @@ func (self *Program) VPCOMPRESSD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPCOMPRESSD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPCOMPRESSD")
     }
     return p
 }
@@ -67905,8 +67905,8 @@ func (self *Program) VPCOMPRESSQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 8)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPCOMPRESSQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPCOMPRESSQ")
     }
     return p
 }
@@ -67945,8 +67945,8 @@ func (self *Program) VPCOMQ(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPCOMQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPCOMQ")
     }
     return p
 }
@@ -67985,8 +67985,8 @@ func (self *Program) VPCOMUB(v0 interface{}, v1 interface{}, v2 interface{}, v3 
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPCOMUB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPCOMUB")
     }
     return p
 }
@@ -68025,8 +68025,8 @@ func (self *Program) VPCOMUD(v0 interface{}, v1 interface{}, v2 interface{}, v3 
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPCOMUD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPCOMUD")
     }
     return p
 }
@@ -68065,8 +68065,8 @@ func (self *Program) VPCOMUQ(v0 interface{}, v1 interface{}, v2 interface{}, v3 
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPCOMUQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPCOMUQ")
     }
     return p
 }
@@ -68105,8 +68105,8 @@ func (self *Program) VPCOMUW(v0 interface{}, v1 interface{}, v2 interface{}, v3 
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPCOMUW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPCOMUW")
     }
     return p
 }
@@ -68145,8 +68145,8 @@ func (self *Program) VPCOMW(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPCOMW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPCOMW")
     }
     return p
 }
@@ -68234,8 +68234,8 @@ func (self *Program) VPCONFLICTD(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPCONFLICTD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPCONFLICTD")
     }
     return p
 }
@@ -68323,8 +68323,8 @@ func (self *Program) VPCONFLICTQ(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPCONFLICTQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPCONFLICTQ")
     }
     return p
 }
@@ -68363,8 +68363,8 @@ func (self *Program) VPERM2F128(v0 interface{}, v1 interface{}, v2 interface{}, 
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPERM2F128")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPERM2F128")
     }
     return p
 }
@@ -68403,8 +68403,8 @@ func (self *Program) VPERM2I128(v0 interface{}, v1 interface{}, v2 interface{}, 
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPERM2I128")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPERM2I128")
     }
     return p
 }
@@ -68492,8 +68492,8 @@ func (self *Program) VPERMB(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.mrsd(lcode(v[2]), addr(v[0]), 64)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPERMB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPERMB")
     }
     return p
 }
@@ -68580,8 +68580,8 @@ func (self *Program) VPERMD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPERMD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPERMD")
     }
     return p
 }
@@ -68669,8 +68669,8 @@ func (self *Program) VPERMI2B(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.mrsd(lcode(v[2]), addr(v[0]), 64)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPERMI2B")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPERMI2B")
     }
     return p
 }
@@ -68758,8 +68758,8 @@ func (self *Program) VPERMI2D(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPERMI2D")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPERMI2D")
     }
     return p
 }
@@ -68847,8 +68847,8 @@ func (self *Program) VPERMI2PD(v0 interface{}, v1 interface{}, v2 interface{}) *
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPERMI2PD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPERMI2PD")
     }
     return p
 }
@@ -68936,8 +68936,8 @@ func (self *Program) VPERMI2PS(v0 interface{}, v1 interface{}, v2 interface{}) *
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPERMI2PS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPERMI2PS")
     }
     return p
 }
@@ -69025,8 +69025,8 @@ func (self *Program) VPERMI2Q(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPERMI2Q")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPERMI2Q")
     }
     return p
 }
@@ -69114,8 +69114,8 @@ func (self *Program) VPERMI2W(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPERMI2W")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPERMI2W")
     }
     return p
 }
@@ -69220,8 +69220,8 @@ func (self *Program) VPERMIL2PD(v0 interface{}, v1 interface{}, v2 interface{}, 
             m.emit((hlcode(v[1]) << 4) | imml(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPERMIL2PD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPERMIL2PD")
     }
     return p
 }
@@ -69326,8 +69326,8 @@ func (self *Program) VPERMIL2PS(v0 interface{}, v1 interface{}, v2 interface{}, 
             m.emit((hlcode(v[1]) << 4) | imml(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPERMIL2PS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPERMIL2PS")
     }
     return p
 }
@@ -69596,8 +69596,8 @@ func (self *Program) VPERMILPD(v0 interface{}, v1 interface{}, v2 interface{}) *
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPERMILPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPERMILPD")
     }
     return p
 }
@@ -69866,8 +69866,8 @@ func (self *Program) VPERMILPS(v0 interface{}, v1 interface{}, v2 interface{}) *
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPERMILPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPERMILPS")
     }
     return p
 }
@@ -70010,8 +70010,8 @@ func (self *Program) VPERMPD(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPERMPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPERMPD")
     }
     return p
 }
@@ -70098,8 +70098,8 @@ func (self *Program) VPERMPS(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPERMPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPERMPS")
     }
     return p
 }
@@ -70242,8 +70242,8 @@ func (self *Program) VPERMQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPERMQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPERMQ")
     }
     return p
 }
@@ -70331,8 +70331,8 @@ func (self *Program) VPERMT2B(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.mrsd(lcode(v[2]), addr(v[0]), 64)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPERMT2B")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPERMT2B")
     }
     return p
 }
@@ -70420,8 +70420,8 @@ func (self *Program) VPERMT2D(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPERMT2D")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPERMT2D")
     }
     return p
 }
@@ -70509,8 +70509,8 @@ func (self *Program) VPERMT2PD(v0 interface{}, v1 interface{}, v2 interface{}) *
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPERMT2PD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPERMT2PD")
     }
     return p
 }
@@ -70598,8 +70598,8 @@ func (self *Program) VPERMT2PS(v0 interface{}, v1 interface{}, v2 interface{}) *
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPERMT2PS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPERMT2PS")
     }
     return p
 }
@@ -70687,8 +70687,8 @@ func (self *Program) VPERMT2Q(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPERMT2Q")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPERMT2Q")
     }
     return p
 }
@@ -70776,8 +70776,8 @@ func (self *Program) VPERMT2W(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPERMT2W")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPERMT2W")
     }
     return p
 }
@@ -70865,8 +70865,8 @@ func (self *Program) VPERMW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPERMW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPERMW")
     }
     return p
 }
@@ -70954,8 +70954,8 @@ func (self *Program) VPEXPANDD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPEXPANDD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPEXPANDD")
     }
     return p
 }
@@ -71043,8 +71043,8 @@ func (self *Program) VPEXPANDQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 8)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPEXPANDQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPEXPANDQ")
     }
     return p
 }
@@ -71110,8 +71110,8 @@ func (self *Program) VPEXTRB(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPEXTRB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPEXTRB")
     }
     return p
 }
@@ -71177,8 +71177,8 @@ func (self *Program) VPEXTRD(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPEXTRD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPEXTRD")
     }
     return p
 }
@@ -71244,8 +71244,8 @@ func (self *Program) VPEXTRQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPEXTRQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPEXTRQ")
     }
     return p
 }
@@ -71326,8 +71326,8 @@ func (self *Program) VPEXTRW(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPEXTRW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPEXTRW")
     }
     return p
 }
@@ -71400,8 +71400,8 @@ func (self *Program) VPGATHERDD(v0 interface{}, v1 interface{}, vv ...interface{
             m.mrsd(lcode(v[1]), addr(v[0]), 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPGATHERDD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPGATHERDD")
     }
     return p
 }
@@ -71474,8 +71474,8 @@ func (self *Program) VPGATHERDQ(v0 interface{}, v1 interface{}, vv ...interface{
             m.mrsd(lcode(v[1]), addr(v[0]), 8)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPGATHERDQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPGATHERDQ")
     }
     return p
 }
@@ -71548,8 +71548,8 @@ func (self *Program) VPGATHERQD(v0 interface{}, v1 interface{}, vv ...interface{
             m.mrsd(lcode(v[1]), addr(v[0]), 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPGATHERQD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPGATHERQD")
     }
     return p
 }
@@ -71622,8 +71622,8 @@ func (self *Program) VPGATHERQQ(v0 interface{}, v1 interface{}, vv ...interface{
             m.mrsd(lcode(v[1]), addr(v[0]), 8)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPGATHERQQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPGATHERQQ")
     }
     return p
 }
@@ -71660,8 +71660,8 @@ func (self *Program) VPHADDBD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPHADDBD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPHADDBD")
     }
     return p
 }
@@ -71698,8 +71698,8 @@ func (self *Program) VPHADDBQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPHADDBQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPHADDBQ")
     }
     return p
 }
@@ -71736,8 +71736,8 @@ func (self *Program) VPHADDBW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPHADDBW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPHADDBW")
     }
     return p
 }
@@ -71798,8 +71798,8 @@ func (self *Program) VPHADDD(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.mrsd(lcode(v[2]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPHADDD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPHADDD")
     }
     return p
 }
@@ -71836,8 +71836,8 @@ func (self *Program) VPHADDDQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPHADDDQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPHADDDQ")
     }
     return p
 }
@@ -71898,8 +71898,8 @@ func (self *Program) VPHADDSW(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.mrsd(lcode(v[2]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPHADDSW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPHADDSW")
     }
     return p
 }
@@ -71936,8 +71936,8 @@ func (self *Program) VPHADDUBD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPHADDUBD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPHADDUBD")
     }
     return p
 }
@@ -71974,8 +71974,8 @@ func (self *Program) VPHADDUBQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPHADDUBQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPHADDUBQ")
     }
     return p
 }
@@ -72012,8 +72012,8 @@ func (self *Program) VPHADDUBW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPHADDUBW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPHADDUBW")
     }
     return p
 }
@@ -72050,8 +72050,8 @@ func (self *Program) VPHADDUDQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPHADDUDQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPHADDUDQ")
     }
     return p
 }
@@ -72088,8 +72088,8 @@ func (self *Program) VPHADDUWD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPHADDUWD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPHADDUWD")
     }
     return p
 }
@@ -72126,8 +72126,8 @@ func (self *Program) VPHADDUWQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPHADDUWQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPHADDUWQ")
     }
     return p
 }
@@ -72188,8 +72188,8 @@ func (self *Program) VPHADDW(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.mrsd(lcode(v[2]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPHADDW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPHADDW")
     }
     return p
 }
@@ -72226,8 +72226,8 @@ func (self *Program) VPHADDWD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPHADDWD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPHADDWD")
     }
     return p
 }
@@ -72264,8 +72264,8 @@ func (self *Program) VPHADDWQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPHADDWQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPHADDWQ")
     }
     return p
 }
@@ -72302,8 +72302,8 @@ func (self *Program) VPHMINPOSUW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPHMINPOSUW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPHMINPOSUW")
     }
     return p
 }
@@ -72340,8 +72340,8 @@ func (self *Program) VPHSUBBW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPHSUBBW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPHSUBBW")
     }
     return p
 }
@@ -72402,8 +72402,8 @@ func (self *Program) VPHSUBD(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.mrsd(lcode(v[2]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPHSUBD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPHSUBD")
     }
     return p
 }
@@ -72440,8 +72440,8 @@ func (self *Program) VPHSUBDQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPHSUBDQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPHSUBDQ")
     }
     return p
 }
@@ -72502,8 +72502,8 @@ func (self *Program) VPHSUBSW(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.mrsd(lcode(v[2]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPHSUBSW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPHSUBSW")
     }
     return p
 }
@@ -72564,8 +72564,8 @@ func (self *Program) VPHSUBW(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.mrsd(lcode(v[2]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPHSUBW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPHSUBW")
     }
     return p
 }
@@ -72602,8 +72602,8 @@ func (self *Program) VPHSUBWD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPHSUBWD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPHSUBWD")
     }
     return p
 }
@@ -72669,8 +72669,8 @@ func (self *Program) VPINSRB(v0 interface{}, v1 interface{}, v2 interface{}, v3 
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPINSRB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPINSRB")
     }
     return p
 }
@@ -72736,8 +72736,8 @@ func (self *Program) VPINSRD(v0 interface{}, v1 interface{}, v2 interface{}, v3 
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPINSRD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPINSRD")
     }
     return p
 }
@@ -72803,8 +72803,8 @@ func (self *Program) VPINSRQ(v0 interface{}, v1 interface{}, v2 interface{}, v3 
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPINSRQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPINSRQ")
     }
     return p
 }
@@ -72868,8 +72868,8 @@ func (self *Program) VPINSRW(v0 interface{}, v1 interface{}, v2 interface{}, v3 
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPINSRW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPINSRW")
     }
     return p
 }
@@ -72957,8 +72957,8 @@ func (self *Program) VPLZCNTD(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPLZCNTD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPLZCNTD")
     }
     return p
 }
@@ -73046,8 +73046,8 @@ func (self *Program) VPLZCNTQ(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPLZCNTQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPLZCNTQ")
     }
     return p
 }
@@ -73086,8 +73086,8 @@ func (self *Program) VPMACSDD(v0 interface{}, v1 interface{}, v2 interface{}, v3
             m.emit(hlcode(v[0]) << 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMACSDD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMACSDD")
     }
     return p
 }
@@ -73126,8 +73126,8 @@ func (self *Program) VPMACSDQH(v0 interface{}, v1 interface{}, v2 interface{}, v
             m.emit(hlcode(v[0]) << 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMACSDQH")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMACSDQH")
     }
     return p
 }
@@ -73166,8 +73166,8 @@ func (self *Program) VPMACSDQL(v0 interface{}, v1 interface{}, v2 interface{}, v
             m.emit(hlcode(v[0]) << 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMACSDQL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMACSDQL")
     }
     return p
 }
@@ -73206,8 +73206,8 @@ func (self *Program) VPMACSSDD(v0 interface{}, v1 interface{}, v2 interface{}, v
             m.emit(hlcode(v[0]) << 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMACSSDD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMACSSDD")
     }
     return p
 }
@@ -73246,8 +73246,8 @@ func (self *Program) VPMACSSDQH(v0 interface{}, v1 interface{}, v2 interface{}, 
             m.emit(hlcode(v[0]) << 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMACSSDQH")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMACSSDQH")
     }
     return p
 }
@@ -73286,8 +73286,8 @@ func (self *Program) VPMACSSDQL(v0 interface{}, v1 interface{}, v2 interface{}, 
             m.emit(hlcode(v[0]) << 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMACSSDQL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMACSSDQL")
     }
     return p
 }
@@ -73326,8 +73326,8 @@ func (self *Program) VPMACSSWD(v0 interface{}, v1 interface{}, v2 interface{}, v
             m.emit(hlcode(v[0]) << 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMACSSWD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMACSSWD")
     }
     return p
 }
@@ -73366,8 +73366,8 @@ func (self *Program) VPMACSSWW(v0 interface{}, v1 interface{}, v2 interface{}, v
             m.emit(hlcode(v[0]) << 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMACSSWW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMACSSWW")
     }
     return p
 }
@@ -73406,8 +73406,8 @@ func (self *Program) VPMACSWD(v0 interface{}, v1 interface{}, v2 interface{}, v3
             m.emit(hlcode(v[0]) << 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMACSWD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMACSWD")
     }
     return p
 }
@@ -73446,8 +73446,8 @@ func (self *Program) VPMACSWW(v0 interface{}, v1 interface{}, v2 interface{}, v3
             m.emit(hlcode(v[0]) << 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMACSWW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMACSWW")
     }
     return p
 }
@@ -73486,8 +73486,8 @@ func (self *Program) VPMADCSSWD(v0 interface{}, v1 interface{}, v2 interface{}, 
             m.emit(hlcode(v[0]) << 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMADCSSWD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMADCSSWD")
     }
     return p
 }
@@ -73526,8 +73526,8 @@ func (self *Program) VPMADCSWD(v0 interface{}, v1 interface{}, v2 interface{}, v
             m.emit(hlcode(v[0]) << 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMADCSWD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMADCSWD")
     }
     return p
 }
@@ -73615,8 +73615,8 @@ func (self *Program) VPMADD52HUQ(v0 interface{}, v1 interface{}, v2 interface{})
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMADD52HUQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMADD52HUQ")
     }
     return p
 }
@@ -73704,8 +73704,8 @@ func (self *Program) VPMADD52LUQ(v0 interface{}, v1 interface{}, v2 interface{})
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMADD52LUQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMADD52LUQ")
     }
     return p
 }
@@ -73841,8 +73841,8 @@ func (self *Program) VPMADDUBSW(v0 interface{}, v1 interface{}, v2 interface{}) 
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMADDUBSW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMADDUBSW")
     }
     return p
 }
@@ -73974,8 +73974,8 @@ func (self *Program) VPMADDWD(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMADDWD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMADDWD")
     }
     return p
 }
@@ -74032,8 +74032,8 @@ func (self *Program) VPMASKMOVD(v0 interface{}, v1 interface{}, v2 interface{}) 
             m.mrsd(lcode(v[0]), addr(v[2]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMASKMOVD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMASKMOVD")
     }
     return p
 }
@@ -74090,8 +74090,8 @@ func (self *Program) VPMASKMOVQ(v0 interface{}, v1 interface{}, v2 interface{}) 
             m.mrsd(lcode(v[0]), addr(v[2]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMASKMOVQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMASKMOVQ")
     }
     return p
 }
@@ -74227,8 +74227,8 @@ func (self *Program) VPMAXSB(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMAXSB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMAXSB")
     }
     return p
 }
@@ -74364,8 +74364,8 @@ func (self *Program) VPMAXSD(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMAXSD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMAXSD")
     }
     return p
 }
@@ -74453,8 +74453,8 @@ func (self *Program) VPMAXSQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMAXSQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMAXSQ")
     }
     return p
 }
@@ -74586,8 +74586,8 @@ func (self *Program) VPMAXSW(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMAXSW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMAXSW")
     }
     return p
 }
@@ -74719,8 +74719,8 @@ func (self *Program) VPMAXUB(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMAXUB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMAXUB")
     }
     return p
 }
@@ -74856,8 +74856,8 @@ func (self *Program) VPMAXUD(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMAXUD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMAXUD")
     }
     return p
 }
@@ -74945,8 +74945,8 @@ func (self *Program) VPMAXUQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMAXUQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMAXUQ")
     }
     return p
 }
@@ -75082,8 +75082,8 @@ func (self *Program) VPMAXUW(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMAXUW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMAXUW")
     }
     return p
 }
@@ -75219,8 +75219,8 @@ func (self *Program) VPMINSB(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMINSB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMINSB")
     }
     return p
 }
@@ -75356,8 +75356,8 @@ func (self *Program) VPMINSD(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMINSD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMINSD")
     }
     return p
 }
@@ -75445,8 +75445,8 @@ func (self *Program) VPMINSQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMINSQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMINSQ")
     }
     return p
 }
@@ -75578,8 +75578,8 @@ func (self *Program) VPMINSW(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMINSW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMINSW")
     }
     return p
 }
@@ -75711,8 +75711,8 @@ func (self *Program) VPMINUB(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMINUB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMINUB")
     }
     return p
 }
@@ -75848,8 +75848,8 @@ func (self *Program) VPMINUD(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMINUD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMINUD")
     }
     return p
 }
@@ -75937,8 +75937,8 @@ func (self *Program) VPMINUQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMINUQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMINUQ")
     }
     return p
 }
@@ -76074,8 +76074,8 @@ func (self *Program) VPMINUW(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMINUW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMINUW")
     }
     return p
 }
@@ -76130,8 +76130,8 @@ func (self *Program) VPMOVB2M(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMOVB2M")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMOVB2M")
     }
     return p
 }
@@ -76186,8 +76186,8 @@ func (self *Program) VPMOVD2M(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMOVD2M")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMOVD2M")
     }
     return p
 }
@@ -76275,8 +76275,8 @@ func (self *Program) VPMOVDB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 8)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMOVDB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMOVDB")
     }
     return p
 }
@@ -76364,8 +76364,8 @@ func (self *Program) VPMOVDW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 16)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMOVDW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMOVDW")
     }
     return p
 }
@@ -76420,8 +76420,8 @@ func (self *Program) VPMOVM2B(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMOVM2B")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMOVM2B")
     }
     return p
 }
@@ -76476,8 +76476,8 @@ func (self *Program) VPMOVM2D(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMOVM2D")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMOVM2D")
     }
     return p
 }
@@ -76532,8 +76532,8 @@ func (self *Program) VPMOVM2Q(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMOVM2Q")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMOVM2Q")
     }
     return p
 }
@@ -76588,8 +76588,8 @@ func (self *Program) VPMOVM2W(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMOVM2W")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMOVM2W")
     }
     return p
 }
@@ -76624,8 +76624,8 @@ func (self *Program) VPMOVMSKB(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMOVMSKB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMOVMSKB")
     }
     return p
 }
@@ -76680,8 +76680,8 @@ func (self *Program) VPMOVQ2M(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMOVQ2M")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMOVQ2M")
     }
     return p
 }
@@ -76769,8 +76769,8 @@ func (self *Program) VPMOVQB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMOVQB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMOVQB")
     }
     return p
 }
@@ -76858,8 +76858,8 @@ func (self *Program) VPMOVQD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 16)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMOVQD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMOVQD")
     }
     return p
 }
@@ -76947,8 +76947,8 @@ func (self *Program) VPMOVQW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 8)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMOVQW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMOVQW")
     }
     return p
 }
@@ -77036,8 +77036,8 @@ func (self *Program) VPMOVSDB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 8)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMOVSDB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMOVSDB")
     }
     return p
 }
@@ -77125,8 +77125,8 @@ func (self *Program) VPMOVSDW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 16)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMOVSDW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMOVSDW")
     }
     return p
 }
@@ -77214,8 +77214,8 @@ func (self *Program) VPMOVSQB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMOVSQB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMOVSQB")
     }
     return p
 }
@@ -77303,8 +77303,8 @@ func (self *Program) VPMOVSQD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 16)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMOVSQD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMOVSQD")
     }
     return p
 }
@@ -77392,8 +77392,8 @@ func (self *Program) VPMOVSQW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 8)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMOVSQW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMOVSQW")
     }
     return p
 }
@@ -77481,8 +77481,8 @@ func (self *Program) VPMOVSWB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 16)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMOVSWB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMOVSWB")
     }
     return p
 }
@@ -77618,8 +77618,8 @@ func (self *Program) VPMOVSXBD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 8)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMOVSXBD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMOVSXBD")
     }
     return p
 }
@@ -77755,8 +77755,8 @@ func (self *Program) VPMOVSXBQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMOVSXBQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMOVSXBQ")
     }
     return p
 }
@@ -77892,8 +77892,8 @@ func (self *Program) VPMOVSXBW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 16)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMOVSXBW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMOVSXBW")
     }
     return p
 }
@@ -78029,8 +78029,8 @@ func (self *Program) VPMOVSXDQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 16)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMOVSXDQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMOVSXDQ")
     }
     return p
 }
@@ -78166,8 +78166,8 @@ func (self *Program) VPMOVSXWD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 16)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMOVSXWD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMOVSXWD")
     }
     return p
 }
@@ -78303,8 +78303,8 @@ func (self *Program) VPMOVSXWQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 8)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMOVSXWQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMOVSXWQ")
     }
     return p
 }
@@ -78392,8 +78392,8 @@ func (self *Program) VPMOVUSDB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 8)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMOVUSDB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMOVUSDB")
     }
     return p
 }
@@ -78481,8 +78481,8 @@ func (self *Program) VPMOVUSDW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 16)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMOVUSDW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMOVUSDW")
     }
     return p
 }
@@ -78570,8 +78570,8 @@ func (self *Program) VPMOVUSQB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMOVUSQB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMOVUSQB")
     }
     return p
 }
@@ -78659,8 +78659,8 @@ func (self *Program) VPMOVUSQD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 16)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMOVUSQD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMOVUSQD")
     }
     return p
 }
@@ -78748,8 +78748,8 @@ func (self *Program) VPMOVUSQW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 8)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMOVUSQW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMOVUSQW")
     }
     return p
 }
@@ -78837,8 +78837,8 @@ func (self *Program) VPMOVUSWB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 16)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMOVUSWB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMOVUSWB")
     }
     return p
 }
@@ -78893,8 +78893,8 @@ func (self *Program) VPMOVW2M(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMOVW2M")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMOVW2M")
     }
     return p
 }
@@ -78982,8 +78982,8 @@ func (self *Program) VPMOVWB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 16)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMOVWB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMOVWB")
     }
     return p
 }
@@ -79119,8 +79119,8 @@ func (self *Program) VPMOVZXBD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 8)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMOVZXBD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMOVZXBD")
     }
     return p
 }
@@ -79256,8 +79256,8 @@ func (self *Program) VPMOVZXBQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMOVZXBQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMOVZXBQ")
     }
     return p
 }
@@ -79393,8 +79393,8 @@ func (self *Program) VPMOVZXBW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 16)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMOVZXBW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMOVZXBW")
     }
     return p
 }
@@ -79530,8 +79530,8 @@ func (self *Program) VPMOVZXDQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 16)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMOVZXDQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMOVZXDQ")
     }
     return p
 }
@@ -79667,8 +79667,8 @@ func (self *Program) VPMOVZXWD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 16)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMOVZXWD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMOVZXWD")
     }
     return p
 }
@@ -79804,8 +79804,8 @@ func (self *Program) VPMOVZXWQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 8)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMOVZXWQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMOVZXWQ")
     }
     return p
 }
@@ -79941,8 +79941,8 @@ func (self *Program) VPMULDQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMULDQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMULDQ")
     }
     return p
 }
@@ -80078,8 +80078,8 @@ func (self *Program) VPMULHRSW(v0 interface{}, v1 interface{}, v2 interface{}) *
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMULHRSW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMULHRSW")
     }
     return p
 }
@@ -80211,8 +80211,8 @@ func (self *Program) VPMULHUW(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMULHUW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMULHUW")
     }
     return p
 }
@@ -80344,8 +80344,8 @@ func (self *Program) VPMULHW(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMULHW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMULHW")
     }
     return p
 }
@@ -80481,8 +80481,8 @@ func (self *Program) VPMULLD(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMULLD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMULLD")
     }
     return p
 }
@@ -80570,8 +80570,8 @@ func (self *Program) VPMULLQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMULLQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMULLQ")
     }
     return p
 }
@@ -80703,8 +80703,8 @@ func (self *Program) VPMULLW(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMULLW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMULLW")
     }
     return p
 }
@@ -80792,8 +80792,8 @@ func (self *Program) VPMULTISHIFTQB(v0 interface{}, v1 interface{}, v2 interface
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMULTISHIFTQB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMULTISHIFTQB")
     }
     return p
 }
@@ -80925,8 +80925,8 @@ func (self *Program) VPMULUDQ(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPMULUDQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPMULUDQ")
     }
     return p
 }
@@ -80964,8 +80964,8 @@ func (self *Program) VPOPCNTD(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPOPCNTD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPOPCNTD")
     }
     return p
 }
@@ -81003,8 +81003,8 @@ func (self *Program) VPOPCNTQ(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPOPCNTQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPOPCNTQ")
     }
     return p
 }
@@ -81061,8 +81061,8 @@ func (self *Program) VPOR(v0 interface{}, v1 interface{}, v2 interface{}) *Instr
             m.mrsd(lcode(v[2]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPOR")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPOR")
     }
     return p
 }
@@ -81150,8 +81150,8 @@ func (self *Program) VPORD(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPORD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPORD")
     }
     return p
 }
@@ -81239,8 +81239,8 @@ func (self *Program) VPORQ(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPORQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPORQ")
     }
     return p
 }
@@ -81299,8 +81299,8 @@ func (self *Program) VPPERM(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
             m.emit(hlcode(v[0]) << 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPPERM")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPPERM")
     }
     return p
 }
@@ -81394,8 +81394,8 @@ func (self *Program) VPROLD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPROLD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPROLD")
     }
     return p
 }
@@ -81489,8 +81489,8 @@ func (self *Program) VPROLQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPROLQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPROLQ")
     }
     return p
 }
@@ -81578,8 +81578,8 @@ func (self *Program) VPROLVD(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPROLVD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPROLVD")
     }
     return p
 }
@@ -81667,8 +81667,8 @@ func (self *Program) VPROLVQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPROLVQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPROLVQ")
     }
     return p
 }
@@ -81762,8 +81762,8 @@ func (self *Program) VPRORD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPRORD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPRORD")
     }
     return p
 }
@@ -81857,8 +81857,8 @@ func (self *Program) VPRORQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPRORQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPRORQ")
     }
     return p
 }
@@ -81946,8 +81946,8 @@ func (self *Program) VPRORVD(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPRORVD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPRORVD")
     }
     return p
 }
@@ -82035,8 +82035,8 @@ func (self *Program) VPRORVQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPRORVQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPRORVQ")
     }
     return p
 }
@@ -82117,8 +82117,8 @@ func (self *Program) VPROTB(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.mrsd(lcode(v[2]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPROTB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPROTB")
     }
     return p
 }
@@ -82199,8 +82199,8 @@ func (self *Program) VPROTD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.mrsd(lcode(v[2]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPROTD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPROTD")
     }
     return p
 }
@@ -82281,8 +82281,8 @@ func (self *Program) VPROTQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.mrsd(lcode(v[2]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPROTQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPROTQ")
     }
     return p
 }
@@ -82363,8 +82363,8 @@ func (self *Program) VPROTW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.mrsd(lcode(v[2]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPROTW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPROTW")
     }
     return p
 }
@@ -82496,8 +82496,8 @@ func (self *Program) VPSADBW(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSADBW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSADBW")
     }
     return p
 }
@@ -82543,8 +82543,8 @@ func (self *Program) VPSCATTERDD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSCATTERDD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSCATTERDD")
     }
     return p
 }
@@ -82590,8 +82590,8 @@ func (self *Program) VPSCATTERDQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 8)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSCATTERDQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSCATTERDQ")
     }
     return p
 }
@@ -82637,8 +82637,8 @@ func (self *Program) VPSCATTERQD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSCATTERQD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSCATTERQD")
     }
     return p
 }
@@ -82684,8 +82684,8 @@ func (self *Program) VPSCATTERQQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 8)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSCATTERQQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSCATTERQQ")
     }
     return p
 }
@@ -82740,8 +82740,8 @@ func (self *Program) VPSHAB(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.mrsd(lcode(v[2]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSHAB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSHAB")
     }
     return p
 }
@@ -82796,8 +82796,8 @@ func (self *Program) VPSHAD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.mrsd(lcode(v[2]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSHAD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSHAD")
     }
     return p
 }
@@ -82852,8 +82852,8 @@ func (self *Program) VPSHAQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.mrsd(lcode(v[2]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSHAQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSHAQ")
     }
     return p
 }
@@ -82908,8 +82908,8 @@ func (self *Program) VPSHAW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.mrsd(lcode(v[2]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSHAW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSHAW")
     }
     return p
 }
@@ -82964,8 +82964,8 @@ func (self *Program) VPSHLB(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.mrsd(lcode(v[2]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSHLB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSHLB")
     }
     return p
 }
@@ -83020,8 +83020,8 @@ func (self *Program) VPSHLD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.mrsd(lcode(v[2]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSHLD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSHLD")
     }
     return p
 }
@@ -83076,8 +83076,8 @@ func (self *Program) VPSHLQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.mrsd(lcode(v[2]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSHLQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSHLQ")
     }
     return p
 }
@@ -83132,8 +83132,8 @@ func (self *Program) VPSHLW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.mrsd(lcode(v[2]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSHLW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSHLW")
     }
     return p
 }
@@ -83269,8 +83269,8 @@ func (self *Program) VPSHUFB(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSHUFB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSHUFB")
     }
     return p
 }
@@ -83412,8 +83412,8 @@ func (self *Program) VPSHUFD(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSHUFD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSHUFD")
     }
     return p
 }
@@ -83555,8 +83555,8 @@ func (self *Program) VPSHUFHW(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSHUFHW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSHUFHW")
     }
     return p
 }
@@ -83698,8 +83698,8 @@ func (self *Program) VPSHUFLW(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSHUFLW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSHUFLW")
     }
     return p
 }
@@ -83760,8 +83760,8 @@ func (self *Program) VPSIGNB(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.mrsd(lcode(v[2]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSIGNB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSIGNB")
     }
     return p
 }
@@ -83822,8 +83822,8 @@ func (self *Program) VPSIGND(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.mrsd(lcode(v[2]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSIGND")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSIGND")
     }
     return p
 }
@@ -83884,8 +83884,8 @@ func (self *Program) VPSIGNW(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.mrsd(lcode(v[2]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSIGNW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSIGNW")
     }
     return p
 }
@@ -84122,8 +84122,8 @@ func (self *Program) VPSLLD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.mrsd(lcode(v[2]), addr(v[0]), 16)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSLLD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSLLD")
     }
     return p
 }
@@ -84241,8 +84241,8 @@ func (self *Program) VPSLLDQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSLLDQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSLLDQ")
     }
     return p
 }
@@ -84479,8 +84479,8 @@ func (self *Program) VPSLLQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.mrsd(lcode(v[2]), addr(v[0]), 16)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSLLQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSLLQ")
     }
     return p
 }
@@ -84616,8 +84616,8 @@ func (self *Program) VPSLLVD(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSLLVD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSLLVD")
     }
     return p
 }
@@ -84753,8 +84753,8 @@ func (self *Program) VPSLLVQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSLLVQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSLLVQ")
     }
     return p
 }
@@ -84842,8 +84842,8 @@ func (self *Program) VPSLLVW(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSLLVW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSLLVW")
     }
     return p
 }
@@ -85080,8 +85080,8 @@ func (self *Program) VPSLLW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSLLW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSLLW")
     }
     return p
 }
@@ -85318,8 +85318,8 @@ func (self *Program) VPSRAD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.mrsd(lcode(v[2]), addr(v[0]), 16)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSRAD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSRAD")
     }
     return p
 }
@@ -85488,8 +85488,8 @@ func (self *Program) VPSRAQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.mrsd(lcode(v[2]), addr(v[0]), 16)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSRAQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSRAQ")
     }
     return p
 }
@@ -85625,8 +85625,8 @@ func (self *Program) VPSRAVD(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSRAVD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSRAVD")
     }
     return p
 }
@@ -85714,8 +85714,8 @@ func (self *Program) VPSRAVQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSRAVQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSRAVQ")
     }
     return p
 }
@@ -85803,8 +85803,8 @@ func (self *Program) VPSRAVW(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSRAVW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSRAVW")
     }
     return p
 }
@@ -86041,8 +86041,8 @@ func (self *Program) VPSRAW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSRAW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSRAW")
     }
     return p
 }
@@ -86279,8 +86279,8 @@ func (self *Program) VPSRLD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.mrsd(lcode(v[2]), addr(v[0]), 16)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSRLD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSRLD")
     }
     return p
 }
@@ -86398,8 +86398,8 @@ func (self *Program) VPSRLDQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSRLDQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSRLDQ")
     }
     return p
 }
@@ -86636,8 +86636,8 @@ func (self *Program) VPSRLQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.mrsd(lcode(v[2]), addr(v[0]), 16)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSRLQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSRLQ")
     }
     return p
 }
@@ -86773,8 +86773,8 @@ func (self *Program) VPSRLVD(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSRLVD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSRLVD")
     }
     return p
 }
@@ -86910,8 +86910,8 @@ func (self *Program) VPSRLVQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSRLVQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSRLVQ")
     }
     return p
 }
@@ -86999,8 +86999,8 @@ func (self *Program) VPSRLVW(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSRLVW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSRLVW")
     }
     return p
 }
@@ -87237,8 +87237,8 @@ func (self *Program) VPSRLW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSRLW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSRLW")
     }
     return p
 }
@@ -87370,8 +87370,8 @@ func (self *Program) VPSUBB(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSUBB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSUBB")
     }
     return p
 }
@@ -87503,8 +87503,8 @@ func (self *Program) VPSUBD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSUBD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSUBD")
     }
     return p
 }
@@ -87636,8 +87636,8 @@ func (self *Program) VPSUBQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSUBQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSUBQ")
     }
     return p
 }
@@ -87769,8 +87769,8 @@ func (self *Program) VPSUBSB(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSUBSB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSUBSB")
     }
     return p
 }
@@ -87902,8 +87902,8 @@ func (self *Program) VPSUBSW(v0 interface{}, v1 interface{}, v2 interface{}) *In
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSUBSW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSUBSW")
     }
     return p
 }
@@ -88035,8 +88035,8 @@ func (self *Program) VPSUBUSB(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSUBUSB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSUBUSB")
     }
     return p
 }
@@ -88168,8 +88168,8 @@ func (self *Program) VPSUBUSW(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSUBUSW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSUBUSW")
     }
     return p
 }
@@ -88301,8 +88301,8 @@ func (self *Program) VPSUBW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPSUBW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPSUBW")
     }
     return p
 }
@@ -88396,8 +88396,8 @@ func (self *Program) VPTERNLOGD(v0 interface{}, v1 interface{}, v2 interface{}, 
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPTERNLOGD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPTERNLOGD")
     }
     return p
 }
@@ -88491,8 +88491,8 @@ func (self *Program) VPTERNLOGQ(v0 interface{}, v1 interface{}, v2 interface{}, 
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPTERNLOGQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPTERNLOGQ")
     }
     return p
 }
@@ -88553,8 +88553,8 @@ func (self *Program) VPTEST(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPTEST")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPTEST")
     }
     return p
 }
@@ -88642,8 +88642,8 @@ func (self *Program) VPTESTMB(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPTESTMB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPTESTMB")
     }
     return p
 }
@@ -88731,8 +88731,8 @@ func (self *Program) VPTESTMD(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPTESTMD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPTESTMD")
     }
     return p
 }
@@ -88820,8 +88820,8 @@ func (self *Program) VPTESTMQ(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPTESTMQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPTESTMQ")
     }
     return p
 }
@@ -88909,8 +88909,8 @@ func (self *Program) VPTESTMW(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPTESTMW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPTESTMW")
     }
     return p
 }
@@ -88998,8 +88998,8 @@ func (self *Program) VPTESTNMB(v0 interface{}, v1 interface{}, v2 interface{}) *
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPTESTNMB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPTESTNMB")
     }
     return p
 }
@@ -89087,8 +89087,8 @@ func (self *Program) VPTESTNMD(v0 interface{}, v1 interface{}, v2 interface{}) *
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPTESTNMD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPTESTNMD")
     }
     return p
 }
@@ -89176,8 +89176,8 @@ func (self *Program) VPTESTNMQ(v0 interface{}, v1 interface{}, v2 interface{}) *
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPTESTNMQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPTESTNMQ")
     }
     return p
 }
@@ -89265,8 +89265,8 @@ func (self *Program) VPTESTNMW(v0 interface{}, v1 interface{}, v2 interface{}) *
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPTESTNMW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPTESTNMW")
     }
     return p
 }
@@ -89398,8 +89398,8 @@ func (self *Program) VPUNPCKHBW(v0 interface{}, v1 interface{}, v2 interface{}) 
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPUNPCKHBW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPUNPCKHBW")
     }
     return p
 }
@@ -89531,8 +89531,8 @@ func (self *Program) VPUNPCKHDQ(v0 interface{}, v1 interface{}, v2 interface{}) 
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPUNPCKHDQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPUNPCKHDQ")
     }
     return p
 }
@@ -89664,8 +89664,8 @@ func (self *Program) VPUNPCKHQDQ(v0 interface{}, v1 interface{}, v2 interface{})
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPUNPCKHQDQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPUNPCKHQDQ")
     }
     return p
 }
@@ -89797,8 +89797,8 @@ func (self *Program) VPUNPCKHWD(v0 interface{}, v1 interface{}, v2 interface{}) 
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPUNPCKHWD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPUNPCKHWD")
     }
     return p
 }
@@ -89930,8 +89930,8 @@ func (self *Program) VPUNPCKLBW(v0 interface{}, v1 interface{}, v2 interface{}) 
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPUNPCKLBW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPUNPCKLBW")
     }
     return p
 }
@@ -90063,8 +90063,8 @@ func (self *Program) VPUNPCKLDQ(v0 interface{}, v1 interface{}, v2 interface{}) 
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPUNPCKLDQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPUNPCKLDQ")
     }
     return p
 }
@@ -90196,8 +90196,8 @@ func (self *Program) VPUNPCKLQDQ(v0 interface{}, v1 interface{}, v2 interface{})
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPUNPCKLQDQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPUNPCKLQDQ")
     }
     return p
 }
@@ -90329,8 +90329,8 @@ func (self *Program) VPUNPCKLWD(v0 interface{}, v1 interface{}, v2 interface{}) 
             m.mrsd(lcode(v[2]), addr(v[0]), 32)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPUNPCKLWD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPUNPCKLWD")
     }
     return p
 }
@@ -90387,8 +90387,8 @@ func (self *Program) VPXOR(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
             m.mrsd(lcode(v[2]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPXOR")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPXOR")
     }
     return p
 }
@@ -90476,8 +90476,8 @@ func (self *Program) VPXORD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPXORD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPXORD")
     }
     return p
 }
@@ -90565,8 +90565,8 @@ func (self *Program) VPXORQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VPXORQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VPXORQ")
     }
     return p
 }
@@ -90680,8 +90680,8 @@ func (self *Program) VRANGEPD(v0 interface{}, v1 interface{}, v2 interface{}, v3
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VRANGEPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VRANGEPD")
     }
     return p
 }
@@ -90795,8 +90795,8 @@ func (self *Program) VRANGEPS(v0 interface{}, v1 interface{}, v2 interface{}, v3
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VRANGEPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VRANGEPS")
     }
     return p
 }
@@ -90856,8 +90856,8 @@ func (self *Program) VRANGESD(v0 interface{}, v1 interface{}, v2 interface{}, v3
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VRANGESD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VRANGESD")
     }
     return p
 }
@@ -90917,8 +90917,8 @@ func (self *Program) VRANGESS(v0 interface{}, v1 interface{}, v2 interface{}, v3
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VRANGESS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VRANGESS")
     }
     return p
 }
@@ -91006,8 +91006,8 @@ func (self *Program) VRCP14PD(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VRCP14PD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VRCP14PD")
     }
     return p
 }
@@ -91095,8 +91095,8 @@ func (self *Program) VRCP14PS(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VRCP14PS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VRCP14PS")
     }
     return p
 }
@@ -91134,8 +91134,8 @@ func (self *Program) VRCP14SD(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.mrsd(lcode(v[2]), addr(v[0]), 8)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VRCP14SD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VRCP14SD")
     }
     return p
 }
@@ -91173,8 +91173,8 @@ func (self *Program) VRCP14SS(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.mrsd(lcode(v[2]), addr(v[0]), 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VRCP14SS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VRCP14SS")
     }
     return p
 }
@@ -91231,8 +91231,8 @@ func (self *Program) VRCP28PD(v0 interface{}, v1 interface{}, vv ...interface{})
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VRCP28PD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VRCP28PD")
     }
     return p
 }
@@ -91289,8 +91289,8 @@ func (self *Program) VRCP28PS(v0 interface{}, v1 interface{}, vv ...interface{})
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VRCP28PS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VRCP28PS")
     }
     return p
 }
@@ -91347,8 +91347,8 @@ func (self *Program) VRCP28SD(v0 interface{}, v1 interface{}, v2 interface{}, vv
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VRCP28SD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VRCP28SD")
     }
     return p
 }
@@ -91405,8 +91405,8 @@ func (self *Program) VRCP28SS(v0 interface{}, v1 interface{}, v2 interface{}, vv
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VRCP28SS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VRCP28SS")
     }
     return p
 }
@@ -91463,8 +91463,8 @@ func (self *Program) VRCPPS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VRCPPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VRCPPS")
     }
     return p
 }
@@ -91499,8 +91499,8 @@ func (self *Program) VRCPSS(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.mrsd(lcode(v[2]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VRCPSS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VRCPSS")
     }
     return p
 }
@@ -91594,8 +91594,8 @@ func (self *Program) VREDUCEPD(v0 interface{}, v1 interface{}, v2 interface{}) *
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VREDUCEPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VREDUCEPD")
     }
     return p
 }
@@ -91689,8 +91689,8 @@ func (self *Program) VREDUCEPS(v0 interface{}, v1 interface{}, v2 interface{}) *
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VREDUCEPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VREDUCEPS")
     }
     return p
 }
@@ -91730,8 +91730,8 @@ func (self *Program) VREDUCESD(v0 interface{}, v1 interface{}, v2 interface{}, v
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VREDUCESD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VREDUCESD")
     }
     return p
 }
@@ -91771,8 +91771,8 @@ func (self *Program) VREDUCESS(v0 interface{}, v1 interface{}, v2 interface{}, v
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VREDUCESS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VREDUCESS")
     }
     return p
 }
@@ -91886,8 +91886,8 @@ func (self *Program) VRNDSCALEPD(v0 interface{}, v1 interface{}, v2 interface{},
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VRNDSCALEPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VRNDSCALEPD")
     }
     return p
 }
@@ -92001,8 +92001,8 @@ func (self *Program) VRNDSCALEPS(v0 interface{}, v1 interface{}, v2 interface{},
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VRNDSCALEPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VRNDSCALEPS")
     }
     return p
 }
@@ -92062,8 +92062,8 @@ func (self *Program) VRNDSCALESD(v0 interface{}, v1 interface{}, v2 interface{},
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VRNDSCALESD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VRNDSCALESD")
     }
     return p
 }
@@ -92123,8 +92123,8 @@ func (self *Program) VRNDSCALESS(v0 interface{}, v1 interface{}, v2 interface{},
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VRNDSCALESS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VRNDSCALESS")
     }
     return p
 }
@@ -92189,8 +92189,8 @@ func (self *Program) VROUNDPD(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VROUNDPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VROUNDPD")
     }
     return p
 }
@@ -92255,8 +92255,8 @@ func (self *Program) VROUNDPS(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VROUNDPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VROUNDPS")
     }
     return p
 }
@@ -92295,8 +92295,8 @@ func (self *Program) VROUNDSD(v0 interface{}, v1 interface{}, v2 interface{}, v3
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VROUNDSD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VROUNDSD")
     }
     return p
 }
@@ -92335,8 +92335,8 @@ func (self *Program) VROUNDSS(v0 interface{}, v1 interface{}, v2 interface{}, v3
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VROUNDSS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VROUNDSS")
     }
     return p
 }
@@ -92424,8 +92424,8 @@ func (self *Program) VRSQRT14PD(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VRSQRT14PD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VRSQRT14PD")
     }
     return p
 }
@@ -92513,8 +92513,8 @@ func (self *Program) VRSQRT14PS(v0 interface{}, v1 interface{}) *Instruction {
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VRSQRT14PS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VRSQRT14PS")
     }
     return p
 }
@@ -92552,8 +92552,8 @@ func (self *Program) VRSQRT14SD(v0 interface{}, v1 interface{}, v2 interface{}) 
             m.mrsd(lcode(v[2]), addr(v[0]), 8)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VRSQRT14SD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VRSQRT14SD")
     }
     return p
 }
@@ -92591,8 +92591,8 @@ func (self *Program) VRSQRT14SS(v0 interface{}, v1 interface{}, v2 interface{}) 
             m.mrsd(lcode(v[2]), addr(v[0]), 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VRSQRT14SS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VRSQRT14SS")
     }
     return p
 }
@@ -92649,8 +92649,8 @@ func (self *Program) VRSQRT28PD(v0 interface{}, v1 interface{}, vv ...interface{
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VRSQRT28PD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VRSQRT28PD")
     }
     return p
 }
@@ -92707,8 +92707,8 @@ func (self *Program) VRSQRT28PS(v0 interface{}, v1 interface{}, vv ...interface{
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VRSQRT28PS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VRSQRT28PS")
     }
     return p
 }
@@ -92765,8 +92765,8 @@ func (self *Program) VRSQRT28SD(v0 interface{}, v1 interface{}, v2 interface{}, 
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VRSQRT28SD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VRSQRT28SD")
     }
     return p
 }
@@ -92823,8 +92823,8 @@ func (self *Program) VRSQRT28SS(v0 interface{}, v1 interface{}, v2 interface{}, 
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VRSQRT28SS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VRSQRT28SS")
     }
     return p
 }
@@ -92881,8 +92881,8 @@ func (self *Program) VRSQRTPS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VRSQRTPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VRSQRTPS")
     }
     return p
 }
@@ -92917,8 +92917,8 @@ func (self *Program) VRSQRTSS(v0 interface{}, v1 interface{}, v2 interface{}) *I
             m.mrsd(lcode(v[2]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VRSQRTSS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VRSQRTSS")
     }
     return p
 }
@@ -93025,8 +93025,8 @@ func (self *Program) VSCALEFPD(v0 interface{}, v1 interface{}, v2 interface{}, v
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VSCALEFPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VSCALEFPD")
     }
     return p
 }
@@ -93133,8 +93133,8 @@ func (self *Program) VSCALEFPS(v0 interface{}, v1 interface{}, v2 interface{}, v
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VSCALEFPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VSCALEFPS")
     }
     return p
 }
@@ -93191,8 +93191,8 @@ func (self *Program) VSCALEFSD(v0 interface{}, v1 interface{}, v2 interface{}, v
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VSCALEFSD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VSCALEFSD")
     }
     return p
 }
@@ -93249,8 +93249,8 @@ func (self *Program) VSCALEFSS(v0 interface{}, v1 interface{}, v2 interface{}, v
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VSCALEFSS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VSCALEFSS")
     }
     return p
 }
@@ -93296,8 +93296,8 @@ func (self *Program) VSCATTERDPD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 8)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VSCATTERDPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VSCATTERDPD")
     }
     return p
 }
@@ -93343,8 +93343,8 @@ func (self *Program) VSCATTERDPS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VSCATTERDPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VSCATTERDPS")
     }
     return p
 }
@@ -93368,8 +93368,8 @@ func (self *Program) VSCATTERPF0DPD(v0 interface{}) *Instruction {
             m.mrsd(5, addr(v[0]), 8)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VSCATTERPF0DPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VSCATTERPF0DPD")
     }
     return p
 }
@@ -93393,8 +93393,8 @@ func (self *Program) VSCATTERPF0DPS(v0 interface{}) *Instruction {
             m.mrsd(5, addr(v[0]), 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VSCATTERPF0DPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VSCATTERPF0DPS")
     }
     return p
 }
@@ -93418,8 +93418,8 @@ func (self *Program) VSCATTERPF0QPD(v0 interface{}) *Instruction {
             m.mrsd(5, addr(v[0]), 8)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VSCATTERPF0QPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VSCATTERPF0QPD")
     }
     return p
 }
@@ -93443,8 +93443,8 @@ func (self *Program) VSCATTERPF0QPS(v0 interface{}) *Instruction {
             m.mrsd(5, addr(v[0]), 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VSCATTERPF0QPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VSCATTERPF0QPS")
     }
     return p
 }
@@ -93468,8 +93468,8 @@ func (self *Program) VSCATTERPF1DPD(v0 interface{}) *Instruction {
             m.mrsd(6, addr(v[0]), 8)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VSCATTERPF1DPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VSCATTERPF1DPD")
     }
     return p
 }
@@ -93493,8 +93493,8 @@ func (self *Program) VSCATTERPF1DPS(v0 interface{}) *Instruction {
             m.mrsd(6, addr(v[0]), 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VSCATTERPF1DPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VSCATTERPF1DPS")
     }
     return p
 }
@@ -93518,8 +93518,8 @@ func (self *Program) VSCATTERPF1QPD(v0 interface{}) *Instruction {
             m.mrsd(6, addr(v[0]), 8)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VSCATTERPF1QPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VSCATTERPF1QPD")
     }
     return p
 }
@@ -93543,8 +93543,8 @@ func (self *Program) VSCATTERPF1QPS(v0 interface{}) *Instruction {
             m.mrsd(6, addr(v[0]), 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VSCATTERPF1QPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VSCATTERPF1QPS")
     }
     return p
 }
@@ -93590,8 +93590,8 @@ func (self *Program) VSCATTERQPD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 8)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VSCATTERQPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VSCATTERQPD")
     }
     return p
 }
@@ -93637,8 +93637,8 @@ func (self *Program) VSCATTERQPS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 4)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VSCATTERQPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VSCATTERQPS")
     }
     return p
 }
@@ -93705,8 +93705,8 @@ func (self *Program) VSHUFF32X4(v0 interface{}, v1 interface{}, v2 interface{}, 
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VSHUFF32X4")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VSHUFF32X4")
     }
     return p
 }
@@ -93773,8 +93773,8 @@ func (self *Program) VSHUFF64X2(v0 interface{}, v1 interface{}, v2 interface{}, 
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VSHUFF64X2")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VSHUFF64X2")
     }
     return p
 }
@@ -93841,8 +93841,8 @@ func (self *Program) VSHUFI32X4(v0 interface{}, v1 interface{}, v2 interface{}, 
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VSHUFI32X4")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VSHUFI32X4")
     }
     return p
 }
@@ -93909,8 +93909,8 @@ func (self *Program) VSHUFI64X2(v0 interface{}, v1 interface{}, v2 interface{}, 
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VSHUFI64X2")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VSHUFI64X2")
     }
     return p
 }
@@ -94052,8 +94052,8 @@ func (self *Program) VSHUFPD(v0 interface{}, v1 interface{}, v2 interface{}, v3 
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VSHUFPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VSHUFPD")
     }
     return p
 }
@@ -94195,8 +94195,8 @@ func (self *Program) VSHUFPS(v0 interface{}, v1 interface{}, v2 interface{}, v3 
             m.imm1(toImmAny(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VSHUFPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VSHUFPS")
     }
     return p
 }
@@ -94347,8 +94347,8 @@ func (self *Program) VSQRTPD(v0 interface{}, v1 interface{}, vv ...interface{}) 
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VSQRTPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VSQRTPD")
     }
     return p
 }
@@ -94499,8 +94499,8 @@ func (self *Program) VSQRTPS(v0 interface{}, v1 interface{}, vv ...interface{}) 
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VSQRTPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VSQRTPS")
     }
     return p
 }
@@ -94579,8 +94579,8 @@ func (self *Program) VSQRTSD(v0 interface{}, v1 interface{}, v2 interface{}, vv 
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VSQRTSD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VSQRTSD")
     }
     return p
 }
@@ -94659,8 +94659,8 @@ func (self *Program) VSQRTSS(v0 interface{}, v1 interface{}, v2 interface{}, vv 
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VSQRTSS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VSQRTSS")
     }
     return p
 }
@@ -94684,8 +94684,8 @@ func (self *Program) VSTMXCSR(v0 interface{}) *Instruction {
             m.mrsd(3, addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VSTMXCSR")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VSTMXCSR")
     }
     return p
 }
@@ -94836,8 +94836,8 @@ func (self *Program) VSUBPD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VSUBPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VSUBPD")
     }
     return p
 }
@@ -94988,8 +94988,8 @@ func (self *Program) VSUBPS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VSUBPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VSUBPS")
     }
     return p
 }
@@ -95068,8 +95068,8 @@ func (self *Program) VSUBSD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VSUBSD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VSUBSD")
     }
     return p
 }
@@ -95148,8 +95148,8 @@ func (self *Program) VSUBSS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VSUBSS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VSUBSS")
     }
     return p
 }
@@ -95210,8 +95210,8 @@ func (self *Program) VTESTPD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VTESTPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VTESTPD")
     }
     return p
 }
@@ -95272,8 +95272,8 @@ func (self *Program) VTESTPS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VTESTPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VTESTPS")
     }
     return p
 }
@@ -95352,8 +95352,8 @@ func (self *Program) VUCOMISD(v0 interface{}, v1 interface{}, vv ...interface{})
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VUCOMISD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VUCOMISD")
     }
     return p
 }
@@ -95432,8 +95432,8 @@ func (self *Program) VUCOMISS(v0 interface{}, v1 interface{}, vv ...interface{})
             m.emit(0xc0 | lcode(v[1]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VUCOMISS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VUCOMISS")
     }
     return p
 }
@@ -95565,8 +95565,8 @@ func (self *Program) VUNPCKHPD(v0 interface{}, v1 interface{}, v2 interface{}) *
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VUNPCKHPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VUNPCKHPD")
     }
     return p
 }
@@ -95698,8 +95698,8 @@ func (self *Program) VUNPCKHPS(v0 interface{}, v1 interface{}, v2 interface{}) *
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VUNPCKHPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VUNPCKHPS")
     }
     return p
 }
@@ -95831,8 +95831,8 @@ func (self *Program) VUNPCKLPD(v0 interface{}, v1 interface{}, v2 interface{}) *
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VUNPCKLPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VUNPCKLPD")
     }
     return p
 }
@@ -95964,8 +95964,8 @@ func (self *Program) VUNPCKLPS(v0 interface{}, v1 interface{}, v2 interface{}) *
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VUNPCKLPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VUNPCKLPS")
     }
     return p
 }
@@ -96097,8 +96097,8 @@ func (self *Program) VXORPD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VXORPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VXORPD")
     }
     return p
 }
@@ -96230,8 +96230,8 @@ func (self *Program) VXORPS(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
             m.emit(0xc0 | lcode(v[2]) << 3 | lcode(v[0]))
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for VXORPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for VXORPS")
     }
     return p
 }
@@ -96304,8 +96304,8 @@ func (self *Program) XADDB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for XADDB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for XADDB")
     }
     return p
 }
@@ -96340,8 +96340,8 @@ func (self *Program) XADDL(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for XADDL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for XADDL")
     }
     return p
 }
@@ -96376,8 +96376,8 @@ func (self *Program) XADDQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for XADDQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for XADDQ")
     }
     return p
 }
@@ -96414,8 +96414,8 @@ func (self *Program) XADDW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for XADDW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for XADDW")
     }
     return p
 }
@@ -96463,8 +96463,8 @@ func (self *Program) XCHGB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for XCHGB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for XCHGB")
     }
     return p
 }
@@ -96530,8 +96530,8 @@ func (self *Program) XCHGL(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for XCHGL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for XCHGL")
     }
     return p
 }
@@ -96597,8 +96597,8 @@ func (self *Program) XCHGQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for XCHGQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for XCHGQ")
     }
     return p
 }
@@ -96670,8 +96670,8 @@ func (self *Program) XCHGW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for XCHGW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for XCHGW")
     }
     return p
 }
@@ -96793,8 +96793,8 @@ func (self *Program) XORB(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for XORB")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for XORB")
     }
     return p
 }
@@ -96895,8 +96895,8 @@ func (self *Program) XORL(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for XORL")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for XORL")
     }
     return p
 }
@@ -96935,8 +96935,8 @@ func (self *Program) XORPD(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for XORPD")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for XORPD")
     }
     return p
 }
@@ -96973,8 +96973,8 @@ func (self *Program) XORPS(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[1]), addr(v[0]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for XORPS")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for XORPS")
     }
     return p
 }
@@ -97076,8 +97076,8 @@ func (self *Program) XORQ(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for XORQ")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for XORQ")
     }
     return p
 }
@@ -97187,8 +97187,8 @@ func (self *Program) XORW(v0 interface{}, v1 interface{}) *Instruction {
             m.mrsd(lcode(v[0]), addr(v[1]), 1)
         })
     }
-    if p.len == 0 {
-        panic("invalid operands for XORW")
+    if p.nforms == 0 {
+        panic("invalid combination of operands for XORW")
     }
     return p
 }

@@ -9,13 +9,9 @@ var (
     memoryOperandPool sync.Pool
 )
 
-func freeLabel(v *Label) {
-    labelPool.Put(v)
-}
-
-func clearLabel(p *Label) *Label {
+func freeLabel(p *Label) {
     *p = Label{}
-    return p
+    labelPool.Put(p)
 }
 
 // CreateLabel creates a new Label, it may allocate a new one or grab one from a pool.
@@ -24,10 +20,10 @@ func CreateLabel(name string) *Label {
     var v interface{}
 
     /* attempt to grab from the pool */
-    if v = labelPool.Get(); v == nil {
-        p = new(Label)
+    if v = labelPool.Get(); v != nil {
+        p = v.(*Label)
     } else {
-        p = clearLabel(v.(*Label))
+        p = new(Label)
     }
 
     /* initialize the label */
@@ -37,12 +33,8 @@ func CreateLabel(name string) *Label {
 }
 
 func freeMemoryOperand(m *MemoryOperand) {
-    memoryOperandPool.Put(m)
-}
-
-func clearMemoryOperand(m *MemoryOperand) *MemoryOperand {
     *m = MemoryOperand{}
-    return m
+    memoryOperandPool.Put(m)
 }
 
 // CreateMemoryOperand creates a new MemoryOperand, it may allocate a new one or grab one from a pool.
@@ -51,10 +43,10 @@ func CreateMemoryOperand(ext MemoryOperandExtension) *MemoryOperand {
     var p *MemoryOperand
 
     /* attempt to grab from the pool */
-    if v = memoryOperandPool.Get(); v == nil {
-        p = new(MemoryOperand)
+    if v = memoryOperandPool.Get(); v != nil {
+        p = v.(*MemoryOperand)
     } else {
-        p = clearMemoryOperand(v.(*MemoryOperand))
+        p = new(MemoryOperand)
     }
 
     /* initialize the memory operand */

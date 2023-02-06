@@ -1,8 +1,8 @@
 package tag
 
 type (
-    Tag    struct{}
-    Sealed interface{ Sealed(Tag) }
+    Tag    struct    {}
+    Sealed interface { Sealed(Tag) }
 )
 
 type Disposable interface {

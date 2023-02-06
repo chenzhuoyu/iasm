@@ -8,6 +8,7 @@ import (
     `strings`
 
     `github.com/chenzhuoyu/iasm/asm`
+    `github.com/chenzhuoyu/iasm/internal/rt`
     `github.com/chenzhuoyu/iasm/internal/tag`
 )
 
@@ -129,7 +130,7 @@ func (self Scale) EnsureValid(addr asm.MemoryAddress) {
 
 // MemoryAddress constructs an x86_64 specific asm.MemoryAddress
 func MemoryAddress(base asm.Register, index asm.Register, scale uint8, disp int32) asm.MemoryAddress {
-    return asm.MemoryAddress{
+    return asm.MemoryAddress {
         Ext    : Scale(scale),
         Base   : base,
         Index  : index,
@@ -288,8 +289,8 @@ func isInt(k reflect.Kind) bool {
 func asInt64(v interface{}) (int64, bool) {
     if isSpecial(v) {
         return 0, false
-    } else if x := efaceOf(v); isInt(x.kind()) {
-        return x.toInt64(), true
+    } else if x := rt.AsEface(v); isInt(x.Kind()) {
+        return x.ToInt64(), true
     } else {
         return 0, false
     }

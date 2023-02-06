@@ -691,9 +691,9 @@ for name, (ins, desc, forms) in sorted(instrs.items()):
                         cc.line('})')
             cc.line('}')
         if not must_success:
-            cc.line('if p.len == 0 {')
+            cc.line('if p.nforms == 0 {')
             with CodeBlock(cc):
-                cc.line('panic("invalid operands for %s")' % name)
+                cc.line('panic("invalid combination of operands for %s")' % name)
             cc.line('}')
         cc.line('return p')
     cc.line('}')

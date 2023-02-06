@@ -15,18 +15,18 @@ func (Register32) Sealed(tag.Tag) {}
 func (Register64) Sealed(tag.Tag) {}
 
 func (self Register32) ID() uint8 {
-    switch {
-        case self == WSP          : return uint8(WZR)
-        case self &^ 0b11111 == 0 : return uint8(self)
-        default                   : panic("aarch64: invalid generic 32-bit register")
+    if self == WSP {
+        return uint8(WZR)
+    } else {
+        return uint8(self)
     }
 }
 
 func (self Register64) ID() uint8 {
-    switch {
-        case self == SP           : return uint8(XZR)
-        case self &^ 0b11111 == 0 : return uint8(self)
-        default                   : panic("aarch64: invalid generic 64-bit register")
+    if self == SP {
+        return uint8(XZR)
+    } else {
+        return uint8(self)
     }
 }
 

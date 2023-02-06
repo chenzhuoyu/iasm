@@ -15,10 +15,10 @@ func newProgram(arch *Arch) *Program {
     var v interface{}
 
     /* attempt to grab from the pool */
-    if v = programPool.Get(); v == nil {
-        p = new(Program)
+    if v = programPool.Get(); v != nil {
+        p = v.(*Program)
     } else {
-        p = clearProgram(v.(*Program))
+        p = new(Program)
     }
 
     /* initialize the program */
@@ -27,12 +27,8 @@ func newProgram(arch *Arch) *Program {
 }
 
 func freeProgram(p *Program) {
-    programPool.Put(p)
-}
-
-func clearProgram(p *Program) *Program {
     *p = Program{}
-    return p
+    programPool.Put(p)
 }
 
 func newInstruction(name string, argc int, argv Operands) *Instruction {
@@ -40,10 +36,10 @@ func newInstruction(name string, argc int, argv Operands) *Instruction {
     var p *Instruction
 
     /* attempt to grab from the pool */
-    if v = instructionPool.Get(); v == nil {
-        p = new(Instruction)
+    if v = instructionPool.Get(); v != nil {
+        p = v.(*Instruction)
     } else {
-        p = clearInstruction(v.(*Instruction))
+        p = new(Instruction)
     }
 
     /* initialize the instruction */
@@ -54,28 +50,20 @@ func newInstruction(name string, argc int, argv Operands) *Instruction {
     return p
 }
 
-func freeInstruction(v *Instruction) {
-    instructionPool.Put(v)
-}
-
-func clearInstruction(p *Instruction) *Instruction {
+func freeInstruction(p *Instruction) {
     *p = Instruction { prefix: p.prefix[:0] }
-    return p
+    instructionPool.Put(p)
 }
 
 func newMemoryOperandExtension() *MemoryOperandExtension {
-    if v := memoryOperandExtensionPool.Get(); v == nil {
-        return new(MemoryOperandExtension)
+    if v := memoryOperandExtensionPool.Get(); v != nil {
+        return v.(*MemoryOperandExtension)
     } else {
-        return clearMemoryOperandExtension(v.(*MemoryOperandExtension))
+        return new(MemoryOperandExtension)
     }
 }
 
 func freeMemoryOperandExtension(p *MemoryOperandExtension) {
-    memoryOperandExtensionPool.Put(p)
-}
-
-func clearMemoryOperandExtension(p *MemoryOperandExtension) *MemoryOperandExtension {
     *p = MemoryOperandExtension{}
-    return p
+    memoryOperandExtensionPool.Put(p)
 }

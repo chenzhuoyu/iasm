@@ -47,10 +47,6 @@ var SIMDVectorArrangements = map[string]SIMDVectorArrangement {
     "2d"  : Vec2D,
 }
 
-func (self SIMDVectorArrangement) q()    uint8 { return uint8(self & 1)  }
-func (self SIMDVectorArrangement) size() uint8 { return uint8(self >> 1) }
-func (self SIMDVectorArrangement) imm5() uint8 { return 1 << self.size() }
-
 func (self SIMDVectorArrangement) String() string {
     switch self {
         case Vec8B  : return "8b"
@@ -155,12 +151,12 @@ func (SIMDRegister64)   ItemWidth() uint8 { return 64 }
 func (SIMDRegister128)  ItemWidth() uint8 { return 128 }
 func (SIMDRegister128r) ItemWidth() uint8 { return 128 }
 
-func (self SIMDRegister8)    ID() uint8 { return uint8(self) & 0b11111 }
-func (self SIMDRegister16)   ID() uint8 { return uint8(self) & 0b11111 }
-func (self SIMDRegister32)   ID() uint8 { return uint8(self) & 0b11111 }
-func (self SIMDRegister64)   ID() uint8 { return uint8(self) & 0b11111 }
-func (self SIMDRegister128)  ID() uint8 { return uint8(self) & 0b11111 }
-func (self SIMDRegister128r) ID() uint8 { return uint8(self) & 0b11111 }
+func (self SIMDRegister8)    ID() uint8 { return uint8(self) }
+func (self SIMDRegister16)   ID() uint8 { return uint8(self) }
+func (self SIMDRegister32)   ID() uint8 { return uint8(self) }
+func (self SIMDRegister64)   ID() uint8 { return uint8(self) }
+func (self SIMDRegister128)  ID() uint8 { return uint8(self) }
+func (self SIMDRegister128r) ID() uint8 { return uint8(self) }
 
 func (self SIMDRegister8)    String() string { return fmt.Sprintf("b%d", self.ID()) }
 func (self SIMDRegister16)   String() string { return fmt.Sprintf("h%d", self.ID()) }

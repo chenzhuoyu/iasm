@@ -11,6 +11,9 @@ from typing import Iterator
 from typing import NamedTuple
 
 from enum import Enum
+from functools import cached_property
+from collections import OrderedDict
+
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 
@@ -103,11 +106,6 @@ cc.line('"1d"  : Vec1D,')
 cc.line('"2d"  : Vec2D,')
 cc.dedent()
 cc.line('}')
-cc.line()
-
-cc.line('func (self SIMDVectorArrangement) q()    uint8 { return uint8(self & 1)  }')
-cc.line('func (self SIMDVectorArrangement) size() uint8 { return uint8(self >> 1) }')
-cc.line('func (self SIMDVectorArrangement) imm5() uint8 { return 1 << self.size() }')
 cc.line()
 
 cc.line('func (self SIMDVectorArrangement) String() string {')
@@ -218,9 +216,9 @@ cc.line('func (SIMDRegister128r) ItemWidth() uint8 { return 128 }')
 cc.line()
 
 for i in range(5):
-    cc.line('func (self SIMDRegister%-4s  ID() uint8 { return uint8(self) & 0b11111 }' % ('%d)' % (8 << i)))
+    cc.line('func (self SIMDRegister%-4s  ID() uint8 { return uint8(self) }' % ('%d)' % (8 << i)))
 
-cc.line('func (self SIMDRegister128r) ID() uint8 { return uint8(self) & 0b11111 }')
+cc.line('func (self SIMDRegister128r) ID() uint8 { return uint8(self) }')
 cc.line()
 
 REG_PREFIX_TAB = [
@@ -454,7 +452,7 @@ for iclass in sorted(encindex.findall('iclass_sect'), key = lambda x: x.attrib['
     bits.update(iclass.findall('regdiagram/box'))
 
     cond = set()
-    vals = bits.bits[:]
+    req = bits.bits[:]
     args = sorted(bits.refs.items(), key = lambda x: x[1], reverse = True)
 
     for dc in iclass.findall('decode_constraints/decode_constraint'):
@@ -465,7 +463,7 @@ for iclass in sorted(encindex.findall('iclass_sect'), key = lambda x: x.attrib['
         ))
 
     for p, n in bits.refs.values():
-        vals[p:p + n] = [0] * n
+        req[p:p + n] = [0] * n
 
     instab[name] = InstructionTabEntry(
         name = name,
@@ -493,8 +491,8 @@ for iclass in sorted(encindex.findall('iclass_sect'), key = lambda x: x.attrib['
         cc.dedent()
         cc.line('}')
 
-    assert None not in vals, 'unset bit in %s: %r' % (name, vals)
-    cc.line('ret := uint32(0x%08x)' % int(''.join(map(str, vals))[::-1], 2))
+    assert None not in req, 'unset bit in %s: %r' % (name, req)
+    cc.line('ret := uint32(0x%08x)' % int(''.join(map(str, req))[::-1], 2))
 
     for th, (p, _) in args:
         if p == 0:
@@ -526,9 +524,12 @@ for name, entry in sorted(instab.items(), key = lambda v: v[0]):
             bitfields = th.findall('td[@class="bitfield"]')
 
             # TODO: remove this
-            # if encname != 'CASPAL_CP32_ldstexcl':
-            # if iformfile != 'add_addsub_imm.xml':
-            #     continue
+            # if encname != 'LDR_B_ldst_regoff':
+            if not (
+                iformfile.startswith('ldr_') or
+                iformfile.startswith('add_')
+            ):
+                continue
 
             assert iformfile, 'missing iform files for ' + name
             assert iformname is not None, 'missing iform names for ' + name
@@ -547,11 +548,11 @@ for name, entry in sorted(instab.items(), key = lambda v: v[0]):
                 else:
                     bits.append(list(map(parse_bit, field.text[::-1])))
 
-            for key, vals in zip(keys, bits):
-                if vals is not None:
+            for key, req in zip(keys, bits):
+                if req is not None:
                     p, n = instr.refs[key]
-                    assert len(vals) == n, 'mismatched bits for %s.%s.%s' % (name, encname, key)
-                    instr.bits[p:p + n] = vals
+                    assert len(req) == n, 'mismatched bits for %s.%s.%s' % (name, encname, key)
+                    instr.bits[p:p + n] = req
 
             enc = EncodingTabEntry(
                 name = encname,
@@ -568,11 +569,14 @@ for name, entry in sorted(instab.items(), key = lambda v: v[0]):
 
 ### ---------- Instruction Assembly Template ---------- ###
 
-class Op(Enum):
+class Sop(Enum):
     LSL  = 'lsl'
-    MSL  = 'msl'
     LSR  = 'lsr'
     ASR  = 'asr'
+    ROR  = 'ror'
+    MSL  = 'msl'
+
+class Xop(Enum):
     UXTB = 'uxtb'
     UXTH = 'uxth'
     UXTW = 'uxtw'
@@ -589,6 +593,10 @@ class Sym(Enum):
     SYSREG = 'systemreg'
 
 class Tag(str):
+    @cached_property
+    def name(self) -> str:
+        return self + ''
+
     def __str__(self) -> str:
         return '=' + self
 
@@ -596,6 +604,10 @@ class Tag(str):
         return 'Tag(%s)' + super().__repr__()
 
 class Imm(str):
+    @cached_property
+    def name(self) -> str:
+        return self + ''
+
     def __str__(self) -> str:
         return '#' + self
 
@@ -607,8 +619,10 @@ class Lit:
     val : object
 
     def __init__(self, v: object):
-        self.ty  = type(v)
-        self.val = v
+        if type(v) not in {int, float}:
+            raise TypeError('invalid literal valu: ' + repr(v))
+        else:
+            self.ty, self.val = type(v), v
 
     def __str__(self) -> str:
         return '#%s' % self.val
@@ -654,7 +668,7 @@ class Vec(NamedTuple):
         )
 
 class Mod(NamedTuple):
-    mod: str | Op
+    mod: str | Sop | Xop
     imm: tuple[Imm | Lit, bool] | None = None
 
     def name(self) -> str:
@@ -673,7 +687,7 @@ class Mod(NamedTuple):
 
 class Mem(NamedTuple):
     base   : Reg
-    offs   : tuple[Reg | Imm | Lit, bool] | None = None
+    offs   : tuple[Imm | Reg | Lit, bool] | None = None
     index  : Literal['pre', 'post'] | None       = None
     extend : tuple[Mod, bool] | None             = None
 
@@ -714,11 +728,10 @@ class Seq(NamedTuple):
     opt: Reg | Vec | Mem | Mod | Imm | Lit | Sym | None = None
 
     def __str__(self) -> str:
-        return ''.join(
-            '%s%s' % (', ' if i else '', str(v))
-            for i, v in enumerate(self.req + [self.opt])
-            if v is not None
-        )
+        return ''.join([
+            *('%s%s' % (', ' if i else '', str(v)) for i, v in enumerate(self.req)),
+            f'{{, {self.opt}}}' if self.opt else ''
+        ])
 
 class Instr(NamedTuple):
     mnemonic: str
@@ -751,10 +764,11 @@ class AsmTemplate:
     pos: int
     buf: list[str | Token]
 
-    ops = {
-        v.name
-        for v in Op
-    }
+    sops = { v.name for v in Sop }
+    xops = { v.name for v in Xop }
+
+    shifts  = { 'shift' }
+    extends = { 'extend', 'extend_1' }
 
     amounts = {
         'amount',
@@ -773,12 +787,6 @@ class AsmTemplate:
         'm',
         'n',
         't',
-    }
-
-    modifiers = {
-        'shift',
-        'extend',
-        'extend_1',
     }
 
     immediates = {
@@ -897,10 +905,10 @@ class AsmTemplate:
                     raise SyntaxError('invalid memory operand')
 
                 idx = 'pre' if self.skip('!') else None
-                args = [(v, bool(True)) for v in buf.req]
+                args = [(v, bool(False)) for v in buf.req]
 
                 if buf.opt is not None:
-                    args.append((buf.opt, False))
+                    args.append((buf.opt, True))
 
                 exts = None
                 offs = None
@@ -977,7 +985,7 @@ class AsmTemplate:
             case v if isinstance(v, Token) and v.name in self.predefined:
                 return self.dsym(v.name)
 
-            case v if isinstance(v, Token) and v.name not in self.modifiers:
+            case v if isinstance(v, Token) and v.name not in self.shifts and v.name not in self.extends:
                 mode = None
                 size = None
                 vidx = None
@@ -1009,8 +1017,12 @@ class AsmTemplate:
                 opt = False
                 mod = v.name if isinstance(v, Token) else v
 
-                if mod not in (self.ops if isinstance(v, str) else self.modifiers):
-                    raise SyntaxError('unexpected token: ' + repr(v))
+                if isinstance(v, str):
+                    if mod not in self.sops and mod not in self.xops:
+                        raise SyntaxError('unexpected token: ' + repr(v))
+                else:
+                    if mod not in self.shifts and mod not in self.extends:
+                        raise SyntaxError('unexpected token: ' + repr(v))
 
                 if self.tok == '{':
                     opt = True
@@ -1030,8 +1042,10 @@ class AsmTemplate:
                     if not isinstance(imm, Imm) or not imm in self.amounts:
                         raise SyntaxError('invalid extension immediate')
 
-                if mod in self.ops:
-                    mod = Op(mod.lower())
+                if mod in self.sops:
+                    mod = Sop(mod.lower())
+                elif mod in self.xops:
+                    mod = Xop(mod.lower())
 
                 if imm is None:
                     return Mod(mod)
@@ -1288,10 +1302,10 @@ for encdata in sorted(enctab.values(), key = lambda x: x.name):
     else:
         maxargs = max(maxargs, len(inst.operands.req) + 1)
 
-    vals = list(bits.refs.items())
-    vals.sort(key = lambda x: x[1], reverse = True)
+    req = list(bits.refs.items())
+    req.sort(key = lambda x: x[1], reverse = True)
 
-    for v, (p, n) in vals:
+    for v, (p, n) in req:
         if None in bits.bits[p:p + n]:
             args.append(v)
         else:
@@ -1326,88 +1340,520 @@ class And(list['And | Or | str']):
         else:
             return ' && '.join('(%s)' % str(v) if isinstance(v, Or) else str(v) for v in self)
 
-REG_CHECKS = {
-    'xd_sp'  : 'isXrOrSP',
-    'xn_sp'  : 'isXrOrSP',
-    'wd_wsp' : 'isWrOrWSP',
-    'wn_wsp' : 'isWrOrWSP',
+IMM_CHECKS = {
+    'imm9'  : 'isImm9(%s)',
+    'imm12' : 'isImm12(%s)',
 }
 
-def match_operand(inst: Instr, argc: int) -> Iterator[str]:
-    for val in inst.operands:
-        print(repr(val), val)
+REG_CHECKS = {
+    'bt'     : 'isBr(%s)',
+    'dt'     : 'isDr(%s)',
+    'ht'     : 'isHr(%s)',
+    'qt'     : 'isQr(%s)',
+    'st'     : 'isSr(%s)',
+    'vd'     : 'isVr(%s)',
+    'vm'     : 'isVr(%s)',
+    'vn'     : 'isVr(%s)',
+    'wd'     : 'isWr(%s)',
+    'wd_wsp' : 'isWrOrWSP(%s)',
+    'wm'     : 'isWr(%s)',
+    'wn'     : 'isWr(%s)',
+    'wn_wsp' : 'isWrOrWSP(%s)',
+    'ws'     : 'isWr(%s)',
+    'wt'     : 'isWr(%s)',
+    'xd'     : 'isXr(%s)',
+    'xd_sp'  : 'isXrOrSP(%s)',
+    'xm'     : 'isXr(%s)',
+    'xn'     : 'isXr(%s)',
+    'xn_sp'  : 'isXrOrSP(%s)',
+    'xs'     : 'isXr(%s)',
+    'xt'     : 'isXr(%s)',
+}
+
+REG_CHECKS_MERGED = {
+    'isWr(%s) || isXr(%s)' : 'isWrOrXr(%s)',
+    'isXr(%s) || isSP(%s)' : 'isXrOrSP(%s)',
+    'isWr(%s) || isWSP(%s)': 'isWrOrWSP(%s)',
+}
+
+COMBREG_CHECKS = {
+    'd': 'isWrOrXr(%s)',
+    'm': 'isWrOrXr(%s)',
+    'n': 'isWrOrXr(%s)',
+}
+
+FIXEDVEC_CHECKS = {
+    'd': 'isAdvSIMD(%s)',
+    'm': 'isAdvSIMD(%s)',
+    'n': 'isAdvSIMD(%s)',
+}
+
+SIGNED_IMM = {
+    'simm',
+    'pimm',
+    'pimm_1',
+    'pimm_2',
+    'pimm_3',
+    'pimm_4',
+}
+
+UNSIGNED_IMM = {
+    'uimm',
+}
+
+def match_operands(form: InstrForm, argc: int) -> Iterator['And | Or | str']:
+    dynvec = {}
+    fixedvec = {}
+    # TODO: remove this
+    print('------- match operand -------')
+    print(form.inst)
+
+    for i, val in enumerate(form.inst.operands.req):
+        if i < argc:
+            name = 'v%d' % i
+        else:
+            name = 'vv[%d]' % (i - argc)
 
         if isinstance(val, Reg):
-            print(REG_CHECKS[val.name])
             if val.size is not None:
-                print('%s[%s]' % (val.size, val.name))
+                if val.size == 'r':
+                    yield COMBREG_CHECKS[val.name] % name
+                else:
+                    yield FIXEDVEC_CHECKS[val.name] % name
+                    fixedvec.setdefault(val.size, []).append(name)
+
             elif val.mode is not None and val.vidx is not None:
+                # TODO: this
                 print('%s.%s[%s]' % (val.name, val.mode, val.vidx))
+                raise NotImplementedError('indexed vector')
+
             elif val.mode is not None:
-                print('%s.%s' % (val.name, val.mode))
+                yield 'isVr(%s)' % name
+                dynvec.setdefault(val.mode, []).append(name)
+
             elif val.altr is not None:
-                print('(%s|%s)' % (val.name, val.altr))
+                c1 = REG_CHECKS[val.name]
+                c2 = REG_CHECKS[val.altr]
+                v1 = REG_CHECKS_MERGED.get('%s || %s' % (c1, c2))
+                v2 = REG_CHECKS_MERGED.get('%s || %s' % (c2, c1))
+
+                if v1 is not None:
+                    yield v1 % name
+                elif v2 is not None:
+                    yield v2 % name
+                else:
+                    yield Or(c1 % name, c2 % name)
+
+            elif val.name == 'label':
+                yield 'isLabel(%s)' % name
+
             else:
-                print(val.name)
+                yield REG_CHECKS[val.name] % name
 
         elif isinstance(val, Vec):
-            pass
+            # TODO: handle vector
+            print(val)
+            raise NotImplementedError('vec operand')
+
         elif isinstance(val, Mem):
-            pass
+            yield 'isMem(%s)' % name
+            yield REG_CHECKS[val.base.name] % ('membase(%s)' % name)
+
+            if val.offs is None:
+                yield 'memindex(%s) == nil' % name
+                yield 'memoffset(%s) == 0' % name
+
+            else:
+                off = val.offs[0]
+                opt = val.offs[1]
+
+                if isinstance(off, Imm):
+                    if off in SIGNED_IMM:
+                        yield 'memindex(%s) == nil' % name
+                    elif off in UNSIGNED_IMM:
+                        yield from ['memindex(%s) == nil' % name, 'memoffset(%s) >= 0' % name]
+                    else:
+                        raise RuntimeError('invalid offset type ' + repr(off))
+
+                elif isinstance(off, Reg):
+                    key = 'memindex(%s)' % name
+                    yield 'memoffset(%s) == 0' % name
+
+                    if off.size is not None:
+                        raise RuntimeError('invalid offset register: vector')
+
+                    if off.mode is not None:
+                        raise RuntimeError('invalid offset register: dyn or indexed vector')
+
+                    if not opt:
+                        if off.altr is None:
+                            yield REG_CHECKS[off.name] % key
+
+                        else:
+                            c1 = REG_CHECKS[off.name]
+                            c2 = REG_CHECKS[off.altr]
+                            v1 = REG_CHECKS_MERGED.get('%s || %s' % (c1, c2))
+                            v2 = REG_CHECKS_MERGED.get('%s || %s' % (c2, c1))
+
+                            if v1 is not None:
+                                yield v1 % key
+                            elif v2 is not None:
+                                yield v2 % key
+                            else:
+                                yield Or(c1 % key, c2 % key)
+
+                else:
+                    if off.ty is not int:
+                        raise RuntimeError('invalid literal type for offsets')
+                    elif not opt:
+                        yield from ['memindex(%s) == nil' % name, 'memoffset(%s) == %d' % (name, off.val)]
+                    else:
+                        yield from ['memindex(%s) == nil' % name, Or('memoffset(%s) == 0' % name, 'memoffset(%s) == %d' % (name, off.val))]
+
+            if val.extend is None:
+                match val.index:
+                    case None   : yield 'memext(%s) == nil' % name
+                    case 'pre'  : yield 'memext(%s) == PreIndex' % name
+                    case 'post' : yield 'memext(%s) == PostIndex' % name
+                    case _      : raise RuntimeError('invalid memory index')
+
+            else:
+                ext = val.extend[0]
+                opx = val.extend[1]
+
+                if val.index is not None:
+                    raise RuntimeError('extension conflits with indexing')
+
+                if not opx:
+                    if isinstance(ext.mod, Sop):
+                        yield 'isMemMod(%s, %s(0))' % (name, ext.mod.name)
+                    elif isinstance(ext.mod, Xop):
+                        yield 'isMemMod(%s, %s(0))' % (name, ext.mod.name)
+                    elif ext.mod in AsmTemplate.shifts:
+                        yield 'memmod(%s) != nil' % name
+                    elif ext.mod in AsmTemplate.extends:
+                        yield 'memmod(%s) != nil' % name
+                    else:
+                        raise RuntimeError('invalid extension')
+
+                    if ext.imm is None:
+                        yield 'memamount(%s) == 0' % name
+
+                    else:
+                        imm = ext.imm[0]
+                        opm = ext.imm[1]
+
+                        if isinstance(imm, Lit):
+                            if imm.ty is not int:
+                                raise RuntimeError('invalid literal type for amounts')
+                            elif not opm or imm.val == 0:
+                                yield 'memamount(%s) == %d' % (name, imm.val)
+                            else:
+                                yield Or('memamount(%s) == 0' % name, 'memamount(%s) == %d' % (name, imm.val))
+
         elif isinstance(val, Mod):
-            pass
+            # TODO: handle extensions
+            print(val)
+            raise NotImplementedError('mod operand')
+
         elif isinstance(val, Imm):
-            pass
+            yield IMM_CHECKS[form.fields[val].name] % name
+
         elif isinstance(val, Lit):
-            pass
+            if val.ty is not int:
+                raise RuntimeError('invalid literal type for operands')
+            else:
+                yield '%s == %d' % (name, val.val)
+
+        elif isinstance(val, Sym):
+            # TODO: handle extensions
+            print(val)
+            raise NotImplementedError('sym operand')
+
         else:
-            pass
+            raise RuntimeError('invalid operand type')
+
+    yield from (
+        'isSameSize(%s, %s)' % (v[i], v[i + 1])
+        for v in dynvec.values()
+        for i in range(len(v) - 1)
+    )
+
+    yield from (
+        'isSameType(%s, %s)' % (v[i], v[i + 1])
+        for v in fixedvec.values()
+        for i in range(len(v) - 1)
+    )
+
+IMM_ENCODER = {
+    'imm12' : 'asImm12',
+}
+
+def encode_operand(
+    form : InstrForm,
+    name : str,
+    val  : Reg | Vec | Mem | Mod | Imm | Lit | Sym,
+    vals : dict[str, str],
+    opts : dict[str, str],
+):
+    if isinstance(val, Reg):
+        if val.mode is not None and val.vidx is not None:
+            # TODO: this
+            print('%s.%s[%s]' % (val.name, val.mode, val.vidx))
+            raise NotImplementedError('indexed vector')
+
+        elif val.mode is not None:
+            vals[val.name] = 'uint32(%s.(asm.Register).ID())' % name
+            vals[val.mode] = 'uint32(%s.(SIMDRegister128r).Arrangement())' % name
+
+        elif val.name == 'label':
+            vals[val.name] = name + '.(*asm.Label)'
+
+        else:
+            vals[val.name] = 'uint32(%s.(asm.Register).ID())' % name
+
+    elif isinstance(val, Vec):
+        # TODO: handle vector
+        print(val)
+        raise NotImplementedError('vec operand')
+
+    elif isinstance(val, Mem):
+        if val.base.mode is not None or val.base.vidx is not None:
+            raise RuntimeError('vector base is not supported')
+        else:
+            vals[val.base.name] = 'uint32(membase(%s).ID())' % name
+
+        if val.offs is not None:
+            off = val.offs[0]
+            opt = val.offs[1]
+
+            if isinstance(off, Imm):
+                vals[off.name] = 'uint32(memoffset(%s))' % name
+
+            elif isinstance(off, Reg):
+                if opt:
+                    raise RuntimeError('optional offset register is not supported')
+                elif off.size is not None:
+                    raise RuntimeError('invalid offset register: vector')
+                elif off.mode is not None:
+                    raise RuntimeError('invalid offset register: dyn or indexed vector')
+                elif off.altr is not None:
+                    vals[off.altr] = 'uint32(memindex(%s).ID())' % name
+                else:
+                    vals[off.name] = 'uint32(memindex(%s).ID())' % name
+
+        if val.extend is not None:
+            ext = val.extend[0]
+            opx = val.extend[1]
+
+            if val.index is not None:
+                raise RuntimeError('extension conflits with indexing')
+
+            if opx and not isinstance(ext.mod, (Sop, Xop)):
+                opts[ext.mod] = 'memmod(%s) != nil' % name
+
+            if ext.mod in AsmTemplate.shifts:
+                vals[ext.mod] = 'uint32(memmod(%s).(ShiftType).ShiftType())' % name
+            elif ext.mod in AsmTemplate.extends:
+                vals[ext.mod] = 'uint32(memmod(%s).(Extension).Extension())' % name
+
+            if ext.imm is not None and isinstance(ext.imm[0], Imm):
+                args = ext.imm[0].name
+                vals[args] = 'uint32(memmod(%s).Amount())' % name
+
+                if opx:
+                    opts[args] = 'memmod(%s) != nil' % name
+
+    elif isinstance(val, Mod):
+        # TODO: this
+        print(val)
+        raise NotImplementedError('mod operand')
+
+    elif isinstance(val, Imm):
+        vals[val.name] = '%s(%s)' % (IMM_ENCODER[form.fields[val].name], name)
+
+    elif isinstance(val, Lit):
+        # TODO: this
+        print(val)
+        raise NotImplementedError('lit operand')
+
+    elif isinstance(val, Sym):
+        # TODO: this
+        print(val)
+        raise NotImplementedError('sym operand')
+
+    else:
+        raise RuntimeError('invalid operand type')
 
 cc = CodeGen()
 cc.line('// Code generated by "mkasm_aarch64.py", DO NOT EDIT.')
 cc.line()
 cc.line('package aarch64')
 cc.line()
+cc.line('import (')
+cc.indent()
+cc.line('`github.com/chenzhuoyu/iasm/asm`')
+cc.dedent()
+cc.line(')')
+cc.line()
 cc.line('const (')
 cc.indent()
-cc.line('_N_args  = %d' % maxargs)
-cc.line('_N_forms = %d' % max(len(v) for v in formtab.values()))
+cc.line('_N_args = %d' % maxargs)
 cc.dedent()
 cc.line(')')
 cc.line()
 
-for name, forms in sorted(formtab.items(), key = lambda x: x[0]):
-    argc = set()
-    status('* Instruction:', name)
+for mnemonic, forms in sorted(formtab.items(), key = lambda x: x[0]):
+    nops = set()
+    status('* Instruction:', mnemonic)
 
     if len(forms) == 1:
-        cc.line('// %s instruction have a single form:' % name)
+        cc.line('// %s instruction have a single form:' % mnemonic)
         cc.line('//')
     else:
-        cc.line('// %s instruction have a %s forms:' % (name, len(forms)))
+        cc.line('// %s instruction have a %s forms:' % (mnemonic, len(forms)))
         cc.line('//')
 
     for form in forms:
         nop = len(form.inst.operands.req)
-        argc.add(nop)
-
-        if form.inst.operands.opt is not None:
-            argc.add(nop + 1)
-
+        nops.add(nop)
         cc.line('//   * %s' % form.text)
 
-    fixed = min(argc)
-    fargs = ', '.join('v%d' % i for i in range(fixed))
+        if form.inst.operands.opt is not None:
+            nops.add(nop + 1)
 
-    if fixed == max(argc):
-        cc.line('func (self *Program) %s(%s interface{}) *Instruction {' % (name, fargs))
-        cc.indent()
+    cc.line('//')
+    nfix = min(nops)
+    base = ['v%d' % i for i in range(nfix)]
+
+    if nfix == max(nops):
+        if not nfix:
+            cc.line('func (self *Program) %s() *Instruction {' % mnemonic)
+            cc.indent()
+            cc.line('p := self.alloc("%s", 0, Operands {})' % mnemonic)
+        else:
+            cc.line('func (self *Program) %s(%s interface{}) *Instruction {' % (mnemonic, ', '.join(base)))
+            cc.indent()
+            cc.line('p := self.alloc("%s", %d, Operands { %s })' % (mnemonic, nfix, ', '.join(base)))
 
     else:
-        cc.line('func (self *Program) %s(%s interface{}, vv ...interface{}) *Instruction {' % (name, fargs))
+        if not nfix:
+            cc.line('func (self *Program) %s(vv ...interface{}) *Instruction {' % mnemonic)
+        else:
+            cc.line('func (self *Program) %s(%s interface{}, vv ...interface{}) *Instruction {' % (mnemonic, ', '.join(base)))
+
         cc.indent()
         cc.line('var p *Instruction')
+        cc.line('switch len(vv) {')
+        cc.indent()
 
+        for argc in sorted(nops):
+            if not argc:
+                assert nfix == 0
+                cc.line('case 0  : p = self.alloc("%s", 0, Operands {})' % mnemonic)
+            else:
+                args = base[:] + ['vv[%d]' % i for i in range(argc - nfix)]
+                cc.line('case %d  : p = self.alloc("%s", %d, Operands { %s })' % (argc - nfix, mnemonic, argc, ', '.join(args)))
+
+        cc.line('default : panic("instruction %s takes %s operands")' % (mnemonic, ' or '.join(map(str, sorted(nops)))))
+        cc.dedent()
+        cc.line('}')
+
+    for form in forms:
+        cc.line('// ' + form.text)
+        cc.line('if %s {' % And(*match_operands(form, nfix)))
+        cc.indent()
+
+        fmap = {}
+        args = []
+        decl = set()
+
+        for key, fv in form.fields.items():
+            nb = 0
+            fn = fv.name.split(':')
+
+            if len(fn) == 1:
+                fmap[fv.name] = (key, key)
+                continue
+
+            for x in fn:
+                _, n = form.bits.refs[x]
+                nb += n
+
+            for x in fn:
+                _, n = form.bits.refs[x]
+                nb -= n
+
+                if nb == 0:
+                    fmap[x] = (key, '%s & 0b%s' % (key, '1' * n))
+                else:
+                    fmap[x] = (key, '(%s >> %d) & 0b%s' % (key, nb, '1' * n))
+
+        for v in form.args:
+            if not isinstance(v, str):
+                args.append(str(v))
+            else:
+                var, arg = fmap[v]
+                decl.add(var)
+
+                if arg != 'label':
+                    args.append(arg)
+                else:
+                    args.append('uint32(label.RelativeTo(pc))')
+
+        vals = OrderedDict()
+        opts = OrderedDict()
+        encode_now = True
+
+        for i, val in enumerate(form.inst.operands.req):
+            if i < nfix:
+                encode_operand(form, 'v%d' % i, val, vals, opts)
+            else:
+                encode_operand(form, 'vv[%d]' % (i - nfix), val, vals, opts)
+
+        for var in sorted(decl):
+            if var in opts:
+                if var != 'label':
+                    cc.line('var %s uint32' % var)
+                else:
+                    cc.line('var %s *asm.Label' % var)
+
+        for k, v in vals.items():
+            if k not in opts:
+                cc.line('%s := %s' % (k, v))
+            else:
+                cc.line('if %s {' % opts[k])
+                cc.indent()
+                cc.line('%s = %s' % (k, v))
+                cc.dedent()
+                cc.line('}')
+
+        # if form.inst.operands.opt is not None:
+        #     # TODO: this
+        #     print(form)
+        #     raise NotImplementedError('opt operand')
+
+        for op in form.inst.operands.req:
+            if op == Reg('label'):
+                encode_now = False
+                break
+
+        if form.inst.operands.opt == Reg('label'):
+            encode_now = False
+
+        if encode_now:
+            cc.line('p.setins(%s(%s))' % (form.enctab.func, ', '.join(args)))
+        else:
+            cc.line('p.setenc(func(pc uintptr) uint32 { return %s(%s) })' % (form.enctab.func, ', '.join(args)))
+
+        cc.dedent()
+        cc.line('}')
+
+    cc.line('if !p.isvalid {')
+    cc.indent()
+    cc.line('panic("aarch64: invalid combination of operands for %s")' % mnemonic)
+    cc.dedent()
+    cc.line('}')
     cc.line('return p')
     cc.dedent()
     cc.line('}')
@@ -1415,68 +1861,3 @@ for name, forms in sorted(formtab.items(), key = lambda x: x[0]):
 
 with open('arch/aarch64/instructions.go', 'w') as fp:
     fp.write('\n'.join(cc.buf))
-
-# data = ElementTree.parse(os.path.join(sys.argv[1], 'onebigfile.xml'))
-# instrs = data.findall('.//sect1[@id="iformpages"]//file/instructionsection[@type="instruction"]')
-
-# for instr in instrs:
-#     opts = {}
-#     fields = {}
-
-#     print('>>>>> %(id)s: %(title)s' % instr.attrib)
-#     parse_props(opts, instr)
-
-#     # TODO: implement SVE instructions
-#     if opts.get('instr-class') == 'sve':
-#         continue
-
-#     for expl in instr.findall('explanations/explanation'):
-#         symbol = expl.find('symbol')
-#         symacc = expl.find('account')
-#         symdef = expl.find('definition')
-
-#         if symbol is None or (symacc is None) is (symdef is None):
-#             raise AssertionError('invalid explanation')
-
-#         desc = symbol.text or ''
-#         name = symbol.attrib['link']
-
-#         if symacc is not None:
-#             assert symdef is None
-#             defs = Account(symacc.attrib['encodedin'], desc)
-#         else:
-#             assert isinstance(symdef, Element)
-#             defs = Definition(symdef.attrib['encodedin'], desc, parse_symdef(symdef))
-
-#         for enc in expl.attrib['enclist'].split(','):
-#             tab = fields.setdefault(enc.strip(), {})
-#             tab[name] = defs
-
-#     # # TODO: remove this
-#     if 'CASPAL_CP32_ldstexcl' not in fields:
-#         continue
-
-#     for iclass in instr.findall('classes/iclass'):
-#         attrs = dict(opts)
-#         proto = Instruction(insdata.bits)
-
-#         parse_props(attrs, iclass)
-#         parse_boxes(proto, iclass.findall('regdiagram/box'))
-
-#         for encoding in iclass.findall('encoding'):
-#             props = dict(attrs)
-#             instr = Instruction(proto)
-#             lexer = TokenStream.parse(encoding.attrib['name'], encoding.findall('asmtemplate/*'))
-
-#             parse_props(props, encoding)
-#             parse_boxes(instr, encoding.findall('box'))
-
-#             print('-------- %s --------' % lexer.name)
-#             print('Mnemonic :', props['mnemonic'])
-#             print('Syntax   :', ' '.join(map(repr, lexer)))
-#             import pprint
-#             print('Fields   :', end = ' ')
-#             pprint.pprint(fields.get(lexer.name, {}), compact = True, sort_dicts = True)
-#             print('Encoding :')
-#             print(instr)
-#             print()

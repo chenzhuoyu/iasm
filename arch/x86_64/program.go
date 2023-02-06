@@ -159,52 +159,23 @@ const (
 type Instruction struct {
     next   *Instruction
     refs   int64
+    name   string
     pc     uintptr
     nb     int
-    len    int
     argc   int
-    name   string
     argv   Operands
     forms  [_N_forms]_Encoding
+    nforms int
     pseudo _Pseudo
     branch _BranchType
     domain InstructionDomain
     prefix []byte
 }
 
-func (self *Instruction) PC() uintptr {
-    return self.pc
-}
-
-func (self *Instruction) Free() {
-    if atomic.AddInt64(&self.refs, -1) == 0 {
-        self.clear()
-        self.pseudo.free()
-        freeInstruction(self)
-    }
-}
-
-func (self *Instruction) Name() string {
-    return self.name
-}
-
-func (self *Instruction) Retain() asm.Instruction {
-    atomic.AddInt64(&self.refs, 1)
-    return self
-}
-
-func (self *Instruction) Domain() InstructionDomain {
-    return self.domain
-}
-
-func (self *Instruction) Operands() []interface{} {
-    return self.argv[:self.argc]
-}
-
 func (self *Instruction) add(flags int, encoder func(m *_Encoding, v []interface{})) {
-    self.forms[self.len].flags = flags
-    self.forms[self.len].encoder = encoder
-    self.len++
+    self.forms[self.nforms].flags = flags
+    self.forms[self.nforms].encoder = encoder
+    self.nforms++
 }
 
 func (self *Instruction) clear() {
@@ -241,7 +212,7 @@ func (self *Instruction) encode(m *[]byte) int {
     }
 
     /* find the shortest encoding */
-    for i := 0; i < self.len; i++ {
+    for i := 0; i < self.nforms; i++ {
         if e := &self.forms[i]; self.check(e) {
             if v := e.encode(self.argv[:self.argc]); v < n {
                 n = v
@@ -258,6 +229,35 @@ func (self *Instruction) encode(m *[]byte) int {
     /* update the instruction length */
     self.nb += n
     return self.nb
+}
+
+func (self *Instruction) PC() uintptr {
+    return self.pc
+}
+
+func (self *Instruction) Free() {
+    if atomic.AddInt64(&self.refs, -1) == 0 {
+        self.clear()
+        self.pseudo.free()
+        freeInstruction(self)
+    }
+}
+
+func (self *Instruction) Name() string {
+    return self.name
+}
+
+func (self *Instruction) Retain() asm.Instruction {
+    atomic.AddInt64(&self.refs, 1)
+    return self
+}
+
+func (self *Instruction) Domain() InstructionDomain {
+    return self.domain
+}
+
+func (self *Instruction) Operands() []interface{} {
+    return self.argv[:self.argc]
 }
 
 /** Instruction Prefixes **/

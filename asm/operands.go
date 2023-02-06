@@ -70,6 +70,14 @@ func (self *Label) Evaluate() (int64, error) {
     }
 }
 
+func (self *Label) RelativeTo(pc uintptr) uintptr {
+    if self.Dest == nil {
+        panic("aarch64: unresolved label: " + self.Name)
+    } else {
+        return self.Dest.PC() - pc
+    }
+}
+
 // MemoryAddressExtension represents an arch-specific memory address extension.
 type MemoryAddressExtension interface {
     tag.Sealed
@@ -147,6 +155,7 @@ type MemoryOperand struct {
 func (self *MemoryOperand) Free() {
     if atomic.AddInt64(&self.refs, -1) == 0 {
         self.Ext.Free()
+        self.Addr.Free()
         freeMemoryOperand(self)
     }
 }
