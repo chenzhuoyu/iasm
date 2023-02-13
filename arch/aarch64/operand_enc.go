@@ -7,6 +7,7 @@ import (
 func asImm12    (v interface{}) uint32 { x, _ := asInt64(v)  ; return uint32(x & 0b111111111111) }
 func asUimm4    (v interface{}) uint32 { x, _ := asUint64(v) ; return uint32(x & 0b1111) }
 func asUimm6    (v interface{}) uint32 { x, _ := asUint64(v) ; return uint32(x & 0b111111) }
+func asUimm8    (v interface{}) uint32 { x, _ := asUint64(v) ; return uint32(x & 0xff) }
 func asMaskImm  (v interface{}) uint32 { x, _ := asUint64(v) ; return _BitMask(x).mask() }
 
 func asInt64(v interface{}) (int64, bool) {

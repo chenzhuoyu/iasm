@@ -1,6 +1,7 @@
 package aarch64
 
 import (
+    `math`
     `reflect`
 
     `github.com/chenzhuoyu/iasm/asm`
@@ -85,6 +86,7 @@ func isImm9     (v interface{}) bool { x, f := asInt64(v)  ; return f && x &^ 0b
 func isImm12    (v interface{}) bool { x, f := asInt64(v)  ; return f && x &^ 0b111111111111 == 0 }
 func isUimm4    (v interface{}) bool { x, f := asUint64(v) ; return f && x &^ 0b1111 == 0 }
 func isUimm6    (v interface{}) bool { x, f := asUint64(v) ; return f && x &^ 0b111111 == 0 }
+func isUimm8    (v interface{}) bool { x, f := asUint64(v) ; return f && x <= math.MaxUint8 }
 func isMask32   (v interface{}) bool { x, f := asUint64(v) ; return f && _BitMask(x).is32() }
 func isMask64   (v interface{}) bool { x, f := asUint64(v) ; return f && _BitMask(x).is64() }
 

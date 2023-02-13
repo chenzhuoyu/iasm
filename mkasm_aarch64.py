@@ -1674,7 +1674,16 @@ for mnemonic, forms in sorted(formtab.items(), key = lambda x: x[0]):
 
         for key, fv in form.fields.items():
             nb = 0
-            fn = fv.name.split(':')
+            fn = []
+            st = False
+
+            for s in fv.name.split(':'):
+                if st:
+                    st = '>' not in s
+                    fn[-1] += ':' + s
+                else:
+                    st = '<' in s
+                    fn.append(s)
 
             if fv.name == form.inst.modifier:
                 continue
@@ -1699,6 +1708,8 @@ for mnemonic, forms in sorted(formtab.items(), key = lambda x: x[0]):
         for v in form.args:
             if not isinstance(v, str):
                 args.append(str(v))
+            elif v not in fmap:
+                args.append(v)  # FIXME: this
             elif all(x[1] != 'label' for x in fmap[v]):
                 args.append(fmap[v][-1][1])
             elif len(fmap[v]) == 1:
@@ -1781,10 +1792,38 @@ for mnemonic, forms in sorted(formtab.items(), key = lambda x: x[0]):
                 cc.dedent()
                 cc.line('}')
 
-        if all(v != Reg('label') for v in form.inst.operands.req):
-            cc.line('p.setins(%s(%s))' % (form.enctab.func, ', '.join(args)))
+        encoding = '%s(%s)' % (form.enctab.func, ', '.join(args))
+        deferred = any(v == Reg('label') for v in form.inst.operands.req)
+
+        if not deferred:
+            if len(encoding) + cc.level * 4 + 10 <= 120:
+                cc.line('p.setins(%s)' % encoding)
+            else:
+                cc.line('p.setins(%s(' % form.enctab.func)
+                cc.indent()
+
+                for arg in args:
+                    cc.line(arg + ',')
+
+                cc.dedent()
+                cc.line('))')
+
         else:
-            cc.line('p.setenc(func(pc uintptr) uint32 { return %s(%s) })' % (form.enctab.func, ', '.join(args)))
+            if len(encoding) + cc.level * 4 + 45 <= 120:
+                cc.line('p.setenc(func(pc uintptr) uint32 { return %s })' % encoding)
+            else:
+                cc.line('p.setenc(func(pc uintptr) uint32 {')
+                cc.indent()
+                cc.line('return %s(' % form.enctab.func)
+                cc.indent()
+
+                for arg in args:
+                    cc.line(arg + ',')
+
+                cc.dedent()
+                cc.line(')')
+                cc.dedent()
+                cc.line('})')
 
         cc.dedent()
         cc.line('}')
