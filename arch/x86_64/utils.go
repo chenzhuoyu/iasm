@@ -7,6 +7,8 @@ import (
     `strconv`
     `unicode/utf8`
     `unsafe`
+
+    `github.com/chenzhuoyu/iasm/internal/rt`
 )
 
 const (
@@ -72,8 +74,8 @@ func append64(m *[]byte, v uint64) {
 }
 
 func expandmm(m *[]byte, n int, v byte) {
-    sl := (*_GoSlice)(unsafe.Pointer(m))
-    nb := sl.len + n
+    sl := (*rt.GoSlice)(unsafe.Pointer(m))
+    nb := sl.Len + n
 
     /* grow as needed */
     if nb > cap(*m) {
@@ -81,8 +83,8 @@ func expandmm(m *[]byte, n int, v byte) {
     }
 
     /* fill the new area */
-    memset(unsafe.Pointer(uintptr(sl.ptr) + uintptr(sl.len)), v, uintptr(n))
-    sl.len = nb
+    memset(unsafe.Pointer(uintptr(sl.Ptr) + uintptr(sl.Len)), v, uintptr(n))
+    sl.Len = nb
 }
 
 func memset(p unsafe.Pointer, c byte, n uintptr) {
@@ -120,11 +122,11 @@ func literal64(v string) (uint64, error) {
 
 var (
     byteWrap = reflect.TypeOf(byte(0))
-    byteType = (*_GoType)(efaceOf(byteWrap).ptr)
+    byteType = (*rt.GoType)(rt.AsEface(byteWrap).Ptr)
 )
 
 //go:linkname growslice runtime.growslice
-func growslice(_ *_GoType, _ []byte, _ int) []byte
+func growslice(_ *rt.GoType, _ []byte, _ int) []byte
 
 //go:noescape
 //go:linkname memclrNoHeapPointers runtime.memclrNoHeapPointers

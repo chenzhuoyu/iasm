@@ -2,11 +2,9 @@ package aarch64
 
 import (
     `fmt`
-    `reflect`
     `strings`
 
     `github.com/chenzhuoyu/iasm/asm`
-    `github.com/chenzhuoyu/iasm/internal/rt`
     `github.com/chenzhuoyu/iasm/internal/tag`
 )
 
@@ -223,6 +221,22 @@ func (LSR) EnsureValid(addr asm.MemoryAddress) { _Modifier_EnsureValid(addr) }
 func (ASR) EnsureValid(addr asm.MemoryAddress) { _Modifier_EnsureValid(addr) }
 func (ROR) EnsureValid(addr asm.MemoryAddress) { _Modifier_EnsureValid(addr) }
 
+type (
+	_LSL12 struct{}
+)
+
+// LSL12 shifts the immediate value by 12, this value can only be used with {ADD,SUB}[S] instructions.
+var LSL12 _LSL12
+
+func (_LSL12) Free() {}
+func (_LSL12) Sealed(_ tag.Tag) {}
+func (_LSL12) MemoryAddressExtension()              {}
+func (_LSL12) Name() string                         { return "LSL #12" }
+func (_LSL12) Amount() uint8                        { return 0 }
+func (_LSL12) String(addr asm.MemoryAddress) string { return _Modifier_String(LSL12, addr) }
+func (_LSL12) ShiftType() uint8                     { return 0b1 }
+func (_LSL12) EnsureValid(addr asm.MemoryAddress)   { _Modifier_EnsureValid(addr) }
+
 // Extension represents one of the register extensions.
 type Extension interface {
     Modifier
@@ -312,162 +326,3 @@ func (SXTB) EnsureValid(addr asm.MemoryAddress) { _Modifier_EnsureValid(addr) }
 func (SXTH) EnsureValid(addr asm.MemoryAddress) { _Modifier_EnsureValid(addr) }
 func (SXTW) EnsureValid(addr asm.MemoryAddress) { _Modifier_EnsureValid(addr) }
 func (SXTX) EnsureValid(addr asm.MemoryAddress) { _Modifier_EnsureValid(addr) }
-
-const _IntMask =
-    (1 << reflect.Int    ) |
-    (1 << reflect.Int8   ) |
-    (1 << reflect.Int16  ) |
-    (1 << reflect.Int32  ) |
-    (1 << reflect.Int64  ) |
-    (1 << reflect.Uint   ) |
-    (1 << reflect.Uint8  ) |
-    (1 << reflect.Uint16 ) |
-    (1 << reflect.Uint32 ) |
-    (1 << reflect.Uint64 ) |
-    (1 << reflect.Uintptr)
-
-func isInt(k reflect.Kind) bool {
-    return (_IntMask & (1 << k)) != 0
-}
-
-func isSpecial(v interface{}) bool {
-    switch v.(type) {
-        case Register32         : return true
-        case Register64         : return true
-        case SIMDVector1        : return true
-        case SIMDVector2        : return true
-        case SIMDVector3        : return true
-        case SIMDVector4        : return true
-        case SIMDVector1r       : return true
-        case SIMDVector2r       : return true
-        case SIMDVector3r       : return true
-        case SIMDVector4r       : return true
-        case SIMDRegister8      : return true
-        case SIMDRegister16     : return true
-        case SIMDRegister32     : return true
-        case SIMDRegister64     : return true
-        case SIMDRegister128    : return true
-        case SIMDRegister128r   : return true
-        case SIMDRegister128v   : return true
-        case asm.RelativeOffset : return true
-        default                 : return false
-    }
-}
-
-func isSameType(x, y interface{}) bool {
-    return isAdvSIMD(x) && isAdvSIMD(y) && rt.AsEface(x).Ty == rt.AsEface(y).Ty
-}
-
-func isSameSize(x, y interface{}) bool {
-    if a, ok := x.(SIMDRegister128r); !ok {
-        return false
-    } else if b, ok := y.(SIMDRegister128r); !ok {
-        return false
-    } else {
-        return a.Arrangement() == b.Arrangement()
-    }
-}
-
-func asImm12(v interface{}) uint32 {
-    x, _ := asInt64(v)
-    return uint32(x & 0b111111111111)
-}
-
-func asInt64(v interface{}) (int64, bool) {
-    if isSpecial(v) {
-        return 0, false
-    } else if x := rt.AsEface(v); isInt(x.Kind()) {
-        return x.ToInt64(), true
-    } else {
-        return 0, false
-    }
-}
-
-func isLabel    (v interface{}) bool { _, f := v.(*asm.Label)         ; return f }
-func isXr       (v interface{}) bool { x, f := v.(Register64)         ; return f && x != SP }
-func isWr       (v interface{}) bool { x, f := v.(Register32)         ; return f && x != WSP }
-func isXrOrSP   (v interface{}) bool { x, f := v.(Register64)         ; return f && x != XZR }
-func isWrOrWSP  (v interface{}) bool { x, f := v.(Register32)         ; return f && x != WZR }
-func isBr       (v interface{}) bool { _, f := v.(SIMDRegister8)      ; return f }
-func isHr       (v interface{}) bool { _, f := v.(SIMDRegister16)     ; return f }
-func isSr       (v interface{}) bool { _, f := v.(SIMDRegister32)     ; return f }
-func isDr       (v interface{}) bool { _, f := v.(SIMDRegister64)     ; return f }
-func isQr       (v interface{}) bool { _, f := v.(SIMDRegister128)    ; return f }
-func isVr       (v interface{}) bool { _, f := v.(SIMDRegister128r)   ; return f }
-
-func isImm(v interface{}) bool {
-    _, f := asInt64(v)
-    return f
-}
-
-func isImm9(v interface{}) bool {
-    x, f := asInt64(v)
-    return f && x &^ 0b111111111 == 0
-}
-
-func isImm12(v interface{}) bool {
-    x, f := asInt64(v)
-    return f && x &^ 0b111111111111 == 0
-}
-
-func isMem(v interface{}) bool {
-    if x, ok := v.(*asm.MemoryOperand); !ok {
-        return false
-    } else {
-        _, ok = x.Addr.(asm.MemoryAddress)
-        return ok
-    }
-}
-
-func isMemMod(v interface{}, mod Modifier) bool {
-    if x, ok := v.(*asm.MemoryOperand); !ok {
-        return false
-    } else if a, ok := x.Addr.(asm.MemoryAddress); !ok {
-        return false
-    } else {
-        return rt.AsEface(a.Ext).Ty == rt.AsEface(mod).Ty
-    }
-}
-
-func isWrOrXr(v interface{}) bool {
-    switch v.(type) {
-        case Register32 : return true
-        case Register64 : return true
-        default         : return false
-    }
-}
-
-func isAdvSIMD(v interface{}) bool {
-    switch v.(type) {
-        case SIMDRegister8   : return true
-        case SIMDRegister16  : return true
-        case SIMDRegister32  : return true
-        case SIMDRegister64  : return true
-        case SIMDRegister128 : return true
-        default              : return false
-    }
-}
-
-func memmod(v interface{}) Modifier {
-    if x, ok := memext(v).(Modifier); ok {
-        return x
-    } else {
-        return nil
-    }
-}
-
-func memext(v interface{}) asm.MemoryAddressExtension {
-    return v.(*asm.MemoryOperand).Addr.(asm.MemoryAddress).Ext
-}
-
-func membase(v interface{}) asm.Register {
-    return v.(*asm.MemoryOperand).Addr.(asm.MemoryAddress).Base
-}
-
-func memindex(v interface{}) asm.Register {
-    return v.(*asm.MemoryOperand).Addr.(asm.MemoryAddress).Index
-}
-
-func memoffset(v interface{}) int32 {
-    return v.(*asm.MemoryOperand).Addr.(asm.MemoryAddress).Offset
-}

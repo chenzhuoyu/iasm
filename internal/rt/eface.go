@@ -58,6 +58,18 @@ func (self *GoEface) ToInt64() int64 {
     }
 }
 
+func (self *GoEface) ToUint64() uint64 {
+    if self.Ty.Size == 8 {
+        return *(*uint64)(self.Ptr)
+    } else if self.Ty.Size == 4 {
+        return uint64(*(*uint32)(self.Ptr))
+    } else if self.Ty.Size == 2 {
+        return uint64(*(*uint16)(self.Ptr))
+    } else {
+        return uint64(*(*uint8)(self.Ptr))
+    }
+}
+
 func AsEface(v interface{}) GoEface {
     return *(*GoEface)(unsafe.Pointer(&v))
 }
