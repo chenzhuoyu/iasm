@@ -13,7 +13,6 @@ import (
     `unsafe`
 
     `github.com/knz/go-libedit`
-    `github.com/mattn/go-isatty`
 )
 
 // IASM is the interactive REPL.
@@ -448,7 +447,7 @@ func (self *IASM) _cmd_asm(v string) {
         }
 
         /* update the input line if stdout is a terminal */
-        if isatty.IsTerminal(os.Stdout.Fd()) {
+        if isatty(os.Stdout.Fd()) {
             println("\x1b[F\x1b[K" + asmdump(buf, fnv, src))
         }
 
