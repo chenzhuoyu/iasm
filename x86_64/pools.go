@@ -86,7 +86,7 @@ func freeInstruction(v *Instruction) {
 }
 
 func clearInstruction(p *Instruction) *Instruction {
-    *p = Instruction { prefix: p.prefix }
+    *p = Instruction { prefix: p.prefix[:0] }
     return p
 }
 
