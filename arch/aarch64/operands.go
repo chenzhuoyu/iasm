@@ -9,8 +9,8 @@ import (
 )
 
 type (
-    _MemOpExt   struct{}
-	_MemAddrExt struct{}
+    _MemOpExt struct{}
+    _Basic    struct{}
 )
 
 // MemOpExt is the aarch specific extensions of asm.MemoryOperand
@@ -28,22 +28,14 @@ func (_MemOpExt) EnsureValid(mem *asm.MemoryOperand) {
     mem.Addr.EnsureValid()
 }
 
-// Mem constructs a memory operand from an addressable value.
-func Mem(addr asm.Addressable) (v *asm.MemoryOperand) {
-    v = asm.CreateMemoryOperand(MemOpExt)
-    v.Addr = addr
-    v.EnsureValid()
-    return
-}
+// Basic reprensets a basic memory address that does not have any indexing or extensions.
+var Basic _Basic
 
-// MemAddrExt reprensets that this memory address does not have any indexing or extensions.
-var MemAddrExt _MemAddrExt
+func (_Basic) Free()                   {}
+func (_Basic) Sealed(_ tag.Tag)        {}
+func (_Basic) MemoryAddressExtension() {}
 
-func (_MemAddrExt) Free()                   {}
-func (_MemAddrExt) Sealed(_ tag.Tag)        {}
-func (_MemAddrExt) MemoryAddressExtension() {}
-
-func (_MemAddrExt) String(addr asm.MemoryAddress) string {
+func (_Basic) String(addr asm.MemoryAddress) string {
     sb := new(strings.Builder)
     sb.WriteByte('[')
     sb.WriteString(addr.Base.String())
@@ -65,7 +57,7 @@ func (_MemAddrExt) String(addr asm.MemoryAddress) string {
     return sb.String()
 }
 
-func (_MemAddrExt) EnsureValid(addr asm.MemoryAddress) {
+func (_Basic) EnsureValid(addr asm.MemoryAddress) {
     if addr.Index != nil && addr.Offset != 0 {
         panic("aarch64: cannot index base by register and immediate at the same time")
     }
@@ -75,8 +67,8 @@ func (_MemAddrExt) EnsureValid(addr asm.MemoryAddress) {
 type IndexMode uint8
 
 const (
-    PreIndex IndexMode = iota       // Pre-index, like "[<Xn|SP>, #imm]!"
-    PostIndex                       // Post-index, like "[<Xn|SP>], #imm"
+    PreIndex IndexMode = iota   // Pre-index, like "[<Xn|SP>, #imm]!"
+    PostIndex                   // Post-index, like "[<Xn|SP>], #imm"
 )
 
 func (IndexMode) Free()                   {}
@@ -222,7 +214,7 @@ func (ASR) EnsureValid(addr asm.MemoryAddress) { _Modifier_EnsureValid(addr) }
 func (ROR) EnsureValid(addr asm.MemoryAddress) { _Modifier_EnsureValid(addr) }
 
 type (
-	_LSL12 struct{}
+    _LSL12 struct{}
 )
 
 // LSL12 shifts the immediate value by 12, this value can only be used with {ADD,SUB}[S] instructions.
@@ -326,3 +318,135 @@ func (SXTB) EnsureValid(addr asm.MemoryAddress) { _Modifier_EnsureValid(addr) }
 func (SXTH) EnsureValid(addr asm.MemoryAddress) { _Modifier_EnsureValid(addr) }
 func (SXTW) EnsureValid(addr asm.MemoryAddress) { _Modifier_EnsureValid(addr) }
 func (SXTX) EnsureValid(addr asm.MemoryAddress) { _Modifier_EnsureValid(addr) }
+
+// Mem constructs a memory operand.
+func Mem(base asm.Register, args ...interface{}) (v *asm.MemoryOperand) {
+    addr := asm.MemoryAddress{}
+    addr.Ext = Basic
+    addr.Base = base
+
+    /* parse offset or index register if any */
+    if len(args) >= 1 {
+        if isInt32(args[0]) {
+            addr.Offset = asInt32(args[0])
+        } else if rr, ok := args[0].(asm.Register); ok {
+            addr.Index = rr
+        } else {
+            panic("aarch64: invalid memory offset or index")
+        }
+    }
+
+    /* parse extensions if any */
+    if len(args) >= 2 {
+        if isMod(args[1]) || isIndex(args[1]) {
+            addr.Ext = args[1].(asm.MemoryAddressExtension)
+        } else {
+            panic("aarch64: invalid memory index, shift or extension")
+        }
+    }
+
+    /* more arguments than required */
+    if len(args) >= 3 {
+        panic("aarch64: excessive arguments for memory operand")
+    }
+
+    /* construct the operand */
+    v = asm.CreateMemoryOperand(MemOpExt)
+    v.Addr = addr
+    v.EnsureValid()
+    return
+}
+
+// BranchTarget represents the operand for BTI instruction.
+type BranchTarget uint8
+
+const (
+    _BrOmitted BranchTarget = iota
+    BrC
+    BrJ
+    BrJC
+)
+
+// BranchCondition represents one of the conditional branch conditions.
+type BranchCondition uint8
+
+const (
+    EQ BranchCondition = 0b0000     // Equal / equals zero                      Z != 0
+    NE BranchCondition = 0b0001     // Not equal                                Z == 0
+    CS BranchCondition = 0b0010     // Carry set / unsigned higher or same      C != 0
+    CC BranchCondition = 0b0011     // Carry clear / unsigned lower             C == 0
+    MI BranchCondition = 0b0100     // Minus / negative                         N != 0
+    PL BranchCondition = 0b0101     // Plus / positive or zero                  N == 0
+    VS BranchCondition = 0b0110     // Overflow                                 V != 0
+    VC BranchCondition = 0b0111     // No overflow                              V == 0
+    HI BranchCondition = 0b1000     // Unsigned higher                          C != 0 and Z == 0
+    LS BranchCondition = 0b1001     // Unsigned lower or same                   C == 0 or Z != 0
+    GE BranchCondition = 0b1010     // Signed greater than or equal             N == V
+    LT BranchCondition = 0b1011     // Signed less than                         N != V
+    GT BranchCondition = 0b1100     // Signed greater than                      Z == 0 and N == V
+    LE BranchCondition = 0b1101     // Signed less than or equal                Z != 0 or N != V
+    AL BranchCondition = 0b1110     // Always (default)                         any
+)
+
+const (
+    HS = CS                         // Unsigned higher or same / carry set      C != 0
+    LO = CC                         // Unsigned lower / carry clear             C == 0
+)
+
+// BarrierOption represents one of the memory barrier options.
+type BarrierOption uint8
+
+const (
+    // SY : Full system is the required shareability domain, reads and writes are the required
+    // access types, both before and after the barrier instruction. This option is referred to
+    // as the full system barrier.
+    SY BarrierOption = 0b1111
+
+    // ST : Full system is the required shareability domain, writes are the required access type,
+    // both before and after the barrier instruction.
+    ST BarrierOption = 0b1110
+
+    // LD : Full system is the required shareability domain, reads are the required access type
+    // before the barrier instruction, and reads and writes are the required access types after
+    // the barrier instruction.
+    LD BarrierOption = 0b1101
+
+    // ISH : Inner Shareable is the required shareability domain, reads and writes are the required
+    // access types, both before and after the barrier instruction.
+    ISH BarrierOption = 0b1011
+
+    // ISHST : Inner Shareable is the required shareability domain, writes are the required access
+    // type, both before and after the barrier instruction.
+    ISHST BarrierOption = 0b1010
+
+    // ISHLD : Inner Shareable is the required shareability domain, reads are the required access
+    // type before the barrier instruction, and reads and writes are the required access types after
+    // the barrier instruction.
+    ISHLD BarrierOption = 0b1001
+
+    // NSH : Non-shareable is the required shareability domain, reads and writes are the required
+    // access, both before and after the barrier instruction.
+    NSH BarrierOption = 0b0111
+
+    // NSHST : Non-shareable is the required shareability domain, writes are the required access
+    // type, both before and after the barrier instruction.
+    NSHST BarrierOption = 0b0110
+
+    // NSHLD : Non-shareable is the required shareability domain, reads are the required access
+    // type before the barrier instruction, and reads and writes are the required access types after
+    // the barrier instruction.
+    NSHLD BarrierOption = 0b0101
+
+    // OSH : Outer Shareable is the required shareability domain, reads and writes are the required
+    // access types, both before and after the barrier instruction.
+    OSH BarrierOption = 0b0011
+
+    // OSHST : Outer Shareable is the required shareability domain, writes are the required access
+    // type, both before and after the barrier instruction.
+    OSHST BarrierOption = 0b0010
+
+    // OSHLD : Outer Shareable is the required shareability domain, reads are the required access
+    // type before the barrier instruction, and reads and writes are the required access types after
+    // the barrier instruction.
+    OSHLD BarrierOption = 0b0001
+)

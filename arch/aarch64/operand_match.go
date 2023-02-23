@@ -31,6 +31,16 @@ func isUint(k reflect.Kind) bool {
     return (_IntMask & (1 << k)) != 0
 }
 
+func isInt32(v interface{}) bool {
+    x, ok := asInt64(v)
+    return ok && x >= math.MinInt32 && x <= math.MaxInt32
+}
+
+func isBrCond(v interface{}) bool {
+    _, ok := v.(BranchCondition)
+    return ok
+}
+
 func isSpecial(v interface{}) bool {
     switch v.(type) {
         case Register32         : return true
@@ -85,14 +95,19 @@ func isImm      (v interface{}) bool { _, f := asInt64(v)  ; return f }
 func isImm9     (v interface{}) bool { x, f := asInt64(v)  ; return f && x &^ 0b111111111 == 0 }
 func isImm12    (v interface{}) bool { x, f := asInt64(v)  ; return f && x &^ 0b111111111111 == 0 }
 func isUimm4    (v interface{}) bool { x, f := asUint64(v) ; return f && x &^ 0b1111 == 0 }
+func isUimm5    (v interface{}) bool { x, f := asUint64(v) ; return f && x &^ 0b11111 == 0 }
 func isUimm6    (v interface{}) bool { x, f := asUint64(v) ; return f && x &^ 0b111111 == 0 }
 func isUimm8    (v interface{}) bool { x, f := asUint64(v) ; return f && x <= math.MaxUint8 }
+func isUimm16   (v interface{}) bool { x, f := asUint64(v) ; return f && x <= math.MaxUint16 }
 func isMask32   (v interface{}) bool { x, f := asUint64(v) ; return f && _BitMask(x).is32() }
 func isMask64   (v interface{}) bool { x, f := asUint64(v) ; return f && _BitMask(x).is64() }
 
-func isMod      (v interface{}) bool { _, f := mext(v).(Modifier) ; return f }
-func isShift    (v interface{}) bool { _, f := v.(ShiftType)      ; return f }
-func isExtend   (v interface{}) bool { _, f := v.(Extension)      ; return f }
+func isMod      (v interface{}) bool { _, f := v.(Modifier)      ; return f }
+func isIndex    (v interface{}) bool { _, f := v.(IndexMode)     ; return f }
+func isShift    (v interface{}) bool { _, f := v.(ShiftType)     ; return f }
+func isExtend   (v interface{}) bool { _, f := v.(Extension)     ; return f }
+func isTargets  (v interface{}) bool { _, f := v.(BranchTarget)  ; return f }
+func isOptions  (v interface{}) bool { _, f := v.(BarrierOption) ; return f }
 
 func isMem(v interface{}) bool {
     if x, ok := v.(*asm.MemoryOperand); !ok {
@@ -101,6 +116,11 @@ func isMem(v interface{}) bool {
         _, ok = x.Addr.(asm.MemoryAddress)
         return ok
     }
+}
+
+func isVfmt(v interface{}, fmt ...SIMDVectorArrangement) bool {
+    for _, f := range fmt { if vfmt(v) == f { return true } }
+    return false
 }
 
 func isSameMod(v interface{}, mod Modifier) bool {
