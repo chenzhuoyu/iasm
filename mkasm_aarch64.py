@@ -59,9 +59,9 @@ class Definition:
     name: str
     desc: str
     refs: list[str]
-    bits: dict[str, str]
+    bits: dict[str, set[str]]
 
-    def __init__(self, name: str, desc: str, refs: list[str], bits: dict[str, str]):
+    def __init__(self, name: str, desc: str, refs: list[str], bits: dict[str, set[str]]):
         self.name = name
         self.desc = desc
         self.refs = refs
@@ -72,7 +72,7 @@ class Definition:
             self.name,
             self.desc,
             ':'.join(self.refs[::-1]),
-            ' '.join('%s=%s' % t for t in self.bits.items())
+            ' '.join('%s={%s}' % (k, ':'.join(sorted(v))) for k, v in self.bits.items())
         )
 
 class Instruction:
@@ -303,39 +303,40 @@ for name, entry in sorted(instab.items(), key = lambda v: v[0]):
             bitfields = th.findall('td[@class="bitfield"]')
 
             # TODO: remove this
-            if 'advsimd' in iformfile or iformfile in {'b_cond.xml', 'casp.xml'}:
-                continue
-            if iformfile[0] > 'e':
-                continue
-            # if not (
-            #     iformfile.startswith('bti') or
-            #     iformfile.startswith('aesd_') or
-            #     iformfile.startswith('uqxtn_') or
-            #     iformfile.startswith('ldr_') or
-            #     iformfile.startswith('and_') or
-            #     iformfile.startswith('eor_') or
-            #     iformfile.startswith('orn_') or
-            #     iformfile.startswith('orr_') or
-            #     iformfile.startswith('addg') or
-            #     iformfile.startswith('blra') or
-            #     iformfile.startswith('bra') or
-            #     iformfile.startswith('ccmn') or
-            #     iformfile.startswith('autia') or
-            #     iformfile.startswith('clrex') or
-            #     iformfile.startswith('dmb') or
-            #     iformfile.startswith('dsb') or
-            #     iformfile.startswith('fcmp') or
-            #     iformfile.startswith('fcvtzs_') or
-            #     iformfile.startswith('scvtf_') or
-            #     iformfile.startswith('shl') or
-            #     iformfile.startswith('shr') or
-            #     iformfile.startswith('sshl') or
-            #     iformfile.startswith('sshr') or
-            #     iformfile.startswith('ssra') or
-            #     iformfile.startswith('usra') or
-            #     iformfile.startswith('adr')
-            # ):
+            # if encname != 'ADDS_64S_addsub_ext':
             #     continue
+            # if 'advsimd' in iformfile or iformfile in {'b_cond.xml', 'casp.xml'}:
+            #     continue
+            if not (
+                iformfile[0] <= 'e' and 'advsimd' not in iformfile and iformfile not in {'b_cond.xml', 'casp.xml'} or
+                iformfile.startswith('bti') or
+                iformfile.startswith('aesd_') or
+                iformfile.startswith('uqxtn_') or
+                iformfile.startswith('ldr_') or
+                iformfile.startswith('and_') or
+                iformfile.startswith('eor_') or
+                iformfile.startswith('orn_') or
+                iformfile.startswith('orr_') or
+                iformfile.startswith('addg') or
+                iformfile.startswith('blra') or
+                iformfile.startswith('bra') or
+                iformfile.startswith('ccmn') or
+                iformfile.startswith('autia') or
+                iformfile.startswith('clrex') or
+                iformfile.startswith('dmb') or
+                iformfile.startswith('dsb') or
+                iformfile.startswith('fcmp') or
+                iformfile.startswith('fcvtzs_') or
+                iformfile.startswith('scvtf_') or
+                iformfile.startswith('shl') or
+                iformfile.startswith('shr') or
+                iformfile.startswith('sshl') or
+                iformfile.startswith('sshr') or
+                iformfile.startswith('ssra') or
+                iformfile.startswith('usra') or
+                iformfile.startswith('adr')
+            ):
+                continue
 
             assert iformfile, 'missing iform files for ' + name
             assert iformname is not None, 'missing iform names for ' + name
@@ -1010,7 +1011,7 @@ def parse_props(out: dict[str, str], p: Element):
     for v in p.findall('docvars/docvar'):
         out[v.attrib['key']] = v.attrib['value']
 
-def parse_symdef(defs: Element) -> tuple[list[str], dict[str, str]]:
+def parse_symdef(defs: Element) -> tuple[list[str], dict[str, set[str]]]:
     rets = {}
     tabs = defs.findall('.//tgroup')
     rows = defs.findall('.//tbody/row')
@@ -1034,7 +1035,7 @@ def parse_symdef(defs: Element) -> tuple[list[str], dict[str, str]]:
             raise AssertionError('missing symbol or bitfield: encodedin="%s"' % dest)
 
         for sym in map(str.strip, syms.text.split('|')):
-            rets[sym] = ''.join(bits)
+            rets.setdefault(sym, set()).add(''.join(bits))
 
     refs = [v.text or '' for v in refs]
     refs.reverse()
@@ -1325,8 +1326,8 @@ def match_operands(form: InstrForm, argc: int) -> Iterator['And | Or | str']:
         if form.inst.operands.opt is None:
             yield 'len(vv) == %d' % (len(argv) - argc)
         else:
-            yield 'len(vv) <= %d' % (len(argv) - argc)
             yield 'len(vv) >= %d' % (len(argv) - argc - 1)
+            yield 'len(vv) <= %d' % (len(argv) - argc)
 
     for i, val in enumerate(argv):
         name = 'v%d' % i if i < argc else 'vv[%d]' % (i - argc)
@@ -1520,6 +1521,13 @@ BM_FORMAT   = '%s__bit_mask'
 REL_VARNAME = 'delta'
 REL_VARINIT = 'uint32(label.RelativeTo(pc))'
 
+BR_ENUMS = {
+    '(omitted)' : '_BrOmitted',
+    'c'         : 'BrC',
+    'j'         : 'BrJ',
+    'jc'        : 'BrJC',
+}
+
 IMM_ENCODER = {
     'CRm'             : 'asUimm4(%s)',
     'N:immr:imms'     : 'asMaskOp(%s)',
@@ -1581,37 +1589,7 @@ def encode_defs(
                 basic = False
                 break
 
-    if basic:
-        cond = []
-        opts[var_name] = cond
-        vals[var_name] = sw_cond
-
-        for k, v in field.bits.items():
-            if v and k != 'RESERVED' and not k.startswith('SEE'):
-                if 'x' not in v:
-                    cond.append('case %s: %s = 0b%s' % (name_tab[k], var_name, v))
-                else:
-                    multi = True
-                    cond.append('case %s: %s = 0b%s' % (name_tab[k], var_name, v.replace('x', '0')))
-
-        if multi:
-            mask = []
-            opts[BM_FORMAT % var_name] = mask
-            vals[BM_FORMAT % var_name] = sw_cond
-
-            for k, v in field.bits.items():
-                if v and k != 'RESERVED' and not k.startswith('SEE'):
-                    bv = ''.join('0' if c == 'x' else '1' for c in v)
-                    mask.append('case %s: %s = 0b%s' % (name_tab[k], BM_FORMAT % var_name, bv))
-            else:
-                mask.append('default: panic("aarch64: %s")' % err_msg)
-
-        if not cond:
-            raise RuntimeError('not encodable: ' + form.inst.mnemonic)
-        else:
-            cond.append('default: panic("aarch64: %s")' % err_msg)
-
-    else:
+    if not basic:
         refs = ''
         defs = None
 
@@ -1635,14 +1613,71 @@ def encode_defs(
         opts[var_name] = cond
         vals[var_name] = refs
 
-        for k, v in field.bits.items():
-            if v and k != 'RESERVED' and not k.startswith('SEE'):
-                if pat := re.match(r'\((\d+)-U[Ii]nt\(%s\)\)' % field.name, k):
-                    cond.append('case 0b%s: %s = %s - uint32(%s)' % (v.replace('x', '0'), var_name, pat.group(1), sw_cond))
-                elif pat := re.match(r'\(U[Ii]nt\(%s\)-(\d+)\)' % field.name, k):
-                    cond.append('case 0b%s: %s = uint32(%s) + %s' % (v.replace('x', '0'), var_name, sw_cond, pat.group(1)))
+        for k, vv in field.bits.items():
+            if vv and k != 'RESERVED' and not k.startswith('SEE'):
+                if len(vv) != 1:
+                    raise RuntimeError('ambiguous bit pattern')
+
+                for v in vv:
+                    if pat := re.match(r'\((\d+)-U[Ii]nt\(%s\)\)' % field.name, k):
+                        cond.append('case 0b%s: %s = %s - uint32(%s)' % (v.replace('x', '0'), var_name, pat.group(1), sw_cond))
+                    elif pat := re.match(r'\(U[Ii]nt\(%s\)-(\d+)\)' % field.name, k):
+                        cond.append('case 0b%s: %s = uint32(%s) + %s' % (v.replace('x', '0'), var_name, sw_cond, pat.group(1)))
+                    else:
+                        raise RuntimeError('unrecognized pattern: ' + repr(k))
+
+        else:
+            cond.append('default: panic("aarch64: %s")' % err_msg)
+
+    else:
+        bitp = 1
+        cond = []
+
+        for k, vv in field.bits.items():
+            if vv and k != 'RESERVED' and not k.startswith('SEE'):
+                if len(vv) != 1:
+                    bitp = len(vv)
+                    break
+
+        opts[var_name] = cond
+        vals[var_name] = (sw_cond, 'bm:%d' % bitp, {}) if bitp != 1 else sw_cond
+
+        for k, vv in field.bits.items():
+            if vv and k != 'RESERVED' and not k.startswith('SEE'):
+                if bitp != 1:
+                    bval, multi = ', '.join(map(hex, sorted(int(v.replace('x', '0'), 2) for v in vv))), True
+                    cond.append('case %s: %s = [%d]uint32{%s}' % (name_tab[k], var_name, bitp, bval))
+
                 else:
-                    raise RuntimeError('unrecognized pattern: ' + repr(k))
+                    for v in vv:
+                        if 'x' not in v:
+                            cond.append('case %s: %s = 0b%s' % (name_tab[k], var_name, v))
+                        else:
+                            multi = True
+                            cond.append('case %s: %s = 0b%s' % (name_tab[k], var_name, v.replace('x', '0')))
+
+        if multi:
+            mask = []
+            opts[BM_FORMAT % var_name] = mask
+            vals[BM_FORMAT % var_name] = (sw_cond, 'bm:%d' % bitp, {}) if bitp != 1 else sw_cond
+
+            for k, vv in field.bits.items():
+                if vv and k != 'RESERVED' and not k.startswith('SEE'):
+                    if bitp != 1:
+                        bits = [''.join('0' if c == 'x' else '1' for c in v) for v in vv]
+                        bval, multi = ', '.join(map(hex, sorted(int(v, 2) for v in bits))), True
+                        mask.append('case %s: %s = [%d]uint32{%s}' % (name_tab[k], BM_FORMAT % var_name, bitp, bval))
+
+                    else:
+                        for v in vv:
+                            bv = ''.join('0' if c == 'x' else '1' for c in v)
+                            mask.append('case %s: %s = 0b%s' % (name_tab[k], BM_FORMAT % var_name, bv))
+
+            else:
+                mask.append('default: panic("aarch64: %s")' % err_msg)
+
+        if not cond:
+            raise RuntimeError('not encodable: ' + form.inst.mnemonic)
         else:
             cond.append('default: panic("aarch64: %s")' % err_msg)
 
@@ -1693,7 +1728,14 @@ def encode_operand(
                 vals[val.name] = 'uint32(%s.(asm.Register).ID())' % name
                 encode_defs(form, 'vfmt(%s)' % name, val.mode, VECTOR_TYPES, vals, opts, 'unreachable')
 
-        elif val.size is not None and val.size != 'r':
+        elif val.size is not None and val.size == 'r':
+            vmap = {}
+            vmap['W'] = 'isWr(%s)' % name
+            vmap['X'] = 'isXr(%s)' % name
+            vals[val.name] = 'uint32(%s.(asm.Register).ID())' % name
+            encode_defs(form, 'true', val.size, vmap, vals, opts, 'unreachable')
+
+        elif val.size is not None:
             if not val.size.startswith('v'):
                 raise RuntimeError('invalid fixed vec size')
 
@@ -1701,11 +1743,11 @@ def encode_operand(
             vals[val.name] = 'uint32(%s.(asm.Register).ID())' % name
             encode_defs(form, '%s.(type)' % name, val.size, SCALAR_TYPES, vals, opts, err)
 
-        elif val.name in SPECIAL_REGS:
-            vals[val.name] = SPECIAL_REGS[val.name] % name
-
         else:
-            vals[val.name] = 'uint32(%s.(asm.Register).ID())' % name
+            if val.name in SPECIAL_REGS:
+                vals[val.name] = SPECIAL_REGS[val.name] % name
+            else:
+                vals[val.name] = 'uint32(%s.(asm.Register).ID())' % name
 
     elif isinstance(val, Vec):
         if optcond:
@@ -1805,12 +1847,8 @@ def encode_operand(
                 raise NotImplementedError('sysreg sym')
 
             case Sym.TARGETS:
-                vals['targets'] = ('%s.(BranchTarget)' % name, '_BrOmitted', {
-                    '(omitted)' : '_BrOmitted',
-                    'c'         : 'BrC',
-                    'j'         : 'BrJ',
-                    'jc'        : 'BrJC',
-                })
+                expr = '%s.(BranchTarget)' % name
+                vals['targets'] = (expr, '_BrOmitted', BR_ENUMS)
 
                 if optcond:
                     opts['targets'] = str(And(*optcond))
@@ -1992,6 +2030,10 @@ for mnemonic, forms in sorted(formtab.items(), key = lambda x: x[0]):
         for var in sorted(opts):
             if not isinstance(vals[var], tuple):
                 cc.line('var %s uint32' % var)
+            elif vals[var][1].startswith('bm:'):
+                cc.line('var %s [%d]uint32' % (var, int(vals[var][1][3:])))
+            elif vals[var][1].startswith('ty:'):
+                cc.line('var %s %s' % (var, vals[var][1][3:]))
             else:
                 cc.line('%s := %s' % (var, vals[var][1]))
 
@@ -2079,15 +2121,19 @@ for mnemonic, forms in sorted(formtab.items(), key = lambda x: x[0]):
                     cc.line('switch %s {' % fn)
                     cc.indent()
 
-                    for sel, bits in fv.bits.items():
-                        if 'x' in bits:
+                    for sel, bx in fv.bits.items():
+                        if len(bx) != 1:
                             raise RuntimeError('ambiguous compositie field ' + repr(bn))
-                        elif len(bits) != be - bs + 1:
-                            raise RuntimeError('bit count mismatch for composite field ' + repr(bn))
-                        elif not isinstance(vals[fn], tuple):
-                            cc.line('case %s: %s |= 0b%s << %d' % (sel, arg, bits, bs))
                         else:
-                            cc.line('case %s: %s |= 0b%s << %d' % (vals[fn][2][sel], arg, bits, bs))
+                            for bits in bx:
+                                if 'x' in bits:
+                                    raise RuntimeError('ambiguous compositie field ' + repr(bn))
+                                elif len(bits) != be - bs + 1:
+                                    raise RuntimeError('bit count mismatch for composite field ' + repr(bn))
+                                elif not isinstance(vals[fn], tuple):
+                                    cc.line('case %s: %s |= 0b%s << %d' % (sel, arg, bits, bs))
+                                else:
+                                    cc.line('case %s: %s |= 0b%s << %d' % (vals[fn][2][sel], arg, bits, bs))
 
                     cc.line('default: panic("aarch64: invalid combination of operands for %s")' % mnemonic)
                     cc.dedent()
@@ -2121,21 +2167,39 @@ for mnemonic, forms in sorted(formtab.items(), key = lambda x: x[0]):
 
             if len(exprs) > 1:
                 for i, (r, v, m) in enumerate(exprs[1:]):
+                    bm = 0
+                    vv = vals[r]
                     vx = exprs[i][1]
                     vk = BM_FORMAT % r
 
                     if (vk in vals) is not (vk in opts):
                         raise RuntimeError('inconsistent bit mask variable state')
 
+                    if isinstance(vv, tuple) and vv[1].startswith('bm:'):
+                        bm = int(vv[1][3:])
+
                     if vk not in vals:
+                        assert not bm, 'unexpected bit mask'
                         terms.append('%s != %s' % (vx, v))
+
                     elif m.isidentifier() and vx.isidentifier():
-                        terms.append('%s & %s != %s' % (vx, m, v))
+                        if not bm:
+                            terms.append('%s & %s != %s' % (vx, m, v))
+                        else:
+                            terms.append('!matchany(%s, &%s[0], &%s[0], %d)' % (vx, m, v, bm))
+
                     elif m.isidentifier() and not vx.isidentifier():
-                        terms.append('(%s) & %s != %s' % (vx, m, v))
+                        if not bm:
+                            terms.append('(%s) & %s != %s' % (vx, m, v))
+                        else:
+                            terms.append('!matchany(%s, &%s[0], &%s[0], %d)' % (vx, m, v, bm))
+
                     elif not m.isidentifier() and vx.isidentifier():
+                        assert not bm, 'unexpected bit mask'
                         terms.append('%s & (%s) != %s' % (vx, m, v))
+
                     else:
+                        assert not bm, 'unexpected bit mask'
                         terms.append('(%s) & (%s) != %s' % (vx, m, v))
 
                 cc.line('if %s {' % ' || '.join(terms))

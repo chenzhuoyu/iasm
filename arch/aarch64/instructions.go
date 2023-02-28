@@ -81,7 +81,7 @@ func (self *Program) ADD(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
         default : panic("instruction ADD takes 3 or 4 operands")
     }
     // ADD  <Wd|WSP>, <Wn|WSP>, <Wm>{, <extend> {#<amount>}}
-    if len(vv) <= 1 && len(vv) >= 0 && isWrOrWSP(v0) && isWrOrWSP(v1) && isWr(v2) && (len(vv) == 0 || isExtend(vv[0])) {
+    if len(vv) >= 0 && len(vv) <= 1 && isWrOrWSP(v0) && isWrOrWSP(v1) && isWr(v2) && (len(vv) == 0 || isExtend(vv[0])) {
         var amount uint32
         var extend uint32
         wd_wsp := uint32(v0.(asm.Register).ID())
@@ -94,8 +94,8 @@ func (self *Program) ADD(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
         p.setins(addsub_ext(0, 0, 0, 0, wm, extend, amount, wn_wsp, wd_wsp))
     }
     // ADD  <Wd|WSP>, <Wn|WSP>, #<imm>{, <shift>}
-    if len(vv) <= 1 &&
-       len(vv) >= 0 &&
+    if len(vv) >= 0 &&
+       len(vv) <= 1 &&
        isWrOrWSP(v0) &&
        isWrOrWSP(v1) &&
        isImm12(v2) &&
@@ -110,7 +110,7 @@ func (self *Program) ADD(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
         p.setins(addsub_imm(0, 0, 0, shift, imm, wn_wsp, wd_wsp))
     }
     // ADD  <Wd>, <Wn>, <Wm>{, <shift> #<amount>}
-    if len(vv) <= 1 && len(vv) >= 0 && isWr(v0) && isWr(v1) && isWr(v2) && (len(vv) == 0 || isShift(vv[0])) {
+    if len(vv) >= 0 && len(vv) <= 1 && isWr(v0) && isWr(v1) && isWr(v2) && (len(vv) == 0 || isShift(vv[0])) {
         var amount uint32
         var shift uint32
         wd := uint32(v0.(asm.Register).ID())
@@ -123,26 +123,41 @@ func (self *Program) ADD(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
         p.setins(addsub_shift(0, 0, 0, shift, wm, amount, wn, wd))
     }
     // ADD  <Xd|SP>, <Xn|SP>, <R><m>{, <extend> {#<amount>}}
-    if len(vv) <= 1 &&
-       len(vv) >= 0 &&
+    if len(vv) >= 0 &&
+       len(vv) <= 1 &&
        isXrOrSP(v0) &&
        isXrOrSP(v1) &&
        isWrOrXr(v2) &&
        (len(vv) == 0 || isExtend(vv[0])) {
         var amount uint32
         var extend_1 uint32
+        var r [4]uint32
+        var r__bit_mask [4]uint32
         xd_sp := uint32(v0.(asm.Register).ID())
         xn_sp := uint32(v1.(asm.Register).ID())
         m := uint32(v2.(asm.Register).ID())
+        switch true {
+            case isWr(v2): r = [4]uint32{0x0, 0x2, 0x4, 0x6}
+            case isXr(v2): r = [4]uint32{0x3}
+            default: panic("aarch64: unreachable")
+        }
+        switch true {
+            case isWr(v2): r__bit_mask = [4]uint32{0x6, 0x6, 0x7, 0x7}
+            case isXr(v2): r__bit_mask = [4]uint32{0x3}
+            default: panic("aarch64: unreachable")
+        }
         if len(vv) > 0 {
             extend_1 = uint32(vv[0].(Extension).Extension())
             amount = uint32(vv[0].(Modifier).Amount())
         }
+        if !matchany(extend_1, &r__bit_mask[0], &r[0], 4) {
+            panic("aarch64: invalid combination of operands for ADD")
+        }
         p.setins(addsub_ext(1, 0, 0, 0, m, extend_1, amount, xn_sp, xd_sp))
     }
     // ADD  <Xd|SP>, <Xn|SP>, #<imm>{, <shift>}
-    if len(vv) <= 1 &&
-       len(vv) >= 0 &&
+    if len(vv) >= 0 &&
+       len(vv) <= 1 &&
        isXrOrSP(v0) &&
        isXrOrSP(v1) &&
        isImm12(v2) &&
@@ -157,7 +172,7 @@ func (self *Program) ADD(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
         p.setins(addsub_imm(1, 0, 0, shift, imm, xn_sp, xd_sp))
     }
     // ADD  <Xd>, <Xn>, <Xm>{, <shift> #<amount>}
-    if len(vv) <= 1 && len(vv) >= 0 && isXr(v0) && isXr(v1) && isXr(v2) && (len(vv) == 0 || isShift(vv[0])) {
+    if len(vv) >= 0 && len(vv) <= 1 && isXr(v0) && isXr(v1) && isXr(v2) && (len(vv) == 0 || isShift(vv[0])) {
         var amount_1 uint32
         var shift uint32
         xd := uint32(v0.(asm.Register).ID())
@@ -215,7 +230,7 @@ func (self *Program) ADDS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
         default : panic("instruction ADDS takes 3 or 4 operands")
     }
     // ADDS  <Wd>, <Wn|WSP>, <Wm>{, <extend> {#<amount>}}
-    if len(vv) <= 1 && len(vv) >= 0 && isWr(v0) && isWrOrWSP(v1) && isWr(v2) && (len(vv) == 0 || isExtend(vv[0])) {
+    if len(vv) >= 0 && len(vv) <= 1 && isWr(v0) && isWrOrWSP(v1) && isWr(v2) && (len(vv) == 0 || isExtend(vv[0])) {
         var amount uint32
         var extend uint32
         wd := uint32(v0.(asm.Register).ID())
@@ -228,8 +243,8 @@ func (self *Program) ADDS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
         p.setins(addsub_ext(0, 0, 1, 0, wm, extend, amount, wn_wsp, wd))
     }
     // ADDS  <Wd>, <Wn|WSP>, #<imm>{, <shift>}
-    if len(vv) <= 1 &&
-       len(vv) >= 0 &&
+    if len(vv) >= 0 &&
+       len(vv) <= 1 &&
        isWr(v0) &&
        isWrOrWSP(v1) &&
        isImm12(v2) &&
@@ -244,7 +259,7 @@ func (self *Program) ADDS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
         p.setins(addsub_imm(0, 0, 1, shift, imm, wn_wsp, wd))
     }
     // ADDS  <Wd>, <Wn>, <Wm>{, <shift> #<amount>}
-    if len(vv) <= 1 && len(vv) >= 0 && isWr(v0) && isWr(v1) && isWr(v2) && (len(vv) == 0 || isShift(vv[0])) {
+    if len(vv) >= 0 && len(vv) <= 1 && isWr(v0) && isWr(v1) && isWr(v2) && (len(vv) == 0 || isShift(vv[0])) {
         var amount uint32
         var shift uint32
         wd := uint32(v0.(asm.Register).ID())
@@ -257,21 +272,36 @@ func (self *Program) ADDS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
         p.setins(addsub_shift(0, 0, 1, shift, wm, amount, wn, wd))
     }
     // ADDS  <Xd>, <Xn|SP>, <R><m>{, <extend> {#<amount>}}
-    if len(vv) <= 1 && len(vv) >= 0 && isXr(v0) && isXrOrSP(v1) && isWrOrXr(v2) && (len(vv) == 0 || isExtend(vv[0])) {
+    if len(vv) >= 0 && len(vv) <= 1 && isXr(v0) && isXrOrSP(v1) && isWrOrXr(v2) && (len(vv) == 0 || isExtend(vv[0])) {
         var amount uint32
         var extend_1 uint32
+        var r [4]uint32
+        var r__bit_mask [4]uint32
         xd := uint32(v0.(asm.Register).ID())
         xn_sp := uint32(v1.(asm.Register).ID())
         m := uint32(v2.(asm.Register).ID())
+        switch true {
+            case isWr(v2): r = [4]uint32{0x0, 0x2, 0x4, 0x6}
+            case isXr(v2): r = [4]uint32{0x3}
+            default: panic("aarch64: unreachable")
+        }
+        switch true {
+            case isWr(v2): r__bit_mask = [4]uint32{0x6, 0x6, 0x7, 0x7}
+            case isXr(v2): r__bit_mask = [4]uint32{0x3}
+            default: panic("aarch64: unreachable")
+        }
         if len(vv) > 0 {
             extend_1 = uint32(vv[0].(Extension).Extension())
             amount = uint32(vv[0].(Modifier).Amount())
         }
+        if !matchany(extend_1, &r__bit_mask[0], &r[0], 4) {
+            panic("aarch64: invalid combination of operands for ADDS")
+        }
         p.setins(addsub_ext(1, 0, 1, 0, m, extend_1, amount, xn_sp, xd))
     }
     // ADDS  <Xd>, <Xn|SP>, #<imm>{, <shift>}
-    if len(vv) <= 1 &&
-       len(vv) >= 0 &&
+    if len(vv) >= 0 &&
+       len(vv) <= 1 &&
        isXr(v0) &&
        isXrOrSP(v1) &&
        isImm12(v2) &&
@@ -286,7 +316,7 @@ func (self *Program) ADDS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
         p.setins(addsub_imm(1, 0, 1, shift, imm, xn_sp, xd))
     }
     // ADDS  <Xd>, <Xn>, <Xm>{, <shift> #<amount>}
-    if len(vv) <= 1 && len(vv) >= 0 && isXr(v0) && isXr(v1) && isXr(v2) && (len(vv) == 0 || isShift(vv[0])) {
+    if len(vv) >= 0 && len(vv) <= 1 && isXr(v0) && isXr(v1) && isXr(v2) && (len(vv) == 0 || isShift(vv[0])) {
         var amount_1 uint32
         var shift uint32
         xd := uint32(v0.(asm.Register).ID())
@@ -344,12 +374,30 @@ func (self *Program) ADRP(v0, v1 interface{}) *Instruction {
     return p
 }
 
-// AND instruction have 4 forms:
+// AESD instruction have one single form:
+//
+//   * AESD  <Vd>.16B, <Vn>.16B
+//
+func (self *Program) AESD(v0, v1 interface{}) *Instruction {
+    p := self.alloc("AESD", 2, Operands { v0, v1 })
+    if isVr(v0) && vfmt(v0) == Vec16B && isVr(v1) && vfmt(v1) == Vec16B {
+        vd := uint32(v0.(asm.Register).ID())
+        vn := uint32(v1.(asm.Register).ID())
+        p.setins(cryptoaes(0, 5, vn, vd))
+    }
+    if !p.isvalid {
+        panic("aarch64: invalid combination of operands for AESD")
+    }
+    return p
+}
+
+// AND instruction have 5 forms:
 //
 //   * AND  <Wd|WSP>, <Wn>, #<imm>
 //   * AND  <Wd>, <Wn>, <Wm>{, <shift> #<amount>}
 //   * AND  <Xd|SP>, <Xn>, #<imm>
 //   * AND  <Xd>, <Xn>, <Xm>{, <shift> #<amount>}
+//   * AND  <Vd>.<T>, <Vn>.<T>, <Vm>.<T>
 //
 func (self *Program) AND(v0, v1, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
@@ -366,7 +414,7 @@ func (self *Program) AND(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
         p.setins(log_imm(0, 0, 0, (imm >> 6) & 0x3f, imm & 0x3f, wn, wd_wsp))
     }
     // AND  <Wd>, <Wn>, <Wm>{, <shift> #<amount>}
-    if len(vv) <= 1 && len(vv) >= 0 && isWr(v0) && isWr(v1) && isWr(v2) && (len(vv) == 0 || isShift(vv[0])) {
+    if len(vv) >= 0 && len(vv) <= 1 && isWr(v0) && isWr(v1) && isWr(v2) && (len(vv) == 0 || isShift(vv[0])) {
         var amount uint32
         var shift uint32
         wd := uint32(v0.(asm.Register).ID())
@@ -386,7 +434,7 @@ func (self *Program) AND(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
         p.setins(log_imm(1, 0, (imm_1 >> 12) & 0x1, (imm_1 >> 6) & 0x3f, imm_1 & 0x3f, xn, xd_sp))
     }
     // AND  <Xd>, <Xn>, <Xm>{, <shift> #<amount>}
-    if len(vv) <= 1 && len(vv) >= 0 && isXr(v0) && isXr(v1) && isXr(v2) && (len(vv) == 0 || isShift(vv[0])) {
+    if len(vv) >= 0 && len(vv) <= 1 && isXr(v0) && isXr(v1) && isXr(v2) && (len(vv) == 0 || isShift(vv[0])) {
         var amount_1 uint32
         var shift uint32
         xd := uint32(v0.(asm.Register).ID())
@@ -397,6 +445,26 @@ func (self *Program) AND(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
             amount_1 = uint32(vv[0].(Modifier).Amount())
         }
         p.setins(log_shift(1, 0, shift, 0, xm, amount_1, xn, xd))
+    }
+    // AND  <Vd>.<T>, <Vn>.<T>, <Vm>.<T>
+    if isVr(v0) &&
+       isVfmt(v0, Vec8B, Vec16B) &&
+       isVr(v1) &&
+       isVfmt(v1, Vec8B, Vec16B) &&
+       isVr(v2) &&
+       isVfmt(v2, Vec8B, Vec16B) &&
+       isSameSize(v0, v1) &&
+       isSameSize(v1, v2) {
+        var t uint32
+        vd := uint32(v0.(asm.Register).ID())
+        switch vfmt(v0) {
+            case Vec8B: t = 0b0
+            case Vec16B: t = 0b1
+            default: panic("aarch64: unreachable")
+        }
+        vn := uint32(v1.(asm.Register).ID())
+        vm := uint32(v2.(asm.Register).ID())
+        p.setins(asimdsame(t, 0, 0, vm, 3, vn, vd))
     }
     if !p.isvalid {
         panic("aarch64: invalid combination of operands for AND")
@@ -426,7 +494,7 @@ func (self *Program) ANDS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
         p.setins(log_imm(0, 3, 0, (imm >> 6) & 0x3f, imm & 0x3f, wn, wd))
     }
     // ANDS  <Wd>, <Wn>, <Wm>{, <shift> #<amount>}
-    if len(vv) <= 1 && len(vv) >= 0 && isWr(v0) && isWr(v1) && isWr(v2) && (len(vv) == 0 || isShift(vv[0])) {
+    if len(vv) >= 0 && len(vv) <= 1 && isWr(v0) && isWr(v1) && isWr(v2) && (len(vv) == 0 || isShift(vv[0])) {
         var amount uint32
         var shift uint32
         wd := uint32(v0.(asm.Register).ID())
@@ -446,7 +514,7 @@ func (self *Program) ANDS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
         p.setins(log_imm(1, 3, (imm_1 >> 12) & 0x1, (imm_1 >> 6) & 0x3f, imm_1 & 0x3f, xn, xd))
     }
     // ANDS  <Xd>, <Xn>, <Xm>{, <shift> #<amount>}
-    if len(vv) <= 1 && len(vv) >= 0 && isXr(v0) && isXr(v1) && isXr(v2) && (len(vv) == 0 || isShift(vv[0])) {
+    if len(vv) >= 0 && len(vv) <= 1 && isXr(v0) && isXr(v1) && isXr(v2) && (len(vv) == 0 || isShift(vv[0])) {
         var amount_1 uint32
         var shift uint32
         xd := uint32(v0.(asm.Register).ID())
@@ -768,7 +836,7 @@ func (self *Program) BIC(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
         default : panic("instruction BIC takes 3 or 4 operands")
     }
     // BIC  <Wd>, <Wn>, <Wm>{, <shift> #<amount>}
-    if len(vv) <= 1 && len(vv) >= 0 && isWr(v0) && isWr(v1) && isWr(v2) && (len(vv) == 0 || isShift(vv[0])) {
+    if len(vv) >= 0 && len(vv) <= 1 && isWr(v0) && isWr(v1) && isWr(v2) && (len(vv) == 0 || isShift(vv[0])) {
         var amount uint32
         var shift uint32
         wd := uint32(v0.(asm.Register).ID())
@@ -781,7 +849,7 @@ func (self *Program) BIC(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
         p.setins(log_shift(0, 0, shift, 1, wm, amount, wn, wd))
     }
     // BIC  <Xd>, <Xn>, <Xm>{, <shift> #<amount>}
-    if len(vv) <= 1 && len(vv) >= 0 && isXr(v0) && isXr(v1) && isXr(v2) && (len(vv) == 0 || isShift(vv[0])) {
+    if len(vv) >= 0 && len(vv) <= 1 && isXr(v0) && isXr(v1) && isXr(v2) && (len(vv) == 0 || isShift(vv[0])) {
         var amount_1 uint32
         var shift uint32
         xd := uint32(v0.(asm.Register).ID())
@@ -812,7 +880,7 @@ func (self *Program) BICS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
         default : panic("instruction BICS takes 3 or 4 operands")
     }
     // BICS  <Wd>, <Wn>, <Wm>{, <shift> #<amount>}
-    if len(vv) <= 1 && len(vv) >= 0 && isWr(v0) && isWr(v1) && isWr(v2) && (len(vv) == 0 || isShift(vv[0])) {
+    if len(vv) >= 0 && len(vv) <= 1 && isWr(v0) && isWr(v1) && isWr(v2) && (len(vv) == 0 || isShift(vv[0])) {
         var amount uint32
         var shift uint32
         wd := uint32(v0.(asm.Register).ID())
@@ -825,7 +893,7 @@ func (self *Program) BICS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
         p.setins(log_shift(0, 3, shift, 1, wm, amount, wn, wd))
     }
     // BICS  <Xd>, <Xn>, <Xm>{, <shift> #<amount>}
-    if len(vv) <= 1 && len(vv) >= 0 && isXr(v0) && isXr(v1) && isXr(v2) && (len(vv) == 0 || isShift(vv[0])) {
+    if len(vv) >= 0 && len(vv) <= 1 && isXr(v0) && isXr(v1) && isXr(v2) && (len(vv) == 0 || isShift(vv[0])) {
         var amount_1 uint32
         var shift uint32
         xd := uint32(v0.(asm.Register).ID())
@@ -1058,7 +1126,7 @@ func (self *Program) BTI(vv ...interface{}) *Instruction {
         case 1  : p = self.alloc("BTI", 1, Operands { vv[0] })
         default : panic("instruction BTI takes 0 or 1 operands")
     }
-    if len(vv) <= 1 && len(vv) >= 0 && (len(vv) == 0 || isTargets(vv[0])) {
+    if len(vv) >= 0 && len(vv) <= 1 && (len(vv) == 0 || isTargets(vv[0])) {
         targets := _BrOmitted
         if len(vv) > 0 {
             targets = vv[0].(BranchTarget)
@@ -1592,7 +1660,7 @@ func (self *Program) CLREX(vv ...interface{}) *Instruction {
         case 1  : p = self.alloc("CLREX", 1, Operands { vv[0] })
         default : panic("instruction CLREX takes 0 or 1 operands")
     }
-    if len(vv) <= 1 && len(vv) >= 0 && (len(vv) == 0 || isUimm4(vv[0])) {
+    if len(vv) >= 0 && len(vv) <= 1 && (len(vv) == 0 || isUimm4(vv[0])) {
         imm := uint32(0b1111)
         if len(vv) > 0 {
             imm = asUimm4(vv[0])
@@ -1936,7 +2004,7 @@ func (self *Program) DCPS1(vv ...interface{}) *Instruction {
         case 1  : p = self.alloc("DCPS1", 1, Operands { vv[0] })
         default : panic("instruction DCPS1 takes 0 or 1 operands")
     }
-    if len(vv) <= 1 && len(vv) >= 0 && (len(vv) == 0 || isUimm16(vv[0])) {
+    if len(vv) >= 0 && len(vv) <= 1 && (len(vv) == 0 || isUimm16(vv[0])) {
         var imm uint32
         if len(vv) > 0 {
             imm = asUimm16(vv[0])
@@ -1960,7 +2028,7 @@ func (self *Program) DCPS2(vv ...interface{}) *Instruction {
         case 1  : p = self.alloc("DCPS2", 1, Operands { vv[0] })
         default : panic("instruction DCPS2 takes 0 or 1 operands")
     }
-    if len(vv) <= 1 && len(vv) >= 0 && (len(vv) == 0 || isUimm16(vv[0])) {
+    if len(vv) >= 0 && len(vv) <= 1 && (len(vv) == 0 || isUimm16(vv[0])) {
         var imm uint32
         if len(vv) > 0 {
             imm = asUimm16(vv[0])
@@ -1984,7 +2052,7 @@ func (self *Program) DCPS3(vv ...interface{}) *Instruction {
         case 1  : p = self.alloc("DCPS3", 1, Operands { vv[0] })
         default : panic("instruction DCPS3 takes 0 or 1 operands")
     }
-    if len(vv) <= 1 && len(vv) >= 0 && (len(vv) == 0 || isUimm16(vv[0])) {
+    if len(vv) >= 0 && len(vv) <= 1 && (len(vv) == 0 || isUimm16(vv[0])) {
         var imm uint32
         if len(vv) > 0 {
             imm = asUimm16(vv[0])
@@ -2064,7 +2132,7 @@ func (self *Program) EON(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
         default : panic("instruction EON takes 3 or 4 operands")
     }
     // EON  <Wd>, <Wn>, <Wm>{, <shift> #<amount>}
-    if len(vv) <= 1 && len(vv) >= 0 && isWr(v0) && isWr(v1) && isWr(v2) && (len(vv) == 0 || isShift(vv[0])) {
+    if len(vv) >= 0 && len(vv) <= 1 && isWr(v0) && isWr(v1) && isWr(v2) && (len(vv) == 0 || isShift(vv[0])) {
         var amount uint32
         var shift uint32
         wd := uint32(v0.(asm.Register).ID())
@@ -2077,7 +2145,7 @@ func (self *Program) EON(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
         p.setins(log_shift(0, 2, shift, 1, wm, amount, wn, wd))
     }
     // EON  <Xd>, <Xn>, <Xm>{, <shift> #<amount>}
-    if len(vv) <= 1 && len(vv) >= 0 && isXr(v0) && isXr(v1) && isXr(v2) && (len(vv) == 0 || isShift(vv[0])) {
+    if len(vv) >= 0 && len(vv) <= 1 && isXr(v0) && isXr(v1) && isXr(v2) && (len(vv) == 0 || isShift(vv[0])) {
         var amount_1 uint32
         var shift uint32
         xd := uint32(v0.(asm.Register).ID())
@@ -2095,12 +2163,13 @@ func (self *Program) EON(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
     return p
 }
 
-// EOR instruction have 4 forms:
+// EOR instruction have 5 forms:
 //
 //   * EOR  <Wd|WSP>, <Wn>, #<imm>
 //   * EOR  <Wd>, <Wn>, <Wm>{, <shift> #<amount>}
 //   * EOR  <Xd|SP>, <Xn>, #<imm>
 //   * EOR  <Xd>, <Xn>, <Xm>{, <shift> #<amount>}
+//   * EOR  <Vd>.<T>, <Vn>.<T>, <Vm>.<T>
 //
 func (self *Program) EOR(v0, v1, v2 interface{}, vv ...interface{}) *Instruction {
     var p *Instruction
@@ -2117,7 +2186,7 @@ func (self *Program) EOR(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
         p.setins(log_imm(0, 2, 0, (imm >> 6) & 0x3f, imm & 0x3f, wn, wd_wsp))
     }
     // EOR  <Wd>, <Wn>, <Wm>{, <shift> #<amount>}
-    if len(vv) <= 1 && len(vv) >= 0 && isWr(v0) && isWr(v1) && isWr(v2) && (len(vv) == 0 || isShift(vv[0])) {
+    if len(vv) >= 0 && len(vv) <= 1 && isWr(v0) && isWr(v1) && isWr(v2) && (len(vv) == 0 || isShift(vv[0])) {
         var amount uint32
         var shift uint32
         wd := uint32(v0.(asm.Register).ID())
@@ -2137,7 +2206,7 @@ func (self *Program) EOR(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
         p.setins(log_imm(1, 2, (imm_1 >> 12) & 0x1, (imm_1 >> 6) & 0x3f, imm_1 & 0x3f, xn, xd_sp))
     }
     // EOR  <Xd>, <Xn>, <Xm>{, <shift> #<amount>}
-    if len(vv) <= 1 && len(vv) >= 0 && isXr(v0) && isXr(v1) && isXr(v2) && (len(vv) == 0 || isShift(vv[0])) {
+    if len(vv) >= 0 && len(vv) <= 1 && isXr(v0) && isXr(v1) && isXr(v2) && (len(vv) == 0 || isShift(vv[0])) {
         var amount_1 uint32
         var shift uint32
         xd := uint32(v0.(asm.Register).ID())
@@ -2148,6 +2217,26 @@ func (self *Program) EOR(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
             amount_1 = uint32(vv[0].(Modifier).Amount())
         }
         p.setins(log_shift(1, 2, shift, 0, xm, amount_1, xn, xd))
+    }
+    // EOR  <Vd>.<T>, <Vn>.<T>, <Vm>.<T>
+    if isVr(v0) &&
+       isVfmt(v0, Vec8B, Vec16B) &&
+       isVr(v1) &&
+       isVfmt(v1, Vec8B, Vec16B) &&
+       isVr(v2) &&
+       isVfmt(v2, Vec8B, Vec16B) &&
+       isSameSize(v0, v1) &&
+       isSameSize(v1, v2) {
+        var t uint32
+        vd := uint32(v0.(asm.Register).ID())
+        switch vfmt(v0) {
+            case Vec8B: t = 0b0
+            case Vec16B: t = 0b1
+            default: panic("aarch64: unreachable")
+        }
+        vn := uint32(v1.(asm.Register).ID())
+        vm := uint32(v2.(asm.Register).ID())
+        p.setins(asimdsame(t, 1, 0, vm, 3, vn, vd))
     }
     if !p.isvalid {
         panic("aarch64: invalid combination of operands for EOR")
@@ -2220,6 +2309,1778 @@ func (self *Program) EXTR(v0, v1, v2, v3 interface{}) *Instruction {
     }
     if !p.isvalid {
         panic("aarch64: invalid combination of operands for EXTR")
+    }
+    return p
+}
+
+// FCMP instruction have 6 forms:
+//
+//   * FCMP  <Dn>, #0.0
+//   * FCMP  <Dn>, <Dm>
+//   * FCMP  <Hn>, #0.0
+//   * FCMP  <Hn>, <Hm>
+//   * FCMP  <Sn>, #0.0
+//   * FCMP  <Sn>, <Sm>
+//
+func (self *Program) FCMP(v0, v1 interface{}) *Instruction {
+    p := self.alloc("FCMP", 2, Operands { v0, v1 })
+    // FCMP  <Dn>, #0.0
+    if isDr(v0) && v1 == 0.0 {
+        dn := uint32(v0.(asm.Register).ID())
+        p.setins(floatcmp(0, 0, 1, 0, 0, dn, 8))
+    }
+    // FCMP  <Dn>, <Dm>
+    if isDr(v0) && isDr(v1) {
+        dn_1 := uint32(v0.(asm.Register).ID())
+        dm := uint32(v1.(asm.Register).ID())
+        p.setins(floatcmp(0, 0, 1, dm, 0, dn_1, 0))
+    }
+    // FCMP  <Hn>, #0.0
+    if isHr(v0) && v1 == 0.0 {
+        hn := uint32(v0.(asm.Register).ID())
+        p.setins(floatcmp(0, 0, 3, 0, 0, hn, 8))
+    }
+    // FCMP  <Hn>, <Hm>
+    if isHr(v0) && isHr(v1) {
+        hn_1 := uint32(v0.(asm.Register).ID())
+        hm := uint32(v1.(asm.Register).ID())
+        p.setins(floatcmp(0, 0, 3, hm, 0, hn_1, 0))
+    }
+    // FCMP  <Sn>, #0.0
+    if isSr(v0) && v1 == 0.0 {
+        sn := uint32(v0.(asm.Register).ID())
+        p.setins(floatcmp(0, 0, 0, 0, 0, sn, 8))
+    }
+    // FCMP  <Sn>, <Sm>
+    if isSr(v0) && isSr(v1) {
+        sn_1 := uint32(v0.(asm.Register).ID())
+        sm := uint32(v1.(asm.Register).ID())
+        p.setins(floatcmp(0, 0, 0, sm, 0, sn_1, 0))
+    }
+    if !p.isvalid {
+        panic("aarch64: invalid combination of operands for FCMP")
+    }
+    return p
+}
+
+// FCMPE instruction have 6 forms:
+//
+//   * FCMPE  <Dn>, #0.0
+//   * FCMPE  <Dn>, <Dm>
+//   * FCMPE  <Hn>, #0.0
+//   * FCMPE  <Hn>, <Hm>
+//   * FCMPE  <Sn>, #0.0
+//   * FCMPE  <Sn>, <Sm>
+//
+func (self *Program) FCMPE(v0, v1 interface{}) *Instruction {
+    p := self.alloc("FCMPE", 2, Operands { v0, v1 })
+    // FCMPE  <Dn>, #0.0
+    if isDr(v0) && v1 == 0.0 {
+        dn := uint32(v0.(asm.Register).ID())
+        p.setins(floatcmp(0, 0, 1, 0, 0, dn, 24))
+    }
+    // FCMPE  <Dn>, <Dm>
+    if isDr(v0) && isDr(v1) {
+        dn_1 := uint32(v0.(asm.Register).ID())
+        dm := uint32(v1.(asm.Register).ID())
+        p.setins(floatcmp(0, 0, 1, dm, 0, dn_1, 16))
+    }
+    // FCMPE  <Hn>, #0.0
+    if isHr(v0) && v1 == 0.0 {
+        hn := uint32(v0.(asm.Register).ID())
+        p.setins(floatcmp(0, 0, 3, 0, 0, hn, 24))
+    }
+    // FCMPE  <Hn>, <Hm>
+    if isHr(v0) && isHr(v1) {
+        hn_1 := uint32(v0.(asm.Register).ID())
+        hm := uint32(v1.(asm.Register).ID())
+        p.setins(floatcmp(0, 0, 3, hm, 0, hn_1, 16))
+    }
+    // FCMPE  <Sn>, #0.0
+    if isSr(v0) && v1 == 0.0 {
+        sn := uint32(v0.(asm.Register).ID())
+        p.setins(floatcmp(0, 0, 0, 0, 0, sn, 24))
+    }
+    // FCMPE  <Sn>, <Sm>
+    if isSr(v0) && isSr(v1) {
+        sn_1 := uint32(v0.(asm.Register).ID())
+        sm := uint32(v1.(asm.Register).ID())
+        p.setins(floatcmp(0, 0, 0, sm, 0, sn_1, 16))
+    }
+    if !p.isvalid {
+        panic("aarch64: invalid combination of operands for FCMPE")
+    }
+    return p
+}
+
+// FCVTZS instruction have 18 forms:
+//
+//   * FCVTZS  <Wd>, <Dn>, #<fbits>
+//   * FCVTZS  <Wd>, <Dn>
+//   * FCVTZS  <Wd>, <Hn>, #<fbits>
+//   * FCVTZS  <Wd>, <Hn>
+//   * FCVTZS  <Wd>, <Sn>, #<fbits>
+//   * FCVTZS  <Wd>, <Sn>
+//   * FCVTZS  <Xd>, <Dn>, #<fbits>
+//   * FCVTZS  <Xd>, <Dn>
+//   * FCVTZS  <Xd>, <Hn>, #<fbits>
+//   * FCVTZS  <Xd>, <Hn>
+//   * FCVTZS  <Xd>, <Sn>, #<fbits>
+//   * FCVTZS  <Xd>, <Sn>
+//   * FCVTZS  <Vd>.<T>, <Vn>.<T>
+//   * FCVTZS  <Vd>.<T>, <Vn>.<T>
+//   * FCVTZS  <Vd>.<T>, <Vn>.<T>, #<fbits>
+//   * FCVTZS  <V><d>, <V><n>
+//   * FCVTZS  <Hd>, <Hn>
+//   * FCVTZS  <V><d>, <V><n>, #<fbits>
+//
+func (self *Program) FCVTZS(v0, v1 interface{}, vv ...interface{}) *Instruction {
+    var p *Instruction
+    switch len(vv) {
+        case 0  : p = self.alloc("FCVTZS", 2, Operands { v0, v1 })
+        case 1  : p = self.alloc("FCVTZS", 3, Operands { v0, v1, vv[0] })
+        default : panic("instruction FCVTZS takes 2 or 3 operands")
+    }
+    // FCVTZS  <Wd>, <Dn>, #<fbits>
+    if len(vv) == 1 && isWr(v0) && isDr(v1) && isFpBits(vv[0]) {
+        wd := uint32(v0.(asm.Register).ID())
+        dn := uint32(v1.(asm.Register).ID())
+        fbits := asFpScale(vv[0])
+        p.setins(float2fix(0, 0, 1, 3, 0, fbits, dn, wd))
+    }
+    // FCVTZS  <Wd>, <Dn>
+    if isWr(v0) && isDr(v1) {
+        wd := uint32(v0.(asm.Register).ID())
+        dn := uint32(v1.(asm.Register).ID())
+        p.setins(float2int(0, 0, 1, 3, 0, dn, wd))
+    }
+    // FCVTZS  <Wd>, <Hn>, #<fbits>
+    if len(vv) == 1 && isWr(v0) && isHr(v1) && isFpBits(vv[0]) {
+        wd := uint32(v0.(asm.Register).ID())
+        hn := uint32(v1.(asm.Register).ID())
+        fbits := asFpScale(vv[0])
+        p.setins(float2fix(0, 0, 3, 3, 0, fbits, hn, wd))
+    }
+    // FCVTZS  <Wd>, <Hn>
+    if isWr(v0) && isHr(v1) {
+        wd := uint32(v0.(asm.Register).ID())
+        hn := uint32(v1.(asm.Register).ID())
+        p.setins(float2int(0, 0, 3, 3, 0, hn, wd))
+    }
+    // FCVTZS  <Wd>, <Sn>, #<fbits>
+    if len(vv) == 1 && isWr(v0) && isSr(v1) && isFpBits(vv[0]) {
+        wd := uint32(v0.(asm.Register).ID())
+        sn := uint32(v1.(asm.Register).ID())
+        fbits := asFpScale(vv[0])
+        p.setins(float2fix(0, 0, 0, 3, 0, fbits, sn, wd))
+    }
+    // FCVTZS  <Wd>, <Sn>
+    if isWr(v0) && isSr(v1) {
+        wd := uint32(v0.(asm.Register).ID())
+        sn := uint32(v1.(asm.Register).ID())
+        p.setins(float2int(0, 0, 0, 3, 0, sn, wd))
+    }
+    // FCVTZS  <Xd>, <Dn>, #<fbits>
+    if len(vv) == 1 && isXr(v0) && isDr(v1) && isFpBits(vv[0]) {
+        xd := uint32(v0.(asm.Register).ID())
+        dn := uint32(v1.(asm.Register).ID())
+        fbits_1 := asFpScale(vv[0])
+        p.setins(float2fix(1, 0, 1, 3, 0, fbits_1, dn, xd))
+    }
+    // FCVTZS  <Xd>, <Dn>
+    if isXr(v0) && isDr(v1) {
+        xd := uint32(v0.(asm.Register).ID())
+        dn := uint32(v1.(asm.Register).ID())
+        p.setins(float2int(1, 0, 1, 3, 0, dn, xd))
+    }
+    // FCVTZS  <Xd>, <Hn>, #<fbits>
+    if len(vv) == 1 && isXr(v0) && isHr(v1) && isFpBits(vv[0]) {
+        xd := uint32(v0.(asm.Register).ID())
+        hn := uint32(v1.(asm.Register).ID())
+        fbits_1 := asFpScale(vv[0])
+        p.setins(float2fix(1, 0, 3, 3, 0, fbits_1, hn, xd))
+    }
+    // FCVTZS  <Xd>, <Hn>
+    if isXr(v0) && isHr(v1) {
+        xd := uint32(v0.(asm.Register).ID())
+        hn := uint32(v1.(asm.Register).ID())
+        p.setins(float2int(1, 0, 3, 3, 0, hn, xd))
+    }
+    // FCVTZS  <Xd>, <Sn>, #<fbits>
+    if len(vv) == 1 && isXr(v0) && isSr(v1) && isFpBits(vv[0]) {
+        xd := uint32(v0.(asm.Register).ID())
+        sn := uint32(v1.(asm.Register).ID())
+        fbits_1 := asFpScale(vv[0])
+        p.setins(float2fix(1, 0, 0, 3, 0, fbits_1, sn, xd))
+    }
+    // FCVTZS  <Xd>, <Sn>
+    if isXr(v0) && isSr(v1) {
+        xd := uint32(v0.(asm.Register).ID())
+        sn := uint32(v1.(asm.Register).ID())
+        p.setins(float2int(1, 0, 0, 3, 0, sn, xd))
+    }
+    // FCVTZS  <Vd>.<T>, <Vn>.<T>
+    if isVr(v0) &&
+       isVfmt(v0, Vec2S, Vec4S, Vec2D) &&
+       isVr(v1) &&
+       isVfmt(v1, Vec2S, Vec4S, Vec2D) &&
+       isSameSize(v0, v1) {
+        var t uint32
+        vd := uint32(v0.(asm.Register).ID())
+        switch vfmt(v0) {
+            case Vec2S: t = 0b00
+            case Vec4S: t = 0b01
+            case Vec2D: t = 0b11
+            default: panic("aarch64: unreachable")
+        }
+        vn := uint32(v1.(asm.Register).ID())
+        size := uint32(0b10)
+        size |= (t >> 1) & 0x1
+        p.setins(asimdmisc(t & 0x1, 0, size, 27, vn, vd))
+    }
+    // FCVTZS  <Vd>.<T>, <Vn>.<T>
+    if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && isSameSize(v0, v1) {
+        var t_1 uint32
+        vd := uint32(v0.(asm.Register).ID())
+        switch vfmt(v0) {
+            case Vec4H: t_1 = 0b0
+            case Vec8H: t_1 = 0b1
+            default: panic("aarch64: unreachable")
+        }
+        vn := uint32(v1.(asm.Register).ID())
+        p.setins(asimdmiscfp16(t_1, 0, 1, 27, vn, vd))
+    }
+    // FCVTZS  <Vd>.<T>, <Vn>.<T>, #<fbits>
+    if len(vv) == 1 &&
+       isVr(v0) &&
+       isVfmt(v0, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
+       isVr(v1) &&
+       isVfmt(v1, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
+       isFpBits(vv[0]) &&
+       isSameSize(v0, v1) {
+        var fbits uint32
+        var t uint32
+        var t__bit_mask uint32
+        vd := uint32(v0.(asm.Register).ID())
+        switch vfmt(v0) {
+            case Vec4H: t = 0b00100
+            case Vec8H: t = 0b00101
+            case Vec2S: t = 0b01000
+            case Vec4S: t = 0b01001
+            case Vec2D: t = 0b10001
+            default: panic("aarch64: unreachable")
+        }
+        switch vfmt(v0) {
+            case Vec4H: t__bit_mask = 0b11101
+            case Vec8H: t__bit_mask = 0b11101
+            case Vec2S: t__bit_mask = 0b11001
+            case Vec4S: t__bit_mask = 0b11001
+            case Vec2D: t__bit_mask = 0b10001
+            default: panic("aarch64: unreachable")
+        }
+        vn := uint32(v1.(asm.Register).ID())
+        switch (t >> 1) & 0xf {
+            case 0b0010: fbits = 32 - uint32(asLit(vv[0]))
+            case 0b0100: fbits = 64 - uint32(asLit(vv[0]))
+            case 0b1000: fbits = 128 - uint32(asLit(vv[0]))
+            default: panic("aarch64: invalid operand 'fbits' for FCVTZS")
+        }
+        if ((fbits >> 3) & 0xf) & ((t__bit_mask >> 1) & 0xf) != (t >> 1) & 0xf {
+            panic("aarch64: invalid combination of operands for FCVTZS")
+        }
+        p.setins(asimdshf(t & 0x1, 0, (fbits >> 3) & 0xf, fbits & 0x7, 31, vn, vd))
+    }
+    // FCVTZS  <V><d>, <V><n>
+    if isAdvSIMD(v0) && isAdvSIMD(v1) && isSameType(v0, v1) {
+        var v uint32
+        d := uint32(v0.(asm.Register).ID())
+        switch v0.(type) {
+            case SIMDRegister32: v = 0b0
+            case SIMDRegister64: v = 0b1
+            default: panic("aarch64: invalid scalar operand size for FCVTZS")
+        }
+        n := uint32(v1.(asm.Register).ID())
+        size := uint32(0b10)
+        size |= v
+        p.setins(asisdmisc(0, size, 27, n, d))
+    }
+    // FCVTZS  <Hd>, <Hn>
+    if isHr(v0) && isHr(v1) {
+        hd := uint32(v0.(asm.Register).ID())
+        hn := uint32(v1.(asm.Register).ID())
+        p.setins(asisdmiscfp16(0, 1, 27, hn, hd))
+    }
+    // FCVTZS  <V><d>, <V><n>, #<fbits>
+    if len(vv) == 1 && isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(vv[0]) && isSameType(v0, v1) {
+        var fbits_1 uint32
+        var v uint32
+        var v__bit_mask uint32
+        d := uint32(v0.(asm.Register).ID())
+        switch v0.(type) {
+            case SIMDRegister16: v = 0b0010
+            case SIMDRegister32: v = 0b0100
+            case SIMDRegister64: v = 0b1000
+            default: panic("aarch64: invalid scalar operand size for FCVTZS")
+        }
+        switch v0.(type) {
+            case SIMDRegister16: v__bit_mask = 0b1110
+            case SIMDRegister32: v__bit_mask = 0b1100
+            case SIMDRegister64: v__bit_mask = 0b1000
+            default: panic("aarch64: invalid scalar operand size for FCVTZS")
+        }
+        n := uint32(v1.(asm.Register).ID())
+        switch v {
+            case 0b0010: fbits_1 = 32 - uint32(asLit(vv[0]))
+            case 0b0100: fbits_1 = 64 - uint32(asLit(vv[0]))
+            case 0b1000: fbits_1 = 128 - uint32(asLit(vv[0]))
+            default: panic("aarch64: invalid operand 'fbits_1' for FCVTZS")
+        }
+        if ((fbits_1 >> 3) & 0xf) & v__bit_mask != v {
+            panic("aarch64: invalid combination of operands for FCVTZS")
+        }
+        p.setins(asisdshf(0, (fbits_1 >> 3) & 0xf, fbits_1 & 0x7, 31, n, d))
+    }
+    if !p.isvalid {
+        panic("aarch64: invalid combination of operands for FCVTZS")
+    }
+    return p
+}
+
+// LDR instruction have 34 forms:
+//
+//   * LDR  <Wt>, [<Xn|SP>], #<simm>
+//   * LDR  <Wt>, [<Xn|SP>, #<simm>]!
+//   * LDR  <Wt>, [<Xn|SP>{, #<pimm>}]
+//   * LDR  <Wt>, [<Xn|SP>, (<Wm>|<Xm>){, <extend> {<amount>}}]
+//   * LDR  <Wt>, <label>
+//   * LDR  <Xt>, [<Xn|SP>], #<simm>
+//   * LDR  <Xt>, [<Xn|SP>, #<simm>]!
+//   * LDR  <Xt>, [<Xn|SP>{, #<pimm>}]
+//   * LDR  <Xt>, [<Xn|SP>, (<Wm>|<Xm>){, <extend> {<amount>}}]
+//   * LDR  <Xt>, <label>
+//   * LDR  <Bt>, [<Xn|SP>, <Xm>{, LSL <amount>}]
+//   * LDR  <Bt>, [<Xn|SP>], #<simm>
+//   * LDR  <Bt>, [<Xn|SP>, #<simm>]!
+//   * LDR  <Bt>, [<Xn|SP>{, #<pimm>}]
+//   * LDR  <Bt>, [<Xn|SP>, (<Wm>|<Xm>), <extend> {<amount>}]
+//   * LDR  <Dt>, [<Xn|SP>], #<simm>
+//   * LDR  <Dt>, [<Xn|SP>, #<simm>]!
+//   * LDR  <Dt>, [<Xn|SP>{, #<pimm>}]
+//   * LDR  <Dt>, [<Xn|SP>, (<Wm>|<Xm>){, <extend> {<amount>}}]
+//   * LDR  <Dt>, <label>
+//   * LDR  <Ht>, [<Xn|SP>], #<simm>
+//   * LDR  <Ht>, [<Xn|SP>, #<simm>]!
+//   * LDR  <Ht>, [<Xn|SP>{, #<pimm>}]
+//   * LDR  <Ht>, [<Xn|SP>, (<Wm>|<Xm>){, <extend> {<amount>}}]
+//   * LDR  <Qt>, [<Xn|SP>], #<simm>
+//   * LDR  <Qt>, [<Xn|SP>, #<simm>]!
+//   * LDR  <Qt>, [<Xn|SP>{, #<pimm>}]
+//   * LDR  <Qt>, [<Xn|SP>, (<Wm>|<Xm>){, <extend> {<amount>}}]
+//   * LDR  <Qt>, <label>
+//   * LDR  <St>, [<Xn|SP>], #<simm>
+//   * LDR  <St>, [<Xn|SP>, #<simm>]!
+//   * LDR  <St>, [<Xn|SP>{, #<pimm>}]
+//   * LDR  <St>, [<Xn|SP>, (<Wm>|<Xm>){, <extend> {<amount>}}]
+//   * LDR  <St>, <label>
+//
+func (self *Program) LDR(v0, v1 interface{}) *Instruction {
+    p := self.alloc("LDR", 2, Operands { v0, v1 })
+    // LDR  <Wt>, [<Xn|SP>], #<simm>
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        wt := uint32(v0.(asm.Register).ID())
+        xn_sp := uint32(mbase(v1).ID())
+        simm := uint32(moffs(v1))
+        p.setins(ldst_immpost(2, 0, 1, simm, xn_sp, wt))
+    }
+    // LDR  <Wt>, [<Xn|SP>, #<simm>]!
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+        wt := uint32(v0.(asm.Register).ID())
+        xn_sp := uint32(mbase(v1).ID())
+        simm := uint32(moffs(v1))
+        p.setins(ldst_immpre(2, 0, 1, simm, xn_sp, wt))
+    }
+    // LDR  <Wt>, [<Xn|SP>{, #<pimm>}]
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        wt := uint32(v0.(asm.Register).ID())
+        xn_sp := uint32(mbase(v1).ID())
+        pimm := uint32(moffs(v1))
+        p.setins(ldst_pos(2, 0, 1, pimm, xn_sp, wt))
+    }
+    // LDR  <Wt>, [<Xn|SP>, (<Wm>|<Xm>){, <extend> {<amount>}}]
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       moffs(v1) == 0 &&
+       isWrOrXr(midx(v1)) &&
+       (mext(v1) == nil || isExtend(mext(v1))) {
+        var amount uint32
+        var extend uint32
+        wt := uint32(v0.(asm.Register).ID())
+        xn_sp := uint32(mbase(v1).ID())
+        xm := uint32(midx(v1).ID())
+        if isMod(mext(v1)) {
+            extend = uint32(mext(v1).(Extension).Extension())
+            amount = uint32(mext(v1).(Modifier).Amount())
+        }
+        p.setins(ldst_regoff(2, 0, 1, xm, extend, amount, xn_sp, wt))
+    }
+    // LDR  <Wt>, <label>
+    if isWr(v0) && isLabel(v1) {
+        wt := uint32(v0.(asm.Register).ID())
+        label := v1.(*asm.Label)
+        p.setenc(func(pc uintptr) uint32 { return loadlit(0, 0, uint32(label.RelativeTo(pc)), wt) })
+    }
+    // LDR  <Xt>, [<Xn|SP>], #<simm>
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        xt := uint32(v0.(asm.Register).ID())
+        xn_sp := uint32(mbase(v1).ID())
+        simm := uint32(moffs(v1))
+        p.setins(ldst_immpost(3, 0, 1, simm, xn_sp, xt))
+    }
+    // LDR  <Xt>, [<Xn|SP>, #<simm>]!
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+        xt := uint32(v0.(asm.Register).ID())
+        xn_sp := uint32(mbase(v1).ID())
+        simm := uint32(moffs(v1))
+        p.setins(ldst_immpre(3, 0, 1, simm, xn_sp, xt))
+    }
+    // LDR  <Xt>, [<Xn|SP>{, #<pimm>}]
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        xt := uint32(v0.(asm.Register).ID())
+        xn_sp := uint32(mbase(v1).ID())
+        pimm_1 := uint32(moffs(v1))
+        p.setins(ldst_pos(3, 0, 1, pimm_1, xn_sp, xt))
+    }
+    // LDR  <Xt>, [<Xn|SP>, (<Wm>|<Xm>){, <extend> {<amount>}}]
+    if isXr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       moffs(v1) == 0 &&
+       isWrOrXr(midx(v1)) &&
+       (mext(v1) == nil || isExtend(mext(v1))) {
+        var amount_1 uint32
+        var extend uint32
+        xt := uint32(v0.(asm.Register).ID())
+        xn_sp := uint32(mbase(v1).ID())
+        xm := uint32(midx(v1).ID())
+        if isMod(mext(v1)) {
+            extend = uint32(mext(v1).(Extension).Extension())
+            amount_1 = uint32(mext(v1).(Modifier).Amount())
+        }
+        p.setins(ldst_regoff(3, 0, 1, xm, extend, amount_1, xn_sp, xt))
+    }
+    // LDR  <Xt>, <label>
+    if isXr(v0) && isLabel(v1) {
+        xt := uint32(v0.(asm.Register).ID())
+        label := v1.(*asm.Label)
+        p.setenc(func(pc uintptr) uint32 { return loadlit(1, 0, uint32(label.RelativeTo(pc)), xt) })
+    }
+    // LDR  <Bt>, [<Xn|SP>, <Xm>{, LSL <amount>}]
+    if isBr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       moffs(v1) == 0 &&
+       isXr(midx(v1)) &&
+       (mext(v1) == nil || isSameMod(mext(v1), LSL(0))) {
+        var amount uint32
+        bt := uint32(v0.(asm.Register).ID())
+        xn_sp := uint32(mbase(v1).ID())
+        xm := uint32(midx(v1).ID())
+        if isMod(mext(v1)) {
+            amount = uint32(mext(v1).(Modifier).Amount())
+        }
+        p.setins(ldst_regoff(0, 1, 1, xm, 3, amount, xn_sp, bt))
+    }
+    // LDR  <Bt>, [<Xn|SP>], #<simm>
+    if isBr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        bt := uint32(v0.(asm.Register).ID())
+        xn_sp := uint32(mbase(v1).ID())
+        simm := uint32(moffs(v1))
+        p.setins(ldst_immpost(0, 1, 1, simm, xn_sp, bt))
+    }
+    // LDR  <Bt>, [<Xn|SP>, #<simm>]!
+    if isBr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+        bt := uint32(v0.(asm.Register).ID())
+        xn_sp := uint32(mbase(v1).ID())
+        simm := uint32(moffs(v1))
+        p.setins(ldst_immpre(0, 1, 1, simm, xn_sp, bt))
+    }
+    // LDR  <Bt>, [<Xn|SP>{, #<pimm>}]
+    if isBr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        bt := uint32(v0.(asm.Register).ID())
+        xn_sp := uint32(mbase(v1).ID())
+        pimm := uint32(moffs(v1))
+        p.setins(ldst_pos(0, 1, 1, pimm, xn_sp, bt))
+    }
+    // LDR  <Bt>, [<Xn|SP>, (<Wm>|<Xm>), <extend> {<amount>}]
+    if isBr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isWrOrXr(midx(v1)) && isMod(mext(v1)) {
+        bt := uint32(v0.(asm.Register).ID())
+        xn_sp := uint32(mbase(v1).ID())
+        xm := uint32(midx(v1).ID())
+        extend := uint32(mext(v1).(Extension).Extension())
+        amount := uint32(mext(v1).(Modifier).Amount())
+        p.setins(ldst_regoff(0, 1, 1, xm, extend, amount, xn_sp, bt))
+    }
+    // LDR  <Dt>, [<Xn|SP>], #<simm>
+    if isDr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        dt := uint32(v0.(asm.Register).ID())
+        xn_sp := uint32(mbase(v1).ID())
+        simm := uint32(moffs(v1))
+        p.setins(ldst_immpost(3, 1, 1, simm, xn_sp, dt))
+    }
+    // LDR  <Dt>, [<Xn|SP>, #<simm>]!
+    if isDr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+        dt := uint32(v0.(asm.Register).ID())
+        xn_sp := uint32(mbase(v1).ID())
+        simm := uint32(moffs(v1))
+        p.setins(ldst_immpre(3, 1, 1, simm, xn_sp, dt))
+    }
+    // LDR  <Dt>, [<Xn|SP>{, #<pimm>}]
+    if isDr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        dt := uint32(v0.(asm.Register).ID())
+        xn_sp := uint32(mbase(v1).ID())
+        pimm_1 := uint32(moffs(v1))
+        p.setins(ldst_pos(3, 1, 1, pimm_1, xn_sp, dt))
+    }
+    // LDR  <Dt>, [<Xn|SP>, (<Wm>|<Xm>){, <extend> {<amount>}}]
+    if isDr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       moffs(v1) == 0 &&
+       isWrOrXr(midx(v1)) &&
+       (mext(v1) == nil || isExtend(mext(v1))) {
+        var amount_1 uint32
+        var extend_1 uint32
+        dt := uint32(v0.(asm.Register).ID())
+        xn_sp := uint32(mbase(v1).ID())
+        xm := uint32(midx(v1).ID())
+        if isMod(mext(v1)) {
+            extend_1 = uint32(mext(v1).(Extension).Extension())
+            amount_1 = uint32(mext(v1).(Modifier).Amount())
+        }
+        p.setins(ldst_regoff(3, 1, 1, xm, extend_1, amount_1, xn_sp, dt))
+    }
+    // LDR  <Dt>, <label>
+    if isDr(v0) && isLabel(v1) {
+        dt := uint32(v0.(asm.Register).ID())
+        label := v1.(*asm.Label)
+        p.setenc(func(pc uintptr) uint32 { return loadlit(1, 1, uint32(label.RelativeTo(pc)), dt) })
+    }
+    // LDR  <Ht>, [<Xn|SP>], #<simm>
+    if isHr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        ht := uint32(v0.(asm.Register).ID())
+        xn_sp := uint32(mbase(v1).ID())
+        simm := uint32(moffs(v1))
+        p.setins(ldst_immpost(1, 1, 1, simm, xn_sp, ht))
+    }
+    // LDR  <Ht>, [<Xn|SP>, #<simm>]!
+    if isHr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+        ht := uint32(v0.(asm.Register).ID())
+        xn_sp := uint32(mbase(v1).ID())
+        simm := uint32(moffs(v1))
+        p.setins(ldst_immpre(1, 1, 1, simm, xn_sp, ht))
+    }
+    // LDR  <Ht>, [<Xn|SP>{, #<pimm>}]
+    if isHr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        ht := uint32(v0.(asm.Register).ID())
+        xn_sp := uint32(mbase(v1).ID())
+        pimm_2 := uint32(moffs(v1))
+        p.setins(ldst_pos(1, 1, 1, pimm_2, xn_sp, ht))
+    }
+    // LDR  <Ht>, [<Xn|SP>, (<Wm>|<Xm>){, <extend> {<amount>}}]
+    if isHr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       moffs(v1) == 0 &&
+       isWrOrXr(midx(v1)) &&
+       (mext(v1) == nil || isExtend(mext(v1))) {
+        var amount_2 uint32
+        var extend_1 uint32
+        ht := uint32(v0.(asm.Register).ID())
+        xn_sp := uint32(mbase(v1).ID())
+        xm := uint32(midx(v1).ID())
+        if isMod(mext(v1)) {
+            extend_1 = uint32(mext(v1).(Extension).Extension())
+            amount_2 = uint32(mext(v1).(Modifier).Amount())
+        }
+        p.setins(ldst_regoff(1, 1, 1, xm, extend_1, amount_2, xn_sp, ht))
+    }
+    // LDR  <Qt>, [<Xn|SP>], #<simm>
+    if isQr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        qt := uint32(v0.(asm.Register).ID())
+        xn_sp := uint32(mbase(v1).ID())
+        simm := uint32(moffs(v1))
+        p.setins(ldst_immpost(0, 1, 3, simm, xn_sp, qt))
+    }
+    // LDR  <Qt>, [<Xn|SP>, #<simm>]!
+    if isQr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+        qt := uint32(v0.(asm.Register).ID())
+        xn_sp := uint32(mbase(v1).ID())
+        simm := uint32(moffs(v1))
+        p.setins(ldst_immpre(0, 1, 3, simm, xn_sp, qt))
+    }
+    // LDR  <Qt>, [<Xn|SP>{, #<pimm>}]
+    if isQr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        qt := uint32(v0.(asm.Register).ID())
+        xn_sp := uint32(mbase(v1).ID())
+        pimm_3 := uint32(moffs(v1))
+        p.setins(ldst_pos(0, 1, 3, pimm_3, xn_sp, qt))
+    }
+    // LDR  <Qt>, [<Xn|SP>, (<Wm>|<Xm>){, <extend> {<amount>}}]
+    if isQr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       moffs(v1) == 0 &&
+       isWrOrXr(midx(v1)) &&
+       (mext(v1) == nil || isExtend(mext(v1))) {
+        var amount_3 uint32
+        var extend_1 uint32
+        qt := uint32(v0.(asm.Register).ID())
+        xn_sp := uint32(mbase(v1).ID())
+        xm := uint32(midx(v1).ID())
+        if isMod(mext(v1)) {
+            extend_1 = uint32(mext(v1).(Extension).Extension())
+            amount_3 = uint32(mext(v1).(Modifier).Amount())
+        }
+        p.setins(ldst_regoff(0, 1, 3, xm, extend_1, amount_3, xn_sp, qt))
+    }
+    // LDR  <Qt>, <label>
+    if isQr(v0) && isLabel(v1) {
+        qt := uint32(v0.(asm.Register).ID())
+        label := v1.(*asm.Label)
+        p.setenc(func(pc uintptr) uint32 { return loadlit(2, 1, uint32(label.RelativeTo(pc)), qt) })
+    }
+    // LDR  <St>, [<Xn|SP>], #<simm>
+    if isSr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        st := uint32(v0.(asm.Register).ID())
+        xn_sp := uint32(mbase(v1).ID())
+        simm := uint32(moffs(v1))
+        p.setins(ldst_immpost(2, 1, 1, simm, xn_sp, st))
+    }
+    // LDR  <St>, [<Xn|SP>, #<simm>]!
+    if isSr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+        st := uint32(v0.(asm.Register).ID())
+        xn_sp := uint32(mbase(v1).ID())
+        simm := uint32(moffs(v1))
+        p.setins(ldst_immpre(2, 1, 1, simm, xn_sp, st))
+    }
+    // LDR  <St>, [<Xn|SP>{, #<pimm>}]
+    if isSr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        st := uint32(v0.(asm.Register).ID())
+        xn_sp := uint32(mbase(v1).ID())
+        pimm_4 := uint32(moffs(v1))
+        p.setins(ldst_pos(2, 1, 1, pimm_4, xn_sp, st))
+    }
+    // LDR  <St>, [<Xn|SP>, (<Wm>|<Xm>){, <extend> {<amount>}}]
+    if isSr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       moffs(v1) == 0 &&
+       isWrOrXr(midx(v1)) &&
+       (mext(v1) == nil || isExtend(mext(v1))) {
+        var amount_4 uint32
+        var extend_1 uint32
+        st := uint32(v0.(asm.Register).ID())
+        xn_sp := uint32(mbase(v1).ID())
+        xm := uint32(midx(v1).ID())
+        if isMod(mext(v1)) {
+            extend_1 = uint32(mext(v1).(Extension).Extension())
+            amount_4 = uint32(mext(v1).(Modifier).Amount())
+        }
+        p.setins(ldst_regoff(2, 1, 1, xm, extend_1, amount_4, xn_sp, st))
+    }
+    // LDR  <St>, <label>
+    if isSr(v0) && isLabel(v1) {
+        st := uint32(v0.(asm.Register).ID())
+        label := v1.(*asm.Label)
+        p.setenc(func(pc uintptr) uint32 { return loadlit(0, 1, uint32(label.RelativeTo(pc)), st) })
+    }
+    if !p.isvalid {
+        panic("aarch64: invalid combination of operands for LDR")
+    }
+    return p
+}
+
+// ORN instruction have 3 forms:
+//
+//   * ORN  <Wd>, <Wn>, <Wm>{, <shift> #<amount>}
+//   * ORN  <Xd>, <Xn>, <Xm>{, <shift> #<amount>}
+//   * ORN  <Vd>.<T>, <Vn>.<T>, <Vm>.<T>
+//
+func (self *Program) ORN(v0, v1, v2 interface{}, vv ...interface{}) *Instruction {
+    var p *Instruction
+    switch len(vv) {
+        case 0  : p = self.alloc("ORN", 3, Operands { v0, v1, v2 })
+        case 1  : p = self.alloc("ORN", 4, Operands { v0, v1, v2, vv[0] })
+        default : panic("instruction ORN takes 3 or 4 operands")
+    }
+    // ORN  <Wd>, <Wn>, <Wm>{, <shift> #<amount>}
+    if len(vv) >= 0 && len(vv) <= 1 && isWr(v0) && isWr(v1) && isWr(v2) && (len(vv) == 0 || isShift(vv[0])) {
+        var amount uint32
+        var shift uint32
+        wd := uint32(v0.(asm.Register).ID())
+        wn := uint32(v1.(asm.Register).ID())
+        wm := uint32(v2.(asm.Register).ID())
+        if len(vv) > 0 {
+            shift = uint32(vv[0].(ShiftType).ShiftType())
+            amount = uint32(vv[0].(Modifier).Amount())
+        }
+        p.setins(log_shift(0, 1, shift, 1, wm, amount, wn, wd))
+    }
+    // ORN  <Xd>, <Xn>, <Xm>{, <shift> #<amount>}
+    if len(vv) >= 0 && len(vv) <= 1 && isXr(v0) && isXr(v1) && isXr(v2) && (len(vv) == 0 || isShift(vv[0])) {
+        var amount_1 uint32
+        var shift uint32
+        xd := uint32(v0.(asm.Register).ID())
+        xn := uint32(v1.(asm.Register).ID())
+        xm := uint32(v2.(asm.Register).ID())
+        if len(vv) > 0 {
+            shift = uint32(vv[0].(ShiftType).ShiftType())
+            amount_1 = uint32(vv[0].(Modifier).Amount())
+        }
+        p.setins(log_shift(1, 1, shift, 1, xm, amount_1, xn, xd))
+    }
+    // ORN  <Vd>.<T>, <Vn>.<T>, <Vm>.<T>
+    if isVr(v0) &&
+       isVfmt(v0, Vec8B, Vec16B) &&
+       isVr(v1) &&
+       isVfmt(v1, Vec8B, Vec16B) &&
+       isVr(v2) &&
+       isVfmt(v2, Vec8B, Vec16B) &&
+       isSameSize(v0, v1) &&
+       isSameSize(v1, v2) {
+        var t uint32
+        vd := uint32(v0.(asm.Register).ID())
+        switch vfmt(v0) {
+            case Vec8B: t = 0b0
+            case Vec16B: t = 0b1
+            default: panic("aarch64: unreachable")
+        }
+        vn := uint32(v1.(asm.Register).ID())
+        vm := uint32(v2.(asm.Register).ID())
+        p.setins(asimdsame(t, 0, 3, vm, 3, vn, vd))
+    }
+    if !p.isvalid {
+        panic("aarch64: invalid combination of operands for ORN")
+    }
+    return p
+}
+
+// ORR instruction have 7 forms:
+//
+//   * ORR  <Wd|WSP>, <Wn>, #<imm>
+//   * ORR  <Wd>, <Wn>, <Wm>{, <shift> #<amount>}
+//   * ORR  <Xd|SP>, <Xn>, #<imm>
+//   * ORR  <Xd>, <Xn>, <Xm>{, <shift> #<amount>}
+//   * ORR  <Vd>.<T>, #<imm8>{, LSL #<amount>}
+//   * ORR  <Vd>.<T>, #<imm8>{, LSL #<amount>}
+//   * ORR  <Vd>.<T>, <Vn>.<T>, <Vm>.<T>
+//
+func (self *Program) ORR(v0, v1 interface{}, vv ...interface{}) *Instruction {
+    var p *Instruction
+    switch len(vv) {
+        case 0  : p = self.alloc("ORR", 2, Operands { v0, v1 })
+        case 1  : p = self.alloc("ORR", 3, Operands { v0, v1, vv[0] })
+        case 2  : p = self.alloc("ORR", 4, Operands { v0, v1, vv[0], vv[1] })
+        default : panic("instruction ORR takes 2 or 3 or 4 operands")
+    }
+    // ORR  <Wd|WSP>, <Wn>, #<imm>
+    if len(vv) == 1 && isWrOrWSP(v0) && isWr(v1) && isMask32(vv[0]) {
+        wd_wsp := uint32(v0.(asm.Register).ID())
+        wn := uint32(v1.(asm.Register).ID())
+        imm := asMaskOp(vv[0])
+        p.setins(log_imm(0, 1, 0, (imm >> 6) & 0x3f, imm & 0x3f, wn, wd_wsp))
+    }
+    // ORR  <Wd>, <Wn>, <Wm>{, <shift> #<amount>}
+    if len(vv) >= 1 && len(vv) <= 2 && isWr(v0) && isWr(v1) && isWr(vv[0]) && (len(vv) <= 1 || isShift(vv[1])) {
+        var amount uint32
+        var shift uint32
+        wd := uint32(v0.(asm.Register).ID())
+        wn := uint32(v1.(asm.Register).ID())
+        wm := uint32(vv[0].(asm.Register).ID())
+        if len(vv) > 1 {
+            shift = uint32(vv[1].(ShiftType).ShiftType())
+            amount = uint32(vv[1].(Modifier).Amount())
+        }
+        p.setins(log_shift(0, 1, shift, 0, wm, amount, wn, wd))
+    }
+    // ORR  <Xd|SP>, <Xn>, #<imm>
+    if len(vv) == 1 && isXrOrSP(v0) && isXr(v1) && isMask64(vv[0]) {
+        xd_sp := uint32(v0.(asm.Register).ID())
+        xn := uint32(v1.(asm.Register).ID())
+        imm_1 := asMaskOp(vv[0])
+        p.setins(log_imm(1, 1, (imm_1 >> 12) & 0x1, (imm_1 >> 6) & 0x3f, imm_1 & 0x3f, xn, xd_sp))
+    }
+    // ORR  <Xd>, <Xn>, <Xm>{, <shift> #<amount>}
+    if len(vv) >= 1 && len(vv) <= 2 && isXr(v0) && isXr(v1) && isXr(vv[0]) && (len(vv) <= 1 || isShift(vv[1])) {
+        var amount_1 uint32
+        var shift uint32
+        xd := uint32(v0.(asm.Register).ID())
+        xn := uint32(v1.(asm.Register).ID())
+        xm := uint32(vv[0].(asm.Register).ID())
+        if len(vv) > 1 {
+            shift = uint32(vv[1].(ShiftType).ShiftType())
+            amount_1 = uint32(vv[1].(Modifier).Amount())
+        }
+        p.setins(log_shift(1, 1, shift, 0, xm, amount_1, xn, xd))
+    }
+    // ORR  <Vd>.<T>, #<imm8>{, LSL #<amount>}
+    if len(vv) >= 0 &&
+       len(vv) <= 1 &&
+       isVr(v0) &&
+       isVfmt(v0, Vec4H, Vec8H) &&
+       isUimm8(v1) &&
+       (len(vv) == 0 || isSameMod(vv[0], LSL(0))) {
+        var amount uint32
+        var t uint32
+        vd := uint32(v0.(asm.Register).ID())
+        switch vfmt(v0) {
+            case Vec4H: t = 0b0
+            case Vec8H: t = 0b1
+            default: panic("aarch64: unreachable")
+        }
+        imm8 := asUimm8(v1)
+        if len(vv) > 0 {
+            amount = uint32(vv[0].(Modifier).Amount())
+        }
+        cmode := uint32(0b1001)
+        switch amount {
+            case 0: cmode |= 0b0 << 1
+            case 8: cmode |= 0b1 << 1
+            default: panic("aarch64: invalid combination of operands for ORR")
+        }
+        p.setins(asimdimm(
+            t,
+            0,
+            (imm8 >> 7) & 0x1,
+            (imm8 >> 6) & 0x1,
+            (imm8 >> 5) & 0x1,
+            cmode,
+            0,
+            (imm8 >> 4) & 0x1,
+            (imm8 >> 3) & 0x1,
+            (imm8 >> 2) & 0x1,
+            (imm8 >> 1) & 0x1,
+            imm8 & 0x1,
+            vd,
+        ))
+    }
+    // ORR  <Vd>.<T>, #<imm8>{, LSL #<amount>}
+    if len(vv) >= 0 &&
+       len(vv) <= 1 &&
+       isVr(v0) &&
+       isVfmt(v0, Vec2S, Vec4S) &&
+       isUimm8(v1) &&
+       (len(vv) == 0 || isSameMod(vv[0], LSL(0))) {
+        var amount_1 uint32
+        var t_1 uint32
+        vd := uint32(v0.(asm.Register).ID())
+        switch vfmt(v0) {
+            case Vec2S: t_1 = 0b0
+            case Vec4S: t_1 = 0b1
+            default: panic("aarch64: unreachable")
+        }
+        imm8 := asUimm8(v1)
+        if len(vv) > 0 {
+            amount_1 = uint32(vv[0].(Modifier).Amount())
+        }
+        cmode := uint32(0b0001)
+        switch amount_1 {
+            case 0: cmode |= 0b00 << 1
+            case 8: cmode |= 0b01 << 1
+            case 16: cmode |= 0b10 << 1
+            case 24: cmode |= 0b11 << 1
+            default: panic("aarch64: invalid combination of operands for ORR")
+        }
+        p.setins(asimdimm(
+            t_1,
+            0,
+            (imm8 >> 7) & 0x1,
+            (imm8 >> 6) & 0x1,
+            (imm8 >> 5) & 0x1,
+            cmode,
+            0,
+            (imm8 >> 4) & 0x1,
+            (imm8 >> 3) & 0x1,
+            (imm8 >> 2) & 0x1,
+            (imm8 >> 1) & 0x1,
+            imm8 & 0x1,
+            vd,
+        ))
+    }
+    // ORR  <Vd>.<T>, <Vn>.<T>, <Vm>.<T>
+    if len(vv) == 1 &&
+       isVr(v0) &&
+       isVfmt(v0, Vec8B, Vec16B) &&
+       isVr(v1) &&
+       isVfmt(v1, Vec8B, Vec16B) &&
+       isVr(vv[0]) &&
+       isVfmt(vv[0], Vec8B, Vec16B) &&
+       isSameSize(v0, v1) &&
+       isSameSize(v1, vv[0]) {
+        var t uint32
+        vd := uint32(v0.(asm.Register).ID())
+        switch vfmt(v0) {
+            case Vec8B: t = 0b0
+            case Vec16B: t = 0b1
+            default: panic("aarch64: unreachable")
+        }
+        vn := uint32(v1.(asm.Register).ID())
+        vm := uint32(vv[0].(asm.Register).ID())
+        p.setins(asimdsame(t, 0, 2, vm, 3, vn, vd))
+    }
+    if !p.isvalid {
+        panic("aarch64: invalid combination of operands for ORR")
+    }
+    return p
+}
+
+// SCVTF instruction have 18 forms:
+//
+//   * SCVTF  <Dd>, <Wn>, #<fbits>
+//   * SCVTF  <Dd>, <Wn>
+//   * SCVTF  <Dd>, <Xn>, #<fbits>
+//   * SCVTF  <Dd>, <Xn>
+//   * SCVTF  <Hd>, <Wn>, #<fbits>
+//   * SCVTF  <Hd>, <Wn>
+//   * SCVTF  <Hd>, <Xn>, #<fbits>
+//   * SCVTF  <Hd>, <Xn>
+//   * SCVTF  <Sd>, <Wn>, #<fbits>
+//   * SCVTF  <Sd>, <Wn>
+//   * SCVTF  <Sd>, <Xn>, #<fbits>
+//   * SCVTF  <Sd>, <Xn>
+//   * SCVTF  <Vd>.<T>, <Vn>.<T>
+//   * SCVTF  <Vd>.<T>, <Vn>.<T>
+//   * SCVTF  <Vd>.<T>, <Vn>.<T>, #<fbits>
+//   * SCVTF  <V><d>, <V><n>
+//   * SCVTF  <Hd>, <Hn>
+//   * SCVTF  <V><d>, <V><n>, #<fbits>
+//
+func (self *Program) SCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
+    var p *Instruction
+    switch len(vv) {
+        case 0  : p = self.alloc("SCVTF", 2, Operands { v0, v1 })
+        case 1  : p = self.alloc("SCVTF", 3, Operands { v0, v1, vv[0] })
+        default : panic("instruction SCVTF takes 2 or 3 operands")
+    }
+    // SCVTF  <Dd>, <Wn>, #<fbits>
+    if len(vv) == 1 && isDr(v0) && isWr(v1) && isFpBits(vv[0]) {
+        dd := uint32(v0.(asm.Register).ID())
+        wn := uint32(v1.(asm.Register).ID())
+        fbits := asFpScale(vv[0])
+        p.setins(float2fix(0, 0, 1, 0, 2, fbits, wn, dd))
+    }
+    // SCVTF  <Dd>, <Wn>
+    if isDr(v0) && isWr(v1) {
+        dd := uint32(v0.(asm.Register).ID())
+        wn := uint32(v1.(asm.Register).ID())
+        p.setins(float2int(0, 0, 1, 0, 2, wn, dd))
+    }
+    // SCVTF  <Dd>, <Xn>, #<fbits>
+    if len(vv) == 1 && isDr(v0) && isXr(v1) && isFpBits(vv[0]) {
+        dd := uint32(v0.(asm.Register).ID())
+        xn := uint32(v1.(asm.Register).ID())
+        fbits_1 := asFpScale(vv[0])
+        p.setins(float2fix(1, 0, 1, 0, 2, fbits_1, xn, dd))
+    }
+    // SCVTF  <Dd>, <Xn>
+    if isDr(v0) && isXr(v1) {
+        dd := uint32(v0.(asm.Register).ID())
+        xn := uint32(v1.(asm.Register).ID())
+        p.setins(float2int(1, 0, 1, 0, 2, xn, dd))
+    }
+    // SCVTF  <Hd>, <Wn>, #<fbits>
+    if len(vv) == 1 && isHr(v0) && isWr(v1) && isFpBits(vv[0]) {
+        hd := uint32(v0.(asm.Register).ID())
+        wn := uint32(v1.(asm.Register).ID())
+        fbits := asFpScale(vv[0])
+        p.setins(float2fix(0, 0, 3, 0, 2, fbits, wn, hd))
+    }
+    // SCVTF  <Hd>, <Wn>
+    if isHr(v0) && isWr(v1) {
+        hd := uint32(v0.(asm.Register).ID())
+        wn := uint32(v1.(asm.Register).ID())
+        p.setins(float2int(0, 0, 3, 0, 2, wn, hd))
+    }
+    // SCVTF  <Hd>, <Xn>, #<fbits>
+    if len(vv) == 1 && isHr(v0) && isXr(v1) && isFpBits(vv[0]) {
+        hd := uint32(v0.(asm.Register).ID())
+        xn := uint32(v1.(asm.Register).ID())
+        fbits_1 := asFpScale(vv[0])
+        p.setins(float2fix(1, 0, 3, 0, 2, fbits_1, xn, hd))
+    }
+    // SCVTF  <Hd>, <Xn>
+    if isHr(v0) && isXr(v1) {
+        hd := uint32(v0.(asm.Register).ID())
+        xn := uint32(v1.(asm.Register).ID())
+        p.setins(float2int(1, 0, 3, 0, 2, xn, hd))
+    }
+    // SCVTF  <Sd>, <Wn>, #<fbits>
+    if len(vv) == 1 && isSr(v0) && isWr(v1) && isFpBits(vv[0]) {
+        sd := uint32(v0.(asm.Register).ID())
+        wn := uint32(v1.(asm.Register).ID())
+        fbits := asFpScale(vv[0])
+        p.setins(float2fix(0, 0, 0, 0, 2, fbits, wn, sd))
+    }
+    // SCVTF  <Sd>, <Wn>
+    if isSr(v0) && isWr(v1) {
+        sd := uint32(v0.(asm.Register).ID())
+        wn := uint32(v1.(asm.Register).ID())
+        p.setins(float2int(0, 0, 0, 0, 2, wn, sd))
+    }
+    // SCVTF  <Sd>, <Xn>, #<fbits>
+    if len(vv) == 1 && isSr(v0) && isXr(v1) && isFpBits(vv[0]) {
+        sd := uint32(v0.(asm.Register).ID())
+        xn := uint32(v1.(asm.Register).ID())
+        fbits_1 := asFpScale(vv[0])
+        p.setins(float2fix(1, 0, 0, 0, 2, fbits_1, xn, sd))
+    }
+    // SCVTF  <Sd>, <Xn>
+    if isSr(v0) && isXr(v1) {
+        sd := uint32(v0.(asm.Register).ID())
+        xn := uint32(v1.(asm.Register).ID())
+        p.setins(float2int(1, 0, 0, 0, 2, xn, sd))
+    }
+    // SCVTF  <Vd>.<T>, <Vn>.<T>
+    if isVr(v0) &&
+       isVfmt(v0, Vec2S, Vec4S, Vec2D) &&
+       isVr(v1) &&
+       isVfmt(v1, Vec2S, Vec4S, Vec2D) &&
+       isSameSize(v0, v1) {
+        var t uint32
+        vd := uint32(v0.(asm.Register).ID())
+        switch vfmt(v0) {
+            case Vec2S: t = 0b00
+            case Vec4S: t = 0b01
+            case Vec2D: t = 0b11
+            default: panic("aarch64: unreachable")
+        }
+        vn := uint32(v1.(asm.Register).ID())
+        size := uint32(0b00)
+        size |= (t >> 1) & 0x1
+        p.setins(asimdmisc(t & 0x1, 0, size, 29, vn, vd))
+    }
+    // SCVTF  <Vd>.<T>, <Vn>.<T>
+    if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && isSameSize(v0, v1) {
+        var t_1 uint32
+        vd := uint32(v0.(asm.Register).ID())
+        switch vfmt(v0) {
+            case Vec4H: t_1 = 0b0
+            case Vec8H: t_1 = 0b1
+            default: panic("aarch64: unreachable")
+        }
+        vn := uint32(v1.(asm.Register).ID())
+        p.setins(asimdmiscfp16(t_1, 0, 0, 29, vn, vd))
+    }
+    // SCVTF  <Vd>.<T>, <Vn>.<T>, #<fbits>
+    if len(vv) == 1 &&
+       isVr(v0) &&
+       isVfmt(v0, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
+       isVr(v1) &&
+       isVfmt(v1, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
+       isFpBits(vv[0]) &&
+       isSameSize(v0, v1) {
+        var fbits uint32
+        var t uint32
+        var t__bit_mask uint32
+        vd := uint32(v0.(asm.Register).ID())
+        switch vfmt(v0) {
+            case Vec4H: t = 0b00100
+            case Vec8H: t = 0b00101
+            case Vec2S: t = 0b01000
+            case Vec4S: t = 0b01001
+            case Vec2D: t = 0b10001
+            default: panic("aarch64: unreachable")
+        }
+        switch vfmt(v0) {
+            case Vec4H: t__bit_mask = 0b11101
+            case Vec8H: t__bit_mask = 0b11101
+            case Vec2S: t__bit_mask = 0b11001
+            case Vec4S: t__bit_mask = 0b11001
+            case Vec2D: t__bit_mask = 0b10001
+            default: panic("aarch64: unreachable")
+        }
+        vn := uint32(v1.(asm.Register).ID())
+        switch (t >> 1) & 0xf {
+            case 0b0010: fbits = 32 - uint32(asLit(vv[0]))
+            case 0b0100: fbits = 64 - uint32(asLit(vv[0]))
+            case 0b1000: fbits = 128 - uint32(asLit(vv[0]))
+            default: panic("aarch64: invalid operand 'fbits' for SCVTF")
+        }
+        if ((fbits >> 3) & 0xf) & ((t__bit_mask >> 1) & 0xf) != (t >> 1) & 0xf {
+            panic("aarch64: invalid combination of operands for SCVTF")
+        }
+        p.setins(asimdshf(t & 0x1, 0, (fbits >> 3) & 0xf, fbits & 0x7, 28, vn, vd))
+    }
+    // SCVTF  <V><d>, <V><n>
+    if isAdvSIMD(v0) && isAdvSIMD(v1) && isSameType(v0, v1) {
+        var v uint32
+        d := uint32(v0.(asm.Register).ID())
+        switch v0.(type) {
+            case SIMDRegister32: v = 0b0
+            case SIMDRegister64: v = 0b1
+            default: panic("aarch64: invalid scalar operand size for SCVTF")
+        }
+        n := uint32(v1.(asm.Register).ID())
+        size := uint32(0b00)
+        size |= v
+        p.setins(asisdmisc(0, size, 29, n, d))
+    }
+    // SCVTF  <Hd>, <Hn>
+    if isHr(v0) && isHr(v1) {
+        hd := uint32(v0.(asm.Register).ID())
+        hn := uint32(v1.(asm.Register).ID())
+        p.setins(asisdmiscfp16(0, 0, 29, hn, hd))
+    }
+    // SCVTF  <V><d>, <V><n>, #<fbits>
+    if len(vv) == 1 && isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(vv[0]) && isSameType(v0, v1) {
+        var fbits_1 uint32
+        var v uint32
+        var v__bit_mask uint32
+        d := uint32(v0.(asm.Register).ID())
+        switch v0.(type) {
+            case SIMDRegister16: v = 0b0010
+            case SIMDRegister32: v = 0b0100
+            case SIMDRegister64: v = 0b1000
+            default: panic("aarch64: invalid scalar operand size for SCVTF")
+        }
+        switch v0.(type) {
+            case SIMDRegister16: v__bit_mask = 0b1110
+            case SIMDRegister32: v__bit_mask = 0b1100
+            case SIMDRegister64: v__bit_mask = 0b1000
+            default: panic("aarch64: invalid scalar operand size for SCVTF")
+        }
+        n := uint32(v1.(asm.Register).ID())
+        switch v {
+            case 0b0010: fbits_1 = 32 - uint32(asLit(vv[0]))
+            case 0b0100: fbits_1 = 64 - uint32(asLit(vv[0]))
+            case 0b1000: fbits_1 = 128 - uint32(asLit(vv[0]))
+            default: panic("aarch64: invalid operand 'fbits_1' for SCVTF")
+        }
+        if ((fbits_1 >> 3) & 0xf) & v__bit_mask != v {
+            panic("aarch64: invalid combination of operands for SCVTF")
+        }
+        p.setins(asisdshf(0, (fbits_1 >> 3) & 0xf, fbits_1 & 0x7, 28, n, d))
+    }
+    if !p.isvalid {
+        panic("aarch64: invalid combination of operands for SCVTF")
+    }
+    return p
+}
+
+// SHL instruction have 2 forms:
+//
+//   * SHL  <Vd>.<T>, <Vn>.<T>, #<shift>
+//   * SHL  <V><d>, <V><n>, #<shift>
+//
+func (self *Program) SHL(v0, v1, v2 interface{}) *Instruction {
+    p := self.alloc("SHL", 3, Operands { v0, v1, v2 })
+    // SHL  <Vd>.<T>, <Vn>.<T>, #<shift>
+    if isVr(v0) &&
+       isVfmt(v0, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
+       isVr(v1) &&
+       isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
+       isFpBits(v2) &&
+       isSameSize(v0, v1) {
+        var shift uint32
+        var t uint32
+        var t__bit_mask uint32
+        vd := uint32(v0.(asm.Register).ID())
+        switch vfmt(v0) {
+            case Vec8B: t = 0b00010
+            case Vec16B: t = 0b00011
+            case Vec4H: t = 0b00100
+            case Vec8H: t = 0b00101
+            case Vec2S: t = 0b01000
+            case Vec4S: t = 0b01001
+            case Vec2D: t = 0b10001
+            default: panic("aarch64: unreachable")
+        }
+        switch vfmt(v0) {
+            case Vec8B: t__bit_mask = 0b11111
+            case Vec16B: t__bit_mask = 0b11111
+            case Vec4H: t__bit_mask = 0b11101
+            case Vec8H: t__bit_mask = 0b11101
+            case Vec2S: t__bit_mask = 0b11001
+            case Vec4S: t__bit_mask = 0b11001
+            case Vec2D: t__bit_mask = 0b10001
+            default: panic("aarch64: unreachable")
+        }
+        vn := uint32(v1.(asm.Register).ID())
+        switch (t >> 1) & 0xf {
+            case 0b0001: shift = uint32(asLit(v2)) + 8
+            case 0b0010: shift = uint32(asLit(v2)) + 16
+            case 0b0100: shift = uint32(asLit(v2)) + 32
+            case 0b1000: shift = uint32(asLit(v2)) + 64
+            default: panic("aarch64: invalid operand 'shift' for SHL")
+        }
+        if ((shift >> 3) & 0xf) & ((t__bit_mask >> 1) & 0xf) != (t >> 1) & 0xf {
+            panic("aarch64: invalid combination of operands for SHL")
+        }
+        p.setins(asimdshf(t & 0x1, 0, (shift >> 3) & 0xf, shift & 0x7, 10, vn, vd))
+    }
+    // SHL  <V><d>, <V><n>, #<shift>
+    if isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(v2) && isSameType(v0, v1) {
+        var shift_1 uint32
+        var v uint32
+        var v__bit_mask uint32
+        d := uint32(v0.(asm.Register).ID())
+        switch v0.(type) {
+            case SIMDRegister64: v = 0b1000
+            default: panic("aarch64: invalid scalar operand size for SHL")
+        }
+        switch v0.(type) {
+            case SIMDRegister64: v__bit_mask = 0b1000
+            default: panic("aarch64: invalid scalar operand size for SHL")
+        }
+        n := uint32(v1.(asm.Register).ID())
+        switch v {
+            case 0b1000: shift_1 = uint32(asLit(v2)) + 64
+            default: panic("aarch64: invalid operand 'shift_1' for SHL")
+        }
+        if ((shift_1 >> 3) & 0xf) & v__bit_mask != v {
+            panic("aarch64: invalid combination of operands for SHL")
+        }
+        p.setins(asisdshf(0, (shift_1 >> 3) & 0xf, shift_1 & 0x7, 10, n, d))
+    }
+    if !p.isvalid {
+        panic("aarch64: invalid combination of operands for SHL")
+    }
+    return p
+}
+
+// SHLL instruction have one single form:
+//
+//   * SHLL{2}  <Vd>.<Ta>, <Vn>.<Tb>, #<shift>
+//
+func (self *Program) SHLL(v0, v1, v2 interface{}) *Instruction {
+    p := self.alloc("SHLL", 3, Operands { v0, v1, v2 })
+    if isVr(v0) &&
+       isVfmt(v0, Vec8H, Vec4S, Vec2D) &&
+       isVr(v1) &&
+       isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
+       isLit(v2, 8, 16, 32) {
+        var shift uint32
+        var ta uint32
+        var tb uint32
+        vd := uint32(v0.(asm.Register).ID())
+        switch vfmt(v0) {
+            case Vec8H: ta = 0b00
+            case Vec4S: ta = 0b01
+            case Vec2D: ta = 0b10
+            default: panic("aarch64: unreachable")
+        }
+        vn := uint32(v1.(asm.Register).ID())
+        switch vfmt(v1) {
+            case Vec8B: tb = 0b000
+            case Vec16B: tb = 0b001
+            case Vec4H: tb = 0b010
+            case Vec8H: tb = 0b011
+            case Vec2S: tb = 0b100
+            case Vec4S: tb = 0b101
+            default: panic("aarch64: unreachable")
+        }
+        switch asLit(v2) {
+            case 8: shift = 0b00
+            case 16: shift = 0b01
+            case 32: shift = 0b10
+            default: panic("aarch64: invalid operand 'shift' for SHLL")
+        }
+        if shift != ta || ta != (tb >> 1) & 0x3 {
+            panic("aarch64: invalid combination of operands for SHLL")
+        }
+        p.setins(asimdmisc(tb & 0x1, 1, shift, 19, vn, vd))
+    }
+    if !p.isvalid {
+        panic("aarch64: invalid combination of operands for SHLL")
+    }
+    return p
+}
+
+// SHRN instruction have one single form:
+//
+//   * SHRN{2}  <Vd>.<Tb>, <Vn>.<Ta>, #<shift>
+//
+func (self *Program) SHRN(v0, v1, v2 interface{}) *Instruction {
+    p := self.alloc("SHRN", 3, Operands { v0, v1, v2 })
+    if isVr(v0) &&
+       isVfmt(v0, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
+       isVr(v1) &&
+       isVfmt(v1, Vec8H, Vec4S, Vec2D) &&
+       isFpBits(v2) {
+        var shift uint32
+        var ta uint32
+        var ta__bit_mask uint32
+        var tb uint32
+        var tb__bit_mask uint32
+        vd := uint32(v0.(asm.Register).ID())
+        switch vfmt(v0) {
+            case Vec8B: tb = 0b00010
+            case Vec16B: tb = 0b00011
+            case Vec4H: tb = 0b00100
+            case Vec8H: tb = 0b00101
+            case Vec2S: tb = 0b01000
+            case Vec4S: tb = 0b01001
+            default: panic("aarch64: unreachable")
+        }
+        switch vfmt(v0) {
+            case Vec8B: tb__bit_mask = 0b11111
+            case Vec16B: tb__bit_mask = 0b11111
+            case Vec4H: tb__bit_mask = 0b11101
+            case Vec8H: tb__bit_mask = 0b11101
+            case Vec2S: tb__bit_mask = 0b11001
+            case Vec4S: tb__bit_mask = 0b11001
+            default: panic("aarch64: unreachable")
+        }
+        vn := uint32(v1.(asm.Register).ID())
+        switch vfmt(v1) {
+            case Vec8H: ta = 0b0001
+            case Vec4S: ta = 0b0010
+            case Vec2D: ta = 0b0100
+            default: panic("aarch64: unreachable")
+        }
+        switch vfmt(v1) {
+            case Vec8H: ta__bit_mask = 0b1111
+            case Vec4S: ta__bit_mask = 0b1110
+            case Vec2D: ta__bit_mask = 0b1100
+            default: panic("aarch64: unreachable")
+        }
+        switch (tb >> 1) & 0xf {
+            case 0b0001: shift = 16 - uint32(asLit(v2))
+            case 0b0010: shift = 32 - uint32(asLit(v2))
+            case 0b0100: shift = 64 - uint32(asLit(v2))
+            default: panic("aarch64: invalid operand 'shift' for SHRN")
+        }
+        if ((shift >> 3) & 0xf) & ta__bit_mask != ta || ta & ((tb__bit_mask >> 1) & 0xf) != (tb >> 1) & 0xf {
+            panic("aarch64: invalid combination of operands for SHRN")
+        }
+        p.setins(asimdshf(tb & 0x1, 0, (shift >> 3) & 0xf, shift & 0x7, 16, vn, vd))
+    }
+    if !p.isvalid {
+        panic("aarch64: invalid combination of operands for SHRN")
+    }
+    return p
+}
+
+// SSHL instruction have 2 forms:
+//
+//   * SSHL  <Vd>.<T>, <Vn>.<T>, <Vm>.<T>
+//   * SSHL  <V><d>, <V><n>, <V><m>
+//
+func (self *Program) SSHL(v0, v1, v2 interface{}) *Instruction {
+    p := self.alloc("SSHL", 3, Operands { v0, v1, v2 })
+    // SSHL  <Vd>.<T>, <Vn>.<T>, <Vm>.<T>
+    if isVr(v0) &&
+       isVfmt(v0, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
+       isVr(v1) &&
+       isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
+       isVr(v2) &&
+       isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
+       isSameSize(v0, v1) &&
+       isSameSize(v1, v2) {
+        var t uint32
+        vd := uint32(v0.(asm.Register).ID())
+        switch vfmt(v0) {
+            case Vec8B: t = 0b000
+            case Vec16B: t = 0b001
+            case Vec4H: t = 0b010
+            case Vec8H: t = 0b011
+            case Vec2S: t = 0b100
+            case Vec4S: t = 0b101
+            case Vec2D: t = 0b111
+            default: panic("aarch64: unreachable")
+        }
+        vn := uint32(v1.(asm.Register).ID())
+        vm := uint32(v2.(asm.Register).ID())
+        p.setins(asimdsame(t & 0x1, 0, (t >> 1) & 0x3, vm, 8, vn, vd))
+    }
+    // SSHL  <V><d>, <V><n>, <V><m>
+    if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
+        var v uint32
+        d := uint32(v0.(asm.Register).ID())
+        switch v0.(type) {
+            case SIMDRegister64: v = 0b11
+            default: panic("aarch64: invalid scalar operand size for SSHL")
+        }
+        n := uint32(v1.(asm.Register).ID())
+        m := uint32(v2.(asm.Register).ID())
+        p.setins(asisdsame(0, v, m, 8, n, d))
+    }
+    if !p.isvalid {
+        panic("aarch64: invalid combination of operands for SSHL")
+    }
+    return p
+}
+
+// SSHLL instruction have one single form:
+//
+//   * SSHLL{2}  <Vd>.<Ta>, <Vn>.<Tb>, #<shift>
+//
+func (self *Program) SSHLL(v0, v1, v2 interface{}) *Instruction {
+    p := self.alloc("SSHLL", 3, Operands { v0, v1, v2 })
+    if isVr(v0) &&
+       isVfmt(v0, Vec8H, Vec4S, Vec2D) &&
+       isVr(v1) &&
+       isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
+       isFpBits(v2) {
+        var shift uint32
+        var ta uint32
+        var ta__bit_mask uint32
+        var tb uint32
+        var tb__bit_mask uint32
+        vd := uint32(v0.(asm.Register).ID())
+        switch vfmt(v0) {
+            case Vec8H: ta = 0b0001
+            case Vec4S: ta = 0b0010
+            case Vec2D: ta = 0b0100
+            default: panic("aarch64: unreachable")
+        }
+        switch vfmt(v0) {
+            case Vec8H: ta__bit_mask = 0b1111
+            case Vec4S: ta__bit_mask = 0b1110
+            case Vec2D: ta__bit_mask = 0b1100
+            default: panic("aarch64: unreachable")
+        }
+        vn := uint32(v1.(asm.Register).ID())
+        switch vfmt(v1) {
+            case Vec8B: tb = 0b00010
+            case Vec16B: tb = 0b00011
+            case Vec4H: tb = 0b00100
+            case Vec8H: tb = 0b00101
+            case Vec2S: tb = 0b01000
+            case Vec4S: tb = 0b01001
+            default: panic("aarch64: unreachable")
+        }
+        switch vfmt(v1) {
+            case Vec8B: tb__bit_mask = 0b11111
+            case Vec16B: tb__bit_mask = 0b11111
+            case Vec4H: tb__bit_mask = 0b11101
+            case Vec8H: tb__bit_mask = 0b11101
+            case Vec2S: tb__bit_mask = 0b11001
+            case Vec4S: tb__bit_mask = 0b11001
+            default: panic("aarch64: unreachable")
+        }
+        switch ta {
+            case 0b0001: shift = uint32(asLit(v2)) + 8
+            case 0b0010: shift = uint32(asLit(v2)) + 16
+            case 0b0100: shift = uint32(asLit(v2)) + 32
+            default: panic("aarch64: invalid operand 'shift' for SSHLL")
+        }
+        if ((shift >> 3) & 0xf) & ta__bit_mask != ta || ta & ((tb__bit_mask >> 1) & 0xf) != (tb >> 1) & 0xf {
+            panic("aarch64: invalid combination of operands for SSHLL")
+        }
+        p.setins(asimdshf(tb & 0x1, 0, (shift >> 3) & 0xf, shift & 0x7, 20, vn, vd))
+    }
+    if !p.isvalid {
+        panic("aarch64: invalid combination of operands for SSHLL")
+    }
+    return p
+}
+
+// SSHR instruction have 2 forms:
+//
+//   * SSHR  <Vd>.<T>, <Vn>.<T>, #<shift>
+//   * SSHR  <V><d>, <V><n>, #<shift>
+//
+func (self *Program) SSHR(v0, v1, v2 interface{}) *Instruction {
+    p := self.alloc("SSHR", 3, Operands { v0, v1, v2 })
+    // SSHR  <Vd>.<T>, <Vn>.<T>, #<shift>
+    if isVr(v0) &&
+       isVfmt(v0, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
+       isVr(v1) &&
+       isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
+       isFpBits(v2) &&
+       isSameSize(v0, v1) {
+        var shift uint32
+        var t uint32
+        var t__bit_mask uint32
+        vd := uint32(v0.(asm.Register).ID())
+        switch vfmt(v0) {
+            case Vec8B: t = 0b00010
+            case Vec16B: t = 0b00011
+            case Vec4H: t = 0b00100
+            case Vec8H: t = 0b00101
+            case Vec2S: t = 0b01000
+            case Vec4S: t = 0b01001
+            case Vec2D: t = 0b10001
+            default: panic("aarch64: unreachable")
+        }
+        switch vfmt(v0) {
+            case Vec8B: t__bit_mask = 0b11111
+            case Vec16B: t__bit_mask = 0b11111
+            case Vec4H: t__bit_mask = 0b11101
+            case Vec8H: t__bit_mask = 0b11101
+            case Vec2S: t__bit_mask = 0b11001
+            case Vec4S: t__bit_mask = 0b11001
+            case Vec2D: t__bit_mask = 0b10001
+            default: panic("aarch64: unreachable")
+        }
+        vn := uint32(v1.(asm.Register).ID())
+        switch (t >> 1) & 0xf {
+            case 0b0001: shift = 16 - uint32(asLit(v2))
+            case 0b0010: shift = 32 - uint32(asLit(v2))
+            case 0b0100: shift = 64 - uint32(asLit(v2))
+            case 0b1000: shift = 128 - uint32(asLit(v2))
+            default: panic("aarch64: invalid operand 'shift' for SSHR")
+        }
+        if ((shift >> 3) & 0xf) & ((t__bit_mask >> 1) & 0xf) != (t >> 1) & 0xf {
+            panic("aarch64: invalid combination of operands for SSHR")
+        }
+        p.setins(asimdshf(t & 0x1, 0, (shift >> 3) & 0xf, shift & 0x7, 0, vn, vd))
+    }
+    // SSHR  <V><d>, <V><n>, #<shift>
+    if isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(v2) && isSameType(v0, v1) {
+        var shift_1 uint32
+        var v uint32
+        var v__bit_mask uint32
+        d := uint32(v0.(asm.Register).ID())
+        switch v0.(type) {
+            case SIMDRegister64: v = 0b1000
+            default: panic("aarch64: invalid scalar operand size for SSHR")
+        }
+        switch v0.(type) {
+            case SIMDRegister64: v__bit_mask = 0b1000
+            default: panic("aarch64: invalid scalar operand size for SSHR")
+        }
+        n := uint32(v1.(asm.Register).ID())
+        switch v {
+            case 0b1000: shift_1 = 128 - uint32(asLit(v2))
+            default: panic("aarch64: invalid operand 'shift_1' for SSHR")
+        }
+        if ((shift_1 >> 3) & 0xf) & v__bit_mask != v {
+            panic("aarch64: invalid combination of operands for SSHR")
+        }
+        p.setins(asisdshf(0, (shift_1 >> 3) & 0xf, shift_1 & 0x7, 0, n, d))
+    }
+    if !p.isvalid {
+        panic("aarch64: invalid combination of operands for SSHR")
+    }
+    return p
+}
+
+// SSRA instruction have 2 forms:
+//
+//   * SSRA  <Vd>.<T>, <Vn>.<T>, #<shift>
+//   * SSRA  <V><d>, <V><n>, #<shift>
+//
+func (self *Program) SSRA(v0, v1, v2 interface{}) *Instruction {
+    p := self.alloc("SSRA", 3, Operands { v0, v1, v2 })
+    // SSRA  <Vd>.<T>, <Vn>.<T>, #<shift>
+    if isVr(v0) &&
+       isVfmt(v0, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
+       isVr(v1) &&
+       isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
+       isFpBits(v2) &&
+       isSameSize(v0, v1) {
+        var shift uint32
+        var t uint32
+        var t__bit_mask uint32
+        vd := uint32(v0.(asm.Register).ID())
+        switch vfmt(v0) {
+            case Vec8B: t = 0b00010
+            case Vec16B: t = 0b00011
+            case Vec4H: t = 0b00100
+            case Vec8H: t = 0b00101
+            case Vec2S: t = 0b01000
+            case Vec4S: t = 0b01001
+            case Vec2D: t = 0b10001
+            default: panic("aarch64: unreachable")
+        }
+        switch vfmt(v0) {
+            case Vec8B: t__bit_mask = 0b11111
+            case Vec16B: t__bit_mask = 0b11111
+            case Vec4H: t__bit_mask = 0b11101
+            case Vec8H: t__bit_mask = 0b11101
+            case Vec2S: t__bit_mask = 0b11001
+            case Vec4S: t__bit_mask = 0b11001
+            case Vec2D: t__bit_mask = 0b10001
+            default: panic("aarch64: unreachable")
+        }
+        vn := uint32(v1.(asm.Register).ID())
+        switch (t >> 1) & 0xf {
+            case 0b0001: shift = 16 - uint32(asLit(v2))
+            case 0b0010: shift = 32 - uint32(asLit(v2))
+            case 0b0100: shift = 64 - uint32(asLit(v2))
+            case 0b1000: shift = 128 - uint32(asLit(v2))
+            default: panic("aarch64: invalid operand 'shift' for SSRA")
+        }
+        if ((shift >> 3) & 0xf) & ((t__bit_mask >> 1) & 0xf) != (t >> 1) & 0xf {
+            panic("aarch64: invalid combination of operands for SSRA")
+        }
+        p.setins(asimdshf(t & 0x1, 0, (shift >> 3) & 0xf, shift & 0x7, 2, vn, vd))
+    }
+    // SSRA  <V><d>, <V><n>, #<shift>
+    if isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(v2) && isSameType(v0, v1) {
+        var shift_1 uint32
+        var v uint32
+        var v__bit_mask uint32
+        d := uint32(v0.(asm.Register).ID())
+        switch v0.(type) {
+            case SIMDRegister64: v = 0b1000
+            default: panic("aarch64: invalid scalar operand size for SSRA")
+        }
+        switch v0.(type) {
+            case SIMDRegister64: v__bit_mask = 0b1000
+            default: panic("aarch64: invalid scalar operand size for SSRA")
+        }
+        n := uint32(v1.(asm.Register).ID())
+        switch v {
+            case 0b1000: shift_1 = 128 - uint32(asLit(v2))
+            default: panic("aarch64: invalid operand 'shift_1' for SSRA")
+        }
+        if ((shift_1 >> 3) & 0xf) & v__bit_mask != v {
+            panic("aarch64: invalid combination of operands for SSRA")
+        }
+        p.setins(asisdshf(0, (shift_1 >> 3) & 0xf, shift_1 & 0x7, 2, n, d))
+    }
+    if !p.isvalid {
+        panic("aarch64: invalid combination of operands for SSRA")
+    }
+    return p
+}
+
+// UQXTN instruction have 2 forms:
+//
+//   * UQXTN{2}  <Vd>.<Tb>, <Vn>.<Ta>
+//   * UQXTN  <Vb><d>, <Va><n>
+//
+func (self *Program) UQXTN(v0, v1 interface{}) *Instruction {
+    p := self.alloc("UQXTN", 2, Operands { v0, v1 })
+    // UQXTN{2}  <Vd>.<Tb>, <Vn>.<Ta>
+    if isVr(v0) &&
+       isVfmt(v0, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
+       isVr(v1) &&
+       isVfmt(v1, Vec8H, Vec4S, Vec2D) {
+        var ta uint32
+        var tb uint32
+        vd := uint32(v0.(asm.Register).ID())
+        switch vfmt(v0) {
+            case Vec8B: tb = 0b000
+            case Vec16B: tb = 0b001
+            case Vec4H: tb = 0b010
+            case Vec8H: tb = 0b011
+            case Vec2S: tb = 0b100
+            case Vec4S: tb = 0b101
+            default: panic("aarch64: unreachable")
+        }
+        vn := uint32(v1.(asm.Register).ID())
+        switch vfmt(v1) {
+            case Vec8H: ta = 0b00
+            case Vec4S: ta = 0b01
+            case Vec2D: ta = 0b10
+            default: panic("aarch64: unreachable")
+        }
+        if ta != (tb >> 1) & 0x3 {
+            panic("aarch64: invalid combination of operands for UQXTN")
+        }
+        p.setins(asimdmisc(tb & 0x1, 1, ta, 20, vn, vd))
+    }
+    // UQXTN  <Vb><d>, <Va><n>
+    if isAdvSIMD(v0) && isAdvSIMD(v1) {
+        var va uint32
+        var vb uint32
+        d := uint32(v0.(asm.Register).ID())
+        switch v0.(type) {
+            case SIMDRegister8: vb = 0b00
+            case SIMDRegister16: vb = 0b01
+            case SIMDRegister32: vb = 0b10
+            default: panic("aarch64: invalid scalar operand size for UQXTN")
+        }
+        n := uint32(v1.(asm.Register).ID())
+        switch v1.(type) {
+            case SIMDRegister16: va = 0b00
+            case SIMDRegister32: va = 0b01
+            case SIMDRegister64: va = 0b10
+            default: panic("aarch64: invalid scalar operand size for UQXTN")
+        }
+        if va != vb {
+            panic("aarch64: invalid combination of operands for UQXTN")
+        }
+        p.setins(asisdmisc(1, va, 20, n, d))
+    }
+    if !p.isvalid {
+        panic("aarch64: invalid combination of operands for UQXTN")
+    }
+    return p
+}
+
+// USRA instruction have 2 forms:
+//
+//   * USRA  <Vd>.<T>, <Vn>.<T>, #<shift>
+//   * USRA  <V><d>, <V><n>, #<shift>
+//
+func (self *Program) USRA(v0, v1, v2 interface{}) *Instruction {
+    p := self.alloc("USRA", 3, Operands { v0, v1, v2 })
+    // USRA  <Vd>.<T>, <Vn>.<T>, #<shift>
+    if isVr(v0) &&
+       isVfmt(v0, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
+       isVr(v1) &&
+       isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
+       isFpBits(v2) &&
+       isSameSize(v0, v1) {
+        var shift uint32
+        var t uint32
+        var t__bit_mask uint32
+        vd := uint32(v0.(asm.Register).ID())
+        switch vfmt(v0) {
+            case Vec8B: t = 0b00010
+            case Vec16B: t = 0b00011
+            case Vec4H: t = 0b00100
+            case Vec8H: t = 0b00101
+            case Vec2S: t = 0b01000
+            case Vec4S: t = 0b01001
+            case Vec2D: t = 0b10001
+            default: panic("aarch64: unreachable")
+        }
+        switch vfmt(v0) {
+            case Vec8B: t__bit_mask = 0b11111
+            case Vec16B: t__bit_mask = 0b11111
+            case Vec4H: t__bit_mask = 0b11101
+            case Vec8H: t__bit_mask = 0b11101
+            case Vec2S: t__bit_mask = 0b11001
+            case Vec4S: t__bit_mask = 0b11001
+            case Vec2D: t__bit_mask = 0b10001
+            default: panic("aarch64: unreachable")
+        }
+        vn := uint32(v1.(asm.Register).ID())
+        switch (t >> 1) & 0xf {
+            case 0b0001: shift = 16 - uint32(asLit(v2))
+            case 0b0010: shift = 32 - uint32(asLit(v2))
+            case 0b0100: shift = 64 - uint32(asLit(v2))
+            case 0b1000: shift = 128 - uint32(asLit(v2))
+            default: panic("aarch64: invalid operand 'shift' for USRA")
+        }
+        if ((shift >> 3) & 0xf) & ((t__bit_mask >> 1) & 0xf) != (t >> 1) & 0xf {
+            panic("aarch64: invalid combination of operands for USRA")
+        }
+        p.setins(asimdshf(t & 0x1, 1, (shift >> 3) & 0xf, shift & 0x7, 2, vn, vd))
+    }
+    // USRA  <V><d>, <V><n>, #<shift>
+    if isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(v2) && isSameType(v0, v1) {
+        var shift_1 uint32
+        var v uint32
+        var v__bit_mask uint32
+        d := uint32(v0.(asm.Register).ID())
+        switch v0.(type) {
+            case SIMDRegister64: v = 0b1000
+            default: panic("aarch64: invalid scalar operand size for USRA")
+        }
+        switch v0.(type) {
+            case SIMDRegister64: v__bit_mask = 0b1000
+            default: panic("aarch64: invalid scalar operand size for USRA")
+        }
+        n := uint32(v1.(asm.Register).ID())
+        switch v {
+            case 0b1000: shift_1 = 128 - uint32(asLit(v2))
+            default: panic("aarch64: invalid operand 'shift_1' for USRA")
+        }
+        if ((shift_1 >> 3) & 0xf) & v__bit_mask != v {
+            panic("aarch64: invalid combination of operands for USRA")
+        }
+        p.setins(asisdshf(1, (shift_1 >> 3) & 0xf, shift_1 & 0x7, 2, n, d))
+    }
+    if !p.isvalid {
+        panic("aarch64: invalid combination of operands for USRA")
     }
     return p
 }
