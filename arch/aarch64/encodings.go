@@ -4,22 +4,22 @@ package aarch64
 
 // addsub_carry: Add/subtract (with carry)
 func addsub_carry(sf, op, S, Rm, Rn, Rd uint32) uint32 {
-    if sf &^ 0b1 != 0 {
+    if sf &^ 0x1 != 0 {
         panic("addsub_carry: invalid sf")
     }
-    if op &^ 0b1 != 0 {
+    if op &^ 0x1 != 0 {
         panic("addsub_carry: invalid op")
     }
-    if S &^ 0b1 != 0 {
+    if S &^ 0x1 != 0 {
         panic("addsub_carry: invalid S")
     }
-    if Rm &^ 0b11111 != 0 {
+    if Rm &^ 0x1f != 0 {
         panic("addsub_carry: invalid Rm")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("addsub_carry: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("addsub_carry: invalid Rd")
     }
     ret := uint32(0x1a000000)
@@ -34,31 +34,31 @@ func addsub_carry(sf, op, S, Rm, Rn, Rd uint32) uint32 {
 
 // addsub_ext: Add/subtract (extended register)
 func addsub_ext(sf, op, S, opt, Rm, option, imm3, Rn, Rd uint32) uint32 {
-    if sf &^ 0b1 != 0 {
+    if sf &^ 0x1 != 0 {
         panic("addsub_ext: invalid sf")
     }
-    if op &^ 0b1 != 0 {
+    if op &^ 0x1 != 0 {
         panic("addsub_ext: invalid op")
     }
-    if S &^ 0b1 != 0 {
+    if S &^ 0x1 != 0 {
         panic("addsub_ext: invalid S")
     }
-    if opt &^ 0b11 != 0 {
+    if opt &^ 0x3 != 0 {
         panic("addsub_ext: invalid opt")
     }
-    if Rm &^ 0b11111 != 0 {
+    if Rm &^ 0x1f != 0 {
         panic("addsub_ext: invalid Rm")
     }
-    if option &^ 0b111 != 0 {
+    if option &^ 0x7 != 0 {
         panic("addsub_ext: invalid option")
     }
-    if imm3 &^ 0b111 != 0 {
+    if imm3 &^ 0x7 != 0 {
         panic("addsub_ext: invalid imm3")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("addsub_ext: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("addsub_ext: invalid Rd")
     }
     ret := uint32(0x0b200000)
@@ -76,25 +76,25 @@ func addsub_ext(sf, op, S, opt, Rm, option, imm3, Rn, Rd uint32) uint32 {
 
 // addsub_imm: Add/subtract (immediate)
 func addsub_imm(sf, op, S, sh, imm12, Rn, Rd uint32) uint32 {
-    if sf &^ 0b1 != 0 {
+    if sf &^ 0x1 != 0 {
         panic("addsub_imm: invalid sf")
     }
-    if op &^ 0b1 != 0 {
+    if op &^ 0x1 != 0 {
         panic("addsub_imm: invalid op")
     }
-    if S &^ 0b1 != 0 {
+    if S &^ 0x1 != 0 {
         panic("addsub_imm: invalid S")
     }
-    if sh &^ 0b1 != 0 {
+    if sh &^ 0x1 != 0 {
         panic("addsub_imm: invalid sh")
     }
-    if imm12 &^ 0b111111111111 != 0 {
+    if imm12 &^ 0xfff != 0 {
         panic("addsub_imm: invalid imm12")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("addsub_imm: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("addsub_imm: invalid Rd")
     }
     ret := uint32(0x11000000)
@@ -110,31 +110,31 @@ func addsub_imm(sf, op, S, sh, imm12, Rn, Rd uint32) uint32 {
 
 // addsub_immtags: Add/subtract (immediate, with tags)
 func addsub_immtags(sf, op, S, o2, uimm6, op3, uimm4, Rn, Rd uint32) uint32 {
-    if sf &^ 0b1 != 0 {
+    if sf &^ 0x1 != 0 {
         panic("addsub_immtags: invalid sf")
     }
-    if op &^ 0b1 != 0 {
+    if op &^ 0x1 != 0 {
         panic("addsub_immtags: invalid op")
     }
-    if S &^ 0b1 != 0 {
+    if S &^ 0x1 != 0 {
         panic("addsub_immtags: invalid S")
     }
-    if o2 &^ 0b1 != 0 {
+    if o2 &^ 0x1 != 0 {
         panic("addsub_immtags: invalid o2")
     }
-    if uimm6 &^ 0b111111 != 0 {
+    if uimm6 &^ 0x3f != 0 {
         panic("addsub_immtags: invalid uimm6")
     }
-    if op3 &^ 0b11 != 0 {
+    if op3 &^ 0x3 != 0 {
         panic("addsub_immtags: invalid op3")
     }
-    if uimm4 &^ 0b1111 != 0 {
+    if uimm4 &^ 0xf != 0 {
         panic("addsub_immtags: invalid uimm4")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("addsub_immtags: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("addsub_immtags: invalid Rd")
     }
     ret := uint32(0x11800000)
@@ -152,28 +152,28 @@ func addsub_immtags(sf, op, S, o2, uimm6, op3, uimm4, Rn, Rd uint32) uint32 {
 
 // addsub_shift: Add/subtract (shifted register)
 func addsub_shift(sf, op, S, shift, Rm, imm6, Rn, Rd uint32) uint32 {
-    if sf &^ 0b1 != 0 {
+    if sf &^ 0x1 != 0 {
         panic("addsub_shift: invalid sf")
     }
-    if op &^ 0b1 != 0 {
+    if op &^ 0x1 != 0 {
         panic("addsub_shift: invalid op")
     }
-    if S &^ 0b1 != 0 {
+    if S &^ 0x1 != 0 {
         panic("addsub_shift: invalid S")
     }
-    if shift &^ 0b11 != 0 {
+    if shift &^ 0x3 != 0 {
         panic("addsub_shift: invalid shift")
     }
-    if Rm &^ 0b11111 != 0 {
+    if Rm &^ 0x1f != 0 {
         panic("addsub_shift: invalid Rm")
     }
-    if imm6 &^ 0b111111 != 0 {
+    if imm6 &^ 0x3f != 0 {
         panic("addsub_shift: invalid imm6")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("addsub_shift: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("addsub_shift: invalid Rd")
     }
     ret := uint32(0x0b000000)
@@ -190,22 +190,22 @@ func addsub_shift(sf, op, S, shift, Rm, imm6, Rn, Rd uint32) uint32 {
 
 // asimdall: Advanced SIMD across lanes
 func asimdall(Q, U, size, opcode, Rn, Rd uint32) uint32 {
-    if Q &^ 0b1 != 0 {
+    if Q &^ 0x1 != 0 {
         panic("asimdall: invalid Q")
     }
-    if U &^ 0b1 != 0 {
+    if U &^ 0x1 != 0 {
         panic("asimdall: invalid U")
     }
-    if size &^ 0b11 != 0 {
+    if size &^ 0x3 != 0 {
         panic("asimdall: invalid size")
     }
-    if opcode &^ 0b11111 != 0 {
+    if opcode &^ 0x1f != 0 {
         panic("asimdall: invalid opcode")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("asimdall: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("asimdall: invalid Rd")
     }
     ret := uint32(0x0e300800)
@@ -220,25 +220,25 @@ func asimdall(Q, U, size, opcode, Rn, Rd uint32) uint32 {
 
 // asimddiff: Advanced SIMD three different
 func asimddiff(Q, U, size, Rm, opcode, Rn, Rd uint32) uint32 {
-    if Q &^ 0b1 != 0 {
+    if Q &^ 0x1 != 0 {
         panic("asimddiff: invalid Q")
     }
-    if U &^ 0b1 != 0 {
+    if U &^ 0x1 != 0 {
         panic("asimddiff: invalid U")
     }
-    if size &^ 0b11 != 0 {
+    if size &^ 0x3 != 0 {
         panic("asimddiff: invalid size")
     }
-    if Rm &^ 0b11111 != 0 {
+    if Rm &^ 0x1f != 0 {
         panic("asimddiff: invalid Rm")
     }
-    if opcode &^ 0b1111 != 0 {
+    if opcode &^ 0xf != 0 {
         panic("asimddiff: invalid opcode")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("asimddiff: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("asimddiff: invalid Rd")
     }
     ret := uint32(0x0e200000)
@@ -254,34 +254,34 @@ func asimddiff(Q, U, size, Rm, opcode, Rn, Rd uint32) uint32 {
 
 // asimdelem: Advanced SIMD vector x indexed element
 func asimdelem(Q, U, size, L, M, Rm, opcode, H, Rn, Rd uint32) uint32 {
-    if Q &^ 0b1 != 0 {
+    if Q &^ 0x1 != 0 {
         panic("asimdelem: invalid Q")
     }
-    if U &^ 0b1 != 0 {
+    if U &^ 0x1 != 0 {
         panic("asimdelem: invalid U")
     }
-    if size &^ 0b11 != 0 {
+    if size &^ 0x3 != 0 {
         panic("asimdelem: invalid size")
     }
-    if L &^ 0b1 != 0 {
+    if L &^ 0x1 != 0 {
         panic("asimdelem: invalid L")
     }
-    if M &^ 0b1 != 0 {
+    if M &^ 0x1 != 0 {
         panic("asimdelem: invalid M")
     }
-    if Rm &^ 0b1111 != 0 {
+    if Rm &^ 0xf != 0 {
         panic("asimdelem: invalid Rm")
     }
-    if opcode &^ 0b1111 != 0 {
+    if opcode &^ 0xf != 0 {
         panic("asimdelem: invalid opcode")
     }
-    if H &^ 0b1 != 0 {
+    if H &^ 0x1 != 0 {
         panic("asimdelem: invalid H")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("asimdelem: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("asimdelem: invalid Rd")
     }
     ret := uint32(0x0f000000)
@@ -300,22 +300,22 @@ func asimdelem(Q, U, size, L, M, Rm, opcode, H, Rn, Rd uint32) uint32 {
 
 // asimdext: Advanced SIMD extract
 func asimdext(Q, op2, Rm, imm4, Rn, Rd uint32) uint32 {
-    if Q &^ 0b1 != 0 {
+    if Q &^ 0x1 != 0 {
         panic("asimdext: invalid Q")
     }
-    if op2 &^ 0b11 != 0 {
+    if op2 &^ 0x3 != 0 {
         panic("asimdext: invalid op2")
     }
-    if Rm &^ 0b11111 != 0 {
+    if Rm &^ 0x1f != 0 {
         panic("asimdext: invalid Rm")
     }
-    if imm4 &^ 0b1111 != 0 {
+    if imm4 &^ 0xf != 0 {
         panic("asimdext: invalid imm4")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("asimdext: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("asimdext: invalid Rd")
     }
     ret := uint32(0x2e000000)
@@ -330,43 +330,43 @@ func asimdext(Q, op2, Rm, imm4, Rn, Rd uint32) uint32 {
 
 // asimdimm: Advanced SIMD modified immediate
 func asimdimm(Q, op, a, b, c, cmode, o2, d, e, f, g, h, Rd uint32) uint32 {
-    if Q &^ 0b1 != 0 {
+    if Q &^ 0x1 != 0 {
         panic("asimdimm: invalid Q")
     }
-    if op &^ 0b1 != 0 {
+    if op &^ 0x1 != 0 {
         panic("asimdimm: invalid op")
     }
-    if a &^ 0b1 != 0 {
+    if a &^ 0x1 != 0 {
         panic("asimdimm: invalid a")
     }
-    if b &^ 0b1 != 0 {
+    if b &^ 0x1 != 0 {
         panic("asimdimm: invalid b")
     }
-    if c &^ 0b1 != 0 {
+    if c &^ 0x1 != 0 {
         panic("asimdimm: invalid c")
     }
-    if cmode &^ 0b1111 != 0 {
+    if cmode &^ 0xf != 0 {
         panic("asimdimm: invalid cmode")
     }
-    if o2 &^ 0b1 != 0 {
+    if o2 &^ 0x1 != 0 {
         panic("asimdimm: invalid o2")
     }
-    if d &^ 0b1 != 0 {
+    if d &^ 0x1 != 0 {
         panic("asimdimm: invalid d")
     }
-    if e &^ 0b1 != 0 {
+    if e &^ 0x1 != 0 {
         panic("asimdimm: invalid e")
     }
-    if f &^ 0b1 != 0 {
+    if f &^ 0x1 != 0 {
         panic("asimdimm: invalid f")
     }
-    if g &^ 0b1 != 0 {
+    if g &^ 0x1 != 0 {
         panic("asimdimm: invalid g")
     }
-    if h &^ 0b1 != 0 {
+    if h &^ 0x1 != 0 {
         panic("asimdimm: invalid h")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("asimdimm: invalid Rd")
     }
     ret := uint32(0x0f000400)
@@ -388,22 +388,22 @@ func asimdimm(Q, op, a, b, c, cmode, o2, d, e, f, g, h, Rd uint32) uint32 {
 
 // asimdins: Advanced SIMD copy
 func asimdins(Q, op, imm5, imm4, Rn, Rd uint32) uint32 {
-    if Q &^ 0b1 != 0 {
+    if Q &^ 0x1 != 0 {
         panic("asimdins: invalid Q")
     }
-    if op &^ 0b1 != 0 {
+    if op &^ 0x1 != 0 {
         panic("asimdins: invalid op")
     }
-    if imm5 &^ 0b11111 != 0 {
+    if imm5 &^ 0x1f != 0 {
         panic("asimdins: invalid imm5")
     }
-    if imm4 &^ 0b1111 != 0 {
+    if imm4 &^ 0xf != 0 {
         panic("asimdins: invalid imm4")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("asimdins: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("asimdins: invalid Rd")
     }
     ret := uint32(0x0e000400)
@@ -418,22 +418,22 @@ func asimdins(Q, op, imm5, imm4, Rn, Rd uint32) uint32 {
 
 // asimdmisc: Advanced SIMD two-register miscellaneous
 func asimdmisc(Q, U, size, opcode, Rn, Rd uint32) uint32 {
-    if Q &^ 0b1 != 0 {
+    if Q &^ 0x1 != 0 {
         panic("asimdmisc: invalid Q")
     }
-    if U &^ 0b1 != 0 {
+    if U &^ 0x1 != 0 {
         panic("asimdmisc: invalid U")
     }
-    if size &^ 0b11 != 0 {
+    if size &^ 0x3 != 0 {
         panic("asimdmisc: invalid size")
     }
-    if opcode &^ 0b11111 != 0 {
+    if opcode &^ 0x1f != 0 {
         panic("asimdmisc: invalid opcode")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("asimdmisc: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("asimdmisc: invalid Rd")
     }
     ret := uint32(0x0e200800)
@@ -448,22 +448,22 @@ func asimdmisc(Q, U, size, opcode, Rn, Rd uint32) uint32 {
 
 // asimdmiscfp16: Advanced SIMD two-register miscellaneous (FP16)
 func asimdmiscfp16(Q, U, a, opcode, Rn, Rd uint32) uint32 {
-    if Q &^ 0b1 != 0 {
+    if Q &^ 0x1 != 0 {
         panic("asimdmiscfp16: invalid Q")
     }
-    if U &^ 0b1 != 0 {
+    if U &^ 0x1 != 0 {
         panic("asimdmiscfp16: invalid U")
     }
-    if a &^ 0b1 != 0 {
+    if a &^ 0x1 != 0 {
         panic("asimdmiscfp16: invalid a")
     }
-    if opcode &^ 0b11111 != 0 {
+    if opcode &^ 0x1f != 0 {
         panic("asimdmiscfp16: invalid opcode")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("asimdmiscfp16: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("asimdmiscfp16: invalid Rd")
     }
     ret := uint32(0x0e780800)
@@ -478,22 +478,22 @@ func asimdmiscfp16(Q, U, a, opcode, Rn, Rd uint32) uint32 {
 
 // asimdperm: Advanced SIMD permute
 func asimdperm(Q, size, Rm, opcode, Rn, Rd uint32) uint32 {
-    if Q &^ 0b1 != 0 {
+    if Q &^ 0x1 != 0 {
         panic("asimdperm: invalid Q")
     }
-    if size &^ 0b11 != 0 {
+    if size &^ 0x3 != 0 {
         panic("asimdperm: invalid size")
     }
-    if Rm &^ 0b11111 != 0 {
+    if Rm &^ 0x1f != 0 {
         panic("asimdperm: invalid Rm")
     }
-    if opcode &^ 0b111 != 0 {
+    if opcode &^ 0x7 != 0 {
         panic("asimdperm: invalid opcode")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("asimdperm: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("asimdperm: invalid Rd")
     }
     ret := uint32(0x0e000800)
@@ -508,25 +508,25 @@ func asimdperm(Q, size, Rm, opcode, Rn, Rd uint32) uint32 {
 
 // asimdsame: Advanced SIMD three same
 func asimdsame(Q, U, size, Rm, opcode, Rn, Rd uint32) uint32 {
-    if Q &^ 0b1 != 0 {
+    if Q &^ 0x1 != 0 {
         panic("asimdsame: invalid Q")
     }
-    if U &^ 0b1 != 0 {
+    if U &^ 0x1 != 0 {
         panic("asimdsame: invalid U")
     }
-    if size &^ 0b11 != 0 {
+    if size &^ 0x3 != 0 {
         panic("asimdsame: invalid size")
     }
-    if Rm &^ 0b11111 != 0 {
+    if Rm &^ 0x1f != 0 {
         panic("asimdsame: invalid Rm")
     }
-    if opcode &^ 0b11111 != 0 {
+    if opcode &^ 0x1f != 0 {
         panic("asimdsame: invalid opcode")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("asimdsame: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("asimdsame: invalid Rd")
     }
     ret := uint32(0x0e200400)
@@ -542,25 +542,25 @@ func asimdsame(Q, U, size, Rm, opcode, Rn, Rd uint32) uint32 {
 
 // asimdsame2: Advanced SIMD three-register extension
 func asimdsame2(Q, U, size, Rm, opcode, Rn, Rd uint32) uint32 {
-    if Q &^ 0b1 != 0 {
+    if Q &^ 0x1 != 0 {
         panic("asimdsame2: invalid Q")
     }
-    if U &^ 0b1 != 0 {
+    if U &^ 0x1 != 0 {
         panic("asimdsame2: invalid U")
     }
-    if size &^ 0b11 != 0 {
+    if size &^ 0x3 != 0 {
         panic("asimdsame2: invalid size")
     }
-    if Rm &^ 0b11111 != 0 {
+    if Rm &^ 0x1f != 0 {
         panic("asimdsame2: invalid Rm")
     }
-    if opcode &^ 0b1111 != 0 {
+    if opcode &^ 0xf != 0 {
         panic("asimdsame2: invalid opcode")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("asimdsame2: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("asimdsame2: invalid Rd")
     }
     ret := uint32(0x0e008400)
@@ -576,25 +576,25 @@ func asimdsame2(Q, U, size, Rm, opcode, Rn, Rd uint32) uint32 {
 
 // asimdsamefp16: Advanced SIMD three same (FP16)
 func asimdsamefp16(Q, U, a, Rm, opcode, Rn, Rd uint32) uint32 {
-    if Q &^ 0b1 != 0 {
+    if Q &^ 0x1 != 0 {
         panic("asimdsamefp16: invalid Q")
     }
-    if U &^ 0b1 != 0 {
+    if U &^ 0x1 != 0 {
         panic("asimdsamefp16: invalid U")
     }
-    if a &^ 0b1 != 0 {
+    if a &^ 0x1 != 0 {
         panic("asimdsamefp16: invalid a")
     }
-    if Rm &^ 0b11111 != 0 {
+    if Rm &^ 0x1f != 0 {
         panic("asimdsamefp16: invalid Rm")
     }
-    if opcode &^ 0b111 != 0 {
+    if opcode &^ 0x7 != 0 {
         panic("asimdsamefp16: invalid opcode")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("asimdsamefp16: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("asimdsamefp16: invalid Rd")
     }
     ret := uint32(0x0e400400)
@@ -610,25 +610,25 @@ func asimdsamefp16(Q, U, a, Rm, opcode, Rn, Rd uint32) uint32 {
 
 // asimdshf: Advanced SIMD shift by immediate
 func asimdshf(Q, U, immh, immb, opcode, Rn, Rd uint32) uint32 {
-    if Q &^ 0b1 != 0 {
+    if Q &^ 0x1 != 0 {
         panic("asimdshf: invalid Q")
     }
-    if U &^ 0b1 != 0 {
+    if U &^ 0x1 != 0 {
         panic("asimdshf: invalid U")
     }
-    if immh &^ 0b1111 != 0 {
+    if immh &^ 0xf != 0 {
         panic("asimdshf: invalid immh")
     }
-    if immb &^ 0b111 != 0 {
+    if immb &^ 0x7 != 0 {
         panic("asimdshf: invalid immb")
     }
-    if opcode &^ 0b11111 != 0 {
+    if opcode &^ 0x1f != 0 {
         panic("asimdshf: invalid opcode")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("asimdshf: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("asimdshf: invalid Rd")
     }
     if immh == 0b0000 {
@@ -647,25 +647,25 @@ func asimdshf(Q, U, immh, immb, opcode, Rn, Rd uint32) uint32 {
 
 // asimdtbl: Advanced SIMD table lookup
 func asimdtbl(Q, op2, Rm, len, op, Rn, Rd uint32) uint32 {
-    if Q &^ 0b1 != 0 {
+    if Q &^ 0x1 != 0 {
         panic("asimdtbl: invalid Q")
     }
-    if op2 &^ 0b11 != 0 {
+    if op2 &^ 0x3 != 0 {
         panic("asimdtbl: invalid op2")
     }
-    if Rm &^ 0b11111 != 0 {
+    if Rm &^ 0x1f != 0 {
         panic("asimdtbl: invalid Rm")
     }
-    if len &^ 0b11 != 0 {
+    if len &^ 0x3 != 0 {
         panic("asimdtbl: invalid len")
     }
-    if op &^ 0b1 != 0 {
+    if op &^ 0x1 != 0 {
         panic("asimdtbl: invalid op")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("asimdtbl: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("asimdtbl: invalid Rd")
     }
     ret := uint32(0x0e000000)
@@ -681,22 +681,22 @@ func asimdtbl(Q, op2, Rm, len, op, Rn, Rd uint32) uint32 {
 
 // asisddiff: Advanced SIMD scalar three different
 func asisddiff(U, size, Rm, opcode, Rn, Rd uint32) uint32 {
-    if U &^ 0b1 != 0 {
+    if U &^ 0x1 != 0 {
         panic("asisddiff: invalid U")
     }
-    if size &^ 0b11 != 0 {
+    if size &^ 0x3 != 0 {
         panic("asisddiff: invalid size")
     }
-    if Rm &^ 0b11111 != 0 {
+    if Rm &^ 0x1f != 0 {
         panic("asisddiff: invalid Rm")
     }
-    if opcode &^ 0b1111 != 0 {
+    if opcode &^ 0xf != 0 {
         panic("asisddiff: invalid opcode")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("asisddiff: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("asisddiff: invalid Rd")
     }
     ret := uint32(0x5e200000)
@@ -711,31 +711,31 @@ func asisddiff(U, size, Rm, opcode, Rn, Rd uint32) uint32 {
 
 // asisdelem: Advanced SIMD scalar x indexed element
 func asisdelem(U, size, L, M, Rm, opcode, H, Rn, Rd uint32) uint32 {
-    if U &^ 0b1 != 0 {
+    if U &^ 0x1 != 0 {
         panic("asisdelem: invalid U")
     }
-    if size &^ 0b11 != 0 {
+    if size &^ 0x3 != 0 {
         panic("asisdelem: invalid size")
     }
-    if L &^ 0b1 != 0 {
+    if L &^ 0x1 != 0 {
         panic("asisdelem: invalid L")
     }
-    if M &^ 0b1 != 0 {
+    if M &^ 0x1 != 0 {
         panic("asisdelem: invalid M")
     }
-    if Rm &^ 0b1111 != 0 {
+    if Rm &^ 0xf != 0 {
         panic("asisdelem: invalid Rm")
     }
-    if opcode &^ 0b1111 != 0 {
+    if opcode &^ 0xf != 0 {
         panic("asisdelem: invalid opcode")
     }
-    if H &^ 0b1 != 0 {
+    if H &^ 0x1 != 0 {
         panic("asisdelem: invalid H")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("asisdelem: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("asisdelem: invalid Rd")
     }
     ret := uint32(0x5f000000)
@@ -753,22 +753,22 @@ func asisdelem(U, size, L, M, Rm, opcode, H, Rn, Rd uint32) uint32 {
 
 // asisdlse: Advanced SIMD load/store multiple structures
 func asisdlse(Q, L, opcode, size, Rn, Rt uint32) uint32 {
-    if Q &^ 0b1 != 0 {
+    if Q &^ 0x1 != 0 {
         panic("asisdlse: invalid Q")
     }
-    if L &^ 0b1 != 0 {
+    if L &^ 0x1 != 0 {
         panic("asisdlse: invalid L")
     }
-    if opcode &^ 0b1111 != 0 {
+    if opcode &^ 0xf != 0 {
         panic("asisdlse: invalid opcode")
     }
-    if size &^ 0b11 != 0 {
+    if size &^ 0x3 != 0 {
         panic("asisdlse: invalid size")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("asisdlse: invalid Rn")
     }
-    if Rt &^ 0b11111 != 0 {
+    if Rt &^ 0x1f != 0 {
         panic("asisdlse: invalid Rt")
     }
     ret := uint32(0x0c000000)
@@ -783,25 +783,25 @@ func asisdlse(Q, L, opcode, size, Rn, Rt uint32) uint32 {
 
 // asisdlsep: Advanced SIMD load/store multiple structures (post-indexed)
 func asisdlsep(Q, L, Rm, opcode, size, Rn, Rt uint32) uint32 {
-    if Q &^ 0b1 != 0 {
+    if Q &^ 0x1 != 0 {
         panic("asisdlsep: invalid Q")
     }
-    if L &^ 0b1 != 0 {
+    if L &^ 0x1 != 0 {
         panic("asisdlsep: invalid L")
     }
-    if Rm &^ 0b11111 != 0 {
+    if Rm &^ 0x1f != 0 {
         panic("asisdlsep: invalid Rm")
     }
-    if opcode &^ 0b1111 != 0 {
+    if opcode &^ 0xf != 0 {
         panic("asisdlsep: invalid opcode")
     }
-    if size &^ 0b11 != 0 {
+    if size &^ 0x3 != 0 {
         panic("asisdlsep: invalid size")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("asisdlsep: invalid Rn")
     }
-    if Rt &^ 0b11111 != 0 {
+    if Rt &^ 0x1f != 0 {
         panic("asisdlsep: invalid Rt")
     }
     ret := uint32(0x0c800000)
@@ -817,28 +817,28 @@ func asisdlsep(Q, L, Rm, opcode, size, Rn, Rt uint32) uint32 {
 
 // asisdlso: Advanced SIMD load/store single structure
 func asisdlso(Q, L, R, opcode, S, size, Rn, Rt uint32) uint32 {
-    if Q &^ 0b1 != 0 {
+    if Q &^ 0x1 != 0 {
         panic("asisdlso: invalid Q")
     }
-    if L &^ 0b1 != 0 {
+    if L &^ 0x1 != 0 {
         panic("asisdlso: invalid L")
     }
-    if R &^ 0b1 != 0 {
+    if R &^ 0x1 != 0 {
         panic("asisdlso: invalid R")
     }
-    if opcode &^ 0b111 != 0 {
+    if opcode &^ 0x7 != 0 {
         panic("asisdlso: invalid opcode")
     }
-    if S &^ 0b1 != 0 {
+    if S &^ 0x1 != 0 {
         panic("asisdlso: invalid S")
     }
-    if size &^ 0b11 != 0 {
+    if size &^ 0x3 != 0 {
         panic("asisdlso: invalid size")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("asisdlso: invalid Rn")
     }
-    if Rt &^ 0b11111 != 0 {
+    if Rt &^ 0x1f != 0 {
         panic("asisdlso: invalid Rt")
     }
     ret := uint32(0x0d000000)
@@ -855,31 +855,31 @@ func asisdlso(Q, L, R, opcode, S, size, Rn, Rt uint32) uint32 {
 
 // asisdlsop: Advanced SIMD load/store single structure (post-indexed)
 func asisdlsop(Q, L, R, Rm, opcode, S, size, Rn, Rt uint32) uint32 {
-    if Q &^ 0b1 != 0 {
+    if Q &^ 0x1 != 0 {
         panic("asisdlsop: invalid Q")
     }
-    if L &^ 0b1 != 0 {
+    if L &^ 0x1 != 0 {
         panic("asisdlsop: invalid L")
     }
-    if R &^ 0b1 != 0 {
+    if R &^ 0x1 != 0 {
         panic("asisdlsop: invalid R")
     }
-    if Rm &^ 0b11111 != 0 {
+    if Rm &^ 0x1f != 0 {
         panic("asisdlsop: invalid Rm")
     }
-    if opcode &^ 0b111 != 0 {
+    if opcode &^ 0x7 != 0 {
         panic("asisdlsop: invalid opcode")
     }
-    if S &^ 0b1 != 0 {
+    if S &^ 0x1 != 0 {
         panic("asisdlsop: invalid S")
     }
-    if size &^ 0b11 != 0 {
+    if size &^ 0x3 != 0 {
         panic("asisdlsop: invalid size")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("asisdlsop: invalid Rn")
     }
-    if Rt &^ 0b11111 != 0 {
+    if Rt &^ 0x1f != 0 {
         panic("asisdlsop: invalid Rt")
     }
     ret := uint32(0x0d800000)
@@ -897,19 +897,19 @@ func asisdlsop(Q, L, R, Rm, opcode, S, size, Rn, Rt uint32) uint32 {
 
 // asisdmisc: Advanced SIMD scalar two-register miscellaneous
 func asisdmisc(U, size, opcode, Rn, Rd uint32) uint32 {
-    if U &^ 0b1 != 0 {
+    if U &^ 0x1 != 0 {
         panic("asisdmisc: invalid U")
     }
-    if size &^ 0b11 != 0 {
+    if size &^ 0x3 != 0 {
         panic("asisdmisc: invalid size")
     }
-    if opcode &^ 0b11111 != 0 {
+    if opcode &^ 0x1f != 0 {
         panic("asisdmisc: invalid opcode")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("asisdmisc: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("asisdmisc: invalid Rd")
     }
     ret := uint32(0x5e200800)
@@ -923,19 +923,19 @@ func asisdmisc(U, size, opcode, Rn, Rd uint32) uint32 {
 
 // asisdmiscfp16: Advanced SIMD scalar two-register miscellaneous FP16
 func asisdmiscfp16(U, a, opcode, Rn, Rd uint32) uint32 {
-    if U &^ 0b1 != 0 {
+    if U &^ 0x1 != 0 {
         panic("asisdmiscfp16: invalid U")
     }
-    if a &^ 0b1 != 0 {
+    if a &^ 0x1 != 0 {
         panic("asisdmiscfp16: invalid a")
     }
-    if opcode &^ 0b11111 != 0 {
+    if opcode &^ 0x1f != 0 {
         panic("asisdmiscfp16: invalid opcode")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("asisdmiscfp16: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("asisdmiscfp16: invalid Rd")
     }
     ret := uint32(0x5e780800)
@@ -949,19 +949,19 @@ func asisdmiscfp16(U, a, opcode, Rn, Rd uint32) uint32 {
 
 // asisdone: Advanced SIMD scalar copy
 func asisdone(op, imm5, imm4, Rn, Rd uint32) uint32 {
-    if op &^ 0b1 != 0 {
+    if op &^ 0x1 != 0 {
         panic("asisdone: invalid op")
     }
-    if imm5 &^ 0b11111 != 0 {
+    if imm5 &^ 0x1f != 0 {
         panic("asisdone: invalid imm5")
     }
-    if imm4 &^ 0b1111 != 0 {
+    if imm4 &^ 0xf != 0 {
         panic("asisdone: invalid imm4")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("asisdone: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("asisdone: invalid Rd")
     }
     ret := uint32(0x5e000400)
@@ -975,19 +975,19 @@ func asisdone(op, imm5, imm4, Rn, Rd uint32) uint32 {
 
 // asisdpair: Advanced SIMD scalar pairwise
 func asisdpair(U, size, opcode, Rn, Rd uint32) uint32 {
-    if U &^ 0b1 != 0 {
+    if U &^ 0x1 != 0 {
         panic("asisdpair: invalid U")
     }
-    if size &^ 0b11 != 0 {
+    if size &^ 0x3 != 0 {
         panic("asisdpair: invalid size")
     }
-    if opcode &^ 0b11111 != 0 {
+    if opcode &^ 0x1f != 0 {
         panic("asisdpair: invalid opcode")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("asisdpair: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("asisdpair: invalid Rd")
     }
     ret := uint32(0x5e300800)
@@ -1001,22 +1001,22 @@ func asisdpair(U, size, opcode, Rn, Rd uint32) uint32 {
 
 // asisdsame: Advanced SIMD scalar three same
 func asisdsame(U, size, Rm, opcode, Rn, Rd uint32) uint32 {
-    if U &^ 0b1 != 0 {
+    if U &^ 0x1 != 0 {
         panic("asisdsame: invalid U")
     }
-    if size &^ 0b11 != 0 {
+    if size &^ 0x3 != 0 {
         panic("asisdsame: invalid size")
     }
-    if Rm &^ 0b11111 != 0 {
+    if Rm &^ 0x1f != 0 {
         panic("asisdsame: invalid Rm")
     }
-    if opcode &^ 0b11111 != 0 {
+    if opcode &^ 0x1f != 0 {
         panic("asisdsame: invalid opcode")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("asisdsame: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("asisdsame: invalid Rd")
     }
     ret := uint32(0x5e200400)
@@ -1031,22 +1031,22 @@ func asisdsame(U, size, Rm, opcode, Rn, Rd uint32) uint32 {
 
 // asisdsame2: Advanced SIMD scalar three same extra
 func asisdsame2(U, size, Rm, opcode, Rn, Rd uint32) uint32 {
-    if U &^ 0b1 != 0 {
+    if U &^ 0x1 != 0 {
         panic("asisdsame2: invalid U")
     }
-    if size &^ 0b11 != 0 {
+    if size &^ 0x3 != 0 {
         panic("asisdsame2: invalid size")
     }
-    if Rm &^ 0b11111 != 0 {
+    if Rm &^ 0x1f != 0 {
         panic("asisdsame2: invalid Rm")
     }
-    if opcode &^ 0b1111 != 0 {
+    if opcode &^ 0xf != 0 {
         panic("asisdsame2: invalid opcode")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("asisdsame2: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("asisdsame2: invalid Rd")
     }
     ret := uint32(0x5e008400)
@@ -1061,22 +1061,22 @@ func asisdsame2(U, size, Rm, opcode, Rn, Rd uint32) uint32 {
 
 // asisdsamefp16: Advanced SIMD scalar three same FP16
 func asisdsamefp16(U, a, Rm, opcode, Rn, Rd uint32) uint32 {
-    if U &^ 0b1 != 0 {
+    if U &^ 0x1 != 0 {
         panic("asisdsamefp16: invalid U")
     }
-    if a &^ 0b1 != 0 {
+    if a &^ 0x1 != 0 {
         panic("asisdsamefp16: invalid a")
     }
-    if Rm &^ 0b11111 != 0 {
+    if Rm &^ 0x1f != 0 {
         panic("asisdsamefp16: invalid Rm")
     }
-    if opcode &^ 0b111 != 0 {
+    if opcode &^ 0x7 != 0 {
         panic("asisdsamefp16: invalid opcode")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("asisdsamefp16: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("asisdsamefp16: invalid Rd")
     }
     ret := uint32(0x5e400400)
@@ -1091,22 +1091,22 @@ func asisdsamefp16(U, a, Rm, opcode, Rn, Rd uint32) uint32 {
 
 // asisdshf: Advanced SIMD scalar shift by immediate
 func asisdshf(U, immh, immb, opcode, Rn, Rd uint32) uint32 {
-    if U &^ 0b1 != 0 {
+    if U &^ 0x1 != 0 {
         panic("asisdshf: invalid U")
     }
-    if immh &^ 0b1111 != 0 {
+    if immh &^ 0xf != 0 {
         panic("asisdshf: invalid immh")
     }
-    if immb &^ 0b111 != 0 {
+    if immb &^ 0x7 != 0 {
         panic("asisdshf: invalid immb")
     }
-    if opcode &^ 0b11111 != 0 {
+    if opcode &^ 0x1f != 0 {
         panic("asisdshf: invalid opcode")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("asisdshf: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("asisdshf: invalid Rd")
     }
     ret := uint32(0x5f000400)
@@ -1121,13 +1121,13 @@ func asisdshf(U, immh, immb, opcode, Rn, Rd uint32) uint32 {
 
 // barriers: Barriers
 func barriers(CRm, op2, Rt uint32) uint32 {
-    if CRm &^ 0b1111 != 0 {
+    if CRm &^ 0xf != 0 {
         panic("barriers: invalid CRm")
     }
-    if op2 &^ 0b111 != 0 {
+    if op2 &^ 0x7 != 0 {
         panic("barriers: invalid op2")
     }
-    if Rt &^ 0b11111 != 0 {
+    if Rt &^ 0x1f != 0 {
         panic("barriers: invalid Rt")
     }
     ret := uint32(0xd5033000)
@@ -1139,25 +1139,25 @@ func barriers(CRm, op2, Rt uint32) uint32 {
 
 // bitfield: Bitfield
 func bitfield(sf, opc, N, immr, imms, Rn, Rd uint32) uint32 {
-    if sf &^ 0b1 != 0 {
+    if sf &^ 0x1 != 0 {
         panic("bitfield: invalid sf")
     }
-    if opc &^ 0b11 != 0 {
+    if opc &^ 0x3 != 0 {
         panic("bitfield: invalid opc")
     }
-    if N &^ 0b1 != 0 {
+    if N &^ 0x1 != 0 {
         panic("bitfield: invalid N")
     }
-    if immr &^ 0b111111 != 0 {
+    if immr &^ 0x3f != 0 {
         panic("bitfield: invalid immr")
     }
-    if imms &^ 0b111111 != 0 {
+    if imms &^ 0x3f != 0 {
         panic("bitfield: invalid imms")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("bitfield: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("bitfield: invalid Rd")
     }
     ret := uint32(0x13000000)
@@ -1173,10 +1173,10 @@ func bitfield(sf, opc, N, immr, imms, Rn, Rd uint32) uint32 {
 
 // branch_imm: Unconditional branch (immediate)
 func branch_imm(op, imm26 uint32) uint32 {
-    if op &^ 0b1 != 0 {
+    if op &^ 0x1 != 0 {
         panic("branch_imm: invalid op")
     }
-    if imm26 &^ 0b11111111111111111111111111 != 0 {
+    if imm26 &^ 0x3ffffff != 0 {
         panic("branch_imm: invalid imm26")
     }
     ret := uint32(0x14000000)
@@ -1187,19 +1187,19 @@ func branch_imm(op, imm26 uint32) uint32 {
 
 // branch_reg: Unconditional branch (register)
 func branch_reg(opc, op2, op3, Rn, op4 uint32) uint32 {
-    if opc &^ 0b1111 != 0 {
+    if opc &^ 0xf != 0 {
         panic("branch_reg: invalid opc")
     }
-    if op2 &^ 0b11111 != 0 {
+    if op2 &^ 0x1f != 0 {
         panic("branch_reg: invalid op2")
     }
-    if op3 &^ 0b111111 != 0 {
+    if op3 &^ 0x3f != 0 {
         panic("branch_reg: invalid op3")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("branch_reg: invalid Rn")
     }
-    if op4 &^ 0b11111 != 0 {
+    if op4 &^ 0x1f != 0 {
         panic("branch_reg: invalid op4")
     }
     ret := uint32(0xd6000000)
@@ -1213,16 +1213,16 @@ func branch_reg(opc, op2, op3, Rn, op4 uint32) uint32 {
 
 // compbranch: Compare and branch (immediate)
 func compbranch(sf, op, imm19, Rt uint32) uint32 {
-    if sf &^ 0b1 != 0 {
+    if sf &^ 0x1 != 0 {
         panic("compbranch: invalid sf")
     }
-    if op &^ 0b1 != 0 {
+    if op &^ 0x1 != 0 {
         panic("compbranch: invalid op")
     }
-    if imm19 &^ 0b1111111111111111111 != 0 {
+    if imm19 &^ 0x7ffff != 0 {
         panic("compbranch: invalid imm19")
     }
-    if Rt &^ 0b11111 != 0 {
+    if Rt &^ 0x1f != 0 {
         panic("compbranch: invalid Rt")
     }
     ret := uint32(0x34000000)
@@ -1235,16 +1235,16 @@ func compbranch(sf, op, imm19, Rt uint32) uint32 {
 
 // condbranch: Conditional branch (immediate)
 func condbranch(o1, imm19, o0, cond uint32) uint32 {
-    if o1 &^ 0b1 != 0 {
+    if o1 &^ 0x1 != 0 {
         panic("condbranch: invalid o1")
     }
-    if imm19 &^ 0b1111111111111111111 != 0 {
+    if imm19 &^ 0x7ffff != 0 {
         panic("condbranch: invalid imm19")
     }
-    if o0 &^ 0b1 != 0 {
+    if o0 &^ 0x1 != 0 {
         panic("condbranch: invalid o0")
     }
-    if cond &^ 0b1111 != 0 {
+    if cond &^ 0xf != 0 {
         panic("condbranch: invalid cond")
     }
     ret := uint32(0x54000000)
@@ -1257,31 +1257,31 @@ func condbranch(o1, imm19, o0, cond uint32) uint32 {
 
 // condcmp_imm: Conditional compare (immediate)
 func condcmp_imm(sf, op, S, imm5, cond, o2, Rn, o3, nzcv uint32) uint32 {
-    if sf &^ 0b1 != 0 {
+    if sf &^ 0x1 != 0 {
         panic("condcmp_imm: invalid sf")
     }
-    if op &^ 0b1 != 0 {
+    if op &^ 0x1 != 0 {
         panic("condcmp_imm: invalid op")
     }
-    if S &^ 0b1 != 0 {
+    if S &^ 0x1 != 0 {
         panic("condcmp_imm: invalid S")
     }
-    if imm5 &^ 0b11111 != 0 {
+    if imm5 &^ 0x1f != 0 {
         panic("condcmp_imm: invalid imm5")
     }
-    if cond &^ 0b1111 != 0 {
+    if cond &^ 0xf != 0 {
         panic("condcmp_imm: invalid cond")
     }
-    if o2 &^ 0b1 != 0 {
+    if o2 &^ 0x1 != 0 {
         panic("condcmp_imm: invalid o2")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("condcmp_imm: invalid Rn")
     }
-    if o3 &^ 0b1 != 0 {
+    if o3 &^ 0x1 != 0 {
         panic("condcmp_imm: invalid o3")
     }
-    if nzcv &^ 0b1111 != 0 {
+    if nzcv &^ 0xf != 0 {
         panic("condcmp_imm: invalid nzcv")
     }
     ret := uint32(0x1a400800)
@@ -1299,31 +1299,31 @@ func condcmp_imm(sf, op, S, imm5, cond, o2, Rn, o3, nzcv uint32) uint32 {
 
 // condcmp_reg: Conditional compare (register)
 func condcmp_reg(sf, op, S, Rm, cond, o2, Rn, o3, nzcv uint32) uint32 {
-    if sf &^ 0b1 != 0 {
+    if sf &^ 0x1 != 0 {
         panic("condcmp_reg: invalid sf")
     }
-    if op &^ 0b1 != 0 {
+    if op &^ 0x1 != 0 {
         panic("condcmp_reg: invalid op")
     }
-    if S &^ 0b1 != 0 {
+    if S &^ 0x1 != 0 {
         panic("condcmp_reg: invalid S")
     }
-    if Rm &^ 0b11111 != 0 {
+    if Rm &^ 0x1f != 0 {
         panic("condcmp_reg: invalid Rm")
     }
-    if cond &^ 0b1111 != 0 {
+    if cond &^ 0xf != 0 {
         panic("condcmp_reg: invalid cond")
     }
-    if o2 &^ 0b1 != 0 {
+    if o2 &^ 0x1 != 0 {
         panic("condcmp_reg: invalid o2")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("condcmp_reg: invalid Rn")
     }
-    if o3 &^ 0b1 != 0 {
+    if o3 &^ 0x1 != 0 {
         panic("condcmp_reg: invalid o3")
     }
-    if nzcv &^ 0b1111 != 0 {
+    if nzcv &^ 0xf != 0 {
         panic("condcmp_reg: invalid nzcv")
     }
     ret := uint32(0x1a400000)
@@ -1341,28 +1341,28 @@ func condcmp_reg(sf, op, S, Rm, cond, o2, Rn, o3, nzcv uint32) uint32 {
 
 // condsel: Conditional select
 func condsel(sf, op, S, Rm, cond, op2, Rn, Rd uint32) uint32 {
-    if sf &^ 0b1 != 0 {
+    if sf &^ 0x1 != 0 {
         panic("condsel: invalid sf")
     }
-    if op &^ 0b1 != 0 {
+    if op &^ 0x1 != 0 {
         panic("condsel: invalid op")
     }
-    if S &^ 0b1 != 0 {
+    if S &^ 0x1 != 0 {
         panic("condsel: invalid S")
     }
-    if Rm &^ 0b11111 != 0 {
+    if Rm &^ 0x1f != 0 {
         panic("condsel: invalid Rm")
     }
-    if cond &^ 0b1111 != 0 {
+    if cond &^ 0xf != 0 {
         panic("condsel: invalid cond")
     }
-    if op2 &^ 0b11 != 0 {
+    if op2 &^ 0x3 != 0 {
         panic("condsel: invalid op2")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("condsel: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("condsel: invalid Rd")
     }
     ret := uint32(0x1a800000)
@@ -1379,19 +1379,19 @@ func condsel(sf, op, S, Rm, cond, op2, Rn, Rd uint32) uint32 {
 
 // crypto3_imm2: Cryptographic three-register, imm2
 func crypto3_imm2(Rm, imm2, opcode, Rn, Rd uint32) uint32 {
-    if Rm &^ 0b11111 != 0 {
+    if Rm &^ 0x1f != 0 {
         panic("crypto3_imm2: invalid Rm")
     }
-    if imm2 &^ 0b11 != 0 {
+    if imm2 &^ 0x3 != 0 {
         panic("crypto3_imm2: invalid imm2")
     }
-    if opcode &^ 0b11 != 0 {
+    if opcode &^ 0x3 != 0 {
         panic("crypto3_imm2: invalid opcode")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("crypto3_imm2: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("crypto3_imm2: invalid Rd")
     }
     ret := uint32(0xce408000)
@@ -1405,16 +1405,16 @@ func crypto3_imm2(Rm, imm2, opcode, Rn, Rd uint32) uint32 {
 
 // crypto3_imm6: Cryptographic three-register, imm6
 func crypto3_imm6(Rm, imm6, Rn, Rd uint32) uint32 {
-    if Rm &^ 0b11111 != 0 {
+    if Rm &^ 0x1f != 0 {
         panic("crypto3_imm6: invalid Rm")
     }
-    if imm6 &^ 0b111111 != 0 {
+    if imm6 &^ 0x3f != 0 {
         panic("crypto3_imm6: invalid imm6")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("crypto3_imm6: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("crypto3_imm6: invalid Rd")
     }
     ret := uint32(0xce800000)
@@ -1427,19 +1427,19 @@ func crypto3_imm6(Rm, imm6, Rn, Rd uint32) uint32 {
 
 // crypto4: Cryptographic four-register
 func crypto4(Op0, Rm, Ra, Rn, Rd uint32) uint32 {
-    if Op0 &^ 0b11 != 0 {
+    if Op0 &^ 0x3 != 0 {
         panic("crypto4: invalid Op0")
     }
-    if Rm &^ 0b11111 != 0 {
+    if Rm &^ 0x1f != 0 {
         panic("crypto4: invalid Rm")
     }
-    if Ra &^ 0b11111 != 0 {
+    if Ra &^ 0x1f != 0 {
         panic("crypto4: invalid Ra")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("crypto4: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("crypto4: invalid Rd")
     }
     ret := uint32(0xce000000)
@@ -1453,16 +1453,16 @@ func crypto4(Op0, Rm, Ra, Rn, Rd uint32) uint32 {
 
 // cryptoaes: Cryptographic AES
 func cryptoaes(size, opcode, Rn, Rd uint32) uint32 {
-    if size &^ 0b11 != 0 {
+    if size &^ 0x3 != 0 {
         panic("cryptoaes: invalid size")
     }
-    if opcode &^ 0b11111 != 0 {
+    if opcode &^ 0x1f != 0 {
         panic("cryptoaes: invalid opcode")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("cryptoaes: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("cryptoaes: invalid Rd")
     }
     ret := uint32(0x4e280800)
@@ -1475,16 +1475,16 @@ func cryptoaes(size, opcode, Rn, Rd uint32) uint32 {
 
 // cryptosha2: Cryptographic two-register SHA
 func cryptosha2(size, opcode, Rn, Rd uint32) uint32 {
-    if size &^ 0b11 != 0 {
+    if size &^ 0x3 != 0 {
         panic("cryptosha2: invalid size")
     }
-    if opcode &^ 0b11111 != 0 {
+    if opcode &^ 0x1f != 0 {
         panic("cryptosha2: invalid opcode")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("cryptosha2: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("cryptosha2: invalid Rd")
     }
     ret := uint32(0x5e280800)
@@ -1497,19 +1497,19 @@ func cryptosha2(size, opcode, Rn, Rd uint32) uint32 {
 
 // cryptosha3: Cryptographic three-register SHA
 func cryptosha3(size, Rm, opcode, Rn, Rd uint32) uint32 {
-    if size &^ 0b11 != 0 {
+    if size &^ 0x3 != 0 {
         panic("cryptosha3: invalid size")
     }
-    if Rm &^ 0b11111 != 0 {
+    if Rm &^ 0x1f != 0 {
         panic("cryptosha3: invalid Rm")
     }
-    if opcode &^ 0b111 != 0 {
+    if opcode &^ 0x7 != 0 {
         panic("cryptosha3: invalid opcode")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("cryptosha3: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("cryptosha3: invalid Rd")
     }
     ret := uint32(0x5e000000)
@@ -1523,13 +1523,13 @@ func cryptosha3(size, Rm, opcode, Rn, Rd uint32) uint32 {
 
 // cryptosha512_2: Cryptographic two-register SHA 512
 func cryptosha512_2(opcode, Rn, Rd uint32) uint32 {
-    if opcode &^ 0b11 != 0 {
+    if opcode &^ 0x3 != 0 {
         panic("cryptosha512_2: invalid opcode")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("cryptosha512_2: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("cryptosha512_2: invalid Rd")
     }
     ret := uint32(0xcec08000)
@@ -1541,19 +1541,19 @@ func cryptosha512_2(opcode, Rn, Rd uint32) uint32 {
 
 // cryptosha512_3: Cryptographic three-register SHA 512
 func cryptosha512_3(Rm, O, opcode, Rn, Rd uint32) uint32 {
-    if Rm &^ 0b11111 != 0 {
+    if Rm &^ 0x1f != 0 {
         panic("cryptosha512_3: invalid Rm")
     }
-    if O &^ 0b1 != 0 {
+    if O &^ 0x1 != 0 {
         panic("cryptosha512_3: invalid O")
     }
-    if opcode &^ 0b11 != 0 {
+    if opcode &^ 0x3 != 0 {
         panic("cryptosha512_3: invalid opcode")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("cryptosha512_3: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("cryptosha512_3: invalid Rd")
     }
     ret := uint32(0xce608000)
@@ -1567,22 +1567,22 @@ func cryptosha512_3(Rm, O, opcode, Rn, Rd uint32) uint32 {
 
 // dp_1src: Data-processing (1 source)
 func dp_1src(sf, S, opcode2, opcode, Rn, Rd uint32) uint32 {
-    if sf &^ 0b1 != 0 {
+    if sf &^ 0x1 != 0 {
         panic("dp_1src: invalid sf")
     }
-    if S &^ 0b1 != 0 {
+    if S &^ 0x1 != 0 {
         panic("dp_1src: invalid S")
     }
-    if opcode2 &^ 0b11111 != 0 {
+    if opcode2 &^ 0x1f != 0 {
         panic("dp_1src: invalid opcode2")
     }
-    if opcode &^ 0b111111 != 0 {
+    if opcode &^ 0x3f != 0 {
         panic("dp_1src: invalid opcode")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("dp_1src: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("dp_1src: invalid Rd")
     }
     ret := uint32(0x5ac00000)
@@ -1597,22 +1597,22 @@ func dp_1src(sf, S, opcode2, opcode, Rn, Rd uint32) uint32 {
 
 // dp_2src: Data-processing (2 source)
 func dp_2src(sf, S, Rm, opcode, Rn, Rd uint32) uint32 {
-    if sf &^ 0b1 != 0 {
+    if sf &^ 0x1 != 0 {
         panic("dp_2src: invalid sf")
     }
-    if S &^ 0b1 != 0 {
+    if S &^ 0x1 != 0 {
         panic("dp_2src: invalid S")
     }
-    if Rm &^ 0b11111 != 0 {
+    if Rm &^ 0x1f != 0 {
         panic("dp_2src: invalid Rm")
     }
-    if opcode &^ 0b111111 != 0 {
+    if opcode &^ 0x3f != 0 {
         panic("dp_2src: invalid opcode")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("dp_2src: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("dp_2src: invalid Rd")
     }
     ret := uint32(0x1ac00000)
@@ -1627,28 +1627,28 @@ func dp_2src(sf, S, Rm, opcode, Rn, Rd uint32) uint32 {
 
 // dp_3src: Data-processing (3 source)
 func dp_3src(sf, op54, op31, Rm, o0, Ra, Rn, Rd uint32) uint32 {
-    if sf &^ 0b1 != 0 {
+    if sf &^ 0x1 != 0 {
         panic("dp_3src: invalid sf")
     }
-    if op54 &^ 0b11 != 0 {
+    if op54 &^ 0x3 != 0 {
         panic("dp_3src: invalid op54")
     }
-    if op31 &^ 0b111 != 0 {
+    if op31 &^ 0x7 != 0 {
         panic("dp_3src: invalid op31")
     }
-    if Rm &^ 0b11111 != 0 {
+    if Rm &^ 0x1f != 0 {
         panic("dp_3src: invalid Rm")
     }
-    if o0 &^ 0b1 != 0 {
+    if o0 &^ 0x1 != 0 {
         panic("dp_3src: invalid o0")
     }
-    if Ra &^ 0b11111 != 0 {
+    if Ra &^ 0x1f != 0 {
         panic("dp_3src: invalid Ra")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("dp_3src: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("dp_3src: invalid Rd")
     }
     ret := uint32(0x1b000000)
@@ -1665,16 +1665,16 @@ func dp_3src(sf, op54, op31, Rm, o0, Ra, Rn, Rd uint32) uint32 {
 
 // exception: Exception generation
 func exception(opc, imm16, op2, LL uint32) uint32 {
-    if opc &^ 0b111 != 0 {
+    if opc &^ 0x7 != 0 {
         panic("exception: invalid opc")
     }
-    if imm16 &^ 0b1111111111111111 != 0 {
+    if imm16 &^ 0xffff != 0 {
         panic("exception: invalid imm16")
     }
-    if op2 &^ 0b111 != 0 {
+    if op2 &^ 0x7 != 0 {
         panic("exception: invalid op2")
     }
-    if LL &^ 0b11 != 0 {
+    if LL &^ 0x3 != 0 {
         panic("exception: invalid LL")
     }
     ret := uint32(0xd4000000)
@@ -1687,28 +1687,28 @@ func exception(opc, imm16, op2, LL uint32) uint32 {
 
 // extract: Extract
 func extract(sf, op21, N, o0, Rm, imms, Rn, Rd uint32) uint32 {
-    if sf &^ 0b1 != 0 {
+    if sf &^ 0x1 != 0 {
         panic("extract: invalid sf")
     }
-    if op21 &^ 0b11 != 0 {
+    if op21 &^ 0x3 != 0 {
         panic("extract: invalid op21")
     }
-    if N &^ 0b1 != 0 {
+    if N &^ 0x1 != 0 {
         panic("extract: invalid N")
     }
-    if o0 &^ 0b1 != 0 {
+    if o0 &^ 0x1 != 0 {
         panic("extract: invalid o0")
     }
-    if Rm &^ 0b11111 != 0 {
+    if Rm &^ 0x1f != 0 {
         panic("extract: invalid Rm")
     }
-    if imms &^ 0b111111 != 0 {
+    if imms &^ 0x3f != 0 {
         panic("extract: invalid imms")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("extract: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("extract: invalid Rd")
     }
     ret := uint32(0x13800000)
@@ -1725,28 +1725,28 @@ func extract(sf, op21, N, o0, Rm, imms, Rn, Rd uint32) uint32 {
 
 // float2fix: Conversion between floating-point and fixed-point
 func float2fix(sf, S, ptype, rmode, opcode, scale, Rn, Rd uint32) uint32 {
-    if sf &^ 0b1 != 0 {
+    if sf &^ 0x1 != 0 {
         panic("float2fix: invalid sf")
     }
-    if S &^ 0b1 != 0 {
+    if S &^ 0x1 != 0 {
         panic("float2fix: invalid S")
     }
-    if ptype &^ 0b11 != 0 {
+    if ptype &^ 0x3 != 0 {
         panic("float2fix: invalid ptype")
     }
-    if rmode &^ 0b11 != 0 {
+    if rmode &^ 0x3 != 0 {
         panic("float2fix: invalid rmode")
     }
-    if opcode &^ 0b111 != 0 {
+    if opcode &^ 0x7 != 0 {
         panic("float2fix: invalid opcode")
     }
-    if scale &^ 0b111111 != 0 {
+    if scale &^ 0x3f != 0 {
         panic("float2fix: invalid scale")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("float2fix: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("float2fix: invalid Rd")
     }
     ret := uint32(0x1e000000)
@@ -1763,25 +1763,25 @@ func float2fix(sf, S, ptype, rmode, opcode, scale, Rn, Rd uint32) uint32 {
 
 // float2int: Conversion between floating-point and integer
 func float2int(sf, S, ptype, rmode, opcode, Rn, Rd uint32) uint32 {
-    if sf &^ 0b1 != 0 {
+    if sf &^ 0x1 != 0 {
         panic("float2int: invalid sf")
     }
-    if S &^ 0b1 != 0 {
+    if S &^ 0x1 != 0 {
         panic("float2int: invalid S")
     }
-    if ptype &^ 0b11 != 0 {
+    if ptype &^ 0x3 != 0 {
         panic("float2int: invalid ptype")
     }
-    if rmode &^ 0b11 != 0 {
+    if rmode &^ 0x3 != 0 {
         panic("float2int: invalid rmode")
     }
-    if opcode &^ 0b111 != 0 {
+    if opcode &^ 0x7 != 0 {
         panic("float2int: invalid opcode")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("float2int: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("float2int: invalid Rd")
     }
     ret := uint32(0x1e200000)
@@ -1797,28 +1797,28 @@ func float2int(sf, S, ptype, rmode, opcode, Rn, Rd uint32) uint32 {
 
 // floatccmp: Floating-point conditional compare
 func floatccmp(M, S, ptype, Rm, cond, Rn, op, nzcv uint32) uint32 {
-    if M &^ 0b1 != 0 {
+    if M &^ 0x1 != 0 {
         panic("floatccmp: invalid M")
     }
-    if S &^ 0b1 != 0 {
+    if S &^ 0x1 != 0 {
         panic("floatccmp: invalid S")
     }
-    if ptype &^ 0b11 != 0 {
+    if ptype &^ 0x3 != 0 {
         panic("floatccmp: invalid ptype")
     }
-    if Rm &^ 0b11111 != 0 {
+    if Rm &^ 0x1f != 0 {
         panic("floatccmp: invalid Rm")
     }
-    if cond &^ 0b1111 != 0 {
+    if cond &^ 0xf != 0 {
         panic("floatccmp: invalid cond")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("floatccmp: invalid Rn")
     }
-    if op &^ 0b1 != 0 {
+    if op &^ 0x1 != 0 {
         panic("floatccmp: invalid op")
     }
-    if nzcv &^ 0b1111 != 0 {
+    if nzcv &^ 0xf != 0 {
         panic("floatccmp: invalid nzcv")
     }
     ret := uint32(0x1e200400)
@@ -1835,25 +1835,25 @@ func floatccmp(M, S, ptype, Rm, cond, Rn, op, nzcv uint32) uint32 {
 
 // floatcmp: Floating-point compare
 func floatcmp(M, S, ptype, Rm, op, Rn, opcode2 uint32) uint32 {
-    if M &^ 0b1 != 0 {
+    if M &^ 0x1 != 0 {
         panic("floatcmp: invalid M")
     }
-    if S &^ 0b1 != 0 {
+    if S &^ 0x1 != 0 {
         panic("floatcmp: invalid S")
     }
-    if ptype &^ 0b11 != 0 {
+    if ptype &^ 0x3 != 0 {
         panic("floatcmp: invalid ptype")
     }
-    if Rm &^ 0b11111 != 0 {
+    if Rm &^ 0x1f != 0 {
         panic("floatcmp: invalid Rm")
     }
-    if op &^ 0b11 != 0 {
+    if op &^ 0x3 != 0 {
         panic("floatcmp: invalid op")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("floatcmp: invalid Rn")
     }
-    if opcode2 &^ 0b11111 != 0 {
+    if opcode2 &^ 0x1f != 0 {
         panic("floatcmp: invalid opcode2")
     }
     ret := uint32(0x1e202000)
@@ -1869,22 +1869,22 @@ func floatcmp(M, S, ptype, Rm, op, Rn, opcode2 uint32) uint32 {
 
 // floatdp1: Floating-point data-processing (1 source)
 func floatdp1(M, S, ptype, opcode, Rn, Rd uint32) uint32 {
-    if M &^ 0b1 != 0 {
+    if M &^ 0x1 != 0 {
         panic("floatdp1: invalid M")
     }
-    if S &^ 0b1 != 0 {
+    if S &^ 0x1 != 0 {
         panic("floatdp1: invalid S")
     }
-    if ptype &^ 0b11 != 0 {
+    if ptype &^ 0x3 != 0 {
         panic("floatdp1: invalid ptype")
     }
-    if opcode &^ 0b111111 != 0 {
+    if opcode &^ 0x3f != 0 {
         panic("floatdp1: invalid opcode")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("floatdp1: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("floatdp1: invalid Rd")
     }
     ret := uint32(0x1e204000)
@@ -1899,25 +1899,25 @@ func floatdp1(M, S, ptype, opcode, Rn, Rd uint32) uint32 {
 
 // floatdp2: Floating-point data-processing (2 source)
 func floatdp2(M, S, ptype, Rm, opcode, Rn, Rd uint32) uint32 {
-    if M &^ 0b1 != 0 {
+    if M &^ 0x1 != 0 {
         panic("floatdp2: invalid M")
     }
-    if S &^ 0b1 != 0 {
+    if S &^ 0x1 != 0 {
         panic("floatdp2: invalid S")
     }
-    if ptype &^ 0b11 != 0 {
+    if ptype &^ 0x3 != 0 {
         panic("floatdp2: invalid ptype")
     }
-    if Rm &^ 0b11111 != 0 {
+    if Rm &^ 0x1f != 0 {
         panic("floatdp2: invalid Rm")
     }
-    if opcode &^ 0b1111 != 0 {
+    if opcode &^ 0xf != 0 {
         panic("floatdp2: invalid opcode")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("floatdp2: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("floatdp2: invalid Rd")
     }
     ret := uint32(0x1e200800)
@@ -1933,31 +1933,31 @@ func floatdp2(M, S, ptype, Rm, opcode, Rn, Rd uint32) uint32 {
 
 // floatdp3: Floating-point data-processing (3 source)
 func floatdp3(M, S, ptype, o1, Rm, o0, Ra, Rn, Rd uint32) uint32 {
-    if M &^ 0b1 != 0 {
+    if M &^ 0x1 != 0 {
         panic("floatdp3: invalid M")
     }
-    if S &^ 0b1 != 0 {
+    if S &^ 0x1 != 0 {
         panic("floatdp3: invalid S")
     }
-    if ptype &^ 0b11 != 0 {
+    if ptype &^ 0x3 != 0 {
         panic("floatdp3: invalid ptype")
     }
-    if o1 &^ 0b1 != 0 {
+    if o1 &^ 0x1 != 0 {
         panic("floatdp3: invalid o1")
     }
-    if Rm &^ 0b11111 != 0 {
+    if Rm &^ 0x1f != 0 {
         panic("floatdp3: invalid Rm")
     }
-    if o0 &^ 0b1 != 0 {
+    if o0 &^ 0x1 != 0 {
         panic("floatdp3: invalid o0")
     }
-    if Ra &^ 0b11111 != 0 {
+    if Ra &^ 0x1f != 0 {
         panic("floatdp3: invalid Ra")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("floatdp3: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("floatdp3: invalid Rd")
     }
     ret := uint32(0x1f000000)
@@ -1975,22 +1975,22 @@ func floatdp3(M, S, ptype, o1, Rm, o0, Ra, Rn, Rd uint32) uint32 {
 
 // floatimm: Floating-point immediate
 func floatimm(M, S, ptype, imm8, imm5, Rd uint32) uint32 {
-    if M &^ 0b1 != 0 {
+    if M &^ 0x1 != 0 {
         panic("floatimm: invalid M")
     }
-    if S &^ 0b1 != 0 {
+    if S &^ 0x1 != 0 {
         panic("floatimm: invalid S")
     }
-    if ptype &^ 0b11 != 0 {
+    if ptype &^ 0x3 != 0 {
         panic("floatimm: invalid ptype")
     }
-    if imm8 &^ 0b11111111 != 0 {
+    if imm8 &^ 0xff != 0 {
         panic("floatimm: invalid imm8")
     }
-    if imm5 &^ 0b11111 != 0 {
+    if imm5 &^ 0x1f != 0 {
         panic("floatimm: invalid imm5")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("floatimm: invalid Rd")
     }
     ret := uint32(0x1e201000)
@@ -2005,25 +2005,25 @@ func floatimm(M, S, ptype, imm8, imm5, Rd uint32) uint32 {
 
 // floatsel: Floating-point conditional select
 func floatsel(M, S, ptype, Rm, cond, Rn, Rd uint32) uint32 {
-    if M &^ 0b1 != 0 {
+    if M &^ 0x1 != 0 {
         panic("floatsel: invalid M")
     }
-    if S &^ 0b1 != 0 {
+    if S &^ 0x1 != 0 {
         panic("floatsel: invalid S")
     }
-    if ptype &^ 0b11 != 0 {
+    if ptype &^ 0x3 != 0 {
         panic("floatsel: invalid ptype")
     }
-    if Rm &^ 0b11111 != 0 {
+    if Rm &^ 0x1f != 0 {
         panic("floatsel: invalid Rm")
     }
-    if cond &^ 0b1111 != 0 {
+    if cond &^ 0xf != 0 {
         panic("floatsel: invalid cond")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("floatsel: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("floatsel: invalid Rd")
     }
     ret := uint32(0x1e200c00)
@@ -2039,10 +2039,10 @@ func floatsel(M, S, ptype, Rm, cond, Rn, Rd uint32) uint32 {
 
 // hints: Hints
 func hints(CRm, op2 uint32) uint32 {
-    if CRm &^ 0b1111 != 0 {
+    if CRm &^ 0xf != 0 {
         panic("hints: invalid CRm")
     }
-    if op2 &^ 0b111 != 0 {
+    if op2 &^ 0x7 != 0 {
         panic("hints: invalid op2")
     }
     ret := uint32(0xd503201f)
@@ -2053,19 +2053,19 @@ func hints(CRm, op2 uint32) uint32 {
 
 // ldapstl_unscaled: LDAPR/STLR (unscaled immediate)
 func ldapstl_unscaled(size, opc, imm9, Rn, Rt uint32) uint32 {
-    if size &^ 0b11 != 0 {
+    if size &^ 0x3 != 0 {
         panic("ldapstl_unscaled: invalid size")
     }
-    if opc &^ 0b11 != 0 {
+    if opc &^ 0x3 != 0 {
         panic("ldapstl_unscaled: invalid opc")
     }
-    if imm9 &^ 0b111111111 != 0 {
+    if imm9 &^ 0x1ff != 0 {
         panic("ldapstl_unscaled: invalid imm9")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("ldapstl_unscaled: invalid Rn")
     }
-    if Rt &^ 0b11111 != 0 {
+    if Rt &^ 0x1f != 0 {
         panic("ldapstl_unscaled: invalid Rt")
     }
     ret := uint32(0x19000000)
@@ -2079,22 +2079,22 @@ func ldapstl_unscaled(size, opc, imm9, Rn, Rt uint32) uint32 {
 
 // ldst_immpost: Load/store register (immediate post-indexed)
 func ldst_immpost(size, V, opc, imm9, Rn, Rt uint32) uint32 {
-    if size &^ 0b11 != 0 {
+    if size &^ 0x3 != 0 {
         panic("ldst_immpost: invalid size")
     }
-    if V &^ 0b1 != 0 {
+    if V &^ 0x1 != 0 {
         panic("ldst_immpost: invalid V")
     }
-    if opc &^ 0b11 != 0 {
+    if opc &^ 0x3 != 0 {
         panic("ldst_immpost: invalid opc")
     }
-    if imm9 &^ 0b111111111 != 0 {
+    if imm9 &^ 0x1ff != 0 {
         panic("ldst_immpost: invalid imm9")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("ldst_immpost: invalid Rn")
     }
-    if Rt &^ 0b11111 != 0 {
+    if Rt &^ 0x1f != 0 {
         panic("ldst_immpost: invalid Rt")
     }
     ret := uint32(0x38000400)
@@ -2109,22 +2109,22 @@ func ldst_immpost(size, V, opc, imm9, Rn, Rt uint32) uint32 {
 
 // ldst_immpre: Load/store register (immediate pre-indexed)
 func ldst_immpre(size, V, opc, imm9, Rn, Rt uint32) uint32 {
-    if size &^ 0b11 != 0 {
+    if size &^ 0x3 != 0 {
         panic("ldst_immpre: invalid size")
     }
-    if V &^ 0b1 != 0 {
+    if V &^ 0x1 != 0 {
         panic("ldst_immpre: invalid V")
     }
-    if opc &^ 0b11 != 0 {
+    if opc &^ 0x3 != 0 {
         panic("ldst_immpre: invalid opc")
     }
-    if imm9 &^ 0b111111111 != 0 {
+    if imm9 &^ 0x1ff != 0 {
         panic("ldst_immpre: invalid imm9")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("ldst_immpre: invalid Rn")
     }
-    if Rt &^ 0b11111 != 0 {
+    if Rt &^ 0x1f != 0 {
         panic("ldst_immpre: invalid Rt")
     }
     ret := uint32(0x38000c00)
@@ -2139,28 +2139,28 @@ func ldst_immpre(size, V, opc, imm9, Rn, Rt uint32) uint32 {
 
 // ldst_pac: Load/store register (pac)
 func ldst_pac(size, V, M, S, imm9, W, Rn, Rt uint32) uint32 {
-    if size &^ 0b11 != 0 {
+    if size &^ 0x3 != 0 {
         panic("ldst_pac: invalid size")
     }
-    if V &^ 0b1 != 0 {
+    if V &^ 0x1 != 0 {
         panic("ldst_pac: invalid V")
     }
-    if M &^ 0b1 != 0 {
+    if M &^ 0x1 != 0 {
         panic("ldst_pac: invalid M")
     }
-    if S &^ 0b1 != 0 {
+    if S &^ 0x1 != 0 {
         panic("ldst_pac: invalid S")
     }
-    if imm9 &^ 0b111111111 != 0 {
+    if imm9 &^ 0x1ff != 0 {
         panic("ldst_pac: invalid imm9")
     }
-    if W &^ 0b1 != 0 {
+    if W &^ 0x1 != 0 {
         panic("ldst_pac: invalid W")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("ldst_pac: invalid Rn")
     }
-    if Rt &^ 0b11111 != 0 {
+    if Rt &^ 0x1f != 0 {
         panic("ldst_pac: invalid Rt")
     }
     ret := uint32(0x38200400)
@@ -2177,22 +2177,22 @@ func ldst_pac(size, V, M, S, imm9, W, Rn, Rt uint32) uint32 {
 
 // ldst_pos: Load/store register (unsigned immediate)
 func ldst_pos(size, V, opc, imm12, Rn, Rt uint32) uint32 {
-    if size &^ 0b11 != 0 {
+    if size &^ 0x3 != 0 {
         panic("ldst_pos: invalid size")
     }
-    if V &^ 0b1 != 0 {
+    if V &^ 0x1 != 0 {
         panic("ldst_pos: invalid V")
     }
-    if opc &^ 0b11 != 0 {
+    if opc &^ 0x3 != 0 {
         panic("ldst_pos: invalid opc")
     }
-    if imm12 &^ 0b111111111111 != 0 {
+    if imm12 &^ 0xfff != 0 {
         panic("ldst_pos: invalid imm12")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("ldst_pos: invalid Rn")
     }
-    if Rt &^ 0b11111 != 0 {
+    if Rt &^ 0x1f != 0 {
         panic("ldst_pos: invalid Rt")
     }
     ret := uint32(0x39000000)
@@ -2207,28 +2207,28 @@ func ldst_pos(size, V, opc, imm12, Rn, Rt uint32) uint32 {
 
 // ldst_regoff: Load/store register (register offset)
 func ldst_regoff(size, V, opc, Rm, option, S, Rn, Rt uint32) uint32 {
-    if size &^ 0b11 != 0 {
+    if size &^ 0x3 != 0 {
         panic("ldst_regoff: invalid size")
     }
-    if V &^ 0b1 != 0 {
+    if V &^ 0x1 != 0 {
         panic("ldst_regoff: invalid V")
     }
-    if opc &^ 0b11 != 0 {
+    if opc &^ 0x3 != 0 {
         panic("ldst_regoff: invalid opc")
     }
-    if Rm &^ 0b11111 != 0 {
+    if Rm &^ 0x1f != 0 {
         panic("ldst_regoff: invalid Rm")
     }
-    if option &^ 0b111 != 0 {
+    if option &^ 0x7 != 0 {
         panic("ldst_regoff: invalid option")
     }
-    if S &^ 0b1 != 0 {
+    if S &^ 0x1 != 0 {
         panic("ldst_regoff: invalid S")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("ldst_regoff: invalid Rn")
     }
-    if Rt &^ 0b11111 != 0 {
+    if Rt &^ 0x1f != 0 {
         panic("ldst_regoff: invalid Rt")
     }
     ret := uint32(0x38200800)
@@ -2245,22 +2245,22 @@ func ldst_regoff(size, V, opc, Rm, option, S, Rn, Rt uint32) uint32 {
 
 // ldst_unpriv: Load/store register (unprivileged)
 func ldst_unpriv(size, V, opc, imm9, Rn, Rt uint32) uint32 {
-    if size &^ 0b11 != 0 {
+    if size &^ 0x3 != 0 {
         panic("ldst_unpriv: invalid size")
     }
-    if V &^ 0b1 != 0 {
+    if V &^ 0x1 != 0 {
         panic("ldst_unpriv: invalid V")
     }
-    if opc &^ 0b11 != 0 {
+    if opc &^ 0x3 != 0 {
         panic("ldst_unpriv: invalid opc")
     }
-    if imm9 &^ 0b111111111 != 0 {
+    if imm9 &^ 0x1ff != 0 {
         panic("ldst_unpriv: invalid imm9")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("ldst_unpriv: invalid Rn")
     }
-    if Rt &^ 0b11111 != 0 {
+    if Rt &^ 0x1f != 0 {
         panic("ldst_unpriv: invalid Rt")
     }
     ret := uint32(0x38000800)
@@ -2275,22 +2275,22 @@ func ldst_unpriv(size, V, opc, imm9, Rn, Rt uint32) uint32 {
 
 // ldst_unscaled: Load/store register (unscaled immediate)
 func ldst_unscaled(size, V, opc, imm9, Rn, Rt uint32) uint32 {
-    if size &^ 0b11 != 0 {
+    if size &^ 0x3 != 0 {
         panic("ldst_unscaled: invalid size")
     }
-    if V &^ 0b1 != 0 {
+    if V &^ 0x1 != 0 {
         panic("ldst_unscaled: invalid V")
     }
-    if opc &^ 0b11 != 0 {
+    if opc &^ 0x3 != 0 {
         panic("ldst_unscaled: invalid opc")
     }
-    if imm9 &^ 0b111111111 != 0 {
+    if imm9 &^ 0x1ff != 0 {
         panic("ldst_unscaled: invalid imm9")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("ldst_unscaled: invalid Rn")
     }
-    if Rt &^ 0b11111 != 0 {
+    if Rt &^ 0x1f != 0 {
         panic("ldst_unscaled: invalid Rt")
     }
     ret := uint32(0x38000000)
@@ -2305,31 +2305,31 @@ func ldst_unscaled(size, V, opc, imm9, Rn, Rt uint32) uint32 {
 
 // ldstexcl: Load/store exclusive
 func ldstexcl(size, o2, L, o1, Rs, o0, Rt2, Rn, Rt uint32) uint32 {
-    if size &^ 0b11 != 0 {
+    if size &^ 0x3 != 0 {
         panic("ldstexcl: invalid size")
     }
-    if o2 &^ 0b1 != 0 {
+    if o2 &^ 0x1 != 0 {
         panic("ldstexcl: invalid o2")
     }
-    if L &^ 0b1 != 0 {
+    if L &^ 0x1 != 0 {
         panic("ldstexcl: invalid L")
     }
-    if o1 &^ 0b1 != 0 {
+    if o1 &^ 0x1 != 0 {
         panic("ldstexcl: invalid o1")
     }
-    if Rs &^ 0b11111 != 0 {
+    if Rs &^ 0x1f != 0 {
         panic("ldstexcl: invalid Rs")
     }
-    if o0 &^ 0b1 != 0 {
+    if o0 &^ 0x1 != 0 {
         panic("ldstexcl: invalid o0")
     }
-    if Rt2 &^ 0b11111 != 0 {
+    if Rt2 &^ 0x1f != 0 {
         panic("ldstexcl: invalid Rt2")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("ldstexcl: invalid Rn")
     }
-    if Rt &^ 0b11111 != 0 {
+    if Rt &^ 0x1f != 0 {
         panic("ldstexcl: invalid Rt")
     }
     ret := uint32(0x08000000)
@@ -2347,25 +2347,25 @@ func ldstexcl(size, o2, L, o1, Rs, o0, Rt2, Rn, Rt uint32) uint32 {
 
 // ldstnapair_offs: Load/store no-allocate pair (offset)
 func ldstnapair_offs(opc, V, L, imm7, Rt2, Rn, Rt uint32) uint32 {
-    if opc &^ 0b11 != 0 {
+    if opc &^ 0x3 != 0 {
         panic("ldstnapair_offs: invalid opc")
     }
-    if V &^ 0b1 != 0 {
+    if V &^ 0x1 != 0 {
         panic("ldstnapair_offs: invalid V")
     }
-    if L &^ 0b1 != 0 {
+    if L &^ 0x1 != 0 {
         panic("ldstnapair_offs: invalid L")
     }
-    if imm7 &^ 0b1111111 != 0 {
+    if imm7 &^ 0x7f != 0 {
         panic("ldstnapair_offs: invalid imm7")
     }
-    if Rt2 &^ 0b11111 != 0 {
+    if Rt2 &^ 0x1f != 0 {
         panic("ldstnapair_offs: invalid Rt2")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("ldstnapair_offs: invalid Rn")
     }
-    if Rt &^ 0b11111 != 0 {
+    if Rt &^ 0x1f != 0 {
         panic("ldstnapair_offs: invalid Rt")
     }
     ret := uint32(0x28000000)
@@ -2381,25 +2381,25 @@ func ldstnapair_offs(opc, V, L, imm7, Rt2, Rn, Rt uint32) uint32 {
 
 // ldstpair_off: Load/store register pair (offset)
 func ldstpair_off(opc, V, L, imm7, Rt2, Rn, Rt uint32) uint32 {
-    if opc &^ 0b11 != 0 {
+    if opc &^ 0x3 != 0 {
         panic("ldstpair_off: invalid opc")
     }
-    if V &^ 0b1 != 0 {
+    if V &^ 0x1 != 0 {
         panic("ldstpair_off: invalid V")
     }
-    if L &^ 0b1 != 0 {
+    if L &^ 0x1 != 0 {
         panic("ldstpair_off: invalid L")
     }
-    if imm7 &^ 0b1111111 != 0 {
+    if imm7 &^ 0x7f != 0 {
         panic("ldstpair_off: invalid imm7")
     }
-    if Rt2 &^ 0b11111 != 0 {
+    if Rt2 &^ 0x1f != 0 {
         panic("ldstpair_off: invalid Rt2")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("ldstpair_off: invalid Rn")
     }
-    if Rt &^ 0b11111 != 0 {
+    if Rt &^ 0x1f != 0 {
         panic("ldstpair_off: invalid Rt")
     }
     ret := uint32(0x29000000)
@@ -2415,25 +2415,25 @@ func ldstpair_off(opc, V, L, imm7, Rt2, Rn, Rt uint32) uint32 {
 
 // ldstpair_post: Load/store register pair (post-indexed)
 func ldstpair_post(opc, V, L, imm7, Rt2, Rn, Rt uint32) uint32 {
-    if opc &^ 0b11 != 0 {
+    if opc &^ 0x3 != 0 {
         panic("ldstpair_post: invalid opc")
     }
-    if V &^ 0b1 != 0 {
+    if V &^ 0x1 != 0 {
         panic("ldstpair_post: invalid V")
     }
-    if L &^ 0b1 != 0 {
+    if L &^ 0x1 != 0 {
         panic("ldstpair_post: invalid L")
     }
-    if imm7 &^ 0b1111111 != 0 {
+    if imm7 &^ 0x7f != 0 {
         panic("ldstpair_post: invalid imm7")
     }
-    if Rt2 &^ 0b11111 != 0 {
+    if Rt2 &^ 0x1f != 0 {
         panic("ldstpair_post: invalid Rt2")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("ldstpair_post: invalid Rn")
     }
-    if Rt &^ 0b11111 != 0 {
+    if Rt &^ 0x1f != 0 {
         panic("ldstpair_post: invalid Rt")
     }
     ret := uint32(0x28800000)
@@ -2449,25 +2449,25 @@ func ldstpair_post(opc, V, L, imm7, Rt2, Rn, Rt uint32) uint32 {
 
 // ldstpair_pre: Load/store register pair (pre-indexed)
 func ldstpair_pre(opc, V, L, imm7, Rt2, Rn, Rt uint32) uint32 {
-    if opc &^ 0b11 != 0 {
+    if opc &^ 0x3 != 0 {
         panic("ldstpair_pre: invalid opc")
     }
-    if V &^ 0b1 != 0 {
+    if V &^ 0x1 != 0 {
         panic("ldstpair_pre: invalid V")
     }
-    if L &^ 0b1 != 0 {
+    if L &^ 0x1 != 0 {
         panic("ldstpair_pre: invalid L")
     }
-    if imm7 &^ 0b1111111 != 0 {
+    if imm7 &^ 0x7f != 0 {
         panic("ldstpair_pre: invalid imm7")
     }
-    if Rt2 &^ 0b11111 != 0 {
+    if Rt2 &^ 0x1f != 0 {
         panic("ldstpair_pre: invalid Rt2")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("ldstpair_pre: invalid Rn")
     }
-    if Rt &^ 0b11111 != 0 {
+    if Rt &^ 0x1f != 0 {
         panic("ldstpair_pre: invalid Rt")
     }
     ret := uint32(0x29800000)
@@ -2483,19 +2483,19 @@ func ldstpair_pre(opc, V, L, imm7, Rt2, Rn, Rt uint32) uint32 {
 
 // ldsttags: Load/store memory tags
 func ldsttags(opc, imm9, op2, Rn, Rt uint32) uint32 {
-    if opc &^ 0b11 != 0 {
+    if opc &^ 0x3 != 0 {
         panic("ldsttags: invalid opc")
     }
-    if imm9 &^ 0b111111111 != 0 {
+    if imm9 &^ 0x1ff != 0 {
         panic("ldsttags: invalid imm9")
     }
-    if op2 &^ 0b11 != 0 {
+    if op2 &^ 0x3 != 0 {
         panic("ldsttags: invalid op2")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("ldsttags: invalid Rn")
     }
-    if Rt &^ 0b11111 != 0 {
+    if Rt &^ 0x1f != 0 {
         panic("ldsttags: invalid Rt")
     }
     ret := uint32(0xd9200000)
@@ -2509,16 +2509,16 @@ func ldsttags(opc, imm9, op2, Rn, Rt uint32) uint32 {
 
 // loadlit: Load register (literal)
 func loadlit(opc, V, imm19, Rt uint32) uint32 {
-    if opc &^ 0b11 != 0 {
+    if opc &^ 0x3 != 0 {
         panic("loadlit: invalid opc")
     }
-    if V &^ 0b1 != 0 {
+    if V &^ 0x1 != 0 {
         panic("loadlit: invalid V")
     }
-    if imm19 &^ 0b1111111111111111111 != 0 {
+    if imm19 &^ 0x7ffff != 0 {
         panic("loadlit: invalid imm19")
     }
-    if Rt &^ 0b11111 != 0 {
+    if Rt &^ 0x1f != 0 {
         panic("loadlit: invalid Rt")
     }
     ret := uint32(0x18000000)
@@ -2531,25 +2531,25 @@ func loadlit(opc, V, imm19, Rt uint32) uint32 {
 
 // log_imm: Logical (immediate)
 func log_imm(sf, opc, N, immr, imms, Rn, Rd uint32) uint32 {
-    if sf &^ 0b1 != 0 {
+    if sf &^ 0x1 != 0 {
         panic("log_imm: invalid sf")
     }
-    if opc &^ 0b11 != 0 {
+    if opc &^ 0x3 != 0 {
         panic("log_imm: invalid opc")
     }
-    if N &^ 0b1 != 0 {
+    if N &^ 0x1 != 0 {
         panic("log_imm: invalid N")
     }
-    if immr &^ 0b111111 != 0 {
+    if immr &^ 0x3f != 0 {
         panic("log_imm: invalid immr")
     }
-    if imms &^ 0b111111 != 0 {
+    if imms &^ 0x3f != 0 {
         panic("log_imm: invalid imms")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("log_imm: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("log_imm: invalid Rd")
     }
     ret := uint32(0x12000000)
@@ -2565,28 +2565,28 @@ func log_imm(sf, opc, N, immr, imms, Rn, Rd uint32) uint32 {
 
 // log_shift: Logical (shifted register)
 func log_shift(sf, opc, shift, N, Rm, imm6, Rn, Rd uint32) uint32 {
-    if sf &^ 0b1 != 0 {
+    if sf &^ 0x1 != 0 {
         panic("log_shift: invalid sf")
     }
-    if opc &^ 0b11 != 0 {
+    if opc &^ 0x3 != 0 {
         panic("log_shift: invalid opc")
     }
-    if shift &^ 0b11 != 0 {
+    if shift &^ 0x3 != 0 {
         panic("log_shift: invalid shift")
     }
-    if N &^ 0b1 != 0 {
+    if N &^ 0x1 != 0 {
         panic("log_shift: invalid N")
     }
-    if Rm &^ 0b11111 != 0 {
+    if Rm &^ 0x1f != 0 {
         panic("log_shift: invalid Rm")
     }
-    if imm6 &^ 0b111111 != 0 {
+    if imm6 &^ 0x3f != 0 {
         panic("log_shift: invalid imm6")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("log_shift: invalid Rn")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("log_shift: invalid Rd")
     }
     ret := uint32(0x0a000000)
@@ -2603,31 +2603,31 @@ func log_shift(sf, opc, shift, N, Rm, imm6, Rn, Rd uint32) uint32 {
 
 // memop: Atomic memory operations
 func memop(size, V, A, R, Rs, o3, opc, Rn, Rt uint32) uint32 {
-    if size &^ 0b11 != 0 {
+    if size &^ 0x3 != 0 {
         panic("memop: invalid size")
     }
-    if V &^ 0b1 != 0 {
+    if V &^ 0x1 != 0 {
         panic("memop: invalid V")
     }
-    if A &^ 0b1 != 0 {
+    if A &^ 0x1 != 0 {
         panic("memop: invalid A")
     }
-    if R &^ 0b1 != 0 {
+    if R &^ 0x1 != 0 {
         panic("memop: invalid R")
     }
-    if Rs &^ 0b11111 != 0 {
+    if Rs &^ 0x1f != 0 {
         panic("memop: invalid Rs")
     }
-    if o3 &^ 0b1 != 0 {
+    if o3 &^ 0x1 != 0 {
         panic("memop: invalid o3")
     }
-    if opc &^ 0b111 != 0 {
+    if opc &^ 0x7 != 0 {
         panic("memop: invalid opc")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("memop: invalid Rn")
     }
-    if Rt &^ 0b11111 != 0 {
+    if Rt &^ 0x1f != 0 {
         panic("memop: invalid Rt")
     }
     ret := uint32(0x38200000)
@@ -2645,19 +2645,19 @@ func memop(size, V, A, R, Rs, o3, opc, Rn, Rt uint32) uint32 {
 
 // movewide: Move wide (immediate)
 func movewide(sf, opc, hw, imm16, Rd uint32) uint32 {
-    if sf &^ 0b1 != 0 {
+    if sf &^ 0x1 != 0 {
         panic("movewide: invalid sf")
     }
-    if opc &^ 0b11 != 0 {
+    if opc &^ 0x3 != 0 {
         panic("movewide: invalid opc")
     }
-    if hw &^ 0b11 != 0 {
+    if hw &^ 0x3 != 0 {
         panic("movewide: invalid hw")
     }
-    if imm16 &^ 0b1111111111111111 != 0 {
+    if imm16 &^ 0xffff != 0 {
         panic("movewide: invalid imm16")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("movewide: invalid Rd")
     }
     ret := uint32(0x12800000)
@@ -2671,16 +2671,16 @@ func movewide(sf, opc, hw, imm16, Rd uint32) uint32 {
 
 // pcreladdr: PC-rel. addressing
 func pcreladdr(op, immlo, immhi, Rd uint32) uint32 {
-    if op &^ 0b1 != 0 {
+    if op &^ 0x1 != 0 {
         panic("pcreladdr: invalid op")
     }
-    if immlo &^ 0b11 != 0 {
+    if immlo &^ 0x3 != 0 {
         panic("pcreladdr: invalid immlo")
     }
-    if immhi &^ 0b1111111111111111111 != 0 {
+    if immhi &^ 0x7ffff != 0 {
         panic("pcreladdr: invalid immhi")
     }
-    if Rd &^ 0b11111 != 0 {
+    if Rd &^ 0x1f != 0 {
         panic("pcreladdr: invalid Rd")
     }
     ret := uint32(0x10000000)
@@ -2693,7 +2693,7 @@ func pcreladdr(op, immlo, immhi, Rd uint32) uint32 {
 
 // perm_undef: Reserved
 func perm_undef(imm16 uint32) uint32 {
-    if imm16 &^ 0b1111111111111111 != 0 {
+    if imm16 &^ 0xffff != 0 {
         panic("perm_undef: invalid imm16")
     }
     ret := uint32(0x00000000)
@@ -2703,16 +2703,16 @@ func perm_undef(imm16 uint32) uint32 {
 
 // pstate: PSTATE
 func pstate(op1, CRm, op2, Rt uint32) uint32 {
-    if op1 &^ 0b111 != 0 {
+    if op1 &^ 0x7 != 0 {
         panic("pstate: invalid op1")
     }
-    if CRm &^ 0b1111 != 0 {
+    if CRm &^ 0xf != 0 {
         panic("pstate: invalid CRm")
     }
-    if op2 &^ 0b111 != 0 {
+    if op2 &^ 0x7 != 0 {
         panic("pstate: invalid op2")
     }
-    if Rt &^ 0b11111 != 0 {
+    if Rt &^ 0x1f != 0 {
         panic("pstate: invalid Rt")
     }
     ret := uint32(0xd5004000)
@@ -2725,25 +2725,25 @@ func pstate(op1, CRm, op2, Rt uint32) uint32 {
 
 // rmif: Rotate right into flags
 func rmif(sf, op, S, imm6, Rn, o2, mask uint32) uint32 {
-    if sf &^ 0b1 != 0 {
+    if sf &^ 0x1 != 0 {
         panic("rmif: invalid sf")
     }
-    if op &^ 0b1 != 0 {
+    if op &^ 0x1 != 0 {
         panic("rmif: invalid op")
     }
-    if S &^ 0b1 != 0 {
+    if S &^ 0x1 != 0 {
         panic("rmif: invalid S")
     }
-    if imm6 &^ 0b111111 != 0 {
+    if imm6 &^ 0x3f != 0 {
         panic("rmif: invalid imm6")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("rmif: invalid Rn")
     }
-    if o2 &^ 0b1 != 0 {
+    if o2 &^ 0x1 != 0 {
         panic("rmif: invalid o2")
     }
-    if mask &^ 0b1111 != 0 {
+    if mask &^ 0xf != 0 {
         panic("rmif: invalid mask")
     }
     ret := uint32(0x1a000400)
@@ -2759,28 +2759,28 @@ func rmif(sf, op, S, imm6, Rn, o2, mask uint32) uint32 {
 
 // setf: Evaluate into flags
 func setf(sf, op, S, opcode2, sz, Rn, o3, mask uint32) uint32 {
-    if sf &^ 0b1 != 0 {
+    if sf &^ 0x1 != 0 {
         panic("setf: invalid sf")
     }
-    if op &^ 0b1 != 0 {
+    if op &^ 0x1 != 0 {
         panic("setf: invalid op")
     }
-    if S &^ 0b1 != 0 {
+    if S &^ 0x1 != 0 {
         panic("setf: invalid S")
     }
-    if opcode2 &^ 0b111111 != 0 {
+    if opcode2 &^ 0x3f != 0 {
         panic("setf: invalid opcode2")
     }
-    if sz &^ 0b1 != 0 {
+    if sz &^ 0x1 != 0 {
         panic("setf: invalid sz")
     }
-    if Rn &^ 0b11111 != 0 {
+    if Rn &^ 0x1f != 0 {
         panic("setf: invalid Rn")
     }
-    if o3 &^ 0b1 != 0 {
+    if o3 &^ 0x1 != 0 {
         panic("setf: invalid o3")
     }
-    if mask &^ 0b1111 != 0 {
+    if mask &^ 0xf != 0 {
         panic("setf: invalid mask")
     }
     ret := uint32(0x1a000800)
@@ -2797,22 +2797,22 @@ func setf(sf, op, S, opcode2, sz, Rn, o3, mask uint32) uint32 {
 
 // systeminstrs: System instructions
 func systeminstrs(L, op1, CRn, CRm, op2, Rt uint32) uint32 {
-    if L &^ 0b1 != 0 {
+    if L &^ 0x1 != 0 {
         panic("systeminstrs: invalid L")
     }
-    if op1 &^ 0b111 != 0 {
+    if op1 &^ 0x7 != 0 {
         panic("systeminstrs: invalid op1")
     }
-    if CRn &^ 0b1111 != 0 {
+    if CRn &^ 0xf != 0 {
         panic("systeminstrs: invalid CRn")
     }
-    if CRm &^ 0b1111 != 0 {
+    if CRm &^ 0xf != 0 {
         panic("systeminstrs: invalid CRm")
     }
-    if op2 &^ 0b111 != 0 {
+    if op2 &^ 0x7 != 0 {
         panic("systeminstrs: invalid op2")
     }
-    if Rt &^ 0b11111 != 0 {
+    if Rt &^ 0x1f != 0 {
         panic("systeminstrs: invalid Rt")
     }
     ret := uint32(0xd5080000)
@@ -2827,25 +2827,25 @@ func systeminstrs(L, op1, CRn, CRm, op2, Rt uint32) uint32 {
 
 // systemmove: System register move
 func systemmove(L, o0, op1, CRn, CRm, op2, Rt uint32) uint32 {
-    if L &^ 0b1 != 0 {
+    if L &^ 0x1 != 0 {
         panic("systemmove: invalid L")
     }
-    if o0 &^ 0b1 != 0 {
+    if o0 &^ 0x1 != 0 {
         panic("systemmove: invalid o0")
     }
-    if op1 &^ 0b111 != 0 {
+    if op1 &^ 0x7 != 0 {
         panic("systemmove: invalid op1")
     }
-    if CRn &^ 0b1111 != 0 {
+    if CRn &^ 0xf != 0 {
         panic("systemmove: invalid CRn")
     }
-    if CRm &^ 0b1111 != 0 {
+    if CRm &^ 0xf != 0 {
         panic("systemmove: invalid CRm")
     }
-    if op2 &^ 0b111 != 0 {
+    if op2 &^ 0x7 != 0 {
         panic("systemmove: invalid op2")
     }
-    if Rt &^ 0b11111 != 0 {
+    if Rt &^ 0x1f != 0 {
         panic("systemmove: invalid Rt")
     }
     ret := uint32(0xd5100000)
@@ -2861,19 +2861,19 @@ func systemmove(L, o0, op1, CRn, CRm, op2, Rt uint32) uint32 {
 
 // testbranch: Test and branch (immediate)
 func testbranch(b5, op, b40, imm14, Rt uint32) uint32 {
-    if b5 &^ 0b1 != 0 {
+    if b5 &^ 0x1 != 0 {
         panic("testbranch: invalid b5")
     }
-    if op &^ 0b1 != 0 {
+    if op &^ 0x1 != 0 {
         panic("testbranch: invalid op")
     }
-    if b40 &^ 0b11111 != 0 {
+    if b40 &^ 0x1f != 0 {
         panic("testbranch: invalid b40")
     }
-    if imm14 &^ 0b11111111111111 != 0 {
+    if imm14 &^ 0x3fff != 0 {
         panic("testbranch: invalid imm14")
     }
-    if Rt &^ 0b11111 != 0 {
+    if Rt &^ 0x1f != 0 {
         panic("testbranch: invalid Rt")
     }
     ret := uint32(0x36000000)

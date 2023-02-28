@@ -101,6 +101,7 @@ func isUimm8    (v interface{}) bool { x, f := asUint64(v) ; return f && x <= ma
 func isUimm16   (v interface{}) bool { x, f := asUint64(v) ; return f && x <= math.MaxUint16 }
 func isMask32   (v interface{}) bool { x, f := asUint64(v) ; return f && _BitMask(x).is32() }
 func isMask64   (v interface{}) bool { x, f := asUint64(v) ; return f && _BitMask(x).is64() }
+func isFpBits   (v interface{}) bool { x, f := asUint64(v) ; return f && x >= 1 && x <= 64 }
 
 func isMod      (v interface{}) bool { _, f := v.(Modifier)      ; return f }
 func isIndex    (v interface{}) bool { _, f := v.(IndexMode)     ; return f }
@@ -115,6 +116,17 @@ func isMem(v interface{}) bool {
     } else {
         _, ok = x.Addr.(asm.MemoryAddress)
         return ok
+    }
+}
+
+func isLit(v interface{}, imm ...int64) bool {
+    if isSpecial(v) {
+        return false
+    } else if x := rt.AsEface(v); !isInt(x.Kind()) && !isUint(x.Kind()) {
+        return false
+    } else {
+        for _, n := range imm { if x.ToInt64() == n { return true } }
+        return false
     }
 }
 

@@ -2,12 +2,11 @@
 # -*- coding: utf-8 -*-
 
 import os
+import re
 import sys
-import itertools
 
 from typing import cast
 from typing import Literal
-from typing import Callable
 from typing import Iterator
 from typing import NamedTuple
 
@@ -59,22 +58,22 @@ class Account:
 class Definition:
     name: str
     desc: str
-    bits: dict[str, set[str]]
+    refs: list[str]
+    bits: dict[str, str]
 
-    def __init__(self, name: str, desc: str, bits: dict[str, set[str]]):
+    def __init__(self, name: str, desc: str, refs: list[str], bits: dict[str, str]):
         self.name = name
         self.desc = desc
+        self.refs = refs
         self.bits = bits
 
     def __repr__(self) -> str:
-        return '%s %s [%s]' % (self.name, self.desc, ' '.join(
-            '%s=%s%s%s' % (
-                key,
-                '' if len(vals) == 1 else '{',
-                ','.join(sorted(vals)),
-                '' if len(vals) == 1 else '}'
-            ) for key, vals in self.bits.items()
-        ))
+        return '%s %s (=%s) [%s]' % (
+            self.name,
+            self.desc,
+            ':'.join(self.refs[::-1]),
+            ' '.join('%s=%s' % t for t in self.bits.items())
+        )
 
 class Instruction:
     bits: list[int | None]
@@ -136,23 +135,15 @@ class Instruction:
             elif self._intersects(i, i + w - 1, hibit - width + 1, hibit):
                 yield None
 
-    def update(self, boxes: list[Element], *, no_add: bool = False):
+    def update(self, boxes: list[Element]):
         for box in boxes:
             bits = box.findall('c')
             name = box.attrib.get('name')
             hibit = int(box.attrib['hibit'])
             width = int(box.attrib.get('width', 1))
 
-            if not no_add and name is not None:
-                keys = self._remove_bits(hibit, width)
-                keys = set(keys)
-
-                for key in keys:
-                    if key is not None:
-                        del self.refs[key]
-
-                if None not in keys:
-                    self.refs[name] = (hibit - width + 1, width)
+            if name is not None:
+                self.refs[name] = (hibit - width + 1, width)
 
             for i, item in enumerate(bits):
                 if item.text in {'0', '(0)', 'z', 'Z'}:
@@ -171,11 +162,12 @@ class EncodingTabEntry(NamedTuple):
     form: str
     file: str
     func: str
+    args: list[str]
     bits: Instruction
 
     def __repr__(self) -> str:
         return '\n'.join([
-            'Encoding %s {' % self.name,
+            'Encoding %s (%s) {' % (self.name, ', '.join(self.args)),
             '    ' + self.desc,
             '    form = ' + self.form,
             '    file = ' + self.file,
@@ -188,15 +180,19 @@ class InstructionTabEntry(NamedTuple):
     name: str
     desc: str
     data: Element
+    args: list[str]
     base: Instruction
 
     def __repr__(self) -> str:
         return '\n'.join([
-            'Instruction %s {' % self.name,
+            'Instruction %s (%s) {' % (self.name, ', '.join(self.args)),
             '    ' + self.desc,
             *('    ' + v for v in repr(self.base).splitlines()),
             '}',
         ])
+
+def bit_mask(nb: int) -> str:
+    return hex((1 << nb) - 1)
 
 def parse_bit(bit: str) -> int | None:
     match bit:
@@ -237,32 +233,30 @@ for iclass in sorted(encindex.findall('iclass_sect'), key = lambda x: x.attrib['
     bits.update(iclass.findall('regdiagram/box'))
 
     cond = set()
-    req = bits.bits[:]
-    args = sorted(bits.refs.items(), key = lambda x: x[1], reverse = True)
+    vals = bits.bits[:]
+    argv = sorted(bits.refs.items(), key = lambda x: x[1], reverse = True)
+    args = [v for v, _ in argv]
 
     for dc in iclass.findall('decode_constraints/decode_constraint'):
-        cond.add((
-            dc.attrib['name'],
-            dc.attrib['op'],
-            dc.attrib['val'],
-        ))
+        cond.add((dc.attrib['name'], dc.attrib['op'], dc.attrib['val']))
 
     for p, n in bits.refs.values():
-        req[p:p + n] = [0] * n
+        vals[p:p + n] = [0] * n
 
     instab[name] = InstructionTabEntry(
         name = name,
         desc = desc,
         data = itab,
+        args = args,
         base = bits,
     )
 
     cc.line('// %s: %s' % (name, desc))
-    cc.line('func %s(%s uint32) uint32 {' % (name, ', '.join(v for v, _ in args)))
+    cc.line('func %s(%s uint32) uint32 {' % (name, ', '.join(args)))
     cc.indent()
 
-    for th, (_, n) in args:
-        cc.line('if %s &^ 0b%s != 0 {' % (th, '1' * n))
+    for th, (_, n) in argv:
+        cc.line('if %s &^ %s != 0 {' % (th, bit_mask(n)))
         cc.indent()
         cc.line('panic("%s: invalid %s")' % (name, th))
         cc.dedent()
@@ -276,10 +270,10 @@ for iclass in sorted(encindex.findall('iclass_sect'), key = lambda x: x.attrib['
         cc.dedent()
         cc.line('}')
 
-    assert None not in req, 'unset bit in %s: %r' % (name, req)
-    cc.line('ret := uint32(0x%08x)' % int(''.join(map(str, req))[::-1], 2))
+    assert None not in vals, 'unset bit in %s: %r' % (name, vals)
+    cc.line('ret := uint32(0x%08x)' % int(''.join(map(str, vals))[::-1], 2))
 
-    for th, (p, _) in args:
+    for th, (p, _) in argv:
         if p == 0:
             cc.line('ret |= ' + th)
         else:
@@ -309,29 +303,39 @@ for name, entry in sorted(instab.items(), key = lambda v: v[0]):
             bitfields = th.findall('td[@class="bitfield"]')
 
             # TODO: remove this
-            # if 'advsimd' in iformfile or iformfile in {'b_cond.xml', 'casp.xml'}:
-            #     continue
-            if not (
-                # iformfile.startswith('bti') or
-                # iformfile.startswith('aesd_') or
-                # iformfile.startswith('uqxtn_') or
-                # iformfile.startswith('ldr_') or
-                # iformfile.startswith('and_') or
-                # iformfile.startswith('eor_') or
-                # iformfile.startswith('orn_') or
-                # iformfile.startswith('orr_') or
-                # iformfile.startswith('addg') or
-                # iformfile.startswith('blra') or
-                # iformfile.startswith('bra') or
-                # iformfile.startswith('ccmn') or
-                # iformfile.startswith('autia') or
-                # iformfile.startswith('clrex') or
-                # iformfile.startswith('dmb') or
-                # iformfile.startswith('dsb') or
-                # iformfile.startswith('fcmp') or
-                iformfile.startswith('fcvtzs')
-            ):
+            if 'advsimd' in iformfile or iformfile in {'b_cond.xml', 'casp.xml'}:
                 continue
+            if iformfile[0] > 'e':
+                continue
+            # if not (
+            #     iformfile.startswith('bti') or
+            #     iformfile.startswith('aesd_') or
+            #     iformfile.startswith('uqxtn_') or
+            #     iformfile.startswith('ldr_') or
+            #     iformfile.startswith('and_') or
+            #     iformfile.startswith('eor_') or
+            #     iformfile.startswith('orn_') or
+            #     iformfile.startswith('orr_') or
+            #     iformfile.startswith('addg') or
+            #     iformfile.startswith('blra') or
+            #     iformfile.startswith('bra') or
+            #     iformfile.startswith('ccmn') or
+            #     iformfile.startswith('autia') or
+            #     iformfile.startswith('clrex') or
+            #     iformfile.startswith('dmb') or
+            #     iformfile.startswith('dsb') or
+            #     iformfile.startswith('fcmp') or
+            #     iformfile.startswith('fcvtzs_') or
+            #     iformfile.startswith('scvtf_') or
+            #     iformfile.startswith('shl') or
+            #     iformfile.startswith('shr') or
+            #     iformfile.startswith('sshl') or
+            #     iformfile.startswith('sshr') or
+            #     iformfile.startswith('ssra') or
+            #     iformfile.startswith('usra') or
+            #     iformfile.startswith('adr')
+            # ):
+            #     continue
 
             assert iformfile, 'missing iform files for ' + name
             assert iformname is not None, 'missing iform names for ' + name
@@ -362,6 +366,7 @@ for name, entry in sorted(instab.items(), key = lambda v: v[0]):
                 form = form,
                 file = iformfile,
                 func = name,
+                args = entry.args,
                 bits = instr,
             )
 
@@ -997,29 +1002,23 @@ class InstrForm(NamedTuple):
     inst   : Instr
     bits   : Instruction
     opts   : dict[str, str]
-    args   : list[str | int]
+    args   : dict[str, int]
     enctab : EncodingTabEntry
     fields : dict[str, Account | Definition]
-
-def permu_bits(bit: str) -> str:
-    match bit:
-        case '0': return '0'
-        case '1': return '1'
-        case 'x': return '01'
-        case _  : raise AssertionError('invalid bit value: ' + repr(bit))
 
 def parse_props(out: dict[str, str], p: Element):
     for v in p.findall('docvars/docvar'):
         out[v.attrib['key']] = v.attrib['value']
 
-def parse_symdef(defs: Element) -> dict[str, set[str]]:
+def parse_symdef(defs: Element) -> tuple[list[str], dict[str, str]]:
     rets = {}
     tabs = defs.findall('.//tgroup')
     rows = defs.findall('.//tbody/row')
+    refs = defs.findall('.//thead/row/entry[@class="bitfield"]')
     dest = defs.attrib['encodedin']
 
-    if len(tabs) != 1:
-        raise AssertionError('expect exactly 1 table: encodedin="%s"' % dest)
+    assert refs, 'no bitfield header name found: encodedin="%s"' % dest
+    assert len(tabs) == 1, 'expect exactly 1 table: encodedin="%s"' % dest
 
     for row in rows:
         bits = []
@@ -1035,13 +1034,15 @@ def parse_symdef(defs: Element) -> dict[str, set[str]]:
             raise AssertionError('missing symbol or bitfield: encodedin="%s"' % dest)
 
         for sym in map(str.strip, syms.text.split('|')):
-            prod = itertools.product(*map(permu_bits, ''.join(bits)))
-            rets.setdefault(sym, set()).update(''.join(v) for v in prod)
+            rets[sym] = ''.join(bits)
+
+    refs = [v.text or '' for v in refs]
+    refs.reverse()
 
     if not rets:
         raise AssertionError('missing definitions: encodedin="%s"' % dest)
     else:
-        return rets
+        return refs, rets
 
 maxargs = 0
 formtab = dict[str, list[InstrForm]]()
@@ -1064,7 +1065,7 @@ for expl in isadocs.findall('.//explanation'):
         defs = Account(symacc.attrib['encodedin'], desc)
     else:
         assert isinstance(symdef, Element)
-        defs = Definition(symdef.attrib['encodedin'], desc, parse_symdef(symdef))
+        defs = Definition(symdef.attrib['encodedin'], desc, *parse_symdef(symdef))
 
     for enc in expl.attrib['enclist'].split(','):
         tab = fieldtab.setdefault(enc.strip(), {})
@@ -1080,14 +1081,14 @@ for encdata in sorted(enctab.values(), key = lambda x: x.name):
     text = ''.join(v.text or '' for v in tokens)
     status('* Assembly Template:', text)
 
-    args = []
+    args = {}
     opts = {}
     bits = Instruction(encdata.bits)
     inst = AsmTemplate.parse(tokens)
 
     parse_props(opts, node)
-    bits.update(node.findall('box'), no_add = True)
-    bits.update(parent_tab[node].findall('regdiagram/box'), no_add = True)
+    bits.update(node.findall('box'))
+    bits.update(parent_tab[node].findall('regdiagram/box'))
     assert inst.mnemonic == opts['mnemonic']
 
     if inst.operands.opt is None:
@@ -1098,11 +1099,12 @@ for encdata in sorted(enctab.values(), key = lambda x: x.name):
     req = list(bits.refs.items())
     req.sort(key = lambda x: x[1], reverse = True)
 
-    for v, (p, n) in req:
-        if None in bits.bits[p:p + n]:
-            args.append(v)
-        else:
-            args.append(int(''.join(map(str, bits.bits[p:p + n][::-1])), 2))
+    for fn in encdata.args:
+        p, n = bits.refs[fn]
+        fval = bits.bits[p:p + n][::-1]
+
+        if None not in fval:
+            args[fn] = int(''.join(map(str, fval)), 2)
 
     formtab.setdefault(inst.mnemonic, []).append(InstrForm(
         text   = text,
@@ -1131,7 +1133,7 @@ class And(list['And | Or | str']):
         if len(self) == 1 and isinstance(self[0], Or):
             return str(self[0])
         else:
-            return ' && '.join('(%s)' % v if isinstance(v, Or) else str(v) for v in self)
+            return ' && '.join('(%s)' % v if isinstance(v, Or) and len(v) > 1 else str(v) for v in self)
 
 class OnceDict(OrderedDict):
     def __setitem__(self, k, v) -> None:
@@ -1154,11 +1156,12 @@ IMM_CHECKS = {
     'imm9'            : 'isImm9(%s)',
     'imm12'           : 'isImm12(%s)',
     'imm16'           : 'isUimm16(%s)',
+    'immh:immb'       : 'isFpBits(%s)',
     'immr'            : 'isUimm6(%s)',
     'immr:imms'       : 'isMask32(%s)',
     'imms'            : 'isUimm6(%s)',
     'nzcv'            : 'isUimm4(%s)',
-    'scale'           : 'isUimm6(%s)',
+    'scale'           : 'isFpBits(%s)',
     'uimm4'           : 'isUimm4(%s)',
     'uimm6'           : 'isUimm6(%s)',
 }
@@ -1166,17 +1169,20 @@ IMM_CHECKS = {
 REG_CHECKS = {
     'cond'   : 'isBrCond(%s)',
     'bt'     : 'isBr(%s)',
+    'da'     : 'isDr(%s)',
     'dd'     : 'isDr(%s)',
     'dm'     : 'isDr(%s)',
     'dn'     : 'isDr(%s)',
     'dn_1'   : 'isDr(%s)',
     'dt'     : 'isDr(%s)',
+    'ha'     : 'isHr(%s)',
     'hd'     : 'isHr(%s)',
     'hm'     : 'isHr(%s)',
     'hn'     : 'isHr(%s)',
     'hn_1'   : 'isHr(%s)',
     'ht'     : 'isHr(%s)',
     'qt'     : 'isQr(%s)',
+    'sa'     : 'isSr(%s)',
     'sd'     : 'isSr(%s)',
     'sm'     : 'isSr(%s)',
     'sn'     : 'isSr(%s)',
@@ -1203,9 +1209,9 @@ REG_CHECKS = {
 }
 
 REG_CHECKS_MERGED = {
-    'isWr(%s) || isXr(%s)' : 'isWrOrXr(%s)',
-    'isXr(%s) || isSP(%s)' : 'isXrOrSP(%s)',
-    'isWr(%s) || isWSP(%s)': 'isWrOrWSP(%s)',
+    'isWr(%s) || isXr(%s)'  : 'isWrOrXr(%s)',
+    'isXr(%s) || isSP(%s)'  : 'isXrOrSP(%s)',
+    'isWr(%s) || isWSP(%s)' : 'isWrOrWSP(%s)',
 }
 
 COMBREG_CHECKS = {
@@ -1361,10 +1367,17 @@ def match_operands(form: InstrForm, argc: int) -> Iterator['And | Or | str']:
                     if isinstance(field, Definition):
                         if not field.bits:
                             raise RuntimeError('no definitions')
-                        elif len(field.bits) == 1:
-                            yield 'vfmt(%s) == %s' % (name, VECTOR_TYPES[list(field.bits)[0]])
-                        else:
-                            yield 'isVfmt(%s, %s)' % (name, ', '.join(VECTOR_TYPES[x] for x in field.bits if x != 'RESERVED'))
+
+                        sels = [
+                            VECTOR_TYPES[x]
+                            for x in field.bits
+                            if x != 'RESERVED' and not x.startswith('SEE')
+                        ]
+
+                        match len(sels):
+                            case 0: pass
+                            case 1: yield 'vfmt(%s) == %s' % (name, sels[0])
+                            case _: yield 'isVfmt(%s, %s)' % (name, ', '.join(sels))
 
             elif val.altr is not None:
                 c1 = REG_CHECKS[val.name]
@@ -1468,7 +1481,16 @@ def match_operands(form: InstrForm, argc: int) -> Iterator['And | Or | str']:
             yield from match_modifier(name, val, bool(optcond), *optcond)
 
         elif isinstance(val, Imm):
-            yield Or(*optcond, IMM_CHECKS[form.fields[val].name] % name)
+            fv = form.fields[val]
+            fn = fv.name
+
+            if fn in IMM_CHECKS:
+                yield Or(*optcond, IMM_CHECKS[fn] % name)
+            elif not isinstance(fv, Definition):
+                raise RuntimeError('cannot encode immediate field ' + repr(fn))
+            else:
+                bits = [x for x in sorted(fv.bits) if x != 'RESERVED' and not x.startswith('SEE')]
+                yield Or(*optcond, 'isLit(%s, %s)' % (name, ', '.join(map(str, sorted(map(int, bits))))))
 
         elif isinstance(val, Lit):
             if optcond:
@@ -1494,20 +1516,24 @@ def match_operands(form: InstrForm, argc: int) -> Iterator['And | Or | str']:
         for i in range(len(v) - 1)
     )
 
+BM_FORMAT   = '%s__bit_mask'
+REL_VARNAME = 'delta'
+REL_VARINIT = 'uint32(label.RelativeTo(pc))'
+
 IMM_ENCODER = {
-    'CRm'             : 'asUimm4',
-    'N:immr:imms'     : 'asMaskImm',
-    'a:b:c:d:e:f:g:h' : 'asUimm8',
-    'imm5'            : 'asUimm5',
-    'imm12'           : 'asImm12',
-    'imm16'           : 'asUimm16',
-    'immr'            : 'asUimm6',
-    'immr:imms'       : 'asMaskImm',
-    'imms'            : 'asUimm6',
-    'nzcv'            : 'asUimm4',
-    'scale'           : 'asUimm6',
-    'uimm4'           : 'asUimm4',
-    'uimm6'           : 'asUimm6',
+    'CRm'             : 'asUimm4(%s)',
+    'N:immr:imms'     : 'asMaskOp(%s)',
+    'a:b:c:d:e:f:g:h' : 'asUimm8(%s)',
+    'imm5'            : 'asUimm5(%s)',
+    'imm12'           : 'asImm12(%s)',
+    'imm16'           : 'asUimm16(%s)',
+    'immr'            : 'asUimm6(%s)',
+    'immr:imms'       : 'asMaskOp(%s)',
+    'imms'            : 'asUimm6(%s)',
+    'nzcv'            : 'asUimm4(%s)',
+    'scale'           : 'asFpScale(%s)',
+    'uimm4'           : 'asUimm4(%s)',
+    'uimm6'           : 'asUimm6(%s)',
 }
 
 OPT_DEFAULTS = {
@@ -1516,10 +1542,22 @@ OPT_DEFAULTS = {
     }
 }
 
-SPECIAL_ENCODERS = {
+SPECIAL_REGS = {
     'cond'  : 'uint32(%s.(BranchCondition))',
     'label' : '%s.(*asm.Label)',
 }
+
+class SwitchLit(dict):
+    def __getitem__(self, key: str) -> str:
+        return str(int(key))
+
+    def __contains__(self, key: str) -> bool:
+        try:
+            int(key)
+        except ValueError:
+            return False
+        else:
+            return True
 
 def encode_defs(
     form     : InstrForm,
@@ -1530,26 +1568,83 @@ def encode_defs(
     opts     : dict[str, str | list],
     err_msg  : str,
 ):
-    cond = []
+    basic = True
+    multi = False
     field = form.fields[var_name]
 
     if not isinstance(field, Definition):
         raise RuntimeError('field should be definitions')
 
-    opts[var_name] = cond
-    vals[var_name] = sw_cond
-
     for k, v in field.bits.items():
-        if k != 'RESERVED':
-            if len(v) != 1:
-                raise RuntimeError('ambiguous encoding')
-            else:
-                cond.append('case %s: %s = 0b%s' % (name_tab[k], var_name, next(iter(v))))
+        if v and k != 'RESERVED' and not k.startswith('SEE'):
+            if k not in name_tab:
+                basic = False
+                break
 
-    if not cond:
-        raise RuntimeError('not encodable: ' + form.inst.mnemonic)
+    if basic:
+        cond = []
+        opts[var_name] = cond
+        vals[var_name] = sw_cond
+
+        for k, v in field.bits.items():
+            if v and k != 'RESERVED' and not k.startswith('SEE'):
+                if 'x' not in v:
+                    cond.append('case %s: %s = 0b%s' % (name_tab[k], var_name, v))
+                else:
+                    multi = True
+                    cond.append('case %s: %s = 0b%s' % (name_tab[k], var_name, v.replace('x', '0')))
+
+        if multi:
+            mask = []
+            opts[BM_FORMAT % var_name] = mask
+            vals[BM_FORMAT % var_name] = sw_cond
+
+            for k, v in field.bits.items():
+                if v and k != 'RESERVED' and not k.startswith('SEE'):
+                    bv = ''.join('0' if c == 'x' else '1' for c in v)
+                    mask.append('case %s: %s = 0b%s' % (name_tab[k], BM_FORMAT % var_name, bv))
+            else:
+                mask.append('default: panic("aarch64: %s")' % err_msg)
+
+        if not cond:
+            raise RuntimeError('not encodable: ' + form.inst.mnemonic)
+        else:
+            cond.append('default: panic("aarch64: %s")' % err_msg)
+
     else:
-        cond.append('default: panic("aarch64: %s")' % err_msg)
+        refs = ''
+        defs = None
+
+        if len(field.refs) != 1:
+            raise RuntimeError('multiple field references: ' + repr(field.name))
+
+        for k, v in form.fields.items():
+            if isinstance(v, Definition) and field.refs[0] in v.refs:
+                refs, defs = k, v
+                break
+        else:
+            raise RuntimeError('cannot find reference field: ' + repr(field.refs))
+
+        if len(defs.refs) != 1:
+            vidx = defs.refs.index(field.refs[0])
+            nbit = form.bits.refs[field.refs[0]][1]
+            nshr = sum([form.bits.refs[x][1] for x in defs.refs[:vidx]])
+            refs = '(%s >> %d) & %s' % (refs, nshr, bit_mask(nbit))
+
+        cond = []
+        opts[var_name] = cond
+        vals[var_name] = refs
+
+        for k, v in field.bits.items():
+            if v and k != 'RESERVED' and not k.startswith('SEE'):
+                if pat := re.match(r'\((\d+)-U[Ii]nt\(%s\)\)' % field.name, k):
+                    cond.append('case 0b%s: %s = %s - uint32(%s)' % (v.replace('x', '0'), var_name, pat.group(1), sw_cond))
+                elif pat := re.match(r'\(U[Ii]nt\(%s\)-(\d+)\)' % field.name, k):
+                    cond.append('case 0b%s: %s = uint32(%s) + %s' % (v.replace('x', '0'), var_name, sw_cond, pat.group(1)))
+                else:
+                    raise RuntimeError('unrecognized pattern: ' + repr(k))
+        else:
+            cond.append('default: panic("aarch64: %s")' % err_msg)
 
 def encode_modifier(
     name        : str,
@@ -1606,8 +1701,8 @@ def encode_operand(
             vals[val.name] = 'uint32(%s.(asm.Register).ID())' % name
             encode_defs(form, '%s.(type)' % name, val.size, SCALAR_TYPES, vals, opts, err)
 
-        elif val.name in SPECIAL_ENCODERS:
-            vals[val.name] = SPECIAL_ENCODERS[val.name] % name
+        elif val.name in SPECIAL_REGS:
+            vals[val.name] = SPECIAL_REGS[val.name] % name
 
         else:
             vals[val.name] = 'uint32(%s.(asm.Register).ID())' % name
@@ -1661,19 +1756,30 @@ def encode_operand(
 
     elif isinstance(val, Imm):
         ref = form.fields[val.name]
-        enc = IMM_ENCODER[ref.name]
+        key = ref.name
 
-        if not optcond:
-            vals[val.name] = '%s(%s)' % (enc, name)
+        if key in IMM_ENCODER:
+            enc = IMM_ENCODER[key] % name
+            tab = form.enctab.name
+
+            if not optcond:
+                vals[val.name] = enc
+
+            else:
+                defv = OPT_DEFAULTS.get(tab, {}).get(val.name)
+                opts[val.name] = str(And(*optcond))
+
+                if defv is None:
+                    vals[val.name] = enc
+                else:
+                    vals[val.name] = (enc, defv, {})
+
+        elif not isinstance(ref, Definition):
+            raise RuntimeError('cannot encode immediate field ' + repr(key))
 
         else:
-            defv = OPT_DEFAULTS.get(form.enctab.name, {}).get(val.name)
-            opts[val.name] = str(And(*optcond))
-
-            if defv is None:
-                vals[val.name] = '%s(%s)' % (enc, name)
-            else:
-                vals[val.name] = ('%s(%s)' % (enc, name), defv, {})
+            err = "invalid operand '%s' for %s" % (val.name, form.inst.mnemonic)
+            encode_defs(form, 'asLit(%s)' % name, val.name, SwitchLit(), vals, opts, err)
 
     elif isinstance(val, Lit):
         if optcond:
@@ -1714,28 +1820,6 @@ def encode_operand(
 
     else:
         raise RuntimeError('invalid operand type')
-
-FIELD_ALIASES = {
-    'ADDG_64_addsub_immtags': {
-        'Rn': 'Xn',
-        'Rd': 'Xd',
-    },
-    'BLRAA_64P_branch_reg': {
-        'op4': 'Rm',
-    },
-    'BLRAB_64P_branch_reg': {
-        'op4': 'Rm',
-    },
-    'BRAA_64P_branch_reg': {
-        'op4': 'Rm',
-    },
-    'BRAB_64P_branch_reg': {
-        'op4': 'Rm',
-    },
-    'FCMP_DZ_floatcmp': {
-        'Rn': 'dn',
-    },
-}
 
 cc = CodeGen()
 cc.line('// Code generated by "mkasm_aarch64.py", DO NOT EDIT.')
@@ -1830,16 +1914,16 @@ for mnemonic, forms in sorted(formtab.items(), key = lambda x: x[0]):
             cc.indent()
 
         else:
-            if not isinstance(mt[0], Or):
+            if not isinstance(mt[0], Or) or len(mt[0]) == 1:
                 cc.line('if %s &&' % mt[0])
             else:
                 cc.line('if (%s) &&' % mt[0])
 
             for i, mm in enumerate(mt[1:], 1):
                 if i == len(mt) - 1:
-                    cc.line('   (%s) {' % mm if isinstance(mm, Or) else '   %s {' % mm)
+                    cc.line('   (%s) {' % mm if isinstance(mm, Or) and len(mm) > 1 else '   %s {' % mm)
                 else:
-                    cc.line('   (%s) &&' % mm if isinstance(mm, Or) else '   %s &&' % mm)
+                    cc.line('   (%s) &&' % mm if isinstance(mm, Or) and len(mm) > 1 else '   %s &&' % mm)
             else:
                 cc.indent()
 
@@ -1849,7 +1933,6 @@ for mnemonic, forms in sorted(formtab.items(), key = lambda x: x[0]):
         if form.inst.modifier not in {None, '2'}:
             raise RuntimeError('invalid instruction modifier')
 
-        print(form)
         for key, fv in form.fields.items():
             nb = 0
             fn = []
@@ -1867,7 +1950,7 @@ for mnemonic, forms in sorted(formtab.items(), key = lambda x: x[0]):
                 continue
 
             if len(fn) == 1:
-                fmap.setdefault(fv.name, []).append((key, key))
+                fmap.setdefault(fv.name, []).append((key, key, BM_FORMAT % key))
                 continue
 
             for x in fn:
@@ -1879,27 +1962,15 @@ for mnemonic, forms in sorted(formtab.items(), key = lambda x: x[0]):
                 nb -= n
 
                 if nb == 0:
-                    fmap.setdefault(x, []).append((key, '%s & 0b%s' % (key, '1' * n)))
+                    fmt = '%s & ' + bit_mask(n)
                 else:
-                    fmap.setdefault(x, []).append((key, '(%s >> %d) & 0b%s' % (key, nb, '1' * n)))
+                    fmt = '(%%s >> %d) & %s' % (nb, bit_mask(n))
 
-        for i, v in enumerate(form.args):
-            if not isinstance(v, str):
-                args.append(str(v))
-                continue
-
-            if v not in fmap and form.enctab.name in FIELD_ALIASES and v in FIELD_ALIASES[form.enctab.name]:
-                v = FIELD_ALIASES[form.enctab.name][v]
-                form.args[i] = v
-
-            if v not in fmap:
-                args.append(v)
-            elif all(x[1] != 'label' for x in fmap[v]):
-                args.append(fmap[v][-1][1])
-            elif len(fmap[v]) == 1:
-                args.append('uint32(label.RelativeTo(pc))')
-            else:
-                raise RuntimeError('multiple lables')
+                fmap.setdefault(x, []).append((
+                    key,
+                    fmt % key,
+                    fmt % (BM_FORMAT % key),
+                ))
 
         vals = OnceDict()
         opts = OnceDict()
@@ -1968,64 +2039,104 @@ for mnemonic, forms in sorted(formtab.items(), key = lambda x: x[0]):
             cc.dedent()
             cc.line('}')
 
-        for arg in form.args:
-            if isinstance(arg, str) and arg not in fmap:
-                ok = False
-                i, n = form.bits.refs[arg]
-                bits = form.bits.bits[i:i + n]
-                cc.line('%s := uint32(0b%s)' % (arg, ''.join('1' if v else '0' for v in bits)))
+        for arg in form.enctab.args:
+            fvs = fmap.get(arg)
+            val = form.args.get(arg)
 
-                for bn, fv in fmap.items():
-                    if bn.endswith('>') and bn.startswith(arg + '<'):
-                        if len(fv) != 1 or fv[0][0] != fv[0][1]:
-                            raise RuntimeError('composite field encoding confliction: ' + repr(bn))
+            if val is not None:
+                args.append(str(val))
+                continue
+
+            if fvs is not None:
+                args.append(fvs[-1][1])
+                continue
+
+            ok = False
+            i, n = form.bits.refs[arg]
+            bits = form.bits.bits[i:i + n]
+
+            cc.line('%s := uint32(0b%s)' % (arg, ''.join('1' if v else '0' for v in bits[::-1])))
+            args.append(arg)
+
+            for bn, fv in fmap.items():
+                if bn.endswith('>') and bn.startswith(arg + '<'):
+                    if len(fv) != 1 or fv[0][0] != fv[0][1]:
+                        raise RuntimeError('composite field encoding confliction: ' + repr(bn))
+
+                    ok = True
+                    fn = fv[0][0]
+                    fv = form.fields[fn]
+                    bv = bn[len(arg) + 1:-1]
+
+                    if ':' not in bv:
+                        be, bs = int(bv), int(bv)
+                    else:
+                        be, bs = map(int, bn[len(arg) + 1:-1].split(':'))
+
+                    if not isinstance(fv, Definition):
+                        raise RuntimeError('field definition required for composite field ' + repr(bn))
+
+                    cc.line('switch %s {' % fn)
+                    cc.indent()
+
+                    for sel, bits in fv.bits.items():
+                        if 'x' in bits:
+                            raise RuntimeError('ambiguous compositie field ' + repr(bn))
+                        elif len(bits) != be - bs + 1:
+                            raise RuntimeError('bit count mismatch for composite field ' + repr(bn))
+                        elif not isinstance(vals[fn], tuple):
+                            cc.line('case %s: %s |= 0b%s << %d' % (sel, arg, bits, bs))
+                        else:
+                            cc.line('case %s: %s |= 0b%s << %d' % (vals[fn][2][sel], arg, bits, bs))
+
+                    cc.line('default: panic("aarch64: invalid combination of operands for %s")' % mnemonic)
+                    cc.dedent()
+                    cc.line('}')
+
+                elif bn in form.bits.refs:
+                    j, k = form.bits.refs[bn]
+                    x, y = i + n - 1, j + k - 1
+
+                    if i <= j and y <= x:
+                        if len(fv) != 1:
+                            raise RuntimeError('ambiguous partial bit values %s.%s' % (arg, bn))
 
                         ok = True
-                        fn = fv[0][0]
-                        fv = form.fields[fn]
-                        bv = bn[len(arg) + 1:-1]
+                        bv = fv[0][1]
 
-                        if ':' not in bv:
-                            be, bs = int(bv), int(bv)
+                        if i == j:
+                            cc.line('%s |= %s' % (arg, bv))
+                        elif bv.isidentifier():
+                            cc.line('%s |= %s << %d' % (arg, bv, j - i))
                         else:
-                            be, bs = map(int, bn[len(arg) + 1:-1].split(':'))
+                            cc.line('%s |= (%s) << %d' % (arg, bv, j - i))
 
-                        if not isinstance(fv, Definition):
-                            raise RuntimeError('field definition required for composite field ' + repr(bn))
-
-                        cc.line('switch %s {' % fn)
-                        cc.indent()
-
-                        for sel, bits in fv.bits.items():
-                            if len(bits) != 1:
-                                raise RuntimeError('multiple definitions for compositie field ' + repr(bn))
-
-                            bc = be - bs + 1
-                            bx = list(bits)[0]
-
-                            if len(bx) != bc:
-                                raise RuntimeError('bit count mismatch for composite field ' + repr(bn))
-
-                            if not isinstance(vals[fn], tuple):
-                                cc.line('case %s: %s |= 0b%s << %d' % (sel, arg, bx, bs))
-                            else:
-                                cc.line('case %s: %s |= 0b%s << %d' % (vals[fn][2][sel], arg, bx, bs))
-
-                        cc.line('default: panic("aarch64: invalid combination of operands for %s")' % mnemonic)
-                        cc.dedent()
-                        cc.line('}')
-
-                if not ok:
-                    print(form)  # TODO: remove this
-                    raise RuntimeError('invalid field ' + repr(arg))
+            if not ok:
+                print(form)  # TODO: remove this
+                raise RuntimeError('invalid field ' + repr(arg))
 
         for fv in fmap.values():
             terms = []
-            exprs = [v[1] for v in sorted(fv, key = lambda v: v[0]) if v[0] in opts or v[0] in vals]
+            exprs = [v for v in sorted(fv, key = lambda v: v[0]) if v[0] in opts or v[0] in vals]
 
             if len(exprs) > 1:
-                for i, v in enumerate(exprs[1:]):
-                    terms.append('%s != %s' % (exprs[i], v))
+                for i, (r, v, m) in enumerate(exprs[1:]):
+                    vx = exprs[i][1]
+                    vk = BM_FORMAT % r
+
+                    if (vk in vals) is not (vk in opts):
+                        raise RuntimeError('inconsistent bit mask variable state')
+
+                    if vk not in vals:
+                        terms.append('%s != %s' % (vx, v))
+                    elif m.isidentifier() and vx.isidentifier():
+                        terms.append('%s & %s != %s' % (vx, m, v))
+                    elif m.isidentifier() and not vx.isidentifier():
+                        terms.append('(%s) & %s != %s' % (vx, m, v))
+                    elif not m.isidentifier() and vx.isidentifier():
+                        terms.append('%s & (%s) != %s' % (vx, m, v))
+                    else:
+                        terms.append('(%s) & (%s) != %s' % (vx, m, v))
 
                 cc.line('if %s {' % ' || '.join(terms))
                 cc.indent()
@@ -2033,12 +2144,16 @@ for mnemonic, forms in sorted(formtab.items(), key = lambda x: x[0]):
                 cc.dedent()
                 cc.line('}')
 
-        encoding = '%s(%s)' % (form.enctab.func, ', '.join(args))
-        deferred = any(v == Reg('label') for v in form.inst.operands.req)
+        deferred = ['label' in v for v in args].count(True)
+        encoding = '%s(%s)' % (form.enctab.func, ', '.join(
+            v.replace('label', REL_VARINIT if deferred == 1 else REL_VARNAME)
+            for v in args
+        ))
 
         if not deferred:
             if len(encoding) + cc.level * 4 + 10 <= 120:
                 cc.line('p.setins(%s)' % encoding)
+
             else:
                 cc.line('p.setins(%s(' % form.enctab.func)
                 cc.indent()
@@ -2049,9 +2164,10 @@ for mnemonic, forms in sorted(formtab.items(), key = lambda x: x[0]):
                 cc.dedent()
                 cc.line('))')
 
-        else:
+        elif deferred == 1:
             if len(encoding) + cc.level * 4 + 45 <= 120:
                 cc.line('p.setenc(func(pc uintptr) uint32 { return %s })' % encoding)
+
             else:
                 cc.line('p.setenc(func(pc uintptr) uint32 {')
                 cc.indent()
@@ -2059,12 +2175,33 @@ for mnemonic, forms in sorted(formtab.items(), key = lambda x: x[0]):
                 cc.indent()
 
                 for arg in args:
-                    cc.line(arg + ',')
+                    cc.line(arg.replace('label', REL_VARINIT) + ',')
 
                 cc.dedent()
                 cc.line(')')
                 cc.dedent()
                 cc.line('})')
+
+        else:
+            cc.line('p.setenc(func(pc uintptr) uint32 {')
+            cc.indent()
+            cc.line('%s := %s' % (REL_VARNAME, REL_VARINIT))
+
+            if len(encoding) + cc.level * 4 + 7 <= 120:
+                cc.line('return %s' % encoding)
+
+            else:
+                cc.line('return %s(' % form.enctab.func)
+                cc.indent()
+
+                for arg in args:
+                    cc.line(arg.replace('label', REL_VARNAME) + ',')
+
+                cc.dedent()
+                cc.line(')')
+
+            cc.dedent()
+            cc.line('})')
 
         if mt:
             cc.dedent()

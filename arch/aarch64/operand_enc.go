@@ -13,7 +13,18 @@ func asUimm5    (v interface{}) uint32 { x, _ := asUint64(v) ; return uint32(x &
 func asUimm6    (v interface{}) uint32 { x, _ := asUint64(v) ; return uint32(x & 0b111111) }
 func asUimm8    (v interface{}) uint32 { x, _ := asUint64(v) ; return uint32(x & 0xff) }
 func asUimm16   (v interface{}) uint32 { x, _ := asUint64(v) ; return uint32(x & 0xffff) }
-func asMaskImm  (v interface{}) uint32 { x, _ := asUint64(v) ; return _BitMask(x).mask() }
+func asMaskOp   (v interface{}) uint32 { x, _ := asUint64(v) ; return _BitMask(x).mask() }
+func asFpScale  (v interface{}) uint32 { x, _ := asUint64(v) ; return uint32(64 - (x & 0b111111)) }
+
+func asLit(v interface{}) int64 {
+    if isSpecial(v) {
+        return 0
+    } else if x := rt.AsEface(v); !isInt(x.Kind()) && !isUint(x.Kind()) {
+        return 0
+    } else {
+        return x.ToInt64()
+    }
+}
 
 func asInt64(v interface{}) (int64, bool) {
     if isSpecial(v) {
