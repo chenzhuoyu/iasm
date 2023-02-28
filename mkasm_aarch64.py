@@ -1567,6 +1567,9 @@ class SwitchLit(dict):
         else:
             return True
 
+def make_mask(v: str) -> str:
+    return ''.join(str(int(c != 'x')) for c in v)
+
 def encode_defs(
     form     : InstrForm,
     sw_cond  : str,
@@ -1644,34 +1647,33 @@ def encode_defs(
 
         for k, vv in field.bits.items():
             if vv and k != 'RESERVED' and not k.startswith('SEE'):
-                if bitp != 1:
-                    bval, multi = ', '.join(map(hex, sorted(int(v.replace('x', '0'), 2) for v in vv))), True
-                    cond.append('case %s: %s = [%d]uint32{%s}' % (name_tab[k], var_name, bitp, bval))
+                swc = name_tab[k]
+                bvs = ['0b' + v.replace('x', '0') for v in sorted(vv)]
 
+                if bitp != 1 or 'x' in list(vv)[0]:
+                    multi = True
+
+                if bitp == 1:
+                    cond.append('case %s: %s = %s' % (swc, var_name, bvs[0]))
                 else:
-                    for v in vv:
-                        if 'x' not in v:
-                            cond.append('case %s: %s = 0b%s' % (name_tab[k], var_name, v))
-                        else:
-                            multi = True
-                            cond.append('case %s: %s = 0b%s' % (name_tab[k], var_name, v.replace('x', '0')))
+                    cond.append('case %s: %s = [%d]uint32{%s}' % (swc, var_name, bitp, ', '.join(bvs)))
 
         if multi:
             mask = []
-            opts[BM_FORMAT % var_name] = mask
-            vals[BM_FORMAT % var_name] = (sw_cond, 'bm:%d' % bitp, {}) if bitp != 1 else sw_cond
+            bvar = BM_FORMAT % var_name
+
+            opts[bvar] = mask
+            vals[bvar] = (sw_cond, 'bm:%d' % bitp, {}) if bitp != 1 else sw_cond
 
             for k, vv in field.bits.items():
                 if vv and k != 'RESERVED' and not k.startswith('SEE'):
-                    if bitp != 1:
-                        bits = [''.join('0' if c == 'x' else '1' for c in v) for v in vv]
-                        bval, multi = ', '.join(map(hex, sorted(int(v, 2) for v in bits))), True
-                        mask.append('case %s: %s = [%d]uint32{%s}' % (name_tab[k], BM_FORMAT % var_name, bitp, bval))
+                    swc = name_tab[k]
+                    bvs = ['0b' + make_mask(v) for v in sorted(vv)]
 
+                    if bitp == 1:
+                        mask.append('case %s: %s = %s' % (swc, bvar, bvs[0]))
                     else:
-                        for v in vv:
-                            bv = ''.join('0' if c == 'x' else '1' for c in v)
-                            mask.append('case %s: %s = 0b%s' % (name_tab[k], BM_FORMAT % var_name, bv))
+                        mask.append('case %s: %s = [%d]uint32{%s}' % (swc, bvar, bitp, ', '.join(bvs)))
 
             else:
                 mask.append('default: panic("aarch64: %s")' % err_msg)

@@ -137,13 +137,13 @@ func (self *Program) ADD(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
         xn_sp := uint32(v1.(asm.Register).ID())
         m := uint32(v2.(asm.Register).ID())
         switch true {
-            case isWr(v2): r = [4]uint32{0x0, 0x2, 0x4, 0x6}
-            case isXr(v2): r = [4]uint32{0x3}
+            case isWr(v2): r = [4]uint32{0b000, 0b010, 0b100, 0b110}
+            case isXr(v2): r = [4]uint32{0b011}
             default: panic("aarch64: unreachable")
         }
         switch true {
-            case isWr(v2): r__bit_mask = [4]uint32{0x6, 0x6, 0x7, 0x7}
-            case isXr(v2): r__bit_mask = [4]uint32{0x3}
+            case isWr(v2): r__bit_mask = [4]uint32{0b110, 0b111, 0b110, 0b111}
+            case isXr(v2): r__bit_mask = [4]uint32{0b011}
             default: panic("aarch64: unreachable")
         }
         if len(vv) > 0 {
@@ -281,13 +281,13 @@ func (self *Program) ADDS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
         xn_sp := uint32(v1.(asm.Register).ID())
         m := uint32(v2.(asm.Register).ID())
         switch true {
-            case isWr(v2): r = [4]uint32{0x0, 0x2, 0x4, 0x6}
-            case isXr(v2): r = [4]uint32{0x3}
+            case isWr(v2): r = [4]uint32{0b000, 0b010, 0b100, 0b110}
+            case isXr(v2): r = [4]uint32{0b011}
             default: panic("aarch64: unreachable")
         }
         switch true {
-            case isWr(v2): r__bit_mask = [4]uint32{0x6, 0x6, 0x7, 0x7}
-            case isXr(v2): r__bit_mask = [4]uint32{0x3}
+            case isWr(v2): r__bit_mask = [4]uint32{0b110, 0b111, 0b110, 0b111}
+            case isXr(v2): r__bit_mask = [4]uint32{0b011}
             default: panic("aarch64: unreachable")
         }
         if len(vv) > 0 {
