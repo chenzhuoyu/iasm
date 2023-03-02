@@ -6,10 +6,11 @@ import (
     `github.com/chenzhuoyu/iasm/internal/tag`
 )
 
-type (
-    Register32 uint8
-    Register64 uint8
-)
+// Register32 represents 32-bit generic purpose registers (W0 ~ W30) and WZR / WSP.
+type Register32 uint8
+
+// Register64 represents 64-bit generic purpose registers (X0 ~ X30) and XZR / SP.
+type Register64 uint8
 
 func (Register32) Sealed(tag.Tag) {}
 func (Register64) Sealed(tag.Tag) {}

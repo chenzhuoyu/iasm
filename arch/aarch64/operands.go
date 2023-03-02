@@ -450,3 +450,37 @@ const (
     // the barrier instruction.
     OSHLD BarrierOption = 0b0001
 )
+
+func (self BarrierOption) nxs() uint32 {
+    switch self {
+        case SY  : return 0b11
+        case ISH : return 0b10
+        case NSH : return 0b01
+        case OSH : return 0b00
+        default  : panic("aarch64: invalid nXS barrier option")
+    }
+}
+
+func (self BarrierOption) isNXS() bool {
+    switch self {
+        case SY  : return true
+        case ISH : return true
+        case NSH : return true
+        case OSH : return true
+        default  : return false
+    }
+}
+
+// PStateField represents one of PSTATE field combinations.
+type PStateField uint8
+
+const (
+    UAO      PStateField = 0b000011
+    PAN      PStateField = 0b000100
+    SPSel    PStateField = 0b000101
+    SSBS     PStateField = 0b011001
+    DIT      PStateField = 0b011010
+    TCO      PStateField = 0b011100
+    DAIFSet  PStateField = 0b011110
+    DAIFClr  PStateField = 0b011111
+)

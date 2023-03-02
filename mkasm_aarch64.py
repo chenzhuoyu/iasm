@@ -221,8 +221,8 @@ for iclass in sorted(encindex.findall('iclass_sect'), key = lambda x: x.attrib['
     desc = iclass.attrib['title']
     itab = iclass.find('instructiontable')
 
-    # TODO: support SVE instructions sometime in the future
-    if name.startswith('sve_'):
+    # TODO: support SVE and SME instructions sometime in the future
+    if name.startswith('sve_') or name.startswith('mortlach_'):
         continue
 
     assert itab is not None, 'missing instruction table for ' + name
@@ -303,20 +303,20 @@ for name, entry in sorted(instab.items(), key = lambda v: v[0]):
             bitfields = th.findall('td[@class="bitfield"]')
 
             # TODO: remove this
-            # if encname != 'ADDS_64S_addsub_ext':
-            #     continue
-            # if 'advsimd' in iformfile or iformfile in {'b_cond.xml', 'casp.xml'}:
+            # if 'advsimd' in iformfile or iformfile in {'b_cond.xml', 'b_cond.xml', 'casp.xml', 'msrr.xml'}:
             #     continue
             if not (
-                iformfile[0] <= 'e' and 'advsimd' not in iformfile and iformfile not in {'b_cond.xml', 'casp.xml'} or
+                iformfile[0] <= 'e' and
+                    'advsimd' not in iformfile and
+                    iformfile not in {'b_cond.xml', 'bc_cond.xml', 'casp.xml', 'msrr.xml'} or
                 iformfile.startswith('bti') or
-                iformfile.startswith('aesd_') or
-                iformfile.startswith('uqxtn_') or
-                iformfile.startswith('ldr_') or
-                iformfile.startswith('and_') or
-                iformfile.startswith('eor_') or
-                iformfile.startswith('orn_') or
-                iformfile.startswith('orr_') or
+                iformfile.startswith('aesd') or
+                iformfile.startswith('uqxtn') or
+                iformfile.startswith('ldr') or
+                iformfile.startswith('and') or
+                iformfile.startswith('eor') or
+                iformfile.startswith('orn') or
+                iformfile.startswith('orr') or
                 iformfile.startswith('addg') or
                 iformfile.startswith('blra') or
                 iformfile.startswith('bra') or
@@ -324,17 +324,26 @@ for name, entry in sorted(instab.items(), key = lambda v: v[0]):
                 iformfile.startswith('autia') or
                 iformfile.startswith('clrex') or
                 iformfile.startswith('dmb') or
-                iformfile.startswith('dsb') or
                 iformfile.startswith('fcmp') or
-                iformfile.startswith('fcvtzs_') or
-                iformfile.startswith('scvtf_') or
+                iformfile.startswith('fcvtzs') or
+                iformfile.startswith('scvtf') or
                 iformfile.startswith('shl') or
                 iformfile.startswith('shr') or
                 iformfile.startswith('sshl') or
                 iformfile.startswith('sshr') or
                 iformfile.startswith('ssra') or
                 iformfile.startswith('usra') or
-                iformfile.startswith('adr')
+                iformfile.startswith('adr') or
+                iformfile.startswith('fmov') or
+                iformfile.startswith('hint') or
+                iformfile.startswith('irg') or
+                iformfile.startswith('ldnp') or
+                iformfile.startswith('ldp') or
+                iformfile.startswith('madd') or
+                iformfile.startswith('mrs') or
+                iformfile.startswith('msr.') or
+                iformfile.startswith('cpy') or
+                iformfile.startswith('dsb')
             ):
                 continue
 
@@ -395,11 +404,12 @@ class Xop(Enum):
     SXTX = 'sxtx'
 
 class Sym(Enum):
-    CSYNC   = 'CSYNC'
-    PRFOP   = 'prfop'
-    OPTION  = 'option'
-    SYSREG  = 'systemreg'
-    TARGETS = 'targets'
+    CSYNC       = 'CSYNC'
+    PRFOP       = 'sa_prfop'
+    OPTION      = 'sa_option'
+    OPTION_NXS  = 'sa_option_1'
+    SYSREG      = 'sa_systemreg'
+    TARGETS     = 'sa_targets'
 
 class Tag(str):
     @cached_property
@@ -441,6 +451,7 @@ class Lit:
 
 class Reg(NamedTuple):
     name: str
+    incr: bool = False
     altr: str | None = None
     size: str | None = None
     mode: str | Tag | None = None
@@ -448,19 +459,25 @@ class Reg(NamedTuple):
 
     def __str__(self) -> str:
         if self.size is not None:
+            assert not self.incr
             assert self.altr is None
             assert self.mode is None
             assert self.vidx is None
             return '%s[%s]' % (self.size, self.name)
         elif self.mode is not None and self.vidx is not None:
+            assert not self.incr
             assert self.altr is None
             return '%s.%s[%s]' % (self.name, self.mode, self.vidx)
         elif self.mode is not None:
+            assert not self.incr
             assert self.altr is None
             return '%s.%s' % (self.name, self.mode)
         elif self.altr is not None:
+            assert not self.incr
             assert self.vidx is None
             return '(%s|%s)' % (self.name, self.altr)
+        elif self.incr:
+            return self.name + '!'
         else:
             return self.name
 
@@ -515,7 +532,6 @@ class Mem(NamedTuple):
 
         match self.index:
             case 'pre':
-                assert self.offs, 'missing index for pre index'
                 ret.append(']!')
 
             case 'post':
@@ -576,60 +592,65 @@ class AsmTemplate:
     sops = { v.name for v in Sop }
     xops = { v.name for v in Xop }
 
-    shifts  = { 'shift' }
-    extends = { 'extend', 'extend_1' }
+    shifts  = { 'sa_shift' }
+    extends = { 'sa_extend', 'sa_extend_1' }
 
     amounts = {
-        'amount',
-        'amount_1',
-        'amount_2',
-        'amount_3',
-        'amount_4',
-        'shift',
-        'shift_1',
-        'shift_2',
-        'shift_3',
+        'sa_amount',
+        'sa_amount_1',
+        'sa_amount_2',
+        'sa_amount_3',
+        'sa_amount_4',
+        'sa_shift',
+        'sa_shift_1',
+        'sa_shift_2',
+        'sa_shift_3',
     }
 
     registers = {
-        'd',
-        'm',
-        'n',
-        't',
+        'sa_d',
+        'sa_m',
+        'sa_n',
+        'sa_t',
     }
 
     immediates = {
-        'imm',
-        'imm_1',
-        'imm_2',
-        'imm_3',
+        'sa_imm',
+        'sa_imm_1',
+        'sa_imm_2',
+        'sa_imm_3',
     }
 
     predefined = {
-        'CSYNC': (
+        'CSYNC': [
             Sym.CSYNC,
             'CSYNC option',
-            []
-        ),
-        'prfop': (
+            [],
+        ],
+        'sa_prfop': (
             Sym.PRFOP,
             'prefetch option',
-            ['|', '#', 'imm5']
+            ['|', '#', 'sa_imm5'],
         ),
-        'option': (
+        'sa_option': (
             Sym.OPTION,
             'barrier option',
-            ['|', '#', 'imm']
+            ['|', '#', 'sa_imm'],
         ),
-        'systemreg': (
+        'sa_option_1': (
+            Sym.OPTION_NXS,
+            'barrier option nXS',
+            ['nXS'],
+        ),
+        'sa_systemreg': (
             Sym.SYSREG,
             'system register',
-            ['|', 'S', 'op0', '_', 'op1', '_', 'cn', '_', 'cm', '_', 'op2']
+            ['|', 'S', 'sa_op0', '_', 'sa_op1', '_', 'sa_cn', '_', 'sa_cm', '_', 'sa_op2'],
         ),
-        'targets': (
+        'sa_targets': (
             Sym.TARGETS,
             'branch targets option',
-            []
+            [],
         ),
     }
 
@@ -803,10 +824,14 @@ class AsmTemplate:
                 mode = None
                 size = None
                 vidx = None
+                incr = False
                 name = v.name
 
                 if not self.eof:
-                    if self.skip('.'):
+                    if self.skip('!'):
+                        incr = True
+
+                    elif self.skip('.'):
                         mode = self.next()
                         mode = Tag(mode) if isinstance(mode, str) else mode.name
 
@@ -822,6 +847,7 @@ class AsmTemplate:
 
                 return Reg(
                     name = name,
+                    incr = incr,
                     mode = mode,
                     size = size,
                     vidx = vidx,
@@ -918,12 +944,8 @@ class AsmTemplate:
                     else:
                         mods = cond.name
 
-                case v if isinstance(v, Token) and v.name == '2':
-                    mods = '2'
-                    self.next()
-
-                case v if isinstance(v, Token) and v.name == 'bt' and name == 'BFMLAL':
-                    mods = 'bt'
+                case v if isinstance(v, Token) and (v.name == 'sa_2' or v.name == 'sa_bt' and name == 'BFMLAL'):
+                    mods = v.name
                     self.next()
 
         if not self.eof:
@@ -1045,6 +1067,12 @@ def parse_symdef(defs: Element) -> tuple[list[str], dict[str, set[str]]]:
     else:
         return refs, rets
 
+MISSING_ENCODING_IN = {
+    'DSB_BOn_barriers': {
+        'sa_option_1': 'imm2',
+    }
+}
+
 maxargs = 0
 formtab = dict[str, list[InstrForm]]()
 fieldtab = dict[str, dict[str, Account | Definition]]()
@@ -1063,12 +1091,24 @@ for expl in isadocs.findall('.//explanation'):
 
     if symacc is not None:
         assert symdef is None
-        defs = Account(symacc.attrib['encodedin'], desc)
+        dest, refs, bits = symacc.attrib['encodedin'], None, None
     else:
         assert isinstance(symdef, Element)
-        defs = Definition(symdef.attrib['encodedin'], desc, *parse_symdef(symdef))
+        dest, (refs, bits) = symdef.attrib['encodedin'], parse_symdef(symdef)
 
     for enc in expl.attrib['enclist'].split(','):
+        tab = MISSING_ENCODING_IN.get(enc, {})
+        sym = tab.get(name)
+
+        if sym is not None:
+            assert not dest, 'replace of non-empty field'
+            dest = sym
+
+        if refs is None or bits is None:
+            defs = Account(dest, desc)
+        else:
+            defs = Definition(dest, desc, refs, bits)
+
         tab = fieldtab.setdefault(enc.strip(), {})
         tab[name] = defs
 
@@ -1142,71 +1182,92 @@ class OnceDict(OrderedDict):
             super().__setitem__(k, v)
 
 SYM_CHECKS = {
-    Sym.CSYNC   : 'isCSync(%s)',
-    Sym.PRFOP   : 'isPrefetch(%s)',
-    Sym.OPTION  : 'isOptions(%s)',
-    Sym.SYSREG  : 'isSysReg(%s)',
-    Sym.TARGETS : 'isTargets(%s)',
+    Sym.CSYNC      : 'isCSync(%s)',
+    Sym.PRFOP      : 'isPrefetch(%s)',
+    Sym.OPTION     : 'isOption(%s)',
+    Sym.OPTION_NXS : 'isOptionNXS(%s)',
+    Sym.SYSREG     : 'isSysReg(%s)',
+    Sym.TARGETS    : 'isTargets(%s)',
 }
 
 IMM_CHECKS = {
-    'CRm'             : 'isUimm4(%s)',
-    'N:immr:imms'     : 'isMask64(%s)',
-    'a:b:c:d:e:f:g:h' : 'isUimm8(%s)',
-    'imm5'            : 'isUimm5(%s)',
-    'imm9'            : 'isImm9(%s)',
-    'imm12'           : 'isImm12(%s)',
-    'imm16'           : 'isUimm16(%s)',
-    'immh:immb'       : 'isFpBits(%s)',
-    'immr'            : 'isUimm6(%s)',
-    'immr:imms'       : 'isMask32(%s)',
-    'imms'            : 'isUimm6(%s)',
-    'nzcv'            : 'isUimm4(%s)',
-    'scale'           : 'isFpBits(%s)',
-    'uimm4'           : 'isUimm4(%s)',
-    'uimm6'           : 'isUimm6(%s)',
+    'CRm'                             : 'isUimm4(%s)',
+    'CRm:Encoding:Hints:Index:by:op2' : 'isUimm7(%s)',
+    'N:immr:imms'                     : 'isMask64(%s)',
+    'a:b:c:d:e:f:g:h'                 : 'isUimm8(%s)',
+    'imm5'                            : 'isUimm5(%s)',
+    'imm8'                            : 'isFpImm8(%s)',
+    'imm9'                            : 'isImm9(%s)',
+    'imm12'                           : 'isImm12(%s)',
+    'imm16'                           : 'isUimm16(%s)',
+    'immh:immb'                       : 'isFpBits(%s)',
+    'immr'                            : 'isUimm6(%s)',
+    'immr:imms'                       : 'isMask32(%s)',
+    'imms'                            : 'isUimm6(%s)',
+    'nzcv'                            : 'isUimm4(%s)',
+    'scale'                           : 'isFpBits(%s)',
+    'uimm4'                           : 'isUimm4(%s)',
+    'uimm6'                           : 'isUimm6(%s)',
 }
 
 REG_CHECKS = {
-    'cond'   : 'isBrCond(%s)',
-    'bt'     : 'isBr(%s)',
-    'da'     : 'isDr(%s)',
-    'dd'     : 'isDr(%s)',
-    'dm'     : 'isDr(%s)',
-    'dn'     : 'isDr(%s)',
-    'dn_1'   : 'isDr(%s)',
-    'dt'     : 'isDr(%s)',
-    'ha'     : 'isHr(%s)',
-    'hd'     : 'isHr(%s)',
-    'hm'     : 'isHr(%s)',
-    'hn'     : 'isHr(%s)',
-    'hn_1'   : 'isHr(%s)',
-    'ht'     : 'isHr(%s)',
-    'qt'     : 'isQr(%s)',
-    'sa'     : 'isSr(%s)',
-    'sd'     : 'isSr(%s)',
-    'sm'     : 'isSr(%s)',
-    'sn'     : 'isSr(%s)',
-    'sn_1'   : 'isSr(%s)',
-    'st'     : 'isSr(%s)',
-    'vd'     : 'isVr(%s)',
-    'vm'     : 'isVr(%s)',
-    'vn'     : 'isVr(%s)',
-    'wd'     : 'isWr(%s)',
-    'wd_wsp' : 'isWrOrWSP(%s)',
-    'wm'     : 'isWr(%s)',
-    'wn'     : 'isWr(%s)',
-    'wn_wsp' : 'isWrOrWSP(%s)',
-    'ws'     : 'isWr(%s)',
-    'wt'     : 'isWr(%s)',
-    'xd'     : 'isXr(%s)',
-    'xd_sp'  : 'isXrOrSP(%s)',
-    'xm'     : 'isXr(%s)',
-    'xm_sp'  : 'isXrOrSP(%s)',
-    'xn'     : 'isXr(%s)',
-    'xn_sp'  : 'isXrOrSP(%s)',
-    'xs'     : 'isXr(%s)',
-    'xt'     : 'isXr(%s)',
+    'sa_cond'        : 'isBrCond(%s)',
+    'sa_bt'          : 'isBr(%s)',
+    'sa_da'          : 'isDr(%s)',
+    'sa_dd'          : 'isDr(%s)',
+    'sa_dm'          : 'isDr(%s)',
+    'sa_dn'          : 'isDr(%s)',
+    'sa_dn_1'        : 'isDr(%s)',
+    'sa_dt'          : 'isDr(%s)',
+    'sa_dt1'         : 'isDr(%s)',
+    'sa_dt2'         : 'isDr(%s)',
+    'sa_ha'          : 'isHr(%s)',
+    'sa_hd'          : 'isHr(%s)',
+    'sa_hm'          : 'isHr(%s)',
+    'sa_hn'          : 'isHr(%s)',
+    'sa_hn_1'        : 'isHr(%s)',
+    'sa_ht'          : 'isHr(%s)',
+    'sa_label'       : 'isLabel(%s)',
+    'sa_pstatefield' : 'isPState(%s)',
+    'sa_qt'          : 'isQr(%s)',
+    'sa_qt1'         : 'isQr(%s)',
+    'sa_qt2'         : 'isQr(%s)',
+    'sa_sa'          : 'isSr(%s)',
+    'sa_sd'          : 'isSr(%s)',
+    'sa_sm'          : 'isSr(%s)',
+    'sa_sn'          : 'isSr(%s)',
+    'sa_sn_1'        : 'isSr(%s)',
+    'sa_st'          : 'isSr(%s)',
+    'sa_st1'         : 'isSr(%s)',
+    'sa_st2'         : 'isSr(%s)',
+    'sa_vd'          : 'isVr(%s)',
+    'sa_vm'          : 'isVr(%s)',
+    'sa_vn'          : 'isVr(%s)',
+    'sa_wa'          : 'isWr(%s)',
+    'sa_wd'          : 'isWr(%s)',
+    'sa_wd_wsp'      : 'isWrOrWSP(%s)',
+    'sa_wm'          : 'isWr(%s)',
+    'sa_wn'          : 'isWr(%s)',
+    'sa_wn_wsp'      : 'isWrOrWSP(%s)',
+    'sa_ws'          : 'isWr(%s)',
+    'sa_wt'          : 'isWr(%s)',
+    'sa_wt1'         : 'isWr(%s)',
+    'sa_wt2'         : 'isWr(%s)',
+    'sa_xa'          : 'isXr(%s)',
+    'sa_xd'          : 'isXr(%s)',
+    'sa_xd_1'        : 'isXr(%s)',
+    'sa_xd_sp'       : 'isXrOrSP(%s)',
+    'sa_xm'          : 'isXr(%s)',
+    'sa_xm_sp'       : 'isXrOrSP(%s)',
+    'sa_xn'          : 'isXr(%s)',
+    'sa_xn_1'        : 'isXr(%s)',
+    'sa_xn_2'        : 'isXr(%s)',
+    'sa_xn_sp'       : 'isXrOrSP(%s)',
+    'sa_xs'          : 'isXr(%s)',
+    'sa_xs_1'        : 'isXr(%s)',
+    'sa_xt'          : 'isXr(%s)',
+    'sa_xt1'         : 'isXr(%s)',
+    'sa_xt2'         : 'isXr(%s)',
 }
 
 REG_CHECKS_MERGED = {
@@ -1216,28 +1277,34 @@ REG_CHECKS_MERGED = {
 }
 
 COMBREG_CHECKS = {
-    'd': 'isWrOrXr(%s)',
-    'm': 'isWrOrXr(%s)',
-    'n': 'isWrOrXr(%s)',
+    'sa_d': 'isWrOrXr(%s)',
+    'sa_m': 'isWrOrXr(%s)',
+    'sa_n': 'isWrOrXr(%s)',
 }
 
 FIXEDVEC_CHECKS = {
-    'd': 'isAdvSIMD(%s)',
-    'm': 'isAdvSIMD(%s)',
-    'n': 'isAdvSIMD(%s)',
+    'sa_d': 'isAdvSIMD(%s)',
+    'sa_m': 'isAdvSIMD(%s)',
+    'sa_n': 'isAdvSIMD(%s)',
 }
 
 SIGNED_IMM = {
-    'simm',
-    'pimm',
-    'pimm_1',
-    'pimm_2',
-    'pimm_3',
-    'pimm_4',
+    'sa_imm',
+    'sa_imm_1',
+    'sa_imm_2',
+    'sa_imm_3',
+    'sa_imm_4',
+    'sa_imm_5',
+    'sa_simm',
+    'sa_pimm',
+    'sa_pimm_1',
+    'sa_pimm_2',
+    'sa_pimm_3',
+    'sa_pimm_4',
 }
 
 UNSIGNED_IMM = {
-    'uimm',
+    'sa_uimm',
 }
 
 SCALAR_TYPES = {
@@ -1341,19 +1408,35 @@ def match_operands(form: InstrForm, argc: int) -> Iterator['And | Or | str']:
 
         if isinstance(val, Reg):
             if optcond:
-                raise RuntimeError('optional reg operand is not supported')
+                if val.altr is not None or \
+                   val.size is not None or \
+                   val.mode is not None or \
+                   val.vidx is not None:
+                    raise RuntimeError('optional complex reg operand is not supported')
+                else:
+                    yield Or(*optcond, REG_CHECKS[val.name] % name)
 
             elif val.size is not None:
-                if val.size == 'r':
+                if val.size == 'sa_r':
                     yield COMBREG_CHECKS[val.name] % name
                 else:
                     yield FIXEDVEC_CHECKS[val.name] % name
                     fixedvec.setdefault(val.size, []).append(name)
 
             elif val.mode is not None and val.vidx is not None:
-                # TODO: this
-                print('%s.%s[%s]' % (val.name, val.mode, val.vidx))
-                raise NotImplementedError('indexed vector')
+                if not val.name.startswith('sa_v'):
+                    raise RuntimeError('invalid indexing on non-vector registers: ' + str(val))
+                else:
+                    yield 'isVri(%s)' % name
+
+                if isinstance(val.mode, Tag):
+                    yield 'vstrr(%s) == Vec%s' % (name, val.mode.name)
+
+                if isinstance(val.vidx, Lit):
+                    if val.vidx.ty is not int:
+                        raise RuntimeError('non-integer indexing on vector register: ' + str(val))
+                    else:
+                        yield 'vidxr(%s) == %d' % (name, val.vidx.val)
 
             elif val.mode is not None:
                 if isinstance(val.mode, Tag):
@@ -1392,9 +1475,6 @@ def match_operands(form: InstrForm, argc: int) -> Iterator['And | Or | str']:
                     yield v2 % name
                 else:
                     yield Or(c1 % name, c2 % name)
-
-            elif val.name == 'label':
-                yield 'isLabel(%s)' % name
 
             else:
                 yield REG_CHECKS[val.name] % name
@@ -1491,13 +1571,17 @@ def match_operands(form: InstrForm, argc: int) -> Iterator['And | Or | str']:
                 raise RuntimeError('cannot encode immediate field ' + repr(fn))
             else:
                 bits = [x for x in sorted(fv.bits) if x != 'RESERVED' and not x.startswith('SEE')]
-                yield Or(*optcond, 'isLit(%s, %s)' % (name, ', '.join(map(str, sorted(map(int, bits))))))
+                yield Or(*optcond, 'isIntLit(%s, %s)' % (name, ', '.join(map(str, sorted(map(int, bits))))))
 
         elif isinstance(val, Lit):
             if optcond:
                 raise RuntimeError('optional lit operand is not supported')
+            elif val.ty is int:
+                yield 'isIntLit(%s, %s)' % (name, val.val)
+            elif val.ty is float:
+                yield 'isFloatLit(%s, %s)' % (name, val.val)
             else:
-                yield '%s == %s' % (name, val.val)
+                raise RuntimeError('invalid literal type: ' + repr(val.ty))
 
         elif isinstance(val, Sym):
             yield Or(*optcond, SYM_CHECKS[val] % name)
@@ -1519,7 +1603,7 @@ def match_operands(form: InstrForm, argc: int) -> Iterator['And | Or | str']:
 
 BM_FORMAT   = '%s__bit_mask'
 REL_VARNAME = 'delta'
-REL_VARINIT = 'uint32(label.RelativeTo(pc))'
+REL_VARINIT = 'uint32(sa_label.RelativeTo(pc))'
 
 BR_ENUMS = {
     '(omitted)' : '_BrOmitted',
@@ -1529,30 +1613,145 @@ BR_ENUMS = {
 }
 
 IMM_ENCODER = {
-    'CRm'             : 'asUimm4(%s)',
-    'N:immr:imms'     : 'asMaskOp(%s)',
-    'a:b:c:d:e:f:g:h' : 'asUimm8(%s)',
-    'imm5'            : 'asUimm5(%s)',
-    'imm12'           : 'asImm12(%s)',
-    'imm16'           : 'asUimm16(%s)',
-    'immr'            : 'asUimm6(%s)',
-    'immr:imms'       : 'asMaskOp(%s)',
-    'imms'            : 'asUimm6(%s)',
-    'nzcv'            : 'asUimm4(%s)',
-    'scale'           : 'asFpScale(%s)',
-    'uimm4'           : 'asUimm4(%s)',
-    'uimm6'           : 'asUimm6(%s)',
+    'CRm'                             : 'asUimm4(%s)',
+    'CRm:Encoding:Hints:Index:by:op2' : 'asUimm7(%s)',
+    'N:immr:imms'                     : 'asMaskOp(%s)',
+    'a:b:c:d:e:f:g:h'                 : 'asUimm8(%s)',
+    'imm5'                            : 'asUimm5(%s)',
+    'imm8'                            : 'asFpImm8(%s)',
+    'imm12'                           : 'asImm12(%s)',
+    'imm16'                           : 'asUimm16(%s)',
+    'immr'                            : 'asUimm6(%s)',
+    'immr:imms'                       : 'asMaskOp(%s)',
+    'imms'                            : 'asUimm6(%s)',
+    'nzcv'                            : 'asUimm4(%s)',
+    'scale'                           : 'asFpScale(%s)',
+    'uimm4'                           : 'asUimm4(%s)',
+    'uimm6'                           : 'asUimm6(%s)',
 }
 
-OPT_DEFAULTS = {
+REG_DEFAULTS = {
+    'IRG_64I_dp_2src': {
+        'xm': 'uint32(XZR.ID())',
+    }
+}
+
+IMM_DEFAULTS = {
     'CLREX_BN_barriers': {
         'imm': 'uint32(0b1111)',
     }
 }
 
 SPECIAL_REGS = {
-    'cond'  : 'uint32(%s.(BranchCondition))',
-    'label' : '%s.(*asm.Label)',
+    'sa_cond'        : 'uint32(%s.(BranchCondition))',
+    'sa_label'       : '%s.(*asm.Label)',
+    'sa_pstatefield' : 'uint32(%s.(PStateField))',
+}
+
+REWRITE_FIELDS = {
+    'HINT_HM_hints': {
+        'CRm:Encoding:Hints:Index:by:op2': 'CRm:op2',
+    },
+}
+
+MISSING_FIELDS = {
+    'CPYE_CPY_memcms'       : { 'size': 0b00 },
+    'CPYEN_CPY_memcms'      : { 'size': 0b00 },
+    'CPYERN_CPY_memcms'     : { 'size': 0b00 },
+    'CPYERTN_CPY_memcms'    : { 'size': 0b00 },
+    'CPYERTRN_CPY_memcms'   : { 'size': 0b00 },
+    'CPYERTWN_CPY_memcms'   : { 'size': 0b00 },
+    'CPYERT_CPY_memcms'     : { 'size': 0b00 },
+    'CPYETN_CPY_memcms'     : { 'size': 0b00 },
+    'CPYETRN_CPY_memcms'    : { 'size': 0b00 },
+    'CPYETWN_CPY_memcms'    : { 'size': 0b00 },
+    'CPYET_CPY_memcms'      : { 'size': 0b00 },
+    'CPYEWN_CPY_memcms'     : { 'size': 0b00 },
+    'CPYEWTN_CPY_memcms'    : { 'size': 0b00 },
+    'CPYEWTRN_CPY_memcms'   : { 'size': 0b00 },
+    'CPYEWTWN_CPY_memcms'   : { 'size': 0b00 },
+    'CPYEWT_CPY_memcms'     : { 'size': 0b00 },
+    'CPYE_CPY_memcms'       : { 'size': 0b00 },
+    'CPYFEN_CPY_memcms'     : { 'size': 0b00 },
+    'CPYFERN_CPY_memcms'    : { 'size': 0b00 },
+    'CPYFERTN_CPY_memcms'   : { 'size': 0b00 },
+    'CPYFERTRN_CPY_memcms'  : { 'size': 0b00 },
+    'CPYFERTWN_CPY_memcms'  : { 'size': 0b00 },
+    'CPYFERT_CPY_memcms'    : { 'size': 0b00 },
+    'CPYFETN_CPY_memcms'    : { 'size': 0b00 },
+    'CPYFETRN_CPY_memcms'   : { 'size': 0b00 },
+    'CPYFETWN_CPY_memcms'   : { 'size': 0b00 },
+    'CPYFET_CPY_memcms'     : { 'size': 0b00 },
+    'CPYFEWN_CPY_memcms'    : { 'size': 0b00 },
+    'CPYFEWTN_CPY_memcms'   : { 'size': 0b00 },
+    'CPYFEWTRN_CPY_memcms'  : { 'size': 0b00 },
+    'CPYFEWTWN_CPY_memcms'  : { 'size': 0b00 },
+    'CPYFEWT_CPY_memcms'    : { 'size': 0b00 },
+    'CPYFE_CPY_memcms'      : { 'size': 0b00 },
+    'CPYFMN_CPY_memcms'     : { 'size': 0b00 },
+    'CPYFMRN_CPY_memcms'    : { 'size': 0b00 },
+    'CPYFMRTN_CPY_memcms'   : { 'size': 0b00 },
+    'CPYFMRTRN_CPY_memcms'  : { 'size': 0b00 },
+    'CPYFMRTWN_CPY_memcms'  : { 'size': 0b00 },
+    'CPYFMRT_CPY_memcms'    : { 'size': 0b00 },
+    'CPYFMTN_CPY_memcms'    : { 'size': 0b00 },
+    'CPYFMTRN_CPY_memcms'   : { 'size': 0b00 },
+    'CPYFMTWN_CPY_memcms'   : { 'size': 0b00 },
+    'CPYFMT_CPY_memcms'     : { 'size': 0b00 },
+    'CPYFMWN_CPY_memcms'    : { 'size': 0b00 },
+    'CPYFMWTN_CPY_memcms'   : { 'size': 0b00 },
+    'CPYFMWTRN_CPY_memcms'  : { 'size': 0b00 },
+    'CPYFMWTWN_CPY_memcms'  : { 'size': 0b00 },
+    'CPYFMWT_CPY_memcms'    : { 'size': 0b00 },
+    'CPYFM_CPY_memcms'      : { 'size': 0b00 },
+    'CPYFPN_CPY_memcms'     : { 'size': 0b00 },
+    'CPYFPRN_CPY_memcms'    : { 'size': 0b00 },
+    'CPYFPRTN_CPY_memcms'   : { 'size': 0b00 },
+    'CPYFPRTRN_CPY_memcms'  : { 'size': 0b00 },
+    'CPYFPRTWN_CPY_memcms'  : { 'size': 0b00 },
+    'CPYFPRT_CPY_memcms'    : { 'size': 0b00 },
+    'CPYFPTN_CPY_memcms'    : { 'size': 0b00 },
+    'CPYFPTRN_CPY_memcms'   : { 'size': 0b00 },
+    'CPYFPTWN_CPY_memcms'   : { 'size': 0b00 },
+    'CPYFPT_CPY_memcms'     : { 'size': 0b00 },
+    'CPYFPWN_CPY_memcms'    : { 'size': 0b00 },
+    'CPYFPWTN_CPY_memcms'   : { 'size': 0b00 },
+    'CPYFPWTRN_CPY_memcms'  : { 'size': 0b00 },
+    'CPYFPWTWN_CPY_memcms'  : { 'size': 0b00 },
+    'CPYFPWT_CPY_memcms'    : { 'size': 0b00 },
+    'CPYFP_CPY_memcms'      : { 'size': 0b00 },
+    'CPYMN_CPY_memcms'      : { 'size': 0b00 },
+    'CPYMRN_CPY_memcms'     : { 'size': 0b00 },
+    'CPYMRTN_CPY_memcms'    : { 'size': 0b00 },
+    'CPYMRTRN_CPY_memcms'   : { 'size': 0b00 },
+    'CPYMRTWN_CPY_memcms'   : { 'size': 0b00 },
+    'CPYMRT_CPY_memcms'     : { 'size': 0b00 },
+    'CPYMTN_CPY_memcms'     : { 'size': 0b00 },
+    'CPYMTRN_CPY_memcms'    : { 'size': 0b00 },
+    'CPYMTWN_CPY_memcms'    : { 'size': 0b00 },
+    'CPYMT_CPY_memcms'      : { 'size': 0b00 },
+    'CPYMWN_CPY_memcms'     : { 'size': 0b00 },
+    'CPYMWTN_CPY_memcms'    : { 'size': 0b00 },
+    'CPYMWTRN_CPY_memcms'   : { 'size': 0b00 },
+    'CPYMWTWN_CPY_memcms'   : { 'size': 0b00 },
+    'CPYMWT_CPY_memcms'     : { 'size': 0b00 },
+    'CPYM_CPY_memcms'       : { 'size': 0b00 },
+    'CPYPN_CPY_memcms'      : { 'size': 0b00 },
+    'CPYPRN_CPY_memcms'     : { 'size': 0b00 },
+    'CPYPRTN_CPY_memcms'    : { 'size': 0b00 },
+    'CPYPRTRN_CPY_memcms'   : { 'size': 0b00 },
+    'CPYPRTWN_CPY_memcms'   : { 'size': 0b00 },
+    'CPYPRT_CPY_memcms'     : { 'size': 0b00 },
+    'CPYPTN_CPY_memcms'     : { 'size': 0b00 },
+    'CPYPTRN_CPY_memcms'    : { 'size': 0b00 },
+    'CPYPTWN_CPY_memcms'    : { 'size': 0b00 },
+    'CPYPT_CPY_memcms'      : { 'size': 0b00 },
+    'CPYPWN_CPY_memcms'     : { 'size': 0b00 },
+    'CPYPWTN_CPY_memcms'    : { 'size': 0b00 },
+    'CPYPWTRN_CPY_memcms'   : { 'size': 0b00 },
+    'CPYPWTWN_CPY_memcms'   : { 'size': 0b00 },
+    'CPYPWT_CPY_memcms'     : { 'size': 0b00 },
+    'CPYP_CPY_memcms'       : { 'size': 0b00 },
 }
 
 class SwitchLit(dict):
@@ -1711,26 +1910,52 @@ def encode_operand(
     name     : str,
     val      : Reg | Vec | Mem | Mod | Imm | Lit | Sym,
     vals     : dict[str, str | tuple[str, str, dict[str, str]]],
-    opts     : dict[str, str | list],
+    opts     : dict[str, str | list[str]],
     *optcond : str,
 ):
     if isinstance(val, Reg):
         if optcond:
-            raise RuntimeError('optional reg operand is not supported')
+            if val.altr is not None or \
+                val.size is not None or \
+                val.mode is not None or \
+                val.vidx is not None:
+                raise RuntimeError('optional complex reg operand is not supported')
+
+            else:
+                expr = 'uint32(%s.(asm.Register).ID())' % name
+                defr = REG_DEFAULTS.get(form.enctab.name, {}).get(val.name)
+                opts[val.name] = str(And(*optcond))
+
+                if defr is None:
+                    vals[val.name] = expr
+                else:
+                    vals[val.name] = (expr, defr, {})
 
         elif val.mode is not None and val.vidx is not None:
+            if not val.name.startswith('sa_v'):
+                raise RuntimeError('invalid indexing on non-vector registers: ' + str(val))
+
+            mode, vidx = val.mode, val.vidx
+            vals[val.name] = 'uint32(%s.(_Indexed128r).ID())' % name
+
             # TODO: this
-            print('%s.%s[%s]' % (val.name, val.mode, val.vidx))
-            raise NotImplementedError('indexed vector')
+            if not isinstance(mode, Tag):
+                print('%s.%s[%s]' % (val.name, val.mode, val.vidx))
+                raise NotImplementedError('indexed vector mode')
+
+            # TODO: this
+            if isinstance(vidx, Imm):
+                print('%s.%s[%s]' % (val.name, val.mode, val.vidx))
+                raise NotImplementedError('indexed vector mode')
 
         elif val.mode is not None:
-            if isinstance(val.mode, Tag):
-                vals[val.name] = 'uint32(%s.(asm.Register).ID())' % name
-            else:
-                vals[val.name] = 'uint32(%s.(asm.Register).ID())' % name
-                encode_defs(form, 'vfmt(%s)' % name, val.mode, VECTOR_TYPES, vals, opts, 'unreachable')
+            mode = val.mode
+            vals[val.name] = 'uint32(%s.(asm.Register).ID())' % name
 
-        elif val.size is not None and val.size == 'r':
+            if not isinstance(mode, Tag):
+                encode_defs(form, 'vfmt(%s)' % name, mode, VECTOR_TYPES, vals, opts, 'unreachable')
+
+        elif val.size is not None and val.size == 'sa_r':
             vmap = {}
             vmap['W'] = 'isWr(%s)' % name
             vmap['X'] = 'isXr(%s)' % name
@@ -1738,7 +1963,7 @@ def encode_operand(
             encode_defs(form, 'true', val.size, vmap, vals, opts, 'unreachable')
 
         elif val.size is not None:
-            if not val.size.startswith('v'):
+            if not val.size.startswith('sa_v'):
                 raise RuntimeError('invalid fixed vec size')
 
             err = 'invalid scalar operand size for ' + form.inst.mnemonic
@@ -1810,7 +2035,7 @@ def encode_operand(
                 vals[val.name] = enc
 
             else:
-                defv = OPT_DEFAULTS.get(tab, {}).get(val.name)
+                defv = IMM_DEFAULTS.get(tab, {}).get(val.name)
                 opts[val.name] = str(And(*optcond))
 
                 if defv is None:
@@ -1839,24 +2064,33 @@ def encode_operand(
                 raise NotImplementedError('prfop sym')
 
             case Sym.OPTION:
-                vals['option'] = ('%s.(BarrierOption)' % name, 'SY', {})
-                vals['imm'] = 'uint32(option)'
+                vals['sa_option'] = ('%s.(BarrierOption)' % name, 'SY', {})
+                vals['sa_imm'] = 'uint32(sa_option)'
 
                 if optcond:
-                    opts['option'] = str(And(*optcond))
+                    opts['sa_option'] = str(And(*optcond))
+
+            case Sym.OPTION_NXS:
+                if optcond:
+                    raise RuntimeError('optional nXS option is not supported')
+                else:
+                    vals['sa_option_1'] = '%s.(BarrierOption).nxs()' % name
 
             case Sym.SYSREG:
-                raise NotImplementedError('sysreg sym')
+                if optcond:
+                    raise RuntimeError('optional sysreg is not supported')
+                else:
+                    vals['sa_systemreg'] = 'uint32(%s.(SystemRegister))' % name
 
             case Sym.TARGETS:
                 expr = '%s.(BranchTarget)' % name
-                vals['targets'] = (expr, '_BrOmitted', BR_ENUMS)
+                vals['sa_targets'] = (expr, '_BrOmitted', BR_ENUMS)
 
                 if optcond:
-                    opts['targets'] = str(And(*optcond))
+                    opts['sa_targets'] = str(And(*optcond))
 
             case _:
-                raise RuntimeError('invalid symbol')
+                raise RuntimeError('invalid symbol: ' + repr(val))
 
     else:
         raise RuntimeError('invalid operand type')
@@ -1970,15 +2204,16 @@ for mnemonic, forms in sorted(formtab.items(), key = lambda x: x[0]):
         fmap = {}
         args = []
 
-        if form.inst.modifier not in {None, '2'}:
+        if form.inst.modifier not in {None, 'sa_2'}:
             raise RuntimeError('invalid instruction modifier')
 
         for key, fv in form.fields.items():
             nb = 0
             fn = []
             st = False
+            fx = REWRITE_FIELDS.get(form.enctab.name, {}).get(fv.name, fv.name)
 
-            for s in fv.name.split(':'):
+            for s in fx.split(':'):
                 if st:
                     st = '>' not in s
                     fn[-1] += ':' + s
@@ -1986,11 +2221,11 @@ for mnemonic, forms in sorted(formtab.items(), key = lambda x: x[0]):
                     st = '<' in s
                     fn.append(s)
 
-            if fv.name == form.inst.modifier:
+            if fx == form.inst.modifier:
                 continue
 
             if len(fn) == 1:
-                fmap.setdefault(fv.name, []).append((key, key, BM_FORMAT % key))
+                fmap.setdefault(fx, []).append((key, key, BM_FORMAT % key))
                 continue
 
             for x in fn:
@@ -2087,12 +2322,16 @@ for mnemonic, forms in sorted(formtab.items(), key = lambda x: x[0]):
             fvs = fmap.get(arg)
             val = form.args.get(arg)
 
+            if val is None:
+                val = MISSING_FIELDS.get(form.enctab.name, {}).get(arg)
+
             if val is not None:
                 args.append(str(val))
                 continue
 
             if fvs is not None:
-                args.append(fvs[-1][1])
+                vv = [v[1] for v in fvs if v[0] in opts or v[0] in vals]
+                args.append(vv[-1])
                 continue
 
             ok = False
@@ -2210,18 +2449,18 @@ for mnemonic, forms in sorted(formtab.items(), key = lambda x: x[0]):
                 cc.dedent()
                 cc.line('}')
 
-        deferred = ['label' in v for v in args].count(True)
+        deferred = ['sa_label' in v for v in args].count(True)
         encoding = '%s(%s)' % (form.enctab.func, ', '.join(
-            v.replace('label', REL_VARINIT if deferred == 1 else REL_VARNAME)
+            v.replace('sa_label', REL_VARINIT if deferred == 1 else REL_VARNAME)
             for v in args
         ))
 
         if not deferred:
             if len(encoding) + cc.level * 4 + 10 <= 120:
-                cc.line('p.setins(%s)' % encoding)
+                cc.line('return p.setins(%s)' % encoding)
 
             else:
-                cc.line('p.setins(%s(' % form.enctab.func)
+                cc.line('return p.setins(%s(' % form.enctab.func)
                 cc.indent()
 
                 for arg in args:
@@ -2232,16 +2471,16 @@ for mnemonic, forms in sorted(formtab.items(), key = lambda x: x[0]):
 
         elif deferred == 1:
             if len(encoding) + cc.level * 4 + 45 <= 120:
-                cc.line('p.setenc(func(pc uintptr) uint32 { return %s })' % encoding)
+                cc.line('return p.setenc(func(pc uintptr) uint32 { return %s })' % encoding)
 
             else:
-                cc.line('p.setenc(func(pc uintptr) uint32 {')
+                cc.line('return p.setenc(func(pc uintptr) uint32 {')
                 cc.indent()
                 cc.line('return %s(' % form.enctab.func)
                 cc.indent()
 
                 for arg in args:
-                    cc.line(arg.replace('label', REL_VARINIT) + ',')
+                    cc.line(arg.replace('sa_label', REL_VARINIT) + ',')
 
                 cc.dedent()
                 cc.line(')')
@@ -2249,7 +2488,7 @@ for mnemonic, forms in sorted(formtab.items(), key = lambda x: x[0]):
                 cc.line('})')
 
         else:
-            cc.line('p.setenc(func(pc uintptr) uint32 {')
+            cc.line('return p.setenc(func(pc uintptr) uint32 {')
             cc.indent()
             cc.line('%s := %s' % (REL_VARNAME, REL_VARINIT))
 
@@ -2261,7 +2500,7 @@ for mnemonic, forms in sorted(formtab.items(), key = lambda x: x[0]):
                 cc.indent()
 
                 for arg in args:
-                    cc.line(arg.replace('label', REL_VARNAME) + ',')
+                    cc.line(arg.replace('sa_label', REL_VARNAME) + ',')
 
                 cc.dedent()
                 cc.line(')')
@@ -2274,13 +2513,12 @@ for mnemonic, forms in sorted(formtab.items(), key = lambda x: x[0]):
             cc.line('}')
 
     if not always:
-        cc.line('if !p.isvalid {')
-        cc.indent()
-        cc.line('panic("aarch64: invalid combination of operands for %s")' % mnemonic)
-        cc.dedent()
-        cc.line('}')
+        if len(forms) != 1:
+            cc.line('// none of above')
 
-    cc.line('return p')
+        cc.line('p.Free()')
+        cc.line('panic("aarch64: invalid combination of operands for %s")' % mnemonic)
+
     cc.dedent()
     cc.line('}')
     cc.line()

@@ -14,13 +14,12 @@ type Operands [_N_args]interface{}
 type Instruction struct {
     next    *Instruction
     refs    int64
-    name    string
     pc      uintptr
+    name    string
     argc    int
     argv    Operands
     instr   uint32
-    encode  func(uintptr) uint32
-    isvalid bool
+    encoder func(uintptr) uint32
 }
 
 func (self *Instruction) clear() {
@@ -31,24 +30,26 @@ func (self *Instruction) clear() {
     }
 }
 
-func (self *Instruction) setins(ins uint32) {
-    if self.isvalid {
-        panic("aarch64: encoding confliction")
-    } else {
-        self.instr = ins
-        self.encode = nil
-        self.isvalid = true
+func (self *Instruction) encode(pc uintptr) uint32 {
+    if self.instr != 0 {
+        return self.instr
+    } else if self.encoder != nil {
+        return self.encoder(pc)
+    } else{
+        panic("aarch64: uninitialized instruction")
     }
 }
 
-func (self *Instruction) setenc(enc func(uintptr) uint32) {
-    if self.isvalid {
-        panic("aarch64: encoding confliction")
-    } else {
-        self.instr = 0
-        self.encode = enc
-        self.isvalid = true
-    }
+func (self *Instruction) setins(ins uint32) *Instruction {
+    self.instr = ins
+    self.encoder = nil
+    return self
+}
+
+func (self *Instruction) setenc(enc func(uintptr) uint32) *Instruction {
+    self.instr = 0
+    self.encoder = enc
+    return self
 }
 
 func (self *Instruction) PC() uintptr {
@@ -105,8 +106,8 @@ func (self *Program) alloc(name string, argc int, argv Operands) *Instruction {
 }
 
 func (self *Program) Free() {
-    // TODO implement me
-    panic("implement me")
+    self.clear()
+    freeProgram(self)
 }
 
 func (self *Program) Link(p *asm.Label) {

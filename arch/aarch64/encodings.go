@@ -109,7 +109,7 @@ func addsub_imm(sf, op, S, sh, imm12, Rn, Rd uint32) uint32 {
 }
 
 // addsub_immtags: Add/subtract (immediate, with tags)
-func addsub_immtags(sf, op, S, o2, uimm6, op3, uimm4, Rn, Rd uint32) uint32 {
+func addsub_immtags(sf, op, S, uimm6, op3, uimm4, Rn, Rd uint32) uint32 {
     if sf &^ 0x1 != 0 {
         panic("addsub_immtags: invalid sf")
     }
@@ -118,9 +118,6 @@ func addsub_immtags(sf, op, S, o2, uimm6, op3, uimm4, Rn, Rd uint32) uint32 {
     }
     if S &^ 0x1 != 0 {
         panic("addsub_immtags: invalid S")
-    }
-    if o2 &^ 0x1 != 0 {
-        panic("addsub_immtags: invalid o2")
     }
     if uimm6 &^ 0x3f != 0 {
         panic("addsub_immtags: invalid uimm6")
@@ -141,7 +138,6 @@ func addsub_immtags(sf, op, S, o2, uimm6, op3, uimm4, Rn, Rd uint32) uint32 {
     ret |= sf << 31
     ret |= op << 30
     ret |= S << 29
-    ret |= o2 << 22
     ret |= uimm6 << 16
     ret |= op3 << 14
     ret |= uimm4 << 10
@@ -816,7 +812,7 @@ func asisdlsep(Q, L, Rm, opcode, size, Rn, Rt uint32) uint32 {
 }
 
 // asisdlso: Advanced SIMD load/store single structure
-func asisdlso(Q, L, R, opcode, S, size, Rn, Rt uint32) uint32 {
+func asisdlso(Q, L, R, o2, opcode, S, size, Rn, Rt uint32) uint32 {
     if Q &^ 0x1 != 0 {
         panic("asisdlso: invalid Q")
     }
@@ -825,6 +821,9 @@ func asisdlso(Q, L, R, opcode, S, size, Rn, Rt uint32) uint32 {
     }
     if R &^ 0x1 != 0 {
         panic("asisdlso: invalid R")
+    }
+    if o2 &^ 0x1 != 0 {
+        panic("asisdlso: invalid o2")
     }
     if opcode &^ 0x7 != 0 {
         panic("asisdlso: invalid opcode")
@@ -845,6 +844,7 @@ func asisdlso(Q, L, R, opcode, S, size, Rn, Rt uint32) uint32 {
     ret |= Q << 30
     ret |= L << 22
     ret |= R << 21
+    ret |= o2 << 16
     ret |= opcode << 13
     ret |= S << 12
     ret |= size << 10
@@ -1229,6 +1229,74 @@ func compbranch(sf, op, imm19, Rt uint32) uint32 {
     ret |= sf << 31
     ret |= op << 24
     ret |= imm19 << 5
+    ret |= Rt
+    return ret;
+}
+
+// comswap: Compare and swap
+func comswap(size, L, Rs, o0, Rt2, Rn, Rt uint32) uint32 {
+    if size &^ 0x3 != 0 {
+        panic("comswap: invalid size")
+    }
+    if L &^ 0x1 != 0 {
+        panic("comswap: invalid L")
+    }
+    if Rs &^ 0x1f != 0 {
+        panic("comswap: invalid Rs")
+    }
+    if o0 &^ 0x1 != 0 {
+        panic("comswap: invalid o0")
+    }
+    if Rt2 &^ 0x1f != 0 {
+        panic("comswap: invalid Rt2")
+    }
+    if Rn &^ 0x1f != 0 {
+        panic("comswap: invalid Rn")
+    }
+    if Rt &^ 0x1f != 0 {
+        panic("comswap: invalid Rt")
+    }
+    ret := uint32(0x08a00000)
+    ret |= size << 30
+    ret |= L << 22
+    ret |= Rs << 16
+    ret |= o0 << 15
+    ret |= Rt2 << 10
+    ret |= Rn << 5
+    ret |= Rt
+    return ret;
+}
+
+// comswappr: Compare and swap pair
+func comswappr(sz, L, Rs, o0, Rt2, Rn, Rt uint32) uint32 {
+    if sz &^ 0x1 != 0 {
+        panic("comswappr: invalid sz")
+    }
+    if L &^ 0x1 != 0 {
+        panic("comswappr: invalid L")
+    }
+    if Rs &^ 0x1f != 0 {
+        panic("comswappr: invalid Rs")
+    }
+    if o0 &^ 0x1 != 0 {
+        panic("comswappr: invalid o0")
+    }
+    if Rt2 &^ 0x1f != 0 {
+        panic("comswappr: invalid Rt2")
+    }
+    if Rn &^ 0x1f != 0 {
+        panic("comswappr: invalid Rn")
+    }
+    if Rt &^ 0x1f != 0 {
+        panic("comswappr: invalid Rt")
+    }
+    ret := uint32(0x08200000)
+    ret |= sz << 30
+    ret |= L << 22
+    ret |= Rs << 16
+    ret |= o0 << 15
+    ret |= Rt2 << 10
+    ret |= Rn << 5
     ret |= Rt
     return ret;
 }
@@ -2051,6 +2119,32 @@ func hints(CRm, op2 uint32) uint32 {
     return ret;
 }
 
+// ldapstl_simd: LDAPR/STLR (SIMD&FP)
+func ldapstl_simd(size, opc, imm9, Rn, Rt uint32) uint32 {
+    if size &^ 0x3 != 0 {
+        panic("ldapstl_simd: invalid size")
+    }
+    if opc &^ 0x3 != 0 {
+        panic("ldapstl_simd: invalid opc")
+    }
+    if imm9 &^ 0x1ff != 0 {
+        panic("ldapstl_simd: invalid imm9")
+    }
+    if Rn &^ 0x1f != 0 {
+        panic("ldapstl_simd: invalid Rn")
+    }
+    if Rt &^ 0x1f != 0 {
+        panic("ldapstl_simd: invalid Rt")
+    }
+    ret := uint32(0x1d000800)
+    ret |= size << 30
+    ret |= opc << 22
+    ret |= imm9 << 12
+    ret |= Rn << 5
+    ret |= Rt
+    return ret;
+}
+
 // ldapstl_unscaled: LDAPR/STLR (unscaled immediate)
 func ldapstl_unscaled(size, opc, imm9, Rn, Rt uint32) uint32 {
     if size &^ 0x3 != 0 {
@@ -2072,6 +2166,76 @@ func ldapstl_unscaled(size, opc, imm9, Rn, Rt uint32) uint32 {
     ret |= size << 30
     ret |= opc << 22
     ret |= imm9 << 12
+    ret |= Rn << 5
+    ret |= Rt
+    return ret;
+}
+
+// ldapstl_writeback: LDAPR/STLR (writeback)
+func ldapstl_writeback(size, L, Rn, Rt uint32) uint32 {
+    if size &^ 0x3 != 0 {
+        panic("ldapstl_writeback: invalid size")
+    }
+    if L &^ 0x1 != 0 {
+        panic("ldapstl_writeback: invalid L")
+    }
+    if Rn &^ 0x1f != 0 {
+        panic("ldapstl_writeback: invalid Rn")
+    }
+    if Rt &^ 0x1f != 0 {
+        panic("ldapstl_writeback: invalid Rt")
+    }
+    ret := uint32(0x19800800)
+    ret |= size << 30
+    ret |= L << 22
+    ret |= Rn << 5
+    ret |= Rt
+    return ret;
+}
+
+// ldiappstilp: LDIAPP/STILP
+func ldiappstilp(size, L, Rt2, opc2, Rn, Rt uint32) uint32 {
+    if size &^ 0x3 != 0 {
+        panic("ldiappstilp: invalid size")
+    }
+    if L &^ 0x1 != 0 {
+        panic("ldiappstilp: invalid L")
+    }
+    if Rt2 &^ 0x1f != 0 {
+        panic("ldiappstilp: invalid Rt2")
+    }
+    if opc2 &^ 0xf != 0 {
+        panic("ldiappstilp: invalid opc2")
+    }
+    if Rn &^ 0x1f != 0 {
+        panic("ldiappstilp: invalid Rn")
+    }
+    if Rt &^ 0x1f != 0 {
+        panic("ldiappstilp: invalid Rt")
+    }
+    ret := uint32(0x19000800)
+    ret |= size << 30
+    ret |= L << 22
+    ret |= Rt2 << 16
+    ret |= opc2 << 12
+    ret |= Rn << 5
+    ret |= Rt
+    return ret;
+}
+
+// ldst_gcs: GCS load/store
+func ldst_gcs(opc, Rn, Rt uint32) uint32 {
+    if opc &^ 0x7 != 0 {
+        panic("ldst_gcs: invalid opc")
+    }
+    if Rn &^ 0x1f != 0 {
+        panic("ldst_gcs: invalid Rn")
+    }
+    if Rt &^ 0x1f != 0 {
+        panic("ldst_gcs: invalid Rt")
+    }
+    ret := uint32(0xd91f0c00)
+    ret |= opc << 12
     ret |= Rn << 5
     ret |= Rt
     return ret;
@@ -2303,40 +2467,66 @@ func ldst_unscaled(size, V, opc, imm9, Rn, Rt uint32) uint32 {
     return ret;
 }
 
-// ldstexcl: Load/store exclusive
-func ldstexcl(size, o2, L, o1, Rs, o0, Rt2, Rn, Rt uint32) uint32 {
-    if size &^ 0x3 != 0 {
-        panic("ldstexcl: invalid size")
-    }
-    if o2 &^ 0x1 != 0 {
-        panic("ldstexcl: invalid o2")
+// ldstexclp: Load/store exclusive pair
+func ldstexclp(sz, L, Rs, o0, Rt2, Rn, Rt uint32) uint32 {
+    if sz &^ 0x1 != 0 {
+        panic("ldstexclp: invalid sz")
     }
     if L &^ 0x1 != 0 {
-        panic("ldstexcl: invalid L")
-    }
-    if o1 &^ 0x1 != 0 {
-        panic("ldstexcl: invalid o1")
+        panic("ldstexclp: invalid L")
     }
     if Rs &^ 0x1f != 0 {
-        panic("ldstexcl: invalid Rs")
+        panic("ldstexclp: invalid Rs")
     }
     if o0 &^ 0x1 != 0 {
-        panic("ldstexcl: invalid o0")
+        panic("ldstexclp: invalid o0")
     }
     if Rt2 &^ 0x1f != 0 {
-        panic("ldstexcl: invalid Rt2")
+        panic("ldstexclp: invalid Rt2")
     }
     if Rn &^ 0x1f != 0 {
-        panic("ldstexcl: invalid Rn")
+        panic("ldstexclp: invalid Rn")
     }
     if Rt &^ 0x1f != 0 {
-        panic("ldstexcl: invalid Rt")
+        panic("ldstexclp: invalid Rt")
+    }
+    ret := uint32(0x88200000)
+    ret |= sz << 30
+    ret |= L << 22
+    ret |= Rs << 16
+    ret |= o0 << 15
+    ret |= Rt2 << 10
+    ret |= Rn << 5
+    ret |= Rt
+    return ret;
+}
+
+// ldstexclr: Load/store exclusive register
+func ldstexclr(size, L, Rs, o0, Rt2, Rn, Rt uint32) uint32 {
+    if size &^ 0x3 != 0 {
+        panic("ldstexclr: invalid size")
+    }
+    if L &^ 0x1 != 0 {
+        panic("ldstexclr: invalid L")
+    }
+    if Rs &^ 0x1f != 0 {
+        panic("ldstexclr: invalid Rs")
+    }
+    if o0 &^ 0x1 != 0 {
+        panic("ldstexclr: invalid o0")
+    }
+    if Rt2 &^ 0x1f != 0 {
+        panic("ldstexclr: invalid Rt2")
+    }
+    if Rn &^ 0x1f != 0 {
+        panic("ldstexclr: invalid Rn")
+    }
+    if Rt &^ 0x1f != 0 {
+        panic("ldstexclr: invalid Rt")
     }
     ret := uint32(0x08000000)
     ret |= size << 30
-    ret |= o2 << 23
     ret |= L << 22
-    ret |= o1 << 21
     ret |= Rs << 16
     ret |= o0 << 15
     ret |= Rt2 << 10
@@ -2373,6 +2563,40 @@ func ldstnapair_offs(opc, V, L, imm7, Rt2, Rn, Rt uint32) uint32 {
     ret |= V << 26
     ret |= L << 22
     ret |= imm7 << 15
+    ret |= Rt2 << 10
+    ret |= Rn << 5
+    ret |= Rt
+    return ret;
+}
+
+// ldstord: Load/store ordered
+func ldstord(size, L, Rs, o0, Rt2, Rn, Rt uint32) uint32 {
+    if size &^ 0x3 != 0 {
+        panic("ldstord: invalid size")
+    }
+    if L &^ 0x1 != 0 {
+        panic("ldstord: invalid L")
+    }
+    if Rs &^ 0x1f != 0 {
+        panic("ldstord: invalid Rs")
+    }
+    if o0 &^ 0x1 != 0 {
+        panic("ldstord: invalid o0")
+    }
+    if Rt2 &^ 0x1f != 0 {
+        panic("ldstord: invalid Rt2")
+    }
+    if Rn &^ 0x1f != 0 {
+        panic("ldstord: invalid Rn")
+    }
+    if Rt &^ 0x1f != 0 {
+        panic("ldstord: invalid Rt")
+    }
+    ret := uint32(0x08800000)
+    ret |= size << 30
+    ret |= L << 22
+    ret |= Rs << 16
+    ret |= o0 << 15
     ret |= Rt2 << 10
     ret |= Rn << 5
     ret |= Rt
@@ -2601,6 +2825,40 @@ func log_shift(sf, opc, shift, N, Rm, imm6, Rn, Rd uint32) uint32 {
     return ret;
 }
 
+// memcms: Memory Copy and Memory Set
+func memcms(size, o0, op1, Rs, op2, Rn, Rd uint32) uint32 {
+    if size &^ 0x3 != 0 {
+        panic("memcms: invalid size")
+    }
+    if o0 &^ 0x1 != 0 {
+        panic("memcms: invalid o0")
+    }
+    if op1 &^ 0x3 != 0 {
+        panic("memcms: invalid op1")
+    }
+    if Rs &^ 0x1f != 0 {
+        panic("memcms: invalid Rs")
+    }
+    if op2 &^ 0xf != 0 {
+        panic("memcms: invalid op2")
+    }
+    if Rn &^ 0x1f != 0 {
+        panic("memcms: invalid Rn")
+    }
+    if Rd &^ 0x1f != 0 {
+        panic("memcms: invalid Rd")
+    }
+    ret := uint32(0x19000400)
+    ret |= size << 30
+    ret |= o0 << 26
+    ret |= op1 << 22
+    ret |= Rs << 16
+    ret |= op2 << 12
+    ret |= Rn << 5
+    ret |= Rd
+    return ret;
+}
+
 // memop: Atomic memory operations
 func memop(size, V, A, R, Rs, o3, opc, Rn, Rt uint32) uint32 {
     if size &^ 0x3 != 0 {
@@ -2640,6 +2898,78 @@ func memop(size, V, A, R, Rs, o3, opc, Rn, Rt uint32) uint32 {
     ret |= opc << 12
     ret |= Rn << 5
     ret |= Rt
+    return ret;
+}
+
+// memop_128: 128-bit atomic memory operations
+func memop_128(S, A, R, Rt2, o3, opc, Rn, Rt uint32) uint32 {
+    if S &^ 0x1 != 0 {
+        panic("memop_128: invalid S")
+    }
+    if A &^ 0x1 != 0 {
+        panic("memop_128: invalid A")
+    }
+    if R &^ 0x1 != 0 {
+        panic("memop_128: invalid R")
+    }
+    if Rt2 &^ 0x1f != 0 {
+        panic("memop_128: invalid Rt2")
+    }
+    if o3 &^ 0x1 != 0 {
+        panic("memop_128: invalid o3")
+    }
+    if opc &^ 0x7 != 0 {
+        panic("memop_128: invalid opc")
+    }
+    if Rn &^ 0x1f != 0 {
+        panic("memop_128: invalid Rn")
+    }
+    if Rt &^ 0x1f != 0 {
+        panic("memop_128: invalid Rt")
+    }
+    ret := uint32(0x19200000)
+    ret |= S << 30
+    ret |= A << 23
+    ret |= R << 22
+    ret |= Rt2 << 16
+    ret |= o3 << 15
+    ret |= opc << 12
+    ret |= Rn << 5
+    ret |= Rt
+    return ret;
+}
+
+// minmax_imm: Min/max (immediate)
+func minmax_imm(sf, op, S, opc, imm8, Rn, Rd uint32) uint32 {
+    if sf &^ 0x1 != 0 {
+        panic("minmax_imm: invalid sf")
+    }
+    if op &^ 0x1 != 0 {
+        panic("minmax_imm: invalid op")
+    }
+    if S &^ 0x1 != 0 {
+        panic("minmax_imm: invalid S")
+    }
+    if opc &^ 0xf != 0 {
+        panic("minmax_imm: invalid opc")
+    }
+    if imm8 &^ 0xff != 0 {
+        panic("minmax_imm: invalid imm8")
+    }
+    if Rn &^ 0x1f != 0 {
+        panic("minmax_imm: invalid Rn")
+    }
+    if Rd &^ 0x1f != 0 {
+        panic("minmax_imm: invalid Rd")
+    }
+    ret := uint32(0x11c00000)
+    ret |= sf << 31
+    ret |= op << 30
+    ret |= S << 29
+    ret |= opc << 18
+    ret |= imm8 << 10
+    ret |= Rn << 5
+    ret |= Rd
     return ret;
 }
 
@@ -2723,6 +3053,66 @@ func pstate(op1, CRm, op2, Rt uint32) uint32 {
     return ret;
 }
 
+// rcwcomswap: RCW compare and swap
+func rcwcomswap(S, A, R, Rs, Rn, Rt uint32) uint32 {
+    if S &^ 0x1 != 0 {
+        panic("rcwcomswap: invalid S")
+    }
+    if A &^ 0x1 != 0 {
+        panic("rcwcomswap: invalid A")
+    }
+    if R &^ 0x1 != 0 {
+        panic("rcwcomswap: invalid R")
+    }
+    if Rs &^ 0x1f != 0 {
+        panic("rcwcomswap: invalid Rs")
+    }
+    if Rn &^ 0x1f != 0 {
+        panic("rcwcomswap: invalid Rn")
+    }
+    if Rt &^ 0x1f != 0 {
+        panic("rcwcomswap: invalid Rt")
+    }
+    ret := uint32(0x19200800)
+    ret |= S << 30
+    ret |= A << 23
+    ret |= R << 22
+    ret |= Rs << 16
+    ret |= Rn << 5
+    ret |= Rt
+    return ret;
+}
+
+// rcwcomswappr: RCW compare and swap pair
+func rcwcomswappr(S, A, R, Rs, Rn, Rt uint32) uint32 {
+    if S &^ 0x1 != 0 {
+        panic("rcwcomswappr: invalid S")
+    }
+    if A &^ 0x1 != 0 {
+        panic("rcwcomswappr: invalid A")
+    }
+    if R &^ 0x1 != 0 {
+        panic("rcwcomswappr: invalid R")
+    }
+    if Rs &^ 0x1f != 0 {
+        panic("rcwcomswappr: invalid Rs")
+    }
+    if Rn &^ 0x1f != 0 {
+        panic("rcwcomswappr: invalid Rn")
+    }
+    if Rt &^ 0x1f != 0 {
+        panic("rcwcomswappr: invalid Rt")
+    }
+    ret := uint32(0x19200c00)
+    ret |= S << 30
+    ret |= A << 23
+    ret |= R << 22
+    ret |= Rs << 16
+    ret |= Rn << 5
+    ret |= Rt
+    return ret;
+}
+
 // rmif: Rotate right into flags
 func rmif(sf, op, S, imm6, Rn, o2, mask uint32) uint32 {
     if sf &^ 0x1 != 0 {
@@ -2795,6 +3185,36 @@ func setf(sf, op, S, opcode2, sz, Rn, o3, mask uint32) uint32 {
     return ret;
 }
 
+// syspairinstrs: System pair instructions
+func syspairinstrs(L, op1, CRn, CRm, op2, Rt uint32) uint32 {
+    if L &^ 0x1 != 0 {
+        panic("syspairinstrs: invalid L")
+    }
+    if op1 &^ 0x7 != 0 {
+        panic("syspairinstrs: invalid op1")
+    }
+    if CRn &^ 0xf != 0 {
+        panic("syspairinstrs: invalid CRn")
+    }
+    if CRm &^ 0xf != 0 {
+        panic("syspairinstrs: invalid CRm")
+    }
+    if op2 &^ 0x7 != 0 {
+        panic("syspairinstrs: invalid op2")
+    }
+    if Rt &^ 0x1f != 0 {
+        panic("syspairinstrs: invalid Rt")
+    }
+    ret := uint32(0xd5480000)
+    ret |= L << 21
+    ret |= op1 << 16
+    ret |= CRn << 12
+    ret |= CRm << 8
+    ret |= op2 << 5
+    ret |= Rt
+    return ret;
+}
+
 // systeminstrs: System instructions
 func systeminstrs(L, op1, CRn, CRm, op2, Rt uint32) uint32 {
     if L &^ 0x1 != 0 {
@@ -2819,6 +3239,24 @@ func systeminstrs(L, op1, CRn, CRm, op2, Rt uint32) uint32 {
     ret |= L << 21
     ret |= op1 << 16
     ret |= CRn << 12
+    ret |= CRm << 8
+    ret |= op2 << 5
+    ret |= Rt
+    return ret;
+}
+
+// systeminstrswithreg: System instructions with register argument
+func systeminstrswithreg(CRm, op2, Rt uint32) uint32 {
+    if CRm &^ 0xf != 0 {
+        panic("systeminstrswithreg: invalid CRm")
+    }
+    if op2 &^ 0x7 != 0 {
+        panic("systeminstrswithreg: invalid op2")
+    }
+    if Rt &^ 0x1f != 0 {
+        panic("systeminstrswithreg: invalid Rt")
+    }
+    ret := uint32(0xd5031000)
     ret |= CRm << 8
     ret |= op2 << 5
     ret |= Rt
@@ -2851,6 +3289,66 @@ func systemmove(L, o0, op1, CRn, CRm, op2, Rt uint32) uint32 {
     ret := uint32(0xd5100000)
     ret |= L << 21
     ret |= o0 << 19
+    ret |= op1 << 16
+    ret |= CRn << 12
+    ret |= CRm << 8
+    ret |= op2 << 5
+    ret |= Rt
+    return ret;
+}
+
+// systemmovepr: System register pair move
+func systemmovepr(L, o0, op1, CRn, CRm, op2, Rt uint32) uint32 {
+    if L &^ 0x1 != 0 {
+        panic("systemmovepr: invalid L")
+    }
+    if o0 &^ 0x1 != 0 {
+        panic("systemmovepr: invalid o0")
+    }
+    if op1 &^ 0x7 != 0 {
+        panic("systemmovepr: invalid op1")
+    }
+    if CRn &^ 0xf != 0 {
+        panic("systemmovepr: invalid CRn")
+    }
+    if CRm &^ 0xf != 0 {
+        panic("systemmovepr: invalid CRm")
+    }
+    if op2 &^ 0x7 != 0 {
+        panic("systemmovepr: invalid op2")
+    }
+    if Rt &^ 0x1f != 0 {
+        panic("systemmovepr: invalid Rt")
+    }
+    ret := uint32(0xd5500000)
+    ret |= L << 21
+    ret |= o0 << 19
+    ret |= op1 << 16
+    ret |= CRn << 12
+    ret |= CRm << 8
+    ret |= op2 << 5
+    ret |= Rt
+    return ret;
+}
+
+// systemresult: System with result
+func systemresult(op1, CRn, CRm, op2, Rt uint32) uint32 {
+    if op1 &^ 0x7 != 0 {
+        panic("systemresult: invalid op1")
+    }
+    if CRn &^ 0xf != 0 {
+        panic("systemresult: invalid CRn")
+    }
+    if CRm &^ 0xf != 0 {
+        panic("systemresult: invalid CRm")
+    }
+    if op2 &^ 0x7 != 0 {
+        panic("systemresult: invalid op2")
+    }
+    if Rt &^ 0x1f != 0 {
+        panic("systemresult: invalid Rt")
+    }
+    ret := uint32(0xd5200000)
     ret |= op1 << 16
     ret |= CRn << 12
     ret |= CRm << 8
