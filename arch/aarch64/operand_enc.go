@@ -8,6 +8,7 @@ import (
 
 func asInt32    (v interface{}) int32  { x, _ := asInt64(v)  ; return int32(x) }
 func asImm12    (v interface{}) uint32 { x, _ := asInt64(v)  ; return uint32(x & 0b111111111111) }
+func asUimm3    (v interface{}) uint32 { x, _ := asUint64(v) ; return uint32(x & 0b111) }
 func asUimm4    (v interface{}) uint32 { x, _ := asUint64(v) ; return uint32(x & 0b1111) }
 func asUimm5    (v interface{}) uint32 { x, _ := asUint64(v) ; return uint32(x & 0b11111) }
 func asUimm6    (v interface{}) uint32 { x, _ := asUint64(v) ; return uint32(x & 0b111111) }

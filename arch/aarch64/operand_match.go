@@ -101,6 +101,7 @@ func isVri       (v interface{}) bool { _, f := v.(_Indexed128r)     ; return f 
 func isImm       (v interface{}) bool { _, f := asInt64(v)  ; return f }
 func isImm9      (v interface{}) bool { x, f := asInt64(v)  ; return f && x &^ 0b111111111 == 0 }
 func isImm12     (v interface{}) bool { x, f := asInt64(v)  ; return f && x &^ 0b111111111111 == 0 }
+func isUimm3     (v interface{}) bool { x, f := asUint64(v) ; return f && x &^ 0b111 == 0 }
 func isUimm4     (v interface{}) bool { x, f := asUint64(v) ; return f && x &^ 0b1111 == 0 }
 func isUimm5     (v interface{}) bool { x, f := asUint64(v) ; return f && x &^ 0b11111 == 0 }
 func isUimm6     (v interface{}) bool { x, f := asUint64(v) ; return f && x &^ 0b111111 == 0 }

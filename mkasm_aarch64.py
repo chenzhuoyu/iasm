@@ -303,58 +303,59 @@ for name, entry in sorted(instab.items(), key = lambda v: v[0]):
             bitfields = th.findall('td[@class="bitfield"]')
 
             # TODO: remove this
-            # if 'advsimd' in iformfile:
-            #     continue
-            if not (
-                # iformfile[0] <= 'e' and 'advsimd' not in iformfile or
-                # iformfile.startswith('bti') or
-                # iformfile.startswith('aesd') or
-                # iformfile.startswith('uqxtn') or
-                # iformfile.startswith('ldr') or
-                # iformfile.startswith('and') or
-                # iformfile.startswith('eor') or
-                # iformfile.startswith('orn') or
-                # iformfile.startswith('orr') or
-                # iformfile.startswith('addg') or
-                # iformfile.startswith('blra') or
-                # iformfile.startswith('bra') or
-                # iformfile.startswith('ccmn') or
-                # iformfile.startswith('autia') or
-                # iformfile.startswith('clrex') or
-                # iformfile.startswith('dmb') or
-                # iformfile.startswith('fcmp') or
-                # iformfile.startswith('fcvtzs') or
-                # iformfile.startswith('scvtf') or
-                # iformfile.startswith('shl') or
-                # iformfile.startswith('shr') or
-                # iformfile.startswith('sshl') or
-                # iformfile.startswith('sshr') or
-                # iformfile.startswith('ssra') or
-                # iformfile.startswith('usra') or
-                # iformfile.startswith('adr') or
-                # iformfile.startswith('fmov') or
-                # iformfile.startswith('hint') or
-                # iformfile.startswith('irg') or
-                # iformfile.startswith('ldnp') or
-                # iformfile.startswith('ldp') or
-                # iformfile.startswith('madd') or
-                # iformfile.startswith('mrs') or
-                # iformfile.startswith('msr.') or
-                # iformfile.startswith('cpy') or
-                # iformfile.startswith('dsb') or
-                # iformfile.startswith('gcsb') or
-                # iformfile.startswith('rprfm') or
-                # iformfile.startswith('msrr') or
-                # iformfile.startswith('casp') or
-                # iformfile.startswith('b_uncond') or
-                # iformfile.startswith('b_cond') or
-                # iformfile.startswith('bc_cond') or
-                # iformfile.startswith('addhn') or
-                # iformfile.startswith('bfcvtn') or
-                # iformfile.startswith('stilp') or
-                iformfile.startswith('sysp')
-            ):
+            if 'advsimd' in iformfile:
                 continue
+            # if not (
+            #     # iformfile[0] <= 'e' and 'advsimd' not in iformfile or
+            #     # iformfile.startswith('bti') or
+            #     # iformfile.startswith('aesd') or
+            #     # iformfile.startswith('uqxtn') or
+            #     # iformfile.startswith('ldr') or
+            #     # iformfile.startswith('and') or
+            #     # iformfile.startswith('eor') or
+            #     # iformfile.startswith('orn') or
+            #     # iformfile.startswith('orr') or
+            #     # iformfile.startswith('addg') or
+            #     # iformfile.startswith('blra') or
+            #     # iformfile.startswith('bra') or
+            #     # iformfile.startswith('ccmn') or
+            #     # iformfile.startswith('autia') or
+            #     # iformfile.startswith('clrex') or
+            #     # iformfile.startswith('dmb') or
+            #     # iformfile.startswith('fcmp') or
+            #     # iformfile.startswith('fcvtzs') or
+            #     # iformfile.startswith('scvtf') or
+            #     # iformfile.startswith('shl') or
+            #     # iformfile.startswith('shr') or
+            #     # iformfile.startswith('sshl') or
+            #     # iformfile.startswith('sshr') or
+            #     # iformfile.startswith('ssra') or
+            #     # iformfile.startswith('usra') or
+            #     # iformfile.startswith('adr') or
+            #     # iformfile.startswith('fmov') or
+            #     # iformfile.startswith('hint') or
+            #     # iformfile.startswith('irg') or
+            #     # iformfile.startswith('ldnp') or
+            #     # iformfile.startswith('ldp') or
+            #     # iformfile.startswith('madd') or
+            #     # iformfile.startswith('mrs') or
+            #     # iformfile.startswith('msr.') or
+            #     # iformfile.startswith('cpy') or
+            #     # iformfile.startswith('dsb') or
+            #     # iformfile.startswith('gcsb') or
+            #     # iformfile.startswith('rprfm') or
+            #     # iformfile.startswith('msrr') or
+            #     # iformfile.startswith('casp') or
+            #     # iformfile.startswith('b_uncond') or
+            #     # iformfile.startswith('b_cond') or
+            #     # iformfile.startswith('bc_cond') or
+            #     # iformfile.startswith('addhn') or
+            #     # iformfile.startswith('bfcvtn') or
+            #     # iformfile.startswith('stilp') or
+            #     # iformfile.startswith('sysp') or
+            #     iformfile.startswith('setp')
+            # ):
+            #     continue
 
             assert iformfile, 'missing iform files for ' + name
             assert iformname is not None, 'missing iform names for ' + name
@@ -561,13 +562,25 @@ class Mem(NamedTuple):
 
 class Seq(NamedTuple):
     req: list[Reg | Vec | Mem | Mod | Imm | Lit | Sym]
-    opt: Reg | Vec | Mem | Mod | Imm | Lit | Sym | None = None
+    opt: list[Reg | Vec | Mem | Mod | Imm | Lit | Sym]
 
     def __str__(self) -> str:
-        return ''.join([
-            *('%s%s' % (', ' if i else '', str(v)) for i, v in enumerate(self.req)),
-            (f'{{, {self.opt}}}' if self.req else f'{{{self.opt}}}') if self.opt else ''
-        ])
+        ret = []
+        pfx = '{'
+
+        if self.req:
+            pfx = '{, '
+            ret.extend('%s%s' % (', ' if i else '', str(v)) for i, v in enumerate(self.req))
+
+        if self.opt:
+            ret.append(pfx)
+            ret.extend('%s%s' % (', ' if i else '', str(v)) for i, v in enumerate(self.opt))
+            ret.append('}')
+
+        if not ret:
+            return ''
+        else:
+            return ''.join(ret)
 
 class Instr(NamedTuple):
     mnemonic: str
@@ -578,7 +591,7 @@ class Instr(NamedTuple):
         return ''.join([
             self.mnemonic,
             '{%s}' % self.modifier if self.modifier else '',
-            ' ' if self.operands.req or self.operands.opt is not None else '',
+            ' ' if self.operands.req or self.operands.opt else '',
             str(self.operands)
         ])
 
@@ -772,8 +785,11 @@ class AsmTemplate:
                 idx = 'pre' if self.skip('!') else None
                 args = [(v, bool(False)) for v in buf.req]
 
-                if buf.opt is not None:
-                    args.append((buf.opt, True))
+                if buf.opt:
+                    if len(buf.opt) == 1:
+                        args.append((buf.opt[0], True))
+                    else:
+                        raise RuntimeError('multiple optional value for memory operand')
 
                 exts = None
                 offs = None
@@ -924,7 +940,7 @@ class AsmTemplate:
 
     def vlist(self) -> Seq:
         req = []
-        opt = None
+        opt = []
 
         if not self.eof and self.tok != '{':
             val = self.value()
@@ -947,8 +963,13 @@ class AsmTemplate:
             if req:
                 self.must(',')
 
-            opt = self.value()
-            self.must('}')
+            val = self.value()
+            opt.append(val)
+
+            while self.skip(','):
+                opt.append(self.value())
+            else:
+                self.must('}')
 
         return Seq(
             req = req,
@@ -957,7 +978,7 @@ class AsmTemplate:
 
     def instr(self) -> Instr:
         mods = None
-        args = Seq([])
+        args = Seq([], [])
         name = self.next()
 
         if not isinstance(name, str):
@@ -1166,10 +1187,11 @@ for encdata in sorted(enctab.values(), key = lambda x: x.name):
     bits.update(parent_tab[node].findall('regdiagram/box'))
     assert inst.mnemonic == opts['mnemonic']
 
-    if inst.operands.opt is None and inst.modifier != 'sa_cond':
-        maxargs = max(maxargs, len(inst.operands.req))
-    else:
-        maxargs = max(maxargs, len(inst.operands.req) + 1)
+    nreq = len(inst.operands.req)
+    nopt = len(inst.operands.opt)
+
+    if maxargs < nreq + nopt:
+        maxargs = nreq + nopt
 
     req = list(bits.refs.items())
     req.sort(key = lambda x: x[1], reverse = True)
@@ -1190,9 +1212,6 @@ for encdata in sorted(enctab.values(), key = lambda x: x.name):
         enctab = encdata,
         fields = fieldtab.get(encdata.name, {})
     ))
-
-# TODO: fuck this
-exit()
 
 ### ---------- Per-instruction Encoding ---------- ###
 
@@ -1234,7 +1253,9 @@ IMM_CHECKS = {
     'CRm:Encoding:Hints:Index:by:op2' : 'isUimm7(%s)',
     'N:immr:imms'                     : 'isMask64(%s)',
     'a:b:c:d:e:f:g:h'                 : 'isUimm8(%s)',
+    'b40:b5'                          : 'isUimm6(%s)',
     'imm5'                            : 'isUimm5(%s)',
+    'imm6'                            : 'isUimm6(%s)',
     'imm8'                            : 'isFpImm8(%s)',
     'imm9'                            : 'isImm9(%s)',
     'imm12'                           : 'isImm12(%s)',
@@ -1243,13 +1264,18 @@ IMM_CHECKS = {
     'immr'                            : 'isUimm6(%s)',
     'immr:imms'                       : 'isMask32(%s)',
     'imms'                            : 'isUimm6(%s)',
+    'mask'                            : 'isUimm4(%s)',
     'nzcv'                            : 'isUimm4(%s)',
+    'op1'                             : 'isUimm3(%s)',
+    'op2'                             : 'isUimm3(%s)',
     'scale'                           : 'isFpBits(%s)',
     'uimm4'                           : 'isUimm4(%s)',
     'uimm6'                           : 'isUimm6(%s)',
 }
 
 REG_CHECKS = {
+    'sa_cm'          : 'isUimm4(%s)',
+    'sa_cn'          : 'isUimm4(%s)',
     'sa_cond'        : 'isBrCond(%s)',
     'sa_bt'          : 'isBr(%s)',
     'sa_da'          : 'isDr(%s)',
@@ -1307,17 +1333,26 @@ REG_CHECKS = {
     'sa_xt'          : 'isXr(%s)',
     'sa_xt1'         : 'isXr(%s)',
     'sa_xt2'         : 'isXr(%s)',
+    'sa_xt_sp'       : 'isXrOrSP(%s)',
 }
 
 REG_PLUS_NAMES = {
-    'CASP_CP32_comswappr'   : { 'sa_w_s': 'sa_ws', 'sa_w_t': 'sa_wt' },
-    'CASP_CP64_comswappr'   : { 'sa_x_s': 'sa_xs', 'sa_x_t': 'sa_xt' },
-    'CASPA_CP32_comswappr'  : { 'sa_w_s': 'sa_ws', 'sa_w_t': 'sa_wt' },
-    'CASPA_CP64_comswappr'  : { 'sa_x_s': 'sa_xs', 'sa_x_t': 'sa_xt' },
-    'CASPAL_CP32_comswappr' : { 'sa_w_s': 'sa_ws', 'sa_w_t': 'sa_wt' },
-    'CASPAL_CP64_comswappr' : { 'sa_x_s': 'sa_xs', 'sa_x_t': 'sa_xt' },
-    'CASPL_CP32_comswappr'  : { 'sa_w_s': 'sa_ws', 'sa_w_t': 'sa_wt' },
-    'CASPL_CP64_comswappr'  : { 'sa_x_s': 'sa_xs', 'sa_x_t': 'sa_xt' },
+    'CASP_CP32_comswappr'         : { 'sa_w_s': 'sa_ws', 'sa_w_t': 'sa_wt' },
+    'CASP_CP64_comswappr'         : { 'sa_x_s': 'sa_xs', 'sa_x_t': 'sa_xt' },
+    'CASPA_CP32_comswappr'        : { 'sa_w_s': 'sa_ws', 'sa_w_t': 'sa_wt' },
+    'CASPA_CP64_comswappr'        : { 'sa_x_s': 'sa_xs', 'sa_x_t': 'sa_xt' },
+    'CASPAL_CP32_comswappr'       : { 'sa_w_s': 'sa_ws', 'sa_w_t': 'sa_wt' },
+    'CASPAL_CP64_comswappr'       : { 'sa_x_s': 'sa_xs', 'sa_x_t': 'sa_xt' },
+    'CASPL_CP32_comswappr'        : { 'sa_w_s': 'sa_ws', 'sa_w_t': 'sa_wt' },
+    'CASPL_CP64_comswappr'        : { 'sa_x_s': 'sa_xs', 'sa_x_t': 'sa_xt' },
+    'RCWCASP_C64_rcwcomswappr'    : { 'sa_x_s': 'sa_xs', 'sa_x_t': 'sa_xt' },
+    'RCWCASPA_C64_rcwcomswappr'   : { 'sa_x_s': 'sa_xs', 'sa_x_t': 'sa_xt' },
+    'RCWCASPAL_C64_rcwcomswappr'  : { 'sa_x_s': 'sa_xs', 'sa_x_t': 'sa_xt' },
+    'RCWCASPL_C64_rcwcomswappr'   : { 'sa_x_s': 'sa_xs', 'sa_x_t': 'sa_xt' },
+    'RCWSCASP_C64_rcwcomswappr'   : { 'sa_x_s': 'sa_xs', 'sa_x_t': 'sa_xt' },
+    'RCWSCASPA_C64_rcwcomswappr'  : { 'sa_x_s': 'sa_xs', 'sa_x_t': 'sa_xt' },
+    'RCWSCASPAL_C64_rcwcomswappr' : { 'sa_x_s': 'sa_xs', 'sa_x_t': 'sa_xt' },
+    'RCWSCASPL_C64_rcwcomswappr'  : { 'sa_x_s': 'sa_xs', 'sa_x_t': 'sa_xt' },
 }
 
 REG_CHECKS_MERGED = {
@@ -1330,6 +1365,7 @@ COMBREG_CHECKS = {
     'sa_d': 'isWrOrXr(%s)',
     'sa_m': 'isWrOrXr(%s)',
     'sa_n': 'isWrOrXr(%s)',
+    'sa_t': 'isWrOrXr(%s)',
 }
 
 FIXEDVEC_CHECKS = {
@@ -1437,25 +1473,24 @@ def match_operands(form: InstrForm, argc: int) -> Iterator['And | Or | str']:
     print('------- match operand -------')
     print(form.inst)
 
-    if form.inst.operands.opt is not None:
-        argv.append(form.inst.operands.opt)
+    if form.inst.operands.opt:
+        argv.extend(form.inst.operands.opt)
 
     if len(argv) > argc:
-        if form.inst.operands.opt is None:
-            yield 'len(vv) == %d' % (len(argv) - argc)
+        narg = len(argv) - argc
+        nopt = len(form.inst.operands.opt)
+
+        if not nopt:
+            yield 'len(vv) == %d' % narg
         else:
-            yield 'len(vv) >= %d' % (len(argv) - argc - 1)
-            yield 'len(vv) <= %d' % (len(argv) - argc)
+            yield Or('len(vv) == %d' % (narg - nopt), 'len(vv) == %d' % narg)
 
     for i, val in enumerate(argv):
         name = 'v%d' % i if i < argc else 'vv[%d]' % (i - argc)
         optcond = []
 
         if i >= len(form.inst.operands.req):
-            if i == argc:
-                optcond.append('len(vv) == 0')
-            else:
-                optcond.append('len(vv) <= %d' % (i - argc))
+            optcond.append('len(vv) == 0')
 
         if isinstance(val, Reg):
             if optcond:
@@ -1633,7 +1668,7 @@ def match_operands(form: InstrForm, argc: int) -> Iterator['And | Or | str']:
             if fn in IMM_CHECKS:
                 yield Or(*optcond, IMM_CHECKS[fn] % name)
             elif not isinstance(fv, Definition):
-                raise RuntimeError('cannot encode immediate field ' + repr(fn))
+                raise RuntimeError('cannot match immediate field ' + repr(fn))
             else:
                 bits = [x for x in sorted(fv.bits) if x != 'RESERVED' and not x.startswith('SEE')]
                 yield Or(*optcond, 'isIntLit(%s, %s)' % (name, ', '.join(map(str, sorted(map(int, bits))))))
@@ -1682,14 +1717,19 @@ IMM_ENCODER = {
     'CRm:Encoding:Hints:Index:by:op2' : 'asUimm7(%s)',
     'N:immr:imms'                     : 'asMaskOp(%s)',
     'a:b:c:d:e:f:g:h'                 : 'asUimm8(%s)',
+    'b40:b5'                          : 'asUimm6(%s)',
     'imm5'                            : 'asUimm5(%s)',
+    'imm6'                            : 'asUimm6(%s)',
     'imm8'                            : 'asFpImm8(%s)',
     'imm12'                           : 'asImm12(%s)',
     'imm16'                           : 'asUimm16(%s)',
     'immr'                            : 'asUimm6(%s)',
     'immr:imms'                       : 'asMaskOp(%s)',
     'imms'                            : 'asUimm6(%s)',
+    'mask'                            : 'asUimm4(%s)',
     'nzcv'                            : 'asUimm4(%s)',
+    'op1'                             : 'asUimm3(%s)',
+    'op2'                             : 'asUimm3(%s)',
     'scale'                           : 'asFpScale(%s)',
     'uimm4'                           : 'asUimm4(%s)',
     'uimm6'                           : 'asUimm6(%s)',
@@ -1708,6 +1748,8 @@ IMM_DEFAULTS = {
 }
 
 SPECIAL_REGS = {
+    'sa_cm'          : 'asUimm4(%s)',
+    'sa_cn'          : 'asUimm4(%s)',
     'sa_cond'        : 'uint32(%s.(BranchCondition))',
     'sa_label'       : '%s.(*asm.Label)',
     'sa_pstatefield' : 'uint32(%s.(PStateField))',
@@ -1817,6 +1859,31 @@ MISSING_FIELDS = {
     'CPYPWTWN_CPY_memcms'   : { 'size': 0b00 },
     'CPYPWT_CPY_memcms'     : { 'size': 0b00 },
     'CPYP_CPY_memcms'       : { 'size': 0b00 },
+
+    'SETEN_SET_memcms'      : { 'size': 0b00 },
+    'SETETN_SET_memcms'     : { 'size': 0b00 },
+    'SETET_SET_memcms'      : { 'size': 0b00 },
+    'SETE_SET_memcms'       : { 'size': 0b00 },
+    'SETGEN_SET_memcms'     : { 'size': 0b00 },
+    'SETGETN_SET_memcms'    : { 'size': 0b00 },
+    'SETGET_SET_memcms'     : { 'size': 0b00 },
+    'SETGE_SET_memcms'      : { 'size': 0b00 },
+    'SETGMN_SET_memcms'     : { 'size': 0b00 },
+    'SETGMTN_SET_memcms'    : { 'size': 0b00 },
+    'SETGMT_SET_memcms'     : { 'size': 0b00 },
+    'SETGM_SET_memcms'      : { 'size': 0b00 },
+    'SETGPN_SET_memcms'     : { 'size': 0b00 },
+    'SETGPTN_SET_memcms'    : { 'size': 0b00 },
+    'SETGPT_SET_memcms'     : { 'size': 0b00 },
+    'SETGP_SET_memcms'      : { 'size': 0b00 },
+    'SETMN_SET_memcms'      : { 'size': 0b00 },
+    'SETMTN_SET_memcms'     : { 'size': 0b00 },
+    'SETMT_SET_memcms'      : { 'size': 0b00 },
+    'SETM_SET_memcms'       : { 'size': 0b00 },
+    'SETPN_SET_memcms'      : { 'size': 0b00 },
+    'SETPTN_SET_memcms'     : { 'size': 0b00 },
+    'SETPT_SET_memcms'      : { 'size': 0b00 },
+    'SETP_SET_memcms'       : { 'size': 0b00 },
 }
 
 class SwitchLit(dict):
@@ -2296,8 +2363,8 @@ for mnemonic, forms in preprocess_instr_forms(formtab):
         nops.add(nop)
         cc.line('//   * %s' % form.text)
 
-        if form.inst.operands.opt is not None:
-            nops.add(nop + 1)
+        if form.inst.operands.opt:
+            nops.add(nop + len(form.inst.operands.opt))
 
     cc.line('//')
     nfix = min(nops)
@@ -2423,12 +2490,12 @@ for mnemonic, forms in preprocess_instr_forms(formtab):
             else:
                 encode_operand(form, 'vv[%d]' % (i - nfix), val, vals, opts)
 
-        if form.inst.operands.opt is not None:
-            if not isinstance(form.inst.operands.opt, (Reg, Mod, Imm, Sym)):
+        for i, val in enumerate(form.inst.operands.opt):
+            if not isinstance(val, (Reg, Mod, Imm, Sym)):
                 raise RuntimeError('invalid optional operand')
             else:
-                idx = len(form.inst.operands.req) - nfix
-                encode_operand(form, 'vv[%d]' % idx, form.inst.operands.opt, vals, opts, 'len(vv) > %d' % idx)
+                idx = len(form.inst.operands.req) - nfix + i
+                encode_operand(form, 'vv[%d]' % idx, val, vals, opts, 'len(vv) == %d' % len(form.inst.operands.opt))
 
         for var in sorted(opts):
             if not isinstance(vals[var], tuple):
