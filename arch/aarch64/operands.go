@@ -484,3 +484,29 @@ const (
     DAIFSet  PStateField = 0b011110
     DAIFClr  PStateField = 0b011111
 )
+
+// Symbol represents one of the instruction literal symbol.
+type Symbol uint8
+
+const (
+    CSYNC Symbol = iota
+    DSYNC
+)
+
+// RangePrefetchOp represents one of the Range Prefetch Options.
+type RangePrefetchOp uint8
+
+const (
+    PLD_KEEP RangePrefetchOp = 0b000000
+    PST_KEEP RangePrefetchOp = 0b000001
+    PLD_STRM RangePrefetchOp = 0b000100
+    PST_STRM RangePrefetchOp = 0b000101
+)
+
+func (self RangePrefetchOp) encode() uint32 {
+    s  := uint32(self & 0b001000)
+    o0 := uint32(self & 0b010000)
+    o2 := uint32(self & 0b100000)
+    rt := uint32(self & 0b000111)
+    return s | (rt << 4) | (o2 >> 3) | (o0 >> 4) | 0b110000010
+}

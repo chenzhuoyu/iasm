@@ -303,47 +303,56 @@ for name, entry in sorted(instab.items(), key = lambda v: v[0]):
             bitfields = th.findall('td[@class="bitfield"]')
 
             # TODO: remove this
-            # if 'advsimd' in iformfile or iformfile in {'b_cond.xml', 'b_cond.xml', 'casp.xml', 'msrr.xml'}:
+            # if 'advsimd' in iformfile:
             #     continue
             if not (
-                iformfile[0] <= 'e' and
-                    'advsimd' not in iformfile and
-                    iformfile not in {'b_cond.xml', 'bc_cond.xml', 'casp.xml', 'msrr.xml'} or
-                iformfile.startswith('bti') or
-                iformfile.startswith('aesd') or
-                iformfile.startswith('uqxtn') or
-                iformfile.startswith('ldr') or
-                iformfile.startswith('and') or
-                iformfile.startswith('eor') or
-                iformfile.startswith('orn') or
-                iformfile.startswith('orr') or
-                iformfile.startswith('addg') or
-                iformfile.startswith('blra') or
-                iformfile.startswith('bra') or
-                iformfile.startswith('ccmn') or
-                iformfile.startswith('autia') or
-                iformfile.startswith('clrex') or
-                iformfile.startswith('dmb') or
-                iformfile.startswith('fcmp') or
-                iformfile.startswith('fcvtzs') or
-                iformfile.startswith('scvtf') or
-                iformfile.startswith('shl') or
-                iformfile.startswith('shr') or
-                iformfile.startswith('sshl') or
-                iformfile.startswith('sshr') or
-                iformfile.startswith('ssra') or
-                iformfile.startswith('usra') or
-                iformfile.startswith('adr') or
-                iformfile.startswith('fmov') or
-                iformfile.startswith('hint') or
-                iformfile.startswith('irg') or
-                iformfile.startswith('ldnp') or
-                iformfile.startswith('ldp') or
-                iformfile.startswith('madd') or
-                iformfile.startswith('mrs') or
-                iformfile.startswith('msr.') or
-                iformfile.startswith('cpy') or
-                iformfile.startswith('dsb')
+                # iformfile[0] <= 'e' and 'advsimd' not in iformfile or
+                # iformfile.startswith('bti') or
+                # iformfile.startswith('aesd') or
+                # iformfile.startswith('uqxtn') or
+                # iformfile.startswith('ldr') or
+                # iformfile.startswith('and') or
+                # iformfile.startswith('eor') or
+                # iformfile.startswith('orn') or
+                # iformfile.startswith('orr') or
+                # iformfile.startswith('addg') or
+                # iformfile.startswith('blra') or
+                # iformfile.startswith('bra') or
+                # iformfile.startswith('ccmn') or
+                # iformfile.startswith('autia') or
+                # iformfile.startswith('clrex') or
+                # iformfile.startswith('dmb') or
+                # iformfile.startswith('fcmp') or
+                # iformfile.startswith('fcvtzs') or
+                # iformfile.startswith('scvtf') or
+                # iformfile.startswith('shl') or
+                # iformfile.startswith('shr') or
+                # iformfile.startswith('sshl') or
+                # iformfile.startswith('sshr') or
+                # iformfile.startswith('ssra') or
+                # iformfile.startswith('usra') or
+                # iformfile.startswith('adr') or
+                # iformfile.startswith('fmov') or
+                # iformfile.startswith('hint') or
+                # iformfile.startswith('irg') or
+                # iformfile.startswith('ldnp') or
+                # iformfile.startswith('ldp') or
+                # iformfile.startswith('madd') or
+                # iformfile.startswith('mrs') or
+                # iformfile.startswith('msr.') or
+                # iformfile.startswith('cpy') or
+                # iformfile.startswith('dsb') or
+                # iformfile.startswith('gcsb') or
+                # iformfile.startswith('rprfm') or
+                # iformfile.startswith('msrr') or
+                # iformfile.startswith('casp') or
+                # iformfile.startswith('b_uncond') or
+                # iformfile.startswith('b_cond') or
+                # iformfile.startswith('bc_cond') or
+                # iformfile.startswith('addhn') or
+                # iformfile.startswith('bfcvtn') or
+                # iformfile.startswith('stilp') or
+                iformfile.startswith('sysp')
             ):
                 continue
 
@@ -405,7 +414,9 @@ class Xop(Enum):
 
 class Sym(Enum):
     CSYNC       = 'CSYNC'
+    DSYNC       = 'DSYNC'
     PRFOP       = 'sa_prfop'
+    RPRFOP      = 'sa_rprfop'
     OPTION      = 'sa_option'
     OPTION_NXS  = 'sa_option_1'
     SYSREG      = 'sa_systemreg'
@@ -627,10 +638,20 @@ class AsmTemplate:
             'CSYNC option',
             [],
         ],
+        'DSYNC': [
+            Sym.DSYNC,
+            'DSYNC option',
+            [],
+        ],
         'sa_prfop': (
             Sym.PRFOP,
             'prefetch option',
             ['|', '#', 'sa_imm5'],
+        ),
+        'sa_rprfop': (
+            Sym.RPRFOP,
+            'range prefetch option',
+            ['|', '#', 'sa_imm6'],
         ),
         'sa_option': (
             Sym.OPTION,
@@ -672,6 +693,15 @@ class AsmTemplate:
         else:
             return self.buf[self.pos]
 
+    @staticmethod
+    def _isint(v: str) -> bool:
+        try:
+            int(v)
+        except ValueError:
+            return False
+        else:
+            return True
+
     def next(self) -> str | Token:
         ret = self.tok
         self.pos += 1
@@ -705,10 +735,10 @@ class AsmTemplate:
         match self.next():
             case '#':
                 match self.next():
-                    case '0.0'                                   : return Lit(0.0)
-                    case v if isinstance(v, str) and v.isdigit() : return Lit(int(v))
-                    case v if isinstance(v, Token)               : return Imm(v.name)
-                    case v                                       : raise SyntaxError('integer or token expected')
+                    case '0.0'                                      : return Lit(0.0)
+                    case v if isinstance(v, str) and self._isint(v) : return Lit(int(v))
+                    case v if isinstance(v, Token)                  : return Imm(v.name)
+                    case v                                          : raise SyntaxError('integer or token expected, got ' + repr(v))
 
             case '(':
                 reg = self.next()
@@ -935,7 +965,7 @@ class AsmTemplate:
 
         if not self.eof:
             match self.tok:
-                case '.' if name == 'B':
+                case '.' if name in {'B', 'BC'}:
                     self.next()
                     cond = self.next()
 
@@ -999,6 +1029,10 @@ class AsmTemplate:
         def _parse_text(self) -> Iterator[str]:
             for i, ch in enumerate(self.buf):
                 if ch.isalnum() or ch == '_' or (self.sbuf and ch == '.'):
+                    self.sbuf += ch
+                    continue
+
+                if ch == '-' and i < len(self.buf) - 1 and self.buf[i + 1].isdigit():
                     self.sbuf += ch
                     continue
 
@@ -1132,7 +1166,7 @@ for encdata in sorted(enctab.values(), key = lambda x: x.name):
     bits.update(parent_tab[node].findall('regdiagram/box'))
     assert inst.mnemonic == opts['mnemonic']
 
-    if inst.operands.opt is None:
+    if inst.operands.opt is None and inst.modifier != 'sa_cond':
         maxargs = max(maxargs, len(inst.operands.req))
     else:
         maxargs = max(maxargs, len(inst.operands.req) + 1)
@@ -1156,6 +1190,9 @@ for encdata in sorted(enctab.values(), key = lambda x: x.name):
         enctab = encdata,
         fields = fieldtab.get(encdata.name, {})
     ))
+
+# TODO: fuck this
+exit()
 
 ### ---------- Per-instruction Encoding ---------- ###
 
@@ -1182,8 +1219,10 @@ class OnceDict(OrderedDict):
             super().__setitem__(k, v)
 
 SYM_CHECKS = {
-    Sym.CSYNC      : 'isCSync(%s)',
-    Sym.PRFOP      : 'isPrefetch(%s)',
+    Sym.CSYNC      : '%s == CSYNC',
+    Sym.DSYNC      : '%s == DSYNC',
+    Sym.PRFOP      : 'isBasicPrf(%s)',
+    Sym.RPRFOP     : 'isRangePrf(%s)',
     Sym.OPTION     : 'isOption(%s)',
     Sym.OPTION_NXS : 'isOptionNXS(%s)',
     Sym.SYSREG     : 'isSysReg(%s)',
@@ -1268,6 +1307,17 @@ REG_CHECKS = {
     'sa_xt'          : 'isXr(%s)',
     'sa_xt1'         : 'isXr(%s)',
     'sa_xt2'         : 'isXr(%s)',
+}
+
+REG_PLUS_NAMES = {
+    'CASP_CP32_comswappr'   : { 'sa_w_s': 'sa_ws', 'sa_w_t': 'sa_wt' },
+    'CASP_CP64_comswappr'   : { 'sa_x_s': 'sa_xs', 'sa_x_t': 'sa_xt' },
+    'CASPA_CP32_comswappr'  : { 'sa_w_s': 'sa_ws', 'sa_w_t': 'sa_wt' },
+    'CASPA_CP64_comswappr'  : { 'sa_x_s': 'sa_xs', 'sa_x_t': 'sa_xt' },
+    'CASPAL_CP32_comswappr' : { 'sa_w_s': 'sa_ws', 'sa_w_t': 'sa_wt' },
+    'CASPAL_CP64_comswappr' : { 'sa_x_s': 'sa_xs', 'sa_x_t': 'sa_xt' },
+    'CASPL_CP32_comswappr'  : { 'sa_w_s': 'sa_ws', 'sa_w_t': 'sa_wt' },
+    'CASPL_CP64_comswappr'  : { 'sa_x_s': 'sa_xs', 'sa_x_t': 'sa_xt' },
 }
 
 REG_CHECKS_MERGED = {
@@ -1380,6 +1430,7 @@ def match_modifier(name: str, mod: Mod, optional: bool, *extra_cond: str) -> Ite
 
 def match_operands(form: InstrForm, argc: int) -> Iterator['And | Or | str']:
     argv = form.inst.operands.req[:]
+    regtab = {}
     dynvec = {}
     fixedvec = {}
     # TODO: remove this
@@ -1476,7 +1527,21 @@ def match_operands(form: InstrForm, argc: int) -> Iterator['And | Or | str']:
                 else:
                     yield Or(c1 % name, c2 % name)
 
+            elif '_plus_' in val.name:
+                vals = val.name.split('_plus_')
+                real, incr = vals[0], int(vals[1])
+
+                if len(vals) != 2:
+                    raise RuntimeError('invalid register name: ' + str(val))
+
+                rtab = REG_PLUS_NAMES.get(form.enctab.name, {})
+                real = rtab.get(real, real)
+
+                yield REG_CHECKS[real] % name
+                yield 'isNextReg(%s, %s, %d)' % (name, regtab[real], incr)
+
             else:
+                regtab[val.name] = name
                 yield REG_CHECKS[val.name] % name
 
         elif isinstance(val, Vec):
@@ -1970,7 +2035,7 @@ def encode_operand(
             vals[val.name] = 'uint32(%s.(asm.Register).ID())' % name
             encode_defs(form, '%s.(type)' % name, val.size, SCALAR_TYPES, vals, opts, err)
 
-        else:
+        elif '_plus_' not in val.name:
             if val.name in SPECIAL_REGS:
                 vals[val.name] = SPECIAL_REGS[val.name] % name
             else:
@@ -2060,8 +2125,21 @@ def encode_operand(
                 if optcond:
                     raise RuntimeError('optional CSYNC is not supported')
 
+            case Sym.DSYNC:
+                if optcond:
+                    raise RuntimeError('optional DSYNC is not supported')
+
             case Sym.PRFOP:
-                raise NotImplementedError('prfop sym')
+                if optcond:
+                    raise RuntimeError('optional prefetch is not supported')
+                else:
+                    vals['sa_prfop'] = '%s.(PrefetchOp).encode()' % name
+
+            case Sym.RPRFOP:
+                if optcond:
+                    raise RuntimeError('optional range prefetch is not supported')
+                else:
+                    vals['sa_rprfop'] = '%s.(RangePrefetchOp).encode()' % name
 
             case Sym.OPTION:
                 vals['sa_option'] = ('%s.(BarrierOption)' % name, 'SY', {})
@@ -2095,6 +2173,93 @@ def encode_operand(
     else:
         raise RuntimeError('invalid operand type')
 
+
+BRANCH_CONDITIONS = [
+    ('EQ', 0b0000),
+    ('NE', 0b0001),
+    ('CS', 0b0010),
+    ('HS', 0b0010),
+    ('CC', 0b0011),
+    ('LO', 0b0011),
+    ('MI', 0b0100),
+    ('PL', 0b0101),
+    ('VS', 0b0110),
+    ('VC', 0b0111),
+    ('HI', 0b1000),
+    ('LS', 0b1001),
+    ('GE', 0b1010),
+    ('LT', 0b1011),
+    ('GT', 0b1100),
+    ('LE', 0b1101),
+    ('AL', 0b1110),
+]
+
+def rebuild_bcc(cond: str, bits: int, forms: list[InstrForm]) -> list[InstrForm]:
+    return [
+        InstrForm(
+            text   = f.text.replace('<cond>', cond.lower()),
+            inst   = Instr(
+                mnemonic = '%s.%s' % (f.inst.mnemonic, cond),
+                operands = f.inst.operands,
+                modifier = None,
+            ),
+            bits   = f.bits,
+            opts   = f.opts,
+            args   = { **f.args, 'cond': bits },
+            enctab = f.enctab,
+            fields = f.fields,
+        )
+        for f in forms
+    ]
+
+def rebuild_upper_half(q: int, sfx: str, forms: list[InstrForm]) -> list[InstrForm]:
+    return [
+        InstrForm(
+            text   = f.text.replace('{2}', sfx),
+            inst   = Instr(
+                mnemonic = f.inst.mnemonic + sfx,
+                operands = f.inst.operands,
+                modifier = None,
+            ),
+            bits   = f.bits,
+            opts   = f.opts,
+            args   = { **f.args, '__ensure__Q': q },
+            enctab = f.enctab,
+            fields = f.fields,
+        )
+        for f in forms
+    ]
+
+def preprocess_instr_forms(ftab: dict[str, list[InstrForm]]) -> Iterator[tuple[str, list[InstrForm]]]:
+    for name, forms in sorted(ftab.items(), key = lambda x: x[0]):
+        mod = None
+        nomod = []
+        withmod = []
+
+        for form in forms:
+            if form.inst.modifier is None:
+                nomod.append(form)
+            elif mod is not None and mod != form.inst.modifier:
+                raise RuntimeError('multiple modifiers')
+            else:
+                mod = form.inst.modifier
+                withmod.append(form)
+
+        match mod:
+            case None:
+                yield name, nomod
+
+            case 'sa_2':
+                yield name, nomod + rebuild_upper_half(0, '', withmod)
+                yield name + '2', rebuild_upper_half(1, '2', withmod)
+
+            case 'sa_cond':
+                for cond, bits in BRANCH_CONDITIONS:
+                    yield name + cond, rebuild_bcc(cond, bits, withmod)
+
+            case _:
+                raise RuntimeError('unrecognized instruction modifier: ' + repr(mod))
+
 cc = CodeGen()
 cc.line('// Code generated by "mkasm_aarch64.py", DO NOT EDIT.')
 cc.line()
@@ -2113,10 +2278,11 @@ cc.dedent()
 cc.line(')')
 cc.line()
 
-for mnemonic, forms in sorted(formtab.items(), key = lambda x: x[0]):
+for mnemonic, forms in preprocess_instr_forms(formtab):
     nops = set()
     always = False
     status('* Instruction:', mnemonic)
+    assert forms, 'instruction %s have no form' % mnemonic
 
     if len(forms) == 1:
         cc.line('// %s instruction have one single form:' % mnemonic)
@@ -2204,8 +2370,8 @@ for mnemonic, forms in sorted(formtab.items(), key = lambda x: x[0]):
         fmap = {}
         args = []
 
-        if form.inst.modifier not in {None, 'sa_2'}:
-            raise RuntimeError('invalid instruction modifier')
+        if form.inst.modifier is not None:
+            raise RuntimeError('instruction modifiers should have been expanded')
 
         for key, fv in form.fields.items():
             nb = 0
@@ -2448,6 +2614,18 @@ for mnemonic, forms in sorted(formtab.items(), key = lambda x: x[0]):
                 cc.line('panic("aarch64: invalid combination of operands for %s")' % mnemonic)
                 cc.dedent()
                 cc.line('}')
+
+        for arg, exp in form.args.items():
+            if arg.startswith('__ensure__'):
+                cc.line('if %s != %d {' % (args[form.enctab.args.index(arg[10:])], exp))
+                cc.indent()
+                cc.line('panic("aarch64: invalid combination of operands for %s")' % mnemonic)
+                cc.dedent()
+                cc.line('}')
+
+        for arg, exp in form.args.items():
+            if arg.startswith('__ensure__'):
+                args[form.enctab.args.index(arg[10:])] = str(exp)
 
         deferred = ['sa_label' in v for v in args].count(True)
         encoding = '%s(%s)' % (form.enctab.func, ', '.join(

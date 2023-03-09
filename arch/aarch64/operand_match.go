@@ -122,6 +122,7 @@ func isExtend    (v interface{}) bool { _, f := v.(Extension)       ; return f }
 func isOption    (v interface{}) bool { _, f := v.(BarrierOption)   ; return f }
 func isOptionNXS (v interface{}) bool { x, f := v.(BarrierOption)   ; return f && x.isNXS() }
 func isTargets   (v interface{}) bool { _, f := v.(BranchTarget)    ; return f }
+func isRangePrf  (v interface{}) bool { _, f := v.(RangePrefetchOp) ; return f }
 
 func isMem(v interface{}) bool {
     if x, ok := v.(*asm.MemoryOperand); !ok {
@@ -193,4 +194,8 @@ func isAdvSIMD(v interface{}) bool {
         case SIMDRegister128 : return true
         default              : return false
     }
+}
+
+func isNextReg(rd, rs interface{}, dist uint8) bool {
+    return isSameType(rs, rd) && rd.(asm.Register).ID() == (rs.(asm.Register).ID() + dist) % 32
 }
