@@ -13,28 +13,34 @@ type SIMDVectorStructure uint8
 
 const (
     VecB SIMDVectorStructure = iota
+    Vec4B
     VecH
+    Vec2H
     VecS
     VecD
 )
 
 func (self SIMDVectorStructure) String() string {
     switch self {
-        case VecB : return "B"
-        case VecH : return "H"
-        case VecS : return "S"
-        case VecD : return "D"
-        default   : panic("aarch64: invalid SIMD vector structure")
+        case VecB  : return "B"
+        case Vec4B : return "4B"
+        case VecH  : return "H"
+        case Vec2H : return "2H"
+        case VecS  : return "S"
+        case VecD  : return "D"
+        default    : panic("aarch64: invalid SIMD vector structure")
     }
 }
 
 func (self SIMDVectorStructure) MaxIndex() uint8 {
     switch self {
-        case VecB : return 15
-        case VecH : return 7
-        case VecS : return 3
-        case VecD : return 1
-        default   : panic("aarch64: invalid SIMD vector structure")
+        case VecB  : return 15
+        case Vec4B : return 3
+        case VecH  : return 7
+        case Vec2H : return 3
+        case VecS  : return 3
+        case VecD  : return 1
+        default    : panic("aarch64: invalid SIMD vector structure")
     }
 }
 
@@ -374,6 +380,41 @@ const (
 )
 
 const (
+    V0_4B = SIMDRegister128r(Vec4B << 5) | iota
+    V1_4B
+    V2_4B
+    V3_4B
+    V4_4B
+    V5_4B
+    V6_4B
+    V7_4B
+    V8_4B
+    V9_4B
+    V10_4B
+    V11_4B
+    V12_4B
+    V13_4B
+    V14_4B
+    V15_4B
+    V16_4B
+    V17_4B
+    V18_4B
+    V19_4B
+    V20_4B
+    V21_4B
+    V22_4B
+    V23_4B
+    V24_4B
+    V25_4B
+    V26_4B
+    V27_4B
+    V28_4B
+    V29_4B
+    V30_4B
+    V31_4B
+)
+
+const (
     V0_H = SIMDRegister128r(VecH << 5) | iota
     V1_H
     V2_H
@@ -406,6 +447,41 @@ const (
     V29_H
     V30_H
     V31_H
+)
+
+const (
+    V0_2H = SIMDRegister128r(Vec2H << 5) | iota
+    V1_2H
+    V2_2H
+    V3_2H
+    V4_2H
+    V5_2H
+    V6_2H
+    V7_2H
+    V8_2H
+    V9_2H
+    V10_2H
+    V11_2H
+    V12_2H
+    V13_2H
+    V14_2H
+    V15_2H
+    V16_2H
+    V17_2H
+    V18_2H
+    V19_2H
+    V20_2H
+    V21_2H
+    V22_2H
+    V23_2H
+    V24_2H
+    V25_2H
+    V26_2H
+    V27_2H
+    V28_2H
+    V29_2H
+    V30_2H
+    V31_2H
 )
 
 const (

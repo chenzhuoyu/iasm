@@ -303,59 +303,65 @@ for name, entry in sorted(instab.items(), key = lambda v: v[0]):
             bitfields = th.findall('td[@class="bitfield"]')
 
             # TODO: remove this
-            if 'advsimd' in iformfile:
+            if encname != 'DUP_asimdins_DR_r':
                 continue
-            # if not (
-            #     # iformfile[0] <= 'e' and 'advsimd' not in iformfile or
-            #     # iformfile.startswith('bti') or
-            #     # iformfile.startswith('aesd') or
-            #     # iformfile.startswith('uqxtn') or
-            #     # iformfile.startswith('ldr') or
-            #     # iformfile.startswith('and') or
-            #     # iformfile.startswith('eor') or
-            #     # iformfile.startswith('orn') or
-            #     # iformfile.startswith('orr') or
-            #     # iformfile.startswith('addg') or
-            #     # iformfile.startswith('blra') or
-            #     # iformfile.startswith('bra') or
-            #     # iformfile.startswith('ccmn') or
-            #     # iformfile.startswith('autia') or
-            #     # iformfile.startswith('clrex') or
-            #     # iformfile.startswith('dmb') or
-            #     # iformfile.startswith('fcmp') or
-            #     # iformfile.startswith('fcvtzs') or
-            #     # iformfile.startswith('scvtf') or
-            #     # iformfile.startswith('shl') or
-            #     # iformfile.startswith('shr') or
-            #     # iformfile.startswith('sshl') or
-            #     # iformfile.startswith('sshr') or
-            #     # iformfile.startswith('ssra') or
-            #     # iformfile.startswith('usra') or
-            #     # iformfile.startswith('adr') or
-            #     # iformfile.startswith('fmov') or
-            #     # iformfile.startswith('hint') or
-            #     # iformfile.startswith('irg') or
-            #     # iformfile.startswith('ldnp') or
-            #     # iformfile.startswith('ldp') or
-            #     # iformfile.startswith('madd') or
-            #     # iformfile.startswith('mrs') or
-            #     # iformfile.startswith('msr.') or
-            #     # iformfile.startswith('cpy') or
-            #     # iformfile.startswith('dsb') or
-            #     # iformfile.startswith('gcsb') or
-            #     # iformfile.startswith('rprfm') or
-            #     # iformfile.startswith('msrr') or
-            #     # iformfile.startswith('casp') or
-            #     # iformfile.startswith('b_uncond') or
-            #     # iformfile.startswith('b_cond') or
-            #     # iformfile.startswith('bc_cond') or
-            #     # iformfile.startswith('addhn') or
-            #     # iformfile.startswith('bfcvtn') or
-            #     # iformfile.startswith('stilp') or
-            #     # iformfile.startswith('sysp') or
-            #     iformfile.startswith('setp')
-            # ):
-            #     continue
+            if 'advsimd' not in iformfile:
+                continue
+            if not (
+                # iformfile[0] <= 'e' and 'advsimd' not in iformfile or
+                # iformfile.startswith('bti') or
+                # iformfile.startswith('aesd') or
+                # iformfile.startswith('uqxtn') or
+                # iformfile.startswith('ldr') or
+                # iformfile.startswith('and') or
+                # iformfile.startswith('eor') or
+                # iformfile.startswith('orn') or
+                # iformfile.startswith('orr') or
+                # iformfile.startswith('addg') or
+                # iformfile.startswith('blra') or
+                # iformfile.startswith('bra') or
+                # iformfile.startswith('ccmn') or
+                # iformfile.startswith('autia') or
+                # iformfile.startswith('clrex') or
+                # iformfile.startswith('dmb') or
+                # iformfile.startswith('fcmp') or
+                # iformfile.startswith('fcvtzs') or
+                # iformfile.startswith('scvtf') or
+                # iformfile.startswith('shl') or
+                # iformfile.startswith('shr') or
+                # iformfile.startswith('sshl') or
+                # iformfile.startswith('sshr') or
+                # iformfile.startswith('ssra') or
+                # iformfile.startswith('usra') or
+                # iformfile.startswith('adr') or
+                # iformfile.startswith('fmov') or
+                # iformfile.startswith('hint') or
+                # iformfile.startswith('irg') or
+                # iformfile.startswith('ldnp') or
+                # iformfile.startswith('ldp') or
+                # iformfile.startswith('madd') or
+                # iformfile.startswith('mrs') or
+                # iformfile.startswith('msr.') or
+                # iformfile.startswith('cpy') or
+                # iformfile.startswith('dsb') or
+                # iformfile.startswith('gcsb') or
+                # iformfile.startswith('rprfm') or
+                # iformfile.startswith('msrr') or
+                # iformfile.startswith('casp') or
+                # iformfile.startswith('b_uncond') or
+                # iformfile.startswith('b_cond') or
+                # iformfile.startswith('bc_cond') or
+                # iformfile.startswith('addhn') or
+                # iformfile.startswith('bfcvtn') or
+                # iformfile.startswith('stilp') or
+                # iformfile.startswith('sysp') or
+                # iformfile.startswith('setp') or
+                # iformfile.startswith('bfdot') or
+                # iformfile.startswith('usdot') or
+                # iformfile.startswith('bfmlal') or
+                iformfile.startswith('dup')
+            ):
+                continue
 
             assert iformfile, 'missing iform files for ' + name
             assert iformname is not None, 'missing iform names for ' + name
@@ -1412,6 +1418,13 @@ VECTOR_TYPES = {
     '2D'  : 'Vec2D',
 }
 
+VECTOR_MODES = {
+    'B': 'VecB',
+    'H': 'VecH',
+    'S': 'VecS',
+    'D': 'VecD',
+}
+
 def match_modifier(name: str, mod: Mod, optional: bool, *extra_cond: str) -> Iterator[Or | str]:
     if not optional:
         if isinstance(mod.mod, Sop):
@@ -2070,15 +2083,11 @@ def encode_operand(
             mode, vidx = val.mode, val.vidx
             vals[val.name] = 'uint32(%s.(_Indexed128r).ID())' % name
 
-            # TODO: this
             if not isinstance(mode, Tag):
-                print('%s.%s[%s]' % (val.name, val.mode, val.vidx))
-                raise NotImplementedError('indexed vector mode')
+                encode_defs(form, 'vstrr(%s)' % name, mode, VECTOR_MODES, vals, opts, 'unreachable')
 
-            # TODO: this
             if isinstance(vidx, Imm):
-                print('%s.%s[%s]' % (val.name, val.mode, val.vidx))
-                raise NotImplementedError('indexed vector mode')
+                vals[vidx.name] = 'uint32(%s.(_Indexed128r).Index())' % name
 
         elif val.mode is not None:
             mode = val.mode
@@ -2200,7 +2209,7 @@ def encode_operand(
                 if optcond:
                     raise RuntimeError('optional prefetch is not supported')
                 else:
-                    vals['sa_prfop'] = '%s.(PrefetchOp).encode()' % name
+                    vals['sa_prfop'] = 'uint32(%s.(PrefetchOp))' % name
 
             case Sym.RPRFOP:
                 if optcond:
@@ -2279,10 +2288,10 @@ def rebuild_bcc(cond: str, bits: int, forms: list[InstrForm]) -> list[InstrForm]
         for f in forms
     ]
 
-def rebuild_upper_half(q: int, sfx: str, forms: list[InstrForm]) -> list[InstrForm]:
+def rebuild_upper_half(pat: str, sfx: str, forms: list[InstrForm], **args: int) -> list[InstrForm]:
     return [
         InstrForm(
-            text   = f.text.replace('{2}', sfx),
+            text   = f.text.replace(pat, sfx),
             inst   = Instr(
                 mnemonic = f.inst.mnemonic + sfx,
                 operands = f.inst.operands,
@@ -2290,7 +2299,7 @@ def rebuild_upper_half(q: int, sfx: str, forms: list[InstrForm]) -> list[InstrFo
             ),
             bits   = f.bits,
             opts   = f.opts,
-            args   = { **f.args, '__ensure__Q': q },
+            args   = { **f.args, **args },
             enctab = f.enctab,
             fields = f.fields,
         )
@@ -2314,18 +2323,31 @@ def preprocess_instr_forms(ftab: dict[str, list[InstrForm]]) -> Iterator[tuple[s
 
         match mod:
             case None:
-                yield name, nomod
+                if nomod:
+                    yield name, nomod
+                else:
+                    raise RuntimeError('non-encodable instruction ' + repr(name))
 
             case 'sa_2':
-                yield name, nomod + rebuild_upper_half(0, '', withmod)
-                yield name + '2', rebuild_upper_half(1, '2', withmod)
+                yield name, nomod + rebuild_upper_half('{2}', '', withmod, __ensure__Q = 0)
+                yield name + '2', rebuild_upper_half('{2}', '2', withmod, __ensure__Q = 1)
+
+            case 'sa_bt':
+                if nomod:
+                    yield name, nomod
+
+                yield name + 'B', rebuild_upper_half('<bt>', 'B', withmod, Q = 0)
+                yield name + 'T', rebuild_upper_half('<bt>', 'T', withmod, Q = 1)
 
             case 'sa_cond':
+                if nomod:
+                    yield name, nomod
+
                 for cond, bits in BRANCH_CONDITIONS:
                     yield name + cond, rebuild_bcc(cond, bits, withmod)
 
             case _:
-                raise RuntimeError('unrecognized instruction modifier: ' + repr(mod))
+                raise RuntimeError('unrecognized instruction modifier for %s: %s' % (name, mod))
 
 cc = CodeGen()
 cc.line('// Code generated by "mkasm_aarch64.py", DO NOT EDIT.')
@@ -2563,8 +2585,19 @@ for mnemonic, forms in preprocess_instr_forms(formtab):
                 continue
 
             if fvs is not None:
-                vv = [v[1] for v in fvs if v[0] in opts or v[0] in vals]
-                args.append(vv[-1])
+                vx = None
+                ok = False
+                fvs.sort(key = lambda v: v[0])
+
+                for r, v, m in fvs:
+                    if (r in opts or r in vals) and not vals[r][1].startswith('bm:'):
+                        vx, ok = v, True
+                        break
+
+                if not ok:
+                    raise RuntimeError('missing field ' + repr(arg))
+
+                args.append(vx)
                 continue
 
             ok = False
@@ -2632,12 +2665,12 @@ for mnemonic, forms in preprocess_instr_forms(formtab):
                             cc.line('%s |= (%s) << %d' % (arg, bv, j - i))
 
             if not ok:
-                print(form)  # TODO: remove this
+                print(form)
                 raise RuntimeError('invalid field ' + repr(arg))
 
         for fv in fmap.values():
             terms = []
-            exprs = [v for v in sorted(fv, key = lambda v: v[0]) if v[0] in opts or v[0] in vals]
+            exprs = [v for v in fv if v[0] in opts or v[0] in vals]
 
             if len(exprs) > 1:
                 for i, (r, v, m) in enumerate(exprs[1:]):

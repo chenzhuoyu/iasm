@@ -493,13 +493,37 @@ const (
     DSYNC
 )
 
+// PrefetchOp represents one of the Prefetch Options.
+type PrefetchOp uint8
+
+const (
+    PLD_L1_KEEP PrefetchOp = 0b00000
+    PLD_L1_STRM PrefetchOp = 0b00001
+    PLD_L2_KEEP PrefetchOp = 0b00010
+    PLD_L2_STRM PrefetchOp = 0b00011
+    PLD_L3_KEEP PrefetchOp = 0b00100
+    PLD_L3_STRM PrefetchOp = 0b00101
+    PLI_L1_KEEP PrefetchOp = 0b01000
+    PLI_L1_STRM PrefetchOp = 0b01001
+    PLI_L2_KEEP PrefetchOp = 0b01010
+    PLI_L2_STRM PrefetchOp = 0b01011
+    PLI_L3_KEEP PrefetchOp = 0b01100
+    PLI_L3_STRM PrefetchOp = 0b01101
+    PST_L1_KEEP PrefetchOp = 0b10000
+    PST_L1_STRM PrefetchOp = 0b10001
+    PST_L2_KEEP PrefetchOp = 0b10010
+    PST_L2_STRM PrefetchOp = 0b10011
+    PST_L3_KEEP PrefetchOp = 0b10100
+    PST_L3_STRM PrefetchOp = 0b10101
+)
+
 // RangePrefetchOp represents one of the Range Prefetch Options.
 type RangePrefetchOp uint8
 
 const (
     PLD_KEEP RangePrefetchOp = 0b000000
-    PST_KEEP RangePrefetchOp = 0b000001
     PLD_STRM RangePrefetchOp = 0b000100
+    PST_KEEP RangePrefetchOp = 0b000001
     PST_STRM RangePrefetchOp = 0b000101
 )
 
