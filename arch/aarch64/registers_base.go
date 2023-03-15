@@ -6,16 +6,15 @@ import (
     `github.com/chenzhuoyu/iasm/internal/tag`
 )
 
-// Register32 represents 32-bit generic purpose registers (W0 ~ W30) and WZR / WSP.
-type Register32 uint8
+type (
+    WRegister uint8 // 32-bit generic purpose registers (W0 ~ W30) and WZR / WSP.
+    XRegister uint8 // 64-bit generic purpose registers (X0 ~ X30) and XZR / SP.
+)
 
-// Register64 represents 64-bit generic purpose registers (X0 ~ X30) and XZR / SP.
-type Register64 uint8
+func (WRegister) Sealed(tag.Tag) {}
+func (XRegister) Sealed(tag.Tag) {}
 
-func (Register32) Sealed(tag.Tag) {}
-func (Register64) Sealed(tag.Tag) {}
-
-func (self Register32) ID() uint8 {
+func (self WRegister) ID() uint8 {
     if self == WSP {
         return uint8(WZR)
     } else {
@@ -23,7 +22,7 @@ func (self Register32) ID() uint8 {
     }
 }
 
-func (self Register64) ID() uint8 {
+func (self XRegister) ID() uint8 {
     if self == SP {
         return uint8(XZR)
     } else {
@@ -31,7 +30,7 @@ func (self Register64) ID() uint8 {
     }
 }
 
-func (self Register32) String() string {
+func (self WRegister) String() string {
     switch self {
         case WSP : return "wsp"
         case WZR : return "wzr"
@@ -39,7 +38,7 @@ func (self Register32) String() string {
     }
 }
 
-func (self Register64) String() string {
+func (self XRegister) String() string {
     switch self {
         case LR  : return "lr"
         case SP  : return "sp"
@@ -49,7 +48,7 @@ func (self Register64) String() string {
 }
 
 const (
-    W0 Register32 = iota
+    W0 WRegister = iota
     W1
     W2
     W3
@@ -84,7 +83,7 @@ const (
 )
 
 const (
-    X0 Register64 = iota
+    X0 XRegister = iota
     X1
     X2
     X3

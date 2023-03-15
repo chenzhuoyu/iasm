@@ -46,25 +46,24 @@ func isInt32(v interface{}) bool {
 
 func isSpecial(v interface{}) bool {
     switch v.(type) {
-        case Register32         : return true
-        case Register64         : return true
-        case SIMDRegister8      : return true
-        case SIMDRegister16     : return true
-        case SIMDRegister32     : return true
-        case SIMDRegister64     : return true
-        case SIMDRegister128    : return true
-        case SIMDRegister128r   : return true
-        case SIMDRegister128v   : return true
-        case SIMDVector1        : return true
-        case SIMDVector2        : return true
-        case SIMDVector3        : return true
-        case SIMDVector4        : return true
-        case _Indexed128r       : return true
+        case WRegister          : return true
+        case XRegister          : return true
+        case BRegister          : return true
+        case HRegister          : return true
+        case SRegister          : return true
+        case DRegister          : return true
+        case QRegister          : return true
+        case VRegister          : return true
+        case _Vec1: return true
+        case _Vec2: return true
+        case _Vec3: return true
+        case _Vec4: return true
+        case VidxRegister       : return true
         case _IndexedVec1       : return true
         case _IndexedVec2       : return true
         case _IndexedVec3       : return true
         case _IndexedVec4       : return true
-        case PStateField: return true
+        case PStateField        : return true
         case SystemRegister     : return true
         case asm.RelativeOffset : return true
         default                 : return false
@@ -75,28 +74,18 @@ func isSameType(x, y interface{}) bool {
     return rt.TypeOf(x) == rt.TypeOf(y)
 }
 
-func isSameSize(x, y interface{}) bool {
-    if a, ok := x.(SIMDRegister128v); !ok {
-        return false
-    } else if b, ok := y.(SIMDRegister128v); !ok {
-        return false
-    } else {
-        return a.Arrangement() == b.Arrangement()
-    }
-}
-
-func isLabel     (v interface{}) bool { _, f := v.(*asm.Label)       ; return f }
-func isXr        (v interface{}) bool { x, f := v.(Register64)       ; return f && x != SP }
-func isWr        (v interface{}) bool { x, f := v.(Register32)       ; return f && x != WSP }
-func isXrOrSP    (v interface{}) bool { x, f := v.(Register64)       ; return f && x != XZR }
-func isWrOrWSP   (v interface{}) bool { x, f := v.(Register32)       ; return f && x != WZR }
-func isBr        (v interface{}) bool { _, f := v.(SIMDRegister8)    ; return f }
-func isHr        (v interface{}) bool { _, f := v.(SIMDRegister16)   ; return f }
-func isSr        (v interface{}) bool { _, f := v.(SIMDRegister32)   ; return f }
-func isDr        (v interface{}) bool { _, f := v.(SIMDRegister64)   ; return f }
-func isQr        (v interface{}) bool { _, f := v.(SIMDRegister128)  ; return f }
-func isVr        (v interface{}) bool { _, f := v.(SIMDRegister128v) ; return f }
-func isVri       (v interface{}) bool { _, f := v.(_Indexed128r)     ; return f }
+func isLabel     (v interface{}) bool { _, f := v.(*asm.Label)   ; return f }
+func isXr        (v interface{}) bool { x, f := v.(XRegister)    ; return f && x != SP }
+func isWr        (v interface{}) bool { x, f := v.(WRegister)    ; return f && x != WSP }
+func isXrOrSP    (v interface{}) bool { x, f := v.(XRegister)    ; return f && x != XZR }
+func isWrOrWSP   (v interface{}) bool { x, f := v.(WRegister)    ; return f && x != WZR }
+func isBr        (v interface{}) bool { _, f := v.(BRegister)    ; return f }
+func isHr        (v interface{}) bool { _, f := v.(HRegister)    ; return f }
+func isSr        (v interface{}) bool { _, f := v.(SRegister)    ; return f }
+func isDr        (v interface{}) bool { _, f := v.(DRegister)    ; return f }
+func isQr        (v interface{}) bool { _, f := v.(QRegister)    ; return f }
+func isVr        (v interface{}) bool { _, f := v.(VRegister)    ; return f }
+func isVri       (v interface{}) bool { _, f := v.(VidxRegister) ; return f }
 
 func isImm       (v interface{}) bool { _, f := asInt64(v)  ; return f }
 func isImm9      (v interface{}) bool { x, f := asInt64(v)  ; return f && x &^ 0b111111111 == 0 }
@@ -135,7 +124,7 @@ func isMem(v interface{}) bool {
     }
 }
 
-func isVfmt(v interface{}, fmt ...SIMDVectorArrangement) bool {
+func isVfmt(v interface{}, fmt ...VecFormat) bool {
     t := vfmt(v)
     for _, f := range fmt { if t == f { return true } }
     return false
@@ -161,6 +150,10 @@ func isIntLit(v interface{}, imm ...int64) bool {
     return false
 }
 
+func isExtIndex(r, v interface{}) bool {
+    return isUimm4(v) && (vfmt(r) != Vec8B || (asUimm4(v) & 0b1000) == 0)
+}
+
 func isFloatLit(v interface{}, imm float64) bool {
     if isSpecial(v) {
         return false
@@ -181,20 +174,20 @@ func isSameMod(v interface{}, mod Modifier) bool {
 
 func isWrOrXr(v interface{}) bool {
     switch v.(type) {
-        case Register32 : return true
-        case Register64 : return true
-        default         : return false
+        case WRegister : return true
+        case XRegister : return true
+        default        : return false
     }
 }
 
 func isAdvSIMD(v interface{}) bool {
     switch v.(type) {
-        case SIMDRegister8   : return true
-        case SIMDRegister16  : return true
-        case SIMDRegister32  : return true
-        case SIMDRegister64  : return true
-        case SIMDRegister128 : return true
-        default              : return false
+        case BRegister : return true
+        case HRegister : return true
+        case SRegister : return true
+        case DRegister : return true
+        case QRegister : return true
+        default        : return false
     }
 }
 

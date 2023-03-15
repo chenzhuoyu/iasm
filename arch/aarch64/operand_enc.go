@@ -96,3 +96,11 @@ func asFloat64(v interface{}) (float64, bool) {
         return 0, false
     }
 }
+
+func asExtIndex(r, v interface{}) uint32 {
+    switch vfmt(r) {
+        case Vec8B  : return asUimm4(v) & 0b00111
+        case Vec16B : return asUimm4(v) | 0b10000
+        default     : panic("aarch64: invalid register for EXT instruction")
+    }
+}

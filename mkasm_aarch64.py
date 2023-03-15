@@ -17,6 +17,8 @@ from collections import OrderedDict
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 
+MAX_LINE_WIDTH = 120
+
 class CodeGen:
     def __init__(self):
         self.buf = []
@@ -191,9 +193,6 @@ class InstructionTabEntry(NamedTuple):
             '}',
         ])
 
-def bit_mask(nb: int) -> str:
-    return hex((1 << nb) - 1)
-
 def parse_bit(bit: str) -> int | None:
     match bit:
         case '0': return 0
@@ -256,7 +255,7 @@ for iclass in sorted(encindex.findall('iclass_sect'), key = lambda x: x.attrib['
     cc.indent()
 
     for th, (_, n) in argv:
-        cc.line('if %s &^ %s != 0 {' % (th, bit_mask(n)))
+        cc.line('if %s &^ %s != 0 {' % (th, hex((1 << n) - 1)))
         cc.indent()
         cc.line('panic("%s: invalid %s")' % (name, th))
         cc.dedent()
@@ -303,65 +302,12 @@ for name, entry in sorted(instab.items(), key = lambda v: v[0]):
             bitfields = th.findall('td[@class="bitfield"]')
 
             # TODO: remove this
-            if encname != 'DUP_asimdins_DR_r':
+            # if encname != 'FADDP_asisdpair_only_H':
+            #     continue
+            if 'advsimd' not in iformfile or iformfile[0] >= 'l':
                 continue
-            if 'advsimd' not in iformfile:
-                continue
-            if not (
-                # iformfile[0] <= 'e' and 'advsimd' not in iformfile or
-                # iformfile.startswith('bti') or
-                # iformfile.startswith('aesd') or
-                # iformfile.startswith('uqxtn') or
-                # iformfile.startswith('ldr') or
-                # iformfile.startswith('and') or
-                # iformfile.startswith('eor') or
-                # iformfile.startswith('orn') or
-                # iformfile.startswith('orr') or
-                # iformfile.startswith('addg') or
-                # iformfile.startswith('blra') or
-                # iformfile.startswith('bra') or
-                # iformfile.startswith('ccmn') or
-                # iformfile.startswith('autia') or
-                # iformfile.startswith('clrex') or
-                # iformfile.startswith('dmb') or
-                # iformfile.startswith('fcmp') or
-                # iformfile.startswith('fcvtzs') or
-                # iformfile.startswith('scvtf') or
-                # iformfile.startswith('shl') or
-                # iformfile.startswith('shr') or
-                # iformfile.startswith('sshl') or
-                # iformfile.startswith('sshr') or
-                # iformfile.startswith('ssra') or
-                # iformfile.startswith('usra') or
-                # iformfile.startswith('adr') or
-                # iformfile.startswith('fmov') or
-                # iformfile.startswith('hint') or
-                # iformfile.startswith('irg') or
-                # iformfile.startswith('ldnp') or
-                # iformfile.startswith('ldp') or
-                # iformfile.startswith('madd') or
-                # iformfile.startswith('mrs') or
-                # iformfile.startswith('msr.') or
-                # iformfile.startswith('cpy') or
-                # iformfile.startswith('dsb') or
-                # iformfile.startswith('gcsb') or
-                # iformfile.startswith('rprfm') or
-                # iformfile.startswith('msrr') or
-                # iformfile.startswith('casp') or
-                # iformfile.startswith('b_uncond') or
-                # iformfile.startswith('b_cond') or
-                # iformfile.startswith('bc_cond') or
-                # iformfile.startswith('addhn') or
-                # iformfile.startswith('bfcvtn') or
-                # iformfile.startswith('stilp') or
-                # iformfile.startswith('sysp') or
-                # iformfile.startswith('setp') or
-                # iformfile.startswith('bfdot') or
-                # iformfile.startswith('usdot') or
-                # iformfile.startswith('bfmlal') or
-                iformfile.startswith('dup')
-            ):
-                continue
+            # if not iformfile.startswith('fmaxnmv'):
+            #     continue
 
             assert iformfile, 'missing iform files for ' + name
             assert iformname is not None, 'missing iform names for ' + name
@@ -1258,6 +1204,7 @@ IMM_CHECKS = {
     'CRm'                             : 'isUimm4(%s)',
     'CRm:Encoding:Hints:Index:by:op2' : 'isUimm7(%s)',
     'N:immr:imms'                     : 'isMask64(%s)',
+    'Q:imm4'                          : 'isExtIndex(v0, %s)',
     'a:b:c:d:e:f:g:h'                 : 'isUimm8(%s)',
     'b40:b5'                          : 'isUimm6(%s)',
     'imm5'                            : 'isUimm5(%s)',
@@ -1400,16 +1347,17 @@ UNSIGNED_IMM = {
 }
 
 SCALAR_TYPES = {
-    'B': 'SIMDRegister8',
-    'H': 'SIMDRegister16',
-    'S': 'SIMDRegister32',
-    'D': 'SIMDRegister64',
-    'Q': 'SIMDRegister128',
+    'B': 'BRegister',
+    'H': 'HRegister',
+    'S': 'SRegister',
+    'D': 'DRegister',
+    'Q': 'QRegister',
 }
 
 VECTOR_TYPES = {
     '8B'  : 'Vec8B',
     '16B' : 'Vec16B',
+    '2H'  : 'Vec2H',
     '4H'  : 'Vec4H',
     '8H'  : 'Vec8H',
     '2S'  : 'Vec2S',
@@ -1419,10 +1367,25 @@ VECTOR_TYPES = {
 }
 
 VECTOR_MODES = {
-    'B': 'VecB',
-    'H': 'VecH',
-    'S': 'VecS',
-    'D': 'VecD',
+    'B': 'ModeB',
+    'H': 'ModeH',
+    'S': 'ModeS',
+    'D': 'ModeD',
+}
+
+VECTOR_SIZE_CHECKS = {
+    'FMAXNMV_asimdall_only_H': {
+        'sa_v': 'isHr(%s)',
+    },
+    'FMINNMV_asimdall_only_H': {
+        'sa_v': 'isHr(%s)',
+    },
+    'FMAXV_asimdall_only_H': {
+        'sa_v': 'isHr(%s)',
+    },
+    'FMINV_asimdall_only_H': {
+        'sa_v': 'isHr(%s)',
+    },
 }
 
 def match_modifier(name: str, mod: Mod, optional: bool, *extra_cond: str) -> Iterator[Or | str]:
@@ -1518,8 +1481,11 @@ def match_operands(form: InstrForm, argc: int) -> Iterator['And | Or | str']:
             elif val.size is not None:
                 if val.size == 'sa_r':
                     yield COMBREG_CHECKS[val.name] % name
-                else:
+                elif val.size not in VECTOR_SIZE_CHECKS.get(form.enctab.name, {}):
                     yield FIXEDVEC_CHECKS[val.name] % name
+                    fixedvec.setdefault(val.size, []).append(name)
+                else:
+                    yield VECTOR_SIZE_CHECKS[form.enctab.name][val.size] % name
                     fixedvec.setdefault(val.size, []).append(name)
 
             elif val.mode is not None and val.vidx is not None:
@@ -1529,7 +1495,7 @@ def match_operands(form: InstrForm, argc: int) -> Iterator['And | Or | str']:
                     yield 'isVri(%s)' % name
 
                 if isinstance(val.mode, Tag):
-                    yield 'vstrr(%s) == Vec%s' % (name, val.mode.name)
+                    yield 'vmoder(%s) == Mode%s' % (name, val.mode.name)
 
                 if isinstance(val.vidx, Lit):
                     if val.vidx.ty is not int:
@@ -1703,7 +1669,7 @@ def match_operands(form: InstrForm, argc: int) -> Iterator['And | Or | str']:
             raise RuntimeError('invalid operand type')
 
     yield from (
-        'isSameSize(%s, %s)' % (v[i], v[i + 1])
+        'vfmt(%s) == vfmt(%s)' % (v[i], v[i + 1])
         for v in dynvec.values()
         for i in range(len(v) - 1)
     )
@@ -1729,6 +1695,7 @@ IMM_ENCODER = {
     'CRm'                             : 'asUimm4(%s)',
     'CRm:Encoding:Hints:Index:by:op2' : 'asUimm7(%s)',
     'N:immr:imms'                     : 'asMaskOp(%s)',
+    'Q:imm4'                          : 'asExtIndex(v0, %s)',
     'a:b:c:d:e:f:g:h'                 : 'asUimm8(%s)',
     'b40:b5'                          : 'asUimm6(%s)',
     'imm5'                            : 'asUimm5(%s)',
@@ -1928,7 +1895,10 @@ def encode_defs(
     field = form.fields[var_name]
 
     if not isinstance(field, Definition):
-        raise RuntimeError('field should be definitions')
+        if var_name not in VECTOR_SIZE_CHECKS.get(form.enctab.name, {}):
+            raise RuntimeError('field should be definitions: ' + repr(var_name))
+        else:
+            return
 
     for k, v in field.bits.items():
         if v and k != 'RESERVED' and not k.startswith('SEE'):
@@ -1954,7 +1924,13 @@ def encode_defs(
             vidx = defs.refs.index(field.refs[0])
             nbit = form.bits.refs[field.refs[0]][1]
             nshr = sum([form.bits.refs[x][1] for x in defs.refs[:vidx]])
-            refs = '(%s >> %d) & %s' % (refs, nshr, bit_mask(nbit))
+
+            if nshr:
+                refs = 'maskp(%s, %d, %d)' % (refs, nshr, nbit)
+            elif nbit >= 3:
+                refs = 'mask(%s, %d)' % (refs, nshr, nbit)
+            else:
+                refs = '%s & %d' % (refs, nshr, (1 << nbit) - 1)
 
         cond = []
         opts[var_name] = cond
@@ -2081,13 +2057,13 @@ def encode_operand(
                 raise RuntimeError('invalid indexing on non-vector registers: ' + str(val))
 
             mode, vidx = val.mode, val.vidx
-            vals[val.name] = 'uint32(%s.(_Indexed128r).ID())' % name
+            vals[val.name] = 'uint32(%s.(VidxRegister).ID())' % name
 
             if not isinstance(mode, Tag):
-                encode_defs(form, 'vstrr(%s)' % name, mode, VECTOR_MODES, vals, opts, 'unreachable')
+                encode_defs(form, 'vmoder(%s)' % name, mode, VECTOR_MODES, vals, opts, 'unreachable')
 
             if isinstance(vidx, Imm):
-                vals[vidx.name] = 'uint32(%s.(_Indexed128r).Index())' % name
+                vals[vidx.name] = 'uint32(vidxr(%s))' % name
 
         elif val.mode is not None:
             mode = val.mode
@@ -2438,7 +2414,7 @@ for mnemonic, forms in preprocess_instr_forms(formtab):
             else:
                 raise RuntimeError('multiple instruction forms while no matching condition')
 
-        elif len(mt) == 1 or len(mts) + cc.level * 4 + 5 <= 120:
+        elif len(mt) == 1 or len(mts) + cc.level * 4 + 5 <= MAX_LINE_WIDTH:
             cc.line('if %s {' % mts)
             cc.indent()
 
@@ -2491,10 +2467,12 @@ for mnemonic, forms in preprocess_instr_forms(formtab):
                 _, n = form.bits.refs[x]
                 nb -= n
 
-                if nb == 0:
-                    fmt = '%s & ' + bit_mask(n)
+                if nb:
+                    fmt = 'maskp(%%s, %d, %d)' % (nb, n)
+                elif n >= 3:
+                    fmt = 'mask(%%s, %d)' % n
                 else:
-                    fmt = '(%%s >> %d) & %s' % (nb, bit_mask(n))
+                    fmt = '%%s & %d' % ((1 << n) - 1)
 
                 fmap.setdefault(x, []).append((
                     key,
@@ -2586,15 +2564,14 @@ for mnemonic, forms in preprocess_instr_forms(formtab):
 
             if fvs is not None:
                 vx = None
-                ok = False
-                fvs.sort(key = lambda v: v[0])
+                fvs.sort(key = lambda v: (v[0] in vals and vals[v[0]][1].startswith('bm:'), v[0]))
 
                 for r, v, m in fvs:
                     if (r in opts or r in vals) and not vals[r][1].startswith('bm:'):
-                        vx, ok = v, True
+                        vx = v
                         break
 
-                if not ok:
+                if vx is None:
                     raise RuntimeError('missing field ' + repr(arg))
 
                 args.append(vx)
@@ -2651,18 +2628,13 @@ for mnemonic, forms in preprocess_instr_forms(formtab):
                     x, y = i + n - 1, j + k - 1
 
                     if i <= j and y <= x:
-                        if len(fv) != 1:
-                            raise RuntimeError('ambiguous partial bit values %s.%s' % (arg, bn))
-
                         ok = True
                         bv = fv[0][1]
 
                         if i == j:
                             cc.line('%s |= %s' % (arg, bv))
-                        elif bv.isidentifier():
-                            cc.line('%s |= %s << %d' % (arg, bv, j - i))
                         else:
-                            cc.line('%s |= (%s) << %d' % (arg, bv, j - i))
+                            cc.line('%s |= %s << %d' % (arg, bv, j - i))
 
             if not ok:
                 print(form)
@@ -2672,45 +2644,64 @@ for mnemonic, forms in preprocess_instr_forms(formtab):
             terms = []
             exprs = [v for v in fv if v[0] in opts or v[0] in vals]
 
-            if len(exprs) > 1:
-                for i, (r, v, m) in enumerate(exprs[1:]):
-                    bm = 0
-                    vv = vals[r]
-                    vx = exprs[i][1]
-                    vk = BM_FORMAT % r
+            for (r0, v0, m0), (r1, v1, m1) in zip(exprs, exprs[1:]):
+                bm0, bm1 = 0, 0
+                rm0, rm1 = BM_FORMAT % r0, BM_FORMAT % r1
 
-                    if (vk in vals) is not (vk in opts):
-                        raise RuntimeError('inconsistent bit mask variable state')
+                if isinstance(vals[r0], tuple) and vals[r0][1].startswith('bm:'):
+                    bm0 = int(vals[r0][1][3:])
 
-                    if isinstance(vv, tuple) and vv[1].startswith('bm:'):
-                        bm = int(vv[1][3:])
+                if isinstance(vals[r1], tuple) and vals[r1][1].startswith('bm:'):
+                    bm1 = int(vals[r1][1][3:])
 
-                    if vk not in vals:
-                        assert not bm, 'unexpected bit mask'
-                        terms.append('%s != %s' % (vx, v))
-
-                    elif m.isidentifier() and vx.isidentifier():
-                        if not bm:
-                            terms.append('%s & %s != %s' % (vx, m, v))
-                        else:
-                            terms.append('!matchany(%s, &%s[0], &%s[0], %d)' % (vx, m, v, bm))
-
-                    elif m.isidentifier() and not vx.isidentifier():
-                        if not bm:
-                            terms.append('(%s) & %s != %s' % (vx, m, v))
-                        else:
-                            terms.append('!matchany(%s, &%s[0], &%s[0], %d)' % (vx, m, v, bm))
-
-                    elif not m.isidentifier() and vx.isidentifier():
-                        assert not bm, 'unexpected bit mask'
-                        terms.append('%s & (%s) != %s' % (vx, m, v))
-
+                if bm1:
+                    if bm0:
+                        raise RuntimeError('multiple bit masks: bm0')
+                    elif rm1 not in vals:
+                        raise RuntimeError('bitmask confliction: bm0')
+                    elif rm0 not in vals:
+                        terms.append('!matchany(%s, &%s[0], &%s[0], %d)' % (v0, v1, m1, bm1))
                     else:
-                        assert not bm, 'unexpected bit mask'
-                        terms.append('(%s) & (%s) != %s' % (vx, m, v))
+                        terms.append('!matchany(%s & %s, &%s[0], &%s[0], %d)' % (v0, m0, v1, m1, bm1))
 
-                cc.line('if %s {' % ' || '.join(terms))
-                cc.indent()
+                elif bm0:
+                    if bm1:
+                        raise RuntimeError('multiple bit masks: bm1')
+                    elif rm0 not in vals:
+                        raise RuntimeError('bitmask confliction: bm1')
+                    elif rm1 not in vals:
+                        terms.append('!matchany(%s, &%s[0], &%s[0], %d)' % (v1, v0, m0, bm0))
+                    else:
+                        terms.append('!matchany(%s & %s, &%s[0], &%s[0], %d)' % (v1, m1, v0, m0, bm0))
+
+                else:
+                    if rm0 in vals and rm1 in vals:
+                        terms.append('%s & %s != %s & %s' % (v0, m0, v1, m1))
+                    elif rm0 in vals:
+                        terms.append('%s & %s != %s' % (v0, m0, v1))
+                    elif rm1 in vals:
+                        terms.append('%s != %s & %s' % (v0, v1, m1))
+                    else:
+                        terms.append('%s != %s' % (v0, v1))
+
+            if terms:
+                conds = ' || '.join(terms)
+                width = len(conds) + cc.level * 4 + 5
+
+                if len(terms) == 1 or width <= MAX_LINE_WIDTH:
+                    cc.line('if %s {' % ' || '.join(terms))
+                    cc.indent()
+
+                else:
+                    hd, *rem, tr = terms
+                    cc.line('if %s ||' % hd)
+
+                    for v in rem:
+                        cc.line('   %s ||' % v)
+
+                    cc.line('   %s {' % tr)
+                    cc.indent()
+
                 cc.line('panic("aarch64: invalid combination of operands for %s")' % mnemonic)
                 cc.dedent()
                 cc.line('}')
@@ -2734,7 +2725,7 @@ for mnemonic, forms in preprocess_instr_forms(formtab):
         ))
 
         if not deferred:
-            if len(encoding) + cc.level * 4 + 10 <= 120:
+            if len(encoding) + cc.level * 4 + 10 <= MAX_LINE_WIDTH:
                 cc.line('return p.setins(%s)' % encoding)
 
             else:
@@ -2748,7 +2739,7 @@ for mnemonic, forms in preprocess_instr_forms(formtab):
                 cc.line('))')
 
         elif deferred == 1:
-            if len(encoding) + cc.level * 4 + 45 <= 120:
+            if len(encoding) + cc.level * 4 + 45 <= MAX_LINE_WIDTH:
                 cc.line('return p.setenc(func(pc uintptr) uint32 { return %s })' % encoding)
 
             else:
@@ -2770,7 +2761,7 @@ for mnemonic, forms in preprocess_instr_forms(formtab):
             cc.indent()
             cc.line('%s := %s' % (REL_VARNAME, REL_VARINIT))
 
-            if len(encoding) + cc.level * 4 + 7 <= 120:
+            if len(encoding) + cc.level * 4 + 7 <= MAX_LINE_WIDTH:
                 cc.line('return %s' % encoding)
 
             else:

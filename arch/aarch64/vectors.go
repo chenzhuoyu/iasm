@@ -2,91 +2,117 @@ package aarch64
 
 import (
     `fmt`
+    `strings`
 
-    `github.com/chenzhuoyu/iasm/internal/rt`
+    `github.com/chenzhuoyu/iasm/asm`
     `github.com/chenzhuoyu/iasm/internal/tag`
 )
 
-// SIMDVector1 represents a SIMD vector with a single register.
-type SIMDVector1 uint8
-
-// SIMDVector2 represents a SIMD vector with two registers of the same arrangement.
-type SIMDVector2 uint8
-
-// SIMDVector3 represents a SIMD vector with three registers of the same arrangement.
-type SIMDVector3 uint8
-
-// SIMDVector4 represents a SIMD vector with four registers of the same arrangement.
-type SIMDVector4 uint8
-
-func nextreg(v, i SIMDRegister128v) SIMDRegister128v {
-    return (v + i) % 32
+// Vector represents a SIMD vector with a certain number of elements.
+type Vector interface {
+    asm.Register
+    Size() uint8
+    Format() VecFormat
+    Vector()
 }
 
-func checkvec(v ...SIMDRegister128v) {
+type (
+    _Vec1 uint16
+    _Vec2 uint16
+    _Vec3 uint16
+    _Vec4 uint16
+)
+
+func mkvec(r VRegister) uint16 {
+    return (uint16(r.Format()) << 8) | uint16(r.ID())
+}
+
+func checkvec(v ...VRegister) {
     for i, x := range v[1:] {
-        if x != nextreg(v[i], 1) {
+        if x.ID() != (v[i].ID() + 1) % 32 {
             panic("aarch64: vector elements must be consecutive registers")
-        } else if x.Arrangement() != v[i].Arrangement() {
+        } else if x.Format() != v[i].Format() {
             panic("aarch64: vector elements must have identical arrangements")
         }
     }
 }
 
-func formatvec(v SIMDRegister128v, n int) string {
-    switch n {
-        case 1  : return fmt.Sprintf("{ %s }", v)
-        case 2  : return fmt.Sprintf("{ %s, %s }", v, nextreg(v, 1))
-        case 3  : return fmt.Sprintf("{ %s, %s, %s }", v, nextreg(v, 1), nextreg(v, 2))
-        case 4  : return fmt.Sprintf("{ %s, %s, %s, %s }", v, nextreg(v, 1), nextreg(v, 2), nextreg(v, 3))
-        default : panic("unreachable")
+func formatvec(v uint8, f VecFormat, n int) string {
+    i := 0
+    s := make([]string, 0, n)
+
+    /* dump each element */
+    for i < n {
+        s = append(s, fmt.Sprintf("v%d.%s", (v + uint8(i)) % 32, f))
+        i++
     }
+
+    /* join them together */
+    return fmt.Sprintf(
+        "{ %s }",
+        strings.Join(s, ", "),
+    )
 }
 
 // Vec1 creates a vector with a single element.
-func Vec1(v0 SIMDRegister128v) SIMDVector1 {
-    return SIMDVector1(v0)
+func Vec1(v0 VRegister) Vector {
+    return _Vec1(mkvec(v0))
 }
 
 // Vec2 creates a vector with two elements of the same arrangement.
-func Vec2(v0, v1 SIMDRegister128v) SIMDVector2 {
+func Vec2(v0, v1 VRegister) Vector {
     checkvec(v0, v1)
-    return SIMDVector2(v0)
+    return _Vec2(mkvec(v0))
 }
 
 // Vec3 creates a vector with 3 elements of the same arrangement.
-func Vec3(v0, v1, v2 SIMDRegister128v) SIMDVector3 {
+func Vec3(v0, v1, v2 VRegister) Vector {
     checkvec(v0, v1, v2)
-    return SIMDVector3(v0)
+    return _Vec3(mkvec(v0))
 }
 
 // Vec4 creates a vector with 4 elements of the same arrangement.
-func Vec4(v0, v1, v2, v3 SIMDRegister128v) SIMDVector4 {
+func Vec4(v0, v1, v2, v3 VRegister) Vector {
     checkvec(v0, v1, v2, v3)
-    return SIMDVector4(v0)
+    return _Vec4(mkvec(v0))
 }
 
-func (self SIMDVector1) ID() uint8 { return uint8(self & 0x1f) }
-func (self SIMDVector2) ID() uint8 { return uint8(self & 0x1f) }
-func (self SIMDVector3) ID() uint8 { return uint8(self & 0x1f) }
-func (self SIMDVector4) ID() uint8 { return uint8(self & 0x1f) }
+func (_Vec1) Size() uint8 { return 1 }
+func (_Vec2) Size() uint8 { return 2 }
+func (_Vec3) Size() uint8 { return 3 }
+func (_Vec4) Size() uint8 { return 4 }
 
-func (self SIMDVector1) String() string { return formatvec(SIMDRegister128v(self), 1) }
-func (self SIMDVector2) String() string { return formatvec(SIMDRegister128v(self), 2) }
-func (self SIMDVector3) String() string { return formatvec(SIMDRegister128v(self), 3) }
-func (self SIMDVector4) String() string { return formatvec(SIMDRegister128v(self), 4) }
+func (_Vec1) Vector() {}
+func (_Vec2) Vector() {}
+func (_Vec3) Vector() {}
+func (_Vec4) Vector() {}
 
-func (self SIMDVector1) Sealed(tag.Tag) {}
-func (self SIMDVector2) Sealed(tag.Tag) {}
-func (self SIMDVector3) Sealed(tag.Tag) {}
-func (self SIMDVector4) Sealed(tag.Tag) {}
+func (_Vec1) Sealed(tag.Tag) {}
+func (_Vec2) Sealed(tag.Tag) {}
+func (_Vec3) Sealed(tag.Tag) {}
+func (_Vec4) Sealed(tag.Tag) {}
 
-// SIMDIndexedVector represents an indexed SIMD vector.
-type SIMDIndexedVector interface {
-    tag.Sealed
-    ID() uint8
+func (self _Vec1) ID() uint8 { return uint8(self & 0x1f) }
+func (self _Vec2) ID() uint8 { return uint8(self & 0x1f) }
+func (self _Vec3) ID() uint8 { return uint8(self & 0x1f) }
+func (self _Vec4) ID() uint8 { return uint8(self & 0x1f) }
+
+func (self _Vec1) String() string { return formatvec(self.ID(), self.Format(), 1) }
+func (self _Vec2) String() string { return formatvec(self.ID(), self.Format(), 2) }
+func (self _Vec3) String() string { return formatvec(self.ID(), self.Format(), 3) }
+func (self _Vec4) String() string { return formatvec(self.ID(), self.Format(), 4) }
+
+func (self _Vec1) Format() VecFormat { return VecFormat(self >> 8) }
+func (self _Vec2) Format() VecFormat { return VecFormat(self >> 8) }
+func (self _Vec3) Format() VecFormat { return VecFormat(self >> 8) }
+func (self _Vec4) Format() VecFormat { return VecFormat(self >> 8) }
+
+// IndexedVector represents an indexed SIMD vector.
+type IndexedVector interface {
+    asm.Register
+    Size() uint8
     Index() uint8
-    Structure() SIMDVectorStructure
+    IndexMode() VecIndexMode
     IndexedVector()
 }
 
@@ -97,59 +123,65 @@ type (
     _IndexedVec4 uint16
 )
 
-var (
-    _typeIndexedVec1 = rt.TypeOf(_IndexedVec1(0))
-    _typeIndexedVec2 = rt.TypeOf(_IndexedVec2(0))
-    _typeIndexedVec3 = rt.TypeOf(_IndexedVec3(0))
-    _typeIndexedVec4 = rt.TypeOf(_IndexedVec4(0))
-)
-
-func nextidx(v, i SIMDRegister128r) SIMDRegister128r {
-    return (v + i) % 32
+func mkidx(v VidxRegister, i uint8) uint16 {
+    return (uint16(i) << 8) | (uint16(v.IndexMode()) << 5) | uint16(v.ID())
 }
 
-func checkidx(v ...SIMDRegister128r) {
+func checkidx(v ...VidxRegister) {
     for i, x := range v[1:] {
-        if x != nextidx(v[i], 1) {
+        if x.ID() != (v[i].ID() + 1) % 32 {
             panic("aarch64: indexed vector elements must be consecutive registers")
-        } else if x.Structure() != v[i].Structure() {
-            panic("aarch64: indexed vector elements must have identical structures")
+        } else if x.IndexMode() != v[i].IndexMode() {
+            panic("aarch64: indexed vector elements must have identical indexing modes")
         }
     }
 }
 
-func formatidx(v SIMDRegister128r, n int, i uint8) string {
-    switch n {
-        case 1  : return fmt.Sprintf("{ %s }[%d]", v, i)
-        case 2  : return fmt.Sprintf("{ %s, %s }[%d]", v, nextidx(v, 1), i)
-        case 3  : return fmt.Sprintf("{ %s, %s, %s }[%d]", v, nextidx(v, 1), nextidx(v, 2), i)
-        case 4  : return fmt.Sprintf("{ %s, %s, %s, %s }[%d]", v, nextidx(v, 1), nextidx(v, 2), nextidx(v, 3), i)
-        default : panic("unreachable")
+func formatidx(v uint8, m VecIndexMode, n int, x uint8) string {
+    i := 0
+    s := make([]string, 0, n)
+
+    /* dump each element */
+    for i < n {
+        s = append(s, fmt.Sprintf("v%d.%s", (v + uint8(i)) % 32, m))
+        i++
     }
+
+    /* join them together */
+    return fmt.Sprintf(
+        "{ %s }[%d]",
+        strings.Join(s, ", "),
+        x,
+    )
 }
 
 // Index1 creates an indexed vector with a single element.
-func Index1(v0 SIMDRegister128r, i uint8) SIMDIndexedVector {
-    return v0.withIndex(_typeIndexedVec1, i).(SIMDIndexedVector)
+func Index1(v0 VidxRegister, i uint8) IndexedVector {
+    return _IndexedVec1(mkidx(v0, i))
 }
 
 // Index2 creates an indexed vector with two elements of the same structure.
-func Index2(v0, v1 SIMDRegister128r, i uint8) SIMDIndexedVector {
+func Index2(v0, v1 VidxRegister, i uint8) IndexedVector {
     checkidx(v0, v1)
-    return v0.withIndex(_typeIndexedVec2, i).(SIMDIndexedVector)
+    return _IndexedVec2(mkidx(v0, i))
 }
 
 // Index3 creates an indexed vector with 3 elements of the same structure.
-func Index3(v0, v1, v2 SIMDRegister128r, i uint8) SIMDIndexedVector {
+func Index3(v0, v1, v2 VidxRegister, i uint8) IndexedVector {
     checkidx(v0, v1, v2)
-    return v0.withIndex(_typeIndexedVec3, i).(SIMDIndexedVector)
+    return _IndexedVec3(mkidx(v0, i))
 }
 
 // Index4 creates an indexed vector with 4 elements of the same structure.
-func Index4(v0, v1, v2, v3 SIMDRegister128r, i uint8) SIMDIndexedVector {
+func Index4(v0, v1, v2, v3 VidxRegister, i uint8) IndexedVector {
     checkidx(v0, v1, v2, v3)
-    return v0.withIndex(_typeIndexedVec4, i).(SIMDIndexedVector)
+    return _IndexedVec4(mkidx(v0, i))
 }
+
+func (_IndexedVec1) Size() uint8 { return 1 }
+func (_IndexedVec2) Size() uint8 { return 2 }
+func (_IndexedVec3) Size() uint8 { return 3 }
+func (_IndexedVec4) Size() uint8 { return 4 }
 
 func (_IndexedVec1) Sealed(tag.Tag) {}
 func (_IndexedVec2) Sealed(tag.Tag) {}
@@ -171,12 +203,12 @@ func (self _IndexedVec2) Index() uint8 { return uint8(self >> 8) }
 func (self _IndexedVec3) Index() uint8 { return uint8(self >> 8) }
 func (self _IndexedVec4) Index() uint8 { return uint8(self >> 8) }
 
-func (self _IndexedVec1) String() string { return formatidx(SIMDRegister128r(self), 1, self.Index()) }
-func (self _IndexedVec2) String() string { return formatidx(SIMDRegister128r(self), 2, self.Index()) }
-func (self _IndexedVec3) String() string { return formatidx(SIMDRegister128r(self), 3, self.Index()) }
-func (self _IndexedVec4) String() string { return formatidx(SIMDRegister128r(self), 4, self.Index()) }
+func (self _IndexedVec1) String() string { return formatidx(self.ID(), self.IndexMode(), 1, self.Index()) }
+func (self _IndexedVec2) String() string { return formatidx(self.ID(), self.IndexMode(), 2, self.Index()) }
+func (self _IndexedVec3) String() string { return formatidx(self.ID(), self.IndexMode(), 3, self.Index()) }
+func (self _IndexedVec4) String() string { return formatidx(self.ID(), self.IndexMode(), 4, self.Index()) }
 
-func (self _IndexedVec1) Structure() SIMDVectorStructure { return SIMDVectorStructure(uint8(self) >> 5) }
-func (self _IndexedVec2) Structure() SIMDVectorStructure { return SIMDVectorStructure(uint8(self) >> 5) }
-func (self _IndexedVec3) Structure() SIMDVectorStructure { return SIMDVectorStructure(uint8(self) >> 5) }
-func (self _IndexedVec4) Structure() SIMDVectorStructure { return SIMDVectorStructure(uint8(self) >> 5) }
+func (self _IndexedVec1) IndexMode() VecIndexMode { return VecIndexMode(uint8(self) >> 5) }
+func (self _IndexedVec2) IndexMode() VecIndexMode { return VecIndexMode(uint8(self) >> 5) }
+func (self _IndexedVec3) IndexMode() VecIndexMode { return VecIndexMode(uint8(self) >> 5) }
+func (self _IndexedVec4) IndexMode() VecIndexMode { return VecIndexMode(uint8(self) >> 5) }

@@ -4,6 +4,18 @@ import (
     `unsafe`
 )
 
+func bfv(v uint32, i int) uint32 {
+    return v >> i
+}
+
+func mask(v uint32, n int) uint32 {
+    return v & ((1 << n) - 1)
+}
+
+func maskp(v uint32, p int, n int) uint32 {
+    return mask(bfv(v, p), n)
+}
+
 func u32at(p unsafe.Pointer, i int) uint32 {
     return *(*uint32)(unsafe.Pointer(uintptr(p) + uintptr(i) * 4))
 }
