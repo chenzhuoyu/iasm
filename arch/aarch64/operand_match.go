@@ -46,6 +46,10 @@ func isInt32(v interface{}) bool {
 
 func isSpecial(v interface{}) bool {
     switch v.(type) {
+        case _Vec1              : return true
+        case _Vec2              : return true
+        case _Vec3              : return true
+        case _Vec4              : return true
         case WRegister          : return true
         case XRegister          : return true
         case BRegister          : return true
@@ -54,10 +58,6 @@ func isSpecial(v interface{}) bool {
         case DRegister          : return true
         case QRegister          : return true
         case VRegister          : return true
-        case _Vec1: return true
-        case _Vec2: return true
-        case _Vec3: return true
-        case _Vec4: return true
         case VidxRegister       : return true
         case _IndexedVec1       : return true
         case _IndexedVec2       : return true
@@ -95,8 +95,6 @@ func isIdxVec2   (v interface{}) bool { x, f := v.(IndexedVector) ; return f && 
 func isIdxVec3   (v interface{}) bool { x, f := v.(IndexedVector) ; return f && x.Size() == 3 }
 func isIdxVec4   (v interface{}) bool { x, f := v.(IndexedVector) ; return f && x.Size() == 4 }
 
-func isImm       (v interface{}) bool { _, f := asInt64(v)  ; return f }
-func isImm9      (v interface{}) bool { x, f := asInt64(v)  ; return f && x &^ 0b111111111 == 0 }
 func isImm12     (v interface{}) bool { x, f := asInt64(v)  ; return f && x &^ 0b111111111111 == 0 }
 func isUimm3     (v interface{}) bool { x, f := asUint64(v) ; return f && x &^ 0b111 == 0 }
 func isUimm4     (v interface{}) bool { x, f := asUint64(v) ; return f && x &^ 0b1111 == 0 }

@@ -8,11 +8,11 @@ import (
 )
 
 type (
-    BRegister uint8 // Vector register with sixteen 8-bit elements (B0 ~ B31).
-    HRegister uint8 // Vector register with eight 16 bit elements (H0 ~ H31).
-    SRegister uint8 // Vector register with four 32-bit elements (S0 ~ S31).
-    DRegister uint8 // Vector register with two 64-bit elements (D0 ~ D31).
-    QRegister uint8 // Vector register with a single 128-bit value (Q0 ~ Q31).
+    BRegister uint8         // SIMD register with sixteen 8-bit elements (B0 ~ B31).
+    HRegister uint8         // SIMD register with eight 16 bit elements (H0 ~ H31).
+    SRegister uint8         // SIMD register with four 32-bit elements (S0 ~ S31).
+    DRegister uint8         // SIMD register with two 64-bit elements (D0 ~ D31).
+    QRegister uint8         // SIMD register with a single 128-bit value (Q0 ~ Q31).
 )
 
 func (BRegister) Sealed(tag.Tag) {}
@@ -77,16 +77,16 @@ type VRegister interface {
 }
 
 type (
-    VRegister8B  uint8 // Vector register with arrangement 8B (V8b0 ~ V8b31).
-    VRegister16B uint8 // Vector register with arrangement 16B (V16b0 ~ V16b31).
-    VRegister2H  uint8 // Vector register with arrangement 2H (V2h0 ~ V2h31).
-    VRegister4H  uint8 // Vector register with arrangement 4H (V4h0 ~ V4h31).
-    VRegister8H  uint8 // Vector register with arrangement 8H (V8h0 ~ V8h31).
-    VRegister2S  uint8 // Vector register with arrangement 2S (V2s0 ~ V2s31).
-    VRegister4S  uint8 // Vector register with arrangement 4S (V4s0 ~ V4s31).
-    VRegister1D  uint8 // Vector register with arrangement 1D (V1d0 ~ V1d31).
-    VRegister2D  uint8 // Vector register with arrangement 2D (V2d0 ~ V2d31).
-    VRegister1Q  uint8 // Vector register with arrangement 1Q (V1q0 ~ V1q31).
+    VRegister8B  uint8      // SIMD register with arrangement 8B (V8b0 ~ V8b31).
+    VRegister16B uint8      // SIMD register with arrangement 16B (V16b0 ~ V16b31).
+    VRegister2H  uint8      // SIMD register with arrangement 2H (V2h0 ~ V2h31).
+    VRegister4H  uint8      // SIMD register with arrangement 4H (V4h0 ~ V4h31).
+    VRegister8H  uint8      // SIMD register with arrangement 8H (V8h0 ~ V8h31).
+    VRegister2S  uint8      // SIMD register with arrangement 2S (V2s0 ~ V2s31).
+    VRegister4S  uint8      // SIMD register with arrangement 4S (V4s0 ~ V4s31).
+    VRegister1D  uint8      // SIMD register with arrangement 1D (V1d0 ~ V1d31).
+    VRegister2D  uint8      // SIMD register with arrangement 2D (V2d0 ~ V2d31).
+    VRegister1Q  uint8      // SIMD register with arrangement 1Q (V1q0 ~ V1q31).
 )
 
 func (VRegister8B)  Sealed(tag.Tag) {}
@@ -170,12 +170,12 @@ type VidxRegister interface {
 }
 
 type (
-	VidxRegisterB  uint16 // Indexed vector register with unit size B (Vib0 ~ Vib31).
-	VidxRegister4B uint16 // Indexed vector register with unit size 4B (Vi4b0 ~ Vi4b31).
-	VidxRegisterH  uint16 // Indexed vector register with unit size H (Vih0 ~ Vih31).
-	VidxRegister2H uint16 // Indexed vector register with unit size 2H (Vi2h0 ~ Vi2h31).
-	VidxRegisterS  uint16 // Indexed vector register with unit size S (Vis0 ~ Vis31).
-	VidxRegisterD  uint16 // Indexed vector register with unit size H (Vid0 ~ Vid31).
+	VidxRegisterB  uint16   // Indexed SIMD register with unit size B (Vib0 ~ Vib31).
+	VidxRegister4B uint16   // Indexed SIMD register with unit size 4B (Vi4b0 ~ Vi4b31).
+	VidxRegisterH  uint16   // Indexed SIMD register with unit size H (Vih0 ~ Vih31).
+	VidxRegister2H uint16   // Indexed SIMD register with unit size 2H (Vi2h0 ~ Vi2h31).
+	VidxRegisterS  uint16   // Indexed SIMD register with unit size S (Vis0 ~ Vis31).
+	VidxRegisterD  uint16   // Indexed SIMD register with unit size H (Vid0 ~ Vid31).
 )
 
 func (VidxRegisterB)  Sealed(tag.Tag) {}

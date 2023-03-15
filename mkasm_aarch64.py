@@ -1202,7 +1202,6 @@ IMM_CHECKS = {
     'imm5'                            : 'isUimm5(%s)',
     'imm6'                            : 'isUimm6(%s)',
     'imm8'                            : 'isFpImm8(%s)',
-    'imm9'                            : 'isImm9(%s)',
     'imm12'                           : 'isImm12(%s)',
     'imm16'                           : 'isUimm16(%s)',
     'immh:immb'                       : 'isFpBits(%s)',
@@ -1570,10 +1569,7 @@ def match_operands(form: InstrForm, argc: int) -> Iterator['And | Or | str']:
                 yield '%s(%s) == %s%s' % (elm, name, pfx, val.mode.name)
 
             if isinstance(val.vidx, Lit):
-                if val.vidx.ty is int:
-                    yield 'vidxi(%s) == %d' % (name, val.vidx.val)
-                else:
-                    raise RuntimeError('index literal must be int')
+                raise NotImplementedError('match_operands: literal indexed vec')
 
         elif isinstance(val, Mem):
             if optcond:
@@ -1739,7 +1735,7 @@ IMM_DEFAULTS = {
 SPECIAL_REGS = {
     'sa_cm'          : 'asUimm4(%s)',
     'sa_cn'          : 'asUimm4(%s)',
-    'sa_cond'        : 'uint32(%s.(BranchCondition))',
+    'sa_cond'        : 'uint32(%s.(ConditionCode))',
     'sa_label'       : '%s.(*asm.Label)',
     'sa_pstatefield' : 'uint32(%s.(PStateField))',
 }

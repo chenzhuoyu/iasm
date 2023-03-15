@@ -367,25 +367,25 @@ const (
     BrJC
 )
 
-// BranchCondition represents one of the conditional branch conditions.
-type BranchCondition uint8
+// ConditionCode represents one of the condition codes.
+type ConditionCode uint8
 
 const (
-    EQ BranchCondition = 0b0000     // Equal / equals zero                      Z != 0
-    NE BranchCondition = 0b0001     // Not equal                                Z == 0
-    CS BranchCondition = 0b0010     // Carry set / unsigned higher or same      C != 0
-    CC BranchCondition = 0b0011     // Carry clear / unsigned lower             C == 0
-    MI BranchCondition = 0b0100     // Minus / negative                         N != 0
-    PL BranchCondition = 0b0101     // Plus / positive or zero                  N == 0
-    VS BranchCondition = 0b0110     // Overflow                                 V != 0
-    VC BranchCondition = 0b0111     // No overflow                              V == 0
-    HI BranchCondition = 0b1000     // Unsigned higher                          C != 0 and Z == 0
-    LS BranchCondition = 0b1001     // Unsigned lower or same                   C == 0 or Z != 0
-    GE BranchCondition = 0b1010     // Signed greater than or equal             N == V
-    LT BranchCondition = 0b1011     // Signed less than                         N != V
-    GT BranchCondition = 0b1100     // Signed greater than                      Z == 0 and N == V
-    LE BranchCondition = 0b1101     // Signed less than or equal                Z != 0 or N != V
-    AL BranchCondition = 0b1110     // Always (default)                         any
+    EQ ConditionCode = 0b0000       // Equal / equals zero                      Z != 0
+    NE ConditionCode = 0b0001       // Not equal                                Z == 0
+    CS ConditionCode = 0b0010       // Carry set / unsigned higher or same      C != 0
+    CC ConditionCode = 0b0011       // Carry clear / unsigned lower             C == 0
+    MI ConditionCode = 0b0100       // Minus / negative                         N != 0
+    PL ConditionCode = 0b0101       // Plus / positive or zero                  N == 0
+    VS ConditionCode = 0b0110       // Overflow                                 V != 0
+    VC ConditionCode = 0b0111       // No overflow                              V == 0
+    HI ConditionCode = 0b1000       // Unsigned higher                          C != 0 and Z == 0
+    LS ConditionCode = 0b1001       // Unsigned lower or same                   C == 0 or Z != 0
+    GE ConditionCode = 0b1010       // Signed greater than or equal             N == V
+    LT ConditionCode = 0b1011       // Signed less than                         N != V
+    GT ConditionCode = 0b1100       // Signed greater than                      Z == 0 and N == V
+    LE ConditionCode = 0b1101       // Signed less than or equal                Z != 0 or N != V
+    AL ConditionCode = 0b1110       // Always (default)                         any
 )
 
 const (

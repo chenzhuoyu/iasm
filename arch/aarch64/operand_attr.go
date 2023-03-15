@@ -12,7 +12,6 @@ func velm   (v interface{}) VecFormat                  { return v.(Vector).Forma
 func vfmt   (v interface{}) VecFormat                  { return v.(VRegister).Format() }
 func vidxr  (v interface{}) uint8                      { return v.(VidxRegister).Index() }
 func vmoder (v interface{}) VecIndexMode               { return v.(VidxRegister).IndexMode() }
-func vidxi  (v interface{}) uint8                      { return v.(IndexedVector).Index() }
 func vmodei (v interface{}) VecIndexMode               { return v.(IndexedVector).IndexMode() }
 
 func modn(v interface{}) uint8 {

@@ -2890,7 +2890,7 @@ func (self *Program) CCMN(v0, v1, v2, v3 interface{}) *Instruction {
         sa_wn := uint32(v0.(asm.Register).ID())
         sa_imm := asUimm5(v1)
         sa_nzcv := asUimm4(v2)
-        sa_cond := uint32(v3.(BranchCondition))
+        sa_cond := uint32(v3.(ConditionCode))
         return p.setins(condcmp_imm(0, 0, 1, sa_imm, sa_cond, 0, sa_wn, 0, sa_nzcv))
     }
     // CCMN  <Wn>, <Wm>, #<nzcv>, <cond>
@@ -2898,7 +2898,7 @@ func (self *Program) CCMN(v0, v1, v2, v3 interface{}) *Instruction {
         sa_wn := uint32(v0.(asm.Register).ID())
         sa_wm := uint32(v1.(asm.Register).ID())
         sa_nzcv := asUimm4(v2)
-        sa_cond := uint32(v3.(BranchCondition))
+        sa_cond := uint32(v3.(ConditionCode))
         return p.setins(condcmp_reg(0, 0, 1, sa_wm, sa_cond, 0, sa_wn, 0, sa_nzcv))
     }
     // CCMN  <Xn>, #<imm>, #<nzcv>, <cond>
@@ -2906,7 +2906,7 @@ func (self *Program) CCMN(v0, v1, v2, v3 interface{}) *Instruction {
         sa_xn := uint32(v0.(asm.Register).ID())
         sa_imm := asUimm5(v1)
         sa_nzcv := asUimm4(v2)
-        sa_cond := uint32(v3.(BranchCondition))
+        sa_cond := uint32(v3.(ConditionCode))
         return p.setins(condcmp_imm(1, 0, 1, sa_imm, sa_cond, 0, sa_xn, 0, sa_nzcv))
     }
     // CCMN  <Xn>, <Xm>, #<nzcv>, <cond>
@@ -2914,7 +2914,7 @@ func (self *Program) CCMN(v0, v1, v2, v3 interface{}) *Instruction {
         sa_xn := uint32(v0.(asm.Register).ID())
         sa_xm := uint32(v1.(asm.Register).ID())
         sa_nzcv := asUimm4(v2)
-        sa_cond := uint32(v3.(BranchCondition))
+        sa_cond := uint32(v3.(ConditionCode))
         return p.setins(condcmp_reg(1, 0, 1, sa_xm, sa_cond, 0, sa_xn, 0, sa_nzcv))
     }
     // none of above
@@ -2936,7 +2936,7 @@ func (self *Program) CCMP(v0, v1, v2, v3 interface{}) *Instruction {
         sa_wn := uint32(v0.(asm.Register).ID())
         sa_imm := asUimm5(v1)
         sa_nzcv := asUimm4(v2)
-        sa_cond := uint32(v3.(BranchCondition))
+        sa_cond := uint32(v3.(ConditionCode))
         return p.setins(condcmp_imm(0, 1, 1, sa_imm, sa_cond, 0, sa_wn, 0, sa_nzcv))
     }
     // CCMP  <Wn>, <Wm>, #<nzcv>, <cond>
@@ -2944,7 +2944,7 @@ func (self *Program) CCMP(v0, v1, v2, v3 interface{}) *Instruction {
         sa_wn := uint32(v0.(asm.Register).ID())
         sa_wm := uint32(v1.(asm.Register).ID())
         sa_nzcv := asUimm4(v2)
-        sa_cond := uint32(v3.(BranchCondition))
+        sa_cond := uint32(v3.(ConditionCode))
         return p.setins(condcmp_reg(0, 1, 1, sa_wm, sa_cond, 0, sa_wn, 0, sa_nzcv))
     }
     // CCMP  <Xn>, #<imm>, #<nzcv>, <cond>
@@ -2952,7 +2952,7 @@ func (self *Program) CCMP(v0, v1, v2, v3 interface{}) *Instruction {
         sa_xn := uint32(v0.(asm.Register).ID())
         sa_imm := asUimm5(v1)
         sa_nzcv := asUimm4(v2)
-        sa_cond := uint32(v3.(BranchCondition))
+        sa_cond := uint32(v3.(ConditionCode))
         return p.setins(condcmp_imm(1, 1, 1, sa_imm, sa_cond, 0, sa_xn, 0, sa_nzcv))
     }
     // CCMP  <Xn>, <Xm>, #<nzcv>, <cond>
@@ -2960,7 +2960,7 @@ func (self *Program) CCMP(v0, v1, v2, v3 interface{}) *Instruction {
         sa_xn := uint32(v0.(asm.Register).ID())
         sa_xm := uint32(v1.(asm.Register).ID())
         sa_nzcv := asUimm4(v2)
-        sa_cond := uint32(v3.(BranchCondition))
+        sa_cond := uint32(v3.(ConditionCode))
         return p.setins(condcmp_reg(1, 1, 1, sa_xm, sa_cond, 0, sa_xn, 0, sa_nzcv))
     }
     // none of above
@@ -6278,7 +6278,7 @@ func (self *Program) CSEL(v0, v1, v2, v3 interface{}) *Instruction {
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
-        sa_cond := uint32(v3.(BranchCondition))
+        sa_cond := uint32(v3.(ConditionCode))
         return p.setins(condsel(0, 0, 0, sa_wm, sa_cond, 0, sa_wn, sa_wd))
     }
     // CSEL  <Xd>, <Xn>, <Xm>, <cond>
@@ -6286,7 +6286,7 @@ func (self *Program) CSEL(v0, v1, v2, v3 interface{}) *Instruction {
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
-        sa_cond := uint32(v3.(BranchCondition))
+        sa_cond := uint32(v3.(ConditionCode))
         return p.setins(condsel(1, 0, 0, sa_xm, sa_cond, 0, sa_xn, sa_xd))
     }
     // none of above
@@ -6306,7 +6306,7 @@ func (self *Program) CSINC(v0, v1, v2, v3 interface{}) *Instruction {
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
-        sa_cond := uint32(v3.(BranchCondition))
+        sa_cond := uint32(v3.(ConditionCode))
         return p.setins(condsel(0, 0, 0, sa_wm, sa_cond, 1, sa_wn, sa_wd))
     }
     // CSINC  <Xd>, <Xn>, <Xm>, <cond>
@@ -6314,7 +6314,7 @@ func (self *Program) CSINC(v0, v1, v2, v3 interface{}) *Instruction {
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
-        sa_cond := uint32(v3.(BranchCondition))
+        sa_cond := uint32(v3.(ConditionCode))
         return p.setins(condsel(1, 0, 0, sa_xm, sa_cond, 1, sa_xn, sa_xd))
     }
     // none of above
@@ -6334,7 +6334,7 @@ func (self *Program) CSINV(v0, v1, v2, v3 interface{}) *Instruction {
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
-        sa_cond := uint32(v3.(BranchCondition))
+        sa_cond := uint32(v3.(ConditionCode))
         return p.setins(condsel(0, 1, 0, sa_wm, sa_cond, 0, sa_wn, sa_wd))
     }
     // CSINV  <Xd>, <Xn>, <Xm>, <cond>
@@ -6342,7 +6342,7 @@ func (self *Program) CSINV(v0, v1, v2, v3 interface{}) *Instruction {
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
-        sa_cond := uint32(v3.(BranchCondition))
+        sa_cond := uint32(v3.(ConditionCode))
         return p.setins(condsel(1, 1, 0, sa_xm, sa_cond, 0, sa_xn, sa_xd))
     }
     // none of above
@@ -6362,7 +6362,7 @@ func (self *Program) CSNEG(v0, v1, v2, v3 interface{}) *Instruction {
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
-        sa_cond := uint32(v3.(BranchCondition))
+        sa_cond := uint32(v3.(ConditionCode))
         return p.setins(condsel(0, 1, 0, sa_wm, sa_cond, 1, sa_wn, sa_wd))
     }
     // CSNEG  <Xd>, <Xn>, <Xm>, <cond>
@@ -6370,7 +6370,7 @@ func (self *Program) CSNEG(v0, v1, v2, v3 interface{}) *Instruction {
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
-        sa_cond := uint32(v3.(BranchCondition))
+        sa_cond := uint32(v3.(ConditionCode))
         return p.setins(condsel(1, 1, 0, sa_xm, sa_cond, 1, sa_xn, sa_xd))
     }
     // none of above
@@ -7460,7 +7460,7 @@ func (self *Program) FCCMP(v0, v1, v2, v3 interface{}) *Instruction {
         sa_dn := uint32(v0.(asm.Register).ID())
         sa_dm := uint32(v1.(asm.Register).ID())
         sa_nzcv := asUimm4(v2)
-        sa_cond := uint32(v3.(BranchCondition))
+        sa_cond := uint32(v3.(ConditionCode))
         return p.setins(floatccmp(0, 0, 1, sa_dm, sa_cond, sa_dn, 0, sa_nzcv))
     }
     // FCCMP  <Hn>, <Hm>, #<nzcv>, <cond>
@@ -7468,7 +7468,7 @@ func (self *Program) FCCMP(v0, v1, v2, v3 interface{}) *Instruction {
         sa_hn := uint32(v0.(asm.Register).ID())
         sa_hm := uint32(v1.(asm.Register).ID())
         sa_nzcv := asUimm4(v2)
-        sa_cond := uint32(v3.(BranchCondition))
+        sa_cond := uint32(v3.(ConditionCode))
         return p.setins(floatccmp(0, 0, 3, sa_hm, sa_cond, sa_hn, 0, sa_nzcv))
     }
     // FCCMP  <Sn>, <Sm>, #<nzcv>, <cond>
@@ -7476,7 +7476,7 @@ func (self *Program) FCCMP(v0, v1, v2, v3 interface{}) *Instruction {
         sa_sn := uint32(v0.(asm.Register).ID())
         sa_sm := uint32(v1.(asm.Register).ID())
         sa_nzcv := asUimm4(v2)
-        sa_cond := uint32(v3.(BranchCondition))
+        sa_cond := uint32(v3.(ConditionCode))
         return p.setins(floatccmp(0, 0, 0, sa_sm, sa_cond, sa_sn, 0, sa_nzcv))
     }
     // none of above
@@ -7497,7 +7497,7 @@ func (self *Program) FCCMPE(v0, v1, v2, v3 interface{}) *Instruction {
         sa_dn := uint32(v0.(asm.Register).ID())
         sa_dm := uint32(v1.(asm.Register).ID())
         sa_nzcv := asUimm4(v2)
-        sa_cond := uint32(v3.(BranchCondition))
+        sa_cond := uint32(v3.(ConditionCode))
         return p.setins(floatccmp(0, 0, 1, sa_dm, sa_cond, sa_dn, 1, sa_nzcv))
     }
     // FCCMPE  <Hn>, <Hm>, #<nzcv>, <cond>
@@ -7505,7 +7505,7 @@ func (self *Program) FCCMPE(v0, v1, v2, v3 interface{}) *Instruction {
         sa_hn := uint32(v0.(asm.Register).ID())
         sa_hm := uint32(v1.(asm.Register).ID())
         sa_nzcv := asUimm4(v2)
-        sa_cond := uint32(v3.(BranchCondition))
+        sa_cond := uint32(v3.(ConditionCode))
         return p.setins(floatccmp(0, 0, 3, sa_hm, sa_cond, sa_hn, 1, sa_nzcv))
     }
     // FCCMPE  <Sn>, <Sm>, #<nzcv>, <cond>
@@ -7513,7 +7513,7 @@ func (self *Program) FCCMPE(v0, v1, v2, v3 interface{}) *Instruction {
         sa_sn := uint32(v0.(asm.Register).ID())
         sa_sm := uint32(v1.(asm.Register).ID())
         sa_nzcv := asUimm4(v2)
-        sa_cond := uint32(v3.(BranchCondition))
+        sa_cond := uint32(v3.(ConditionCode))
         return p.setins(floatccmp(0, 0, 0, sa_sm, sa_cond, sa_sn, 1, sa_nzcv))
     }
     // none of above
@@ -8343,7 +8343,7 @@ func (self *Program) FCSEL(v0, v1, v2, v3 interface{}) *Instruction {
         sa_dd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         sa_dm := uint32(v2.(asm.Register).ID())
-        sa_cond := uint32(v3.(BranchCondition))
+        sa_cond := uint32(v3.(ConditionCode))
         return p.setins(floatsel(0, 0, 1, sa_dm, sa_cond, sa_dn, sa_dd))
     }
     // FCSEL  <Hd>, <Hn>, <Hm>, <cond>
@@ -8351,7 +8351,7 @@ func (self *Program) FCSEL(v0, v1, v2, v3 interface{}) *Instruction {
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         sa_hm := uint32(v2.(asm.Register).ID())
-        sa_cond := uint32(v3.(BranchCondition))
+        sa_cond := uint32(v3.(ConditionCode))
         return p.setins(floatsel(0, 0, 3, sa_hm, sa_cond, sa_hn, sa_hd))
     }
     // FCSEL  <Sd>, <Sn>, <Sm>, <cond>
@@ -8359,7 +8359,7 @@ func (self *Program) FCSEL(v0, v1, v2, v3 interface{}) *Instruction {
         sa_sd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         sa_sm := uint32(v2.(asm.Register).ID())
-        sa_cond := uint32(v3.(BranchCondition))
+        sa_cond := uint32(v3.(ConditionCode))
         return p.setins(floatsel(0, 0, 0, sa_sm, sa_cond, sa_sn, sa_sd))
     }
     // none of above
