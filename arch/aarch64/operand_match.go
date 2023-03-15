@@ -74,18 +74,26 @@ func isSameType(x, y interface{}) bool {
     return rt.TypeOf(x) == rt.TypeOf(y)
 }
 
-func isLabel     (v interface{}) bool { _, f := v.(*asm.Label)   ; return f }
-func isXr        (v interface{}) bool { x, f := v.(XRegister)    ; return f && x != SP }
-func isWr        (v interface{}) bool { x, f := v.(WRegister)    ; return f && x != WSP }
-func isXrOrSP    (v interface{}) bool { x, f := v.(XRegister)    ; return f && x != XZR }
-func isWrOrWSP   (v interface{}) bool { x, f := v.(WRegister)    ; return f && x != WZR }
-func isBr        (v interface{}) bool { _, f := v.(BRegister)    ; return f }
-func isHr        (v interface{}) bool { _, f := v.(HRegister)    ; return f }
-func isSr        (v interface{}) bool { _, f := v.(SRegister)    ; return f }
-func isDr        (v interface{}) bool { _, f := v.(DRegister)    ; return f }
-func isQr        (v interface{}) bool { _, f := v.(QRegister)    ; return f }
-func isVr        (v interface{}) bool { _, f := v.(VRegister)    ; return f }
-func isVri       (v interface{}) bool { _, f := v.(VidxRegister) ; return f }
+func isLabel     (v interface{}) bool { _, f := v.(*asm.Label)    ; return f }
+func isXr        (v interface{}) bool { x, f := v.(XRegister)     ; return f && x != SP }
+func isWr        (v interface{}) bool { x, f := v.(WRegister)     ; return f && x != WSP }
+func isXrOrSP    (v interface{}) bool { x, f := v.(XRegister)     ; return f && x != XZR }
+func isWrOrWSP   (v interface{}) bool { x, f := v.(WRegister)     ; return f && x != WZR }
+func isBr        (v interface{}) bool { _, f := v.(BRegister)     ; return f }
+func isHr        (v interface{}) bool { _, f := v.(HRegister)     ; return f }
+func isSr        (v interface{}) bool { _, f := v.(SRegister)     ; return f }
+func isDr        (v interface{}) bool { _, f := v.(DRegister)     ; return f }
+func isQr        (v interface{}) bool { _, f := v.(QRegister)     ; return f }
+func isVr        (v interface{}) bool { _, f := v.(VRegister)     ; return f }
+func isVri       (v interface{}) bool { _, f := v.(VidxRegister)  ; return f }
+func isVec1      (v interface{}) bool { x, f := v.(Vector)        ; return f && x.Size() == 1 }
+func isVec2      (v interface{}) bool { x, f := v.(Vector)        ; return f && x.Size() == 2 }
+func isVec3      (v interface{}) bool { x, f := v.(Vector)        ; return f && x.Size() == 3 }
+func isVec4      (v interface{}) bool { x, f := v.(Vector)        ; return f && x.Size() == 4 }
+func isIdxVec1   (v interface{}) bool { x, f := v.(IndexedVector) ; return f && x.Size() == 1 }
+func isIdxVec2   (v interface{}) bool { x, f := v.(IndexedVector) ; return f && x.Size() == 2 }
+func isIdxVec3   (v interface{}) bool { x, f := v.(IndexedVector) ; return f && x.Size() == 3 }
+func isIdxVec4   (v interface{}) bool { x, f := v.(IndexedVector) ; return f && x.Size() == 4 }
 
 func isImm       (v interface{}) bool { _, f := asInt64(v)  ; return f }
 func isImm9      (v interface{}) bool { x, f := asInt64(v)  ; return f && x &^ 0b111111111 == 0 }

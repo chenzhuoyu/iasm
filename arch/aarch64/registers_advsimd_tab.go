@@ -493,6 +493,41 @@ const (
 )
 
 const (
+    V1q0 VRegister1Q = iota
+    V1q1
+    V1q2
+    V1q3
+    V1q4
+    V1q5
+    V1q6
+    V1q7
+    V1q8
+    V1q9
+    V1q10
+    V1q11
+    V1q12
+    V1q13
+    V1q14
+    V1q15
+    V1q16
+    V1q17
+    V1q18
+    V1q19
+    V1q20
+    V1q21
+    V1q22
+    V1q23
+    V1q24
+    V1q25
+    V1q26
+    V1q27
+    V1q28
+    V1q29
+    V1q30
+    V1q31
+)
+
+const (
     Vib0 VidxRegisterB = iota
     Vib1
     Vib2

@@ -16,6 +16,7 @@ REG_TAB = [
     ('V4s' , 'V'   , '4S'),
     ('V1d' , 'V'   , '1D'),
     ('V2d' , 'V'   , '2D'),
+    ('V1q' , 'V'   , '1Q'),
     ('Vib' , 'Vidx', 'B'),
     ('Vi4b', 'Vidx', '4B'),
     ('Vih' , 'Vidx', 'H'),

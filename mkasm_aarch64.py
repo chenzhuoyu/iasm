@@ -301,14 +301,6 @@ for name, entry in sorted(instab.items(), key = lambda v: v[0]):
             iformname = th.find('td[@class="iformname"]')
             bitfields = th.findall('td[@class="bitfield"]')
 
-            # TODO: remove this
-            # if encname != 'FADDP_asisdpair_only_H':
-            #     continue
-            if 'advsimd' not in iformfile or iformfile[0] >= 'l':
-                continue
-            # if not iformfile.startswith('fmaxnmv'):
-            #     continue
-
             assert iformfile, 'missing iform files for ' + name
             assert iformname is not None, 'missing iform names for ' + name
             assert len(bitfields) == len(keys), 'mismatched bitfields for %s.%s' % (name, encname)
@@ -1247,6 +1239,8 @@ REG_CHECKS = {
     'sa_ht'          : 'isHr(%s)',
     'sa_label'       : 'isLabel(%s)',
     'sa_pstatefield' : 'isPState(%s)',
+    'sa_qd'          : 'isQr(%s)',
+    'sa_qn'          : 'isQr(%s)',
     'sa_qt'          : 'isQr(%s)',
     'sa_qt1'         : 'isQr(%s)',
     'sa_qt2'         : 'isQr(%s)',
@@ -1364,6 +1358,7 @@ VECTOR_TYPES = {
     '4S'  : 'Vec4S',
     '1D'  : 'Vec1D',
     '2D'  : 'Vec2D',
+    '1Q'  : 'Vec1Q',
 }
 
 VECTOR_MODES = {
@@ -1445,9 +1440,6 @@ def match_operands(form: InstrForm, argc: int) -> Iterator['And | Or | str']:
     regtab = {}
     dynvec = {}
     fixedvec = {}
-    # TODO: remove this
-    print('------- match operand -------')
-    print(form.inst)
 
     if form.inst.operands.opt:
         argv.extend(form.inst.operands.opt)
@@ -1562,9 +1554,26 @@ def match_operands(form: InstrForm, argc: int) -> Iterator['And | Or | str']:
             if optcond:
                 raise RuntimeError('optional vector operand is not supported')
 
-            # TODO: handle vector
-            print(val)
-            raise NotImplementedError('vec operand')
+            pfx = 'Vec'
+            elm = 'velm'
+            vec = 'isVec'
+
+            if val.vidx is not None:
+                pfx = 'Mode'
+                elm = 'vmodei'
+                vec = 'isIdxVec'
+
+            nelm = len(val.regs)
+            yield '%s%d(%s)' % (vec, nelm, name)
+
+            if isinstance(val.mode, Tag):
+                yield '%s(%s) == %s%s' % (elm, name, pfx, val.mode.name)
+
+            if isinstance(val.vidx, Lit):
+                if val.vidx.ty is int:
+                    yield 'vidxi(%s) == %d' % (name, val.vidx.val)
+                else:
+                    raise RuntimeError('index literal must be int')
 
         elif isinstance(val, Mem):
             if optcond:
@@ -1840,6 +1849,9 @@ MISSING_FIELDS = {
     'CPYPWT_CPY_memcms'     : { 'size': 0b00 },
     'CPYP_CPY_memcms'       : { 'size': 0b00 },
 
+    'SDOT_asimdelem_D'      : { 'size': 0b10 },
+    'SDOT_asimdsame2_D'     : { 'size': 0b10 },
+
     'SETEN_SET_memcms'      : { 'size': 0b00 },
     'SETETN_SET_memcms'     : { 'size': 0b00 },
     'SETET_SET_memcms'      : { 'size': 0b00 },
@@ -1864,6 +1876,9 @@ MISSING_FIELDS = {
     'SETPTN_SET_memcms'     : { 'size': 0b00 },
     'SETPT_SET_memcms'      : { 'size': 0b00 },
     'SETP_SET_memcms'       : { 'size': 0b00 },
+
+    'UDOT_asimdelem_D'      : { 'size': 0b10 },
+    'UDOT_asimdsame2_D'     : { 'size': 0b10 },
 }
 
 class SwitchLit(dict):
@@ -2097,9 +2112,22 @@ def encode_operand(
         if optcond:
             raise RuntimeError('optional vector operand is not supported')
 
-        # TODO: handle vector
-        print(val)
-        raise NotImplementedError('vec operand')
+        elm = 'velm'
+        vec = 'Vector'
+
+        if val.vidx is not None:
+            elm = 'vmodei'
+            vec = 'IndexedVector'
+
+        reg0 = val.regs[0]
+        vals[reg0] = 'uint32(%s.(%s).ID())' % (name, vec)
+
+        if not isinstance(val.mode, Tag):
+            err = 'invalid vector arrangement for ' + form.inst.mnemonic
+            encode_defs(form, '%s(%s)' % (elm, name), val.mode, VECTOR_TYPES, vals, opts, err)
+
+        if isinstance(val.vidx, Imm):
+            vals[val.vidx.name] = 'uint32(%s.(IndexedVector).Index())' % name
 
     elif isinstance(val, Mem):
         if optcond:

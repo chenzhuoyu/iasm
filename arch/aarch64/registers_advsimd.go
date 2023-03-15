@@ -46,6 +46,7 @@ const (
     Vec4S
     Vec1D
     Vec2D
+    Vec1Q
 )
 
 var _VecFormatNames = [...]string {
@@ -58,6 +59,7 @@ var _VecFormatNames = [...]string {
     "4S",
     "1D",
     "2D",
+    "1Q",
 }
 
 func (self VecFormat) String() string {
@@ -84,6 +86,7 @@ type (
     VRegister4S  uint8 // Vector register with arrangement 4S (V4s0 ~ V4s31).
     VRegister1D  uint8 // Vector register with arrangement 1D (V1d0 ~ V1d31).
     VRegister2D  uint8 // Vector register with arrangement 2D (V2d0 ~ V2d31).
+    VRegister1Q  uint8 // Vector register with arrangement 1Q (V1q0 ~ V1q31).
 )
 
 func (VRegister8B)  Sealed(tag.Tag) {}
@@ -95,6 +98,7 @@ func (VRegister2S)  Sealed(tag.Tag) {}
 func (VRegister4S)  Sealed(tag.Tag) {}
 func (VRegister1D)  Sealed(tag.Tag) {}
 func (VRegister2D)  Sealed(tag.Tag) {}
+func (VRegister1Q)  Sealed(tag.Tag) {}
 
 func (VRegister8B)  Format() VecFormat { return Vec8B }
 func (VRegister16B) Format() VecFormat { return Vec16B }
@@ -105,6 +109,7 @@ func (VRegister2S)  Format() VecFormat { return Vec2S }
 func (VRegister4S)  Format() VecFormat { return Vec4S }
 func (VRegister1D)  Format() VecFormat { return Vec1D }
 func (VRegister2D)  Format() VecFormat { return Vec2D }
+func (VRegister1Q)  Format() VecFormat { return Vec1Q }
 
 func (self VRegister8B)  ID() uint8 { return uint8(self) }
 func (self VRegister16B) ID() uint8 { return uint8(self) }
@@ -115,6 +120,7 @@ func (self VRegister2S)  ID() uint8 { return uint8(self) }
 func (self VRegister4S)  ID() uint8 { return uint8(self) }
 func (self VRegister1D)  ID() uint8 { return uint8(self) }
 func (self VRegister2D)  ID() uint8 { return uint8(self) }
+func (self VRegister1Q)  ID() uint8 { return uint8(self) }
 
 func (self VRegister8B)  String() string { return fmt.Sprintf("v%d.8B" , self.ID()) }
 func (self VRegister16B) String() string { return fmt.Sprintf("v%d.16B", self.ID()) }
@@ -125,6 +131,7 @@ func (self VRegister2S)  String() string { return fmt.Sprintf("v%d.2S" , self.ID
 func (self VRegister4S)  String() string { return fmt.Sprintf("v%d.4S" , self.ID()) }
 func (self VRegister1D)  String() string { return fmt.Sprintf("v%d.1D" , self.ID()) }
 func (self VRegister2D)  String() string { return fmt.Sprintf("v%d.2D" , self.ID()) }
+func (self VRegister1Q)  String() string { return fmt.Sprintf("v%d.1Q" , self.ID()) }
 
 // VecIndexMode represents the unit size of an indexed vector register.
 type VecIndexMode uint8

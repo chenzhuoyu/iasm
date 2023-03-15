@@ -8,6 +8,7 @@ func mext   (v interface{}) asm.MemoryAddressExtension { return v.(*asm.MemoryOp
 func mbase  (v interface{}) asm.Register               { return v.(*asm.MemoryOperand).Addr.(asm.MemoryAddress).Base }
 func midx   (v interface{}) asm.Register               { return v.(*asm.MemoryOperand).Addr.(asm.MemoryAddress).Index }
 func moffs  (v interface{}) int32                      { return v.(*asm.MemoryOperand).Addr.(asm.MemoryAddress).Offset }
+func velm   (v interface{}) VecFormat                  { return v.(Vector).Format() }
 func vfmt   (v interface{}) VecFormat                  { return v.(VRegister).Format() }
 func vidxr  (v interface{}) uint8                      { return v.(VidxRegister).Index() }
 func vmoder (v interface{}) VecIndexMode               { return v.(VidxRegister).IndexMode() }
