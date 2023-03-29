@@ -97,10 +97,20 @@ func asFloat64(v interface{}) (float64, bool) {
     }
 }
 
+func asMOVxImm(v interface{}, bits uint64, inverted bool) uint32 {
+    x, _ := encodeMoveImm(v, bits, inverted)
+    return x
+}
+
 func asExtIndex(r, v interface{}) uint32 {
     switch vfmt(r) {
         case Vec8B  : return asUimm4(v) & 0b00111
         case Vec16B : return asUimm4(v) | 0b10000
         default     : panic("aarch64: invalid register for EXT instruction")
     }
+}
+
+func asLSLShift(v interface{}, n uint64) uint32 {
+    sh, _ := asUint64(v)
+    return uint32((-sh % n) << 6 | (n - sh - 1))
 }

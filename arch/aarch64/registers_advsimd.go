@@ -74,6 +74,7 @@ func (self VecFormat) String() string {
 type VRegister interface {
     asm.Register
     Format() VecFormat
+    VRegister()
 }
 
 type (
@@ -110,6 +111,17 @@ func (VRegister4S)  Format() VecFormat { return Vec4S }
 func (VRegister1D)  Format() VecFormat { return Vec1D }
 func (VRegister2D)  Format() VecFormat { return Vec2D }
 func (VRegister1Q)  Format() VecFormat { return Vec1Q }
+
+func (VRegister8B)  VRegister() {}
+func (VRegister16B) VRegister() {}
+func (VRegister2H)  VRegister() {}
+func (VRegister4H)  VRegister() {}
+func (VRegister8H)  VRegister() {}
+func (VRegister2S)  VRegister() {}
+func (VRegister4S)  VRegister() {}
+func (VRegister1D)  VRegister() {}
+func (VRegister2D)  VRegister() {}
+func (VRegister1Q)  VRegister() {}
 
 func (self VRegister8B)  ID() uint8 { return uint8(self) }
 func (self VRegister16B) ID() uint8 { return uint8(self) }
@@ -167,6 +179,7 @@ type VidxRegister interface {
     asm.Register
     Index() uint8
     IndexMode() VecIndexMode
+    VidxRegister()
 }
 
 type (
@@ -191,6 +204,13 @@ func (VidxRegisterH)  IndexMode() VecIndexMode { return ModeH  }
 func (VidxRegister2H) IndexMode() VecIndexMode { return Mode2H }
 func (VidxRegisterS)  IndexMode() VecIndexMode { return ModeS  }
 func (VidxRegisterD)  IndexMode() VecIndexMode { return ModeD  }
+
+func (VidxRegisterB)  VidxRegister() {}
+func (VidxRegister4B) VidxRegister() {}
+func (VidxRegisterH)  VidxRegister() {}
+func (VidxRegister2H) VidxRegister() {}
+func (VidxRegisterS)  VidxRegister() {}
+func (VidxRegisterD)  VidxRegister() {}
 
 func (self VidxRegisterB)  ID() uint8 { return uint8(self >> 8) }
 func (self VidxRegister4B) ID() uint8 { return uint8(self >> 8) }

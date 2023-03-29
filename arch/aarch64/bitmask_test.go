@@ -10,9 +10,9 @@ import (
 
 func TestBitMask_Encode(t *testing.T) {
     testtab := []struct {
-        imm uint64
+        imm           uint64
         n, immr, imms uint32
-        ok bool
+        ok            bool
     } {
         { imm: 0x5555555555555555, n: 0, immr: 0b000000, imms: 0b111100, ok: true },
         { imm: 0xaaaaaaaaaaaaaaaa, n: 0, immr: 0b000001, imms: 0b111100, ok: true },

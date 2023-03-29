@@ -9,24 +9,9 @@ import (
 )
 
 type (
-    _MemOpExt struct{}
     _Basic    struct{}
+    _MemOpExt struct{}
 )
-
-// MemOpExt is the aarch specific extensions of asm.MemoryOperand
-var MemOpExt _MemOpExt
-
-func (_MemOpExt) Free()                   {}
-func (_MemOpExt) Sealed(tag.Tag)          {}
-func (_MemOpExt) MemoryOperandExtension() {}
-
-func (_MemOpExt) String(mem *asm.MemoryOperand) string {
-    return mem.Addr.String()
-}
-
-func (_MemOpExt) EnsureValid(mem *asm.MemoryOperand) {
-    mem.Addr.EnsureValid()
-}
 
 // Basic reprensets a basic memory address that does not have any indexing or extensions.
 var Basic _Basic
@@ -61,6 +46,21 @@ func (_Basic) EnsureValid(addr asm.MemoryAddress) {
     if addr.Index != nil && addr.Offset != 0 {
         panic("aarch64: cannot index base by register and immediate at the same time")
     }
+}
+
+// MemOpExt is the aarch specific extensions of asm.MemoryOperand
+var MemOpExt _MemOpExt
+
+func (_MemOpExt) Free()                   {}
+func (_MemOpExt) Sealed(tag.Tag)          {}
+func (_MemOpExt) MemoryOperandExtension() {}
+
+func (_MemOpExt) String(mem *asm.MemoryOperand) string {
+    return mem.Addr.String()
+}
+
+func (_MemOpExt) EnsureValid(mem *asm.MemoryOperand) {
+    mem.Addr.EnsureValid()
 }
 
 // IndexMode represents the memory operand index mode.
@@ -475,14 +475,256 @@ func (self BarrierOption) isNXS() bool {
 type PStateField uint8
 
 const (
-    UAO      PStateField = 0b000011
-    PAN      PStateField = 0b000100
-    SPSel    PStateField = 0b000101
-    SSBS     PStateField = 0b011001
-    DIT      PStateField = 0b011010
-    TCO      PStateField = 0b011100
-    DAIFSet  PStateField = 0b011110
-    DAIFClr  PStateField = 0b011111
+    UAO      PStateField = 0b000_011
+    PAN      PStateField = 0b000_100
+    SPSel    PStateField = 0b000_101
+    SSBS     PStateField = 0b011_001
+    DIT      PStateField = 0b011_010
+    TCO      PStateField = 0b011_100
+    DAIFSet  PStateField = 0b011_110
+    DAIFClr  PStateField = 0b011_111
+)
+
+type (
+    ATOption    uint16  // ATOption represents one of the Address Translation options.
+    BRBOption   uint16  // BRBOption represents one of the Branch Record Buffer options.
+    DCOption    uint16  // DCOption represents one of the Data Cache options.
+    ICOption    uint16  // ICOption represents one of the Instruction Cache options.
+    TLBIOption  uint16  // TLBIOption represents one of the TLB Invalidation (Pair) options.
+)
+
+const (
+    S1E1R  ATOption = 0b000_1000_000
+    S1E1W  ATOption = 0b000_1000_001
+    S1E0R  ATOption = 0b000_1000_010
+    S1E0W  ATOption = 0b000_1000_011
+    S1E1RP ATOption = 0b000_1001_000
+    S1E1WP ATOption = 0b000_1001_001
+    S1E2R  ATOption = 0b100_1000_000
+    S1E2W  ATOption = 0b100_1000_001
+    S12E1R ATOption = 0b100_1000_100
+    S12E1W ATOption = 0b100_1000_101
+    S12E0R ATOption = 0b100_1000_110
+    S12E0W ATOption = 0b100_1000_111
+    S1E3R  ATOption = 0b110_1000_000
+    S1E3W  ATOption = 0b110_1000_001
+)
+
+const (
+    IALL BRBOption = 0b100
+    INJ  BRBOption = 0b101
+)
+
+const (
+    IVAC     DCOption = 0b000_0110_001
+    ISW      DCOption = 0b000_0110_010
+    IGVAC    DCOption = 0b000_0110_011
+    IGSW     DCOption = 0b000_0110_100
+    IGDVAC   DCOption = 0b000_0110_101
+    IGDSW    DCOption = 0b000_0110_110
+    CSW      DCOption = 0b000_1010_010
+    CGSW     DCOption = 0b000_1010_100
+    CGDSW    DCOption = 0b000_1010_110
+    CISW     DCOption = 0b000_1110_010
+    CIGSW    DCOption = 0b000_1110_100
+    CIGDSW   DCOption = 0b000_1110_110
+    ZVA      DCOption = 0b011_0100_001
+    GVA      DCOption = 0b011_0100_011
+    GZVA     DCOption = 0b011_0100_100
+    CVAC     DCOption = 0b011_1010_001
+    CGVAC    DCOption = 0b011_1010_011
+    CGDVAC   DCOption = 0b011_1010_101
+    CVAU     DCOption = 0b011_1011_001
+    CVAP     DCOption = 0b011_1100_001
+    CGVAP    DCOption = 0b011_1100_011
+    CGDVAP   DCOption = 0b011_1100_101
+    CVADP    DCOption = 0b011_1101_001
+    CGVADP   DCOption = 0b011_1101_011
+    CGDVADP  DCOption = 0b011_1101_101
+    CIVAC    DCOption = 0b011_1110_001
+    CIGVAC   DCOption = 0b011_1110_011
+    CIGDVAC  DCOption = 0b011_1110_101
+    CIPAE    DCOption = 0b100_1110_000
+    CIGDPAE  DCOption = 0b100_1110_111
+    CIPAPA   DCOption = 0b110_1110_001
+    CIGDPAPA DCOption = 0b110_1110_101
+)
+
+const (
+    IALLUIS ICOption = 0b000_0001_000
+    IALLU   ICOption = 0b000_0101_000
+    IVAU    ICOption = 0b011_0101_001
+)
+
+const (
+    VMALLE1OS       TLBIOption = 0b000_1000_0001_000
+    VAE1OS          TLBIOption = 0b000_1000_0001_001
+    ASIDE1OS        TLBIOption = 0b000_1000_0001_010
+    VAAE1OS         TLBIOption = 0b000_1000_0001_011
+    VALE1OS         TLBIOption = 0b000_1000_0001_101
+    VAALE1OS        TLBIOption = 0b000_1000_0001_111
+    RVAE1IS         TLBIOption = 0b000_1000_0010_001
+    RVAAE1IS        TLBIOption = 0b000_1000_0010_011
+    RVALE1IS        TLBIOption = 0b000_1000_0010_101
+    RVAALE1IS       TLBIOption = 0b000_1000_0010_111
+    VMALLE1IS       TLBIOption = 0b000_1000_0011_000
+    VAE1IS          TLBIOption = 0b000_1000_0011_001
+    ASIDE1IS        TLBIOption = 0b000_1000_0011_010
+    VAAE1IS         TLBIOption = 0b000_1000_0011_011
+    VALE1IS         TLBIOption = 0b000_1000_0011_101
+    VAALE1IS        TLBIOption = 0b000_1000_0011_111
+    RVAE1OS         TLBIOption = 0b000_1000_0101_001
+    RVAAE1OS        TLBIOption = 0b000_1000_0101_011
+    RVALE1OS        TLBIOption = 0b000_1000_0101_101
+    RVAALE1OS       TLBIOption = 0b000_1000_0101_111
+    RVAE1           TLBIOption = 0b000_1000_0110_001
+    RVAAE1          TLBIOption = 0b000_1000_0110_011
+    RVALE1          TLBIOption = 0b000_1000_0110_101
+    RVAALE1         TLBIOption = 0b000_1000_0110_111
+    VMALLE1         TLBIOption = 0b000_1000_0111_000
+    VAE1            TLBIOption = 0b000_1000_0111_001
+    ASIDE1          TLBIOption = 0b000_1000_0111_010
+    VAAE1           TLBIOption = 0b000_1000_0111_011
+    VALE1           TLBIOption = 0b000_1000_0111_101
+    VAALE1          TLBIOption = 0b000_1000_0111_111
+    VMALLE1OSNXS    TLBIOption = 0b000_1001_0001_000
+    VAE1OSNXS       TLBIOption = 0b000_1001_0001_001
+    ASIDE1OSNXS     TLBIOption = 0b000_1001_0001_010
+    VAAE1OSNXS      TLBIOption = 0b000_1001_0001_011
+    VALE1OSNXS      TLBIOption = 0b000_1001_0001_101
+    VAALE1OSNXS     TLBIOption = 0b000_1001_0001_111
+    RVAE1ISNXS      TLBIOption = 0b000_1001_0010_001
+    RVAAE1ISNXS     TLBIOption = 0b000_1001_0010_011
+    RVALE1ISNXS     TLBIOption = 0b000_1001_0010_101
+    RVAALE1ISNXS    TLBIOption = 0b000_1001_0010_111
+    VMALLE1ISNXS    TLBIOption = 0b000_1001_0011_000
+    VAE1ISNXS       TLBIOption = 0b000_1001_0011_001
+    ASIDE1ISNXS     TLBIOption = 0b000_1001_0011_010
+    VAAE1ISNXS      TLBIOption = 0b000_1001_0011_011
+    VALE1ISNXS      TLBIOption = 0b000_1001_0011_101
+    VAALE1ISNXS     TLBIOption = 0b000_1001_0011_111
+    RVAE1OSNXS      TLBIOption = 0b000_1001_0101_001
+    RVAAE1OSNXS     TLBIOption = 0b000_1001_0101_011
+    RVALE1OSNXS     TLBIOption = 0b000_1001_0101_101
+    RVAALE1OSNXS    TLBIOption = 0b000_1001_0101_111
+    RVAE1NXS        TLBIOption = 0b000_1001_0110_001
+    RVAAE1NXS       TLBIOption = 0b000_1001_0110_011
+    RVALE1NXS       TLBIOption = 0b000_1001_0110_101
+    RVAALE1NXS      TLBIOption = 0b000_1001_0110_111
+    VMALLE1NXS      TLBIOption = 0b000_1001_0111_000
+    VAE1NXS         TLBIOption = 0b000_1001_0111_001
+    ASIDE1NXS       TLBIOption = 0b000_1001_0111_010
+    VAAE1NXS        TLBIOption = 0b000_1001_0111_011
+    VALE1NXS        TLBIOption = 0b000_1001_0111_101
+    VAALE1NXS       TLBIOption = 0b000_1001_0111_111
+    IPAS2E1IS       TLBIOption = 0b100_1000_0000_001
+    RIPAS2E1IS      TLBIOption = 0b100_1000_0000_010
+    IPAS2LE1IS      TLBIOption = 0b100_1000_0000_101
+    RIPAS2LE1IS     TLBIOption = 0b100_1000_0000_110
+    ALLE2OS         TLBIOption = 0b100_1000_0001_000
+    VAE2OS          TLBIOption = 0b100_1000_0001_001
+    ALLE1OS         TLBIOption = 0b100_1000_0001_100
+    VALE2OS         TLBIOption = 0b100_1000_0001_101
+    VMALLS12E1OS    TLBIOption = 0b100_1000_0001_110
+    RVAE2IS         TLBIOption = 0b100_1000_0010_001
+    RVALE2IS        TLBIOption = 0b100_1000_0010_101
+    ALLE2IS         TLBIOption = 0b100_1000_0011_000
+    VAE2IS          TLBIOption = 0b100_1000_0011_001
+    ALLE1IS         TLBIOption = 0b100_1000_0011_100
+    VALE2IS         TLBIOption = 0b100_1000_0011_101
+    VMALLS12E1IS    TLBIOption = 0b100_1000_0011_110
+    IPAS2E1OS       TLBIOption = 0b100_1000_0100_000
+    IPAS2E1         TLBIOption = 0b100_1000_0100_001
+    RIPAS2E1        TLBIOption = 0b100_1000_0100_010
+    RIPAS2E1OS      TLBIOption = 0b100_1000_0100_011
+    IPAS2LE1OS      TLBIOption = 0b100_1000_0100_100
+    IPAS2LE1        TLBIOption = 0b100_1000_0100_101
+    RIPAS2LE1       TLBIOption = 0b100_1000_0100_110
+    RIPAS2LE1OS     TLBIOption = 0b100_1000_0100_111
+    RVAE2OS         TLBIOption = 0b100_1000_0101_001
+    RVALE2OS        TLBIOption = 0b100_1000_0101_101
+    RVAE2           TLBIOption = 0b100_1000_0110_001
+    RVALE2          TLBIOption = 0b100_1000_0110_101
+    ALLE2           TLBIOption = 0b100_1000_0111_000
+    VAE2            TLBIOption = 0b100_1000_0111_001
+    ALLE1           TLBIOption = 0b100_1000_0111_100
+    VALE2           TLBIOption = 0b100_1000_0111_101
+    VMALLS12E1      TLBIOption = 0b100_1000_0111_110
+    IPAS2E1ISNXS    TLBIOption = 0b100_1001_0000_001
+    RIPAS2E1ISNXS   TLBIOption = 0b100_1001_0000_010
+    IPAS2LE1ISNXS   TLBIOption = 0b100_1001_0000_101
+    RIPAS2LE1ISNXS  TLBIOption = 0b100_1001_0000_110
+    ALLE2OSNXS      TLBIOption = 0b100_1001_0001_000
+    VAE2OSNXS       TLBIOption = 0b100_1001_0001_001
+    ALLE1OSNXS      TLBIOption = 0b100_1001_0001_100
+    VALE2OSNXS      TLBIOption = 0b100_1001_0001_101
+    VMALLS12E1OSNXS TLBIOption = 0b100_1001_0001_110
+    RVAE2ISNXS      TLBIOption = 0b100_1001_0010_001
+    RVALE2ISNXS     TLBIOption = 0b100_1001_0010_101
+    ALLE2ISNXS      TLBIOption = 0b100_1001_0011_000
+    VAE2ISNXS       TLBIOption = 0b100_1001_0011_001
+    ALLE1ISNXS      TLBIOption = 0b100_1001_0011_100
+    VALE2ISNXS      TLBIOption = 0b100_1001_0011_101
+    VMALLS12E1ISNXS TLBIOption = 0b100_1001_0011_110
+    IPAS2E1OSNXS    TLBIOption = 0b100_1001_0100_000
+    IPAS2E1NXS      TLBIOption = 0b100_1001_0100_001
+    RIPAS2E1NXS     TLBIOption = 0b100_1001_0100_010
+    RIPAS2E1OSNXS   TLBIOption = 0b100_1001_0100_011
+    IPAS2LE1OSNXS   TLBIOption = 0b100_1001_0100_100
+    IPAS2LE1NXS     TLBIOption = 0b100_1001_0100_101
+    RIPAS2LE1NXS    TLBIOption = 0b100_1001_0100_110
+    RIPAS2LE1OSNXS  TLBIOption = 0b100_1001_0100_111
+    RVAE2OSNXS      TLBIOption = 0b100_1001_0101_001
+    RVALE2OSNXS     TLBIOption = 0b100_1001_0101_101
+    RVAE2NXS        TLBIOption = 0b100_1001_0110_001
+    RVALE2NXS       TLBIOption = 0b100_1001_0110_101
+    ALLE2NXS        TLBIOption = 0b100_1001_0111_000
+    VAE2NXS         TLBIOption = 0b100_1001_0111_001
+    ALLE1NXS        TLBIOption = 0b100_1001_0111_100
+    VALE2NXS        TLBIOption = 0b100_1001_0111_101
+    VMALLS12E1NXS   TLBIOption = 0b100_1001_0111_110
+    ALLE3OS         TLBIOption = 0b110_1000_0001_000
+    VAE3OS          TLBIOption = 0b110_1000_0001_001
+    PAALLOS         TLBIOption = 0b110_1000_0001_100
+    VALE3OS         TLBIOption = 0b110_1000_0001_101
+    RVAE3IS         TLBIOption = 0b110_1000_0010_001
+    RVALE3IS        TLBIOption = 0b110_1000_0010_101
+    ALLE3IS         TLBIOption = 0b110_1000_0011_000
+    VAE3IS          TLBIOption = 0b110_1000_0011_001
+    VALE3IS         TLBIOption = 0b110_1000_0011_101
+    RPAOS           TLBIOption = 0b110_1000_0100_011
+    RPALOS          TLBIOption = 0b110_1000_0100_111
+    RVAE3OS         TLBIOption = 0b110_1000_0101_001
+    RVALE3OS        TLBIOption = 0b110_1000_0101_101
+    RVAE3           TLBIOption = 0b110_1000_0110_001
+    RVALE3          TLBIOption = 0b110_1000_0110_101
+    ALLE3           TLBIOption = 0b110_1000_0111_000
+    VAE3            TLBIOption = 0b110_1000_0111_001
+    PAALL           TLBIOption = 0b110_1000_0111_100
+    VALE3           TLBIOption = 0b110_1000_0111_101
+    ALLE3OSNXS      TLBIOption = 0b110_1001_0001_000
+    VAE3OSNXS       TLBIOption = 0b110_1001_0001_001
+    VALE3OSNXS      TLBIOption = 0b110_1001_0001_101
+    RVAE3ISNXS      TLBIOption = 0b110_1001_0010_001
+    RVALE3ISNXS     TLBIOption = 0b110_1001_0010_101
+    ALLE3ISNXS      TLBIOption = 0b110_1001_0011_000
+    VAE3ISNXS       TLBIOption = 0b110_1001_0011_001
+    VALE3ISNXS      TLBIOption = 0b110_1001_0011_101
+    RVAE3OSNXS      TLBIOption = 0b110_1001_0101_001
+    RVALE3OSNXS     TLBIOption = 0b110_1001_0101_101
+    RVAE3NXS        TLBIOption = 0b110_1001_0110_001
+    RVALE3NXS       TLBIOption = 0b110_1001_0110_101
+    ALLE3NXS        TLBIOption = 0b110_1001_0111_000
+    VAE3NXS         TLBIOption = 0b110_1001_0111_001
+    VALE3NXS        TLBIOption = 0b110_1001_0111_101
+)
+
+// SMEOption represents one of the options used by SMSTART / SMSTOP instructions.
+type SMEOption uint8
+
+const (
+    SM SMEOption = 0b0011   // SMSTART SM enters Streaming SVE mode, but does not enable the SME ZA storage.
+    ZA SMEOption = 0b0101   // SMSTART ZA enables the SME ZA storage, but does not cause an entry to Streaming SVE mode.
 )
 
 // Symbol represents one of the instruction literal symbol.
@@ -491,6 +733,7 @@ type Symbol uint8
 const (
     CSYNC Symbol = iota
     DSYNC
+    RCTX
 )
 
 // PrefetchOp represents one of the Prefetch Options.

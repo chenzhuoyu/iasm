@@ -50,7 +50,7 @@ func (self *Program) ABS(v0, v1 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vn := uint32(v1.(asm.Register).ID())
-        return p.setins(asimdmisc(sa_t & 1, 0, maskp(sa_t, 1, 2), 11, sa_vn, sa_vd))
+        return p.setins(asimdmisc(mask(sa_t, 1), 0, ubfx(sa_t, 1, 2), 11, sa_vn, sa_vd))
     }
     // ABS  <V><d>, <V><n>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isSameType(v0, v1) {
@@ -266,7 +266,7 @@ func (self *Program) ADD(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdsame(sa_t & 1, 0, maskp(sa_t, 1, 2), sa_vm, 16, sa_vn, sa_vd))
+        return p.setins(asimdsame(mask(sa_t, 1), 0, ubfx(sa_t, 1, 2), sa_vm, 16, sa_vn, sa_vd))
     }
     // ADD  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
@@ -339,10 +339,10 @@ func (self *Program) ADDHN(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vm := uint32(v2.(asm.Register).ID())
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for ADDHN")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for ADDHN")
         }
         return p.setins(asimddiff(0, 0, sa_ta, sa_vm, 4, sa_vn, sa_vd))
@@ -384,10 +384,10 @@ func (self *Program) ADDHN2(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vm := uint32(v2.(asm.Register).ID())
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for ADDHN2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for ADDHN2")
         }
         return p.setins(asimddiff(1, 0, sa_ta, sa_vm, 4, sa_vn, sa_vd))
@@ -432,7 +432,7 @@ func (self *Program) ADDP(v0, v1 interface{}, vv ...interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(vv[0].(asm.Register).ID())
-        return p.setins(asimdsame(sa_t & 1, 0, maskp(sa_t, 1, 2), sa_vm, 23, sa_vn, sa_vd))
+        return p.setins(asimdsame(mask(sa_t, 1), 0, ubfx(sa_t, 1, 2), sa_vm, 23, sa_vn, sa_vd))
     }
     // ADDP  <V><d>, <Vn>.<T>
     if isAdvSIMD(v0) && isVr(v1) && vfmt(v1) == Vec2D {
@@ -601,10 +601,10 @@ func (self *Program) ADDV(v0, v1 interface{}) *Instruction {
             case Vec4S: sa_t = 0b101
             default: panic("aarch64: unreachable")
         }
-        if maskp(sa_t, 1, 2) != sa_v {
+        if ubfx(sa_t, 1, 2) != sa_v {
             panic("aarch64: invalid combination of operands for ADDV")
         }
-        return p.setins(asimdall(sa_t & 1, 0, maskp(sa_t, 1, 2), 27, sa_vn, sa_d))
+        return p.setins(asimdall(mask(sa_t, 1), 0, ubfx(sa_t, 1, 2), 27, sa_vn, sa_d))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for ADDV")
@@ -621,7 +621,7 @@ func (self *Program) ADR(v0, v1 interface{}) *Instruction {
         sa_label := v1.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 {
             delta := uint32(sa_label.RelativeTo(pc))
-            return pcreladdr(0, delta & 3, maskp(delta, 2, 19), sa_xd)
+            return pcreladdr(0, delta, delta, sa_xd)
         })
     }
     p.Free()
@@ -639,7 +639,7 @@ func (self *Program) ADRP(v0, v1 interface{}) *Instruction {
         sa_label := v1.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 {
             delta := uint32(sa_label.RelativeTo(pc))
-            return pcreladdr(1, delta & 3, maskp(delta, 2, 19), sa_xd)
+            return pcreladdr(1, delta, delta, sa_xd)
         })
     }
     p.Free()
@@ -726,7 +726,7 @@ func (self *Program) AND(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
         sa_wd_wsp := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_imm := asMaskOp(v2)
-        return p.setins(log_imm(0, 0, 0, maskp(sa_imm, 6, 6), mask(sa_imm, 6), sa_wn, sa_wd_wsp))
+        return p.setins(log_imm(0, 0, 0, ubfx(sa_imm, 6, 6), mask(sa_imm, 6), sa_wn, sa_wd_wsp))
     }
     // AND  <Wd>, <Wn>, <Wm>{, <shift> #<amount>}
     if (len(vv) == 0 || len(vv) == 1) && isWr(v0) && isWr(v1) && isWr(v2) && (len(vv) == 0 || isShift(vv[0])) {
@@ -746,7 +746,7 @@ func (self *Program) AND(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
         sa_xd_sp := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_imm_1 := asMaskOp(v2)
-        return p.setins(log_imm(1, 0, maskp(sa_imm_1, 12, 1), maskp(sa_imm_1, 6, 6), mask(sa_imm_1, 6), sa_xn, sa_xd_sp))
+        return p.setins(log_imm(1, 0, ubfx(sa_imm_1, 12, 1), ubfx(sa_imm_1, 6, 6), mask(sa_imm_1, 6), sa_xn, sa_xd_sp))
     }
     // AND  <Xd>, <Xn>, <Xm>{, <shift> #<amount>}
     if (len(vv) == 0 || len(vv) == 1) && isXr(v0) && isXr(v1) && isXr(v2) && (len(vv) == 0 || isShift(vv[0])) {
@@ -805,7 +805,7 @@ func (self *Program) ANDS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_imm := asMaskOp(v2)
-        return p.setins(log_imm(0, 3, 0, maskp(sa_imm, 6, 6), mask(sa_imm, 6), sa_wn, sa_wd))
+        return p.setins(log_imm(0, 3, 0, ubfx(sa_imm, 6, 6), mask(sa_imm, 6), sa_wn, sa_wd))
     }
     // ANDS  <Wd>, <Wn>, <Wm>{, <shift> #<amount>}
     if (len(vv) == 0 || len(vv) == 1) && isWr(v0) && isWr(v1) && isWr(v2) && (len(vv) == 0 || isShift(vv[0])) {
@@ -825,7 +825,7 @@ func (self *Program) ANDS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_imm_1 := asMaskOp(v2)
-        return p.setins(log_imm(1, 3, maskp(sa_imm_1, 12, 1), maskp(sa_imm_1, 6, 6), mask(sa_imm_1, 6), sa_xn, sa_xd))
+        return p.setins(log_imm(1, 3, ubfx(sa_imm_1, 12, 1), ubfx(sa_imm_1, 6, 6), mask(sa_imm_1, 6), sa_xn, sa_xd))
     }
     // ANDS  <Xd>, <Xn>, <Xm>{, <shift> #<amount>}
     if (len(vv) == 0 || len(vv) == 1) && isXr(v0) && isXr(v1) && isXr(v2) && (len(vv) == 0 || isShift(vv[0])) {
@@ -843,6 +843,48 @@ func (self *Program) ANDS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
     // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for ANDS")
+}
+
+// ASR instruction have 4 forms:
+//
+//   * ASR  <Wd>, <Wn>, <Wm>
+//   * ASR  <Xd>, <Xn>, <Xm>
+//   * ASR  <Wd>, <Wn>, #<shift>
+//   * ASR  <Xd>, <Xn>, #<shift>
+//
+func (self *Program) ASR(v0, v1, v2 interface{}) *Instruction {
+    p := self.alloc("ASR", 3, Operands { v0, v1, v2 })
+    // ASR  <Wd>, <Wn>, <Wm>
+    if isWr(v0) && isWr(v1) && isWr(v2) {
+        sa_wd := uint32(v0.(asm.Register).ID())
+        sa_wn := uint32(v1.(asm.Register).ID())
+        sa_wm := uint32(v2.(asm.Register).ID())
+        return p.setins(dp_2src(0, 0, sa_wm, 10, sa_wn, sa_wd))
+    }
+    // ASR  <Xd>, <Xn>, <Xm>
+    if isXr(v0) && isXr(v1) && isXr(v2) {
+        sa_xd := uint32(v0.(asm.Register).ID())
+        sa_xn := uint32(v1.(asm.Register).ID())
+        sa_xm := uint32(v2.(asm.Register).ID())
+        return p.setins(dp_2src(1, 0, sa_xm, 10, sa_xn, sa_xd))
+    }
+    // ASR  <Wd>, <Wn>, #<shift>
+    if isWr(v0) && isWr(v1) && isUimm6(v2) {
+        sa_wd := uint32(v0.(asm.Register).ID())
+        sa_wn := uint32(v1.(asm.Register).ID())
+        sa_shift := asUimm6(v2)
+        return p.setins(bitfield(0, 0, 0, sa_shift, 31, sa_wn, sa_wd))
+    }
+    // ASR  <Xd>, <Xn>, #<shift>
+    if isXr(v0) && isXr(v1) && isUimm6(v2) {
+        sa_xd := uint32(v0.(asm.Register).ID())
+        sa_xn := uint32(v1.(asm.Register).ID())
+        sa_shift_1 := asUimm6(v2)
+        return p.setins(bitfield(1, 0, 1, sa_shift_1, 63, sa_xn, sa_xd))
+    }
+    // none of above
+    p.Free()
+    panic("aarch64: invalid combination of operands for ASR")
 }
 
 // ASRV instruction have 2 forms:
@@ -869,6 +911,21 @@ func (self *Program) ASRV(v0, v1, v2 interface{}) *Instruction {
     // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for ASRV")
+}
+
+// AT instruction have one single form:
+//
+//   * AT  <at_op>, <Xt>
+//
+func (self *Program) AT(v0, v1 interface{}) *Instruction {
+    p := self.alloc("AT", 2, Operands { v0, v1 })
+    if isATOption(v0) && isXr(v1) {
+        sa_at_op := uint32(v0.(ATOption))
+        sa_xt_1 := uint32(v1.(asm.Register).ID())
+        return p.setins(systeminstrs(0, ubfx(sa_at_op, 7, 3), 7, ubfx(sa_at_op, 3, 4), mask(sa_at_op, 3), sa_xt_1))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for AT")
 }
 
 // AUTDA instruction have one single form:
@@ -1564,6 +1621,32 @@ func (self *Program) BCAX(v0, v1, v2, v3 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BCAX")
 }
 
+// BFC instruction have 2 forms:
+//
+//   * BFC  <Wd>, #<lsb>, #<width>
+//   * BFC  <Xd>, #<lsb>, #<width>
+//
+func (self *Program) BFC(v0, v1, v2 interface{}) *Instruction {
+    p := self.alloc("BFC", 3, Operands { v0, v1, v2 })
+    // BFC  <Wd>, #<lsb>, #<width>
+    if isWr(v0) && isUimm5(v1) && isBFxWidth(v1, v2, 32) {
+        sa_wd := uint32(v0.(asm.Register).ID())
+        sa_lsb := -asUimm5(v1) % 32
+        sa_width := asUimm5(v2) - 1
+        return p.setins(bitfield(0, 1, 0, sa_lsb, sa_width, 31, sa_wd))
+    }
+    // BFC  <Xd>, #<lsb>, #<width>
+    if isXr(v0) && isUimm6(v1) && isBFxWidth(v1, v2, 64) {
+        sa_xd := uint32(v0.(asm.Register).ID())
+        sa_lsb_2 := -asUimm6(v1) % 64
+        sa_width_1 := asUimm6(v2) - 1
+        return p.setins(bitfield(1, 1, 1, sa_lsb_2, sa_width_1, 31, sa_xd))
+    }
+    // none of above
+    p.Free()
+    panic("aarch64: invalid combination of operands for BFC")
+}
+
 // BFCVT instruction have one single form:
 //
 //   * BFCVT  <Hd>, <Sn>
@@ -1660,18 +1743,7 @@ func (self *Program) BFDOT(v0, v1, v2 interface{}) *Instruction {
         if sa_ta != sa_tb {
             panic("aarch64: invalid combination of operands for BFDOT")
         }
-        return p.setins(asimdelem(
-            sa_ta,
-            0,
-            1,
-            sa_index & 1,
-            maskp(sa_vm, 4, 1),
-            mask(sa_vm, 4),
-            15,
-            maskp(sa_index, 1, 1),
-            sa_vn,
-            sa_vd,
-        ))
+        return p.setins(asimdelem(sa_ta, 0, 1, mask(sa_index, 1), sa_vm, sa_vm, 15, ubfx(sa_index, 1, 1), sa_vn, sa_vd))
     }
     // BFDOT  <Vd>.<Ta>, <Vn>.<Tb>, <Vm>.<Tb>
     if isVr(v0) &&
@@ -1704,6 +1776,34 @@ func (self *Program) BFDOT(v0, v1, v2 interface{}) *Instruction {
     // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for BFDOT")
+}
+
+// BFI instruction have 2 forms:
+//
+//   * BFI  <Wd>, <Wn>, #<lsb>, #<width>
+//   * BFI  <Xd>, <Xn>, #<lsb>, #<width>
+//
+func (self *Program) BFI(v0, v1, v2, v3 interface{}) *Instruction {
+    p := self.alloc("BFI", 4, Operands { v0, v1, v2, v3 })
+    // BFI  <Wd>, <Wn>, #<lsb>, #<width>
+    if isWr(v0) && isWr(v1) && isUimm5(v2) && isBFxWidth(v2, v3, 32) {
+        sa_wd := uint32(v0.(asm.Register).ID())
+        sa_wn := uint32(v1.(asm.Register).ID())
+        sa_lsb := -asUimm5(v2) % 32
+        sa_width := asUimm5(v3) - 1
+        return p.setins(bitfield(0, 1, 0, sa_lsb, sa_width, sa_wn, sa_wd))
+    }
+    // BFI  <Xd>, <Xn>, #<lsb>, #<width>
+    if isXr(v0) && isXr(v1) && isUimm6(v2) && isBFxWidth(v2, v3, 64) {
+        sa_xd := uint32(v0.(asm.Register).ID())
+        sa_xn := uint32(v1.(asm.Register).ID())
+        sa_lsb_2 := -asUimm6(v2) % 64
+        sa_width_1 := asUimm6(v3) - 1
+        return p.setins(bitfield(1, 1, 1, sa_lsb_2, sa_width_1, sa_xn, sa_xd))
+    }
+    // none of above
+    p.Free()
+    panic("aarch64: invalid combination of operands for BFI")
 }
 
 // BFM instruction have 2 forms:
@@ -1751,11 +1851,11 @@ func (self *Program) BFMLALB(v0, v1, v2 interface{}) *Instruction {
             0,
             0,
             3,
-            maskp(sa_index, 1, 1),
-            sa_index & 1,
+            ubfx(sa_index, 1, 1),
+            mask(sa_index, 1),
             sa_vm,
             15,
-            maskp(sa_index, 2, 1),
+            ubfx(sa_index, 2, 1),
             sa_vn,
             sa_vd,
         ))
@@ -1789,11 +1889,11 @@ func (self *Program) BFMLALT(v0, v1, v2 interface{}) *Instruction {
             1,
             0,
             3,
-            maskp(sa_index, 1, 1),
-            sa_index & 1,
+            ubfx(sa_index, 1, 1),
+            mask(sa_index, 1),
             sa_vm,
             15,
-            maskp(sa_index, 2, 1),
+            ubfx(sa_index, 2, 1),
             sa_vn,
             sa_vd,
         ))
@@ -1824,6 +1924,34 @@ func (self *Program) BFMMLA(v0, v1, v2 interface{}) *Instruction {
     }
     p.Free()
     panic("aarch64: invalid combination of operands for BFMMLA")
+}
+
+// BFXIL instruction have 2 forms:
+//
+//   * BFXIL  <Wd>, <Wn>, #<lsb>, #<width>
+//   * BFXIL  <Xd>, <Xn>, #<lsb>, #<width>
+//
+func (self *Program) BFXIL(v0, v1, v2, v3 interface{}) *Instruction {
+    p := self.alloc("BFXIL", 4, Operands { v0, v1, v2, v3 })
+    // BFXIL  <Wd>, <Wn>, #<lsb>, #<width>
+    if isWr(v0) && isWr(v1) && isUimm5(v2) && isBFxWidth(v2, v3, 32) {
+        sa_wd := uint32(v0.(asm.Register).ID())
+        sa_wn := uint32(v1.(asm.Register).ID())
+        sa_lsb_1 := asUimm5(v2)
+        sa_width := sa_lsb_1 + asUimm5(v3) - 1
+        return p.setins(bitfield(0, 1, 0, sa_lsb_1, sa_width, sa_wn, sa_wd))
+    }
+    // BFXIL  <Xd>, <Xn>, #<lsb>, #<width>
+    if isXr(v0) && isXr(v1) && isUimm6(v2) && isBFxWidth(v2, v3, 64) {
+        sa_xd := uint32(v0.(asm.Register).ID())
+        sa_xn := uint32(v1.(asm.Register).ID())
+        sa_lsb_3 := asUimm6(v2)
+        sa_width_1 := sa_lsb_3 + asUimm6(v3) - 1
+        return p.setins(bitfield(1, 1, 1, sa_lsb_3, sa_width_1, sa_xn, sa_xd))
+    }
+    // none of above
+    p.Free()
+    panic("aarch64: invalid combination of operands for BFXIL")
 }
 
 // BIC instruction have 5 forms:
@@ -1895,16 +2023,16 @@ func (self *Program) BIC(v0, v1 interface{}, vv ...interface{}) *Instruction {
         return p.setins(asimdimm(
             sa_t,
             1,
-            maskp(sa_imm8, 7, 1),
-            maskp(sa_imm8, 6, 1),
-            maskp(sa_imm8, 5, 1),
+            ubfx(sa_imm8, 7, 1),
+            ubfx(sa_imm8, 6, 1),
+            ubfx(sa_imm8, 5, 1),
             cmode,
             0,
-            maskp(sa_imm8, 4, 1),
-            maskp(sa_imm8, 3, 1),
-            maskp(sa_imm8, 2, 1),
-            maskp(sa_imm8, 1, 1),
-            sa_imm8 & 1,
+            ubfx(sa_imm8, 4, 1),
+            ubfx(sa_imm8, 3, 1),
+            ubfx(sa_imm8, 2, 1),
+            ubfx(sa_imm8, 1, 1),
+            mask(sa_imm8, 1),
             sa_vd,
         ))
     }
@@ -1937,16 +2065,16 @@ func (self *Program) BIC(v0, v1 interface{}, vv ...interface{}) *Instruction {
         return p.setins(asimdimm(
             sa_t_1,
             1,
-            maskp(sa_imm8, 7, 1),
-            maskp(sa_imm8, 6, 1),
-            maskp(sa_imm8, 5, 1),
+            ubfx(sa_imm8, 7, 1),
+            ubfx(sa_imm8, 6, 1),
+            ubfx(sa_imm8, 5, 1),
             cmode,
             0,
-            maskp(sa_imm8, 4, 1),
-            maskp(sa_imm8, 3, 1),
-            maskp(sa_imm8, 2, 1),
-            maskp(sa_imm8, 1, 1),
-            sa_imm8 & 1,
+            ubfx(sa_imm8, 4, 1),
+            ubfx(sa_imm8, 3, 1),
+            ubfx(sa_imm8, 2, 1),
+            ubfx(sa_imm8, 1, 1),
+            mask(sa_imm8, 1),
             sa_vd,
         ))
     }
@@ -2241,6 +2369,29 @@ func (self *Program) BRABZ(v0 interface{}) *Instruction {
     }
     p.Free()
     panic("aarch64: invalid combination of operands for BRABZ")
+}
+
+// BRB instruction have one single form:
+//
+//   * BRB  <brb_op>{, <Xt>}
+//
+func (self *Program) BRB(v0 interface{}, vv ...interface{}) *Instruction {
+    var p *Instruction
+    switch len(vv) {
+        case 0  : p = self.alloc("BRB", 1, Operands { v0 })
+        case 1  : p = self.alloc("BRB", 2, Operands { v0, vv[0] })
+        default : panic("instruction BRB takes 1 or 2 operands")
+    }
+    if (len(vv) == 0 || len(vv) == 1) && isBRBOption(v0) && (len(vv) == 0 || isXr(vv[0])) {
+        var sa_xt uint32
+        sa_brb_op := uint32(v0.(BRBOption))
+        if len(vv) == 1 {
+            sa_xt = uint32(vv[0].(asm.Register).ID())
+        }
+        return p.setins(systeminstrs(0, 1, 7, 2, sa_brb_op, sa_xt))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for BRB")
 }
 
 // BRK instruction have one single form:
@@ -2977,6 +3128,20 @@ func (self *Program) CFINV() *Instruction {
     return p.setins(pstate(0, 0, 0, 31))
 }
 
+// CFP instruction have one single form:
+//
+//   * CFP  RCTX, <Xt>
+//
+func (self *Program) CFP(v0, v1 interface{}) *Instruction {
+    p := self.alloc("CFP", 2, Operands { v0, v1 })
+    if v0 == RCTX && isXr(v1) {
+        sa_xt_1 := uint32(v1.(asm.Register).ID())
+        return p.setins(systeminstrs(0, 3, 7, 3, 4, sa_xt_1))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for CFP")
+}
+
 // CHKFEAT instruction have one single form:
 //
 //   * CHKFEAT
@@ -2984,6 +3149,58 @@ func (self *Program) CFINV() *Instruction {
 func (self *Program) CHKFEAT() *Instruction {
     p := self.alloc("CHKFEAT", 0, Operands {})
     return p.setins(hints(5, 0))
+}
+
+// CINC instruction have 2 forms:
+//
+//   * CINC  <Wd>, <Wn>, <cond>
+//   * CINC  <Xd>, <Xn>, <cond>
+//
+func (self *Program) CINC(v0, v1, v2 interface{}) *Instruction {
+    p := self.alloc("CINC", 3, Operands { v0, v1, v2 })
+    // CINC  <Wd>, <Wn>, <cond>
+    if isWr(v0) && isWr(v1) && isBrCond(v2) {
+        sa_wd := uint32(v0.(asm.Register).ID())
+        sa_wn_1 := uint32(v1.(asm.Register).ID())
+        sa_cond_1 := uint32(v2.(ConditionCode) ^ 1)
+        return p.setins(condsel(0, 0, 0, sa_wn_1, sa_cond_1, 1, sa_wn_1, sa_wd))
+    }
+    // CINC  <Xd>, <Xn>, <cond>
+    if isXr(v0) && isXr(v1) && isBrCond(v2) {
+        sa_xd := uint32(v0.(asm.Register).ID())
+        sa_xn_1 := uint32(v1.(asm.Register).ID())
+        sa_cond_1 := uint32(v2.(ConditionCode) ^ 1)
+        return p.setins(condsel(1, 0, 0, sa_xn_1, sa_cond_1, 1, sa_xn_1, sa_xd))
+    }
+    // none of above
+    p.Free()
+    panic("aarch64: invalid combination of operands for CINC")
+}
+
+// CINV instruction have 2 forms:
+//
+//   * CINV  <Wd>, <Wn>, <cond>
+//   * CINV  <Xd>, <Xn>, <cond>
+//
+func (self *Program) CINV(v0, v1, v2 interface{}) *Instruction {
+    p := self.alloc("CINV", 3, Operands { v0, v1, v2 })
+    // CINV  <Wd>, <Wn>, <cond>
+    if isWr(v0) && isWr(v1) && isBrCond(v2) {
+        sa_wd := uint32(v0.(asm.Register).ID())
+        sa_wn_1 := uint32(v1.(asm.Register).ID())
+        sa_cond_1 := uint32(v2.(ConditionCode) ^ 1)
+        return p.setins(condsel(0, 1, 0, sa_wn_1, sa_cond_1, 0, sa_wn_1, sa_wd))
+    }
+    // CINV  <Xd>, <Xn>, <cond>
+    if isXr(v0) && isXr(v1) && isBrCond(v2) {
+        sa_xd := uint32(v0.(asm.Register).ID())
+        sa_xn_1 := uint32(v1.(asm.Register).ID())
+        sa_cond_1 := uint32(v2.(ConditionCode) ^ 1)
+        return p.setins(condsel(1, 1, 0, sa_xn_1, sa_cond_1, 0, sa_xn_1, sa_xd))
+    }
+    // none of above
+    p.Free()
+    panic("aarch64: invalid combination of operands for CINV")
 }
 
 // CLRBHB instruction have one single form:
@@ -3055,7 +3272,7 @@ func (self *Program) CLS(v0, v1 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vn := uint32(v1.(asm.Register).ID())
-        return p.setins(asimdmisc(sa_t & 1, 0, maskp(sa_t, 1, 2), 4, sa_vn, sa_vd))
+        return p.setins(asimdmisc(mask(sa_t, 1), 0, ubfx(sa_t, 1, 2), 4, sa_vn, sa_vd))
     }
     // none of above
     p.Free()
@@ -3100,7 +3317,7 @@ func (self *Program) CLZ(v0, v1 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vn := uint32(v1.(asm.Register).ID())
-        return p.setins(asimdmisc(sa_t & 1, 1, maskp(sa_t, 1, 2), 4, sa_vn, sa_vd))
+        return p.setins(asimdmisc(mask(sa_t, 1), 1, ubfx(sa_t, 1, 2), 4, sa_vn, sa_vd))
     }
     // none of above
     p.Free()
@@ -3136,7 +3353,7 @@ func (self *Program) CMEQ(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vn := uint32(v1.(asm.Register).ID())
-        return p.setins(asimdmisc(sa_t & 1, 0, maskp(sa_t, 1, 2), 9, sa_vn, sa_vd))
+        return p.setins(asimdmisc(mask(sa_t, 1), 0, ubfx(sa_t, 1, 2), 9, sa_vn, sa_vd))
     }
     // CMEQ  <Vd>.<T>, <Vn>.<T>, <Vm>.<T>
     if isVr(v0) &&
@@ -3161,7 +3378,7 @@ func (self *Program) CMEQ(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdsame(sa_t & 1, 1, maskp(sa_t, 1, 2), sa_vm, 17, sa_vn, sa_vd))
+        return p.setins(asimdsame(mask(sa_t, 1), 1, ubfx(sa_t, 1, 2), sa_vm, 17, sa_vn, sa_vd))
     }
     // CMEQ  <V><d>, <V><n>, #0
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isIntLit(v2, 0) && isSameType(v0, v1) {
@@ -3220,7 +3437,7 @@ func (self *Program) CMGE(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vn := uint32(v1.(asm.Register).ID())
-        return p.setins(asimdmisc(sa_t & 1, 1, maskp(sa_t, 1, 2), 8, sa_vn, sa_vd))
+        return p.setins(asimdmisc(mask(sa_t, 1), 1, ubfx(sa_t, 1, 2), 8, sa_vn, sa_vd))
     }
     // CMGE  <Vd>.<T>, <Vn>.<T>, <Vm>.<T>
     if isVr(v0) &&
@@ -3245,7 +3462,7 @@ func (self *Program) CMGE(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdsame(sa_t & 1, 0, maskp(sa_t, 1, 2), sa_vm, 7, sa_vn, sa_vd))
+        return p.setins(asimdsame(mask(sa_t, 1), 0, ubfx(sa_t, 1, 2), sa_vm, 7, sa_vn, sa_vd))
     }
     // CMGE  <V><d>, <V><n>, #0
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isIntLit(v2, 0) && isSameType(v0, v1) {
@@ -3304,7 +3521,7 @@ func (self *Program) CMGT(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vn := uint32(v1.(asm.Register).ID())
-        return p.setins(asimdmisc(sa_t & 1, 0, maskp(sa_t, 1, 2), 8, sa_vn, sa_vd))
+        return p.setins(asimdmisc(mask(sa_t, 1), 0, ubfx(sa_t, 1, 2), 8, sa_vn, sa_vd))
     }
     // CMGT  <Vd>.<T>, <Vn>.<T>, <Vm>.<T>
     if isVr(v0) &&
@@ -3329,7 +3546,7 @@ func (self *Program) CMGT(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdsame(sa_t & 1, 0, maskp(sa_t, 1, 2), sa_vm, 6, sa_vn, sa_vd))
+        return p.setins(asimdsame(mask(sa_t, 1), 0, ubfx(sa_t, 1, 2), sa_vm, 6, sa_vn, sa_vd))
     }
     // CMGT  <V><d>, <V><n>, #0
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isIntLit(v2, 0) && isSameType(v0, v1) {
@@ -3389,7 +3606,7 @@ func (self *Program) CMHI(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdsame(sa_t & 1, 1, maskp(sa_t, 1, 2), sa_vm, 6, sa_vn, sa_vd))
+        return p.setins(asimdsame(mask(sa_t, 1), 1, ubfx(sa_t, 1, 2), sa_vm, 6, sa_vn, sa_vd))
     }
     // CMHI  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
@@ -3438,7 +3655,7 @@ func (self *Program) CMHS(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdsame(sa_t & 1, 1, maskp(sa_t, 1, 2), sa_vm, 7, sa_vn, sa_vd))
+        return p.setins(asimdsame(mask(sa_t, 1), 1, ubfx(sa_t, 1, 2), sa_vm, 7, sa_vn, sa_vd))
     }
     // CMHS  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
@@ -3484,7 +3701,7 @@ func (self *Program) CMLE(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vn := uint32(v1.(asm.Register).ID())
-        return p.setins(asimdmisc(sa_t & 1, 1, maskp(sa_t, 1, 2), 9, sa_vn, sa_vd))
+        return p.setins(asimdmisc(mask(sa_t, 1), 1, ubfx(sa_t, 1, 2), 9, sa_vn, sa_vd))
     }
     // CMLE  <V><d>, <V><n>, #0
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isIntLit(v2, 0) && isSameType(v0, v1) {
@@ -3529,7 +3746,7 @@ func (self *Program) CMLT(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vn := uint32(v1.(asm.Register).ID())
-        return p.setins(asimdmisc(sa_t & 1, 0, maskp(sa_t, 1, 2), 10, sa_vn, sa_vd))
+        return p.setins(asimdmisc(mask(sa_t, 1), 0, ubfx(sa_t, 1, 2), 10, sa_vn, sa_vd))
     }
     // CMLT  <V><d>, <V><n>, #0
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isIntLit(v2, 0) && isSameType(v0, v1) {
@@ -3545,6 +3762,245 @@ func (self *Program) CMLT(v0, v1, v2 interface{}) *Instruction {
     // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for CMLT")
+}
+
+// CMN instruction have 6 forms:
+//
+//   * CMN  <Wn|WSP>, <Wm>{, <extend> {#<amount>}}
+//   * CMN  <Wn|WSP>, #<imm>{, <shift>}
+//   * CMN  <Wn>, <Wm>{, <shift> #<amount>}
+//   * CMN  <Xn|SP>, <R><m>{, <extend> {#<amount>}}
+//   * CMN  <Xn|SP>, #<imm>{, <shift>}
+//   * CMN  <Xn>, <Xm>{, <shift> #<amount>}
+//
+func (self *Program) CMN(v0, v1 interface{}, vv ...interface{}) *Instruction {
+    var p *Instruction
+    switch len(vv) {
+        case 0  : p = self.alloc("CMN", 2, Operands { v0, v1 })
+        case 1  : p = self.alloc("CMN", 3, Operands { v0, v1, vv[0] })
+        default : panic("instruction CMN takes 2 or 3 operands")
+    }
+    // CMN  <Wn|WSP>, <Wm>{, <extend> {#<amount>}}
+    if (len(vv) == 0 || len(vv) == 1) && isWrOrWSP(v0) && isWr(v1) && (len(vv) == 0 || isExtend(vv[0])) {
+        var sa_amount uint32
+        var sa_extend uint32
+        sa_wn_wsp := uint32(v0.(asm.Register).ID())
+        sa_wm := uint32(v1.(asm.Register).ID())
+        if len(vv) == 1 {
+            sa_extend = uint32(vv[0].(Extension).Extension())
+            sa_amount = uint32(vv[0].(Modifier).Amount())
+        }
+        return p.setins(addsub_ext(0, 0, 1, 0, sa_wm, sa_extend, sa_amount, sa_wn_wsp, 31))
+    }
+    // CMN  <Wn|WSP>, #<imm>{, <shift>}
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isWrOrWSP(v0) &&
+       isImm12(v1) &&
+       (len(vv) == 0 || isShift(vv[0]) && modn(vv[0]) == 0) {
+        var sa_shift uint32
+        sa_wn_wsp := uint32(v0.(asm.Register).ID())
+        sa_imm := asImm12(v1)
+        if len(vv) == 1 {
+            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+        }
+        return p.setins(addsub_imm(0, 0, 1, sa_shift, sa_imm, sa_wn_wsp, 31))
+    }
+    // CMN  <Wn>, <Wm>{, <shift> #<amount>}
+    if (len(vv) == 0 || len(vv) == 1) && isWr(v0) && isWr(v1) && (len(vv) == 0 || isShift(vv[0])) {
+        var sa_amount uint32
+        var sa_shift uint32
+        sa_wn := uint32(v0.(asm.Register).ID())
+        sa_wm := uint32(v1.(asm.Register).ID())
+        if len(vv) == 1 {
+            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            sa_amount = uint32(vv[0].(Modifier).Amount())
+        }
+        return p.setins(addsub_shift(0, 0, 1, sa_shift, sa_wm, sa_amount, sa_wn, 31))
+    }
+    // CMN  <Xn|SP>, <R><m>{, <extend> {#<amount>}}
+    if (len(vv) == 0 || len(vv) == 1) && isXrOrSP(v0) && isWrOrXr(v1) && (len(vv) == 0 || isExtend(vv[0])) {
+        var sa_amount uint32
+        var sa_extend_1 uint32
+        var sa_r [4]uint32
+        var sa_r__bit_mask [4]uint32
+        sa_xn_sp := uint32(v0.(asm.Register).ID())
+        sa_m := uint32(v1.(asm.Register).ID())
+        switch true {
+            case isWr(v1): sa_r = [4]uint32{0b000, 0b010, 0b100, 0b110}
+            case isXr(v1): sa_r = [4]uint32{0b011}
+            default: panic("aarch64: unreachable")
+        }
+        switch true {
+            case isWr(v1): sa_r__bit_mask = [4]uint32{0b110, 0b111, 0b110, 0b111}
+            case isXr(v1): sa_r__bit_mask = [4]uint32{0b011}
+            default: panic("aarch64: unreachable")
+        }
+        if len(vv) == 1 {
+            sa_extend_1 = uint32(vv[0].(Extension).Extension())
+            sa_amount = uint32(vv[0].(Modifier).Amount())
+        }
+        if !matchany(sa_extend_1, &sa_r[0], &sa_r__bit_mask[0], 4) {
+            panic("aarch64: invalid combination of operands for CMN")
+        }
+        return p.setins(addsub_ext(1, 0, 1, 0, sa_m, sa_extend_1, sa_amount, sa_xn_sp, 31))
+    }
+    // CMN  <Xn|SP>, #<imm>{, <shift>}
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isXrOrSP(v0) &&
+       isImm12(v1) &&
+       (len(vv) == 0 || isShift(vv[0]) && modn(vv[0]) == 0) {
+        var sa_shift uint32
+        sa_xn_sp := uint32(v0.(asm.Register).ID())
+        sa_imm := asImm12(v1)
+        if len(vv) == 1 {
+            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+        }
+        return p.setins(addsub_imm(1, 0, 1, sa_shift, sa_imm, sa_xn_sp, 31))
+    }
+    // CMN  <Xn>, <Xm>{, <shift> #<amount>}
+    if (len(vv) == 0 || len(vv) == 1) && isXr(v0) && isXr(v1) && (len(vv) == 0 || isShift(vv[0])) {
+        var sa_amount_1 uint32
+        var sa_shift uint32
+        sa_xn := uint32(v0.(asm.Register).ID())
+        sa_xm := uint32(v1.(asm.Register).ID())
+        if len(vv) == 1 {
+            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            sa_amount_1 = uint32(vv[0].(Modifier).Amount())
+        }
+        return p.setins(addsub_shift(1, 0, 1, sa_shift, sa_xm, sa_amount_1, sa_xn, 31))
+    }
+    // none of above
+    p.Free()
+    panic("aarch64: invalid combination of operands for CMN")
+}
+
+// CMP instruction have 6 forms:
+//
+//   * CMP  <Wn|WSP>, <Wm>{, <extend> {#<amount>}}
+//   * CMP  <Wn|WSP>, #<imm>{, <shift>}
+//   * CMP  <Wn>, <Wm>{, <shift> #<amount>}
+//   * CMP  <Xn|SP>, <R><m>{, <extend> {#<amount>}}
+//   * CMP  <Xn|SP>, #<imm>{, <shift>}
+//   * CMP  <Xn>, <Xm>{, <shift> #<amount>}
+//
+func (self *Program) CMP(v0, v1 interface{}, vv ...interface{}) *Instruction {
+    var p *Instruction
+    switch len(vv) {
+        case 0  : p = self.alloc("CMP", 2, Operands { v0, v1 })
+        case 1  : p = self.alloc("CMP", 3, Operands { v0, v1, vv[0] })
+        default : panic("instruction CMP takes 2 or 3 operands")
+    }
+    // CMP  <Wn|WSP>, <Wm>{, <extend> {#<amount>}}
+    if (len(vv) == 0 || len(vv) == 1) && isWrOrWSP(v0) && isWr(v1) && (len(vv) == 0 || isExtend(vv[0])) {
+        var sa_amount uint32
+        var sa_extend uint32
+        sa_wn_wsp := uint32(v0.(asm.Register).ID())
+        sa_wm := uint32(v1.(asm.Register).ID())
+        if len(vv) == 1 {
+            sa_extend = uint32(vv[0].(Extension).Extension())
+            sa_amount = uint32(vv[0].(Modifier).Amount())
+        }
+        return p.setins(addsub_ext(0, 1, 1, 0, sa_wm, sa_extend, sa_amount, sa_wn_wsp, 31))
+    }
+    // CMP  <Wn|WSP>, #<imm>{, <shift>}
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isWrOrWSP(v0) &&
+       isImm12(v1) &&
+       (len(vv) == 0 || isShift(vv[0]) && modn(vv[0]) == 0) {
+        var sa_shift uint32
+        sa_wn_wsp := uint32(v0.(asm.Register).ID())
+        sa_imm := asImm12(v1)
+        if len(vv) == 1 {
+            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+        }
+        return p.setins(addsub_imm(0, 1, 1, sa_shift, sa_imm, sa_wn_wsp, 31))
+    }
+    // CMP  <Wn>, <Wm>{, <shift> #<amount>}
+    if (len(vv) == 0 || len(vv) == 1) && isWr(v0) && isWr(v1) && (len(vv) == 0 || isShift(vv[0])) {
+        var sa_amount uint32
+        var sa_shift uint32
+        sa_wn := uint32(v0.(asm.Register).ID())
+        sa_wm := uint32(v1.(asm.Register).ID())
+        if len(vv) == 1 {
+            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            sa_amount = uint32(vv[0].(Modifier).Amount())
+        }
+        return p.setins(addsub_shift(0, 1, 1, sa_shift, sa_wm, sa_amount, sa_wn, 31))
+    }
+    // CMP  <Xn|SP>, <R><m>{, <extend> {#<amount>}}
+    if (len(vv) == 0 || len(vv) == 1) && isXrOrSP(v0) && isWrOrXr(v1) && (len(vv) == 0 || isExtend(vv[0])) {
+        var sa_amount uint32
+        var sa_extend_1 uint32
+        var sa_r [4]uint32
+        var sa_r__bit_mask [4]uint32
+        sa_xn_sp := uint32(v0.(asm.Register).ID())
+        sa_m := uint32(v1.(asm.Register).ID())
+        switch true {
+            case isWr(v1): sa_r = [4]uint32{0b000, 0b010, 0b100, 0b110}
+            case isXr(v1): sa_r = [4]uint32{0b011}
+            default: panic("aarch64: unreachable")
+        }
+        switch true {
+            case isWr(v1): sa_r__bit_mask = [4]uint32{0b110, 0b111, 0b110, 0b111}
+            case isXr(v1): sa_r__bit_mask = [4]uint32{0b011}
+            default: panic("aarch64: unreachable")
+        }
+        if len(vv) == 1 {
+            sa_extend_1 = uint32(vv[0].(Extension).Extension())
+            sa_amount = uint32(vv[0].(Modifier).Amount())
+        }
+        if !matchany(sa_extend_1, &sa_r[0], &sa_r__bit_mask[0], 4) {
+            panic("aarch64: invalid combination of operands for CMP")
+        }
+        return p.setins(addsub_ext(1, 1, 1, 0, sa_m, sa_extend_1, sa_amount, sa_xn_sp, 31))
+    }
+    // CMP  <Xn|SP>, #<imm>{, <shift>}
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isXrOrSP(v0) &&
+       isImm12(v1) &&
+       (len(vv) == 0 || isShift(vv[0]) && modn(vv[0]) == 0) {
+        var sa_shift uint32
+        sa_xn_sp := uint32(v0.(asm.Register).ID())
+        sa_imm := asImm12(v1)
+        if len(vv) == 1 {
+            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+        }
+        return p.setins(addsub_imm(1, 1, 1, sa_shift, sa_imm, sa_xn_sp, 31))
+    }
+    // CMP  <Xn>, <Xm>{, <shift> #<amount>}
+    if (len(vv) == 0 || len(vv) == 1) && isXr(v0) && isXr(v1) && (len(vv) == 0 || isShift(vv[0])) {
+        var sa_amount_1 uint32
+        var sa_shift uint32
+        sa_xn := uint32(v0.(asm.Register).ID())
+        sa_xm := uint32(v1.(asm.Register).ID())
+        if len(vv) == 1 {
+            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            sa_amount_1 = uint32(vv[0].(Modifier).Amount())
+        }
+        return p.setins(addsub_shift(1, 1, 1, sa_shift, sa_xm, sa_amount_1, sa_xn, 31))
+    }
+    // none of above
+    p.Free()
+    panic("aarch64: invalid combination of operands for CMP")
+}
+
+// CMPP instruction have one single form:
+//
+//   * CMPP  <Xn|SP>, <Xm|SP>
+//
+func (self *Program) CMPP(v0, v1 interface{}) *Instruction {
+    p := self.alloc("CMPP", 2, Operands { v0, v1 })
+    if isXrOrSP(v0) && isXrOrSP(v1) {
+        sa_xn_sp := uint32(v0.(asm.Register).ID())
+        sa_xm_sp := uint32(v1.(asm.Register).ID())
+        Rm := uint32(0b00000)
+        Rm |= sa_xm_sp
+        Rn := uint32(0b00000)
+        Rn |= sa_xn_sp
+        return p.setins(dp_2src(1, 1, Rm, 0, Rn, 31))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for CMPP")
 }
 
 // CMTST instruction have 2 forms:
@@ -3577,7 +4033,7 @@ func (self *Program) CMTST(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdsame(sa_t & 1, 0, maskp(sa_t, 1, 2), sa_vm, 17, sa_vn, sa_vd))
+        return p.setins(asimdsame(mask(sa_t, 1), 0, ubfx(sa_t, 1, 2), sa_vm, 17, sa_vn, sa_vd))
     }
     // CMTST  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
@@ -3594,6 +4050,32 @@ func (self *Program) CMTST(v0, v1, v2 interface{}) *Instruction {
     // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for CMTST")
+}
+
+// CNEG instruction have 2 forms:
+//
+//   * CNEG  <Wd>, <Wn>, <cond>
+//   * CNEG  <Xd>, <Xn>, <cond>
+//
+func (self *Program) CNEG(v0, v1, v2 interface{}) *Instruction {
+    p := self.alloc("CNEG", 3, Operands { v0, v1, v2 })
+    // CNEG  <Wd>, <Wn>, <cond>
+    if isWr(v0) && isWr(v1) && isBrCond(v2) {
+        sa_wd := uint32(v0.(asm.Register).ID())
+        sa_wn_1 := uint32(v1.(asm.Register).ID())
+        sa_cond_1 := uint32(v2.(ConditionCode) ^ 1)
+        return p.setins(condsel(0, 1, 0, sa_wn_1, sa_cond_1, 1, sa_wn_1, sa_wd))
+    }
+    // CNEG  <Xd>, <Xn>, <cond>
+    if isXr(v0) && isXr(v1) && isBrCond(v2) {
+        sa_xd := uint32(v0.(asm.Register).ID())
+        sa_xn_1 := uint32(v1.(asm.Register).ID())
+        sa_cond_1 := uint32(v2.(ConditionCode) ^ 1)
+        return p.setins(condsel(1, 1, 0, sa_xn_1, sa_cond_1, 1, sa_xn_1, sa_xd))
+    }
+    // none of above
+    p.Free()
+    panic("aarch64: invalid combination of operands for CNEG")
 }
 
 // CNT instruction have 3 forms:
@@ -3626,11 +4108,39 @@ func (self *Program) CNT(v0, v1 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vn := uint32(v1.(asm.Register).ID())
-        return p.setins(asimdmisc(sa_t & 1, 0, maskp(sa_t, 1, 2), 5, sa_vn, sa_vd))
+        return p.setins(asimdmisc(mask(sa_t, 1), 0, ubfx(sa_t, 1, 2), 5, sa_vn, sa_vd))
     }
     // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for CNT")
+}
+
+// COSP instruction have one single form:
+//
+//   * COSP  RCTX, <Xt>
+//
+func (self *Program) COSP(v0, v1 interface{}) *Instruction {
+    p := self.alloc("COSP", 2, Operands { v0, v1 })
+    if v0 == RCTX && isXr(v1) {
+        sa_xt_1 := uint32(v1.(asm.Register).ID())
+        return p.setins(systeminstrs(0, 3, 7, 3, 6, sa_xt_1))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for COSP")
+}
+
+// CPP instruction have one single form:
+//
+//   * CPP  RCTX, <Xt>
+//
+func (self *Program) CPP(v0, v1 interface{}) *Instruction {
+    p := self.alloc("CPP", 2, Operands { v0, v1 })
+    if v0 == RCTX && isXr(v1) {
+        sa_xt_1 := uint32(v1.(asm.Register).ID())
+        return p.setins(systeminstrs(0, 3, 7, 3, 7, sa_xt_1))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for CPP")
 }
 
 // CPYE instruction have one single form:
@@ -6294,6 +6804,54 @@ func (self *Program) CSEL(v0, v1, v2, v3 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CSEL")
 }
 
+// CSET instruction have 2 forms:
+//
+//   * CSET  <Wd>, <cond>
+//   * CSET  <Xd>, <cond>
+//
+func (self *Program) CSET(v0, v1 interface{}) *Instruction {
+    p := self.alloc("CSET", 2, Operands { v0, v1 })
+    // CSET  <Wd>, <cond>
+    if isWr(v0) && isBrCond(v1) {
+        sa_wd := uint32(v0.(asm.Register).ID())
+        sa_cond_1 := uint32(v1.(ConditionCode) ^ 1)
+        return p.setins(condsel(0, 0, 0, 31, sa_cond_1, 1, 31, sa_wd))
+    }
+    // CSET  <Xd>, <cond>
+    if isXr(v0) && isBrCond(v1) {
+        sa_xd := uint32(v0.(asm.Register).ID())
+        sa_cond_1 := uint32(v1.(ConditionCode) ^ 1)
+        return p.setins(condsel(1, 0, 0, 31, sa_cond_1, 1, 31, sa_xd))
+    }
+    // none of above
+    p.Free()
+    panic("aarch64: invalid combination of operands for CSET")
+}
+
+// CSETM instruction have 2 forms:
+//
+//   * CSETM  <Wd>, <cond>
+//   * CSETM  <Xd>, <cond>
+//
+func (self *Program) CSETM(v0, v1 interface{}) *Instruction {
+    p := self.alloc("CSETM", 2, Operands { v0, v1 })
+    // CSETM  <Wd>, <cond>
+    if isWr(v0) && isBrCond(v1) {
+        sa_wd := uint32(v0.(asm.Register).ID())
+        sa_cond_1 := uint32(v1.(ConditionCode) ^ 1)
+        return p.setins(condsel(0, 1, 0, 31, sa_cond_1, 0, 31, sa_wd))
+    }
+    // CSETM  <Xd>, <cond>
+    if isXr(v0) && isBrCond(v1) {
+        sa_xd := uint32(v0.(asm.Register).ID())
+        sa_cond_1 := uint32(v1.(ConditionCode) ^ 1)
+        return p.setins(condsel(1, 1, 0, 31, sa_cond_1, 0, 31, sa_xd))
+    }
+    // none of above
+    p.Free()
+    panic("aarch64: invalid combination of operands for CSETM")
+}
+
 // CSINC instruction have 2 forms:
 //
 //   * CSINC  <Wd>, <Wn>, <Wm>, <cond>
@@ -6400,6 +6958,21 @@ func (self *Program) CTZ(v0, v1 interface{}) *Instruction {
     // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for CTZ")
+}
+
+// DC instruction have one single form:
+//
+//   * DC  <dc_op>, <Xt>
+//
+func (self *Program) DC(v0, v1 interface{}) *Instruction {
+    p := self.alloc("DC", 2, Operands { v0, v1 })
+    if isDCOption(v0) && isXr(v1) {
+        sa_dc_op := uint32(v0.(DCOption))
+        sa_xt_1 := uint32(v1.(asm.Register).ID())
+        return p.setins(systeminstrs(0, ubfx(sa_dc_op, 7, 3), 7, ubfx(sa_dc_op, 3, 4), mask(sa_dc_op, 3), sa_xt_1))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for DC")
 }
 
 // DCPS1 instruction have one single form:
@@ -6572,10 +7145,10 @@ func (self *Program) DUP(v0, v1 interface{}) *Instruction {
             case isXr(v1): sa_r__bit_mask = [3]uint32{0b01111}
             default: panic("aarch64: unreachable")
         }
-        if !matchany(maskp(sa_t, 1, 5) & maskp(sa_t__bit_mask, 1, 5), &sa_r[0], &sa_r__bit_mask[0], 3) {
+        if !matchany(ubfx(sa_t, 1, 5) & ubfx(sa_t__bit_mask, 1, 5), &sa_r[0], &sa_r__bit_mask[0], 3) {
             panic("aarch64: invalid combination of operands for DUP")
         }
-        return p.setins(asimdins(sa_t & 1, 0, maskp(sa_t, 1, 5), 1, sa_n, sa_vd))
+        return p.setins(asimdins(mask(sa_t, 1), 0, ubfx(sa_t, 1, 5), 1, sa_n, sa_vd))
     }
     // DUP  <Vd>.<T>, <Vn>.<Ts>[<index>]
     if isVr(v0) && isVfmt(v0, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) && isVri(v1) {
@@ -6620,11 +7193,11 @@ func (self *Program) DUP(v0, v1 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v1))
-        if sa_index != maskp(sa_t, 1, 5) & maskp(sa_t__bit_mask, 1, 5) ||
-           maskp(sa_t, 1, 5) & maskp(sa_t__bit_mask, 1, 5) != sa_ts & sa_ts__bit_mask {
+        if sa_index != ubfx(sa_t, 1, 5) & ubfx(sa_t__bit_mask, 1, 5) ||
+           ubfx(sa_t, 1, 5) & ubfx(sa_t__bit_mask, 1, 5) != sa_ts & sa_ts__bit_mask {
             panic("aarch64: invalid combination of operands for DUP")
         }
-        return p.setins(asimdins(sa_t & 1, 0, sa_index, 0, sa_vn, sa_vd))
+        return p.setins(asimdins(mask(sa_t, 1), 0, sa_index, 0, sa_vn, sa_vd))
     }
     // DUP  <V><d>, <Vn>.<T>[<index>]
     if isAdvSIMD(v0) && isVri(v1) {
@@ -6671,6 +7244,20 @@ func (self *Program) DUP(v0, v1 interface{}) *Instruction {
     // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for DUP")
+}
+
+// DVP instruction have one single form:
+//
+//   * DVP  RCTX, <Xt>
+//
+func (self *Program) DVP(v0, v1 interface{}) *Instruction {
+    p := self.alloc("DVP", 2, Operands { v0, v1 })
+    if v0 == RCTX && isXr(v1) {
+        sa_xt_1 := uint32(v1.(asm.Register).ID())
+        return p.setins(systeminstrs(0, 3, 7, 3, 5, sa_xt_1))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for DVP")
 }
 
 // EON instruction have 2 forms:
@@ -6736,7 +7323,7 @@ func (self *Program) EOR(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
         sa_wd_wsp := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_imm := asMaskOp(v2)
-        return p.setins(log_imm(0, 2, 0, maskp(sa_imm, 6, 6), mask(sa_imm, 6), sa_wn, sa_wd_wsp))
+        return p.setins(log_imm(0, 2, 0, ubfx(sa_imm, 6, 6), mask(sa_imm, 6), sa_wn, sa_wd_wsp))
     }
     // EOR  <Wd>, <Wn>, <Wm>{, <shift> #<amount>}
     if (len(vv) == 0 || len(vv) == 1) && isWr(v0) && isWr(v1) && isWr(v2) && (len(vv) == 0 || isShift(vv[0])) {
@@ -6756,7 +7343,7 @@ func (self *Program) EOR(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
         sa_xd_sp := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_imm_1 := asMaskOp(v2)
-        return p.setins(log_imm(1, 2, maskp(sa_imm_1, 12, 1), maskp(sa_imm_1, 6, 6), mask(sa_imm_1, 6), sa_xn, sa_xd_sp))
+        return p.setins(log_imm(1, 2, ubfx(sa_imm_1, 12, 1), ubfx(sa_imm_1, 6, 6), mask(sa_imm_1, 6), sa_xn, sa_xd_sp))
     }
     // EOR  <Xd>, <Xn>, <Xm>{, <shift> #<amount>}
     if (len(vv) == 0 || len(vv) == 1) && isXr(v0) && isXr(v1) && isXr(v2) && (len(vv) == 0 || isShift(vv[0])) {
@@ -6881,10 +7468,10 @@ func (self *Program) EXT(v0, v1, v2, v3 interface{}) *Instruction {
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
         sa_index := asExtIndex(v0, v3)
-        if maskp(sa_index, 4, 1) != sa_t {
+        if ubfx(sa_index, 4, 1) != sa_t {
             panic("aarch64: invalid combination of operands for EXT")
         }
-        return p.setins(asimdext(maskp(sa_index, 4, 1), 0, sa_vm, mask(sa_index, 4), sa_vn, sa_vd))
+        return p.setins(asimdext(ubfx(sa_index, 4, 1), 0, sa_vm, mask(sa_index, 4), sa_vn, sa_vd))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for EXT")
@@ -6947,8 +7534,8 @@ func (self *Program) FABD(v0, v1, v2 interface{}) *Instruction {
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
         size := uint32(0b10)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdsame(sa_t & 1, 1, size, sa_vm, 26, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdsame(mask(sa_t, 1), 1, size, sa_vm, 26, sa_vn, sa_vd))
     }
     // FABD  <Vd>.<T>, <Vn>.<T>, <Vm>.<T>
     if isVr(v0) &&
@@ -7041,8 +7628,8 @@ func (self *Program) FABS(v0, v1 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         size := uint32(0b10)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdmisc(sa_t & 1, 0, size, 15, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdmisc(mask(sa_t, 1), 0, size, 15, sa_vn, sa_vd))
     }
     // FABS  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
@@ -7090,8 +7677,8 @@ func (self *Program) FACGE(v0, v1, v2 interface{}) *Instruction {
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
         size := uint32(0b00)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdsame(sa_t & 1, 1, size, sa_vm, 29, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdsame(mask(sa_t, 1), 1, size, sa_vm, 29, sa_vn, sa_vd))
     }
     // FACGE  <Vd>.<T>, <Vn>.<T>, <Vm>.<T>
     if isVr(v0) &&
@@ -7169,8 +7756,8 @@ func (self *Program) FACGT(v0, v1, v2 interface{}) *Instruction {
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
         size := uint32(0b10)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdsame(sa_t & 1, 1, size, sa_vm, 29, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdsame(mask(sa_t, 1), 1, size, sa_vm, 29, sa_vn, sa_vd))
     }
     // FACGT  <Vd>.<T>, <Vn>.<T>, <Vm>.<T>
     if isVr(v0) &&
@@ -7270,8 +7857,8 @@ func (self *Program) FADD(v0, v1, v2 interface{}) *Instruction {
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
         size := uint32(0b00)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdsame(sa_t & 1, 0, size, sa_vm, 26, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdsame(mask(sa_t, 1), 0, size, sa_vm, 26, sa_vn, sa_vd))
     }
     // FADD  <Vd>.<T>, <Vn>.<T>, <Vm>.<T>
     if isVr(v0) &&
@@ -7333,8 +7920,8 @@ func (self *Program) FADDP(v0, v1 interface{}, vv ...interface{}) *Instruction {
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(vv[0].(asm.Register).ID())
         size := uint32(0b00)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdsame(sa_t & 1, 1, size, sa_vm, 26, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdsame(mask(sa_t, 1), 1, size, sa_vm, 26, sa_vn, sa_vd))
     }
     // FADDP  <Vd>.<T>, <Vn>.<T>, <Vm>.<T>
     if len(vv) == 1 &&
@@ -7441,7 +8028,7 @@ func (self *Program) FCADD(v0, v1, v2, v3 interface{}) *Instruction {
         }
         opcode := uint32(0b1100)
         opcode |= sa_rotate << 1
-        return p.setins(asimdsame2(sa_t & 1, 1, maskp(sa_t, 1, 2), sa_vm, opcode, sa_vn, sa_vd))
+        return p.setins(asimdsame2(mask(sa_t, 1), 1, ubfx(sa_t, 1, 2), sa_vm, opcode, sa_vn, sa_vd))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for FCADD")
@@ -7551,8 +8138,8 @@ func (self *Program) FCMEQ(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         size := uint32(0b10)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdmisc(sa_t & 1, 0, size, 13, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdmisc(mask(sa_t, 1), 0, size, 13, sa_vn, sa_vd))
     }
     // FCMEQ  <Vd>.<T>, <Vn>.<T>, #0.0
     if isVr(v0) &&
@@ -7591,8 +8178,8 @@ func (self *Program) FCMEQ(v0, v1, v2 interface{}) *Instruction {
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
         size := uint32(0b00)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdsame(sa_t & 1, 0, size, sa_vm, 28, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdsame(mask(sa_t, 1), 0, size, sa_vm, 28, sa_vn, sa_vd))
     }
     // FCMEQ  <Vd>.<T>, <Vn>.<T>, <Vm>.<T>
     if isVr(v0) &&
@@ -7691,8 +8278,8 @@ func (self *Program) FCMGE(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         size := uint32(0b10)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdmisc(sa_t & 1, 1, size, 12, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdmisc(mask(sa_t, 1), 1, size, 12, sa_vn, sa_vd))
     }
     // FCMGE  <Vd>.<T>, <Vn>.<T>, #0.0
     if isVr(v0) &&
@@ -7731,8 +8318,8 @@ func (self *Program) FCMGE(v0, v1, v2 interface{}) *Instruction {
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
         size := uint32(0b00)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdsame(sa_t & 1, 1, size, sa_vm, 28, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdsame(mask(sa_t, 1), 1, size, sa_vm, 28, sa_vn, sa_vd))
     }
     // FCMGE  <Vd>.<T>, <Vn>.<T>, <Vm>.<T>
     if isVr(v0) &&
@@ -7831,8 +8418,8 @@ func (self *Program) FCMGT(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         size := uint32(0b10)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdmisc(sa_t & 1, 0, size, 12, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdmisc(mask(sa_t, 1), 0, size, 12, sa_vn, sa_vd))
     }
     // FCMGT  <Vd>.<T>, <Vn>.<T>, #0.0
     if isVr(v0) &&
@@ -7871,8 +8458,8 @@ func (self *Program) FCMGT(v0, v1, v2 interface{}) *Instruction {
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
         size := uint32(0b10)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdsame(sa_t & 1, 1, size, sa_vm, 28, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdsame(mask(sa_t, 1), 1, size, sa_vm, 28, sa_vn, sa_vd))
     }
     // FCMGT  <Vd>.<T>, <Vn>.<T>, <Vm>.<T>
     if isVr(v0) &&
@@ -7984,18 +8571,18 @@ func (self *Program) FCMLA(v0, v1, v2, v3 interface{}) *Instruction {
         }
         opcode := uint32(0b0001)
         opcode |= sa_rotate << 1
-        if maskp(sa_t, 1, 2) != sa_ts || sa_ts != maskp(sa_index, 2, 2) {
+        if ubfx(sa_t, 1, 2) != sa_ts || sa_ts != ubfx(sa_index, 2, 2) {
             panic("aarch64: invalid combination of operands for FCMLA")
         }
         return p.setins(asimdelem(
-            sa_t & 1,
+            mask(sa_t, 1),
             1,
             1,
-            sa_index & 1,
-            maskp(sa_vm, 4, 1),
-            mask(sa_vm, 4),
+            mask(sa_index, 1),
+            sa_vm,
+            sa_vm,
             opcode,
-            maskp(sa_index, 1, 1),
+            ubfx(sa_index, 1, 1),
             sa_vn,
             sa_vd,
         ))
@@ -8035,18 +8622,18 @@ func (self *Program) FCMLA(v0, v1, v2, v3 interface{}) *Instruction {
         }
         opcode := uint32(0b0001)
         opcode |= sa_rotate << 1
-        if maskp(sa_t, 1, 2) != sa_ts || sa_ts != maskp(sa_index, 2, 2) {
+        if ubfx(sa_t, 1, 2) != sa_ts || sa_ts != ubfx(sa_index, 2, 2) {
             panic("aarch64: invalid combination of operands for FCMLA")
         }
         return p.setins(asimdelem(
-            sa_t & 1,
+            mask(sa_t, 1),
             1,
             2,
-            sa_index & 1,
-            maskp(sa_vm, 4, 1),
-            mask(sa_vm, 4),
+            mask(sa_index, 1),
+            sa_vm,
+            sa_vm,
             opcode,
-            maskp(sa_index, 1, 1),
+            ubfx(sa_index, 1, 1),
             sa_vn,
             sa_vd,
         ))
@@ -8083,7 +8670,7 @@ func (self *Program) FCMLA(v0, v1, v2, v3 interface{}) *Instruction {
         }
         opcode := uint32(0b1000)
         opcode |= sa_rotate
-        return p.setins(asimdsame2(sa_t & 1, 1, maskp(sa_t, 1, 2), sa_vm, opcode, sa_vn, sa_vd))
+        return p.setins(asimdsame2(mask(sa_t, 1), 1, ubfx(sa_t, 1, 2), sa_vm, opcode, sa_vn, sa_vd))
     }
     // none of above
     p.Free()
@@ -8116,8 +8703,8 @@ func (self *Program) FCMLE(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         size := uint32(0b10)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdmisc(sa_t & 1, 1, size, 13, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdmisc(mask(sa_t, 1), 1, size, 13, sa_vn, sa_vd))
     }
     // FCMLE  <Vd>.<T>, <Vn>.<T>, #0.0
     if isVr(v0) &&
@@ -8187,8 +8774,8 @@ func (self *Program) FCMLT(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         size := uint32(0b10)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdmisc(sa_t & 1, 0, size, 14, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdmisc(mask(sa_t, 1), 0, size, 14, sa_vn, sa_vd))
     }
     // FCMLT  <Vd>.<T>, <Vn>.<T>, #0.0
     if isVr(v0) &&
@@ -8486,8 +9073,8 @@ func (self *Program) FCVTAS(v0, v1 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         size := uint32(0b00)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdmisc(sa_t & 1, 0, size, 28, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdmisc(mask(sa_t, 1), 0, size, 28, sa_vn, sa_vd))
     }
     // FCVTAS  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
@@ -8593,8 +9180,8 @@ func (self *Program) FCVTAU(v0, v1 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         size := uint32(0b00)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdmisc(sa_t & 1, 1, size, 28, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdmisc(mask(sa_t, 1), 1, size, 28, sa_vn, sa_vd))
     }
     // FCVTAU  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
@@ -8658,10 +9245,10 @@ func (self *Program) FCVTL(v0, v1 interface{}) *Instruction {
         }
         size := uint32(0b00)
         size |= sa_ta
-        if sa_ta != maskp(sa_tb, 1, 1) {
+        if sa_ta != ubfx(sa_tb, 1, 1) {
             panic("aarch64: invalid combination of operands for FCVTL")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for FCVTL")
         }
         return p.setins(asimdmisc(0, 0, size, 23, sa_vn, sa_vd))
@@ -8695,10 +9282,10 @@ func (self *Program) FCVTL2(v0, v1 interface{}) *Instruction {
         }
         size := uint32(0b00)
         size |= sa_ta
-        if sa_ta != maskp(sa_tb, 1, 1) {
+        if sa_ta != ubfx(sa_tb, 1, 1) {
             panic("aarch64: invalid combination of operands for FCVTL2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for FCVTL2")
         }
         return p.setins(asimdmisc(1, 0, size, 23, sa_vn, sa_vd))
@@ -8774,8 +9361,8 @@ func (self *Program) FCVTMS(v0, v1 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         size := uint32(0b00)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdmisc(sa_t & 1, 0, size, 27, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdmisc(mask(sa_t, 1), 0, size, 27, sa_vn, sa_vd))
     }
     // FCVTMS  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
@@ -8881,8 +9468,8 @@ func (self *Program) FCVTMU(v0, v1 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         size := uint32(0b00)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdmisc(sa_t & 1, 1, size, 27, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdmisc(mask(sa_t, 1), 1, size, 27, sa_vn, sa_vd))
     }
     // FCVTMU  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
@@ -8945,11 +9532,11 @@ func (self *Program) FCVTN(v0, v1 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         size := uint32(0b00)
-        size |= maskp(sa_tb, 1, 1)
-        if maskp(sa_tb, 1, 1) != sa_ta {
+        size |= ubfx(sa_tb, 1, 1)
+        if ubfx(sa_tb, 1, 1) != sa_ta {
             panic("aarch64: invalid combination of operands for FCVTN")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for FCVTN")
         }
         return p.setins(asimdmisc(0, 0, size, 22, sa_vn, sa_vd))
@@ -8982,11 +9569,11 @@ func (self *Program) FCVTN2(v0, v1 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         size := uint32(0b00)
-        size |= maskp(sa_tb, 1, 1)
-        if maskp(sa_tb, 1, 1) != sa_ta {
+        size |= ubfx(sa_tb, 1, 1)
+        if ubfx(sa_tb, 1, 1) != sa_ta {
             panic("aarch64: invalid combination of operands for FCVTN2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for FCVTN2")
         }
         return p.setins(asimdmisc(1, 0, size, 22, sa_vn, sa_vd))
@@ -9062,8 +9649,8 @@ func (self *Program) FCVTNS(v0, v1 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         size := uint32(0b00)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdmisc(sa_t & 1, 0, size, 26, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdmisc(mask(sa_t, 1), 0, size, 26, sa_vn, sa_vd))
     }
     // FCVTNS  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
@@ -9169,8 +9756,8 @@ func (self *Program) FCVTNU(v0, v1 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         size := uint32(0b00)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdmisc(sa_t & 1, 1, size, 26, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdmisc(mask(sa_t, 1), 1, size, 26, sa_vn, sa_vd))
     }
     // FCVTNU  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
@@ -9276,8 +9863,8 @@ func (self *Program) FCVTPS(v0, v1 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         size := uint32(0b10)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdmisc(sa_t & 1, 0, size, 26, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdmisc(mask(sa_t, 1), 0, size, 26, sa_vn, sa_vd))
     }
     // FCVTPS  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
@@ -9383,8 +9970,8 @@ func (self *Program) FCVTPU(v0, v1 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         size := uint32(0b10)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdmisc(sa_t & 1, 1, size, 26, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdmisc(mask(sa_t, 1), 1, size, 26, sa_vn, sa_vd))
     }
     // FCVTPU  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
@@ -9467,11 +10054,11 @@ func (self *Program) FCVTXN(v0, v1 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         size := uint32(0b00)
-        size |= maskp(sa_tb, 1, 1)
-        if maskp(sa_tb, 1, 1) != sa_ta {
+        size |= ubfx(sa_tb, 1, 1)
+        if ubfx(sa_tb, 1, 1) != sa_ta {
             panic("aarch64: invalid combination of operands for FCVTXN")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for FCVTXN")
         }
         return p.setins(asimdmisc(0, 1, size, 22, sa_vn, sa_vd))
@@ -9502,11 +10089,11 @@ func (self *Program) FCVTXN2(v0, v1 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         size := uint32(0b00)
-        size |= maskp(sa_tb, 1, 1)
-        if maskp(sa_tb, 1, 1) != sa_ta {
+        size |= ubfx(sa_tb, 1, 1)
+        if ubfx(sa_tb, 1, 1) != sa_ta {
             panic("aarch64: invalid combination of operands for FCVTXN2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for FCVTXN2")
         }
         return p.setins(asimdmisc(1, 1, size, 22, sa_vn, sa_vd))
@@ -9637,8 +10224,8 @@ func (self *Program) FCVTZS(v0, v1 interface{}, vv ...interface{}) *Instruction 
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         size := uint32(0b10)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdmisc(sa_t & 1, 0, size, 27, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdmisc(mask(sa_t, 1), 0, size, 27, sa_vn, sa_vd))
     }
     // FCVTZS  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
@@ -9681,16 +10268,16 @@ func (self *Program) FCVTZS(v0, v1 interface{}, vv ...interface{}) *Instruction 
             default: panic("aarch64: unreachable")
         }
         sa_vn := uint32(v1.(asm.Register).ID())
-        switch maskp(sa_t, 1, 4) {
+        switch ubfx(sa_t, 1, 4) {
             case 0b0010: sa_fbits = 32 - uint32(asLit(vv[0]))
             case 0b0100: sa_fbits = 64 - uint32(asLit(vv[0]))
             case 0b1000: sa_fbits = 128 - uint32(asLit(vv[0]))
             default: panic("aarch64: invalid operand 'sa_fbits' for FCVTZS")
         }
-        if maskp(sa_fbits, 3, 4) != maskp(sa_t, 1, 4) & maskp(sa_t__bit_mask, 1, 4) {
+        if ubfx(sa_fbits, 3, 4) != ubfx(sa_t, 1, 4) & ubfx(sa_t__bit_mask, 1, 4) {
             panic("aarch64: invalid combination of operands for FCVTZS")
         }
-        return p.setins(asimdshf(sa_t & 1, 0, maskp(sa_fbits, 3, 4), mask(sa_fbits, 3), 31, sa_vn, sa_vd))
+        return p.setins(asimdshf(mask(sa_t, 1), 0, ubfx(sa_fbits, 3, 4), mask(sa_fbits, 3), 31, sa_vn, sa_vd))
     }
     // FCVTZS  <V><d>, <V><n>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isSameType(v0, v1) {
@@ -9737,10 +10324,10 @@ func (self *Program) FCVTZS(v0, v1 interface{}, vv ...interface{}) *Instruction 
             case 0b1000: sa_fbits_1 = 128 - uint32(asLit(vv[0]))
             default: panic("aarch64: invalid operand 'sa_fbits_1' for FCVTZS")
         }
-        if maskp(sa_fbits_1, 3, 4) != sa_v & sa_v__bit_mask {
+        if ubfx(sa_fbits_1, 3, 4) != sa_v & sa_v__bit_mask {
             panic("aarch64: invalid combination of operands for FCVTZS")
         }
-        return p.setins(asisdshf(0, maskp(sa_fbits_1, 3, 4), mask(sa_fbits_1, 3), 31, sa_n, sa_d))
+        return p.setins(asisdshf(0, ubfx(sa_fbits_1, 3, 4), mask(sa_fbits_1, 3), 31, sa_n, sa_d))
     }
     // none of above
     p.Free()
@@ -9869,8 +10456,8 @@ func (self *Program) FCVTZU(v0, v1 interface{}, vv ...interface{}) *Instruction 
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         size := uint32(0b10)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdmisc(sa_t & 1, 1, size, 27, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdmisc(mask(sa_t, 1), 1, size, 27, sa_vn, sa_vd))
     }
     // FCVTZU  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
@@ -9913,16 +10500,16 @@ func (self *Program) FCVTZU(v0, v1 interface{}, vv ...interface{}) *Instruction 
             default: panic("aarch64: unreachable")
         }
         sa_vn := uint32(v1.(asm.Register).ID())
-        switch maskp(sa_t, 1, 4) {
+        switch ubfx(sa_t, 1, 4) {
             case 0b0010: sa_fbits = 32 - uint32(asLit(vv[0]))
             case 0b0100: sa_fbits = 64 - uint32(asLit(vv[0]))
             case 0b1000: sa_fbits = 128 - uint32(asLit(vv[0]))
             default: panic("aarch64: invalid operand 'sa_fbits' for FCVTZU")
         }
-        if maskp(sa_fbits, 3, 4) != maskp(sa_t, 1, 4) & maskp(sa_t__bit_mask, 1, 4) {
+        if ubfx(sa_fbits, 3, 4) != ubfx(sa_t, 1, 4) & ubfx(sa_t__bit_mask, 1, 4) {
             panic("aarch64: invalid combination of operands for FCVTZU")
         }
-        return p.setins(asimdshf(sa_t & 1, 1, maskp(sa_fbits, 3, 4), mask(sa_fbits, 3), 31, sa_vn, sa_vd))
+        return p.setins(asimdshf(mask(sa_t, 1), 1, ubfx(sa_fbits, 3, 4), mask(sa_fbits, 3), 31, sa_vn, sa_vd))
     }
     // FCVTZU  <V><d>, <V><n>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isSameType(v0, v1) {
@@ -9969,10 +10556,10 @@ func (self *Program) FCVTZU(v0, v1 interface{}, vv ...interface{}) *Instruction 
             case 0b1000: sa_fbits_1 = 128 - uint32(asLit(vv[0]))
             default: panic("aarch64: invalid operand 'sa_fbits_1' for FCVTZU")
         }
-        if maskp(sa_fbits_1, 3, 4) != sa_v & sa_v__bit_mask {
+        if ubfx(sa_fbits_1, 3, 4) != sa_v & sa_v__bit_mask {
             panic("aarch64: invalid combination of operands for FCVTZU")
         }
-        return p.setins(asisdshf(1, maskp(sa_fbits_1, 3, 4), mask(sa_fbits_1, 3), 31, sa_n, sa_d))
+        return p.setins(asisdshf(1, ubfx(sa_fbits_1, 3, 4), mask(sa_fbits_1, 3), 31, sa_n, sa_d))
     }
     // none of above
     p.Free()
@@ -10030,8 +10617,8 @@ func (self *Program) FDIV(v0, v1, v2 interface{}) *Instruction {
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
         size := uint32(0b00)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdsame(sa_t & 1, 1, size, sa_vm, 31, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdsame(mask(sa_t, 1), 1, size, sa_vm, 31, sa_vn, sa_vd))
     }
     // FDIV  <Vd>.<T>, <Vn>.<T>, <Vm>.<T>
     if isVr(v0) &&
@@ -10161,8 +10748,8 @@ func (self *Program) FMAX(v0, v1, v2 interface{}) *Instruction {
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
         size := uint32(0b00)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdsame(sa_t & 1, 0, size, sa_vm, 30, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdsame(mask(sa_t, 1), 0, size, sa_vm, 30, sa_vn, sa_vd))
     }
     // FMAX  <Vd>.<T>, <Vn>.<T>, <Vm>.<T>
     if isVr(v0) &&
@@ -10240,8 +10827,8 @@ func (self *Program) FMAXNM(v0, v1, v2 interface{}) *Instruction {
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
         size := uint32(0b00)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdsame(sa_t & 1, 0, size, sa_vm, 24, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdsame(mask(sa_t, 1), 0, size, sa_vm, 24, sa_vn, sa_vd))
     }
     // FMAXNM  <Vd>.<T>, <Vn>.<T>, <Vm>.<T>
     if isVr(v0) &&
@@ -10303,8 +10890,8 @@ func (self *Program) FMAXNMP(v0, v1 interface{}, vv ...interface{}) *Instruction
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(vv[0].(asm.Register).ID())
         size := uint32(0b00)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdsame(sa_t & 1, 1, size, sa_vm, 24, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdsame(mask(sa_t, 1), 1, size, sa_vm, 24, sa_vn, sa_vd))
     }
     // FMAXNMP  <Vd>.<T>, <Vn>.<T>, <Vm>.<T>
     if len(vv) == 1 &&
@@ -10411,10 +10998,10 @@ func (self *Program) FMAXNMV(v0, v1 interface{}) *Instruction {
         }
         size := uint32(0b00)
         size |= sa_v_1
-        if sa_v_1 != sa_t_1 & 1 {
+        if sa_v_1 != mask(sa_t_1, 1) {
             panic("aarch64: invalid combination of operands for FMAXNMV")
         }
-        return p.setins(asimdall(maskp(sa_t_1, 1, 1), 1, size, 12, sa_vn, sa_d))
+        return p.setins(asimdall(ubfx(sa_t_1, 1, 1), 1, size, 12, sa_vn, sa_d))
     }
     // none of above
     p.Free()
@@ -10456,8 +11043,8 @@ func (self *Program) FMAXP(v0, v1 interface{}, vv ...interface{}) *Instruction {
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(vv[0].(asm.Register).ID())
         size := uint32(0b00)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdsame(sa_t & 1, 1, size, sa_vm, 30, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdsame(mask(sa_t, 1), 1, size, sa_vm, 30, sa_vn, sa_vd))
     }
     // FMAXP  <Vd>.<T>, <Vn>.<T>, <Vm>.<T>
     if len(vv) == 1 &&
@@ -10564,10 +11151,10 @@ func (self *Program) FMAXV(v0, v1 interface{}) *Instruction {
         }
         size := uint32(0b00)
         size |= sa_v_1
-        if sa_v_1 != sa_t_1 & 1 {
+        if sa_v_1 != mask(sa_t_1, 1) {
             panic("aarch64: invalid combination of operands for FMAXV")
         }
-        return p.setins(asimdall(maskp(sa_t_1, 1, 1), 1, size, 15, sa_vn, sa_d))
+        return p.setins(asimdall(ubfx(sa_t_1, 1, 1), 1, size, 15, sa_vn, sa_d))
     }
     // none of above
     p.Free()
@@ -10625,8 +11212,8 @@ func (self *Program) FMIN(v0, v1, v2 interface{}) *Instruction {
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
         size := uint32(0b10)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdsame(sa_t & 1, 0, size, sa_vm, 30, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdsame(mask(sa_t, 1), 0, size, sa_vm, 30, sa_vn, sa_vd))
     }
     // FMIN  <Vd>.<T>, <Vn>.<T>, <Vm>.<T>
     if isVr(v0) &&
@@ -10704,8 +11291,8 @@ func (self *Program) FMINNM(v0, v1, v2 interface{}) *Instruction {
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
         size := uint32(0b10)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdsame(sa_t & 1, 0, size, sa_vm, 24, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdsame(mask(sa_t, 1), 0, size, sa_vm, 24, sa_vn, sa_vd))
     }
     // FMINNM  <Vd>.<T>, <Vn>.<T>, <Vm>.<T>
     if isVr(v0) &&
@@ -10767,8 +11354,8 @@ func (self *Program) FMINNMP(v0, v1 interface{}, vv ...interface{}) *Instruction
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(vv[0].(asm.Register).ID())
         size := uint32(0b10)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdsame(sa_t & 1, 1, size, sa_vm, 24, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdsame(mask(sa_t, 1), 1, size, sa_vm, 24, sa_vn, sa_vd))
     }
     // FMINNMP  <Vd>.<T>, <Vn>.<T>, <Vm>.<T>
     if len(vv) == 1 &&
@@ -10875,10 +11462,10 @@ func (self *Program) FMINNMV(v0, v1 interface{}) *Instruction {
         }
         size := uint32(0b10)
         size |= sa_v_1
-        if sa_v_1 != sa_t_1 & 1 {
+        if sa_v_1 != mask(sa_t_1, 1) {
             panic("aarch64: invalid combination of operands for FMINNMV")
         }
-        return p.setins(asimdall(maskp(sa_t_1, 1, 1), 1, size, 12, sa_vn, sa_d))
+        return p.setins(asimdall(ubfx(sa_t_1, 1, 1), 1, size, 12, sa_vn, sa_d))
     }
     // none of above
     p.Free()
@@ -10920,8 +11507,8 @@ func (self *Program) FMINP(v0, v1 interface{}, vv ...interface{}) *Instruction {
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(vv[0].(asm.Register).ID())
         size := uint32(0b10)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdsame(sa_t & 1, 1, size, sa_vm, 30, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdsame(mask(sa_t, 1), 1, size, sa_vm, 30, sa_vn, sa_vd))
     }
     // FMINP  <Vd>.<T>, <Vn>.<T>, <Vm>.<T>
     if len(vv) == 1 &&
@@ -11028,10 +11615,10 @@ func (self *Program) FMINV(v0, v1 interface{}) *Instruction {
         }
         size := uint32(0b10)
         size |= sa_v_1
-        if sa_v_1 != sa_t_1 & 1 {
+        if sa_v_1 != mask(sa_t_1, 1) {
             panic("aarch64: invalid combination of operands for FMINV")
         }
-        return p.setins(asimdall(maskp(sa_t_1, 1, 1), 1, size, 15, sa_vn, sa_d))
+        return p.setins(asimdall(ubfx(sa_t_1, 1, 1), 1, size, 15, sa_vn, sa_d))
     }
     // none of above
     p.Free()
@@ -11071,11 +11658,11 @@ func (self *Program) FMLA(v0, v1, v2 interface{}) *Instruction {
             sa_t,
             0,
             0,
-            maskp(sa_index, 1, 1),
-            sa_index & 1,
+            ubfx(sa_index, 1, 1),
+            mask(sa_index, 1),
             sa_vm,
             1,
-            maskp(sa_index, 2, 1),
+            ubfx(sa_index, 2, 1),
             sa_vn,
             sa_vd,
         ))
@@ -11105,19 +11692,19 @@ func (self *Program) FMLA(v0, v1, v2 interface{}) *Instruction {
         }
         sa_index_1 := uint32(vidxr(v2))
         size := uint32(0b10)
-        size |= sa_t_1 & 1
-        if sa_t_1 & 1 != sa_ts || sa_ts != maskp(sa_index_1, 2, 1) {
+        size |= mask(sa_t_1, 1)
+        if mask(sa_t_1, 1) != sa_ts || sa_ts != ubfx(sa_index_1, 2, 1) {
             panic("aarch64: invalid combination of operands for FMLA")
         }
         return p.setins(asimdelem(
-            maskp(sa_t_1, 1, 1),
+            ubfx(sa_t_1, 1, 1),
             0,
             size,
-            maskp(sa_index_1, 1, 1),
-            maskp(sa_vm_1, 4, 1),
+            ubfx(sa_index_1, 1, 1),
+            ubfx(sa_vm_1, 4, 1),
             mask(sa_vm_1, 4),
             1,
-            sa_index_1 & 1,
+            mask(sa_index_1, 1),
             sa_vn,
             sa_vd,
         ))
@@ -11142,8 +11729,8 @@ func (self *Program) FMLA(v0, v1, v2 interface{}) *Instruction {
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
         size := uint32(0b00)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdsame(sa_t & 1, 0, size, sa_vm, 25, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdsame(mask(sa_t, 1), 0, size, sa_vm, 25, sa_vn, sa_vd))
     }
     // FMLA  <Vd>.<T>, <Vn>.<T>, <Vm>.<T>
     if isVr(v0) &&
@@ -11171,7 +11758,7 @@ func (self *Program) FMLA(v0, v1, v2 interface{}) *Instruction {
         sa_hn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(VidxRegister).ID())
         sa_index := uint32(vidxr(v2))
-        return p.setins(asisdelem(0, 0, maskp(sa_index, 1, 1), sa_index & 1, sa_vm, 1, maskp(sa_index, 2, 1), sa_hn, sa_hd))
+        return p.setins(asisdelem(0, 0, ubfx(sa_index, 1, 1), mask(sa_index, 1), sa_vm, 1, ubfx(sa_index, 2, 1), sa_hn, sa_hd))
     }
     // FMLA  <V><d>, <V><n>, <Vm>.<Ts>[<index>]
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isVri(v2) && isSameType(v0, v1) {
@@ -11193,17 +11780,17 @@ func (self *Program) FMLA(v0, v1, v2 interface{}) *Instruction {
         sa_index_1 := uint32(vidxr(v2))
         size := uint32(0b10)
         size |= sa_v
-        if sa_v != sa_ts || sa_ts != maskp(sa_index_1, 2, 1) {
+        if sa_v != sa_ts || sa_ts != ubfx(sa_index_1, 2, 1) {
             panic("aarch64: invalid combination of operands for FMLA")
         }
         return p.setins(asisdelem(
             0,
             size,
-            maskp(sa_index_1, 1, 1),
-            maskp(sa_vm_1, 4, 1),
+            ubfx(sa_index_1, 1, 1),
+            ubfx(sa_vm_1, 4, 1),
             mask(sa_vm_1, 4),
             1,
-            sa_index_1 & 1,
+            mask(sa_index_1, 1),
             sa_n,
             sa_d,
         ))
@@ -11250,11 +11837,11 @@ func (self *Program) FMLAL(v0, v1, v2 interface{}) *Instruction {
             sa_ta,
             0,
             2,
-            maskp(sa_index, 1, 1),
-            sa_index & 1,
+            ubfx(sa_index, 1, 1),
+            mask(sa_index, 1),
             sa_vm,
             0,
-            maskp(sa_index, 2, 1),
+            ubfx(sa_index, 2, 1),
             sa_vn,
             sa_vd,
         ))
@@ -11329,11 +11916,11 @@ func (self *Program) FMLAL2(v0, v1, v2 interface{}) *Instruction {
             sa_ta,
             1,
             2,
-            maskp(sa_index, 1, 1),
-            sa_index & 1,
+            ubfx(sa_index, 1, 1),
+            mask(sa_index, 1),
             sa_vm,
             8,
-            maskp(sa_index, 2, 1),
+            ubfx(sa_index, 2, 1),
             sa_vn,
             sa_vd,
         ))
@@ -11404,11 +11991,11 @@ func (self *Program) FMLS(v0, v1, v2 interface{}) *Instruction {
             sa_t,
             0,
             0,
-            maskp(sa_index, 1, 1),
-            sa_index & 1,
+            ubfx(sa_index, 1, 1),
+            mask(sa_index, 1),
             sa_vm,
             5,
-            maskp(sa_index, 2, 1),
+            ubfx(sa_index, 2, 1),
             sa_vn,
             sa_vd,
         ))
@@ -11438,19 +12025,19 @@ func (self *Program) FMLS(v0, v1, v2 interface{}) *Instruction {
         }
         sa_index_1 := uint32(vidxr(v2))
         size := uint32(0b10)
-        size |= sa_t_1 & 1
-        if sa_t_1 & 1 != sa_ts || sa_ts != maskp(sa_index_1, 2, 1) {
+        size |= mask(sa_t_1, 1)
+        if mask(sa_t_1, 1) != sa_ts || sa_ts != ubfx(sa_index_1, 2, 1) {
             panic("aarch64: invalid combination of operands for FMLS")
         }
         return p.setins(asimdelem(
-            maskp(sa_t_1, 1, 1),
+            ubfx(sa_t_1, 1, 1),
             0,
             size,
-            maskp(sa_index_1, 1, 1),
-            maskp(sa_vm_1, 4, 1),
+            ubfx(sa_index_1, 1, 1),
+            ubfx(sa_vm_1, 4, 1),
             mask(sa_vm_1, 4),
             5,
-            sa_index_1 & 1,
+            mask(sa_index_1, 1),
             sa_vn,
             sa_vd,
         ))
@@ -11475,8 +12062,8 @@ func (self *Program) FMLS(v0, v1, v2 interface{}) *Instruction {
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
         size := uint32(0b10)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdsame(sa_t & 1, 0, size, sa_vm, 25, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdsame(mask(sa_t, 1), 0, size, sa_vm, 25, sa_vn, sa_vd))
     }
     // FMLS  <Vd>.<T>, <Vn>.<T>, <Vm>.<T>
     if isVr(v0) &&
@@ -11504,7 +12091,7 @@ func (self *Program) FMLS(v0, v1, v2 interface{}) *Instruction {
         sa_hn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(VidxRegister).ID())
         sa_index := uint32(vidxr(v2))
-        return p.setins(asisdelem(0, 0, maskp(sa_index, 1, 1), sa_index & 1, sa_vm, 5, maskp(sa_index, 2, 1), sa_hn, sa_hd))
+        return p.setins(asisdelem(0, 0, ubfx(sa_index, 1, 1), mask(sa_index, 1), sa_vm, 5, ubfx(sa_index, 2, 1), sa_hn, sa_hd))
     }
     // FMLS  <V><d>, <V><n>, <Vm>.<Ts>[<index>]
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isVri(v2) && isSameType(v0, v1) {
@@ -11526,17 +12113,17 @@ func (self *Program) FMLS(v0, v1, v2 interface{}) *Instruction {
         sa_index_1 := uint32(vidxr(v2))
         size := uint32(0b10)
         size |= sa_v
-        if sa_v != sa_ts || sa_ts != maskp(sa_index_1, 2, 1) {
+        if sa_v != sa_ts || sa_ts != ubfx(sa_index_1, 2, 1) {
             panic("aarch64: invalid combination of operands for FMLS")
         }
         return p.setins(asisdelem(
             0,
             size,
-            maskp(sa_index_1, 1, 1),
-            maskp(sa_vm_1, 4, 1),
+            ubfx(sa_index_1, 1, 1),
+            ubfx(sa_vm_1, 4, 1),
             mask(sa_vm_1, 4),
             5,
-            sa_index_1 & 1,
+            mask(sa_index_1, 1),
             sa_n,
             sa_d,
         ))
@@ -11583,11 +12170,11 @@ func (self *Program) FMLSL(v0, v1, v2 interface{}) *Instruction {
             sa_ta,
             0,
             2,
-            maskp(sa_index, 1, 1),
-            sa_index & 1,
+            ubfx(sa_index, 1, 1),
+            mask(sa_index, 1),
             sa_vm,
             4,
-            maskp(sa_index, 2, 1),
+            ubfx(sa_index, 2, 1),
             sa_vn,
             sa_vd,
         ))
@@ -11662,11 +12249,11 @@ func (self *Program) FMLSL2(v0, v1, v2 interface{}) *Instruction {
             sa_ta,
             1,
             2,
-            maskp(sa_index, 1, 1),
-            sa_index & 1,
+            ubfx(sa_index, 1, 1),
+            mask(sa_index, 1),
             sa_vm,
             12,
-            maskp(sa_index, 2, 1),
+            ubfx(sa_index, 2, 1),
             sa_vn,
             sa_vd,
         ))
@@ -11831,16 +12418,16 @@ func (self *Program) FMOV(v0, v1 interface{}) *Instruction {
         return p.setins(asimdimm(
             1,
             1,
-            maskp(sa_imm, 7, 1),
-            maskp(sa_imm, 6, 1),
-            maskp(sa_imm, 5, 1),
+            ubfx(sa_imm, 7, 1),
+            ubfx(sa_imm, 6, 1),
+            ubfx(sa_imm, 5, 1),
             15,
             0,
-            maskp(sa_imm, 4, 1),
-            maskp(sa_imm, 3, 1),
-            maskp(sa_imm, 2, 1),
-            maskp(sa_imm, 1, 1),
-            sa_imm & 1,
+            ubfx(sa_imm, 4, 1),
+            ubfx(sa_imm, 3, 1),
+            ubfx(sa_imm, 2, 1),
+            ubfx(sa_imm, 1, 1),
+            mask(sa_imm, 1),
             sa_vd,
         ))
     }
@@ -11857,16 +12444,16 @@ func (self *Program) FMOV(v0, v1 interface{}) *Instruction {
         return p.setins(asimdimm(
             sa_t_1,
             0,
-            maskp(sa_imm, 7, 1),
-            maskp(sa_imm, 6, 1),
-            maskp(sa_imm, 5, 1),
+            ubfx(sa_imm, 7, 1),
+            ubfx(sa_imm, 6, 1),
+            ubfx(sa_imm, 5, 1),
             15,
             1,
-            maskp(sa_imm, 4, 1),
-            maskp(sa_imm, 3, 1),
-            maskp(sa_imm, 2, 1),
-            maskp(sa_imm, 1, 1),
-            sa_imm & 1,
+            ubfx(sa_imm, 4, 1),
+            ubfx(sa_imm, 3, 1),
+            ubfx(sa_imm, 2, 1),
+            ubfx(sa_imm, 1, 1),
+            mask(sa_imm, 1),
             sa_vd,
         ))
     }
@@ -11883,16 +12470,16 @@ func (self *Program) FMOV(v0, v1 interface{}) *Instruction {
         return p.setins(asimdimm(
             sa_t,
             0,
-            maskp(sa_imm, 7, 1),
-            maskp(sa_imm, 6, 1),
-            maskp(sa_imm, 5, 1),
+            ubfx(sa_imm, 7, 1),
+            ubfx(sa_imm, 6, 1),
+            ubfx(sa_imm, 5, 1),
             15,
             0,
-            maskp(sa_imm, 4, 1),
-            maskp(sa_imm, 3, 1),
-            maskp(sa_imm, 2, 1),
-            maskp(sa_imm, 1, 1),
-            sa_imm & 1,
+            ubfx(sa_imm, 4, 1),
+            ubfx(sa_imm, 3, 1),
+            ubfx(sa_imm, 2, 1),
+            ubfx(sa_imm, 1, 1),
+            mask(sa_imm, 1),
             sa_vd,
         ))
     }
@@ -11995,11 +12582,11 @@ func (self *Program) FMUL(v0, v1, v2 interface{}) *Instruction {
             sa_t,
             0,
             0,
-            maskp(sa_index, 1, 1),
-            sa_index & 1,
+            ubfx(sa_index, 1, 1),
+            mask(sa_index, 1),
             sa_vm,
             9,
-            maskp(sa_index, 2, 1),
+            ubfx(sa_index, 2, 1),
             sa_vn,
             sa_vd,
         ))
@@ -12029,19 +12616,19 @@ func (self *Program) FMUL(v0, v1, v2 interface{}) *Instruction {
         }
         sa_index_1 := uint32(vidxr(v2))
         size := uint32(0b10)
-        size |= sa_t_1 & 1
-        if sa_t_1 & 1 != sa_ts || sa_ts != maskp(sa_index_1, 2, 1) {
+        size |= mask(sa_t_1, 1)
+        if mask(sa_t_1, 1) != sa_ts || sa_ts != ubfx(sa_index_1, 2, 1) {
             panic("aarch64: invalid combination of operands for FMUL")
         }
         return p.setins(asimdelem(
-            maskp(sa_t_1, 1, 1),
+            ubfx(sa_t_1, 1, 1),
             0,
             size,
-            maskp(sa_index_1, 1, 1),
-            maskp(sa_vm_1, 4, 1),
+            ubfx(sa_index_1, 1, 1),
+            ubfx(sa_vm_1, 4, 1),
             mask(sa_vm_1, 4),
             9,
-            sa_index_1 & 1,
+            mask(sa_index_1, 1),
             sa_vn,
             sa_vd,
         ))
@@ -12066,8 +12653,8 @@ func (self *Program) FMUL(v0, v1, v2 interface{}) *Instruction {
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
         size := uint32(0b00)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdsame(sa_t & 1, 1, size, sa_vm, 27, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdsame(mask(sa_t, 1), 1, size, sa_vm, 27, sa_vn, sa_vd))
     }
     // FMUL  <Vd>.<T>, <Vn>.<T>, <Vm>.<T>
     if isVr(v0) &&
@@ -12095,7 +12682,7 @@ func (self *Program) FMUL(v0, v1, v2 interface{}) *Instruction {
         sa_hn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(VidxRegister).ID())
         sa_index := uint32(vidxr(v2))
-        return p.setins(asisdelem(0, 0, maskp(sa_index, 1, 1), sa_index & 1, sa_vm, 9, maskp(sa_index, 2, 1), sa_hn, sa_hd))
+        return p.setins(asisdelem(0, 0, ubfx(sa_index, 1, 1), mask(sa_index, 1), sa_vm, 9, ubfx(sa_index, 2, 1), sa_hn, sa_hd))
     }
     // FMUL  <V><d>, <V><n>, <Vm>.<Ts>[<index>]
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isVri(v2) && isSameType(v0, v1) {
@@ -12117,17 +12704,17 @@ func (self *Program) FMUL(v0, v1, v2 interface{}) *Instruction {
         sa_index_1 := uint32(vidxr(v2))
         size := uint32(0b10)
         size |= sa_v
-        if sa_v != sa_ts || sa_ts != maskp(sa_index_1, 2, 1) {
+        if sa_v != sa_ts || sa_ts != ubfx(sa_index_1, 2, 1) {
             panic("aarch64: invalid combination of operands for FMUL")
         }
         return p.setins(asisdelem(
             0,
             size,
-            maskp(sa_index_1, 1, 1),
-            maskp(sa_vm_1, 4, 1),
+            ubfx(sa_index_1, 1, 1),
+            ubfx(sa_vm_1, 4, 1),
             mask(sa_vm_1, 4),
             9,
-            sa_index_1 & 1,
+            mask(sa_index_1, 1),
             sa_n,
             sa_d,
         ))
@@ -12172,11 +12759,11 @@ func (self *Program) FMULX(v0, v1, v2 interface{}) *Instruction {
             sa_t,
             1,
             0,
-            maskp(sa_index, 1, 1),
-            sa_index & 1,
+            ubfx(sa_index, 1, 1),
+            mask(sa_index, 1),
             sa_vm,
             9,
-            maskp(sa_index, 2, 1),
+            ubfx(sa_index, 2, 1),
             sa_vn,
             sa_vd,
         ))
@@ -12206,19 +12793,19 @@ func (self *Program) FMULX(v0, v1, v2 interface{}) *Instruction {
         }
         sa_index_1 := uint32(vidxr(v2))
         size := uint32(0b10)
-        size |= sa_t_1 & 1
-        if sa_t_1 & 1 != sa_ts || sa_ts != maskp(sa_index_1, 2, 1) {
+        size |= mask(sa_t_1, 1)
+        if mask(sa_t_1, 1) != sa_ts || sa_ts != ubfx(sa_index_1, 2, 1) {
             panic("aarch64: invalid combination of operands for FMULX")
         }
         return p.setins(asimdelem(
-            maskp(sa_t_1, 1, 1),
+            ubfx(sa_t_1, 1, 1),
             1,
             size,
-            maskp(sa_index_1, 1, 1),
-            maskp(sa_vm_1, 4, 1),
+            ubfx(sa_index_1, 1, 1),
+            ubfx(sa_vm_1, 4, 1),
             mask(sa_vm_1, 4),
             9,
-            sa_index_1 & 1,
+            mask(sa_index_1, 1),
             sa_vn,
             sa_vd,
         ))
@@ -12243,8 +12830,8 @@ func (self *Program) FMULX(v0, v1, v2 interface{}) *Instruction {
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
         size := uint32(0b00)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdsame(sa_t & 1, 0, size, sa_vm, 27, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdsame(mask(sa_t, 1), 0, size, sa_vm, 27, sa_vn, sa_vd))
     }
     // FMULX  <Vd>.<T>, <Vn>.<T>, <Vm>.<T>
     if isVr(v0) &&
@@ -12272,7 +12859,7 @@ func (self *Program) FMULX(v0, v1, v2 interface{}) *Instruction {
         sa_hn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(VidxRegister).ID())
         sa_index := uint32(vidxr(v2))
-        return p.setins(asisdelem(1, 0, maskp(sa_index, 1, 1), sa_index & 1, sa_vm, 9, maskp(sa_index, 2, 1), sa_hn, sa_hd))
+        return p.setins(asisdelem(1, 0, ubfx(sa_index, 1, 1), mask(sa_index, 1), sa_vm, 9, ubfx(sa_index, 2, 1), sa_hn, sa_hd))
     }
     // FMULX  <V><d>, <V><n>, <Vm>.<Ts>[<index>]
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isVri(v2) && isSameType(v0, v1) {
@@ -12294,17 +12881,17 @@ func (self *Program) FMULX(v0, v1, v2 interface{}) *Instruction {
         sa_index_1 := uint32(vidxr(v2))
         size := uint32(0b10)
         size |= sa_v
-        if sa_v != sa_ts || sa_ts != maskp(sa_index_1, 2, 1) {
+        if sa_v != sa_ts || sa_ts != ubfx(sa_index_1, 2, 1) {
             panic("aarch64: invalid combination of operands for FMULX")
         }
         return p.setins(asisdelem(
             1,
             size,
-            maskp(sa_index_1, 1, 1),
-            maskp(sa_vm_1, 4, 1),
+            ubfx(sa_index_1, 1, 1),
+            ubfx(sa_vm_1, 4, 1),
             mask(sa_vm_1, 4),
             9,
-            sa_index_1 & 1,
+            mask(sa_index_1, 1),
             sa_n,
             sa_d,
         ))
@@ -12380,8 +12967,8 @@ func (self *Program) FNEG(v0, v1 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         size := uint32(0b10)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdmisc(sa_t & 1, 1, size, 15, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdmisc(mask(sa_t, 1), 1, size, 15, sa_vn, sa_vd))
     }
     // FNEG  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
@@ -12533,8 +13120,8 @@ func (self *Program) FRECPE(v0, v1 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         size := uint32(0b10)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdmisc(sa_t & 1, 0, size, 29, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdmisc(mask(sa_t, 1), 0, size, 29, sa_vn, sa_vd))
     }
     // FRECPE  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
@@ -12602,8 +13189,8 @@ func (self *Program) FRECPS(v0, v1, v2 interface{}) *Instruction {
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
         size := uint32(0b00)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdsame(sa_t & 1, 0, size, sa_vm, 31, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdsame(mask(sa_t, 1), 0, size, sa_vm, 31, sa_vn, sa_vd))
     }
     // FRECPS  <Vd>.<T>, <Vn>.<T>, <Vm>.<T>
     if isVr(v0) &&
@@ -12720,8 +13307,8 @@ func (self *Program) FRINT32X(v0, v1 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         size := uint32(0b00)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdmisc(sa_t & 1, 1, size, 30, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdmisc(mask(sa_t, 1), 1, size, 30, sa_vn, sa_vd))
     }
     // none of above
     p.Free()
@@ -12764,8 +13351,8 @@ func (self *Program) FRINT32Z(v0, v1 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         size := uint32(0b00)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdmisc(sa_t & 1, 0, size, 30, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdmisc(mask(sa_t, 1), 0, size, 30, sa_vn, sa_vd))
     }
     // none of above
     p.Free()
@@ -12808,8 +13395,8 @@ func (self *Program) FRINT64X(v0, v1 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         size := uint32(0b00)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdmisc(sa_t & 1, 1, size, 31, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdmisc(mask(sa_t, 1), 1, size, 31, sa_vn, sa_vd))
     }
     // none of above
     p.Free()
@@ -12852,8 +13439,8 @@ func (self *Program) FRINT64Z(v0, v1 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         size := uint32(0b00)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdmisc(sa_t & 1, 0, size, 31, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdmisc(mask(sa_t, 1), 0, size, 31, sa_vn, sa_vd))
     }
     // none of above
     p.Free()
@@ -12904,8 +13491,8 @@ func (self *Program) FRINTA(v0, v1 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         size := uint32(0b00)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdmisc(sa_t & 1, 1, size, 24, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdmisc(mask(sa_t, 1), 1, size, 24, sa_vn, sa_vd))
     }
     // FRINTA  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
@@ -12968,8 +13555,8 @@ func (self *Program) FRINTI(v0, v1 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         size := uint32(0b10)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdmisc(sa_t & 1, 1, size, 25, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdmisc(mask(sa_t, 1), 1, size, 25, sa_vn, sa_vd))
     }
     // FRINTI  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
@@ -13032,8 +13619,8 @@ func (self *Program) FRINTM(v0, v1 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         size := uint32(0b00)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdmisc(sa_t & 1, 0, size, 25, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdmisc(mask(sa_t, 1), 0, size, 25, sa_vn, sa_vd))
     }
     // FRINTM  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
@@ -13096,8 +13683,8 @@ func (self *Program) FRINTN(v0, v1 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         size := uint32(0b00)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdmisc(sa_t & 1, 0, size, 24, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdmisc(mask(sa_t, 1), 0, size, 24, sa_vn, sa_vd))
     }
     // FRINTN  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
@@ -13160,8 +13747,8 @@ func (self *Program) FRINTP(v0, v1 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         size := uint32(0b10)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdmisc(sa_t & 1, 0, size, 24, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdmisc(mask(sa_t, 1), 0, size, 24, sa_vn, sa_vd))
     }
     // FRINTP  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
@@ -13224,8 +13811,8 @@ func (self *Program) FRINTX(v0, v1 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         size := uint32(0b00)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdmisc(sa_t & 1, 1, size, 25, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdmisc(mask(sa_t, 1), 1, size, 25, sa_vn, sa_vd))
     }
     // FRINTX  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
@@ -13288,8 +13875,8 @@ func (self *Program) FRINTZ(v0, v1 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         size := uint32(0b10)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdmisc(sa_t & 1, 0, size, 25, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdmisc(mask(sa_t, 1), 0, size, 25, sa_vn, sa_vd))
     }
     // FRINTZ  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
@@ -13333,8 +13920,8 @@ func (self *Program) FRSQRTE(v0, v1 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         size := uint32(0b10)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdmisc(sa_t & 1, 1, size, 29, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdmisc(mask(sa_t, 1), 1, size, 29, sa_vn, sa_vd))
     }
     // FRSQRTE  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
@@ -13402,8 +13989,8 @@ func (self *Program) FRSQRTS(v0, v1, v2 interface{}) *Instruction {
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
         size := uint32(0b10)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdsame(sa_t & 1, 0, size, sa_vm, 31, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdsame(mask(sa_t, 1), 0, size, sa_vm, 31, sa_vn, sa_vd))
     }
     // FRSQRTS  <Vd>.<T>, <Vn>.<T>, <Vm>.<T>
     if isVr(v0) &&
@@ -13496,8 +14083,8 @@ func (self *Program) FSQRT(v0, v1 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         size := uint32(0b10)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdmisc(sa_t & 1, 1, size, 31, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdmisc(mask(sa_t, 1), 1, size, 31, sa_vn, sa_vd))
     }
     // FSQRT  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
@@ -13567,8 +14154,8 @@ func (self *Program) FSUB(v0, v1, v2 interface{}) *Instruction {
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
         size := uint32(0b10)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdsame(sa_t & 1, 0, size, sa_vm, 26, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdsame(mask(sa_t, 1), 0, size, sa_vm, 26, sa_vn, sa_vd))
     }
     // FSUB  <Vd>.<T>, <Vn>.<T>, <Vm>.<T>
     if isVr(v0) &&
@@ -13606,6 +14193,128 @@ func (self *Program) GCSB(v0 interface{}) *Instruction {
     }
     p.Free()
     panic("aarch64: invalid combination of operands for GCSB")
+}
+
+// GCSPOPCX instruction have one single form:
+//
+//   * GCSPOPCX  {<Xt>}
+//
+func (self *Program) GCSPOPCX(vv ...interface{}) *Instruction {
+    var p *Instruction
+    switch len(vv) {
+        case 0  : p = self.alloc("GCSPOPCX", 0, Operands {})
+        case 1  : p = self.alloc("GCSPOPCX", 1, Operands { vv[0] })
+        default : panic("instruction GCSPOPCX takes 0 or 1 operands")
+    }
+    if (len(vv) == 0 || len(vv) == 1) && (len(vv) == 0 || isXr(vv[0])) {
+        var sa_xt uint32
+        if len(vv) == 1 {
+            sa_xt = uint32(vv[0].(asm.Register).ID())
+        }
+        return p.setins(systeminstrs(0, 0, 7, 7, 5, sa_xt))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for GCSPOPCX")
+}
+
+// GCSPOPM instruction have one single form:
+//
+//   * GCSPOPM  <Xt>
+//
+func (self *Program) GCSPOPM(v0 interface{}) *Instruction {
+    p := self.alloc("GCSPOPM", 1, Operands { v0 })
+    if isXr(v0) {
+        sa_xt := uint32(v0.(asm.Register).ID())
+        return p.setins(systeminstrs(1, 3, 7, 7, 1, sa_xt))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for GCSPOPM")
+}
+
+// GCSPOPX instruction have one single form:
+//
+//   * GCSPOPX  {<Xt>}
+//
+func (self *Program) GCSPOPX(vv ...interface{}) *Instruction {
+    var p *Instruction
+    switch len(vv) {
+        case 0  : p = self.alloc("GCSPOPX", 0, Operands {})
+        case 1  : p = self.alloc("GCSPOPX", 1, Operands { vv[0] })
+        default : panic("instruction GCSPOPX takes 0 or 1 operands")
+    }
+    if (len(vv) == 0 || len(vv) == 1) && (len(vv) == 0 || isXr(vv[0])) {
+        var sa_xt uint32
+        if len(vv) == 1 {
+            sa_xt = uint32(vv[0].(asm.Register).ID())
+        }
+        return p.setins(systeminstrs(0, 0, 7, 7, 6, sa_xt))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for GCSPOPX")
+}
+
+// GCSPUSHM instruction have one single form:
+//
+//   * GCSPUSHM  <Xt>
+//
+func (self *Program) GCSPUSHM(v0 interface{}) *Instruction {
+    p := self.alloc("GCSPUSHM", 1, Operands { v0 })
+    if isXr(v0) {
+        sa_xt_1 := uint32(v0.(asm.Register).ID())
+        return p.setins(systeminstrs(0, 3, 7, 7, 0, sa_xt_1))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for GCSPUSHM")
+}
+
+// GCSPUSHX instruction have one single form:
+//
+//   * GCSPUSHX  {<Xt>}
+//
+func (self *Program) GCSPUSHX(vv ...interface{}) *Instruction {
+    var p *Instruction
+    switch len(vv) {
+        case 0  : p = self.alloc("GCSPUSHX", 0, Operands {})
+        case 1  : p = self.alloc("GCSPUSHX", 1, Operands { vv[0] })
+        default : panic("instruction GCSPUSHX takes 0 or 1 operands")
+    }
+    if (len(vv) == 0 || len(vv) == 1) && (len(vv) == 0 || isXr(vv[0])) {
+        var sa_xt uint32
+        if len(vv) == 1 {
+            sa_xt = uint32(vv[0].(asm.Register).ID())
+        }
+        return p.setins(systeminstrs(0, 0, 7, 7, 4, sa_xt))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for GCSPUSHX")
+}
+
+// GCSSS1 instruction have one single form:
+//
+//   * GCSSS1  <Xt>
+//
+func (self *Program) GCSSS1(v0 interface{}) *Instruction {
+    p := self.alloc("GCSSS1", 1, Operands { v0 })
+    if isXr(v0) {
+        sa_xt_1 := uint32(v0.(asm.Register).ID())
+        return p.setins(systeminstrs(0, 3, 7, 7, 2, sa_xt_1))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for GCSSS1")
+}
+
+// GCSSS2 instruction have one single form:
+//
+//   * GCSSS2  <Xt>
+//
+func (self *Program) GCSSS2(v0 interface{}) *Instruction {
+    p := self.alloc("GCSSS2", 1, Operands { v0 })
+    if isXr(v0) {
+        sa_xt := uint32(v0.(asm.Register).ID())
+        return p.setins(systeminstrs(1, 3, 7, 7, 3, sa_xt))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for GCSSS2")
 }
 
 // GCSSTR instruction have one single form:
@@ -13668,7 +14377,7 @@ func (self *Program) HINT(v0 interface{}) *Instruction {
     p := self.alloc("HINT", 1, Operands { v0 })
     if isUimm7(v0) {
         sa_imm := asUimm7(v0)
-        return p.setins(hints(maskp(sa_imm, 3, 4), mask(sa_imm, 3)))
+        return p.setins(hints(ubfx(sa_imm, 3, 4), mask(sa_imm, 3)))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for HINT")
@@ -13700,6 +14409,29 @@ func (self *Program) HVC(v0 interface{}) *Instruction {
     }
     p.Free()
     panic("aarch64: invalid combination of operands for HVC")
+}
+
+// IC instruction have one single form:
+//
+//   * IC  <ic_op>{, <Xt>}
+//
+func (self *Program) IC(v0 interface{}, vv ...interface{}) *Instruction {
+    var p *Instruction
+    switch len(vv) {
+        case 0  : p = self.alloc("IC", 1, Operands { v0 })
+        case 1  : p = self.alloc("IC", 2, Operands { v0, vv[0] })
+        default : panic("instruction IC takes 1 or 2 operands")
+    }
+    if (len(vv) == 0 || len(vv) == 1) && isICOption(v0) && (len(vv) == 0 || isXr(vv[0])) {
+        var sa_xt uint32
+        sa_ic_op := uint32(v0.(ICOption))
+        if len(vv) == 1 {
+            sa_xt = uint32(vv[0].(asm.Register).ID())
+        }
+        return p.setins(systeminstrs(0, ubfx(sa_ic_op, 7, 3), 7, ubfx(sa_ic_op, 3, 4), mask(sa_ic_op, 3), sa_xt))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for IC")
 }
 
 // INS instruction have 2 forms:
@@ -13769,7 +14501,7 @@ func (self *Program) INS(v0, v1 interface{}) *Instruction {
         sa_index1 := uint32(vidxr(v0))
         sa_vn := uint32(v1.(VidxRegister).ID())
         sa_index2 := uint32(vidxr(v1))
-        if sa_index1 != maskp(sa_index2, 4, 5) || maskp(sa_index2, 4, 5) != sa_ts & sa_ts__bit_mask {
+        if sa_index1 != ubfx(sa_index2, 4, 5) || ubfx(sa_index2, 4, 5) != sa_ts & sa_ts__bit_mask {
             panic("aarch64: invalid combination of operands for INS")
         }
         return p.setins(asimdins(1, 1, sa_index1, mask(sa_index2, 4), sa_vn, sa_vd))
@@ -13877,7 +14609,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
             default: panic("aarch64: invalid vector arrangement for LD1")
         }
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlse(sa_t & 1, 1, 7, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlse(mask(sa_t, 1), 1, 7, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // LD1  { <Vt>.<T>, <Vt2>.<T> }, [<Xn|SP>]
     if isVec2(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
@@ -13895,7 +14627,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
             default: panic("aarch64: invalid vector arrangement for LD1")
         }
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlse(sa_t & 1, 1, 10, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlse(mask(sa_t, 1), 1, 10, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // LD1  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T> }, [<Xn|SP>]
     if isVec3(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
@@ -13913,7 +14645,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
             default: panic("aarch64: invalid vector arrangement for LD1")
         }
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlse(sa_t & 1, 1, 6, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlse(mask(sa_t, 1), 1, 6, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // LD1  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T>, <Vt4>.<T> }, [<Xn|SP>]
     if isVec4(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
@@ -13931,7 +14663,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
             default: panic("aarch64: invalid vector arrangement for LD1")
         }
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlse(sa_t & 1, 1, 2, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlse(mask(sa_t, 1), 1, 2, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // LD1  { <Vt>.<T> }, [<Xn|SP>], <imm>
     if isVec1(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
@@ -13950,10 +14682,10 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
         }
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_imm := uint32(moffs(v1))
-        if sa_imm != sa_t & 1 {
+        if sa_imm != mask(sa_t, 1) {
             panic("aarch64: invalid combination of operands for LD1")
         }
-        return p.setins(asisdlsep(sa_imm, 1, 31, 7, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlsep(sa_imm, 1, 31, 7, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // LD1  { <Vt>.<T>, <Vt2>.<T> }, [<Xn|SP>], <imm>
     if isVec2(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
@@ -13972,10 +14704,10 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
         }
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_imm_1 := uint32(moffs(v1))
-        if sa_imm_1 != sa_t & 1 {
+        if sa_imm_1 != mask(sa_t, 1) {
             panic("aarch64: invalid combination of operands for LD1")
         }
-        return p.setins(asisdlsep(sa_imm_1, 1, 31, 10, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlsep(sa_imm_1, 1, 31, 10, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // LD1  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T> }, [<Xn|SP>], <imm>
     if isVec3(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
@@ -13994,10 +14726,10 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
         }
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_imm_2 := uint32(moffs(v1))
-        if sa_imm_2 != sa_t & 1 {
+        if sa_imm_2 != mask(sa_t, 1) {
             panic("aarch64: invalid combination of operands for LD1")
         }
-        return p.setins(asisdlsep(sa_imm_2, 1, 31, 6, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlsep(sa_imm_2, 1, 31, 6, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // LD1  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T>, <Vt4>.<T> }, [<Xn|SP>], <imm>
     if isVec4(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
@@ -14016,10 +14748,10 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
         }
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_imm_3 := uint32(moffs(v1))
-        if sa_imm_3 != sa_t & 1 {
+        if sa_imm_3 != mask(sa_t, 1) {
             panic("aarch64: invalid combination of operands for LD1")
         }
-        return p.setins(asisdlsep(sa_imm_3, 1, 31, 2, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlsep(sa_imm_3, 1, 31, 2, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // LD1  { <Vt>.<T> }, [<Xn|SP>], <Xm>
     if isVec1(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
@@ -14038,7 +14770,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
         }
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
-        return p.setins(asisdlsep(sa_t & 1, 1, sa_xm, 7, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlsep(mask(sa_t, 1), 1, sa_xm, 7, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // LD1  { <Vt>.<T>, <Vt2>.<T> }, [<Xn|SP>], <Xm>
     if isVec2(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
@@ -14057,7 +14789,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
         }
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
-        return p.setins(asisdlsep(sa_t & 1, 1, sa_xm, 10, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlsep(mask(sa_t, 1), 1, sa_xm, 10, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // LD1  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T> }, [<Xn|SP>], <Xm>
     if isVec3(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
@@ -14076,7 +14808,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
         }
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
-        return p.setins(asisdlsep(sa_t & 1, 1, sa_xm, 6, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlsep(mask(sa_t, 1), 1, sa_xm, 6, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // LD1  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T>, <Vt4>.<T> }, [<Xn|SP>], <Xm>
     if isVec4(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
@@ -14095,7 +14827,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
         }
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
-        return p.setins(asisdlsep(sa_t & 1, 1, sa_xm, 2, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlsep(mask(sa_t, 1), 1, sa_xm, 2, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // LD1  { <Vt>.B }[<index>], [<Xn|SP>]
     if isIdxVec1(v0) &&
@@ -14108,7 +14840,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlso(maskp(sa_index, 3, 1), 1, 0, 0, 0, maskp(sa_index, 2, 1), sa_index & 3, sa_xn_sp, sa_vt))
+        return p.setins(asisdlso(ubfx(sa_index, 3, 1), 1, 0, 0, 0, ubfx(sa_index, 2, 1), mask(sa_index, 2), sa_xn_sp, sa_vt))
     }
     // LD1  { <Vt>.D }[<index>], [<Xn|SP>]
     if isIdxVec1(v0) &&
@@ -14135,13 +14867,13 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
         sa_index_2 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(asisdlso(
-            maskp(sa_index_2, 3, 1),
+            ubfx(sa_index_2, 3, 1),
             1,
             0,
             0,
             2,
-            maskp(sa_index_2, 2, 1),
-            sa_index_2 & 3,
+            ubfx(sa_index_2, 2, 1),
+            mask(sa_index_2, 2),
             sa_xn_sp,
             sa_vt,
         ))
@@ -14157,7 +14889,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlso(maskp(sa_index_3, 1, 1), 1, 0, 0, 4, sa_index_3 & 1, 0, sa_xn_sp, sa_vt))
+        return p.setins(asisdlso(ubfx(sa_index_3, 1, 1), 1, 0, 0, 4, mask(sa_index_3, 1), 0, sa_xn_sp, sa_vt))
     }
     // LD1  { <Vt>.B }[<index>], [<Xn|SP>], #1
     if isIdxVec1(v0) &&
@@ -14170,7 +14902,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlsop(maskp(sa_index, 3, 1), 1, 0, 31, 0, maskp(sa_index, 2, 1), sa_index & 3, sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(ubfx(sa_index, 3, 1), 1, 0, 31, 0, ubfx(sa_index, 2, 1), mask(sa_index, 2), sa_xn_sp, sa_vt))
     }
     // LD1  { <Vt>.B }[<index>], [<Xn|SP>], <Xm>
     if isIdxVec1(v0) &&
@@ -14184,7 +14916,17 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
-        return p.setins(asisdlsop(maskp(sa_index, 3, 1), 1, 0, sa_xm, 0, maskp(sa_index, 2, 1), sa_index & 3, sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(
+            ubfx(sa_index, 3, 1),
+            1,
+            0,
+            sa_xm,
+            0,
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 2),
+            sa_xn_sp,
+            sa_vt,
+        ))
     }
     // LD1  { <Vt>.D }[<index>], [<Xn|SP>], #8
     if isIdxVec1(v0) &&
@@ -14225,13 +14967,13 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
         sa_index_2 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(asisdlsop(
-            maskp(sa_index_2, 3, 1),
+            ubfx(sa_index_2, 3, 1),
             1,
             0,
             31,
             2,
-            maskp(sa_index_2, 2, 1),
-            sa_index_2 & 3,
+            ubfx(sa_index_2, 2, 1),
+            mask(sa_index_2, 2),
             sa_xn_sp,
             sa_vt,
         ))
@@ -14249,13 +14991,13 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
         return p.setins(asisdlsop(
-            maskp(sa_index_2, 3, 1),
+            ubfx(sa_index_2, 3, 1),
             1,
             0,
             sa_xm,
             2,
-            maskp(sa_index_2, 2, 1),
-            sa_index_2 & 3,
+            ubfx(sa_index_2, 2, 1),
+            mask(sa_index_2, 2),
             sa_xn_sp,
             sa_vt,
         ))
@@ -14271,7 +15013,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlsop(maskp(sa_index_3, 1, 1), 1, 0, 31, 4, sa_index_3 & 1, 0, sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(ubfx(sa_index_3, 1, 1), 1, 0, 31, 4, mask(sa_index_3, 1), 0, sa_xn_sp, sa_vt))
     }
     // LD1  { <Vt>.S }[<index>], [<Xn|SP>], <Xm>
     if isIdxVec1(v0) &&
@@ -14285,7 +15027,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
-        return p.setins(asisdlsop(maskp(sa_index_3, 1, 1), 1, 0, sa_xm, 4, sa_index_3 & 1, 0, sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(ubfx(sa_index_3, 1, 1), 1, 0, sa_xm, 4, mask(sa_index_3, 1), 0, sa_xn_sp, sa_vt))
     }
     // none of above
     p.Free()
@@ -14316,7 +15058,7 @@ func (self *Program) LD1R(v0, v1 interface{}) *Instruction {
             default: panic("aarch64: invalid vector arrangement for LD1R")
         }
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlso(sa_t & 1, 1, 0, 0, 6, 0, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlso(mask(sa_t, 1), 1, 0, 0, 6, 0, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // LD1R  { <Vt>.<T> }, [<Xn|SP>], <imm>
     if isVec1(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
@@ -14335,10 +15077,10 @@ func (self *Program) LD1R(v0, v1 interface{}) *Instruction {
         }
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_imm := uint32(moffs(v1))
-        if sa_imm != maskp(sa_t, 1, 2) {
+        if sa_imm != ubfx(sa_t, 1, 2) {
             panic("aarch64: invalid combination of operands for LD1R")
         }
-        return p.setins(asisdlsop(sa_t & 1, 1, 0, 31, 6, 0, sa_imm, sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(mask(sa_t, 1), 1, 0, 31, 6, 0, sa_imm, sa_xn_sp, sa_vt))
     }
     // LD1R  { <Vt>.<T> }, [<Xn|SP>], <Xm>
     if isVec1(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
@@ -14357,7 +15099,7 @@ func (self *Program) LD1R(v0, v1 interface{}) *Instruction {
         }
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
-        return p.setins(asisdlsop(sa_t & 1, 1, 0, sa_xm, 6, 0, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(mask(sa_t, 1), 1, 0, sa_xm, 6, 0, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // none of above
     p.Free()
@@ -14399,7 +15141,7 @@ func (self *Program) LD2(v0, v1 interface{}) *Instruction {
             default: panic("aarch64: invalid vector arrangement for LD2")
         }
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlse(sa_t & 1, 1, 8, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlse(mask(sa_t, 1), 1, 8, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // LD2  { <Vt>.<T>, <Vt2>.<T> }, [<Xn|SP>], <imm>
     if isVec2(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
@@ -14417,10 +15159,10 @@ func (self *Program) LD2(v0, v1 interface{}) *Instruction {
         }
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_imm := uint32(moffs(v1))
-        if sa_imm != sa_t & 1 {
+        if sa_imm != mask(sa_t, 1) {
             panic("aarch64: invalid combination of operands for LD2")
         }
-        return p.setins(asisdlsep(sa_imm, 1, 31, 8, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlsep(sa_imm, 1, 31, 8, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // LD2  { <Vt>.<T>, <Vt2>.<T> }, [<Xn|SP>], <Xm>
     if isVec2(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
@@ -14438,7 +15180,7 @@ func (self *Program) LD2(v0, v1 interface{}) *Instruction {
         }
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
-        return p.setins(asisdlsep(sa_t & 1, 1, sa_xm, 8, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlsep(mask(sa_t, 1), 1, sa_xm, 8, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // LD2  { <Vt>.B, <Vt2>.B }[<index>], [<Xn|SP>]
     if isIdxVec2(v0) &&
@@ -14451,7 +15193,7 @@ func (self *Program) LD2(v0, v1 interface{}) *Instruction {
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlso(maskp(sa_index, 3, 1), 1, 1, 0, 0, maskp(sa_index, 2, 1), sa_index & 3, sa_xn_sp, sa_vt))
+        return p.setins(asisdlso(ubfx(sa_index, 3, 1), 1, 1, 0, 0, ubfx(sa_index, 2, 1), mask(sa_index, 2), sa_xn_sp, sa_vt))
     }
     // LD2  { <Vt>.D, <Vt2>.D }[<index>], [<Xn|SP>]
     if isIdxVec2(v0) &&
@@ -14478,13 +15220,13 @@ func (self *Program) LD2(v0, v1 interface{}) *Instruction {
         sa_index_2 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(asisdlso(
-            maskp(sa_index_2, 3, 1),
+            ubfx(sa_index_2, 3, 1),
             1,
             1,
             0,
             2,
-            maskp(sa_index_2, 2, 1),
-            sa_index_2 & 3,
+            ubfx(sa_index_2, 2, 1),
+            mask(sa_index_2, 2),
             sa_xn_sp,
             sa_vt,
         ))
@@ -14500,7 +15242,7 @@ func (self *Program) LD2(v0, v1 interface{}) *Instruction {
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlso(maskp(sa_index_3, 1, 1), 1, 1, 0, 4, sa_index_3 & 1, 0, sa_xn_sp, sa_vt))
+        return p.setins(asisdlso(ubfx(sa_index_3, 1, 1), 1, 1, 0, 4, mask(sa_index_3, 1), 0, sa_xn_sp, sa_vt))
     }
     // LD2  { <Vt>.B, <Vt2>.B }[<index>], [<Xn|SP>], #2
     if isIdxVec2(v0) &&
@@ -14513,7 +15255,7 @@ func (self *Program) LD2(v0, v1 interface{}) *Instruction {
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlsop(maskp(sa_index, 3, 1), 1, 1, 31, 0, maskp(sa_index, 2, 1), sa_index & 3, sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(ubfx(sa_index, 3, 1), 1, 1, 31, 0, ubfx(sa_index, 2, 1), mask(sa_index, 2), sa_xn_sp, sa_vt))
     }
     // LD2  { <Vt>.B, <Vt2>.B }[<index>], [<Xn|SP>], <Xm>
     if isIdxVec2(v0) &&
@@ -14527,7 +15269,17 @@ func (self *Program) LD2(v0, v1 interface{}) *Instruction {
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
-        return p.setins(asisdlsop(maskp(sa_index, 3, 1), 1, 1, sa_xm, 0, maskp(sa_index, 2, 1), sa_index & 3, sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(
+            ubfx(sa_index, 3, 1),
+            1,
+            1,
+            sa_xm,
+            0,
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 2),
+            sa_xn_sp,
+            sa_vt,
+        ))
     }
     // LD2  { <Vt>.D, <Vt2>.D }[<index>], [<Xn|SP>], #16
     if isIdxVec2(v0) &&
@@ -14568,13 +15320,13 @@ func (self *Program) LD2(v0, v1 interface{}) *Instruction {
         sa_index_2 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(asisdlsop(
-            maskp(sa_index_2, 3, 1),
+            ubfx(sa_index_2, 3, 1),
             1,
             1,
             31,
             2,
-            maskp(sa_index_2, 2, 1),
-            sa_index_2 & 3,
+            ubfx(sa_index_2, 2, 1),
+            mask(sa_index_2, 2),
             sa_xn_sp,
             sa_vt,
         ))
@@ -14592,13 +15344,13 @@ func (self *Program) LD2(v0, v1 interface{}) *Instruction {
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
         return p.setins(asisdlsop(
-            maskp(sa_index_2, 3, 1),
+            ubfx(sa_index_2, 3, 1),
             1,
             1,
             sa_xm,
             2,
-            maskp(sa_index_2, 2, 1),
-            sa_index_2 & 3,
+            ubfx(sa_index_2, 2, 1),
+            mask(sa_index_2, 2),
             sa_xn_sp,
             sa_vt,
         ))
@@ -14614,7 +15366,7 @@ func (self *Program) LD2(v0, v1 interface{}) *Instruction {
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlsop(maskp(sa_index_3, 1, 1), 1, 1, 31, 4, sa_index_3 & 1, 0, sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(ubfx(sa_index_3, 1, 1), 1, 1, 31, 4, mask(sa_index_3, 1), 0, sa_xn_sp, sa_vt))
     }
     // LD2  { <Vt>.S, <Vt2>.S }[<index>], [<Xn|SP>], <Xm>
     if isIdxVec2(v0) &&
@@ -14628,7 +15380,7 @@ func (self *Program) LD2(v0, v1 interface{}) *Instruction {
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
-        return p.setins(asisdlsop(maskp(sa_index_3, 1, 1), 1, 1, sa_xm, 4, sa_index_3 & 1, 0, sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(ubfx(sa_index_3, 1, 1), 1, 1, sa_xm, 4, mask(sa_index_3, 1), 0, sa_xn_sp, sa_vt))
     }
     // none of above
     p.Free()
@@ -14659,7 +15411,7 @@ func (self *Program) LD2R(v0, v1 interface{}) *Instruction {
             default: panic("aarch64: invalid vector arrangement for LD2R")
         }
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlso(sa_t & 1, 1, 1, 0, 6, 0, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlso(mask(sa_t, 1), 1, 1, 0, 6, 0, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // LD2R  { <Vt>.<T>, <Vt2>.<T> }, [<Xn|SP>], <imm>
     if isVec2(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
@@ -14678,10 +15430,10 @@ func (self *Program) LD2R(v0, v1 interface{}) *Instruction {
         }
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_imm := uint32(moffs(v1))
-        if sa_imm != maskp(sa_t, 1, 2) {
+        if sa_imm != ubfx(sa_t, 1, 2) {
             panic("aarch64: invalid combination of operands for LD2R")
         }
-        return p.setins(asisdlsop(sa_t & 1, 1, 1, 31, 6, 0, sa_imm, sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(mask(sa_t, 1), 1, 1, 31, 6, 0, sa_imm, sa_xn_sp, sa_vt))
     }
     // LD2R  { <Vt>.<T>, <Vt2>.<T> }, [<Xn|SP>], <Xm>
     if isVec2(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
@@ -14700,7 +15452,7 @@ func (self *Program) LD2R(v0, v1 interface{}) *Instruction {
         }
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
-        return p.setins(asisdlsop(sa_t & 1, 1, 1, sa_xm, 6, 0, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(mask(sa_t, 1), 1, 1, sa_xm, 6, 0, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // none of above
     p.Free()
@@ -14742,7 +15494,7 @@ func (self *Program) LD3(v0, v1 interface{}) *Instruction {
             default: panic("aarch64: invalid vector arrangement for LD3")
         }
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlse(sa_t & 1, 1, 4, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlse(mask(sa_t, 1), 1, 4, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // LD3  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T> }, [<Xn|SP>], <imm>
     if isVec3(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
@@ -14760,10 +15512,10 @@ func (self *Program) LD3(v0, v1 interface{}) *Instruction {
         }
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_imm := uint32(moffs(v1))
-        if sa_imm != sa_t & 1 {
+        if sa_imm != mask(sa_t, 1) {
             panic("aarch64: invalid combination of operands for LD3")
         }
-        return p.setins(asisdlsep(sa_imm, 1, 31, 4, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlsep(sa_imm, 1, 31, 4, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // LD3  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T> }, [<Xn|SP>], <Xm>
     if isVec3(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
@@ -14781,7 +15533,7 @@ func (self *Program) LD3(v0, v1 interface{}) *Instruction {
         }
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
-        return p.setins(asisdlsep(sa_t & 1, 1, sa_xm, 4, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlsep(mask(sa_t, 1), 1, sa_xm, 4, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // LD3  { <Vt>.B, <Vt2>.B, <Vt3>.B }[<index>], [<Xn|SP>]
     if isIdxVec3(v0) &&
@@ -14794,7 +15546,7 @@ func (self *Program) LD3(v0, v1 interface{}) *Instruction {
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlso(maskp(sa_index, 3, 1), 1, 0, 0, 1, maskp(sa_index, 2, 1), sa_index & 3, sa_xn_sp, sa_vt))
+        return p.setins(asisdlso(ubfx(sa_index, 3, 1), 1, 0, 0, 1, ubfx(sa_index, 2, 1), mask(sa_index, 2), sa_xn_sp, sa_vt))
     }
     // LD3  { <Vt>.D, <Vt2>.D, <Vt3>.D }[<index>], [<Xn|SP>]
     if isIdxVec3(v0) &&
@@ -14821,13 +15573,13 @@ func (self *Program) LD3(v0, v1 interface{}) *Instruction {
         sa_index_2 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(asisdlso(
-            maskp(sa_index_2, 3, 1),
+            ubfx(sa_index_2, 3, 1),
             1,
             0,
             0,
             3,
-            maskp(sa_index_2, 2, 1),
-            sa_index_2 & 3,
+            ubfx(sa_index_2, 2, 1),
+            mask(sa_index_2, 2),
             sa_xn_sp,
             sa_vt,
         ))
@@ -14843,7 +15595,7 @@ func (self *Program) LD3(v0, v1 interface{}) *Instruction {
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlso(maskp(sa_index_3, 1, 1), 1, 0, 0, 5, sa_index_3 & 1, 0, sa_xn_sp, sa_vt))
+        return p.setins(asisdlso(ubfx(sa_index_3, 1, 1), 1, 0, 0, 5, mask(sa_index_3, 1), 0, sa_xn_sp, sa_vt))
     }
     // LD3  { <Vt>.B, <Vt2>.B, <Vt3>.B }[<index>], [<Xn|SP>], #3
     if isIdxVec3(v0) &&
@@ -14856,7 +15608,7 @@ func (self *Program) LD3(v0, v1 interface{}) *Instruction {
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlsop(maskp(sa_index, 3, 1), 1, 0, 31, 1, maskp(sa_index, 2, 1), sa_index & 3, sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(ubfx(sa_index, 3, 1), 1, 0, 31, 1, ubfx(sa_index, 2, 1), mask(sa_index, 2), sa_xn_sp, sa_vt))
     }
     // LD3  { <Vt>.B, <Vt2>.B, <Vt3>.B }[<index>], [<Xn|SP>], <Xm>
     if isIdxVec3(v0) &&
@@ -14870,7 +15622,17 @@ func (self *Program) LD3(v0, v1 interface{}) *Instruction {
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
-        return p.setins(asisdlsop(maskp(sa_index, 3, 1), 1, 0, sa_xm, 1, maskp(sa_index, 2, 1), sa_index & 3, sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(
+            ubfx(sa_index, 3, 1),
+            1,
+            0,
+            sa_xm,
+            1,
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 2),
+            sa_xn_sp,
+            sa_vt,
+        ))
     }
     // LD3  { <Vt>.D, <Vt2>.D, <Vt3>.D }[<index>], [<Xn|SP>], #24
     if isIdxVec3(v0) &&
@@ -14911,13 +15673,13 @@ func (self *Program) LD3(v0, v1 interface{}) *Instruction {
         sa_index_2 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(asisdlsop(
-            maskp(sa_index_2, 3, 1),
+            ubfx(sa_index_2, 3, 1),
             1,
             0,
             31,
             3,
-            maskp(sa_index_2, 2, 1),
-            sa_index_2 & 3,
+            ubfx(sa_index_2, 2, 1),
+            mask(sa_index_2, 2),
             sa_xn_sp,
             sa_vt,
         ))
@@ -14935,13 +15697,13 @@ func (self *Program) LD3(v0, v1 interface{}) *Instruction {
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
         return p.setins(asisdlsop(
-            maskp(sa_index_2, 3, 1),
+            ubfx(sa_index_2, 3, 1),
             1,
             0,
             sa_xm,
             3,
-            maskp(sa_index_2, 2, 1),
-            sa_index_2 & 3,
+            ubfx(sa_index_2, 2, 1),
+            mask(sa_index_2, 2),
             sa_xn_sp,
             sa_vt,
         ))
@@ -14957,7 +15719,7 @@ func (self *Program) LD3(v0, v1 interface{}) *Instruction {
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlsop(maskp(sa_index_3, 1, 1), 1, 0, 31, 5, sa_index_3 & 1, 0, sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(ubfx(sa_index_3, 1, 1), 1, 0, 31, 5, mask(sa_index_3, 1), 0, sa_xn_sp, sa_vt))
     }
     // LD3  { <Vt>.S, <Vt2>.S, <Vt3>.S }[<index>], [<Xn|SP>], <Xm>
     if isIdxVec3(v0) &&
@@ -14971,7 +15733,7 @@ func (self *Program) LD3(v0, v1 interface{}) *Instruction {
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
-        return p.setins(asisdlsop(maskp(sa_index_3, 1, 1), 1, 0, sa_xm, 5, sa_index_3 & 1, 0, sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(ubfx(sa_index_3, 1, 1), 1, 0, sa_xm, 5, mask(sa_index_3, 1), 0, sa_xn_sp, sa_vt))
     }
     // none of above
     p.Free()
@@ -15002,7 +15764,7 @@ func (self *Program) LD3R(v0, v1 interface{}) *Instruction {
             default: panic("aarch64: invalid vector arrangement for LD3R")
         }
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlso(sa_t & 1, 1, 0, 0, 7, 0, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlso(mask(sa_t, 1), 1, 0, 0, 7, 0, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // LD3R  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T> }, [<Xn|SP>], <imm>
     if isVec3(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
@@ -15021,10 +15783,10 @@ func (self *Program) LD3R(v0, v1 interface{}) *Instruction {
         }
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_imm := uint32(moffs(v1))
-        if sa_imm != maskp(sa_t, 1, 2) {
+        if sa_imm != ubfx(sa_t, 1, 2) {
             panic("aarch64: invalid combination of operands for LD3R")
         }
-        return p.setins(asisdlsop(sa_t & 1, 1, 0, 31, 7, 0, sa_imm, sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(mask(sa_t, 1), 1, 0, 31, 7, 0, sa_imm, sa_xn_sp, sa_vt))
     }
     // LD3R  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T> }, [<Xn|SP>], <Xm>
     if isVec3(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
@@ -15043,7 +15805,7 @@ func (self *Program) LD3R(v0, v1 interface{}) *Instruction {
         }
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
-        return p.setins(asisdlsop(sa_t & 1, 1, 0, sa_xm, 7, 0, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(mask(sa_t, 1), 1, 0, sa_xm, 7, 0, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // none of above
     p.Free()
@@ -15085,7 +15847,7 @@ func (self *Program) LD4(v0, v1 interface{}) *Instruction {
             default: panic("aarch64: invalid vector arrangement for LD4")
         }
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlse(sa_t & 1, 1, 0, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlse(mask(sa_t, 1), 1, 0, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // LD4  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T>, <Vt4>.<T> }, [<Xn|SP>], <imm>
     if isVec4(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
@@ -15103,10 +15865,10 @@ func (self *Program) LD4(v0, v1 interface{}) *Instruction {
         }
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_imm := uint32(moffs(v1))
-        if sa_imm != sa_t & 1 {
+        if sa_imm != mask(sa_t, 1) {
             panic("aarch64: invalid combination of operands for LD4")
         }
-        return p.setins(asisdlsep(sa_imm, 1, 31, 0, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlsep(sa_imm, 1, 31, 0, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // LD4  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T>, <Vt4>.<T> }, [<Xn|SP>], <Xm>
     if isVec4(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
@@ -15124,7 +15886,7 @@ func (self *Program) LD4(v0, v1 interface{}) *Instruction {
         }
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
-        return p.setins(asisdlsep(sa_t & 1, 1, sa_xm, 0, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlsep(mask(sa_t, 1), 1, sa_xm, 0, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // LD4  { <Vt>.B, <Vt2>.B, <Vt3>.B, <Vt4>.B }[<index>], [<Xn|SP>]
     if isIdxVec4(v0) &&
@@ -15137,7 +15899,7 @@ func (self *Program) LD4(v0, v1 interface{}) *Instruction {
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlso(maskp(sa_index, 3, 1), 1, 1, 0, 1, maskp(sa_index, 2, 1), sa_index & 3, sa_xn_sp, sa_vt))
+        return p.setins(asisdlso(ubfx(sa_index, 3, 1), 1, 1, 0, 1, ubfx(sa_index, 2, 1), mask(sa_index, 2), sa_xn_sp, sa_vt))
     }
     // LD4  { <Vt>.D, <Vt2>.D, <Vt3>.D, <Vt4>.D }[<index>], [<Xn|SP>]
     if isIdxVec4(v0) &&
@@ -15164,13 +15926,13 @@ func (self *Program) LD4(v0, v1 interface{}) *Instruction {
         sa_index_2 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(asisdlso(
-            maskp(sa_index_2, 3, 1),
+            ubfx(sa_index_2, 3, 1),
             1,
             1,
             0,
             3,
-            maskp(sa_index_2, 2, 1),
-            sa_index_2 & 3,
+            ubfx(sa_index_2, 2, 1),
+            mask(sa_index_2, 2),
             sa_xn_sp,
             sa_vt,
         ))
@@ -15186,7 +15948,7 @@ func (self *Program) LD4(v0, v1 interface{}) *Instruction {
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlso(maskp(sa_index_3, 1, 1), 1, 1, 0, 5, sa_index_3 & 1, 0, sa_xn_sp, sa_vt))
+        return p.setins(asisdlso(ubfx(sa_index_3, 1, 1), 1, 1, 0, 5, mask(sa_index_3, 1), 0, sa_xn_sp, sa_vt))
     }
     // LD4  { <Vt>.B, <Vt2>.B, <Vt3>.B, <Vt4>.B }[<index>], [<Xn|SP>], #4
     if isIdxVec4(v0) &&
@@ -15199,7 +15961,7 @@ func (self *Program) LD4(v0, v1 interface{}) *Instruction {
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlsop(maskp(sa_index, 3, 1), 1, 1, 31, 1, maskp(sa_index, 2, 1), sa_index & 3, sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(ubfx(sa_index, 3, 1), 1, 1, 31, 1, ubfx(sa_index, 2, 1), mask(sa_index, 2), sa_xn_sp, sa_vt))
     }
     // LD4  { <Vt>.B, <Vt2>.B, <Vt3>.B, <Vt4>.B }[<index>], [<Xn|SP>], <Xm>
     if isIdxVec4(v0) &&
@@ -15213,7 +15975,17 @@ func (self *Program) LD4(v0, v1 interface{}) *Instruction {
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
-        return p.setins(asisdlsop(maskp(sa_index, 3, 1), 1, 1, sa_xm, 1, maskp(sa_index, 2, 1), sa_index & 3, sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(
+            ubfx(sa_index, 3, 1),
+            1,
+            1,
+            sa_xm,
+            1,
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 2),
+            sa_xn_sp,
+            sa_vt,
+        ))
     }
     // LD4  { <Vt>.D, <Vt2>.D, <Vt3>.D, <Vt4>.D }[<index>], [<Xn|SP>], #32
     if isIdxVec4(v0) &&
@@ -15254,13 +16026,13 @@ func (self *Program) LD4(v0, v1 interface{}) *Instruction {
         sa_index_2 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(asisdlsop(
-            maskp(sa_index_2, 3, 1),
+            ubfx(sa_index_2, 3, 1),
             1,
             1,
             31,
             3,
-            maskp(sa_index_2, 2, 1),
-            sa_index_2 & 3,
+            ubfx(sa_index_2, 2, 1),
+            mask(sa_index_2, 2),
             sa_xn_sp,
             sa_vt,
         ))
@@ -15278,13 +16050,13 @@ func (self *Program) LD4(v0, v1 interface{}) *Instruction {
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
         return p.setins(asisdlsop(
-            maskp(sa_index_2, 3, 1),
+            ubfx(sa_index_2, 3, 1),
             1,
             1,
             sa_xm,
             3,
-            maskp(sa_index_2, 2, 1),
-            sa_index_2 & 3,
+            ubfx(sa_index_2, 2, 1),
+            mask(sa_index_2, 2),
             sa_xn_sp,
             sa_vt,
         ))
@@ -15300,7 +16072,7 @@ func (self *Program) LD4(v0, v1 interface{}) *Instruction {
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlsop(maskp(sa_index_3, 1, 1), 1, 1, 31, 5, sa_index_3 & 1, 0, sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(ubfx(sa_index_3, 1, 1), 1, 1, 31, 5, mask(sa_index_3, 1), 0, sa_xn_sp, sa_vt))
     }
     // LD4  { <Vt>.S, <Vt2>.S, <Vt3>.S, <Vt4>.S }[<index>], [<Xn|SP>], <Xm>
     if isIdxVec4(v0) &&
@@ -15314,7 +16086,7 @@ func (self *Program) LD4(v0, v1 interface{}) *Instruction {
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
-        return p.setins(asisdlsop(maskp(sa_index_3, 1, 1), 1, 1, sa_xm, 5, sa_index_3 & 1, 0, sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(ubfx(sa_index_3, 1, 1), 1, 1, sa_xm, 5, mask(sa_index_3, 1), 0, sa_xn_sp, sa_vt))
     }
     // none of above
     p.Free()
@@ -15345,7 +16117,7 @@ func (self *Program) LD4R(v0, v1 interface{}) *Instruction {
             default: panic("aarch64: invalid vector arrangement for LD4R")
         }
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlso(sa_t & 1, 1, 1, 0, 7, 0, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlso(mask(sa_t, 1), 1, 1, 0, 7, 0, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // LD4R  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T>, <Vt4>.<T> }, [<Xn|SP>], <imm>
     if isVec4(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
@@ -15364,10 +16136,10 @@ func (self *Program) LD4R(v0, v1 interface{}) *Instruction {
         }
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_imm := uint32(moffs(v1))
-        if sa_imm != maskp(sa_t, 1, 2) {
+        if sa_imm != ubfx(sa_t, 1, 2) {
             panic("aarch64: invalid combination of operands for LD4R")
         }
-        return p.setins(asisdlsop(sa_t & 1, 1, 1, 31, 7, 0, sa_imm, sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(mask(sa_t, 1), 1, 1, 31, 7, 0, sa_imm, sa_xn_sp, sa_vt))
     }
     // LD4R  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T>, <Vt4>.<T> }, [<Xn|SP>], <Xm>
     if isVec4(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
@@ -15386,7 +16158,7 @@ func (self *Program) LD4R(v0, v1 interface{}) *Instruction {
         }
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
-        return p.setins(asisdlsop(sa_t & 1, 1, 1, sa_xm, 7, 0, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(mask(sa_t, 1), 1, 1, sa_xm, 7, 0, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // none of above
     p.Free()
@@ -17729,14 +18501,14 @@ func (self *Program) LDRAA(v0, v1 interface{}) *Instruction {
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
-        return p.setins(ldst_pac(3, 0, 0, maskp(sa_simm, 9, 1), mask(sa_simm, 9), 1, sa_xn_sp, sa_xt))
+        return p.setins(ldst_pac(3, 0, 0, ubfx(sa_simm, 9, 1), mask(sa_simm, 9), 1, sa_xn_sp, sa_xt))
     }
     // LDRAA  <Xt>, [<Xn|SP>{, #<simm>}]
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
-        return p.setins(ldst_pac(3, 0, 0, maskp(sa_simm, 9, 1), mask(sa_simm, 9), 0, sa_xn_sp, sa_xt))
+        return p.setins(ldst_pac(3, 0, 0, ubfx(sa_simm, 9, 1), mask(sa_simm, 9), 0, sa_xn_sp, sa_xt))
     }
     // none of above
     p.Free()
@@ -17755,14 +18527,14 @@ func (self *Program) LDRAB(v0, v1 interface{}) *Instruction {
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
-        return p.setins(ldst_pac(3, 0, 1, maskp(sa_simm, 9, 1), mask(sa_simm, 9), 1, sa_xn_sp, sa_xt))
+        return p.setins(ldst_pac(3, 0, 1, ubfx(sa_simm, 9, 1), mask(sa_simm, 9), 1, sa_xn_sp, sa_xt))
     }
     // LDRAB  <Xt>, [<Xn|SP>{, #<simm>}]
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
-        return p.setins(ldst_pac(3, 0, 1, maskp(sa_simm, 9, 1), mask(sa_simm, 9), 0, sa_xn_sp, sa_xt))
+        return p.setins(ldst_pac(3, 0, 1, ubfx(sa_simm, 9, 1), mask(sa_simm, 9), 0, sa_xn_sp, sa_xt))
     }
     // none of above
     p.Free()
@@ -20283,6 +21055,48 @@ func (self *Program) LDXRH(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDXRH")
 }
 
+// LSL instruction have 4 forms:
+//
+//   * LSL  <Wd>, <Wn>, <Wm>
+//   * LSL  <Xd>, <Xn>, <Xm>
+//   * LSL  <Wd>, <Wn>, #<shift>
+//   * LSL  <Xd>, <Xn>, #<shift>
+//
+func (self *Program) LSL(v0, v1, v2 interface{}) *Instruction {
+    p := self.alloc("LSL", 3, Operands { v0, v1, v2 })
+    // LSL  <Wd>, <Wn>, <Wm>
+    if isWr(v0) && isWr(v1) && isWr(v2) {
+        sa_wd := uint32(v0.(asm.Register).ID())
+        sa_wn := uint32(v1.(asm.Register).ID())
+        sa_wm := uint32(v2.(asm.Register).ID())
+        return p.setins(dp_2src(0, 0, sa_wm, 8, sa_wn, sa_wd))
+    }
+    // LSL  <Xd>, <Xn>, <Xm>
+    if isXr(v0) && isXr(v1) && isXr(v2) {
+        sa_xd := uint32(v0.(asm.Register).ID())
+        sa_xn := uint32(v1.(asm.Register).ID())
+        sa_xm := uint32(v2.(asm.Register).ID())
+        return p.setins(dp_2src(1, 0, sa_xm, 8, sa_xn, sa_xd))
+    }
+    // LSL  <Wd>, <Wn>, #<shift>
+    if isWr(v0) && isWr(v1) && isUimm5(v2) {
+        sa_wd := uint32(v0.(asm.Register).ID())
+        sa_wn := uint32(v1.(asm.Register).ID())
+        sa_shift_1 := asLSLShift(v2, 32)
+        return p.setins(bitfield(0, 2, 0, ubfx(sa_shift_1, 6, 6), mask(sa_shift_1, 6), sa_wn, sa_wd))
+    }
+    // LSL  <Xd>, <Xn>, #<shift>
+    if isXr(v0) && isXr(v1) && isUimm6(v2) {
+        sa_xd := uint32(v0.(asm.Register).ID())
+        sa_xn := uint32(v1.(asm.Register).ID())
+        sa_shift_3 := asLSLShift(v2, 64)
+        return p.setins(bitfield(1, 2, 1, ubfx(sa_shift_3, 6, 6), mask(sa_shift_3, 6), sa_xn, sa_xd))
+    }
+    // none of above
+    p.Free()
+    panic("aarch64: invalid combination of operands for LSL")
+}
+
 // LSLV instruction have 2 forms:
 //
 //   * LSLV  <Wd>, <Wn>, <Wm>
@@ -20307,6 +21121,48 @@ func (self *Program) LSLV(v0, v1, v2 interface{}) *Instruction {
     // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for LSLV")
+}
+
+// LSR instruction have 4 forms:
+//
+//   * LSR  <Wd>, <Wn>, <Wm>
+//   * LSR  <Xd>, <Xn>, <Xm>
+//   * LSR  <Wd>, <Wn>, #<shift>
+//   * LSR  <Xd>, <Xn>, #<shift>
+//
+func (self *Program) LSR(v0, v1, v2 interface{}) *Instruction {
+    p := self.alloc("LSR", 3, Operands { v0, v1, v2 })
+    // LSR  <Wd>, <Wn>, <Wm>
+    if isWr(v0) && isWr(v1) && isWr(v2) {
+        sa_wd := uint32(v0.(asm.Register).ID())
+        sa_wn := uint32(v1.(asm.Register).ID())
+        sa_wm := uint32(v2.(asm.Register).ID())
+        return p.setins(dp_2src(0, 0, sa_wm, 9, sa_wn, sa_wd))
+    }
+    // LSR  <Xd>, <Xn>, <Xm>
+    if isXr(v0) && isXr(v1) && isXr(v2) {
+        sa_xd := uint32(v0.(asm.Register).ID())
+        sa_xn := uint32(v1.(asm.Register).ID())
+        sa_xm := uint32(v2.(asm.Register).ID())
+        return p.setins(dp_2src(1, 0, sa_xm, 9, sa_xn, sa_xd))
+    }
+    // LSR  <Wd>, <Wn>, #<shift>
+    if isWr(v0) && isWr(v1) && isUimm6(v2) {
+        sa_wd := uint32(v0.(asm.Register).ID())
+        sa_wn := uint32(v1.(asm.Register).ID())
+        sa_shift := asUimm6(v2)
+        return p.setins(bitfield(0, 2, 0, sa_shift, 31, sa_wn, sa_wd))
+    }
+    // LSR  <Xd>, <Xn>, #<shift>
+    if isXr(v0) && isXr(v1) && isUimm6(v2) {
+        sa_xd := uint32(v0.(asm.Register).ID())
+        sa_xn := uint32(v1.(asm.Register).ID())
+        sa_shift_2 := asUimm6(v2)
+        return p.setins(bitfield(1, 2, 1, sa_shift_2, 63, sa_xn, sa_xd))
+    }
+    // none of above
+    p.Free()
+    panic("aarch64: invalid combination of operands for LSR")
 }
 
 // LSRV instruction have 2 forms:
@@ -20395,21 +21251,21 @@ func (self *Program) MLA(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if maskp(sa_index, 3, 2) != maskp(sa_t, 1, 2) || maskp(sa_t, 1, 2) != sa_ts || sa_ts != maskp(sa_vm, 5, 2) {
+        if ubfx(sa_index, 3, 2) != ubfx(sa_t, 1, 2) || ubfx(sa_t, 1, 2) != sa_ts || sa_ts != sa_vm {
             panic("aarch64: invalid combination of operands for MLA")
         }
-        if sa_index & 1 != maskp(sa_vm, 4, 1) {
+        if mask(sa_index, 1) != sa_vm {
             panic("aarch64: invalid combination of operands for MLA")
         }
         return p.setins(asimdelem(
-            sa_t & 1,
+            mask(sa_t, 1),
             1,
-            maskp(sa_index, 3, 2),
-            maskp(sa_index, 2, 1),
-            sa_index & 1,
-            mask(sa_vm, 4),
+            ubfx(sa_index, 3, 2),
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 1),
+            sa_vm,
             0,
-            maskp(sa_index, 1, 1),
+            ubfx(sa_index, 1, 1),
             sa_vn,
             sa_vd,
         ))
@@ -20436,7 +21292,7 @@ func (self *Program) MLA(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdsame(sa_t & 1, 0, maskp(sa_t, 1, 2), sa_vm, 18, sa_vn, sa_vd))
+        return p.setins(asimdsame(mask(sa_t, 1), 0, ubfx(sa_t, 1, 2), sa_vm, 18, sa_vn, sa_vd))
     }
     // none of above
     p.Free()
@@ -20475,21 +21331,21 @@ func (self *Program) MLS(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if maskp(sa_index, 3, 2) != maskp(sa_t, 1, 2) || maskp(sa_t, 1, 2) != sa_ts || sa_ts != maskp(sa_vm, 5, 2) {
+        if ubfx(sa_index, 3, 2) != ubfx(sa_t, 1, 2) || ubfx(sa_t, 1, 2) != sa_ts || sa_ts != sa_vm {
             panic("aarch64: invalid combination of operands for MLS")
         }
-        if sa_index & 1 != maskp(sa_vm, 4, 1) {
+        if mask(sa_index, 1) != sa_vm {
             panic("aarch64: invalid combination of operands for MLS")
         }
         return p.setins(asimdelem(
-            sa_t & 1,
+            mask(sa_t, 1),
             1,
-            maskp(sa_index, 3, 2),
-            maskp(sa_index, 2, 1),
-            sa_index & 1,
-            mask(sa_vm, 4),
+            ubfx(sa_index, 3, 2),
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 1),
+            sa_vm,
             4,
-            maskp(sa_index, 1, 1),
+            ubfx(sa_index, 1, 1),
             sa_vn,
             sa_vd,
         ))
@@ -20516,11 +21372,256 @@ func (self *Program) MLS(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdsame(sa_t & 1, 1, maskp(sa_t, 1, 2), sa_vm, 18, sa_vn, sa_vd))
+        return p.setins(asimdsame(mask(sa_t, 1), 1, ubfx(sa_t, 1, 2), sa_vm, 18, sa_vn, sa_vd))
     }
     // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for MLS")
+}
+
+// MNEG instruction have 2 forms:
+//
+//   * MNEG  <Wd>, <Wn>, <Wm>
+//   * MNEG  <Xd>, <Xn>, <Xm>
+//
+func (self *Program) MNEG(v0, v1, v2 interface{}) *Instruction {
+    p := self.alloc("MNEG", 3, Operands { v0, v1, v2 })
+    // MNEG  <Wd>, <Wn>, <Wm>
+    if isWr(v0) && isWr(v1) && isWr(v2) {
+        sa_wd := uint32(v0.(asm.Register).ID())
+        sa_wn := uint32(v1.(asm.Register).ID())
+        sa_wm := uint32(v2.(asm.Register).ID())
+        return p.setins(dp_3src(0, 0, 0, sa_wm, 1, 31, sa_wn, sa_wd))
+    }
+    // MNEG  <Xd>, <Xn>, <Xm>
+    if isXr(v0) && isXr(v1) && isXr(v2) {
+        sa_xd := uint32(v0.(asm.Register).ID())
+        sa_xn := uint32(v1.(asm.Register).ID())
+        sa_xm := uint32(v2.(asm.Register).ID())
+        return p.setins(dp_3src(1, 0, 0, sa_xm, 1, 31, sa_xn, sa_xd))
+    }
+    // none of above
+    p.Free()
+    panic("aarch64: invalid combination of operands for MNEG")
+}
+
+// MOV instruction have 16 forms:
+//
+//   * MOV  <Wd|WSP>, <Wn|WSP>
+//   * MOV  <Xd|SP>, <Xn|SP>
+//   * MOV  <V><d>, <Vn>.<T>[<index>]
+//   * MOV  <Vd>.<Ts>[<index>], <R><n>
+//   * MOV  <Vd>.<Ts>[<index1>], <Vn>.<Ts>[<index2>]
+//   * MOV  <Wd>, #<imm>
+//   * MOV  <Xd>, #<imm>
+//   * MOV  <Wd>, #<imm>
+//   * MOV  <Xd>, #<imm>
+//   * MOV  <Wd|WSP>, #<imm>
+//   * MOV  <Wd>, <Wm>
+//   * MOV  <Xd|SP>, #<imm>
+//   * MOV  <Xd>, <Xm>
+//   * MOV  <Vd>.<T>, <Vn>.<T>
+//   * MOV  <Wd>, <Vn>.S[<index>]
+//   * MOV  <Xd>, <Vn>.D[<index>]
+//
+func (self *Program) MOV(v0, v1 interface{}) *Instruction {
+    p := self.alloc("MOV", 2, Operands { v0, v1 })
+    // MOV  <Wd|WSP>, <Wn|WSP>
+    if isWrOrWSP(v0) && isWrOrWSP(v1) {
+        sa_wd_wsp := uint32(v0.(asm.Register).ID())
+        sa_wn_wsp := uint32(v1.(asm.Register).ID())
+        return p.setins(addsub_imm(0, 0, 0, 0, 0, sa_wn_wsp, sa_wd_wsp))
+    }
+    // MOV  <Xd|SP>, <Xn|SP>
+    if isXrOrSP(v0) && isXrOrSP(v1) {
+        sa_xd_sp := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(v1.(asm.Register).ID())
+        return p.setins(addsub_imm(1, 0, 0, 0, 0, sa_xn_sp, sa_xd_sp))
+    }
+    // MOV  <V><d>, <Vn>.<T>[<index>]
+    if isAdvSIMD(v0) && isVri(v1) {
+        var sa_t_1 uint32
+        var sa_t_1__bit_mask uint32
+        var sa_v uint32
+        var sa_v__bit_mask uint32
+        sa_d := uint32(v0.(asm.Register).ID())
+        switch v0.(type) {
+            case BRegister: sa_v = 0b00001
+            case HRegister: sa_v = 0b00010
+            case SRegister: sa_v = 0b00100
+            case DRegister: sa_v = 0b01000
+            default: panic("aarch64: invalid scalar operand size for MOV")
+        }
+        switch v0.(type) {
+            case BRegister: sa_v__bit_mask = 0b00001
+            case HRegister: sa_v__bit_mask = 0b00011
+            case SRegister: sa_v__bit_mask = 0b00111
+            case DRegister: sa_v__bit_mask = 0b01111
+            default: panic("aarch64: invalid scalar operand size for MOV")
+        }
+        sa_vn := uint32(v1.(VidxRegister).ID())
+        switch vmoder(v1) {
+            case ModeB: sa_t_1 = 0b00001
+            case ModeH: sa_t_1 = 0b00010
+            case ModeS: sa_t_1 = 0b00100
+            case ModeD: sa_t_1 = 0b01000
+            default: panic("aarch64: unreachable")
+        }
+        switch vmoder(v1) {
+            case ModeB: sa_t_1__bit_mask = 0b00001
+            case ModeH: sa_t_1__bit_mask = 0b00011
+            case ModeS: sa_t_1__bit_mask = 0b00111
+            case ModeD: sa_t_1__bit_mask = 0b01111
+            default: panic("aarch64: unreachable")
+        }
+        sa_index := uint32(vidxr(v1))
+        if sa_index != sa_t_1 & sa_t_1__bit_mask || sa_t_1 & sa_t_1__bit_mask != sa_v & sa_v__bit_mask {
+            panic("aarch64: invalid combination of operands for MOV")
+        }
+        return p.setins(asisdone(0, sa_index, 0, sa_vn, sa_d))
+    }
+    // MOV  <Vd>.<Ts>[<index>], <R><n>
+    if isVri(v0) && isWrOrXr(v1) {
+        var sa_r [3]uint32
+        var sa_r__bit_mask [3]uint32
+        var sa_ts uint32
+        var sa_ts__bit_mask uint32
+        sa_vd := uint32(v0.(VidxRegister).ID())
+        switch vmoder(v0) {
+            case ModeB: sa_ts = 0b00001
+            case ModeH: sa_ts = 0b00010
+            case ModeS: sa_ts = 0b00100
+            case ModeD: sa_ts = 0b01000
+            default: panic("aarch64: unreachable")
+        }
+        switch vmoder(v0) {
+            case ModeB: sa_ts__bit_mask = 0b00001
+            case ModeH: sa_ts__bit_mask = 0b00011
+            case ModeS: sa_ts__bit_mask = 0b00111
+            case ModeD: sa_ts__bit_mask = 0b01111
+            default: panic("aarch64: unreachable")
+        }
+        sa_index := uint32(vidxr(v0))
+        sa_n := uint32(v1.(asm.Register).ID())
+        switch true {
+            case isWr(v1): sa_r = [3]uint32{0b00100, 0b00010, 0b00001}
+            case isXr(v1): sa_r = [3]uint32{0b01000}
+            default: panic("aarch64: unreachable")
+        }
+        switch true {
+            case isWr(v1): sa_r__bit_mask = [3]uint32{0b00111, 0b00011, 0b00001}
+            case isXr(v1): sa_r__bit_mask = [3]uint32{0b01111}
+            default: panic("aarch64: unreachable")
+        }
+        if sa_index != sa_ts & sa_ts__bit_mask || !matchany(sa_ts & sa_ts__bit_mask, &sa_r[0], &sa_r__bit_mask[0], 3) {
+            panic("aarch64: invalid combination of operands for MOV")
+        }
+        return p.setins(asimdins(1, 0, sa_index, 3, sa_n, sa_vd))
+    }
+    // MOV  <Vd>.<Ts>[<index1>], <Vn>.<Ts>[<index2>]
+    if isVri(v0) && isVri(v1) {
+        var sa_ts uint32
+        var sa_ts__bit_mask uint32
+        sa_vd := uint32(v0.(VidxRegister).ID())
+        switch vmoder(v0) {
+            case ModeB: sa_ts = 0b00001
+            case ModeH: sa_ts = 0b00010
+            case ModeS: sa_ts = 0b00100
+            case ModeD: sa_ts = 0b01000
+            default: panic("aarch64: unreachable")
+        }
+        switch vmoder(v0) {
+            case ModeB: sa_ts__bit_mask = 0b00001
+            case ModeH: sa_ts__bit_mask = 0b00011
+            case ModeS: sa_ts__bit_mask = 0b00111
+            case ModeD: sa_ts__bit_mask = 0b01111
+            default: panic("aarch64: unreachable")
+        }
+        sa_index1 := uint32(vidxr(v0))
+        sa_vn := uint32(v1.(VidxRegister).ID())
+        sa_index2 := uint32(vidxr(v1))
+        if sa_index1 != ubfx(sa_index2, 4, 5) || ubfx(sa_index2, 4, 5) != sa_ts & sa_ts__bit_mask {
+            panic("aarch64: invalid combination of operands for MOV")
+        }
+        return p.setins(asimdins(1, 1, sa_index1, mask(sa_index2, 4), sa_vn, sa_vd))
+    }
+    // MOV  <Wd>, #<imm>
+    if isWr(v0) && isMOVxImm(v1, 32, true) {
+        sa_wd := uint32(v0.(asm.Register).ID())
+        sa_imm_1 := asMOVxImm(v1, 32, true)
+        return p.setins(movewide(0, 0, ubfx(sa_imm_1, 16, 2), mask(sa_imm_1, 16), sa_wd))
+    }
+    // MOV  <Xd>, #<imm>
+    if isXr(v0) && isMOVxImm(v1, 64, true) {
+        sa_xd := uint32(v0.(asm.Register).ID())
+        sa_imm_2 := asMOVxImm(v1, 64, true)
+        return p.setins(movewide(1, 0, ubfx(sa_imm_2, 16, 2), mask(sa_imm_2, 16), sa_xd))
+    }
+    // MOV  <Wd>, #<imm>
+    if isWr(v0) && isMOVxImm(v1, 32, false) {
+        sa_wd := uint32(v0.(asm.Register).ID())
+        sa_imm_1 := asMOVxImm(v1, 32, false)
+        return p.setins(movewide(0, 2, ubfx(sa_imm_1, 16, 2), mask(sa_imm_1, 16), sa_wd))
+    }
+    // MOV  <Xd>, #<imm>
+    if isXr(v0) && isMOVxImm(v1, 64, false) {
+        sa_xd := uint32(v0.(asm.Register).ID())
+        sa_imm_2 := asMOVxImm(v1, 64, false)
+        return p.setins(movewide(1, 2, ubfx(sa_imm_2, 16, 2), mask(sa_imm_2, 16), sa_xd))
+    }
+    // MOV  <Wd|WSP>, #<imm>
+    if isWrOrWSP(v0) && isMask32(v1) {
+        sa_wd_wsp := uint32(v0.(asm.Register).ID())
+        sa_imm_2 := asMaskOp(v1)
+        return p.setins(log_imm(0, 1, 0, ubfx(sa_imm_2, 6, 6), mask(sa_imm_2, 6), 31, sa_wd_wsp))
+    }
+    // MOV  <Wd>, <Wm>
+    if isWr(v0) && isWr(v1) {
+        sa_wd := uint32(v0.(asm.Register).ID())
+        sa_wm_1 := uint32(v1.(asm.Register).ID())
+        return p.setins(log_shift(0, 1, 0, 0, sa_wm_1, 0, 31, sa_wd))
+    }
+    // MOV  <Xd|SP>, #<imm>
+    if isXrOrSP(v0) && isMask64(v1) {
+        sa_xd_sp := uint32(v0.(asm.Register).ID())
+        sa_imm_3 := asMaskOp(v1)
+        return p.setins(log_imm(1, 1, ubfx(sa_imm_3, 12, 1), ubfx(sa_imm_3, 6, 6), mask(sa_imm_3, 6), 31, sa_xd_sp))
+    }
+    // MOV  <Xd>, <Xm>
+    if isXr(v0) && isXr(v1) {
+        sa_xd := uint32(v0.(asm.Register).ID())
+        sa_xm_1 := uint32(v1.(asm.Register).ID())
+        return p.setins(log_shift(1, 1, 0, 0, sa_xm_1, 0, 31, sa_xd))
+    }
+    // MOV  <Vd>.<T>, <Vn>.<T>
+    if isVr(v0) && isVfmt(v0, Vec8B, Vec16B) && isVr(v1) && isVfmt(v1, Vec8B, Vec16B) && vfmt(v0) == vfmt(v1) {
+        var sa_t uint32
+        sa_vd := uint32(v0.(asm.Register).ID())
+        switch vfmt(v0) {
+            case Vec8B: sa_t = 0b0
+            case Vec16B: sa_t = 0b1
+            default: panic("aarch64: unreachable")
+        }
+        sa_vn := uint32(v1.(asm.Register).ID())
+        return p.setins(asimdsame(sa_t, 0, 2, sa_vn, 3, sa_vn, sa_vd))
+    }
+    // MOV  <Wd>, <Vn>.S[<index>]
+    if isWr(v0) && isVri(v1) && vmoder(v1) == ModeS {
+        sa_wd := uint32(v0.(asm.Register).ID())
+        sa_vn := uint32(v1.(VidxRegister).ID())
+        sa_index_2 := uint32(vidxr(v1))
+        return p.setins(asimdins(0, 0, sa_index_2, 7, sa_vn, sa_wd))
+    }
+    // MOV  <Xd>, <Vn>.D[<index>]
+    if isXr(v0) && isVri(v1) && vmoder(v1) == ModeD {
+        sa_xd := uint32(v0.(asm.Register).ID())
+        sa_vn := uint32(v1.(VidxRegister).ID())
+        sa_index_1 := uint32(vidxr(v1))
+        return p.setins(asimdins(1, 0, sa_index_1, 7, sa_vn, sa_xd))
+    }
+    // none of above
+    p.Free()
+    panic("aarch64: invalid combination of operands for MOV")
 }
 
 // MOVI instruction have 6 forms:
@@ -20546,16 +21647,16 @@ func (self *Program) MOVI(v0, v1 interface{}, vv ...interface{}) *Instruction {
         return p.setins(asimdimm(
             1,
             1,
-            maskp(sa_imm, 7, 1),
-            maskp(sa_imm, 6, 1),
-            maskp(sa_imm, 5, 1),
+            ubfx(sa_imm, 7, 1),
+            ubfx(sa_imm, 6, 1),
+            ubfx(sa_imm, 5, 1),
             14,
             0,
-            maskp(sa_imm, 4, 1),
-            maskp(sa_imm, 3, 1),
-            maskp(sa_imm, 2, 1),
-            maskp(sa_imm, 1, 1),
-            sa_imm & 1,
+            ubfx(sa_imm, 4, 1),
+            ubfx(sa_imm, 3, 1),
+            ubfx(sa_imm, 2, 1),
+            ubfx(sa_imm, 1, 1),
+            mask(sa_imm, 1),
             sa_vd,
         ))
     }
@@ -20566,16 +21667,16 @@ func (self *Program) MOVI(v0, v1 interface{}, vv ...interface{}) *Instruction {
         return p.setins(asimdimm(
             0,
             1,
-            maskp(sa_imm, 7, 1),
-            maskp(sa_imm, 6, 1),
-            maskp(sa_imm, 5, 1),
+            ubfx(sa_imm, 7, 1),
+            ubfx(sa_imm, 6, 1),
+            ubfx(sa_imm, 5, 1),
             14,
             0,
-            maskp(sa_imm, 4, 1),
-            maskp(sa_imm, 3, 1),
-            maskp(sa_imm, 2, 1),
-            maskp(sa_imm, 1, 1),
-            sa_imm & 1,
+            ubfx(sa_imm, 4, 1),
+            ubfx(sa_imm, 3, 1),
+            ubfx(sa_imm, 2, 1),
+            ubfx(sa_imm, 1, 1),
+            mask(sa_imm, 1),
             sa_dd,
         ))
     }
@@ -20606,16 +21707,16 @@ func (self *Program) MOVI(v0, v1 interface{}, vv ...interface{}) *Instruction {
         return p.setins(asimdimm(
             sa_t,
             0,
-            maskp(sa_imm8, 7, 1),
-            maskp(sa_imm8, 6, 1),
-            maskp(sa_imm8, 5, 1),
+            ubfx(sa_imm8, 7, 1),
+            ubfx(sa_imm8, 6, 1),
+            ubfx(sa_imm8, 5, 1),
             cmode,
             0,
-            maskp(sa_imm8, 4, 1),
-            maskp(sa_imm8, 3, 1),
-            maskp(sa_imm8, 2, 1),
-            maskp(sa_imm8, 1, 1),
-            sa_imm8 & 1,
+            ubfx(sa_imm8, 4, 1),
+            ubfx(sa_imm8, 3, 1),
+            ubfx(sa_imm8, 2, 1),
+            ubfx(sa_imm8, 1, 1),
+            mask(sa_imm8, 1),
             sa_vd,
         ))
     }
@@ -20648,16 +21749,16 @@ func (self *Program) MOVI(v0, v1 interface{}, vv ...interface{}) *Instruction {
         return p.setins(asimdimm(
             sa_t_1,
             0,
-            maskp(sa_imm8, 7, 1),
-            maskp(sa_imm8, 6, 1),
-            maskp(sa_imm8, 5, 1),
+            ubfx(sa_imm8, 7, 1),
+            ubfx(sa_imm8, 6, 1),
+            ubfx(sa_imm8, 5, 1),
             cmode,
             0,
-            maskp(sa_imm8, 4, 1),
-            maskp(sa_imm8, 3, 1),
-            maskp(sa_imm8, 2, 1),
-            maskp(sa_imm8, 1, 1),
-            sa_imm8 & 1,
+            ubfx(sa_imm8, 4, 1),
+            ubfx(sa_imm8, 3, 1),
+            ubfx(sa_imm8, 2, 1),
+            ubfx(sa_imm8, 1, 1),
+            mask(sa_imm8, 1),
             sa_vd,
         ))
     }
@@ -20681,16 +21782,16 @@ func (self *Program) MOVI(v0, v1 interface{}, vv ...interface{}) *Instruction {
         return p.setins(asimdimm(
             sa_t_1,
             0,
-            maskp(sa_imm8, 7, 1),
-            maskp(sa_imm8, 6, 1),
-            maskp(sa_imm8, 5, 1),
+            ubfx(sa_imm8, 7, 1),
+            ubfx(sa_imm8, 6, 1),
+            ubfx(sa_imm8, 5, 1),
             cmode,
             0,
-            maskp(sa_imm8, 4, 1),
-            maskp(sa_imm8, 3, 1),
-            maskp(sa_imm8, 2, 1),
-            maskp(sa_imm8, 1, 1),
-            sa_imm8 & 1,
+            ubfx(sa_imm8, 4, 1),
+            ubfx(sa_imm8, 3, 1),
+            ubfx(sa_imm8, 2, 1),
+            ubfx(sa_imm8, 1, 1),
+            mask(sa_imm8, 1),
             sa_vd,
         ))
     }
@@ -20711,16 +21812,16 @@ func (self *Program) MOVI(v0, v1 interface{}, vv ...interface{}) *Instruction {
         return p.setins(asimdimm(
             sa_t_2,
             0,
-            maskp(sa_imm8, 7, 1),
-            maskp(sa_imm8, 6, 1),
-            maskp(sa_imm8, 5, 1),
+            ubfx(sa_imm8, 7, 1),
+            ubfx(sa_imm8, 6, 1),
+            ubfx(sa_imm8, 5, 1),
             14,
             0,
-            maskp(sa_imm8, 4, 1),
-            maskp(sa_imm8, 3, 1),
-            maskp(sa_imm8, 2, 1),
-            maskp(sa_imm8, 1, 1),
-            sa_imm8 & 1,
+            ubfx(sa_imm8, 4, 1),
+            ubfx(sa_imm8, 3, 1),
+            ubfx(sa_imm8, 2, 1),
+            ubfx(sa_imm8, 1, 1),
+            mask(sa_imm8, 1),
             sa_vd,
         ))
     }
@@ -20851,10 +21952,10 @@ func (self *Program) MRRS(v0, v1, v2 interface{}) *Instruction {
         sa_systemreg := uint32(v2.(SystemRegister))
         return p.setins(systemmovepr(
             1,
-            maskp(sa_systemreg, 6, 1),
-            maskp(sa_systemreg, 3, 3),
-            maskp(sa_systemreg, 7, 4),
-            maskp(sa_systemreg, 11, 4),
+            ubfx(sa_systemreg, 6, 1),
+            ubfx(sa_systemreg, 3, 3),
+            ubfx(sa_systemreg, 7, 4),
+            ubfx(sa_systemreg, 11, 4),
             mask(sa_systemreg, 3),
             sa_xt,
         ))
@@ -20874,10 +21975,10 @@ func (self *Program) MRS(v0, v1 interface{}) *Instruction {
         sa_systemreg := uint32(v1.(SystemRegister))
         return p.setins(systemmove(
             1,
-            maskp(sa_systemreg, 6, 1),
-            maskp(sa_systemreg, 3, 3),
-            maskp(sa_systemreg, 7, 4),
-            maskp(sa_systemreg, 11, 4),
+            ubfx(sa_systemreg, 6, 1),
+            ubfx(sa_systemreg, 3, 3),
+            ubfx(sa_systemreg, 7, 4),
+            ubfx(sa_systemreg, 11, 4),
             mask(sa_systemreg, 3),
             sa_xt,
         ))
@@ -20895,12 +21996,9 @@ func (self *Program) MSR(v0, v1 interface{}) *Instruction {
     p := self.alloc("MSR", 2, Operands { v0, v1 })
     // MSR  <pstatefield>, #<imm>
     if isPState(v0) && isUimm4(v1) {
-        sa_pstatefield := uint32(v0.(PStateField))
+        sa_pstatefield := uint32(v0.(PStateField)) << 4
         sa_imm := asUimm4(v1)
-        if sa_imm != mask(sa_pstatefield, 4) {
-            panic("aarch64: invalid combination of operands for MSR")
-        }
-        return p.setins(pstate(maskp(sa_pstatefield, 7, 3), sa_imm, maskp(sa_pstatefield, 4, 3), 31))
+        return p.setins(pstate(sa_pstatefield, sa_imm, sa_pstatefield, 31))
     }
     // MSR  (<systemreg>|S<op0>_<op1>_<Cn>_<Cm>_<op2>), <Xt>
     if isSysReg(v0) && isXr(v1) {
@@ -20908,10 +22006,10 @@ func (self *Program) MSR(v0, v1 interface{}) *Instruction {
         sa_xt := uint32(v1.(asm.Register).ID())
         return p.setins(systemmove(
             0,
-            maskp(sa_systemreg, 6, 1),
-            maskp(sa_systemreg, 3, 3),
-            maskp(sa_systemreg, 7, 4),
-            maskp(sa_systemreg, 11, 4),
+            ubfx(sa_systemreg, 6, 1),
+            ubfx(sa_systemreg, 3, 3),
+            ubfx(sa_systemreg, 7, 4),
+            ubfx(sa_systemreg, 11, 4),
             mask(sa_systemreg, 3),
             sa_xt,
         ))
@@ -20932,10 +22030,10 @@ func (self *Program) MSRR(v0, v1, v2 interface{}) *Instruction {
         sa_xt := uint32(v1.(asm.Register).ID())
         return p.setins(systemmovepr(
             0,
-            maskp(sa_systemreg, 6, 1),
-            maskp(sa_systemreg, 3, 3),
-            maskp(sa_systemreg, 7, 4),
-            maskp(sa_systemreg, 11, 4),
+            ubfx(sa_systemreg, 6, 1),
+            ubfx(sa_systemreg, 3, 3),
+            ubfx(sa_systemreg, 7, 4),
+            ubfx(sa_systemreg, 11, 4),
             mask(sa_systemreg, 3),
             sa_xt,
         ))
@@ -20972,13 +22070,29 @@ func (self *Program) MSUB(v0, v1, v2, v3 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for MSUB")
 }
 
-// MUL instruction have 2 forms:
+// MUL instruction have 4 forms:
 //
+//   * MUL  <Wd>, <Wn>, <Wm>
+//   * MUL  <Xd>, <Xn>, <Xm>
 //   * MUL  <Vd>.<T>, <Vn>.<T>, <Vm>.<Ts>[<index>]
 //   * MUL  <Vd>.<T>, <Vn>.<T>, <Vm>.<T>
 //
 func (self *Program) MUL(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("MUL", 3, Operands { v0, v1, v2 })
+    // MUL  <Wd>, <Wn>, <Wm>
+    if isWr(v0) && isWr(v1) && isWr(v2) {
+        sa_wd := uint32(v0.(asm.Register).ID())
+        sa_wn := uint32(v1.(asm.Register).ID())
+        sa_wm := uint32(v2.(asm.Register).ID())
+        return p.setins(dp_3src(0, 0, 0, sa_wm, 0, 31, sa_wn, sa_wd))
+    }
+    // MUL  <Xd>, <Xn>, <Xm>
+    if isXr(v0) && isXr(v1) && isXr(v2) {
+        sa_xd := uint32(v0.(asm.Register).ID())
+        sa_xn := uint32(v1.(asm.Register).ID())
+        sa_xm := uint32(v2.(asm.Register).ID())
+        return p.setins(dp_3src(1, 0, 0, sa_xm, 0, 31, sa_xn, sa_xd))
+    }
     // MUL  <Vd>.<T>, <Vn>.<T>, <Vm>.<Ts>[<index>]
     if isVr(v0) &&
        isVfmt(v0, Vec4H, Vec8H, Vec2S, Vec4S) &&
@@ -21004,21 +22118,21 @@ func (self *Program) MUL(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if maskp(sa_index, 3, 2) != maskp(sa_t, 1, 2) || maskp(sa_t, 1, 2) != sa_ts || sa_ts != maskp(sa_vm, 5, 2) {
+        if ubfx(sa_index, 3, 2) != ubfx(sa_t, 1, 2) || ubfx(sa_t, 1, 2) != sa_ts || sa_ts != sa_vm {
             panic("aarch64: invalid combination of operands for MUL")
         }
-        if sa_index & 1 != maskp(sa_vm, 4, 1) {
+        if mask(sa_index, 1) != sa_vm {
             panic("aarch64: invalid combination of operands for MUL")
         }
         return p.setins(asimdelem(
-            sa_t & 1,
+            mask(sa_t, 1),
             0,
-            maskp(sa_index, 3, 2),
-            maskp(sa_index, 2, 1),
-            sa_index & 1,
-            mask(sa_vm, 4),
+            ubfx(sa_index, 3, 2),
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 1),
+            sa_vm,
             8,
-            maskp(sa_index, 1, 1),
+            ubfx(sa_index, 1, 1),
             sa_vn,
             sa_vd,
         ))
@@ -21045,11 +22159,65 @@ func (self *Program) MUL(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdsame(sa_t & 1, 0, maskp(sa_t, 1, 2), sa_vm, 19, sa_vn, sa_vd))
+        return p.setins(asimdsame(mask(sa_t, 1), 0, ubfx(sa_t, 1, 2), sa_vm, 19, sa_vn, sa_vd))
     }
     // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for MUL")
+}
+
+// MVN instruction have 3 forms:
+//
+//   * MVN  <Vd>.<T>, <Vn>.<T>
+//   * MVN  <Wd>, <Wm>{, <shift> #<amount>}
+//   * MVN  <Xd>, <Xm>{, <shift> #<amount>}
+//
+func (self *Program) MVN(v0, v1 interface{}, vv ...interface{}) *Instruction {
+    var p *Instruction
+    switch len(vv) {
+        case 0  : p = self.alloc("MVN", 2, Operands { v0, v1 })
+        case 1  : p = self.alloc("MVN", 3, Operands { v0, v1, vv[0] })
+        default : panic("instruction MVN takes 2 or 3 operands")
+    }
+    // MVN  <Vd>.<T>, <Vn>.<T>
+    if isVr(v0) && isVfmt(v0, Vec8B, Vec16B) && isVr(v1) && isVfmt(v1, Vec8B, Vec16B) && vfmt(v0) == vfmt(v1) {
+        var sa_t uint32
+        sa_vd := uint32(v0.(asm.Register).ID())
+        switch vfmt(v0) {
+            case Vec8B: sa_t = 0b0
+            case Vec16B: sa_t = 0b1
+            default: panic("aarch64: unreachable")
+        }
+        sa_vn := uint32(v1.(asm.Register).ID())
+        return p.setins(asimdmisc(sa_t, 1, 0, 5, sa_vn, sa_vd))
+    }
+    // MVN  <Wd>, <Wm>{, <shift> #<amount>}
+    if (len(vv) == 0 || len(vv) == 1) && isWr(v0) && isWr(v1) && (len(vv) == 0 || isShift(vv[0])) {
+        var sa_amount uint32
+        var sa_shift uint32
+        sa_wd := uint32(v0.(asm.Register).ID())
+        sa_wm_1 := uint32(v1.(asm.Register).ID())
+        if len(vv) == 1 {
+            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            sa_amount = uint32(vv[0].(Modifier).Amount())
+        }
+        return p.setins(log_shift(0, 1, sa_shift, 1, sa_wm_1, sa_amount, 31, sa_wd))
+    }
+    // MVN  <Xd>, <Xm>{, <shift> #<amount>}
+    if (len(vv) == 0 || len(vv) == 1) && isXr(v0) && isXr(v1) && (len(vv) == 0 || isShift(vv[0])) {
+        var sa_amount_1 uint32
+        var sa_shift uint32
+        sa_xd := uint32(v0.(asm.Register).ID())
+        sa_xm_1 := uint32(v1.(asm.Register).ID())
+        if len(vv) == 1 {
+            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            sa_amount_1 = uint32(vv[0].(Modifier).Amount())
+        }
+        return p.setins(log_shift(1, 1, sa_shift, 1, sa_xm_1, sa_amount_1, 31, sa_xd))
+    }
+    // none of above
+    p.Free()
+    panic("aarch64: invalid combination of operands for MVN")
 }
 
 // MVNI instruction have 3 forms:
@@ -21092,16 +22260,16 @@ func (self *Program) MVNI(v0, v1 interface{}, vv ...interface{}) *Instruction {
         return p.setins(asimdimm(
             sa_t,
             1,
-            maskp(sa_imm8, 7, 1),
-            maskp(sa_imm8, 6, 1),
-            maskp(sa_imm8, 5, 1),
+            ubfx(sa_imm8, 7, 1),
+            ubfx(sa_imm8, 6, 1),
+            ubfx(sa_imm8, 5, 1),
             cmode,
             0,
-            maskp(sa_imm8, 4, 1),
-            maskp(sa_imm8, 3, 1),
-            maskp(sa_imm8, 2, 1),
-            maskp(sa_imm8, 1, 1),
-            sa_imm8 & 1,
+            ubfx(sa_imm8, 4, 1),
+            ubfx(sa_imm8, 3, 1),
+            ubfx(sa_imm8, 2, 1),
+            ubfx(sa_imm8, 1, 1),
+            mask(sa_imm8, 1),
             sa_vd,
         ))
     }
@@ -21134,16 +22302,16 @@ func (self *Program) MVNI(v0, v1 interface{}, vv ...interface{}) *Instruction {
         return p.setins(asimdimm(
             sa_t_1,
             1,
-            maskp(sa_imm8, 7, 1),
-            maskp(sa_imm8, 6, 1),
-            maskp(sa_imm8, 5, 1),
+            ubfx(sa_imm8, 7, 1),
+            ubfx(sa_imm8, 6, 1),
+            ubfx(sa_imm8, 5, 1),
             cmode,
             0,
-            maskp(sa_imm8, 4, 1),
-            maskp(sa_imm8, 3, 1),
-            maskp(sa_imm8, 2, 1),
-            maskp(sa_imm8, 1, 1),
-            sa_imm8 & 1,
+            ubfx(sa_imm8, 4, 1),
+            ubfx(sa_imm8, 3, 1),
+            ubfx(sa_imm8, 2, 1),
+            ubfx(sa_imm8, 1, 1),
+            mask(sa_imm8, 1),
             sa_vd,
         ))
     }
@@ -21167,16 +22335,16 @@ func (self *Program) MVNI(v0, v1 interface{}, vv ...interface{}) *Instruction {
         return p.setins(asimdimm(
             sa_t_1,
             1,
-            maskp(sa_imm8, 7, 1),
-            maskp(sa_imm8, 6, 1),
-            maskp(sa_imm8, 5, 1),
+            ubfx(sa_imm8, 7, 1),
+            ubfx(sa_imm8, 6, 1),
+            ubfx(sa_imm8, 5, 1),
             cmode,
             0,
-            maskp(sa_imm8, 4, 1),
-            maskp(sa_imm8, 3, 1),
-            maskp(sa_imm8, 2, 1),
-            maskp(sa_imm8, 1, 1),
-            sa_imm8 & 1,
+            ubfx(sa_imm8, 4, 1),
+            ubfx(sa_imm8, 3, 1),
+            ubfx(sa_imm8, 2, 1),
+            ubfx(sa_imm8, 1, 1),
+            mask(sa_imm8, 1),
             sa_vd,
         ))
     }
@@ -21185,13 +22353,44 @@ func (self *Program) MVNI(v0, v1 interface{}, vv ...interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for MVNI")
 }
 
-// NEG instruction have 2 forms:
+// NEG instruction have 4 forms:
 //
+//   * NEG  <Wd>, <Wm>{, <shift> #<amount>}
+//   * NEG  <Xd>, <Xm>{, <shift> #<amount>}
 //   * NEG  <Vd>.<T>, <Vn>.<T>
 //   * NEG  <V><d>, <V><n>
 //
-func (self *Program) NEG(v0, v1 interface{}) *Instruction {
-    p := self.alloc("NEG", 2, Operands { v0, v1 })
+func (self *Program) NEG(v0, v1 interface{}, vv ...interface{}) *Instruction {
+    var p *Instruction
+    switch len(vv) {
+        case 0  : p = self.alloc("NEG", 2, Operands { v0, v1 })
+        case 1  : p = self.alloc("NEG", 3, Operands { v0, v1, vv[0] })
+        default : panic("instruction NEG takes 2 or 3 operands")
+    }
+    // NEG  <Wd>, <Wm>{, <shift> #<amount>}
+    if (len(vv) == 0 || len(vv) == 1) && isWr(v0) && isWr(v1) && (len(vv) == 0 || isShift(vv[0])) {
+        var sa_amount uint32
+        var sa_shift uint32
+        sa_wd := uint32(v0.(asm.Register).ID())
+        sa_wm_1 := uint32(v1.(asm.Register).ID())
+        if len(vv) == 1 {
+            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            sa_amount = uint32(vv[0].(Modifier).Amount())
+        }
+        return p.setins(addsub_shift(0, 1, 0, sa_shift, sa_wm_1, sa_amount, 31, sa_wd))
+    }
+    // NEG  <Xd>, <Xm>{, <shift> #<amount>}
+    if (len(vv) == 0 || len(vv) == 1) && isXr(v0) && isXr(v1) && (len(vv) == 0 || isShift(vv[0])) {
+        var sa_amount_1 uint32
+        var sa_shift uint32
+        sa_xd := uint32(v0.(asm.Register).ID())
+        sa_xm_1 := uint32(v1.(asm.Register).ID())
+        if len(vv) == 1 {
+            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            sa_amount_1 = uint32(vv[0].(Modifier).Amount())
+        }
+        return p.setins(addsub_shift(1, 1, 0, sa_shift, sa_xm_1, sa_amount_1, 31, sa_xd))
+    }
     // NEG  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) &&
        isVfmt(v0, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
@@ -21211,7 +22410,7 @@ func (self *Program) NEG(v0, v1 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vn := uint32(v1.(asm.Register).ID())
-        return p.setins(asimdmisc(sa_t & 1, 1, maskp(sa_t, 1, 2), 11, sa_vn, sa_vd))
+        return p.setins(asimdmisc(mask(sa_t, 1), 1, ubfx(sa_t, 1, 2), 11, sa_vn, sa_vd))
     }
     // NEG  <V><d>, <V><n>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isSameType(v0, v1) {
@@ -21227,6 +22426,95 @@ func (self *Program) NEG(v0, v1 interface{}) *Instruction {
     // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for NEG")
+}
+
+// NEGS instruction have 2 forms:
+//
+//   * NEGS  <Wd>, <Wm>{, <shift> #<amount>}
+//   * NEGS  <Xd>, <Xm>{, <shift> #<amount>}
+//
+func (self *Program) NEGS(v0, v1 interface{}, vv ...interface{}) *Instruction {
+    var p *Instruction
+    switch len(vv) {
+        case 0  : p = self.alloc("NEGS", 2, Operands { v0, v1 })
+        case 1  : p = self.alloc("NEGS", 3, Operands { v0, v1, vv[0] })
+        default : panic("instruction NEGS takes 2 or 3 operands")
+    }
+    // NEGS  <Wd>, <Wm>{, <shift> #<amount>}
+    if (len(vv) == 0 || len(vv) == 1) && isWr(v0) && isWr(v1) && (len(vv) == 0 || isShift(vv[0])) {
+        var sa_amount uint32
+        var sa_shift uint32
+        sa_wd := uint32(v0.(asm.Register).ID())
+        sa_wm_1 := uint32(v1.(asm.Register).ID())
+        if len(vv) == 1 {
+            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            sa_amount = uint32(vv[0].(Modifier).Amount())
+        }
+        return p.setins(addsub_shift(0, 1, 1, sa_shift, sa_wm_1, sa_amount, 31, sa_wd))
+    }
+    // NEGS  <Xd>, <Xm>{, <shift> #<amount>}
+    if (len(vv) == 0 || len(vv) == 1) && isXr(v0) && isXr(v1) && (len(vv) == 0 || isShift(vv[0])) {
+        var sa_amount_1 uint32
+        var sa_shift uint32
+        sa_xd := uint32(v0.(asm.Register).ID())
+        sa_xm_1 := uint32(v1.(asm.Register).ID())
+        if len(vv) == 1 {
+            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            sa_amount_1 = uint32(vv[0].(Modifier).Amount())
+        }
+        return p.setins(addsub_shift(1, 1, 1, sa_shift, sa_xm_1, sa_amount_1, 31, sa_xd))
+    }
+    // none of above
+    p.Free()
+    panic("aarch64: invalid combination of operands for NEGS")
+}
+
+// NGC instruction have 2 forms:
+//
+//   * NGC  <Wd>, <Wm>
+//   * NGC  <Xd>, <Xm>
+//
+func (self *Program) NGC(v0, v1 interface{}) *Instruction {
+    p := self.alloc("NGC", 2, Operands { v0, v1 })
+    // NGC  <Wd>, <Wm>
+    if isWr(v0) && isWr(v1) {
+        sa_wd := uint32(v0.(asm.Register).ID())
+        sa_wm_1 := uint32(v1.(asm.Register).ID())
+        return p.setins(addsub_carry(0, 1, 0, sa_wm_1, 31, sa_wd))
+    }
+    // NGC  <Xd>, <Xm>
+    if isXr(v0) && isXr(v1) {
+        sa_xd := uint32(v0.(asm.Register).ID())
+        sa_xm_1 := uint32(v1.(asm.Register).ID())
+        return p.setins(addsub_carry(1, 1, 0, sa_xm_1, 31, sa_xd))
+    }
+    // none of above
+    p.Free()
+    panic("aarch64: invalid combination of operands for NGC")
+}
+
+// NGCS instruction have 2 forms:
+//
+//   * NGCS  <Wd>, <Wm>
+//   * NGCS  <Xd>, <Xm>
+//
+func (self *Program) NGCS(v0, v1 interface{}) *Instruction {
+    p := self.alloc("NGCS", 2, Operands { v0, v1 })
+    // NGCS  <Wd>, <Wm>
+    if isWr(v0) && isWr(v1) {
+        sa_wd := uint32(v0.(asm.Register).ID())
+        sa_wm_1 := uint32(v1.(asm.Register).ID())
+        return p.setins(addsub_carry(0, 1, 1, sa_wm_1, 31, sa_wd))
+    }
+    // NGCS  <Xd>, <Xm>
+    if isXr(v0) && isXr(v1) {
+        sa_xd := uint32(v0.(asm.Register).ID())
+        sa_xm_1 := uint32(v1.(asm.Register).ID())
+        return p.setins(addsub_carry(1, 1, 1, sa_xm_1, 31, sa_xd))
+    }
+    // none of above
+    p.Free()
+    panic("aarch64: invalid combination of operands for NGCS")
 }
 
 // NOP instruction have one single form:
@@ -21346,7 +22634,7 @@ func (self *Program) ORR(v0, v1 interface{}, vv ...interface{}) *Instruction {
         sa_wd_wsp := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_imm := asMaskOp(vv[0])
-        return p.setins(log_imm(0, 1, 0, maskp(sa_imm, 6, 6), mask(sa_imm, 6), sa_wn, sa_wd_wsp))
+        return p.setins(log_imm(0, 1, 0, ubfx(sa_imm, 6, 6), mask(sa_imm, 6), sa_wn, sa_wd_wsp))
     }
     // ORR  <Wd>, <Wn>, <Wm>{, <shift> #<amount>}
     if (len(vv) == 1 || len(vv) == 2) && isWr(v0) && isWr(v1) && isWr(vv[0]) && (len(vv) == 0 || isShift(vv[1])) {
@@ -21366,7 +22654,7 @@ func (self *Program) ORR(v0, v1 interface{}, vv ...interface{}) *Instruction {
         sa_xd_sp := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_imm_1 := asMaskOp(vv[0])
-        return p.setins(log_imm(1, 1, maskp(sa_imm_1, 12, 1), maskp(sa_imm_1, 6, 6), mask(sa_imm_1, 6), sa_xn, sa_xd_sp))
+        return p.setins(log_imm(1, 1, ubfx(sa_imm_1, 12, 1), ubfx(sa_imm_1, 6, 6), mask(sa_imm_1, 6), sa_xn, sa_xd_sp))
     }
     // ORR  <Xd>, <Xn>, <Xm>{, <shift> #<amount>}
     if (len(vv) == 1 || len(vv) == 2) && isXr(v0) && isXr(v1) && isXr(vv[0]) && (len(vv) == 0 || isShift(vv[1])) {
@@ -21408,16 +22696,16 @@ func (self *Program) ORR(v0, v1 interface{}, vv ...interface{}) *Instruction {
         return p.setins(asimdimm(
             sa_t,
             0,
-            maskp(sa_imm8, 7, 1),
-            maskp(sa_imm8, 6, 1),
-            maskp(sa_imm8, 5, 1),
+            ubfx(sa_imm8, 7, 1),
+            ubfx(sa_imm8, 6, 1),
+            ubfx(sa_imm8, 5, 1),
             cmode,
             0,
-            maskp(sa_imm8, 4, 1),
-            maskp(sa_imm8, 3, 1),
-            maskp(sa_imm8, 2, 1),
-            maskp(sa_imm8, 1, 1),
-            sa_imm8 & 1,
+            ubfx(sa_imm8, 4, 1),
+            ubfx(sa_imm8, 3, 1),
+            ubfx(sa_imm8, 2, 1),
+            ubfx(sa_imm8, 1, 1),
+            mask(sa_imm8, 1),
             sa_vd,
         ))
     }
@@ -21450,16 +22738,16 @@ func (self *Program) ORR(v0, v1 interface{}, vv ...interface{}) *Instruction {
         return p.setins(asimdimm(
             sa_t_1,
             0,
-            maskp(sa_imm8, 7, 1),
-            maskp(sa_imm8, 6, 1),
-            maskp(sa_imm8, 5, 1),
+            ubfx(sa_imm8, 7, 1),
+            ubfx(sa_imm8, 6, 1),
+            ubfx(sa_imm8, 5, 1),
             cmode,
             0,
-            maskp(sa_imm8, 4, 1),
-            maskp(sa_imm8, 3, 1),
-            maskp(sa_imm8, 2, 1),
-            maskp(sa_imm8, 1, 1),
-            sa_imm8 & 1,
+            ubfx(sa_imm8, 4, 1),
+            ubfx(sa_imm8, 3, 1),
+            ubfx(sa_imm8, 2, 1),
+            ubfx(sa_imm8, 1, 1),
+            mask(sa_imm8, 1),
             sa_vd,
         ))
     }
@@ -21698,7 +22986,7 @@ func (self *Program) PMUL(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdsame(sa_t & 1, 1, maskp(sa_t, 1, 2), sa_vm, 19, sa_vn, sa_vd))
+        return p.setins(asimdsame(mask(sa_t, 1), 1, ubfx(sa_t, 1, 2), sa_vm, 19, sa_vn, sa_vd))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for PMUL")
@@ -21734,10 +23022,10 @@ func (self *Program) PMULL(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vm := uint32(v2.(asm.Register).ID())
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for PMULL")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for PMULL")
         }
         return p.setins(asimddiff(0, 0, sa_ta, sa_vm, 14, sa_vn, sa_vd))
@@ -21776,10 +23064,10 @@ func (self *Program) PMULL2(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vm := uint32(v2.(asm.Register).ID())
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for PMULL2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for PMULL2")
         }
         return p.setins(asimddiff(1, 0, sa_ta, sa_vm, 14, sa_vn, sa_vd))
@@ -21861,6 +23149,15 @@ func (self *Program) PSB(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for PSB")
 }
 
+// PSSBB instruction have one single form:
+//
+//   * PSSBB
+//
+func (self *Program) PSSBB() *Instruction {
+    p := self.alloc("PSSBB", 0, Operands {})
+    return p.setins(barriers(4, 4, 31))
+}
+
 // RADDHN instruction have one single form:
 //
 //   * RADDHN  <Vd>.<Tb>, <Vn>.<Ta>, <Vm>.<Ta>
@@ -21894,10 +23191,10 @@ func (self *Program) RADDHN(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vm := uint32(v2.(asm.Register).ID())
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for RADDHN")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for RADDHN")
         }
         return p.setins(asimddiff(0, 1, sa_ta, sa_vm, 4, sa_vn, sa_vd))
@@ -21939,10 +23236,10 @@ func (self *Program) RADDHN2(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vm := uint32(v2.(asm.Register).ID())
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for RADDHN2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for RADDHN2")
         }
         return p.setins(asimddiff(1, 1, sa_ta, sa_vm, 4, sa_vn, sa_vd))
@@ -23538,7 +24835,7 @@ func (self *Program) REV16(v0, v1 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vn := uint32(v1.(asm.Register).ID())
-        return p.setins(asimdmisc(sa_t & 1, 0, maskp(sa_t, 1, 2), 1, sa_vn, sa_vd))
+        return p.setins(asimdmisc(mask(sa_t, 1), 0, ubfx(sa_t, 1, 2), 1, sa_vn, sa_vd))
     }
     // none of above
     p.Free()
@@ -23574,19 +24871,27 @@ func (self *Program) REV32(v0, v1 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vn := uint32(v1.(asm.Register).ID())
-        return p.setins(asimdmisc(sa_t & 1, 1, maskp(sa_t, 1, 2), 0, sa_vn, sa_vd))
+        return p.setins(asimdmisc(mask(sa_t, 1), 1, ubfx(sa_t, 1, 2), 0, sa_vn, sa_vd))
     }
     // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for REV32")
 }
 
-// REV64 instruction have one single form:
+// REV64 instruction have 2 forms:
 //
+//   * REV64  <Xd>, <Xn>
 //   * REV64  <Vd>.<T>, <Vn>.<T>
 //
 func (self *Program) REV64(v0, v1 interface{}) *Instruction {
     p := self.alloc("REV64", 2, Operands { v0, v1 })
+    // REV64  <Xd>, <Xn>
+    if isXr(v0) && isXr(v1) {
+        sa_xd := uint32(v0.(asm.Register).ID())
+        sa_xn := uint32(v1.(asm.Register).ID())
+        return p.setins(dp_1src(1, 0, 0, 3, sa_xn, sa_xd))
+    }
+    // REV64  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) &&
        isVfmt(v0, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        isVr(v1) &&
@@ -23604,8 +24909,9 @@ func (self *Program) REV64(v0, v1 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vn := uint32(v1.(asm.Register).ID())
-        return p.setins(asimdmisc(sa_t & 1, 0, maskp(sa_t, 1, 2), 0, sa_vn, sa_vd))
+        return p.setins(asimdmisc(mask(sa_t, 1), 0, ubfx(sa_t, 1, 2), 0, sa_vn, sa_vd))
     }
+    // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for REV64")
 }
@@ -23624,6 +24930,48 @@ func (self *Program) RMIF(v0, v1, v2 interface{}) *Instruction {
     }
     p.Free()
     panic("aarch64: invalid combination of operands for RMIF")
+}
+
+// ROR instruction have 4 forms:
+//
+//   * ROR  <Wd>, <Ws>, #<shift>
+//   * ROR  <Xd>, <Xs>, #<shift>
+//   * ROR  <Wd>, <Wn>, <Wm>
+//   * ROR  <Xd>, <Xn>, <Xm>
+//
+func (self *Program) ROR(v0, v1, v2 interface{}) *Instruction {
+    p := self.alloc("ROR", 3, Operands { v0, v1, v2 })
+    // ROR  <Wd>, <Ws>, #<shift>
+    if isWr(v0) && isWr(v1) && isUimm6(v2) {
+        sa_wd := uint32(v0.(asm.Register).ID())
+        sa_ws := uint32(v1.(asm.Register).ID())
+        sa_shift := asUimm6(v2)
+        return p.setins(extract(0, 0, 0, 0, sa_ws, sa_shift, sa_ws, sa_wd))
+    }
+    // ROR  <Xd>, <Xs>, #<shift>
+    if isXr(v0) && isXr(v1) && isUimm6(v2) {
+        sa_xd := uint32(v0.(asm.Register).ID())
+        sa_xs := uint32(v1.(asm.Register).ID())
+        sa_shift_1 := asUimm6(v2)
+        return p.setins(extract(1, 0, 1, 0, sa_xs, sa_shift_1, sa_xs, sa_xd))
+    }
+    // ROR  <Wd>, <Wn>, <Wm>
+    if isWr(v0) && isWr(v1) && isWr(v2) {
+        sa_wd := uint32(v0.(asm.Register).ID())
+        sa_wn := uint32(v1.(asm.Register).ID())
+        sa_wm := uint32(v2.(asm.Register).ID())
+        return p.setins(dp_2src(0, 0, sa_wm, 11, sa_wn, sa_wd))
+    }
+    // ROR  <Xd>, <Xn>, <Xm>
+    if isXr(v0) && isXr(v1) && isXr(v2) {
+        sa_xd := uint32(v0.(asm.Register).ID())
+        sa_xn := uint32(v1.(asm.Register).ID())
+        sa_xm := uint32(v2.(asm.Register).ID())
+        return p.setins(dp_2src(1, 0, sa_xm, 11, sa_xn, sa_xd))
+    }
+    // none of above
+    p.Free()
+    panic("aarch64: invalid combination of operands for ROR")
 }
 
 // RORV instruction have 2 forms:
@@ -23674,9 +25022,9 @@ func (self *Program) RPRFM(v0, v1, v2 interface{}) *Instruction {
             2,
             sa_xm,
             mask(sa_rprfop, 3),
-            maskp(sa_rprfop, 3, 1),
+            ubfx(sa_rprfop, 3, 1),
             sa_xn_sp,
-            maskp(sa_rprfop, 4, 5),
+            ubfx(sa_rprfop, 4, 5),
         ))
     }
     p.Free()
@@ -23731,20 +25079,20 @@ func (self *Program) RSHRN(v0, v1, v2 interface{}) *Instruction {
             case Vec2D: sa_ta__bit_mask = 0b1100
             default: panic("aarch64: unreachable")
         }
-        switch maskp(sa_tb, 1, 4) {
+        switch ubfx(sa_tb, 1, 4) {
             case 0b0001: sa_shift = 16 - uint32(asLit(v2))
             case 0b0010: sa_shift = 32 - uint32(asLit(v2))
             case 0b0100: sa_shift = 64 - uint32(asLit(v2))
             default: panic("aarch64: invalid operand 'sa_shift' for RSHRN")
         }
-        if maskp(sa_shift, 3, 4) != sa_ta & sa_ta__bit_mask ||
-           sa_ta & sa_ta__bit_mask != maskp(sa_tb, 1, 4) & maskp(sa_tb__bit_mask, 1, 4) {
+        if ubfx(sa_shift, 3, 4) != sa_ta & sa_ta__bit_mask ||
+           sa_ta & sa_ta__bit_mask != ubfx(sa_tb, 1, 4) & ubfx(sa_tb__bit_mask, 1, 4) {
             panic("aarch64: invalid combination of operands for RSHRN")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for RSHRN")
         }
-        return p.setins(asimdshf(0, 0, maskp(sa_shift, 3, 4), mask(sa_shift, 3), 17, sa_vn, sa_vd))
+        return p.setins(asimdshf(0, 0, ubfx(sa_shift, 3, 4), mask(sa_shift, 3), 17, sa_vn, sa_vd))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for RSHRN")
@@ -23798,20 +25146,20 @@ func (self *Program) RSHRN2(v0, v1, v2 interface{}) *Instruction {
             case Vec2D: sa_ta__bit_mask = 0b1100
             default: panic("aarch64: unreachable")
         }
-        switch maskp(sa_tb, 1, 4) {
+        switch ubfx(sa_tb, 1, 4) {
             case 0b0001: sa_shift = 16 - uint32(asLit(v2))
             case 0b0010: sa_shift = 32 - uint32(asLit(v2))
             case 0b0100: sa_shift = 64 - uint32(asLit(v2))
             default: panic("aarch64: invalid operand 'sa_shift' for RSHRN2")
         }
-        if maskp(sa_shift, 3, 4) != sa_ta & sa_ta__bit_mask ||
-           sa_ta & sa_ta__bit_mask != maskp(sa_tb, 1, 4) & maskp(sa_tb__bit_mask, 1, 4) {
+        if ubfx(sa_shift, 3, 4) != sa_ta & sa_ta__bit_mask ||
+           sa_ta & sa_ta__bit_mask != ubfx(sa_tb, 1, 4) & ubfx(sa_tb__bit_mask, 1, 4) {
             panic("aarch64: invalid combination of operands for RSHRN2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for RSHRN2")
         }
-        return p.setins(asimdshf(1, 0, maskp(sa_shift, 3, 4), mask(sa_shift, 3), 17, sa_vn, sa_vd))
+        return p.setins(asimdshf(1, 0, ubfx(sa_shift, 3, 4), mask(sa_shift, 3), 17, sa_vn, sa_vd))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for RSHRN2")
@@ -23850,10 +25198,10 @@ func (self *Program) RSUBHN(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vm := uint32(v2.(asm.Register).ID())
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for RSUBHN")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for RSUBHN")
         }
         return p.setins(asimddiff(0, 1, sa_ta, sa_vm, 6, sa_vn, sa_vd))
@@ -23895,10 +25243,10 @@ func (self *Program) RSUBHN2(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vm := uint32(v2.(asm.Register).ID())
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for RSUBHN2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for RSUBHN2")
         }
         return p.setins(asimddiff(1, 1, sa_ta, sa_vm, 6, sa_vn, sa_vd))
@@ -23934,7 +25282,7 @@ func (self *Program) SABA(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdsame(sa_t & 1, 0, maskp(sa_t, 1, 2), sa_vm, 15, sa_vn, sa_vd))
+        return p.setins(asimdsame(mask(sa_t, 1), 0, ubfx(sa_t, 1, 2), sa_vm, 15, sa_vn, sa_vd))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for SABA")
@@ -23973,10 +25321,10 @@ func (self *Program) SABAL(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vm := uint32(v2.(asm.Register).ID())
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for SABAL")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for SABAL")
         }
         return p.setins(asimddiff(0, 0, sa_ta, sa_vm, 5, sa_vn, sa_vd))
@@ -24018,10 +25366,10 @@ func (self *Program) SABAL2(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vm := uint32(v2.(asm.Register).ID())
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for SABAL2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for SABAL2")
         }
         return p.setins(asimddiff(1, 0, sa_ta, sa_vm, 5, sa_vn, sa_vd))
@@ -24057,7 +25405,7 @@ func (self *Program) SABD(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdsame(sa_t & 1, 0, maskp(sa_t, 1, 2), sa_vm, 14, sa_vn, sa_vd))
+        return p.setins(asimdsame(mask(sa_t, 1), 0, ubfx(sa_t, 1, 2), sa_vm, 14, sa_vn, sa_vd))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for SABD")
@@ -24096,10 +25444,10 @@ func (self *Program) SABDL(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vm := uint32(v2.(asm.Register).ID())
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for SABDL")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for SABDL")
         }
         return p.setins(asimddiff(0, 0, sa_ta, sa_vm, 7, sa_vn, sa_vd))
@@ -24141,10 +25489,10 @@ func (self *Program) SABDL2(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vm := uint32(v2.(asm.Register).ID())
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for SABDL2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for SABDL2")
         }
         return p.setins(asimddiff(1, 0, sa_ta, sa_vm, 7, sa_vn, sa_vd))
@@ -24185,13 +25533,13 @@ func (self *Program) SADALP(v0, v1 interface{}) *Instruction {
             case Vec4S: sa_tb = 0b101
             default: panic("aarch64: unreachable")
         }
-        if maskp(sa_ta, 1, 2) != maskp(sa_tb, 1, 2) {
+        if ubfx(sa_ta, 1, 2) != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for SADALP")
         }
-        if sa_ta & 1 != sa_tb & 1 {
+        if mask(sa_ta, 1) != mask(sa_tb, 1) {
             panic("aarch64: invalid combination of operands for SADALP")
         }
-        return p.setins(asimdmisc(sa_ta & 1, 0, maskp(sa_ta, 1, 2), 6, sa_vn, sa_vd))
+        return p.setins(asimdmisc(mask(sa_ta, 1), 0, ubfx(sa_ta, 1, 2), 6, sa_vn, sa_vd))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for SADALP")
@@ -24230,10 +25578,10 @@ func (self *Program) SADDL(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vm := uint32(v2.(asm.Register).ID())
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for SADDL")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for SADDL")
         }
         return p.setins(asimddiff(0, 0, sa_ta, sa_vm, 0, sa_vn, sa_vd))
@@ -24275,10 +25623,10 @@ func (self *Program) SADDL2(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vm := uint32(v2.(asm.Register).ID())
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for SADDL2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for SADDL2")
         }
         return p.setins(asimddiff(1, 0, sa_ta, sa_vm, 0, sa_vn, sa_vd))
@@ -24319,13 +25667,13 @@ func (self *Program) SADDLP(v0, v1 interface{}) *Instruction {
             case Vec4S: sa_tb = 0b101
             default: panic("aarch64: unreachable")
         }
-        if maskp(sa_ta, 1, 2) != maskp(sa_tb, 1, 2) {
+        if ubfx(sa_ta, 1, 2) != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for SADDLP")
         }
-        if sa_ta & 1 != sa_tb & 1 {
+        if mask(sa_ta, 1) != mask(sa_tb, 1) {
             panic("aarch64: invalid combination of operands for SADDLP")
         }
-        return p.setins(asimdmisc(sa_ta & 1, 0, maskp(sa_ta, 1, 2), 2, sa_vn, sa_vd))
+        return p.setins(asimdmisc(mask(sa_ta, 1), 0, ubfx(sa_ta, 1, 2), 2, sa_vn, sa_vd))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for SADDLP")
@@ -24356,10 +25704,10 @@ func (self *Program) SADDLV(v0, v1 interface{}) *Instruction {
             case Vec4S: sa_t = 0b101
             default: panic("aarch64: unreachable")
         }
-        if maskp(sa_t, 1, 2) != sa_v {
+        if ubfx(sa_t, 1, 2) != sa_v {
             panic("aarch64: invalid combination of operands for SADDLV")
         }
-        return p.setins(asimdall(sa_t & 1, 0, maskp(sa_t, 1, 2), 3, sa_vn, sa_d))
+        return p.setins(asimdall(mask(sa_t, 1), 0, ubfx(sa_t, 1, 2), 3, sa_vn, sa_d))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for SADDLV")
@@ -24398,10 +25746,10 @@ func (self *Program) SADDW(v0, v1, v2 interface{}) *Instruction {
             case Vec4S: sa_tb = 0b101
             default: panic("aarch64: unreachable")
         }
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for SADDW")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for SADDW")
         }
         return p.setins(asimddiff(0, 0, sa_ta, sa_vm, 1, sa_vn, sa_vd))
@@ -24443,10 +25791,10 @@ func (self *Program) SADDW2(v0, v1, v2 interface{}) *Instruction {
             case Vec4S: sa_tb = 0b101
             default: panic("aarch64: unreachable")
         }
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for SADDW2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for SADDW2")
         }
         return p.setins(asimddiff(1, 0, sa_ta, sa_vm, 1, sa_vn, sa_vd))
@@ -24516,6 +25864,34 @@ func (self *Program) SBCS(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SBCS")
 }
 
+// SBFIZ instruction have 2 forms:
+//
+//   * SBFIZ  <Wd>, <Wn>, #<lsb>, #<width>
+//   * SBFIZ  <Xd>, <Xn>, #<lsb>, #<width>
+//
+func (self *Program) SBFIZ(v0, v1, v2, v3 interface{}) *Instruction {
+    p := self.alloc("SBFIZ", 4, Operands { v0, v1, v2, v3 })
+    // SBFIZ  <Wd>, <Wn>, #<lsb>, #<width>
+    if isWr(v0) && isWr(v1) && isUimm5(v2) && isBFxWidth(v2, v3, 32) {
+        sa_wd := uint32(v0.(asm.Register).ID())
+        sa_wn := uint32(v1.(asm.Register).ID())
+        sa_lsb := -asUimm5(v2) % 32
+        sa_width := asUimm5(v3) - 1
+        return p.setins(bitfield(0, 0, 0, sa_lsb, sa_width, sa_wn, sa_wd))
+    }
+    // SBFIZ  <Xd>, <Xn>, #<lsb>, #<width>
+    if isXr(v0) && isXr(v1) && isUimm6(v2) && isBFxWidth(v2, v3, 64) {
+        sa_xd := uint32(v0.(asm.Register).ID())
+        sa_xn := uint32(v1.(asm.Register).ID())
+        sa_lsb_2 := -asUimm6(v2) % 64
+        sa_width_1 := asUimm6(v3) - 1
+        return p.setins(bitfield(1, 0, 1, sa_lsb_2, sa_width_1, sa_xn, sa_xd))
+    }
+    // none of above
+    p.Free()
+    panic("aarch64: invalid combination of operands for SBFIZ")
+}
+
 // SBFM instruction have 2 forms:
 //
 //   * SBFM  <Wd>, <Wn>, #<immr>, #<imms>
@@ -24542,6 +25918,34 @@ func (self *Program) SBFM(v0, v1, v2, v3 interface{}) *Instruction {
     // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for SBFM")
+}
+
+// SBFX instruction have 2 forms:
+//
+//   * SBFX  <Wd>, <Wn>, #<lsb>, #<width>
+//   * SBFX  <Xd>, <Xn>, #<lsb>, #<width>
+//
+func (self *Program) SBFX(v0, v1, v2, v3 interface{}) *Instruction {
+    p := self.alloc("SBFX", 4, Operands { v0, v1, v2, v3 })
+    // SBFX  <Wd>, <Wn>, #<lsb>, #<width>
+    if isWr(v0) && isWr(v1) && isUimm5(v2) && isBFxWidth(v2, v3, 32) {
+        sa_wd := uint32(v0.(asm.Register).ID())
+        sa_wn := uint32(v1.(asm.Register).ID())
+        sa_lsb_1 := asUimm5(v2)
+        sa_width := sa_lsb_1 + asUimm5(v3) - 1
+        return p.setins(bitfield(0, 0, 0, sa_lsb_1, sa_width, sa_wn, sa_wd))
+    }
+    // SBFX  <Xd>, <Xn>, #<lsb>, #<width>
+    if isXr(v0) && isXr(v1) && isUimm6(v2) && isBFxWidth(v2, v3, 64) {
+        sa_xd := uint32(v0.(asm.Register).ID())
+        sa_xn := uint32(v1.(asm.Register).ID())
+        sa_lsb_3 := asUimm6(v2)
+        sa_width_1 := sa_lsb_3 + asUimm6(v3) - 1
+        return p.setins(bitfield(1, 0, 1, sa_lsb_3, sa_width_1, sa_xn, sa_xd))
+    }
+    // none of above
+    p.Free()
+    panic("aarch64: invalid combination of operands for SBFX")
 }
 
 // SCVTF instruction have 18 forms:
@@ -24666,8 +26070,8 @@ func (self *Program) SCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         size := uint32(0b00)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdmisc(sa_t & 1, 0, size, 29, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdmisc(mask(sa_t, 1), 0, size, 29, sa_vn, sa_vd))
     }
     // SCVTF  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
@@ -24710,16 +26114,16 @@ func (self *Program) SCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vn := uint32(v1.(asm.Register).ID())
-        switch maskp(sa_t, 1, 4) {
+        switch ubfx(sa_t, 1, 4) {
             case 0b0010: sa_fbits = 32 - uint32(asLit(vv[0]))
             case 0b0100: sa_fbits = 64 - uint32(asLit(vv[0]))
             case 0b1000: sa_fbits = 128 - uint32(asLit(vv[0]))
             default: panic("aarch64: invalid operand 'sa_fbits' for SCVTF")
         }
-        if maskp(sa_fbits, 3, 4) != maskp(sa_t, 1, 4) & maskp(sa_t__bit_mask, 1, 4) {
+        if ubfx(sa_fbits, 3, 4) != ubfx(sa_t, 1, 4) & ubfx(sa_t__bit_mask, 1, 4) {
             panic("aarch64: invalid combination of operands for SCVTF")
         }
-        return p.setins(asimdshf(sa_t & 1, 0, maskp(sa_fbits, 3, 4), mask(sa_fbits, 3), 28, sa_vn, sa_vd))
+        return p.setins(asimdshf(mask(sa_t, 1), 0, ubfx(sa_fbits, 3, 4), mask(sa_fbits, 3), 28, sa_vn, sa_vd))
     }
     // SCVTF  <V><d>, <V><n>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isSameType(v0, v1) {
@@ -24766,10 +26170,10 @@ func (self *Program) SCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
             case 0b1000: sa_fbits_1 = 128 - uint32(asLit(vv[0]))
             default: panic("aarch64: invalid operand 'sa_fbits_1' for SCVTF")
         }
-        if maskp(sa_fbits_1, 3, 4) != sa_v & sa_v__bit_mask {
+        if ubfx(sa_fbits_1, 3, 4) != sa_v & sa_v__bit_mask {
             panic("aarch64: invalid combination of operands for SCVTF")
         }
-        return p.setins(asisdshf(0, maskp(sa_fbits_1, 3, 4), mask(sa_fbits_1, 3), 28, sa_n, sa_d))
+        return p.setins(asisdshf(0, ubfx(sa_fbits_1, 3, 4), mask(sa_fbits_1, 3), 28, sa_n, sa_d))
     }
     // none of above
     p.Free()
@@ -24835,18 +26239,7 @@ func (self *Program) SDOT(v0, v1, v2 interface{}) *Instruction {
         if sa_ta != sa_tb {
             panic("aarch64: invalid combination of operands for SDOT")
         }
-        return p.setins(asimdelem(
-            sa_ta,
-            0,
-            2,
-            sa_index & 1,
-            maskp(sa_vm, 4, 1),
-            mask(sa_vm, 4),
-            14,
-            maskp(sa_index, 1, 1),
-            sa_vn,
-            sa_vd,
-        ))
+        return p.setins(asimdelem(sa_ta, 0, 2, mask(sa_index, 1), sa_vm, sa_vm, 14, ubfx(sa_index, 1, 1), sa_vn, sa_vd))
     }
     // SDOT  <Vd>.<Ta>, <Vn>.<Tb>, <Vm>.<Tb>
     if isVr(v0) &&
@@ -25702,7 +27095,7 @@ func (self *Program) SHADD(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdsame(sa_t & 1, 0, maskp(sa_t, 1, 2), sa_vm, 0, sa_vn, sa_vd))
+        return p.setins(asimdsame(mask(sa_t, 1), 0, ubfx(sa_t, 1, 2), sa_vm, 0, sa_vn, sa_vd))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for SHADD")
@@ -25747,17 +27140,17 @@ func (self *Program) SHL(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vn := uint32(v1.(asm.Register).ID())
-        switch maskp(sa_t, 1, 4) {
+        switch ubfx(sa_t, 1, 4) {
             case 0b0001: sa_shift = uint32(asLit(v2)) + 8
             case 0b0010: sa_shift = uint32(asLit(v2)) + 16
             case 0b0100: sa_shift = uint32(asLit(v2)) + 32
             case 0b1000: sa_shift = uint32(asLit(v2)) + 64
             default: panic("aarch64: invalid operand 'sa_shift' for SHL")
         }
-        if maskp(sa_shift, 3, 4) != maskp(sa_t, 1, 4) & maskp(sa_t__bit_mask, 1, 4) {
+        if ubfx(sa_shift, 3, 4) != ubfx(sa_t, 1, 4) & ubfx(sa_t__bit_mask, 1, 4) {
             panic("aarch64: invalid combination of operands for SHL")
         }
-        return p.setins(asimdshf(sa_t & 1, 0, maskp(sa_shift, 3, 4), mask(sa_shift, 3), 10, sa_vn, sa_vd))
+        return p.setins(asimdshf(mask(sa_t, 1), 0, ubfx(sa_shift, 3, 4), mask(sa_shift, 3), 10, sa_vn, sa_vd))
     }
     // SHL  <V><d>, <V><n>, #<shift>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(v2) && isSameType(v0, v1) {
@@ -25778,10 +27171,10 @@ func (self *Program) SHL(v0, v1, v2 interface{}) *Instruction {
             case 0b1000: sa_shift_1 = uint32(asLit(v2)) + 64
             default: panic("aarch64: invalid operand 'sa_shift_1' for SHL")
         }
-        if maskp(sa_shift_1, 3, 4) != sa_v & sa_v__bit_mask {
+        if ubfx(sa_shift_1, 3, 4) != sa_v & sa_v__bit_mask {
             panic("aarch64: invalid combination of operands for SHL")
         }
-        return p.setins(asisdshf(0, maskp(sa_shift_1, 3, 4), mask(sa_shift_1, 3), 10, sa_n, sa_d))
+        return p.setins(asisdshf(0, ubfx(sa_shift_1, 3, 4), mask(sa_shift_1, 3), 10, sa_n, sa_d))
     }
     // none of above
     p.Free()
@@ -25825,10 +27218,10 @@ func (self *Program) SHLL(v0, v1, v2 interface{}) *Instruction {
             case 32: sa_shift = 0b10
             default: panic("aarch64: invalid operand 'sa_shift' for SHLL")
         }
-        if sa_shift != sa_ta || sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_shift != sa_ta || sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for SHLL")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for SHLL")
         }
         return p.setins(asimdmisc(0, 1, sa_shift, 19, sa_vn, sa_vd))
@@ -25874,10 +27267,10 @@ func (self *Program) SHLL2(v0, v1, v2 interface{}) *Instruction {
             case 32: sa_shift = 0b10
             default: panic("aarch64: invalid operand 'sa_shift' for SHLL2")
         }
-        if sa_shift != sa_ta || sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_shift != sa_ta || sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for SHLL2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for SHLL2")
         }
         return p.setins(asimdmisc(1, 1, sa_shift, 19, sa_vn, sa_vd))
@@ -25934,20 +27327,20 @@ func (self *Program) SHRN(v0, v1, v2 interface{}) *Instruction {
             case Vec2D: sa_ta__bit_mask = 0b1100
             default: panic("aarch64: unreachable")
         }
-        switch maskp(sa_tb, 1, 4) {
+        switch ubfx(sa_tb, 1, 4) {
             case 0b0001: sa_shift = 16 - uint32(asLit(v2))
             case 0b0010: sa_shift = 32 - uint32(asLit(v2))
             case 0b0100: sa_shift = 64 - uint32(asLit(v2))
             default: panic("aarch64: invalid operand 'sa_shift' for SHRN")
         }
-        if maskp(sa_shift, 3, 4) != sa_ta & sa_ta__bit_mask ||
-           sa_ta & sa_ta__bit_mask != maskp(sa_tb, 1, 4) & maskp(sa_tb__bit_mask, 1, 4) {
+        if ubfx(sa_shift, 3, 4) != sa_ta & sa_ta__bit_mask ||
+           sa_ta & sa_ta__bit_mask != ubfx(sa_tb, 1, 4) & ubfx(sa_tb__bit_mask, 1, 4) {
             panic("aarch64: invalid combination of operands for SHRN")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for SHRN")
         }
-        return p.setins(asimdshf(0, 0, maskp(sa_shift, 3, 4), mask(sa_shift, 3), 16, sa_vn, sa_vd))
+        return p.setins(asimdshf(0, 0, ubfx(sa_shift, 3, 4), mask(sa_shift, 3), 16, sa_vn, sa_vd))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for SHRN")
@@ -26001,20 +27394,20 @@ func (self *Program) SHRN2(v0, v1, v2 interface{}) *Instruction {
             case Vec2D: sa_ta__bit_mask = 0b1100
             default: panic("aarch64: unreachable")
         }
-        switch maskp(sa_tb, 1, 4) {
+        switch ubfx(sa_tb, 1, 4) {
             case 0b0001: sa_shift = 16 - uint32(asLit(v2))
             case 0b0010: sa_shift = 32 - uint32(asLit(v2))
             case 0b0100: sa_shift = 64 - uint32(asLit(v2))
             default: panic("aarch64: invalid operand 'sa_shift' for SHRN2")
         }
-        if maskp(sa_shift, 3, 4) != sa_ta & sa_ta__bit_mask ||
-           sa_ta & sa_ta__bit_mask != maskp(sa_tb, 1, 4) & maskp(sa_tb__bit_mask, 1, 4) {
+        if ubfx(sa_shift, 3, 4) != sa_ta & sa_ta__bit_mask ||
+           sa_ta & sa_ta__bit_mask != ubfx(sa_tb, 1, 4) & ubfx(sa_tb__bit_mask, 1, 4) {
             panic("aarch64: invalid combination of operands for SHRN2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for SHRN2")
         }
-        return p.setins(asimdshf(1, 0, maskp(sa_shift, 3, 4), mask(sa_shift, 3), 16, sa_vn, sa_vd))
+        return p.setins(asimdshf(1, 0, ubfx(sa_shift, 3, 4), mask(sa_shift, 3), 16, sa_vn, sa_vd))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for SHRN2")
@@ -26047,7 +27440,7 @@ func (self *Program) SHSUB(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdsame(sa_t & 1, 0, maskp(sa_t, 1, 2), sa_vm, 4, sa_vn, sa_vd))
+        return p.setins(asimdsame(mask(sa_t, 1), 0, ubfx(sa_t, 1, 2), sa_vm, 4, sa_vn, sa_vd))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for SHSUB")
@@ -26092,17 +27485,17 @@ func (self *Program) SLI(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vn := uint32(v1.(asm.Register).ID())
-        switch maskp(sa_t, 1, 4) {
+        switch ubfx(sa_t, 1, 4) {
             case 0b0001: sa_shift = uint32(asLit(v2)) + 8
             case 0b0010: sa_shift = uint32(asLit(v2)) + 16
             case 0b0100: sa_shift = uint32(asLit(v2)) + 32
             case 0b1000: sa_shift = uint32(asLit(v2)) + 64
             default: panic("aarch64: invalid operand 'sa_shift' for SLI")
         }
-        if maskp(sa_shift, 3, 4) != maskp(sa_t, 1, 4) & maskp(sa_t__bit_mask, 1, 4) {
+        if ubfx(sa_shift, 3, 4) != ubfx(sa_t, 1, 4) & ubfx(sa_t__bit_mask, 1, 4) {
             panic("aarch64: invalid combination of operands for SLI")
         }
-        return p.setins(asimdshf(sa_t & 1, 1, maskp(sa_shift, 3, 4), mask(sa_shift, 3), 10, sa_vn, sa_vd))
+        return p.setins(asimdshf(mask(sa_t, 1), 1, ubfx(sa_shift, 3, 4), mask(sa_shift, 3), 10, sa_vn, sa_vd))
     }
     // SLI  <V><d>, <V><n>, #<shift>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(v2) && isSameType(v0, v1) {
@@ -26123,10 +27516,10 @@ func (self *Program) SLI(v0, v1, v2 interface{}) *Instruction {
             case 0b1000: sa_shift_1 = uint32(asLit(v2)) + 64
             default: panic("aarch64: invalid operand 'sa_shift_1' for SLI")
         }
-        if maskp(sa_shift_1, 3, 4) != sa_v & sa_v__bit_mask {
+        if ubfx(sa_shift_1, 3, 4) != sa_v & sa_v__bit_mask {
             panic("aarch64: invalid combination of operands for SLI")
         }
-        return p.setins(asisdshf(1, maskp(sa_shift_1, 3, 4), mask(sa_shift_1, 3), 10, sa_n, sa_d))
+        return p.setins(asisdshf(1, ubfx(sa_shift_1, 3, 4), mask(sa_shift_1, 3), 10, sa_n, sa_d))
     }
     // none of above
     p.Free()
@@ -26365,7 +27758,7 @@ func (self *Program) SMAX(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdsame(sa_t & 1, 0, maskp(sa_t, 1, 2), sa_vm, 12, sa_vn, sa_vd))
+        return p.setins(asimdsame(mask(sa_t, 1), 0, ubfx(sa_t, 1, 2), sa_vm, 12, sa_vn, sa_vd))
     }
     // none of above
     p.Free()
@@ -26399,7 +27792,7 @@ func (self *Program) SMAXP(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdsame(sa_t & 1, 0, maskp(sa_t, 1, 2), sa_vm, 20, sa_vn, sa_vd))
+        return p.setins(asimdsame(mask(sa_t, 1), 0, ubfx(sa_t, 1, 2), sa_vm, 20, sa_vn, sa_vd))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for SMAXP")
@@ -26430,10 +27823,10 @@ func (self *Program) SMAXV(v0, v1 interface{}) *Instruction {
             case Vec4S: sa_t = 0b101
             default: panic("aarch64: unreachable")
         }
-        if maskp(sa_t, 1, 2) != sa_v {
+        if ubfx(sa_t, 1, 2) != sa_v {
             panic("aarch64: invalid combination of operands for SMAXV")
         }
-        return p.setins(asimdall(sa_t & 1, 0, maskp(sa_t, 1, 2), 10, sa_vn, sa_d))
+        return p.setins(asimdall(mask(sa_t, 1), 0, ubfx(sa_t, 1, 2), 10, sa_vn, sa_d))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for SMAXV")
@@ -26513,7 +27906,7 @@ func (self *Program) SMIN(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdsame(sa_t & 1, 0, maskp(sa_t, 1, 2), sa_vm, 13, sa_vn, sa_vd))
+        return p.setins(asimdsame(mask(sa_t, 1), 0, ubfx(sa_t, 1, 2), sa_vm, 13, sa_vn, sa_vd))
     }
     // none of above
     p.Free()
@@ -26547,7 +27940,7 @@ func (self *Program) SMINP(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdsame(sa_t & 1, 0, maskp(sa_t, 1, 2), sa_vm, 21, sa_vn, sa_vd))
+        return p.setins(asimdsame(mask(sa_t, 1), 0, ubfx(sa_t, 1, 2), sa_vm, 21, sa_vn, sa_vd))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for SMINP")
@@ -26578,10 +27971,10 @@ func (self *Program) SMINV(v0, v1 interface{}) *Instruction {
             case Vec4S: sa_t = 0b101
             default: panic("aarch64: unreachable")
         }
-        if maskp(sa_t, 1, 2) != sa_v {
+        if ubfx(sa_t, 1, 2) != sa_v {
             panic("aarch64: invalid combination of operands for SMINV")
         }
-        return p.setins(asimdall(sa_t & 1, 0, maskp(sa_t, 1, 2), 26, sa_vn, sa_d))
+        return p.setins(asimdall(mask(sa_t, 1), 0, ubfx(sa_t, 1, 2), 26, sa_vn, sa_d))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for SMINV")
@@ -26622,10 +28015,10 @@ func (self *Program) SMLAL(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vm := uint32(v2.(asm.Register).ID())
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for SMLAL")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for SMLAL")
         }
         return p.setins(asimddiff(0, 0, sa_ta, sa_vm, 8, sa_vn, sa_vd))
@@ -26656,27 +28049,24 @@ func (self *Program) SMLAL(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if maskp(sa_index, 3, 2) != sa_ta ||
-           sa_ta != maskp(sa_tb, 1, 2) ||
-           maskp(sa_tb, 1, 2) != sa_ts ||
-           sa_ts != maskp(sa_vm, 5, 2) {
+        if ubfx(sa_index, 3, 2) != sa_ta || sa_ta != ubfx(sa_tb, 1, 2) || ubfx(sa_tb, 1, 2) != sa_ts || sa_ts != sa_vm {
             panic("aarch64: invalid combination of operands for SMLAL")
         }
-        if sa_index & 1 != maskp(sa_vm, 4, 1) {
+        if mask(sa_index, 1) != sa_vm {
             panic("aarch64: invalid combination of operands for SMLAL")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for SMLAL")
         }
         return p.setins(asimdelem(
             0,
             0,
-            maskp(sa_index, 3, 2),
-            maskp(sa_index, 2, 1),
-            sa_index & 1,
-            mask(sa_vm, 4),
+            ubfx(sa_index, 3, 2),
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 1),
+            sa_vm,
             2,
-            maskp(sa_index, 1, 1),
+            ubfx(sa_index, 1, 1),
             sa_vn,
             sa_vd,
         ))
@@ -26721,10 +28111,10 @@ func (self *Program) SMLAL2(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vm := uint32(v2.(asm.Register).ID())
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for SMLAL2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for SMLAL2")
         }
         return p.setins(asimddiff(1, 0, sa_ta, sa_vm, 8, sa_vn, sa_vd))
@@ -26755,27 +28145,24 @@ func (self *Program) SMLAL2(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if maskp(sa_index, 3, 2) != sa_ta ||
-           sa_ta != maskp(sa_tb, 1, 2) ||
-           maskp(sa_tb, 1, 2) != sa_ts ||
-           sa_ts != maskp(sa_vm, 5, 2) {
+        if ubfx(sa_index, 3, 2) != sa_ta || sa_ta != ubfx(sa_tb, 1, 2) || ubfx(sa_tb, 1, 2) != sa_ts || sa_ts != sa_vm {
             panic("aarch64: invalid combination of operands for SMLAL2")
         }
-        if sa_index & 1 != maskp(sa_vm, 4, 1) {
+        if mask(sa_index, 1) != sa_vm {
             panic("aarch64: invalid combination of operands for SMLAL2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for SMLAL2")
         }
         return p.setins(asimdelem(
             1,
             0,
-            maskp(sa_index, 3, 2),
-            maskp(sa_index, 2, 1),
-            sa_index & 1,
-            mask(sa_vm, 4),
+            ubfx(sa_index, 3, 2),
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 1),
+            sa_vm,
             2,
-            maskp(sa_index, 1, 1),
+            ubfx(sa_index, 1, 1),
             sa_vn,
             sa_vd,
         ))
@@ -26820,10 +28207,10 @@ func (self *Program) SMLSL(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vm := uint32(v2.(asm.Register).ID())
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for SMLSL")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for SMLSL")
         }
         return p.setins(asimddiff(0, 0, sa_ta, sa_vm, 10, sa_vn, sa_vd))
@@ -26854,27 +28241,24 @@ func (self *Program) SMLSL(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if maskp(sa_index, 3, 2) != sa_ta ||
-           sa_ta != maskp(sa_tb, 1, 2) ||
-           maskp(sa_tb, 1, 2) != sa_ts ||
-           sa_ts != maskp(sa_vm, 5, 2) {
+        if ubfx(sa_index, 3, 2) != sa_ta || sa_ta != ubfx(sa_tb, 1, 2) || ubfx(sa_tb, 1, 2) != sa_ts || sa_ts != sa_vm {
             panic("aarch64: invalid combination of operands for SMLSL")
         }
-        if sa_index & 1 != maskp(sa_vm, 4, 1) {
+        if mask(sa_index, 1) != sa_vm {
             panic("aarch64: invalid combination of operands for SMLSL")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for SMLSL")
         }
         return p.setins(asimdelem(
             0,
             0,
-            maskp(sa_index, 3, 2),
-            maskp(sa_index, 2, 1),
-            sa_index & 1,
-            mask(sa_vm, 4),
+            ubfx(sa_index, 3, 2),
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 1),
+            sa_vm,
             6,
-            maskp(sa_index, 1, 1),
+            ubfx(sa_index, 1, 1),
             sa_vn,
             sa_vd,
         ))
@@ -26919,10 +28303,10 @@ func (self *Program) SMLSL2(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vm := uint32(v2.(asm.Register).ID())
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for SMLSL2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for SMLSL2")
         }
         return p.setins(asimddiff(1, 0, sa_ta, sa_vm, 10, sa_vn, sa_vd))
@@ -26953,27 +28337,24 @@ func (self *Program) SMLSL2(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if maskp(sa_index, 3, 2) != sa_ta ||
-           sa_ta != maskp(sa_tb, 1, 2) ||
-           maskp(sa_tb, 1, 2) != sa_ts ||
-           sa_ts != maskp(sa_vm, 5, 2) {
+        if ubfx(sa_index, 3, 2) != sa_ta || sa_ta != ubfx(sa_tb, 1, 2) || ubfx(sa_tb, 1, 2) != sa_ts || sa_ts != sa_vm {
             panic("aarch64: invalid combination of operands for SMLSL2")
         }
-        if sa_index & 1 != maskp(sa_vm, 4, 1) {
+        if mask(sa_index, 1) != sa_vm {
             panic("aarch64: invalid combination of operands for SMLSL2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for SMLSL2")
         }
         return p.setins(asimdelem(
             1,
             0,
-            maskp(sa_index, 3, 2),
-            maskp(sa_index, 2, 1),
-            sa_index & 1,
-            mask(sa_vm, 4),
+            ubfx(sa_index, 3, 2),
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 1),
+            sa_vm,
             6,
-            maskp(sa_index, 1, 1),
+            ubfx(sa_index, 1, 1),
             sa_vn,
             sa_vd,
         ))
@@ -26997,6 +28378,22 @@ func (self *Program) SMMLA(v0, v1, v2 interface{}) *Instruction {
     }
     p.Free()
     panic("aarch64: invalid combination of operands for SMMLA")
+}
+
+// SMNEGL instruction have one single form:
+//
+//   * SMNEGL  <Xd>, <Wn>, <Wm>
+//
+func (self *Program) SMNEGL(v0, v1, v2 interface{}) *Instruction {
+    p := self.alloc("SMNEGL", 3, Operands { v0, v1, v2 })
+    if isXr(v0) && isWr(v1) && isWr(v2) {
+        sa_xd := uint32(v0.(asm.Register).ID())
+        sa_wn := uint32(v1.(asm.Register).ID())
+        sa_wm := uint32(v2.(asm.Register).ID())
+        return p.setins(dp_3src(1, 0, 1, sa_wm, 1, 31, sa_wn, sa_xd))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for SMNEGL")
 }
 
 // SMOV instruction have 2 forms:
@@ -27057,6 +28454,50 @@ func (self *Program) SMOV(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SMOV")
 }
 
+// SMSTART instruction have one single form:
+//
+//   * SMSTART  {<option>}
+//
+func (self *Program) SMSTART(vv ...interface{}) *Instruction {
+    var p *Instruction
+    switch len(vv) {
+        case 0  : p = self.alloc("SMSTART", 0, Operands {})
+        case 1  : p = self.alloc("SMSTART", 1, Operands { vv[0] })
+        default : panic("instruction SMSTART takes 0 or 1 operands")
+    }
+    if (len(vv) == 0 || len(vv) == 1) && (len(vv) == 0 || isSMEOption(vv[0])) {
+        sa_pstatefield := uint32(0b0111)
+        if len(vv) == 1 {
+            sa_pstatefield = uint32(vv[0].(SMEOption))
+        }
+        return p.setins(pstate(3, sa_pstatefield, 3, 31))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for SMSTART")
+}
+
+// SMSTOP instruction have one single form:
+//
+//   * SMSTOP  {<option>}
+//
+func (self *Program) SMSTOP(vv ...interface{}) *Instruction {
+    var p *Instruction
+    switch len(vv) {
+        case 0  : p = self.alloc("SMSTOP", 0, Operands {})
+        case 1  : p = self.alloc("SMSTOP", 1, Operands { vv[0] })
+        default : panic("instruction SMSTOP takes 0 or 1 operands")
+    }
+    if (len(vv) == 0 || len(vv) == 1) && (len(vv) == 0 || isSMEOption(vv[0])) {
+        sa_pstatefield := uint32(0b0111)
+        if len(vv) == 1 {
+            sa_pstatefield = uint32(vv[0].(SMEOption))
+        }
+        return p.setins(pstate(3, sa_pstatefield, 3, 31))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for SMSTOP")
+}
+
 // SMSUBL instruction have one single form:
 //
 //   * SMSUBL  <Xd>, <Wn>, <Wm>, <Xa>
@@ -27090,13 +28531,21 @@ func (self *Program) SMULH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SMULH")
 }
 
-// SMULL instruction have 2 forms:
+// SMULL instruction have 3 forms:
 //
+//   * SMULL  <Xd>, <Wn>, <Wm>
 //   * SMULL  <Vd>.<Ta>, <Vn>.<Tb>, <Vm>.<Tb>
 //   * SMULL  <Vd>.<Ta>, <Vn>.<Tb>, <Vm>.<Ts>[<index>]
 //
 func (self *Program) SMULL(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SMULL", 3, Operands { v0, v1, v2 })
+    // SMULL  <Xd>, <Wn>, <Wm>
+    if isXr(v0) && isWr(v1) && isWr(v2) {
+        sa_xd := uint32(v0.(asm.Register).ID())
+        sa_wn := uint32(v1.(asm.Register).ID())
+        sa_wm := uint32(v2.(asm.Register).ID())
+        return p.setins(dp_3src(1, 0, 1, sa_wm, 0, 31, sa_wn, sa_xd))
+    }
     // SMULL  <Vd>.<Ta>, <Vn>.<Tb>, <Vm>.<Tb>
     if isVr(v0) &&
        isVfmt(v0, Vec8H, Vec4S, Vec2D) &&
@@ -27125,10 +28574,10 @@ func (self *Program) SMULL(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vm := uint32(v2.(asm.Register).ID())
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for SMULL")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for SMULL")
         }
         return p.setins(asimddiff(0, 0, sa_ta, sa_vm, 12, sa_vn, sa_vd))
@@ -27159,27 +28608,24 @@ func (self *Program) SMULL(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if maskp(sa_index, 3, 2) != sa_ta ||
-           sa_ta != maskp(sa_tb, 1, 2) ||
-           maskp(sa_tb, 1, 2) != sa_ts ||
-           sa_ts != maskp(sa_vm, 5, 2) {
+        if ubfx(sa_index, 3, 2) != sa_ta || sa_ta != ubfx(sa_tb, 1, 2) || ubfx(sa_tb, 1, 2) != sa_ts || sa_ts != sa_vm {
             panic("aarch64: invalid combination of operands for SMULL")
         }
-        if sa_index & 1 != maskp(sa_vm, 4, 1) {
+        if mask(sa_index, 1) != sa_vm {
             panic("aarch64: invalid combination of operands for SMULL")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for SMULL")
         }
         return p.setins(asimdelem(
             0,
             0,
-            maskp(sa_index, 3, 2),
-            maskp(sa_index, 2, 1),
-            sa_index & 1,
-            mask(sa_vm, 4),
+            ubfx(sa_index, 3, 2),
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 1),
+            sa_vm,
             10,
-            maskp(sa_index, 1, 1),
+            ubfx(sa_index, 1, 1),
             sa_vn,
             sa_vd,
         ))
@@ -27224,10 +28670,10 @@ func (self *Program) SMULL2(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vm := uint32(v2.(asm.Register).ID())
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for SMULL2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for SMULL2")
         }
         return p.setins(asimddiff(1, 0, sa_ta, sa_vm, 12, sa_vn, sa_vd))
@@ -27258,27 +28704,24 @@ func (self *Program) SMULL2(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if maskp(sa_index, 3, 2) != sa_ta ||
-           sa_ta != maskp(sa_tb, 1, 2) ||
-           maskp(sa_tb, 1, 2) != sa_ts ||
-           sa_ts != maskp(sa_vm, 5, 2) {
+        if ubfx(sa_index, 3, 2) != sa_ta || sa_ta != ubfx(sa_tb, 1, 2) || ubfx(sa_tb, 1, 2) != sa_ts || sa_ts != sa_vm {
             panic("aarch64: invalid combination of operands for SMULL2")
         }
-        if sa_index & 1 != maskp(sa_vm, 4, 1) {
+        if mask(sa_index, 1) != sa_vm {
             panic("aarch64: invalid combination of operands for SMULL2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for SMULL2")
         }
         return p.setins(asimdelem(
             1,
             0,
-            maskp(sa_index, 3, 2),
-            maskp(sa_index, 2, 1),
-            sa_index & 1,
-            mask(sa_vm, 4),
+            ubfx(sa_index, 3, 2),
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 1),
+            sa_vm,
             10,
-            maskp(sa_index, 1, 1),
+            ubfx(sa_index, 1, 1),
             sa_vn,
             sa_vd,
         ))
@@ -27314,7 +28757,7 @@ func (self *Program) SQABS(v0, v1 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vn := uint32(v1.(asm.Register).ID())
-        return p.setins(asimdmisc(sa_t & 1, 0, maskp(sa_t, 1, 2), 7, sa_vn, sa_vd))
+        return p.setins(asimdmisc(mask(sa_t, 1), 0, ubfx(sa_t, 1, 2), 7, sa_vn, sa_vd))
     }
     // SQABS  <V><d>, <V><n>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isSameType(v0, v1) {
@@ -27365,7 +28808,7 @@ func (self *Program) SQADD(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdsame(sa_t & 1, 0, maskp(sa_t, 1, 2), sa_vm, 1, sa_vn, sa_vd))
+        return p.setins(asimdsame(mask(sa_t, 1), 0, ubfx(sa_t, 1, 2), sa_vm, 1, sa_vn, sa_vd))
     }
     // SQADD  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
@@ -27442,20 +28885,20 @@ func (self *Program) SQDMLAL(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if maskp(sa_index, 3, 2) != sa_ts || sa_ts != sa_va || sa_va != sa_vb || sa_vb != maskp(sa_vm, 5, 2) {
+        if ubfx(sa_index, 3, 2) != sa_ts || sa_ts != sa_va || sa_va != sa_vb || sa_vb != sa_vm {
             panic("aarch64: invalid combination of operands for SQDMLAL")
         }
-        if sa_index & 1 != maskp(sa_vm, 4, 1) {
+        if mask(sa_index, 1) != sa_vm {
             panic("aarch64: invalid combination of operands for SQDMLAL")
         }
         return p.setins(asisdelem(
             0,
-            maskp(sa_index, 3, 2),
-            maskp(sa_index, 2, 1),
-            sa_index & 1,
-            mask(sa_vm, 4),
+            ubfx(sa_index, 3, 2),
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 1),
+            sa_vm,
             3,
-            maskp(sa_index, 1, 1),
+            ubfx(sa_index, 1, 1),
             sa_n,
             sa_d,
         ))
@@ -27485,10 +28928,10 @@ func (self *Program) SQDMLAL(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vm := uint32(v2.(asm.Register).ID())
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for SQDMLAL")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for SQDMLAL")
         }
         return p.setins(asimddiff(0, 0, sa_ta, sa_vm, 9, sa_vn, sa_vd))
@@ -27519,27 +28962,24 @@ func (self *Program) SQDMLAL(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if maskp(sa_index, 3, 2) != sa_ta ||
-           sa_ta != maskp(sa_tb, 1, 2) ||
-           maskp(sa_tb, 1, 2) != sa_ts ||
-           sa_ts != maskp(sa_vm, 5, 2) {
+        if ubfx(sa_index, 3, 2) != sa_ta || sa_ta != ubfx(sa_tb, 1, 2) || ubfx(sa_tb, 1, 2) != sa_ts || sa_ts != sa_vm {
             panic("aarch64: invalid combination of operands for SQDMLAL")
         }
-        if sa_index & 1 != maskp(sa_vm, 4, 1) {
+        if mask(sa_index, 1) != sa_vm {
             panic("aarch64: invalid combination of operands for SQDMLAL")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for SQDMLAL")
         }
         return p.setins(asimdelem(
             0,
             0,
-            maskp(sa_index, 3, 2),
-            maskp(sa_index, 2, 1),
-            sa_index & 1,
-            mask(sa_vm, 4),
+            ubfx(sa_index, 3, 2),
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 1),
+            sa_vm,
             3,
-            maskp(sa_index, 1, 1),
+            ubfx(sa_index, 1, 1),
             sa_vn,
             sa_vd,
         ))
@@ -27581,10 +29021,10 @@ func (self *Program) SQDMLAL2(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vm := uint32(v2.(asm.Register).ID())
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for SQDMLAL2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for SQDMLAL2")
         }
         return p.setins(asimddiff(1, 0, sa_ta, sa_vm, 9, sa_vn, sa_vd))
@@ -27615,27 +29055,24 @@ func (self *Program) SQDMLAL2(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if maskp(sa_index, 3, 2) != sa_ta ||
-           sa_ta != maskp(sa_tb, 1, 2) ||
-           maskp(sa_tb, 1, 2) != sa_ts ||
-           sa_ts != maskp(sa_vm, 5, 2) {
+        if ubfx(sa_index, 3, 2) != sa_ta || sa_ta != ubfx(sa_tb, 1, 2) || ubfx(sa_tb, 1, 2) != sa_ts || sa_ts != sa_vm {
             panic("aarch64: invalid combination of operands for SQDMLAL2")
         }
-        if sa_index & 1 != maskp(sa_vm, 4, 1) {
+        if mask(sa_index, 1) != sa_vm {
             panic("aarch64: invalid combination of operands for SQDMLAL2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for SQDMLAL2")
         }
         return p.setins(asimdelem(
             1,
             0,
-            maskp(sa_index, 3, 2),
-            maskp(sa_index, 2, 1),
-            sa_index & 1,
-            mask(sa_vm, 4),
+            ubfx(sa_index, 3, 2),
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 1),
+            sa_vm,
             3,
-            maskp(sa_index, 1, 1),
+            ubfx(sa_index, 1, 1),
             sa_vn,
             sa_vd,
         ))
@@ -27700,20 +29137,20 @@ func (self *Program) SQDMLSL(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if maskp(sa_index, 3, 2) != sa_ts || sa_ts != sa_va || sa_va != sa_vb || sa_vb != maskp(sa_vm, 5, 2) {
+        if ubfx(sa_index, 3, 2) != sa_ts || sa_ts != sa_va || sa_va != sa_vb || sa_vb != sa_vm {
             panic("aarch64: invalid combination of operands for SQDMLSL")
         }
-        if sa_index & 1 != maskp(sa_vm, 4, 1) {
+        if mask(sa_index, 1) != sa_vm {
             panic("aarch64: invalid combination of operands for SQDMLSL")
         }
         return p.setins(asisdelem(
             0,
-            maskp(sa_index, 3, 2),
-            maskp(sa_index, 2, 1),
-            sa_index & 1,
-            mask(sa_vm, 4),
+            ubfx(sa_index, 3, 2),
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 1),
+            sa_vm,
             7,
-            maskp(sa_index, 1, 1),
+            ubfx(sa_index, 1, 1),
             sa_n,
             sa_d,
         ))
@@ -27743,10 +29180,10 @@ func (self *Program) SQDMLSL(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vm := uint32(v2.(asm.Register).ID())
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for SQDMLSL")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for SQDMLSL")
         }
         return p.setins(asimddiff(0, 0, sa_ta, sa_vm, 11, sa_vn, sa_vd))
@@ -27777,27 +29214,24 @@ func (self *Program) SQDMLSL(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if maskp(sa_index, 3, 2) != sa_ta ||
-           sa_ta != maskp(sa_tb, 1, 2) ||
-           maskp(sa_tb, 1, 2) != sa_ts ||
-           sa_ts != maskp(sa_vm, 5, 2) {
+        if ubfx(sa_index, 3, 2) != sa_ta || sa_ta != ubfx(sa_tb, 1, 2) || ubfx(sa_tb, 1, 2) != sa_ts || sa_ts != sa_vm {
             panic("aarch64: invalid combination of operands for SQDMLSL")
         }
-        if sa_index & 1 != maskp(sa_vm, 4, 1) {
+        if mask(sa_index, 1) != sa_vm {
             panic("aarch64: invalid combination of operands for SQDMLSL")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for SQDMLSL")
         }
         return p.setins(asimdelem(
             0,
             0,
-            maskp(sa_index, 3, 2),
-            maskp(sa_index, 2, 1),
-            sa_index & 1,
-            mask(sa_vm, 4),
+            ubfx(sa_index, 3, 2),
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 1),
+            sa_vm,
             7,
-            maskp(sa_index, 1, 1),
+            ubfx(sa_index, 1, 1),
             sa_vn,
             sa_vd,
         ))
@@ -27839,10 +29273,10 @@ func (self *Program) SQDMLSL2(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vm := uint32(v2.(asm.Register).ID())
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for SQDMLSL2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for SQDMLSL2")
         }
         return p.setins(asimddiff(1, 0, sa_ta, sa_vm, 11, sa_vn, sa_vd))
@@ -27873,27 +29307,24 @@ func (self *Program) SQDMLSL2(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if maskp(sa_index, 3, 2) != sa_ta ||
-           sa_ta != maskp(sa_tb, 1, 2) ||
-           maskp(sa_tb, 1, 2) != sa_ts ||
-           sa_ts != maskp(sa_vm, 5, 2) {
+        if ubfx(sa_index, 3, 2) != sa_ta || sa_ta != ubfx(sa_tb, 1, 2) || ubfx(sa_tb, 1, 2) != sa_ts || sa_ts != sa_vm {
             panic("aarch64: invalid combination of operands for SQDMLSL2")
         }
-        if sa_index & 1 != maskp(sa_vm, 4, 1) {
+        if mask(sa_index, 1) != sa_vm {
             panic("aarch64: invalid combination of operands for SQDMLSL2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for SQDMLSL2")
         }
         return p.setins(asimdelem(
             1,
             0,
-            maskp(sa_index, 3, 2),
-            maskp(sa_index, 2, 1),
-            sa_index & 1,
-            mask(sa_vm, 4),
+            ubfx(sa_index, 3, 2),
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 1),
+            sa_vm,
             7,
-            maskp(sa_index, 1, 1),
+            ubfx(sa_index, 1, 1),
             sa_vn,
             sa_vd,
         ))
@@ -27937,21 +29368,21 @@ func (self *Program) SQDMULH(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if maskp(sa_index, 3, 2) != maskp(sa_t, 1, 2) || maskp(sa_t, 1, 2) != sa_ts || sa_ts != maskp(sa_vm, 5, 2) {
+        if ubfx(sa_index, 3, 2) != ubfx(sa_t, 1, 2) || ubfx(sa_t, 1, 2) != sa_ts || sa_ts != sa_vm {
             panic("aarch64: invalid combination of operands for SQDMULH")
         }
-        if sa_index & 1 != maskp(sa_vm, 4, 1) {
+        if mask(sa_index, 1) != sa_vm {
             panic("aarch64: invalid combination of operands for SQDMULH")
         }
         return p.setins(asimdelem(
-            sa_t & 1,
+            mask(sa_t, 1),
             0,
-            maskp(sa_index, 3, 2),
-            maskp(sa_index, 2, 1),
-            sa_index & 1,
-            mask(sa_vm, 4),
+            ubfx(sa_index, 3, 2),
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 1),
+            sa_vm,
             12,
-            maskp(sa_index, 1, 1),
+            ubfx(sa_index, 1, 1),
             sa_vn,
             sa_vd,
         ))
@@ -27976,7 +29407,7 @@ func (self *Program) SQDMULH(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdsame(sa_t & 1, 0, maskp(sa_t, 1, 2), sa_vm, 22, sa_vn, sa_vd))
+        return p.setins(asimdsame(mask(sa_t, 1), 0, ubfx(sa_t, 1, 2), sa_vm, 22, sa_vn, sa_vd))
     }
     // SQDMULH  <V><d>, <V><n>, <Vm>.<Ts>[<index>]
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isVri(v2) && isSameType(v0, v1) {
@@ -27996,20 +29427,20 @@ func (self *Program) SQDMULH(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if maskp(sa_index, 3, 2) != sa_ts || sa_ts != sa_v || sa_v != maskp(sa_vm, 5, 2) {
+        if ubfx(sa_index, 3, 2) != sa_ts || sa_ts != sa_v || sa_v != sa_vm {
             panic("aarch64: invalid combination of operands for SQDMULH")
         }
-        if sa_index & 1 != maskp(sa_vm, 4, 1) {
+        if mask(sa_index, 1) != sa_vm {
             panic("aarch64: invalid combination of operands for SQDMULH")
         }
         return p.setins(asisdelem(
             0,
-            maskp(sa_index, 3, 2),
-            maskp(sa_index, 2, 1),
-            sa_index & 1,
-            mask(sa_vm, 4),
+            ubfx(sa_index, 3, 2),
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 1),
+            sa_vm,
             12,
-            maskp(sa_index, 1, 1),
+            ubfx(sa_index, 1, 1),
             sa_n,
             sa_d,
         ))
@@ -28087,20 +29518,20 @@ func (self *Program) SQDMULL(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if maskp(sa_index, 3, 2) != sa_ts || sa_ts != sa_va || sa_va != sa_vb || sa_vb != maskp(sa_vm, 5, 2) {
+        if ubfx(sa_index, 3, 2) != sa_ts || sa_ts != sa_va || sa_va != sa_vb || sa_vb != sa_vm {
             panic("aarch64: invalid combination of operands for SQDMULL")
         }
-        if sa_index & 1 != maskp(sa_vm, 4, 1) {
+        if mask(sa_index, 1) != sa_vm {
             panic("aarch64: invalid combination of operands for SQDMULL")
         }
         return p.setins(asisdelem(
             0,
-            maskp(sa_index, 3, 2),
-            maskp(sa_index, 2, 1),
-            sa_index & 1,
-            mask(sa_vm, 4),
+            ubfx(sa_index, 3, 2),
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 1),
+            sa_vm,
             11,
-            maskp(sa_index, 1, 1),
+            ubfx(sa_index, 1, 1),
             sa_n,
             sa_d,
         ))
@@ -28130,10 +29561,10 @@ func (self *Program) SQDMULL(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vm := uint32(v2.(asm.Register).ID())
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for SQDMULL")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for SQDMULL")
         }
         return p.setins(asimddiff(0, 0, sa_ta, sa_vm, 13, sa_vn, sa_vd))
@@ -28164,27 +29595,24 @@ func (self *Program) SQDMULL(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if maskp(sa_index, 3, 2) != sa_ta ||
-           sa_ta != maskp(sa_tb, 1, 2) ||
-           maskp(sa_tb, 1, 2) != sa_ts ||
-           sa_ts != maskp(sa_vm, 5, 2) {
+        if ubfx(sa_index, 3, 2) != sa_ta || sa_ta != ubfx(sa_tb, 1, 2) || ubfx(sa_tb, 1, 2) != sa_ts || sa_ts != sa_vm {
             panic("aarch64: invalid combination of operands for SQDMULL")
         }
-        if sa_index & 1 != maskp(sa_vm, 4, 1) {
+        if mask(sa_index, 1) != sa_vm {
             panic("aarch64: invalid combination of operands for SQDMULL")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for SQDMULL")
         }
         return p.setins(asimdelem(
             0,
             0,
-            maskp(sa_index, 3, 2),
-            maskp(sa_index, 2, 1),
-            sa_index & 1,
-            mask(sa_vm, 4),
+            ubfx(sa_index, 3, 2),
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 1),
+            sa_vm,
             11,
-            maskp(sa_index, 1, 1),
+            ubfx(sa_index, 1, 1),
             sa_vn,
             sa_vd,
         ))
@@ -28226,10 +29654,10 @@ func (self *Program) SQDMULL2(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vm := uint32(v2.(asm.Register).ID())
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for SQDMULL2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for SQDMULL2")
         }
         return p.setins(asimddiff(1, 0, sa_ta, sa_vm, 13, sa_vn, sa_vd))
@@ -28260,27 +29688,24 @@ func (self *Program) SQDMULL2(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if maskp(sa_index, 3, 2) != sa_ta ||
-           sa_ta != maskp(sa_tb, 1, 2) ||
-           maskp(sa_tb, 1, 2) != sa_ts ||
-           sa_ts != maskp(sa_vm, 5, 2) {
+        if ubfx(sa_index, 3, 2) != sa_ta || sa_ta != ubfx(sa_tb, 1, 2) || ubfx(sa_tb, 1, 2) != sa_ts || sa_ts != sa_vm {
             panic("aarch64: invalid combination of operands for SQDMULL2")
         }
-        if sa_index & 1 != maskp(sa_vm, 4, 1) {
+        if mask(sa_index, 1) != sa_vm {
             panic("aarch64: invalid combination of operands for SQDMULL2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for SQDMULL2")
         }
         return p.setins(asimdelem(
             1,
             0,
-            maskp(sa_index, 3, 2),
-            maskp(sa_index, 2, 1),
-            sa_index & 1,
-            mask(sa_vm, 4),
+            ubfx(sa_index, 3, 2),
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 1),
+            sa_vm,
             11,
-            maskp(sa_index, 1, 1),
+            ubfx(sa_index, 1, 1),
             sa_vn,
             sa_vd,
         ))
@@ -28316,7 +29741,7 @@ func (self *Program) SQNEG(v0, v1 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vn := uint32(v1.(asm.Register).ID())
-        return p.setins(asimdmisc(sa_t & 1, 1, maskp(sa_t, 1, 2), 7, sa_vn, sa_vd))
+        return p.setins(asimdmisc(mask(sa_t, 1), 1, ubfx(sa_t, 1, 2), 7, sa_vn, sa_vd))
     }
     // SQNEG  <V><d>, <V><n>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isSameType(v0, v1) {
@@ -28371,21 +29796,21 @@ func (self *Program) SQRDMLAH(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if maskp(sa_index, 3, 2) != maskp(sa_t, 1, 2) || maskp(sa_t, 1, 2) != sa_ts || sa_ts != maskp(sa_vm, 5, 2) {
+        if ubfx(sa_index, 3, 2) != ubfx(sa_t, 1, 2) || ubfx(sa_t, 1, 2) != sa_ts || sa_ts != sa_vm {
             panic("aarch64: invalid combination of operands for SQRDMLAH")
         }
-        if sa_index & 1 != maskp(sa_vm, 4, 1) {
+        if mask(sa_index, 1) != sa_vm {
             panic("aarch64: invalid combination of operands for SQRDMLAH")
         }
         return p.setins(asimdelem(
-            sa_t & 1,
+            mask(sa_t, 1),
             1,
-            maskp(sa_index, 3, 2),
-            maskp(sa_index, 2, 1),
-            sa_index & 1,
-            mask(sa_vm, 4),
+            ubfx(sa_index, 3, 2),
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 1),
+            sa_vm,
             13,
-            maskp(sa_index, 1, 1),
+            ubfx(sa_index, 1, 1),
             sa_vn,
             sa_vd,
         ))
@@ -28410,7 +29835,7 @@ func (self *Program) SQRDMLAH(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdsame2(sa_t & 1, 1, maskp(sa_t, 1, 2), sa_vm, 0, sa_vn, sa_vd))
+        return p.setins(asimdsame2(mask(sa_t, 1), 1, ubfx(sa_t, 1, 2), sa_vm, 0, sa_vn, sa_vd))
     }
     // SQRDMLAH  <V><d>, <V><n>, <Vm>.<Ts>[<index>]
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isVri(v2) && isSameType(v0, v1) {
@@ -28430,20 +29855,20 @@ func (self *Program) SQRDMLAH(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if maskp(sa_index, 3, 2) != sa_ts || sa_ts != sa_v || sa_v != maskp(sa_vm, 5, 2) {
+        if ubfx(sa_index, 3, 2) != sa_ts || sa_ts != sa_v || sa_v != sa_vm {
             panic("aarch64: invalid combination of operands for SQRDMLAH")
         }
-        if sa_index & 1 != maskp(sa_vm, 4, 1) {
+        if mask(sa_index, 1) != sa_vm {
             panic("aarch64: invalid combination of operands for SQRDMLAH")
         }
         return p.setins(asisdelem(
             1,
-            maskp(sa_index, 3, 2),
-            maskp(sa_index, 2, 1),
-            sa_index & 1,
-            mask(sa_vm, 4),
+            ubfx(sa_index, 3, 2),
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 1),
+            sa_vm,
             13,
-            maskp(sa_index, 1, 1),
+            ubfx(sa_index, 1, 1),
             sa_n,
             sa_d,
         ))
@@ -28500,21 +29925,21 @@ func (self *Program) SQRDMLSH(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if maskp(sa_index, 3, 2) != maskp(sa_t, 1, 2) || maskp(sa_t, 1, 2) != sa_ts || sa_ts != maskp(sa_vm, 5, 2) {
+        if ubfx(sa_index, 3, 2) != ubfx(sa_t, 1, 2) || ubfx(sa_t, 1, 2) != sa_ts || sa_ts != sa_vm {
             panic("aarch64: invalid combination of operands for SQRDMLSH")
         }
-        if sa_index & 1 != maskp(sa_vm, 4, 1) {
+        if mask(sa_index, 1) != sa_vm {
             panic("aarch64: invalid combination of operands for SQRDMLSH")
         }
         return p.setins(asimdelem(
-            sa_t & 1,
+            mask(sa_t, 1),
             1,
-            maskp(sa_index, 3, 2),
-            maskp(sa_index, 2, 1),
-            sa_index & 1,
-            mask(sa_vm, 4),
+            ubfx(sa_index, 3, 2),
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 1),
+            sa_vm,
             15,
-            maskp(sa_index, 1, 1),
+            ubfx(sa_index, 1, 1),
             sa_vn,
             sa_vd,
         ))
@@ -28539,7 +29964,7 @@ func (self *Program) SQRDMLSH(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdsame2(sa_t & 1, 1, maskp(sa_t, 1, 2), sa_vm, 1, sa_vn, sa_vd))
+        return p.setins(asimdsame2(mask(sa_t, 1), 1, ubfx(sa_t, 1, 2), sa_vm, 1, sa_vn, sa_vd))
     }
     // SQRDMLSH  <V><d>, <V><n>, <Vm>.<Ts>[<index>]
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isVri(v2) && isSameType(v0, v1) {
@@ -28559,20 +29984,20 @@ func (self *Program) SQRDMLSH(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if maskp(sa_index, 3, 2) != sa_ts || sa_ts != sa_v || sa_v != maskp(sa_vm, 5, 2) {
+        if ubfx(sa_index, 3, 2) != sa_ts || sa_ts != sa_v || sa_v != sa_vm {
             panic("aarch64: invalid combination of operands for SQRDMLSH")
         }
-        if sa_index & 1 != maskp(sa_vm, 4, 1) {
+        if mask(sa_index, 1) != sa_vm {
             panic("aarch64: invalid combination of operands for SQRDMLSH")
         }
         return p.setins(asisdelem(
             1,
-            maskp(sa_index, 3, 2),
-            maskp(sa_index, 2, 1),
-            sa_index & 1,
-            mask(sa_vm, 4),
+            ubfx(sa_index, 3, 2),
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 1),
+            sa_vm,
             15,
-            maskp(sa_index, 1, 1),
+            ubfx(sa_index, 1, 1),
             sa_n,
             sa_d,
         ))
@@ -28629,21 +30054,21 @@ func (self *Program) SQRDMULH(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if maskp(sa_index, 3, 2) != maskp(sa_t, 1, 2) || maskp(sa_t, 1, 2) != sa_ts || sa_ts != maskp(sa_vm, 5, 2) {
+        if ubfx(sa_index, 3, 2) != ubfx(sa_t, 1, 2) || ubfx(sa_t, 1, 2) != sa_ts || sa_ts != sa_vm {
             panic("aarch64: invalid combination of operands for SQRDMULH")
         }
-        if sa_index & 1 != maskp(sa_vm, 4, 1) {
+        if mask(sa_index, 1) != sa_vm {
             panic("aarch64: invalid combination of operands for SQRDMULH")
         }
         return p.setins(asimdelem(
-            sa_t & 1,
+            mask(sa_t, 1),
             0,
-            maskp(sa_index, 3, 2),
-            maskp(sa_index, 2, 1),
-            sa_index & 1,
-            mask(sa_vm, 4),
+            ubfx(sa_index, 3, 2),
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 1),
+            sa_vm,
             13,
-            maskp(sa_index, 1, 1),
+            ubfx(sa_index, 1, 1),
             sa_vn,
             sa_vd,
         ))
@@ -28668,7 +30093,7 @@ func (self *Program) SQRDMULH(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdsame(sa_t & 1, 1, maskp(sa_t, 1, 2), sa_vm, 22, sa_vn, sa_vd))
+        return p.setins(asimdsame(mask(sa_t, 1), 1, ubfx(sa_t, 1, 2), sa_vm, 22, sa_vn, sa_vd))
     }
     // SQRDMULH  <V><d>, <V><n>, <Vm>.<Ts>[<index>]
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isVri(v2) && isSameType(v0, v1) {
@@ -28688,20 +30113,20 @@ func (self *Program) SQRDMULH(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if maskp(sa_index, 3, 2) != sa_ts || sa_ts != sa_v || sa_v != maskp(sa_vm, 5, 2) {
+        if ubfx(sa_index, 3, 2) != sa_ts || sa_ts != sa_v || sa_v != sa_vm {
             panic("aarch64: invalid combination of operands for SQRDMULH")
         }
-        if sa_index & 1 != maskp(sa_vm, 4, 1) {
+        if mask(sa_index, 1) != sa_vm {
             panic("aarch64: invalid combination of operands for SQRDMULH")
         }
         return p.setins(asisdelem(
             0,
-            maskp(sa_index, 3, 2),
-            maskp(sa_index, 2, 1),
-            sa_index & 1,
-            mask(sa_vm, 4),
+            ubfx(sa_index, 3, 2),
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 1),
+            sa_vm,
             13,
-            maskp(sa_index, 1, 1),
+            ubfx(sa_index, 1, 1),
             sa_n,
             sa_d,
         ))
@@ -28754,7 +30179,7 @@ func (self *Program) SQRSHL(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdsame(sa_t & 1, 0, maskp(sa_t, 1, 2), sa_vm, 11, sa_vn, sa_vd))
+        return p.setins(asimdsame(mask(sa_t, 1), 0, ubfx(sa_t, 1, 2), sa_vm, 11, sa_vn, sa_vd))
     }
     // SQRSHL  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
@@ -28822,10 +30247,10 @@ func (self *Program) SQRSHRN(v0, v1, v2 interface{}) *Instruction {
             case 0b0100: sa_shift_1 = 64 - uint32(asLit(v2))
             default: panic("aarch64: invalid operand 'sa_shift_1' for SQRSHRN")
         }
-        if maskp(sa_shift_1, 3, 4) != sa_va & sa_va__bit_mask || sa_va & sa_va__bit_mask != sa_vb & sa_vb__bit_mask {
+        if ubfx(sa_shift_1, 3, 4) != sa_va & sa_va__bit_mask || sa_va & sa_va__bit_mask != sa_vb & sa_vb__bit_mask {
             panic("aarch64: invalid combination of operands for SQRSHRN")
         }
-        return p.setins(asisdshf(0, maskp(sa_shift_1, 3, 4), mask(sa_shift_1, 3), 19, sa_n, sa_d))
+        return p.setins(asisdshf(0, ubfx(sa_shift_1, 3, 4), mask(sa_shift_1, 3), 19, sa_n, sa_d))
     }
     // SQRSHRN  <Vd>.<Tb>, <Vn>.<Ta>, #<shift>
     if isVr(v0) &&
@@ -28870,20 +30295,20 @@ func (self *Program) SQRSHRN(v0, v1, v2 interface{}) *Instruction {
             case Vec2D: sa_ta__bit_mask = 0b1100
             default: panic("aarch64: unreachable")
         }
-        switch maskp(sa_tb, 1, 4) {
+        switch ubfx(sa_tb, 1, 4) {
             case 0b0001: sa_shift = 16 - uint32(asLit(v2))
             case 0b0010: sa_shift = 32 - uint32(asLit(v2))
             case 0b0100: sa_shift = 64 - uint32(asLit(v2))
             default: panic("aarch64: invalid operand 'sa_shift' for SQRSHRN")
         }
-        if maskp(sa_shift, 3, 4) != sa_ta & sa_ta__bit_mask ||
-           sa_ta & sa_ta__bit_mask != maskp(sa_tb, 1, 4) & maskp(sa_tb__bit_mask, 1, 4) {
+        if ubfx(sa_shift, 3, 4) != sa_ta & sa_ta__bit_mask ||
+           sa_ta & sa_ta__bit_mask != ubfx(sa_tb, 1, 4) & ubfx(sa_tb__bit_mask, 1, 4) {
             panic("aarch64: invalid combination of operands for SQRSHRN")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for SQRSHRN")
         }
-        return p.setins(asimdshf(0, 0, maskp(sa_shift, 3, 4), mask(sa_shift, 3), 19, sa_vn, sa_vd))
+        return p.setins(asimdshf(0, 0, ubfx(sa_shift, 3, 4), mask(sa_shift, 3), 19, sa_vn, sa_vd))
     }
     // none of above
     p.Free()
@@ -28938,20 +30363,20 @@ func (self *Program) SQRSHRN2(v0, v1, v2 interface{}) *Instruction {
             case Vec2D: sa_ta__bit_mask = 0b1100
             default: panic("aarch64: unreachable")
         }
-        switch maskp(sa_tb, 1, 4) {
+        switch ubfx(sa_tb, 1, 4) {
             case 0b0001: sa_shift = 16 - uint32(asLit(v2))
             case 0b0010: sa_shift = 32 - uint32(asLit(v2))
             case 0b0100: sa_shift = 64 - uint32(asLit(v2))
             default: panic("aarch64: invalid operand 'sa_shift' for SQRSHRN2")
         }
-        if maskp(sa_shift, 3, 4) != sa_ta & sa_ta__bit_mask ||
-           sa_ta & sa_ta__bit_mask != maskp(sa_tb, 1, 4) & maskp(sa_tb__bit_mask, 1, 4) {
+        if ubfx(sa_shift, 3, 4) != sa_ta & sa_ta__bit_mask ||
+           sa_ta & sa_ta__bit_mask != ubfx(sa_tb, 1, 4) & ubfx(sa_tb__bit_mask, 1, 4) {
             panic("aarch64: invalid combination of operands for SQRSHRN2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for SQRSHRN2")
         }
-        return p.setins(asimdshf(1, 0, maskp(sa_shift, 3, 4), mask(sa_shift, 3), 19, sa_vn, sa_vd))
+        return p.setins(asimdshf(1, 0, ubfx(sa_shift, 3, 4), mask(sa_shift, 3), 19, sa_vn, sa_vd))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for SQRSHRN2")
@@ -29003,10 +30428,10 @@ func (self *Program) SQRSHRUN(v0, v1, v2 interface{}) *Instruction {
             case 0b0100: sa_shift_1 = 64 - uint32(asLit(v2))
             default: panic("aarch64: invalid operand 'sa_shift_1' for SQRSHRUN")
         }
-        if maskp(sa_shift_1, 3, 4) != sa_va & sa_va__bit_mask || sa_va & sa_va__bit_mask != sa_vb & sa_vb__bit_mask {
+        if ubfx(sa_shift_1, 3, 4) != sa_va & sa_va__bit_mask || sa_va & sa_va__bit_mask != sa_vb & sa_vb__bit_mask {
             panic("aarch64: invalid combination of operands for SQRSHRUN")
         }
-        return p.setins(asisdshf(1, maskp(sa_shift_1, 3, 4), mask(sa_shift_1, 3), 17, sa_n, sa_d))
+        return p.setins(asisdshf(1, ubfx(sa_shift_1, 3, 4), mask(sa_shift_1, 3), 17, sa_n, sa_d))
     }
     // SQRSHRUN  <Vd>.<Tb>, <Vn>.<Ta>, #<shift>
     if isVr(v0) &&
@@ -29051,20 +30476,20 @@ func (self *Program) SQRSHRUN(v0, v1, v2 interface{}) *Instruction {
             case Vec2D: sa_ta__bit_mask = 0b1100
             default: panic("aarch64: unreachable")
         }
-        switch maskp(sa_tb, 1, 4) {
+        switch ubfx(sa_tb, 1, 4) {
             case 0b0001: sa_shift = 16 - uint32(asLit(v2))
             case 0b0010: sa_shift = 32 - uint32(asLit(v2))
             case 0b0100: sa_shift = 64 - uint32(asLit(v2))
             default: panic("aarch64: invalid operand 'sa_shift' for SQRSHRUN")
         }
-        if maskp(sa_shift, 3, 4) != sa_ta & sa_ta__bit_mask ||
-           sa_ta & sa_ta__bit_mask != maskp(sa_tb, 1, 4) & maskp(sa_tb__bit_mask, 1, 4) {
+        if ubfx(sa_shift, 3, 4) != sa_ta & sa_ta__bit_mask ||
+           sa_ta & sa_ta__bit_mask != ubfx(sa_tb, 1, 4) & ubfx(sa_tb__bit_mask, 1, 4) {
             panic("aarch64: invalid combination of operands for SQRSHRUN")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for SQRSHRUN")
         }
-        return p.setins(asimdshf(0, 1, maskp(sa_shift, 3, 4), mask(sa_shift, 3), 17, sa_vn, sa_vd))
+        return p.setins(asimdshf(0, 1, ubfx(sa_shift, 3, 4), mask(sa_shift, 3), 17, sa_vn, sa_vd))
     }
     // none of above
     p.Free()
@@ -29119,20 +30544,20 @@ func (self *Program) SQRSHRUN2(v0, v1, v2 interface{}) *Instruction {
             case Vec2D: sa_ta__bit_mask = 0b1100
             default: panic("aarch64: unreachable")
         }
-        switch maskp(sa_tb, 1, 4) {
+        switch ubfx(sa_tb, 1, 4) {
             case 0b0001: sa_shift = 16 - uint32(asLit(v2))
             case 0b0010: sa_shift = 32 - uint32(asLit(v2))
             case 0b0100: sa_shift = 64 - uint32(asLit(v2))
             default: panic("aarch64: invalid operand 'sa_shift' for SQRSHRUN2")
         }
-        if maskp(sa_shift, 3, 4) != sa_ta & sa_ta__bit_mask ||
-           sa_ta & sa_ta__bit_mask != maskp(sa_tb, 1, 4) & maskp(sa_tb__bit_mask, 1, 4) {
+        if ubfx(sa_shift, 3, 4) != sa_ta & sa_ta__bit_mask ||
+           sa_ta & sa_ta__bit_mask != ubfx(sa_tb, 1, 4) & ubfx(sa_tb__bit_mask, 1, 4) {
             panic("aarch64: invalid combination of operands for SQRSHRUN2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for SQRSHRUN2")
         }
-        return p.setins(asimdshf(1, 1, maskp(sa_shift, 3, 4), mask(sa_shift, 3), 17, sa_vn, sa_vd))
+        return p.setins(asimdshf(1, 1, ubfx(sa_shift, 3, 4), mask(sa_shift, 3), 17, sa_vn, sa_vd))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for SQRSHRUN2")
@@ -29170,7 +30595,7 @@ func (self *Program) SQSHL(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdsame(sa_t & 1, 0, maskp(sa_t, 1, 2), sa_vm, 9, sa_vn, sa_vd))
+        return p.setins(asimdsame(mask(sa_t, 1), 0, ubfx(sa_t, 1, 2), sa_vm, 9, sa_vn, sa_vd))
     }
     // SQSHL  <Vd>.<T>, <Vn>.<T>, #<shift>
     if isVr(v0) &&
@@ -29204,17 +30629,17 @@ func (self *Program) SQSHL(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vn := uint32(v1.(asm.Register).ID())
-        switch maskp(sa_t, 1, 4) {
+        switch ubfx(sa_t, 1, 4) {
             case 0b0001: sa_shift = uint32(asLit(v2)) + 8
             case 0b0010: sa_shift = uint32(asLit(v2)) + 16
             case 0b0100: sa_shift = uint32(asLit(v2)) + 32
             case 0b1000: sa_shift = uint32(asLit(v2)) + 64
             default: panic("aarch64: invalid operand 'sa_shift' for SQSHL")
         }
-        if maskp(sa_shift, 3, 4) != maskp(sa_t, 1, 4) & maskp(sa_t__bit_mask, 1, 4) {
+        if ubfx(sa_shift, 3, 4) != ubfx(sa_t, 1, 4) & ubfx(sa_t__bit_mask, 1, 4) {
             panic("aarch64: invalid combination of operands for SQSHL")
         }
-        return p.setins(asimdshf(sa_t & 1, 0, maskp(sa_shift, 3, 4), mask(sa_shift, 3), 14, sa_vn, sa_vd))
+        return p.setins(asimdshf(mask(sa_t, 1), 0, ubfx(sa_shift, 3, 4), mask(sa_shift, 3), 14, sa_vn, sa_vd))
     }
     // SQSHL  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
@@ -29259,10 +30684,10 @@ func (self *Program) SQSHL(v0, v1, v2 interface{}) *Instruction {
             case 0b1000: sa_shift_1 = uint32(asLit(v2)) + 64
             default: panic("aarch64: invalid operand 'sa_shift_1' for SQSHL")
         }
-        if maskp(sa_shift_1, 3, 4) != sa_v & sa_v__bit_mask {
+        if ubfx(sa_shift_1, 3, 4) != sa_v & sa_v__bit_mask {
             panic("aarch64: invalid combination of operands for SQSHL")
         }
-        return p.setins(asisdshf(0, maskp(sa_shift_1, 3, 4), mask(sa_shift_1, 3), 14, sa_n, sa_d))
+        return p.setins(asisdshf(0, ubfx(sa_shift_1, 3, 4), mask(sa_shift_1, 3), 14, sa_n, sa_d))
     }
     // none of above
     p.Free()
@@ -29308,17 +30733,17 @@ func (self *Program) SQSHLU(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vn := uint32(v1.(asm.Register).ID())
-        switch maskp(sa_t, 1, 4) {
+        switch ubfx(sa_t, 1, 4) {
             case 0b0001: sa_shift = uint32(asLit(v2)) + 8
             case 0b0010: sa_shift = uint32(asLit(v2)) + 16
             case 0b0100: sa_shift = uint32(asLit(v2)) + 32
             case 0b1000: sa_shift = uint32(asLit(v2)) + 64
             default: panic("aarch64: invalid operand 'sa_shift' for SQSHLU")
         }
-        if maskp(sa_shift, 3, 4) != maskp(sa_t, 1, 4) & maskp(sa_t__bit_mask, 1, 4) {
+        if ubfx(sa_shift, 3, 4) != ubfx(sa_t, 1, 4) & ubfx(sa_t__bit_mask, 1, 4) {
             panic("aarch64: invalid combination of operands for SQSHLU")
         }
-        return p.setins(asimdshf(sa_t & 1, 1, maskp(sa_shift, 3, 4), mask(sa_shift, 3), 12, sa_vn, sa_vd))
+        return p.setins(asimdshf(mask(sa_t, 1), 1, ubfx(sa_shift, 3, 4), mask(sa_shift, 3), 12, sa_vn, sa_vd))
     }
     // SQSHLU  <V><d>, <V><n>, #<shift>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(v2) && isSameType(v0, v1) {
@@ -29348,10 +30773,10 @@ func (self *Program) SQSHLU(v0, v1, v2 interface{}) *Instruction {
             case 0b1000: sa_shift_1 = uint32(asLit(v2)) + 64
             default: panic("aarch64: invalid operand 'sa_shift_1' for SQSHLU")
         }
-        if maskp(sa_shift_1, 3, 4) != sa_v & sa_v__bit_mask {
+        if ubfx(sa_shift_1, 3, 4) != sa_v & sa_v__bit_mask {
             panic("aarch64: invalid combination of operands for SQSHLU")
         }
-        return p.setins(asisdshf(1, maskp(sa_shift_1, 3, 4), mask(sa_shift_1, 3), 12, sa_n, sa_d))
+        return p.setins(asisdshf(1, ubfx(sa_shift_1, 3, 4), mask(sa_shift_1, 3), 12, sa_n, sa_d))
     }
     // none of above
     p.Free()
@@ -29404,10 +30829,10 @@ func (self *Program) SQSHRN(v0, v1, v2 interface{}) *Instruction {
             case 0b0100: sa_shift_1 = 64 - uint32(asLit(v2))
             default: panic("aarch64: invalid operand 'sa_shift_1' for SQSHRN")
         }
-        if maskp(sa_shift_1, 3, 4) != sa_va & sa_va__bit_mask || sa_va & sa_va__bit_mask != sa_vb & sa_vb__bit_mask {
+        if ubfx(sa_shift_1, 3, 4) != sa_va & sa_va__bit_mask || sa_va & sa_va__bit_mask != sa_vb & sa_vb__bit_mask {
             panic("aarch64: invalid combination of operands for SQSHRN")
         }
-        return p.setins(asisdshf(0, maskp(sa_shift_1, 3, 4), mask(sa_shift_1, 3), 18, sa_n, sa_d))
+        return p.setins(asisdshf(0, ubfx(sa_shift_1, 3, 4), mask(sa_shift_1, 3), 18, sa_n, sa_d))
     }
     // SQSHRN  <Vd>.<Tb>, <Vn>.<Ta>, #<shift>
     if isVr(v0) &&
@@ -29452,20 +30877,20 @@ func (self *Program) SQSHRN(v0, v1, v2 interface{}) *Instruction {
             case Vec2D: sa_ta__bit_mask = 0b1100
             default: panic("aarch64: unreachable")
         }
-        switch maskp(sa_tb, 1, 4) {
+        switch ubfx(sa_tb, 1, 4) {
             case 0b0001: sa_shift = 16 - uint32(asLit(v2))
             case 0b0010: sa_shift = 32 - uint32(asLit(v2))
             case 0b0100: sa_shift = 64 - uint32(asLit(v2))
             default: panic("aarch64: invalid operand 'sa_shift' for SQSHRN")
         }
-        if maskp(sa_shift, 3, 4) != sa_ta & sa_ta__bit_mask ||
-           sa_ta & sa_ta__bit_mask != maskp(sa_tb, 1, 4) & maskp(sa_tb__bit_mask, 1, 4) {
+        if ubfx(sa_shift, 3, 4) != sa_ta & sa_ta__bit_mask ||
+           sa_ta & sa_ta__bit_mask != ubfx(sa_tb, 1, 4) & ubfx(sa_tb__bit_mask, 1, 4) {
             panic("aarch64: invalid combination of operands for SQSHRN")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for SQSHRN")
         }
-        return p.setins(asimdshf(0, 0, maskp(sa_shift, 3, 4), mask(sa_shift, 3), 18, sa_vn, sa_vd))
+        return p.setins(asimdshf(0, 0, ubfx(sa_shift, 3, 4), mask(sa_shift, 3), 18, sa_vn, sa_vd))
     }
     // none of above
     p.Free()
@@ -29520,20 +30945,20 @@ func (self *Program) SQSHRN2(v0, v1, v2 interface{}) *Instruction {
             case Vec2D: sa_ta__bit_mask = 0b1100
             default: panic("aarch64: unreachable")
         }
-        switch maskp(sa_tb, 1, 4) {
+        switch ubfx(sa_tb, 1, 4) {
             case 0b0001: sa_shift = 16 - uint32(asLit(v2))
             case 0b0010: sa_shift = 32 - uint32(asLit(v2))
             case 0b0100: sa_shift = 64 - uint32(asLit(v2))
             default: panic("aarch64: invalid operand 'sa_shift' for SQSHRN2")
         }
-        if maskp(sa_shift, 3, 4) != sa_ta & sa_ta__bit_mask ||
-           sa_ta & sa_ta__bit_mask != maskp(sa_tb, 1, 4) & maskp(sa_tb__bit_mask, 1, 4) {
+        if ubfx(sa_shift, 3, 4) != sa_ta & sa_ta__bit_mask ||
+           sa_ta & sa_ta__bit_mask != ubfx(sa_tb, 1, 4) & ubfx(sa_tb__bit_mask, 1, 4) {
             panic("aarch64: invalid combination of operands for SQSHRN2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for SQSHRN2")
         }
-        return p.setins(asimdshf(1, 0, maskp(sa_shift, 3, 4), mask(sa_shift, 3), 18, sa_vn, sa_vd))
+        return p.setins(asimdshf(1, 0, ubfx(sa_shift, 3, 4), mask(sa_shift, 3), 18, sa_vn, sa_vd))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for SQSHRN2")
@@ -29585,10 +31010,10 @@ func (self *Program) SQSHRUN(v0, v1, v2 interface{}) *Instruction {
             case 0b0100: sa_shift_1 = 64 - uint32(asLit(v2))
             default: panic("aarch64: invalid operand 'sa_shift_1' for SQSHRUN")
         }
-        if maskp(sa_shift_1, 3, 4) != sa_va & sa_va__bit_mask || sa_va & sa_va__bit_mask != sa_vb & sa_vb__bit_mask {
+        if ubfx(sa_shift_1, 3, 4) != sa_va & sa_va__bit_mask || sa_va & sa_va__bit_mask != sa_vb & sa_vb__bit_mask {
             panic("aarch64: invalid combination of operands for SQSHRUN")
         }
-        return p.setins(asisdshf(1, maskp(sa_shift_1, 3, 4), mask(sa_shift_1, 3), 16, sa_n, sa_d))
+        return p.setins(asisdshf(1, ubfx(sa_shift_1, 3, 4), mask(sa_shift_1, 3), 16, sa_n, sa_d))
     }
     // SQSHRUN  <Vd>.<Tb>, <Vn>.<Ta>, #<shift>
     if isVr(v0) &&
@@ -29633,20 +31058,20 @@ func (self *Program) SQSHRUN(v0, v1, v2 interface{}) *Instruction {
             case Vec2D: sa_ta__bit_mask = 0b1100
             default: panic("aarch64: unreachable")
         }
-        switch maskp(sa_tb, 1, 4) {
+        switch ubfx(sa_tb, 1, 4) {
             case 0b0001: sa_shift = 16 - uint32(asLit(v2))
             case 0b0010: sa_shift = 32 - uint32(asLit(v2))
             case 0b0100: sa_shift = 64 - uint32(asLit(v2))
             default: panic("aarch64: invalid operand 'sa_shift' for SQSHRUN")
         }
-        if maskp(sa_shift, 3, 4) != sa_ta & sa_ta__bit_mask ||
-           sa_ta & sa_ta__bit_mask != maskp(sa_tb, 1, 4) & maskp(sa_tb__bit_mask, 1, 4) {
+        if ubfx(sa_shift, 3, 4) != sa_ta & sa_ta__bit_mask ||
+           sa_ta & sa_ta__bit_mask != ubfx(sa_tb, 1, 4) & ubfx(sa_tb__bit_mask, 1, 4) {
             panic("aarch64: invalid combination of operands for SQSHRUN")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for SQSHRUN")
         }
-        return p.setins(asimdshf(0, 1, maskp(sa_shift, 3, 4), mask(sa_shift, 3), 16, sa_vn, sa_vd))
+        return p.setins(asimdshf(0, 1, ubfx(sa_shift, 3, 4), mask(sa_shift, 3), 16, sa_vn, sa_vd))
     }
     // none of above
     p.Free()
@@ -29701,20 +31126,20 @@ func (self *Program) SQSHRUN2(v0, v1, v2 interface{}) *Instruction {
             case Vec2D: sa_ta__bit_mask = 0b1100
             default: panic("aarch64: unreachable")
         }
-        switch maskp(sa_tb, 1, 4) {
+        switch ubfx(sa_tb, 1, 4) {
             case 0b0001: sa_shift = 16 - uint32(asLit(v2))
             case 0b0010: sa_shift = 32 - uint32(asLit(v2))
             case 0b0100: sa_shift = 64 - uint32(asLit(v2))
             default: panic("aarch64: invalid operand 'sa_shift' for SQSHRUN2")
         }
-        if maskp(sa_shift, 3, 4) != sa_ta & sa_ta__bit_mask ||
-           sa_ta & sa_ta__bit_mask != maskp(sa_tb, 1, 4) & maskp(sa_tb__bit_mask, 1, 4) {
+        if ubfx(sa_shift, 3, 4) != sa_ta & sa_ta__bit_mask ||
+           sa_ta & sa_ta__bit_mask != ubfx(sa_tb, 1, 4) & ubfx(sa_tb__bit_mask, 1, 4) {
             panic("aarch64: invalid combination of operands for SQSHRUN2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for SQSHRUN2")
         }
-        return p.setins(asimdshf(1, 1, maskp(sa_shift, 3, 4), mask(sa_shift, 3), 16, sa_vn, sa_vd))
+        return p.setins(asimdshf(1, 1, ubfx(sa_shift, 3, 4), mask(sa_shift, 3), 16, sa_vn, sa_vd))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for SQSHRUN2")
@@ -29750,7 +31175,7 @@ func (self *Program) SQSUB(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdsame(sa_t & 1, 0, maskp(sa_t, 1, 2), sa_vm, 5, sa_vn, sa_vd))
+        return p.setins(asimdsame(mask(sa_t, 1), 0, ubfx(sa_t, 1, 2), sa_vm, 5, sa_vn, sa_vd))
     }
     // SQSUB  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
@@ -29826,10 +31251,10 @@ func (self *Program) SQXTN(v0, v1 interface{}) *Instruction {
             case Vec2D: sa_ta = 0b10
             default: panic("aarch64: unreachable")
         }
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for SQXTN")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for SQXTN")
         }
         return p.setins(asimdmisc(0, 0, sa_ta, 20, sa_vn, sa_vd))
@@ -29868,10 +31293,10 @@ func (self *Program) SQXTN2(v0, v1 interface{}) *Instruction {
             case Vec2D: sa_ta = 0b10
             default: panic("aarch64: unreachable")
         }
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for SQXTN2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for SQXTN2")
         }
         return p.setins(asimdmisc(1, 0, sa_ta, 20, sa_vn, sa_vd))
@@ -29934,10 +31359,10 @@ func (self *Program) SQXTUN(v0, v1 interface{}) *Instruction {
             case Vec2D: sa_ta = 0b10
             default: panic("aarch64: unreachable")
         }
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for SQXTUN")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for SQXTUN")
         }
         return p.setins(asimdmisc(0, 1, sa_ta, 18, sa_vn, sa_vd))
@@ -29976,10 +31401,10 @@ func (self *Program) SQXTUN2(v0, v1 interface{}) *Instruction {
             case Vec2D: sa_ta = 0b10
             default: panic("aarch64: unreachable")
         }
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for SQXTUN2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for SQXTUN2")
         }
         return p.setins(asimdmisc(1, 1, sa_ta, 18, sa_vn, sa_vd))
@@ -30015,7 +31440,7 @@ func (self *Program) SRHADD(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdsame(sa_t & 1, 0, maskp(sa_t, 1, 2), sa_vm, 2, sa_vn, sa_vd))
+        return p.setins(asimdsame(mask(sa_t, 1), 0, ubfx(sa_t, 1, 2), sa_vm, 2, sa_vn, sa_vd))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for SRHADD")
@@ -30060,17 +31485,17 @@ func (self *Program) SRI(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vn := uint32(v1.(asm.Register).ID())
-        switch maskp(sa_t, 1, 4) {
+        switch ubfx(sa_t, 1, 4) {
             case 0b0001: sa_shift = 16 - uint32(asLit(v2))
             case 0b0010: sa_shift = 32 - uint32(asLit(v2))
             case 0b0100: sa_shift = 64 - uint32(asLit(v2))
             case 0b1000: sa_shift = 128 - uint32(asLit(v2))
             default: panic("aarch64: invalid operand 'sa_shift' for SRI")
         }
-        if maskp(sa_shift, 3, 4) != maskp(sa_t, 1, 4) & maskp(sa_t__bit_mask, 1, 4) {
+        if ubfx(sa_shift, 3, 4) != ubfx(sa_t, 1, 4) & ubfx(sa_t__bit_mask, 1, 4) {
             panic("aarch64: invalid combination of operands for SRI")
         }
-        return p.setins(asimdshf(sa_t & 1, 1, maskp(sa_shift, 3, 4), mask(sa_shift, 3), 8, sa_vn, sa_vd))
+        return p.setins(asimdshf(mask(sa_t, 1), 1, ubfx(sa_shift, 3, 4), mask(sa_shift, 3), 8, sa_vn, sa_vd))
     }
     // SRI  <V><d>, <V><n>, #<shift>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(v2) && isSameType(v0, v1) {
@@ -30091,10 +31516,10 @@ func (self *Program) SRI(v0, v1, v2 interface{}) *Instruction {
             case 0b1000: sa_shift_1 = 128 - uint32(asLit(v2))
             default: panic("aarch64: invalid operand 'sa_shift_1' for SRI")
         }
-        if maskp(sa_shift_1, 3, 4) != sa_v & sa_v__bit_mask {
+        if ubfx(sa_shift_1, 3, 4) != sa_v & sa_v__bit_mask {
             panic("aarch64: invalid combination of operands for SRI")
         }
-        return p.setins(asisdshf(1, maskp(sa_shift_1, 3, 4), mask(sa_shift_1, 3), 8, sa_n, sa_d))
+        return p.setins(asisdshf(1, ubfx(sa_shift_1, 3, 4), mask(sa_shift_1, 3), 8, sa_n, sa_d))
     }
     // none of above
     p.Free()
@@ -30131,7 +31556,7 @@ func (self *Program) SRSHL(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdsame(sa_t & 1, 0, maskp(sa_t, 1, 2), sa_vm, 10, sa_vn, sa_vd))
+        return p.setins(asimdsame(mask(sa_t, 1), 0, ubfx(sa_t, 1, 2), sa_vm, 10, sa_vn, sa_vd))
     }
     // SRSHL  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
@@ -30189,17 +31614,17 @@ func (self *Program) SRSHR(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vn := uint32(v1.(asm.Register).ID())
-        switch maskp(sa_t, 1, 4) {
+        switch ubfx(sa_t, 1, 4) {
             case 0b0001: sa_shift = 16 - uint32(asLit(v2))
             case 0b0010: sa_shift = 32 - uint32(asLit(v2))
             case 0b0100: sa_shift = 64 - uint32(asLit(v2))
             case 0b1000: sa_shift = 128 - uint32(asLit(v2))
             default: panic("aarch64: invalid operand 'sa_shift' for SRSHR")
         }
-        if maskp(sa_shift, 3, 4) != maskp(sa_t, 1, 4) & maskp(sa_t__bit_mask, 1, 4) {
+        if ubfx(sa_shift, 3, 4) != ubfx(sa_t, 1, 4) & ubfx(sa_t__bit_mask, 1, 4) {
             panic("aarch64: invalid combination of operands for SRSHR")
         }
-        return p.setins(asimdshf(sa_t & 1, 0, maskp(sa_shift, 3, 4), mask(sa_shift, 3), 4, sa_vn, sa_vd))
+        return p.setins(asimdshf(mask(sa_t, 1), 0, ubfx(sa_shift, 3, 4), mask(sa_shift, 3), 4, sa_vn, sa_vd))
     }
     // SRSHR  <V><d>, <V><n>, #<shift>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(v2) && isSameType(v0, v1) {
@@ -30220,10 +31645,10 @@ func (self *Program) SRSHR(v0, v1, v2 interface{}) *Instruction {
             case 0b1000: sa_shift_1 = 128 - uint32(asLit(v2))
             default: panic("aarch64: invalid operand 'sa_shift_1' for SRSHR")
         }
-        if maskp(sa_shift_1, 3, 4) != sa_v & sa_v__bit_mask {
+        if ubfx(sa_shift_1, 3, 4) != sa_v & sa_v__bit_mask {
             panic("aarch64: invalid combination of operands for SRSHR")
         }
-        return p.setins(asisdshf(0, maskp(sa_shift_1, 3, 4), mask(sa_shift_1, 3), 4, sa_n, sa_d))
+        return p.setins(asisdshf(0, ubfx(sa_shift_1, 3, 4), mask(sa_shift_1, 3), 4, sa_n, sa_d))
     }
     // none of above
     p.Free()
@@ -30269,17 +31694,17 @@ func (self *Program) SRSRA(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vn := uint32(v1.(asm.Register).ID())
-        switch maskp(sa_t, 1, 4) {
+        switch ubfx(sa_t, 1, 4) {
             case 0b0001: sa_shift = 16 - uint32(asLit(v2))
             case 0b0010: sa_shift = 32 - uint32(asLit(v2))
             case 0b0100: sa_shift = 64 - uint32(asLit(v2))
             case 0b1000: sa_shift = 128 - uint32(asLit(v2))
             default: panic("aarch64: invalid operand 'sa_shift' for SRSRA")
         }
-        if maskp(sa_shift, 3, 4) != maskp(sa_t, 1, 4) & maskp(sa_t__bit_mask, 1, 4) {
+        if ubfx(sa_shift, 3, 4) != ubfx(sa_t, 1, 4) & ubfx(sa_t__bit_mask, 1, 4) {
             panic("aarch64: invalid combination of operands for SRSRA")
         }
-        return p.setins(asimdshf(sa_t & 1, 0, maskp(sa_shift, 3, 4), mask(sa_shift, 3), 6, sa_vn, sa_vd))
+        return p.setins(asimdshf(mask(sa_t, 1), 0, ubfx(sa_shift, 3, 4), mask(sa_shift, 3), 6, sa_vn, sa_vd))
     }
     // SRSRA  <V><d>, <V><n>, #<shift>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(v2) && isSameType(v0, v1) {
@@ -30300,14 +31725,23 @@ func (self *Program) SRSRA(v0, v1, v2 interface{}) *Instruction {
             case 0b1000: sa_shift_1 = 128 - uint32(asLit(v2))
             default: panic("aarch64: invalid operand 'sa_shift_1' for SRSRA")
         }
-        if maskp(sa_shift_1, 3, 4) != sa_v & sa_v__bit_mask {
+        if ubfx(sa_shift_1, 3, 4) != sa_v & sa_v__bit_mask {
             panic("aarch64: invalid combination of operands for SRSRA")
         }
-        return p.setins(asisdshf(0, maskp(sa_shift_1, 3, 4), mask(sa_shift_1, 3), 6, sa_n, sa_d))
+        return p.setins(asisdshf(0, ubfx(sa_shift_1, 3, 4), mask(sa_shift_1, 3), 6, sa_n, sa_d))
     }
     // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for SRSRA")
+}
+
+// SSBB instruction have one single form:
+//
+//   * SSBB
+//
+func (self *Program) SSBB() *Instruction {
+    p := self.alloc("SSBB", 0, Operands {})
+    return p.setins(barriers(0, 4, 31))
 }
 
 // SSHL instruction have 2 forms:
@@ -30340,7 +31774,7 @@ func (self *Program) SSHL(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdsame(sa_t & 1, 0, maskp(sa_t, 1, 2), sa_vm, 8, sa_vn, sa_vd))
+        return p.setins(asimdsame(mask(sa_t, 1), 0, ubfx(sa_t, 1, 2), sa_vm, 8, sa_vn, sa_vd))
     }
     // SSHL  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
@@ -30413,14 +31847,14 @@ func (self *Program) SSHLL(v0, v1, v2 interface{}) *Instruction {
             case 0b0100: sa_shift = uint32(asLit(v2)) + 32
             default: panic("aarch64: invalid operand 'sa_shift' for SSHLL")
         }
-        if maskp(sa_shift, 3, 4) != sa_ta & sa_ta__bit_mask ||
-           sa_ta & sa_ta__bit_mask != maskp(sa_tb, 1, 4) & maskp(sa_tb__bit_mask, 1, 4) {
+        if ubfx(sa_shift, 3, 4) != sa_ta & sa_ta__bit_mask ||
+           sa_ta & sa_ta__bit_mask != ubfx(sa_tb, 1, 4) & ubfx(sa_tb__bit_mask, 1, 4) {
             panic("aarch64: invalid combination of operands for SSHLL")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for SSHLL")
         }
-        return p.setins(asimdshf(0, 0, maskp(sa_shift, 3, 4), mask(sa_shift, 3), 20, sa_vn, sa_vd))
+        return p.setins(asimdshf(0, 0, ubfx(sa_shift, 3, 4), mask(sa_shift, 3), 20, sa_vn, sa_vd))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for SSHLL")
@@ -30480,14 +31914,14 @@ func (self *Program) SSHLL2(v0, v1, v2 interface{}) *Instruction {
             case 0b0100: sa_shift = uint32(asLit(v2)) + 32
             default: panic("aarch64: invalid operand 'sa_shift' for SSHLL2")
         }
-        if maskp(sa_shift, 3, 4) != sa_ta & sa_ta__bit_mask ||
-           sa_ta & sa_ta__bit_mask != maskp(sa_tb, 1, 4) & maskp(sa_tb__bit_mask, 1, 4) {
+        if ubfx(sa_shift, 3, 4) != sa_ta & sa_ta__bit_mask ||
+           sa_ta & sa_ta__bit_mask != ubfx(sa_tb, 1, 4) & ubfx(sa_tb__bit_mask, 1, 4) {
             panic("aarch64: invalid combination of operands for SSHLL2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for SSHLL2")
         }
-        return p.setins(asimdshf(1, 0, maskp(sa_shift, 3, 4), mask(sa_shift, 3), 20, sa_vn, sa_vd))
+        return p.setins(asimdshf(1, 0, ubfx(sa_shift, 3, 4), mask(sa_shift, 3), 20, sa_vn, sa_vd))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for SSHLL2")
@@ -30532,17 +31966,17 @@ func (self *Program) SSHR(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vn := uint32(v1.(asm.Register).ID())
-        switch maskp(sa_t, 1, 4) {
+        switch ubfx(sa_t, 1, 4) {
             case 0b0001: sa_shift = 16 - uint32(asLit(v2))
             case 0b0010: sa_shift = 32 - uint32(asLit(v2))
             case 0b0100: sa_shift = 64 - uint32(asLit(v2))
             case 0b1000: sa_shift = 128 - uint32(asLit(v2))
             default: panic("aarch64: invalid operand 'sa_shift' for SSHR")
         }
-        if maskp(sa_shift, 3, 4) != maskp(sa_t, 1, 4) & maskp(sa_t__bit_mask, 1, 4) {
+        if ubfx(sa_shift, 3, 4) != ubfx(sa_t, 1, 4) & ubfx(sa_t__bit_mask, 1, 4) {
             panic("aarch64: invalid combination of operands for SSHR")
         }
-        return p.setins(asimdshf(sa_t & 1, 0, maskp(sa_shift, 3, 4), mask(sa_shift, 3), 0, sa_vn, sa_vd))
+        return p.setins(asimdshf(mask(sa_t, 1), 0, ubfx(sa_shift, 3, 4), mask(sa_shift, 3), 0, sa_vn, sa_vd))
     }
     // SSHR  <V><d>, <V><n>, #<shift>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(v2) && isSameType(v0, v1) {
@@ -30563,10 +31997,10 @@ func (self *Program) SSHR(v0, v1, v2 interface{}) *Instruction {
             case 0b1000: sa_shift_1 = 128 - uint32(asLit(v2))
             default: panic("aarch64: invalid operand 'sa_shift_1' for SSHR")
         }
-        if maskp(sa_shift_1, 3, 4) != sa_v & sa_v__bit_mask {
+        if ubfx(sa_shift_1, 3, 4) != sa_v & sa_v__bit_mask {
             panic("aarch64: invalid combination of operands for SSHR")
         }
-        return p.setins(asisdshf(0, maskp(sa_shift_1, 3, 4), mask(sa_shift_1, 3), 0, sa_n, sa_d))
+        return p.setins(asisdshf(0, ubfx(sa_shift_1, 3, 4), mask(sa_shift_1, 3), 0, sa_n, sa_d))
     }
     // none of above
     p.Free()
@@ -30612,17 +32046,17 @@ func (self *Program) SSRA(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vn := uint32(v1.(asm.Register).ID())
-        switch maskp(sa_t, 1, 4) {
+        switch ubfx(sa_t, 1, 4) {
             case 0b0001: sa_shift = 16 - uint32(asLit(v2))
             case 0b0010: sa_shift = 32 - uint32(asLit(v2))
             case 0b0100: sa_shift = 64 - uint32(asLit(v2))
             case 0b1000: sa_shift = 128 - uint32(asLit(v2))
             default: panic("aarch64: invalid operand 'sa_shift' for SSRA")
         }
-        if maskp(sa_shift, 3, 4) != maskp(sa_t, 1, 4) & maskp(sa_t__bit_mask, 1, 4) {
+        if ubfx(sa_shift, 3, 4) != ubfx(sa_t, 1, 4) & ubfx(sa_t__bit_mask, 1, 4) {
             panic("aarch64: invalid combination of operands for SSRA")
         }
-        return p.setins(asimdshf(sa_t & 1, 0, maskp(sa_shift, 3, 4), mask(sa_shift, 3), 2, sa_vn, sa_vd))
+        return p.setins(asimdshf(mask(sa_t, 1), 0, ubfx(sa_shift, 3, 4), mask(sa_shift, 3), 2, sa_vn, sa_vd))
     }
     // SSRA  <V><d>, <V><n>, #<shift>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(v2) && isSameType(v0, v1) {
@@ -30643,10 +32077,10 @@ func (self *Program) SSRA(v0, v1, v2 interface{}) *Instruction {
             case 0b1000: sa_shift_1 = 128 - uint32(asLit(v2))
             default: panic("aarch64: invalid operand 'sa_shift_1' for SSRA")
         }
-        if maskp(sa_shift_1, 3, 4) != sa_v & sa_v__bit_mask {
+        if ubfx(sa_shift_1, 3, 4) != sa_v & sa_v__bit_mask {
             panic("aarch64: invalid combination of operands for SSRA")
         }
-        return p.setins(asisdshf(0, maskp(sa_shift_1, 3, 4), mask(sa_shift_1, 3), 2, sa_n, sa_d))
+        return p.setins(asisdshf(0, ubfx(sa_shift_1, 3, 4), mask(sa_shift_1, 3), 2, sa_n, sa_d))
     }
     // none of above
     p.Free()
@@ -30686,10 +32120,10 @@ func (self *Program) SSUBL(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vm := uint32(v2.(asm.Register).ID())
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for SSUBL")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for SSUBL")
         }
         return p.setins(asimddiff(0, 0, sa_ta, sa_vm, 2, sa_vn, sa_vd))
@@ -30731,10 +32165,10 @@ func (self *Program) SSUBL2(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vm := uint32(v2.(asm.Register).ID())
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for SSUBL2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for SSUBL2")
         }
         return p.setins(asimddiff(1, 0, sa_ta, sa_vm, 2, sa_vn, sa_vd))
@@ -30776,10 +32210,10 @@ func (self *Program) SSUBW(v0, v1, v2 interface{}) *Instruction {
             case Vec4S: sa_tb = 0b101
             default: panic("aarch64: unreachable")
         }
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for SSUBW")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for SSUBW")
         }
         return p.setins(asimddiff(0, 0, sa_ta, sa_vm, 3, sa_vn, sa_vd))
@@ -30821,10 +32255,10 @@ func (self *Program) SSUBW2(v0, v1, v2 interface{}) *Instruction {
             case Vec4S: sa_tb = 0b101
             default: panic("aarch64: unreachable")
         }
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for SSUBW2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for SSUBW2")
         }
         return p.setins(asimddiff(1, 0, sa_ta, sa_vm, 3, sa_vn, sa_vd))
@@ -30878,7 +32312,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
             default: panic("aarch64: invalid vector arrangement for ST1")
         }
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlse(sa_t & 1, 0, 7, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlse(mask(sa_t, 1), 0, 7, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // ST1  { <Vt>.<T>, <Vt2>.<T> }, [<Xn|SP>]
     if isVec2(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
@@ -30896,7 +32330,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
             default: panic("aarch64: invalid vector arrangement for ST1")
         }
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlse(sa_t & 1, 0, 10, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlse(mask(sa_t, 1), 0, 10, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // ST1  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T> }, [<Xn|SP>]
     if isVec3(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
@@ -30914,7 +32348,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
             default: panic("aarch64: invalid vector arrangement for ST1")
         }
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlse(sa_t & 1, 0, 6, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlse(mask(sa_t, 1), 0, 6, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // ST1  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T>, <Vt4>.<T> }, [<Xn|SP>]
     if isVec4(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
@@ -30932,7 +32366,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
             default: panic("aarch64: invalid vector arrangement for ST1")
         }
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlse(sa_t & 1, 0, 2, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlse(mask(sa_t, 1), 0, 2, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // ST1  { <Vt>.<T> }, [<Xn|SP>], <imm>
     if isVec1(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
@@ -30951,10 +32385,10 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
         }
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_imm := uint32(moffs(v1))
-        if sa_imm != sa_t & 1 {
+        if sa_imm != mask(sa_t, 1) {
             panic("aarch64: invalid combination of operands for ST1")
         }
-        return p.setins(asisdlsep(sa_imm, 0, 31, 7, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlsep(sa_imm, 0, 31, 7, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // ST1  { <Vt>.<T>, <Vt2>.<T> }, [<Xn|SP>], <imm>
     if isVec2(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
@@ -30973,10 +32407,10 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
         }
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_imm_1 := uint32(moffs(v1))
-        if sa_imm_1 != sa_t & 1 {
+        if sa_imm_1 != mask(sa_t, 1) {
             panic("aarch64: invalid combination of operands for ST1")
         }
-        return p.setins(asisdlsep(sa_imm_1, 0, 31, 10, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlsep(sa_imm_1, 0, 31, 10, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // ST1  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T> }, [<Xn|SP>], <imm>
     if isVec3(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
@@ -30995,10 +32429,10 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
         }
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_imm_2 := uint32(moffs(v1))
-        if sa_imm_2 != sa_t & 1 {
+        if sa_imm_2 != mask(sa_t, 1) {
             panic("aarch64: invalid combination of operands for ST1")
         }
-        return p.setins(asisdlsep(sa_imm_2, 0, 31, 6, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlsep(sa_imm_2, 0, 31, 6, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // ST1  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T>, <Vt4>.<T> }, [<Xn|SP>], <imm>
     if isVec4(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
@@ -31017,10 +32451,10 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
         }
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_imm_3 := uint32(moffs(v1))
-        if sa_imm_3 != sa_t & 1 {
+        if sa_imm_3 != mask(sa_t, 1) {
             panic("aarch64: invalid combination of operands for ST1")
         }
-        return p.setins(asisdlsep(sa_imm_3, 0, 31, 2, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlsep(sa_imm_3, 0, 31, 2, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // ST1  { <Vt>.<T> }, [<Xn|SP>], <Xm>
     if isVec1(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
@@ -31039,7 +32473,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
         }
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
-        return p.setins(asisdlsep(sa_t & 1, 0, sa_xm, 7, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlsep(mask(sa_t, 1), 0, sa_xm, 7, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // ST1  { <Vt>.<T>, <Vt2>.<T> }, [<Xn|SP>], <Xm>
     if isVec2(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
@@ -31058,7 +32492,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
         }
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
-        return p.setins(asisdlsep(sa_t & 1, 0, sa_xm, 10, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlsep(mask(sa_t, 1), 0, sa_xm, 10, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // ST1  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T> }, [<Xn|SP>], <Xm>
     if isVec3(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
@@ -31077,7 +32511,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
         }
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
-        return p.setins(asisdlsep(sa_t & 1, 0, sa_xm, 6, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlsep(mask(sa_t, 1), 0, sa_xm, 6, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // ST1  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T>, <Vt4>.<T> }, [<Xn|SP>], <Xm>
     if isVec4(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
@@ -31096,7 +32530,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
         }
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
-        return p.setins(asisdlsep(sa_t & 1, 0, sa_xm, 2, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlsep(mask(sa_t, 1), 0, sa_xm, 2, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // ST1  { <Vt>.B }[<index>], [<Xn|SP>]
     if isIdxVec1(v0) &&
@@ -31109,7 +32543,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlso(maskp(sa_index, 3, 1), 0, 0, 0, 0, maskp(sa_index, 2, 1), sa_index & 3, sa_xn_sp, sa_vt))
+        return p.setins(asisdlso(ubfx(sa_index, 3, 1), 0, 0, 0, 0, ubfx(sa_index, 2, 1), mask(sa_index, 2), sa_xn_sp, sa_vt))
     }
     // ST1  { <Vt>.D }[<index>], [<Xn|SP>]
     if isIdxVec1(v0) &&
@@ -31136,13 +32570,13 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
         sa_index_2 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(asisdlso(
-            maskp(sa_index_2, 3, 1),
+            ubfx(sa_index_2, 3, 1),
             0,
             0,
             0,
             2,
-            maskp(sa_index_2, 2, 1),
-            sa_index_2 & 3,
+            ubfx(sa_index_2, 2, 1),
+            mask(sa_index_2, 2),
             sa_xn_sp,
             sa_vt,
         ))
@@ -31158,7 +32592,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlso(maskp(sa_index_3, 1, 1), 0, 0, 0, 4, sa_index_3 & 1, 0, sa_xn_sp, sa_vt))
+        return p.setins(asisdlso(ubfx(sa_index_3, 1, 1), 0, 0, 0, 4, mask(sa_index_3, 1), 0, sa_xn_sp, sa_vt))
     }
     // ST1  { <Vt>.B }[<index>], [<Xn|SP>], #1
     if isIdxVec1(v0) &&
@@ -31171,7 +32605,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlsop(maskp(sa_index, 3, 1), 0, 0, 31, 0, maskp(sa_index, 2, 1), sa_index & 3, sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(ubfx(sa_index, 3, 1), 0, 0, 31, 0, ubfx(sa_index, 2, 1), mask(sa_index, 2), sa_xn_sp, sa_vt))
     }
     // ST1  { <Vt>.B }[<index>], [<Xn|SP>], <Xm>
     if isIdxVec1(v0) &&
@@ -31185,7 +32619,17 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
-        return p.setins(asisdlsop(maskp(sa_index, 3, 1), 0, 0, sa_xm, 0, maskp(sa_index, 2, 1), sa_index & 3, sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(
+            ubfx(sa_index, 3, 1),
+            0,
+            0,
+            sa_xm,
+            0,
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 2),
+            sa_xn_sp,
+            sa_vt,
+        ))
     }
     // ST1  { <Vt>.D }[<index>], [<Xn|SP>], #8
     if isIdxVec1(v0) &&
@@ -31226,13 +32670,13 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
         sa_index_2 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(asisdlsop(
-            maskp(sa_index_2, 3, 1),
+            ubfx(sa_index_2, 3, 1),
             0,
             0,
             31,
             2,
-            maskp(sa_index_2, 2, 1),
-            sa_index_2 & 3,
+            ubfx(sa_index_2, 2, 1),
+            mask(sa_index_2, 2),
             sa_xn_sp,
             sa_vt,
         ))
@@ -31250,13 +32694,13 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
         return p.setins(asisdlsop(
-            maskp(sa_index_2, 3, 1),
+            ubfx(sa_index_2, 3, 1),
             0,
             0,
             sa_xm,
             2,
-            maskp(sa_index_2, 2, 1),
-            sa_index_2 & 3,
+            ubfx(sa_index_2, 2, 1),
+            mask(sa_index_2, 2),
             sa_xn_sp,
             sa_vt,
         ))
@@ -31272,7 +32716,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlsop(maskp(sa_index_3, 1, 1), 0, 0, 31, 4, sa_index_3 & 1, 0, sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(ubfx(sa_index_3, 1, 1), 0, 0, 31, 4, mask(sa_index_3, 1), 0, sa_xn_sp, sa_vt))
     }
     // ST1  { <Vt>.S }[<index>], [<Xn|SP>], <Xm>
     if isIdxVec1(v0) &&
@@ -31286,7 +32730,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
-        return p.setins(asisdlsop(maskp(sa_index_3, 1, 1), 0, 0, sa_xm, 4, sa_index_3 & 1, 0, sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(ubfx(sa_index_3, 1, 1), 0, 0, sa_xm, 4, mask(sa_index_3, 1), 0, sa_xn_sp, sa_vt))
     }
     // none of above
     p.Free()
@@ -31328,7 +32772,7 @@ func (self *Program) ST2(v0, v1 interface{}) *Instruction {
             default: panic("aarch64: invalid vector arrangement for ST2")
         }
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlse(sa_t & 1, 0, 8, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlse(mask(sa_t, 1), 0, 8, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // ST2  { <Vt>.<T>, <Vt2>.<T> }, [<Xn|SP>], <imm>
     if isVec2(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
@@ -31346,10 +32790,10 @@ func (self *Program) ST2(v0, v1 interface{}) *Instruction {
         }
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_imm := uint32(moffs(v1))
-        if sa_imm != sa_t & 1 {
+        if sa_imm != mask(sa_t, 1) {
             panic("aarch64: invalid combination of operands for ST2")
         }
-        return p.setins(asisdlsep(sa_imm, 0, 31, 8, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlsep(sa_imm, 0, 31, 8, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // ST2  { <Vt>.<T>, <Vt2>.<T> }, [<Xn|SP>], <Xm>
     if isVec2(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
@@ -31367,7 +32811,7 @@ func (self *Program) ST2(v0, v1 interface{}) *Instruction {
         }
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
-        return p.setins(asisdlsep(sa_t & 1, 0, sa_xm, 8, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlsep(mask(sa_t, 1), 0, sa_xm, 8, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // ST2  { <Vt>.B, <Vt2>.B }[<index>], [<Xn|SP>]
     if isIdxVec2(v0) &&
@@ -31380,7 +32824,7 @@ func (self *Program) ST2(v0, v1 interface{}) *Instruction {
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlso(maskp(sa_index, 3, 1), 0, 1, 0, 0, maskp(sa_index, 2, 1), sa_index & 3, sa_xn_sp, sa_vt))
+        return p.setins(asisdlso(ubfx(sa_index, 3, 1), 0, 1, 0, 0, ubfx(sa_index, 2, 1), mask(sa_index, 2), sa_xn_sp, sa_vt))
     }
     // ST2  { <Vt>.D, <Vt2>.D }[<index>], [<Xn|SP>]
     if isIdxVec2(v0) &&
@@ -31407,13 +32851,13 @@ func (self *Program) ST2(v0, v1 interface{}) *Instruction {
         sa_index_2 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(asisdlso(
-            maskp(sa_index_2, 3, 1),
+            ubfx(sa_index_2, 3, 1),
             0,
             1,
             0,
             2,
-            maskp(sa_index_2, 2, 1),
-            sa_index_2 & 3,
+            ubfx(sa_index_2, 2, 1),
+            mask(sa_index_2, 2),
             sa_xn_sp,
             sa_vt,
         ))
@@ -31429,7 +32873,7 @@ func (self *Program) ST2(v0, v1 interface{}) *Instruction {
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlso(maskp(sa_index_3, 1, 1), 0, 1, 0, 4, sa_index_3 & 1, 0, sa_xn_sp, sa_vt))
+        return p.setins(asisdlso(ubfx(sa_index_3, 1, 1), 0, 1, 0, 4, mask(sa_index_3, 1), 0, sa_xn_sp, sa_vt))
     }
     // ST2  { <Vt>.B, <Vt2>.B }[<index>], [<Xn|SP>], #2
     if isIdxVec2(v0) &&
@@ -31442,7 +32886,7 @@ func (self *Program) ST2(v0, v1 interface{}) *Instruction {
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlsop(maskp(sa_index, 3, 1), 0, 1, 31, 0, maskp(sa_index, 2, 1), sa_index & 3, sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(ubfx(sa_index, 3, 1), 0, 1, 31, 0, ubfx(sa_index, 2, 1), mask(sa_index, 2), sa_xn_sp, sa_vt))
     }
     // ST2  { <Vt>.B, <Vt2>.B }[<index>], [<Xn|SP>], <Xm>
     if isIdxVec2(v0) &&
@@ -31456,7 +32900,17 @@ func (self *Program) ST2(v0, v1 interface{}) *Instruction {
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
-        return p.setins(asisdlsop(maskp(sa_index, 3, 1), 0, 1, sa_xm, 0, maskp(sa_index, 2, 1), sa_index & 3, sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(
+            ubfx(sa_index, 3, 1),
+            0,
+            1,
+            sa_xm,
+            0,
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 2),
+            sa_xn_sp,
+            sa_vt,
+        ))
     }
     // ST2  { <Vt>.D, <Vt2>.D }[<index>], [<Xn|SP>], #16
     if isIdxVec2(v0) &&
@@ -31497,13 +32951,13 @@ func (self *Program) ST2(v0, v1 interface{}) *Instruction {
         sa_index_2 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(asisdlsop(
-            maskp(sa_index_2, 3, 1),
+            ubfx(sa_index_2, 3, 1),
             0,
             1,
             31,
             2,
-            maskp(sa_index_2, 2, 1),
-            sa_index_2 & 3,
+            ubfx(sa_index_2, 2, 1),
+            mask(sa_index_2, 2),
             sa_xn_sp,
             sa_vt,
         ))
@@ -31521,13 +32975,13 @@ func (self *Program) ST2(v0, v1 interface{}) *Instruction {
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
         return p.setins(asisdlsop(
-            maskp(sa_index_2, 3, 1),
+            ubfx(sa_index_2, 3, 1),
             0,
             1,
             sa_xm,
             2,
-            maskp(sa_index_2, 2, 1),
-            sa_index_2 & 3,
+            ubfx(sa_index_2, 2, 1),
+            mask(sa_index_2, 2),
             sa_xn_sp,
             sa_vt,
         ))
@@ -31543,7 +32997,7 @@ func (self *Program) ST2(v0, v1 interface{}) *Instruction {
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlsop(maskp(sa_index_3, 1, 1), 0, 1, 31, 4, sa_index_3 & 1, 0, sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(ubfx(sa_index_3, 1, 1), 0, 1, 31, 4, mask(sa_index_3, 1), 0, sa_xn_sp, sa_vt))
     }
     // ST2  { <Vt>.S, <Vt2>.S }[<index>], [<Xn|SP>], <Xm>
     if isIdxVec2(v0) &&
@@ -31557,7 +33011,7 @@ func (self *Program) ST2(v0, v1 interface{}) *Instruction {
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
-        return p.setins(asisdlsop(maskp(sa_index_3, 1, 1), 0, 1, sa_xm, 4, sa_index_3 & 1, 0, sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(ubfx(sa_index_3, 1, 1), 0, 1, sa_xm, 4, mask(sa_index_3, 1), 0, sa_xn_sp, sa_vt))
     }
     // none of above
     p.Free()
@@ -31645,7 +33099,7 @@ func (self *Program) ST3(v0, v1 interface{}) *Instruction {
             default: panic("aarch64: invalid vector arrangement for ST3")
         }
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlse(sa_t & 1, 0, 4, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlse(mask(sa_t, 1), 0, 4, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // ST3  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T> }, [<Xn|SP>], <imm>
     if isVec3(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
@@ -31663,10 +33117,10 @@ func (self *Program) ST3(v0, v1 interface{}) *Instruction {
         }
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_imm := uint32(moffs(v1))
-        if sa_imm != sa_t & 1 {
+        if sa_imm != mask(sa_t, 1) {
             panic("aarch64: invalid combination of operands for ST3")
         }
-        return p.setins(asisdlsep(sa_imm, 0, 31, 4, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlsep(sa_imm, 0, 31, 4, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // ST3  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T> }, [<Xn|SP>], <Xm>
     if isVec3(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
@@ -31684,7 +33138,7 @@ func (self *Program) ST3(v0, v1 interface{}) *Instruction {
         }
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
-        return p.setins(asisdlsep(sa_t & 1, 0, sa_xm, 4, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlsep(mask(sa_t, 1), 0, sa_xm, 4, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // ST3  { <Vt>.B, <Vt2>.B, <Vt3>.B }[<index>], [<Xn|SP>]
     if isIdxVec3(v0) &&
@@ -31697,7 +33151,7 @@ func (self *Program) ST3(v0, v1 interface{}) *Instruction {
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlso(maskp(sa_index, 3, 1), 0, 0, 0, 1, maskp(sa_index, 2, 1), sa_index & 3, sa_xn_sp, sa_vt))
+        return p.setins(asisdlso(ubfx(sa_index, 3, 1), 0, 0, 0, 1, ubfx(sa_index, 2, 1), mask(sa_index, 2), sa_xn_sp, sa_vt))
     }
     // ST3  { <Vt>.D, <Vt2>.D, <Vt3>.D }[<index>], [<Xn|SP>]
     if isIdxVec3(v0) &&
@@ -31724,13 +33178,13 @@ func (self *Program) ST3(v0, v1 interface{}) *Instruction {
         sa_index_2 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(asisdlso(
-            maskp(sa_index_2, 3, 1),
+            ubfx(sa_index_2, 3, 1),
             0,
             0,
             0,
             3,
-            maskp(sa_index_2, 2, 1),
-            sa_index_2 & 3,
+            ubfx(sa_index_2, 2, 1),
+            mask(sa_index_2, 2),
             sa_xn_sp,
             sa_vt,
         ))
@@ -31746,7 +33200,7 @@ func (self *Program) ST3(v0, v1 interface{}) *Instruction {
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlso(maskp(sa_index_3, 1, 1), 0, 0, 0, 5, sa_index_3 & 1, 0, sa_xn_sp, sa_vt))
+        return p.setins(asisdlso(ubfx(sa_index_3, 1, 1), 0, 0, 0, 5, mask(sa_index_3, 1), 0, sa_xn_sp, sa_vt))
     }
     // ST3  { <Vt>.B, <Vt2>.B, <Vt3>.B }[<index>], [<Xn|SP>], #3
     if isIdxVec3(v0) &&
@@ -31759,7 +33213,7 @@ func (self *Program) ST3(v0, v1 interface{}) *Instruction {
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlsop(maskp(sa_index, 3, 1), 0, 0, 31, 1, maskp(sa_index, 2, 1), sa_index & 3, sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(ubfx(sa_index, 3, 1), 0, 0, 31, 1, ubfx(sa_index, 2, 1), mask(sa_index, 2), sa_xn_sp, sa_vt))
     }
     // ST3  { <Vt>.B, <Vt2>.B, <Vt3>.B }[<index>], [<Xn|SP>], <Xm>
     if isIdxVec3(v0) &&
@@ -31773,7 +33227,17 @@ func (self *Program) ST3(v0, v1 interface{}) *Instruction {
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
-        return p.setins(asisdlsop(maskp(sa_index, 3, 1), 0, 0, sa_xm, 1, maskp(sa_index, 2, 1), sa_index & 3, sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(
+            ubfx(sa_index, 3, 1),
+            0,
+            0,
+            sa_xm,
+            1,
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 2),
+            sa_xn_sp,
+            sa_vt,
+        ))
     }
     // ST3  { <Vt>.D, <Vt2>.D, <Vt3>.D }[<index>], [<Xn|SP>], #24
     if isIdxVec3(v0) &&
@@ -31814,13 +33278,13 @@ func (self *Program) ST3(v0, v1 interface{}) *Instruction {
         sa_index_2 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(asisdlsop(
-            maskp(sa_index_2, 3, 1),
+            ubfx(sa_index_2, 3, 1),
             0,
             0,
             31,
             3,
-            maskp(sa_index_2, 2, 1),
-            sa_index_2 & 3,
+            ubfx(sa_index_2, 2, 1),
+            mask(sa_index_2, 2),
             sa_xn_sp,
             sa_vt,
         ))
@@ -31838,13 +33302,13 @@ func (self *Program) ST3(v0, v1 interface{}) *Instruction {
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
         return p.setins(asisdlsop(
-            maskp(sa_index_2, 3, 1),
+            ubfx(sa_index_2, 3, 1),
             0,
             0,
             sa_xm,
             3,
-            maskp(sa_index_2, 2, 1),
-            sa_index_2 & 3,
+            ubfx(sa_index_2, 2, 1),
+            mask(sa_index_2, 2),
             sa_xn_sp,
             sa_vt,
         ))
@@ -31860,7 +33324,7 @@ func (self *Program) ST3(v0, v1 interface{}) *Instruction {
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlsop(maskp(sa_index_3, 1, 1), 0, 0, 31, 5, sa_index_3 & 1, 0, sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(ubfx(sa_index_3, 1, 1), 0, 0, 31, 5, mask(sa_index_3, 1), 0, sa_xn_sp, sa_vt))
     }
     // ST3  { <Vt>.S, <Vt2>.S, <Vt3>.S }[<index>], [<Xn|SP>], <Xm>
     if isIdxVec3(v0) &&
@@ -31874,7 +33338,7 @@ func (self *Program) ST3(v0, v1 interface{}) *Instruction {
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
-        return p.setins(asisdlsop(maskp(sa_index_3, 1, 1), 0, 0, sa_xm, 5, sa_index_3 & 1, 0, sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(ubfx(sa_index_3, 1, 1), 0, 0, sa_xm, 5, mask(sa_index_3, 1), 0, sa_xn_sp, sa_vt))
     }
     // none of above
     p.Free()
@@ -31916,7 +33380,7 @@ func (self *Program) ST4(v0, v1 interface{}) *Instruction {
             default: panic("aarch64: invalid vector arrangement for ST4")
         }
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlse(sa_t & 1, 0, 0, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlse(mask(sa_t, 1), 0, 0, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // ST4  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T>, <Vt4>.<T> }, [<Xn|SP>], <imm>
     if isVec4(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
@@ -31934,10 +33398,10 @@ func (self *Program) ST4(v0, v1 interface{}) *Instruction {
         }
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_imm := uint32(moffs(v1))
-        if sa_imm != sa_t & 1 {
+        if sa_imm != mask(sa_t, 1) {
             panic("aarch64: invalid combination of operands for ST4")
         }
-        return p.setins(asisdlsep(sa_imm, 0, 31, 0, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlsep(sa_imm, 0, 31, 0, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // ST4  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T>, <Vt4>.<T> }, [<Xn|SP>], <Xm>
     if isVec4(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
@@ -31955,7 +33419,7 @@ func (self *Program) ST4(v0, v1 interface{}) *Instruction {
         }
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
-        return p.setins(asisdlsep(sa_t & 1, 0, sa_xm, 0, maskp(sa_t, 1, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlsep(mask(sa_t, 1), 0, sa_xm, 0, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // ST4  { <Vt>.B, <Vt2>.B, <Vt3>.B, <Vt4>.B }[<index>], [<Xn|SP>]
     if isIdxVec4(v0) &&
@@ -31968,7 +33432,7 @@ func (self *Program) ST4(v0, v1 interface{}) *Instruction {
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlso(maskp(sa_index, 3, 1), 0, 1, 0, 1, maskp(sa_index, 2, 1), sa_index & 3, sa_xn_sp, sa_vt))
+        return p.setins(asisdlso(ubfx(sa_index, 3, 1), 0, 1, 0, 1, ubfx(sa_index, 2, 1), mask(sa_index, 2), sa_xn_sp, sa_vt))
     }
     // ST4  { <Vt>.D, <Vt2>.D, <Vt3>.D, <Vt4>.D }[<index>], [<Xn|SP>]
     if isIdxVec4(v0) &&
@@ -31995,13 +33459,13 @@ func (self *Program) ST4(v0, v1 interface{}) *Instruction {
         sa_index_2 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(asisdlso(
-            maskp(sa_index_2, 3, 1),
+            ubfx(sa_index_2, 3, 1),
             0,
             1,
             0,
             3,
-            maskp(sa_index_2, 2, 1),
-            sa_index_2 & 3,
+            ubfx(sa_index_2, 2, 1),
+            mask(sa_index_2, 2),
             sa_xn_sp,
             sa_vt,
         ))
@@ -32017,7 +33481,7 @@ func (self *Program) ST4(v0, v1 interface{}) *Instruction {
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlso(maskp(sa_index_3, 1, 1), 0, 1, 0, 5, sa_index_3 & 1, 0, sa_xn_sp, sa_vt))
+        return p.setins(asisdlso(ubfx(sa_index_3, 1, 1), 0, 1, 0, 5, mask(sa_index_3, 1), 0, sa_xn_sp, sa_vt))
     }
     // ST4  { <Vt>.B, <Vt2>.B, <Vt3>.B, <Vt4>.B }[<index>], [<Xn|SP>], #4
     if isIdxVec4(v0) &&
@@ -32030,7 +33494,7 @@ func (self *Program) ST4(v0, v1 interface{}) *Instruction {
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlsop(maskp(sa_index, 3, 1), 0, 1, 31, 1, maskp(sa_index, 2, 1), sa_index & 3, sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(ubfx(sa_index, 3, 1), 0, 1, 31, 1, ubfx(sa_index, 2, 1), mask(sa_index, 2), sa_xn_sp, sa_vt))
     }
     // ST4  { <Vt>.B, <Vt2>.B, <Vt3>.B, <Vt4>.B }[<index>], [<Xn|SP>], <Xm>
     if isIdxVec4(v0) &&
@@ -32044,7 +33508,17 @@ func (self *Program) ST4(v0, v1 interface{}) *Instruction {
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
-        return p.setins(asisdlsop(maskp(sa_index, 3, 1), 0, 1, sa_xm, 1, maskp(sa_index, 2, 1), sa_index & 3, sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(
+            ubfx(sa_index, 3, 1),
+            0,
+            1,
+            sa_xm,
+            1,
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 2),
+            sa_xn_sp,
+            sa_vt,
+        ))
     }
     // ST4  { <Vt>.D, <Vt2>.D, <Vt3>.D, <Vt4>.D }[<index>], [<Xn|SP>], #32
     if isIdxVec4(v0) &&
@@ -32085,13 +33559,13 @@ func (self *Program) ST4(v0, v1 interface{}) *Instruction {
         sa_index_2 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(asisdlsop(
-            maskp(sa_index_2, 3, 1),
+            ubfx(sa_index_2, 3, 1),
             0,
             1,
             31,
             3,
-            maskp(sa_index_2, 2, 1),
-            sa_index_2 & 3,
+            ubfx(sa_index_2, 2, 1),
+            mask(sa_index_2, 2),
             sa_xn_sp,
             sa_vt,
         ))
@@ -32109,13 +33583,13 @@ func (self *Program) ST4(v0, v1 interface{}) *Instruction {
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
         return p.setins(asisdlsop(
-            maskp(sa_index_2, 3, 1),
+            ubfx(sa_index_2, 3, 1),
             0,
             1,
             sa_xm,
             3,
-            maskp(sa_index_2, 2, 1),
-            sa_index_2 & 3,
+            ubfx(sa_index_2, 2, 1),
+            mask(sa_index_2, 2),
             sa_xn_sp,
             sa_vt,
         ))
@@ -32131,7 +33605,7 @@ func (self *Program) ST4(v0, v1 interface{}) *Instruction {
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlsop(maskp(sa_index_3, 1, 1), 0, 1, 31, 5, sa_index_3 & 1, 0, sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(ubfx(sa_index_3, 1, 1), 0, 1, 31, 5, mask(sa_index_3, 1), 0, sa_xn_sp, sa_vt))
     }
     // ST4  { <Vt>.S, <Vt2>.S, <Vt3>.S, <Vt4>.S }[<index>], [<Xn|SP>], <Xm>
     if isIdxVec4(v0) &&
@@ -32145,7 +33619,7 @@ func (self *Program) ST4(v0, v1 interface{}) *Instruction {
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
-        return p.setins(asisdlsop(maskp(sa_index_3, 1, 1), 0, 1, sa_xm, 5, sa_index_3 & 1, 0, sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(ubfx(sa_index_3, 1, 1), 0, 1, sa_xm, 5, mask(sa_index_3, 1), 0, sa_xn_sp, sa_vt))
     }
     // none of above
     p.Free()
@@ -32214,6 +33688,330 @@ func (self *Program) ST64BV0(v0, v1, v2 interface{}) *Instruction {
     }
     p.Free()
     panic("aarch64: invalid combination of operands for ST64BV0")
+}
+
+// STADD instruction have 2 forms:
+//
+//   * STADD  <Ws>, [<Xn|SP>]
+//   * STADD  <Xs>, [<Xn|SP>]
+//
+func (self *Program) STADD(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STADD", 2, Operands { v0, v1 })
+    // STADD  <Ws>, [<Xn|SP>]
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(2, 0, 0, 0, sa_ws, 0, 0, sa_xn_sp, 31))
+    }
+    // STADD  <Xs>, [<Xn|SP>]
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_xs := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(3, 0, 0, 0, sa_xs, 0, 0, sa_xn_sp, 31))
+    }
+    // none of above
+    p.Free()
+    panic("aarch64: invalid combination of operands for STADD")
+}
+
+// STADDB instruction have one single form:
+//
+//   * STADDB  <Ws>, [<Xn|SP>]
+//
+func (self *Program) STADDB(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STADDB", 2, Operands { v0, v1 })
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(0, 0, 0, 0, sa_ws, 0, 0, sa_xn_sp, 31))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for STADDB")
+}
+
+// STADDH instruction have one single form:
+//
+//   * STADDH  <Ws>, [<Xn|SP>]
+//
+func (self *Program) STADDH(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STADDH", 2, Operands { v0, v1 })
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(1, 0, 0, 0, sa_ws, 0, 0, sa_xn_sp, 31))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for STADDH")
+}
+
+// STADDL instruction have 2 forms:
+//
+//   * STADDL  <Ws>, [<Xn|SP>]
+//   * STADDL  <Xs>, [<Xn|SP>]
+//
+func (self *Program) STADDL(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STADDL", 2, Operands { v0, v1 })
+    // STADDL  <Ws>, [<Xn|SP>]
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(2, 0, 0, 1, sa_ws, 0, 0, sa_xn_sp, 31))
+    }
+    // STADDL  <Xs>, [<Xn|SP>]
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_xs := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(3, 0, 0, 1, sa_xs, 0, 0, sa_xn_sp, 31))
+    }
+    // none of above
+    p.Free()
+    panic("aarch64: invalid combination of operands for STADDL")
+}
+
+// STADDLB instruction have one single form:
+//
+//   * STADDLB  <Ws>, [<Xn|SP>]
+//
+func (self *Program) STADDLB(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STADDLB", 2, Operands { v0, v1 })
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(0, 0, 0, 1, sa_ws, 0, 0, sa_xn_sp, 31))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for STADDLB")
+}
+
+// STADDLH instruction have one single form:
+//
+//   * STADDLH  <Ws>, [<Xn|SP>]
+//
+func (self *Program) STADDLH(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STADDLH", 2, Operands { v0, v1 })
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(1, 0, 0, 1, sa_ws, 0, 0, sa_xn_sp, 31))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for STADDLH")
+}
+
+// STCLR instruction have 2 forms:
+//
+//   * STCLR  <Ws>, [<Xn|SP>]
+//   * STCLR  <Xs>, [<Xn|SP>]
+//
+func (self *Program) STCLR(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STCLR", 2, Operands { v0, v1 })
+    // STCLR  <Ws>, [<Xn|SP>]
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(2, 0, 0, 0, sa_ws, 0, 1, sa_xn_sp, 31))
+    }
+    // STCLR  <Xs>, [<Xn|SP>]
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_xs := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(3, 0, 0, 0, sa_xs, 0, 1, sa_xn_sp, 31))
+    }
+    // none of above
+    p.Free()
+    panic("aarch64: invalid combination of operands for STCLR")
+}
+
+// STCLRB instruction have one single form:
+//
+//   * STCLRB  <Ws>, [<Xn|SP>]
+//
+func (self *Program) STCLRB(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STCLRB", 2, Operands { v0, v1 })
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(0, 0, 0, 0, sa_ws, 0, 1, sa_xn_sp, 31))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for STCLRB")
+}
+
+// STCLRH instruction have one single form:
+//
+//   * STCLRH  <Ws>, [<Xn|SP>]
+//
+func (self *Program) STCLRH(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STCLRH", 2, Operands { v0, v1 })
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(1, 0, 0, 0, sa_ws, 0, 1, sa_xn_sp, 31))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for STCLRH")
+}
+
+// STCLRL instruction have 2 forms:
+//
+//   * STCLRL  <Ws>, [<Xn|SP>]
+//   * STCLRL  <Xs>, [<Xn|SP>]
+//
+func (self *Program) STCLRL(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STCLRL", 2, Operands { v0, v1 })
+    // STCLRL  <Ws>, [<Xn|SP>]
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(2, 0, 0, 1, sa_ws, 0, 1, sa_xn_sp, 31))
+    }
+    // STCLRL  <Xs>, [<Xn|SP>]
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_xs := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(3, 0, 0, 1, sa_xs, 0, 1, sa_xn_sp, 31))
+    }
+    // none of above
+    p.Free()
+    panic("aarch64: invalid combination of operands for STCLRL")
+}
+
+// STCLRLB instruction have one single form:
+//
+//   * STCLRLB  <Ws>, [<Xn|SP>]
+//
+func (self *Program) STCLRLB(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STCLRLB", 2, Operands { v0, v1 })
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(0, 0, 0, 1, sa_ws, 0, 1, sa_xn_sp, 31))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for STCLRLB")
+}
+
+// STCLRLH instruction have one single form:
+//
+//   * STCLRLH  <Ws>, [<Xn|SP>]
+//
+func (self *Program) STCLRLH(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STCLRLH", 2, Operands { v0, v1 })
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(1, 0, 0, 1, sa_ws, 0, 1, sa_xn_sp, 31))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for STCLRLH")
+}
+
+// STEOR instruction have 2 forms:
+//
+//   * STEOR  <Ws>, [<Xn|SP>]
+//   * STEOR  <Xs>, [<Xn|SP>]
+//
+func (self *Program) STEOR(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STEOR", 2, Operands { v0, v1 })
+    // STEOR  <Ws>, [<Xn|SP>]
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(2, 0, 0, 0, sa_ws, 0, 2, sa_xn_sp, 31))
+    }
+    // STEOR  <Xs>, [<Xn|SP>]
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_xs := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(3, 0, 0, 0, sa_xs, 0, 2, sa_xn_sp, 31))
+    }
+    // none of above
+    p.Free()
+    panic("aarch64: invalid combination of operands for STEOR")
+}
+
+// STEORB instruction have one single form:
+//
+//   * STEORB  <Ws>, [<Xn|SP>]
+//
+func (self *Program) STEORB(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STEORB", 2, Operands { v0, v1 })
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(0, 0, 0, 0, sa_ws, 0, 2, sa_xn_sp, 31))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for STEORB")
+}
+
+// STEORH instruction have one single form:
+//
+//   * STEORH  <Ws>, [<Xn|SP>]
+//
+func (self *Program) STEORH(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STEORH", 2, Operands { v0, v1 })
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(1, 0, 0, 0, sa_ws, 0, 2, sa_xn_sp, 31))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for STEORH")
+}
+
+// STEORL instruction have 2 forms:
+//
+//   * STEORL  <Ws>, [<Xn|SP>]
+//   * STEORL  <Xs>, [<Xn|SP>]
+//
+func (self *Program) STEORL(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STEORL", 2, Operands { v0, v1 })
+    // STEORL  <Ws>, [<Xn|SP>]
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(2, 0, 0, 1, sa_ws, 0, 2, sa_xn_sp, 31))
+    }
+    // STEORL  <Xs>, [<Xn|SP>]
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_xs := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(3, 0, 0, 1, sa_xs, 0, 2, sa_xn_sp, 31))
+    }
+    // none of above
+    p.Free()
+    panic("aarch64: invalid combination of operands for STEORL")
+}
+
+// STEORLB instruction have one single form:
+//
+//   * STEORLB  <Ws>, [<Xn|SP>]
+//
+func (self *Program) STEORLB(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STEORLB", 2, Operands { v0, v1 })
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(0, 0, 0, 1, sa_ws, 0, 2, sa_xn_sp, 31))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for STEORLB")
+}
+
+// STEORLH instruction have one single form:
+//
+//   * STEORLH  <Ws>, [<Xn|SP>]
+//
+func (self *Program) STEORLH(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STEORLH", 2, Operands { v0, v1 })
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(1, 0, 0, 1, sa_ws, 0, 2, sa_xn_sp, 31))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for STEORLH")
 }
 
 // STG instruction have 3 forms:
@@ -33447,6 +35245,330 @@ func (self *Program) STRH(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STRH")
 }
 
+// STSET instruction have 2 forms:
+//
+//   * STSET  <Ws>, [<Xn|SP>]
+//   * STSET  <Xs>, [<Xn|SP>]
+//
+func (self *Program) STSET(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STSET", 2, Operands { v0, v1 })
+    // STSET  <Ws>, [<Xn|SP>]
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(2, 0, 0, 0, sa_ws, 0, 3, sa_xn_sp, 31))
+    }
+    // STSET  <Xs>, [<Xn|SP>]
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_xs := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(3, 0, 0, 0, sa_xs, 0, 3, sa_xn_sp, 31))
+    }
+    // none of above
+    p.Free()
+    panic("aarch64: invalid combination of operands for STSET")
+}
+
+// STSETB instruction have one single form:
+//
+//   * STSETB  <Ws>, [<Xn|SP>]
+//
+func (self *Program) STSETB(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STSETB", 2, Operands { v0, v1 })
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(0, 0, 0, 0, sa_ws, 0, 3, sa_xn_sp, 31))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for STSETB")
+}
+
+// STSETH instruction have one single form:
+//
+//   * STSETH  <Ws>, [<Xn|SP>]
+//
+func (self *Program) STSETH(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STSETH", 2, Operands { v0, v1 })
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(1, 0, 0, 0, sa_ws, 0, 3, sa_xn_sp, 31))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for STSETH")
+}
+
+// STSETL instruction have 2 forms:
+//
+//   * STSETL  <Ws>, [<Xn|SP>]
+//   * STSETL  <Xs>, [<Xn|SP>]
+//
+func (self *Program) STSETL(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STSETL", 2, Operands { v0, v1 })
+    // STSETL  <Ws>, [<Xn|SP>]
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(2, 0, 0, 1, sa_ws, 0, 3, sa_xn_sp, 31))
+    }
+    // STSETL  <Xs>, [<Xn|SP>]
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_xs := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(3, 0, 0, 1, sa_xs, 0, 3, sa_xn_sp, 31))
+    }
+    // none of above
+    p.Free()
+    panic("aarch64: invalid combination of operands for STSETL")
+}
+
+// STSETLB instruction have one single form:
+//
+//   * STSETLB  <Ws>, [<Xn|SP>]
+//
+func (self *Program) STSETLB(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STSETLB", 2, Operands { v0, v1 })
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(0, 0, 0, 1, sa_ws, 0, 3, sa_xn_sp, 31))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for STSETLB")
+}
+
+// STSETLH instruction have one single form:
+//
+//   * STSETLH  <Ws>, [<Xn|SP>]
+//
+func (self *Program) STSETLH(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STSETLH", 2, Operands { v0, v1 })
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(1, 0, 0, 1, sa_ws, 0, 3, sa_xn_sp, 31))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for STSETLH")
+}
+
+// STSMAX instruction have 2 forms:
+//
+//   * STSMAX  <Ws>, [<Xn|SP>]
+//   * STSMAX  <Xs>, [<Xn|SP>]
+//
+func (self *Program) STSMAX(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STSMAX", 2, Operands { v0, v1 })
+    // STSMAX  <Ws>, [<Xn|SP>]
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(2, 0, 0, 0, sa_ws, 0, 4, sa_xn_sp, 31))
+    }
+    // STSMAX  <Xs>, [<Xn|SP>]
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_xs := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(3, 0, 0, 0, sa_xs, 0, 4, sa_xn_sp, 31))
+    }
+    // none of above
+    p.Free()
+    panic("aarch64: invalid combination of operands for STSMAX")
+}
+
+// STSMAXB instruction have one single form:
+//
+//   * STSMAXB  <Ws>, [<Xn|SP>]
+//
+func (self *Program) STSMAXB(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STSMAXB", 2, Operands { v0, v1 })
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(0, 0, 0, 0, sa_ws, 0, 4, sa_xn_sp, 31))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for STSMAXB")
+}
+
+// STSMAXH instruction have one single form:
+//
+//   * STSMAXH  <Ws>, [<Xn|SP>]
+//
+func (self *Program) STSMAXH(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STSMAXH", 2, Operands { v0, v1 })
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(1, 0, 0, 0, sa_ws, 0, 4, sa_xn_sp, 31))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for STSMAXH")
+}
+
+// STSMAXL instruction have 2 forms:
+//
+//   * STSMAXL  <Ws>, [<Xn|SP>]
+//   * STSMAXL  <Xs>, [<Xn|SP>]
+//
+func (self *Program) STSMAXL(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STSMAXL", 2, Operands { v0, v1 })
+    // STSMAXL  <Ws>, [<Xn|SP>]
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(2, 0, 0, 1, sa_ws, 0, 4, sa_xn_sp, 31))
+    }
+    // STSMAXL  <Xs>, [<Xn|SP>]
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_xs := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(3, 0, 0, 1, sa_xs, 0, 4, sa_xn_sp, 31))
+    }
+    // none of above
+    p.Free()
+    panic("aarch64: invalid combination of operands for STSMAXL")
+}
+
+// STSMAXLB instruction have one single form:
+//
+//   * STSMAXLB  <Ws>, [<Xn|SP>]
+//
+func (self *Program) STSMAXLB(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STSMAXLB", 2, Operands { v0, v1 })
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(0, 0, 0, 1, sa_ws, 0, 4, sa_xn_sp, 31))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for STSMAXLB")
+}
+
+// STSMAXLH instruction have one single form:
+//
+//   * STSMAXLH  <Ws>, [<Xn|SP>]
+//
+func (self *Program) STSMAXLH(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STSMAXLH", 2, Operands { v0, v1 })
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(1, 0, 0, 1, sa_ws, 0, 4, sa_xn_sp, 31))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for STSMAXLH")
+}
+
+// STSMIN instruction have 2 forms:
+//
+//   * STSMIN  <Ws>, [<Xn|SP>]
+//   * STSMIN  <Xs>, [<Xn|SP>]
+//
+func (self *Program) STSMIN(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STSMIN", 2, Operands { v0, v1 })
+    // STSMIN  <Ws>, [<Xn|SP>]
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(2, 0, 0, 0, sa_ws, 0, 5, sa_xn_sp, 31))
+    }
+    // STSMIN  <Xs>, [<Xn|SP>]
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_xs := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(3, 0, 0, 0, sa_xs, 0, 5, sa_xn_sp, 31))
+    }
+    // none of above
+    p.Free()
+    panic("aarch64: invalid combination of operands for STSMIN")
+}
+
+// STSMINB instruction have one single form:
+//
+//   * STSMINB  <Ws>, [<Xn|SP>]
+//
+func (self *Program) STSMINB(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STSMINB", 2, Operands { v0, v1 })
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(0, 0, 0, 0, sa_ws, 0, 5, sa_xn_sp, 31))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for STSMINB")
+}
+
+// STSMINH instruction have one single form:
+//
+//   * STSMINH  <Ws>, [<Xn|SP>]
+//
+func (self *Program) STSMINH(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STSMINH", 2, Operands { v0, v1 })
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(1, 0, 0, 0, sa_ws, 0, 5, sa_xn_sp, 31))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for STSMINH")
+}
+
+// STSMINL instruction have 2 forms:
+//
+//   * STSMINL  <Ws>, [<Xn|SP>]
+//   * STSMINL  <Xs>, [<Xn|SP>]
+//
+func (self *Program) STSMINL(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STSMINL", 2, Operands { v0, v1 })
+    // STSMINL  <Ws>, [<Xn|SP>]
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(2, 0, 0, 1, sa_ws, 0, 5, sa_xn_sp, 31))
+    }
+    // STSMINL  <Xs>, [<Xn|SP>]
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_xs := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(3, 0, 0, 1, sa_xs, 0, 5, sa_xn_sp, 31))
+    }
+    // none of above
+    p.Free()
+    panic("aarch64: invalid combination of operands for STSMINL")
+}
+
+// STSMINLB instruction have one single form:
+//
+//   * STSMINLB  <Ws>, [<Xn|SP>]
+//
+func (self *Program) STSMINLB(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STSMINLB", 2, Operands { v0, v1 })
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(0, 0, 0, 1, sa_ws, 0, 5, sa_xn_sp, 31))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for STSMINLB")
+}
+
+// STSMINLH instruction have one single form:
+//
+//   * STSMINLH  <Ws>, [<Xn|SP>]
+//
+func (self *Program) STSMINLH(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STSMINLH", 2, Operands { v0, v1 })
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(1, 0, 0, 1, sa_ws, 0, 5, sa_xn_sp, 31))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for STSMINLH")
+}
+
 // STTR instruction have 2 forms:
 //
 //   * STTR  <Wt>, [<Xn|SP>{, #<simm>}]
@@ -33503,6 +35625,222 @@ func (self *Program) STTRH(v0, v1 interface{}) *Instruction {
     }
     p.Free()
     panic("aarch64: invalid combination of operands for STTRH")
+}
+
+// STUMAX instruction have 2 forms:
+//
+//   * STUMAX  <Ws>, [<Xn|SP>]
+//   * STUMAX  <Xs>, [<Xn|SP>]
+//
+func (self *Program) STUMAX(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STUMAX", 2, Operands { v0, v1 })
+    // STUMAX  <Ws>, [<Xn|SP>]
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(2, 0, 0, 0, sa_ws, 0, 6, sa_xn_sp, 31))
+    }
+    // STUMAX  <Xs>, [<Xn|SP>]
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_xs := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(3, 0, 0, 0, sa_xs, 0, 6, sa_xn_sp, 31))
+    }
+    // none of above
+    p.Free()
+    panic("aarch64: invalid combination of operands for STUMAX")
+}
+
+// STUMAXB instruction have one single form:
+//
+//   * STUMAXB  <Ws>, [<Xn|SP>]
+//
+func (self *Program) STUMAXB(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STUMAXB", 2, Operands { v0, v1 })
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(0, 0, 0, 0, sa_ws, 0, 6, sa_xn_sp, 31))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for STUMAXB")
+}
+
+// STUMAXH instruction have one single form:
+//
+//   * STUMAXH  <Ws>, [<Xn|SP>]
+//
+func (self *Program) STUMAXH(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STUMAXH", 2, Operands { v0, v1 })
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(1, 0, 0, 0, sa_ws, 0, 6, sa_xn_sp, 31))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for STUMAXH")
+}
+
+// STUMAXL instruction have 2 forms:
+//
+//   * STUMAXL  <Ws>, [<Xn|SP>]
+//   * STUMAXL  <Xs>, [<Xn|SP>]
+//
+func (self *Program) STUMAXL(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STUMAXL", 2, Operands { v0, v1 })
+    // STUMAXL  <Ws>, [<Xn|SP>]
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(2, 0, 0, 1, sa_ws, 0, 6, sa_xn_sp, 31))
+    }
+    // STUMAXL  <Xs>, [<Xn|SP>]
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_xs := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(3, 0, 0, 1, sa_xs, 0, 6, sa_xn_sp, 31))
+    }
+    // none of above
+    p.Free()
+    panic("aarch64: invalid combination of operands for STUMAXL")
+}
+
+// STUMAXLB instruction have one single form:
+//
+//   * STUMAXLB  <Ws>, [<Xn|SP>]
+//
+func (self *Program) STUMAXLB(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STUMAXLB", 2, Operands { v0, v1 })
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(0, 0, 0, 1, sa_ws, 0, 6, sa_xn_sp, 31))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for STUMAXLB")
+}
+
+// STUMAXLH instruction have one single form:
+//
+//   * STUMAXLH  <Ws>, [<Xn|SP>]
+//
+func (self *Program) STUMAXLH(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STUMAXLH", 2, Operands { v0, v1 })
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(1, 0, 0, 1, sa_ws, 0, 6, sa_xn_sp, 31))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for STUMAXLH")
+}
+
+// STUMIN instruction have 2 forms:
+//
+//   * STUMIN  <Ws>, [<Xn|SP>]
+//   * STUMIN  <Xs>, [<Xn|SP>]
+//
+func (self *Program) STUMIN(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STUMIN", 2, Operands { v0, v1 })
+    // STUMIN  <Ws>, [<Xn|SP>]
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(2, 0, 0, 0, sa_ws, 0, 7, sa_xn_sp, 31))
+    }
+    // STUMIN  <Xs>, [<Xn|SP>]
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_xs := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(3, 0, 0, 0, sa_xs, 0, 7, sa_xn_sp, 31))
+    }
+    // none of above
+    p.Free()
+    panic("aarch64: invalid combination of operands for STUMIN")
+}
+
+// STUMINB instruction have one single form:
+//
+//   * STUMINB  <Ws>, [<Xn|SP>]
+//
+func (self *Program) STUMINB(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STUMINB", 2, Operands { v0, v1 })
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(0, 0, 0, 0, sa_ws, 0, 7, sa_xn_sp, 31))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for STUMINB")
+}
+
+// STUMINH instruction have one single form:
+//
+//   * STUMINH  <Ws>, [<Xn|SP>]
+//
+func (self *Program) STUMINH(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STUMINH", 2, Operands { v0, v1 })
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(1, 0, 0, 0, sa_ws, 0, 7, sa_xn_sp, 31))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for STUMINH")
+}
+
+// STUMINL instruction have 2 forms:
+//
+//   * STUMINL  <Ws>, [<Xn|SP>]
+//   * STUMINL  <Xs>, [<Xn|SP>]
+//
+func (self *Program) STUMINL(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STUMINL", 2, Operands { v0, v1 })
+    // STUMINL  <Ws>, [<Xn|SP>]
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(2, 0, 0, 1, sa_ws, 0, 7, sa_xn_sp, 31))
+    }
+    // STUMINL  <Xs>, [<Xn|SP>]
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_xs := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(3, 0, 0, 1, sa_xs, 0, 7, sa_xn_sp, 31))
+    }
+    // none of above
+    p.Free()
+    panic("aarch64: invalid combination of operands for STUMINL")
+}
+
+// STUMINLB instruction have one single form:
+//
+//   * STUMINLB  <Ws>, [<Xn|SP>]
+//
+func (self *Program) STUMINLB(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STUMINLB", 2, Operands { v0, v1 })
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(0, 0, 0, 1, sa_ws, 0, 7, sa_xn_sp, 31))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for STUMINLB")
+}
+
+// STUMINLH instruction have one single form:
+//
+//   * STUMINLH  <Ws>, [<Xn|SP>]
+//
+func (self *Program) STUMINLH(v0, v1 interface{}) *Instruction {
+    p := self.alloc("STUMINLH", 2, Operands { v0, v1 })
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        sa_ws := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(mbase(v1).ID())
+        return p.setins(memop(1, 0, 0, 1, sa_ws, 0, 7, sa_xn_sp, 31))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for STUMINLH")
 }
 
 // STUR instruction have 7 forms:
@@ -33984,7 +36322,7 @@ func (self *Program) SUB(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdsame(sa_t & 1, 1, maskp(sa_t, 1, 2), sa_vm, 16, sa_vn, sa_vd))
+        return p.setins(asimdsame(mask(sa_t, 1), 1, ubfx(sa_t, 1, 2), sa_vm, 16, sa_vn, sa_vd))
     }
     // SUB  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
@@ -34057,10 +36395,10 @@ func (self *Program) SUBHN(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vm := uint32(v2.(asm.Register).ID())
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for SUBHN")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for SUBHN")
         }
         return p.setins(asimddiff(0, 0, sa_ta, sa_vm, 6, sa_vn, sa_vd))
@@ -34102,10 +36440,10 @@ func (self *Program) SUBHN2(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vm := uint32(v2.(asm.Register).ID())
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for SUBHN2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for SUBHN2")
         }
         return p.setins(asimddiff(1, 0, sa_ta, sa_vm, 6, sa_vn, sa_vd))
@@ -34307,18 +36645,7 @@ func (self *Program) SUDOT(v0, v1, v2 interface{}) *Instruction {
         if sa_ta != sa_tb {
             panic("aarch64: invalid combination of operands for SUDOT")
         }
-        return p.setins(asimdelem(
-            sa_ta,
-            0,
-            0,
-            sa_index & 1,
-            maskp(sa_vm, 4, 1),
-            mask(sa_vm, 4),
-            15,
-            maskp(sa_index, 1, 1),
-            sa_vn,
-            sa_vd,
-        ))
+        return p.setins(asimdelem(sa_ta, 0, 0, mask(sa_index, 1), sa_vm, sa_vm, 15, ubfx(sa_index, 1, 1), sa_vn, sa_vd))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for SUDOT")
@@ -34350,7 +36677,7 @@ func (self *Program) SUQADD(v0, v1 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vn := uint32(v1.(asm.Register).ID())
-        return p.setins(asimdmisc(sa_t & 1, 0, maskp(sa_t, 1, 2), 3, sa_vn, sa_vd))
+        return p.setins(asimdmisc(mask(sa_t, 1), 0, ubfx(sa_t, 1, 2), 3, sa_vn, sa_vd))
     }
     // SUQADD  <V><d>, <V><n>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isSameType(v0, v1) {
@@ -34801,6 +37128,185 @@ func (self *Program) SWPPL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SWPPL")
 }
 
+// SXTB instruction have 2 forms:
+//
+//   * SXTB  <Wd>, <Wn>
+//   * SXTB  <Xd>, <Wn>
+//
+func (self *Program) SXTB(v0, v1 interface{}) *Instruction {
+    p := self.alloc("SXTB", 2, Operands { v0, v1 })
+    // SXTB  <Wd>, <Wn>
+    if isWr(v0) && isWr(v1) {
+        sa_wd := uint32(v0.(asm.Register).ID())
+        sa_wn := uint32(v1.(asm.Register).ID())
+        return p.setins(bitfield(0, 0, 0, 0, 7, sa_wn, sa_wd))
+    }
+    // SXTB  <Xd>, <Wn>
+    if isXr(v0) && isWr(v1) {
+        sa_xd := uint32(v0.(asm.Register).ID())
+        sa_wn := uint32(v1.(asm.Register).ID())
+        return p.setins(bitfield(1, 0, 1, 0, 7, sa_wn, sa_xd))
+    }
+    // none of above
+    p.Free()
+    panic("aarch64: invalid combination of operands for SXTB")
+}
+
+// SXTH instruction have 2 forms:
+//
+//   * SXTH  <Wd>, <Wn>
+//   * SXTH  <Xd>, <Wn>
+//
+func (self *Program) SXTH(v0, v1 interface{}) *Instruction {
+    p := self.alloc("SXTH", 2, Operands { v0, v1 })
+    // SXTH  <Wd>, <Wn>
+    if isWr(v0) && isWr(v1) {
+        sa_wd := uint32(v0.(asm.Register).ID())
+        sa_wn := uint32(v1.(asm.Register).ID())
+        return p.setins(bitfield(0, 0, 0, 0, 15, sa_wn, sa_wd))
+    }
+    // SXTH  <Xd>, <Wn>
+    if isXr(v0) && isWr(v1) {
+        sa_xd := uint32(v0.(asm.Register).ID())
+        sa_wn := uint32(v1.(asm.Register).ID())
+        return p.setins(bitfield(1, 0, 1, 0, 15, sa_wn, sa_xd))
+    }
+    // none of above
+    p.Free()
+    panic("aarch64: invalid combination of operands for SXTH")
+}
+
+// SXTL instruction have one single form:
+//
+//   * SXTL  <Vd>.<Ta>, <Vn>.<Tb>
+//
+func (self *Program) SXTL(v0, v1 interface{}) *Instruction {
+    p := self.alloc("SXTL", 2, Operands { v0, v1 })
+    if isVr(v0) &&
+       isVfmt(v0, Vec8H, Vec4S, Vec2D) &&
+       isVr(v1) &&
+       isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) {
+        var sa_ta uint32
+        var sa_ta__bit_mask uint32
+        var sa_tb uint32
+        var sa_tb__bit_mask uint32
+        sa_vd := uint32(v0.(asm.Register).ID())
+        switch vfmt(v0) {
+            case Vec8H: sa_ta = 0b0001
+            case Vec4S: sa_ta = 0b0010
+            case Vec2D: sa_ta = 0b0100
+            default: panic("aarch64: unreachable")
+        }
+        switch vfmt(v0) {
+            case Vec8H: sa_ta__bit_mask = 0b1111
+            case Vec4S: sa_ta__bit_mask = 0b1110
+            case Vec2D: sa_ta__bit_mask = 0b1100
+            default: panic("aarch64: unreachable")
+        }
+        sa_vn := uint32(v1.(asm.Register).ID())
+        switch vfmt(v1) {
+            case Vec8B: sa_tb = 0b00010
+            case Vec16B: sa_tb = 0b00011
+            case Vec4H: sa_tb = 0b00100
+            case Vec8H: sa_tb = 0b00101
+            case Vec2S: sa_tb = 0b01000
+            case Vec4S: sa_tb = 0b01001
+            default: panic("aarch64: unreachable")
+        }
+        switch vfmt(v1) {
+            case Vec8B: sa_tb__bit_mask = 0b11111
+            case Vec16B: sa_tb__bit_mask = 0b11111
+            case Vec4H: sa_tb__bit_mask = 0b11101
+            case Vec8H: sa_tb__bit_mask = 0b11101
+            case Vec2S: sa_tb__bit_mask = 0b11001
+            case Vec4S: sa_tb__bit_mask = 0b11001
+            default: panic("aarch64: unreachable")
+        }
+        if sa_ta & sa_ta__bit_mask != ubfx(sa_tb, 1, 4) & ubfx(sa_tb__bit_mask, 1, 4) {
+            panic("aarch64: invalid combination of operands for SXTL")
+        }
+        if mask(sa_tb, 1) != 0 {
+            panic("aarch64: invalid combination of operands for SXTL")
+        }
+        return p.setins(asimdshf(0, 0, sa_ta, 0, 20, sa_vn, sa_vd))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for SXTL")
+}
+
+// SXTL2 instruction have one single form:
+//
+//   * SXTL2  <Vd>.<Ta>, <Vn>.<Tb>
+//
+func (self *Program) SXTL2(v0, v1 interface{}) *Instruction {
+    p := self.alloc("SXTL2", 2, Operands { v0, v1 })
+    if isVr(v0) &&
+       isVfmt(v0, Vec8H, Vec4S, Vec2D) &&
+       isVr(v1) &&
+       isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) {
+        var sa_ta uint32
+        var sa_ta__bit_mask uint32
+        var sa_tb uint32
+        var sa_tb__bit_mask uint32
+        sa_vd := uint32(v0.(asm.Register).ID())
+        switch vfmt(v0) {
+            case Vec8H: sa_ta = 0b0001
+            case Vec4S: sa_ta = 0b0010
+            case Vec2D: sa_ta = 0b0100
+            default: panic("aarch64: unreachable")
+        }
+        switch vfmt(v0) {
+            case Vec8H: sa_ta__bit_mask = 0b1111
+            case Vec4S: sa_ta__bit_mask = 0b1110
+            case Vec2D: sa_ta__bit_mask = 0b1100
+            default: panic("aarch64: unreachable")
+        }
+        sa_vn := uint32(v1.(asm.Register).ID())
+        switch vfmt(v1) {
+            case Vec8B: sa_tb = 0b00010
+            case Vec16B: sa_tb = 0b00011
+            case Vec4H: sa_tb = 0b00100
+            case Vec8H: sa_tb = 0b00101
+            case Vec2S: sa_tb = 0b01000
+            case Vec4S: sa_tb = 0b01001
+            default: panic("aarch64: unreachable")
+        }
+        switch vfmt(v1) {
+            case Vec8B: sa_tb__bit_mask = 0b11111
+            case Vec16B: sa_tb__bit_mask = 0b11111
+            case Vec4H: sa_tb__bit_mask = 0b11101
+            case Vec8H: sa_tb__bit_mask = 0b11101
+            case Vec2S: sa_tb__bit_mask = 0b11001
+            case Vec4S: sa_tb__bit_mask = 0b11001
+            default: panic("aarch64: unreachable")
+        }
+        if sa_ta & sa_ta__bit_mask != ubfx(sa_tb, 1, 4) & ubfx(sa_tb__bit_mask, 1, 4) {
+            panic("aarch64: invalid combination of operands for SXTL2")
+        }
+        if mask(sa_tb, 1) != 1 {
+            panic("aarch64: invalid combination of operands for SXTL2")
+        }
+        return p.setins(asimdshf(1, 0, sa_ta, 0, 20, sa_vn, sa_vd))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for SXTL2")
+}
+
+// SXTW instruction have one single form:
+//
+//   * SXTW  <Xd>, <Wn>
+//
+func (self *Program) SXTW(v0, v1 interface{}) *Instruction {
+    p := self.alloc("SXTW", 2, Operands { v0, v1 })
+    if isXr(v0) && isWr(v1) {
+        sa_xd := uint32(v0.(asm.Register).ID())
+        sa_wn := uint32(v1.(asm.Register).ID())
+        return p.setins(bitfield(1, 0, 1, 0, 31, sa_wn, sa_xd))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for SXTW")
+}
+
 // SYS instruction have one single form:
 //
 //   * SYS  #<op1>, <Cn>, <Cm>, #<op2>{, <Xt>}
@@ -34993,14 +37499,14 @@ func (self *Program) TBNZ(v0, v1, v2 interface{}) *Instruction {
         }
         sa_imm := asUimm6(v1)
         sa_label := v2.(*asm.Label)
-        if sa_imm & 1 != sa_r {
+        if mask(sa_imm, 1) != sa_r {
             panic("aarch64: invalid combination of operands for TBNZ")
         }
         return p.setenc(func(pc uintptr) uint32 {
             return testbranch(
-                sa_imm & 1,
+                mask(sa_imm, 1),
                 1,
-                maskp(sa_imm, 1, 5),
+                ubfx(sa_imm, 1, 5),
                 uint32(sa_label.RelativeTo(pc)),
                 sa_t,
             )
@@ -35116,14 +37622,14 @@ func (self *Program) TBZ(v0, v1, v2 interface{}) *Instruction {
         }
         sa_imm := asUimm6(v1)
         sa_label := v2.(*asm.Label)
-        if sa_imm & 1 != sa_r {
+        if mask(sa_imm, 1) != sa_r {
             panic("aarch64: invalid combination of operands for TBZ")
         }
         return p.setenc(func(pc uintptr) uint32 {
             return testbranch(
-                sa_imm & 1,
+                mask(sa_imm, 1),
                 0,
-                maskp(sa_imm, 1, 5),
+                ubfx(sa_imm, 1, 5),
                 uint32(sa_label.RelativeTo(pc)),
                 sa_t,
             )
@@ -35156,6 +37662,88 @@ func (self *Program) TCOMMIT() *Instruction {
     return p.setins(barriers(0, 3, 31))
 }
 
+// TLBI instruction have one single form:
+//
+//   * TLBI  <tlbi_op>{, <Xt>}
+//
+func (self *Program) TLBI(v0 interface{}, vv ...interface{}) *Instruction {
+    var p *Instruction
+    switch len(vv) {
+        case 0  : p = self.alloc("TLBI", 1, Operands { v0 })
+        case 1  : p = self.alloc("TLBI", 2, Operands { v0, vv[0] })
+        default : panic("instruction TLBI takes 1 or 2 operands")
+    }
+    if (len(vv) == 0 || len(vv) == 1) && isTLBIOption(v0) && (len(vv) == 0 || isXr(vv[0])) {
+        var sa_xt uint32
+        sa_tlbi_op := uint32(v0.(TLBIOption))
+        if len(vv) == 1 {
+            sa_xt = uint32(vv[0].(asm.Register).ID())
+        }
+        return p.setins(systeminstrs(
+            0,
+            ubfx(sa_tlbi_op, 11, 3),
+            ubfx(sa_tlbi_op, 7, 4),
+            ubfx(sa_tlbi_op, 3, 4),
+            mask(sa_tlbi_op, 3),
+            sa_xt,
+        ))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for TLBI")
+}
+
+// TLBIP instruction have one single form:
+//
+//   * TLBIP  <tlbip_op>{, <Xt1>, <Xt2>}
+//
+func (self *Program) TLBIP(v0 interface{}, vv ...interface{}) *Instruction {
+    var p *Instruction
+    switch len(vv) {
+        case 0  : p = self.alloc("TLBIP", 1, Operands { v0 })
+        case 2  : p = self.alloc("TLBIP", 3, Operands { v0, vv[0], vv[1] })
+        default : panic("instruction TLBIP takes 1 or 3 operands")
+    }
+    if (len(vv) == 0 || len(vv) == 2) &&
+       isTLBIPOption(v0) &&
+       (len(vv) == 0 || isXr(vv[0])) &&
+       (len(vv) == 0 || isXr(vv[1])) {
+        var sa_xt1 uint32
+        var sa_xt2 uint32
+        sa_tlbip_op := uint32(v0.(TLBIOption))
+        if len(vv) == 2 {
+            sa_xt1 = uint32(vv[0].(asm.Register).ID())
+            sa_xt2 = uint32(vv[1].(asm.Register).ID())
+        }
+        if sa_xt1 != sa_xt2 {
+            panic("aarch64: invalid combination of operands for TLBIP")
+        }
+        return p.setins(syspairinstrs(
+            0,
+            ubfx(sa_tlbip_op, 11, 3),
+            ubfx(sa_tlbip_op, 7, 4),
+            ubfx(sa_tlbip_op, 3, 4),
+            mask(sa_tlbip_op, 3),
+            sa_xt1,
+        ))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for TLBIP")
+}
+
+// TRCIT instruction have one single form:
+//
+//   * TRCIT  <Xt>
+//
+func (self *Program) TRCIT(v0 interface{}) *Instruction {
+    p := self.alloc("TRCIT", 1, Operands { v0 })
+    if isXr(v0) {
+        sa_xt_1 := uint32(v0.(asm.Register).ID())
+        return p.setins(systeminstrs(0, 3, 7, 2, 7, sa_xt_1))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for TRCIT")
+}
+
 // TRN1 instruction have one single form:
 //
 //   * TRN1  <Vd>.<T>, <Vn>.<T>, <Vm>.<T>
@@ -35184,7 +37772,7 @@ func (self *Program) TRN1(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdperm(sa_t & 1, maskp(sa_t, 1, 2), sa_vm, 2, sa_vn, sa_vd))
+        return p.setins(asimdperm(mask(sa_t, 1), ubfx(sa_t, 1, 2), sa_vm, 2, sa_vn, sa_vd))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for TRN1")
@@ -35218,7 +37806,7 @@ func (self *Program) TRN2(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdperm(sa_t & 1, maskp(sa_t, 1, 2), sa_vm, 6, sa_vn, sa_vd))
+        return p.setins(asimdperm(mask(sa_t, 1), ubfx(sa_t, 1, 2), sa_vm, 6, sa_vn, sa_vd))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for TRN2")
@@ -35235,6 +37823,61 @@ func (self *Program) TSB(v0 interface{}) *Instruction {
     }
     p.Free()
     panic("aarch64: invalid combination of operands for TSB")
+}
+
+// TST instruction have 4 forms:
+//
+//   * TST  <Wn>, #<imm>
+//   * TST  <Wn>, <Wm>{, <shift> #<amount>}
+//   * TST  <Xn>, #<imm>
+//   * TST  <Xn>, <Xm>{, <shift> #<amount>}
+//
+func (self *Program) TST(v0, v1 interface{}, vv ...interface{}) *Instruction {
+    var p *Instruction
+    switch len(vv) {
+        case 0  : p = self.alloc("TST", 2, Operands { v0, v1 })
+        case 1  : p = self.alloc("TST", 3, Operands { v0, v1, vv[0] })
+        default : panic("instruction TST takes 2 or 3 operands")
+    }
+    // TST  <Wn>, #<imm>
+    if isWr(v0) && isMask32(v1) {
+        sa_wn := uint32(v0.(asm.Register).ID())
+        sa_imm := asMaskOp(v1)
+        return p.setins(log_imm(0, 3, 0, ubfx(sa_imm, 6, 6), mask(sa_imm, 6), sa_wn, 31))
+    }
+    // TST  <Wn>, <Wm>{, <shift> #<amount>}
+    if (len(vv) == 0 || len(vv) == 1) && isWr(v0) && isWr(v1) && (len(vv) == 0 || isShift(vv[0])) {
+        var sa_amount uint32
+        var sa_shift uint32
+        sa_wn := uint32(v0.(asm.Register).ID())
+        sa_wm := uint32(v1.(asm.Register).ID())
+        if len(vv) == 1 {
+            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            sa_amount = uint32(vv[0].(Modifier).Amount())
+        }
+        return p.setins(log_shift(0, 3, sa_shift, 0, sa_wm, sa_amount, sa_wn, 31))
+    }
+    // TST  <Xn>, #<imm>
+    if isXr(v0) && isMask64(v1) {
+        sa_xn := uint32(v0.(asm.Register).ID())
+        sa_imm_1 := asMaskOp(v1)
+        return p.setins(log_imm(1, 3, ubfx(sa_imm_1, 12, 1), ubfx(sa_imm_1, 6, 6), mask(sa_imm_1, 6), sa_xn, 31))
+    }
+    // TST  <Xn>, <Xm>{, <shift> #<amount>}
+    if (len(vv) == 0 || len(vv) == 1) && isXr(v0) && isXr(v1) && (len(vv) == 0 || isShift(vv[0])) {
+        var sa_amount_1 uint32
+        var sa_shift uint32
+        sa_xn := uint32(v0.(asm.Register).ID())
+        sa_xm := uint32(v1.(asm.Register).ID())
+        if len(vv) == 1 {
+            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            sa_amount_1 = uint32(vv[0].(Modifier).Amount())
+        }
+        return p.setins(log_shift(1, 3, sa_shift, 0, sa_xm, sa_amount_1, sa_xn, 31))
+    }
+    // none of above
+    p.Free()
+    panic("aarch64: invalid combination of operands for TST")
 }
 
 // TSTART instruction have one single form:
@@ -35292,7 +37935,7 @@ func (self *Program) UABA(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdsame(sa_t & 1, 1, maskp(sa_t, 1, 2), sa_vm, 15, sa_vn, sa_vd))
+        return p.setins(asimdsame(mask(sa_t, 1), 1, ubfx(sa_t, 1, 2), sa_vm, 15, sa_vn, sa_vd))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for UABA")
@@ -35331,10 +37974,10 @@ func (self *Program) UABAL(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vm := uint32(v2.(asm.Register).ID())
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for UABAL")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for UABAL")
         }
         return p.setins(asimddiff(0, 1, sa_ta, sa_vm, 5, sa_vn, sa_vd))
@@ -35376,10 +38019,10 @@ func (self *Program) UABAL2(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vm := uint32(v2.(asm.Register).ID())
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for UABAL2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for UABAL2")
         }
         return p.setins(asimddiff(1, 1, sa_ta, sa_vm, 5, sa_vn, sa_vd))
@@ -35415,7 +38058,7 @@ func (self *Program) UABD(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdsame(sa_t & 1, 1, maskp(sa_t, 1, 2), sa_vm, 14, sa_vn, sa_vd))
+        return p.setins(asimdsame(mask(sa_t, 1), 1, ubfx(sa_t, 1, 2), sa_vm, 14, sa_vn, sa_vd))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for UABD")
@@ -35454,10 +38097,10 @@ func (self *Program) UABDL(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vm := uint32(v2.(asm.Register).ID())
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for UABDL")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for UABDL")
         }
         return p.setins(asimddiff(0, 1, sa_ta, sa_vm, 7, sa_vn, sa_vd))
@@ -35499,10 +38142,10 @@ func (self *Program) UABDL2(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vm := uint32(v2.(asm.Register).ID())
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for UABDL2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for UABDL2")
         }
         return p.setins(asimddiff(1, 1, sa_ta, sa_vm, 7, sa_vn, sa_vd))
@@ -35543,13 +38186,13 @@ func (self *Program) UADALP(v0, v1 interface{}) *Instruction {
             case Vec4S: sa_tb = 0b101
             default: panic("aarch64: unreachable")
         }
-        if maskp(sa_ta, 1, 2) != maskp(sa_tb, 1, 2) {
+        if ubfx(sa_ta, 1, 2) != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for UADALP")
         }
-        if sa_ta & 1 != sa_tb & 1 {
+        if mask(sa_ta, 1) != mask(sa_tb, 1) {
             panic("aarch64: invalid combination of operands for UADALP")
         }
-        return p.setins(asimdmisc(sa_ta & 1, 1, maskp(sa_ta, 1, 2), 6, sa_vn, sa_vd))
+        return p.setins(asimdmisc(mask(sa_ta, 1), 1, ubfx(sa_ta, 1, 2), 6, sa_vn, sa_vd))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for UADALP")
@@ -35588,10 +38231,10 @@ func (self *Program) UADDL(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vm := uint32(v2.(asm.Register).ID())
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for UADDL")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for UADDL")
         }
         return p.setins(asimddiff(0, 1, sa_ta, sa_vm, 0, sa_vn, sa_vd))
@@ -35633,10 +38276,10 @@ func (self *Program) UADDL2(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vm := uint32(v2.(asm.Register).ID())
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for UADDL2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for UADDL2")
         }
         return p.setins(asimddiff(1, 1, sa_ta, sa_vm, 0, sa_vn, sa_vd))
@@ -35677,13 +38320,13 @@ func (self *Program) UADDLP(v0, v1 interface{}) *Instruction {
             case Vec4S: sa_tb = 0b101
             default: panic("aarch64: unreachable")
         }
-        if maskp(sa_ta, 1, 2) != maskp(sa_tb, 1, 2) {
+        if ubfx(sa_ta, 1, 2) != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for UADDLP")
         }
-        if sa_ta & 1 != sa_tb & 1 {
+        if mask(sa_ta, 1) != mask(sa_tb, 1) {
             panic("aarch64: invalid combination of operands for UADDLP")
         }
-        return p.setins(asimdmisc(sa_ta & 1, 1, maskp(sa_ta, 1, 2), 2, sa_vn, sa_vd))
+        return p.setins(asimdmisc(mask(sa_ta, 1), 1, ubfx(sa_ta, 1, 2), 2, sa_vn, sa_vd))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for UADDLP")
@@ -35714,10 +38357,10 @@ func (self *Program) UADDLV(v0, v1 interface{}) *Instruction {
             case Vec4S: sa_t = 0b101
             default: panic("aarch64: unreachable")
         }
-        if maskp(sa_t, 1, 2) != sa_v {
+        if ubfx(sa_t, 1, 2) != sa_v {
             panic("aarch64: invalid combination of operands for UADDLV")
         }
-        return p.setins(asimdall(sa_t & 1, 1, maskp(sa_t, 1, 2), 3, sa_vn, sa_d))
+        return p.setins(asimdall(mask(sa_t, 1), 1, ubfx(sa_t, 1, 2), 3, sa_vn, sa_d))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for UADDLV")
@@ -35756,10 +38399,10 @@ func (self *Program) UADDW(v0, v1, v2 interface{}) *Instruction {
             case Vec4S: sa_tb = 0b101
             default: panic("aarch64: unreachable")
         }
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for UADDW")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for UADDW")
         }
         return p.setins(asimddiff(0, 1, sa_ta, sa_vm, 1, sa_vn, sa_vd))
@@ -35801,16 +38444,44 @@ func (self *Program) UADDW2(v0, v1, v2 interface{}) *Instruction {
             case Vec4S: sa_tb = 0b101
             default: panic("aarch64: unreachable")
         }
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for UADDW2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for UADDW2")
         }
         return p.setins(asimddiff(1, 1, sa_ta, sa_vm, 1, sa_vn, sa_vd))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for UADDW2")
+}
+
+// UBFIZ instruction have 2 forms:
+//
+//   * UBFIZ  <Wd>, <Wn>, #<lsb>, #<width>
+//   * UBFIZ  <Xd>, <Xn>, #<lsb>, #<width>
+//
+func (self *Program) UBFIZ(v0, v1, v2, v3 interface{}) *Instruction {
+    p := self.alloc("UBFIZ", 4, Operands { v0, v1, v2, v3 })
+    // UBFIZ  <Wd>, <Wn>, #<lsb>, #<width>
+    if isWr(v0) && isWr(v1) && isUimm5(v2) && isBFxWidth(v2, v3, 32) {
+        sa_wd := uint32(v0.(asm.Register).ID())
+        sa_wn := uint32(v1.(asm.Register).ID())
+        sa_lsb := -asUimm5(v2) % 32
+        sa_width := asUimm5(v3) - 1
+        return p.setins(bitfield(0, 2, 0, sa_lsb, sa_width, sa_wn, sa_wd))
+    }
+    // UBFIZ  <Xd>, <Xn>, #<lsb>, #<width>
+    if isXr(v0) && isXr(v1) && isUimm6(v2) && isBFxWidth(v2, v3, 64) {
+        sa_xd := uint32(v0.(asm.Register).ID())
+        sa_xn := uint32(v1.(asm.Register).ID())
+        sa_lsb_2 := -asUimm6(v2) % 64
+        sa_width_1 := asUimm6(v3) - 1
+        return p.setins(bitfield(1, 2, 1, sa_lsb_2, sa_width_1, sa_xn, sa_xd))
+    }
+    // none of above
+    p.Free()
+    panic("aarch64: invalid combination of operands for UBFIZ")
 }
 
 // UBFM instruction have 2 forms:
@@ -35839,6 +38510,34 @@ func (self *Program) UBFM(v0, v1, v2, v3 interface{}) *Instruction {
     // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for UBFM")
+}
+
+// UBFX instruction have 2 forms:
+//
+//   * UBFX  <Wd>, <Wn>, #<lsb>, #<width>
+//   * UBFX  <Xd>, <Xn>, #<lsb>, #<width>
+//
+func (self *Program) UBFX(v0, v1, v2, v3 interface{}) *Instruction {
+    p := self.alloc("UBFX", 4, Operands { v0, v1, v2, v3 })
+    // UBFX  <Wd>, <Wn>, #<lsb>, #<width>
+    if isWr(v0) && isWr(v1) && isUimm5(v2) && isBFxWidth(v2, v3, 32) {
+        sa_wd := uint32(v0.(asm.Register).ID())
+        sa_wn := uint32(v1.(asm.Register).ID())
+        sa_lsb_1 := asUimm5(v2)
+        sa_width := sa_lsb_1 + asUimm5(v3) - 1
+        return p.setins(bitfield(0, 2, 0, sa_lsb_1, sa_width, sa_wn, sa_wd))
+    }
+    // UBFX  <Xd>, <Xn>, #<lsb>, #<width>
+    if isXr(v0) && isXr(v1) && isUimm6(v2) && isBFxWidth(v2, v3, 64) {
+        sa_xd := uint32(v0.(asm.Register).ID())
+        sa_xn := uint32(v1.(asm.Register).ID())
+        sa_lsb_3 := asUimm6(v2)
+        sa_width_1 := sa_lsb_3 + asUimm6(v3) - 1
+        return p.setins(bitfield(1, 2, 1, sa_lsb_3, sa_width_1, sa_xn, sa_xd))
+    }
+    // none of above
+    p.Free()
+    panic("aarch64: invalid combination of operands for UBFX")
 }
 
 // UCVTF instruction have 18 forms:
@@ -35963,8 +38662,8 @@ func (self *Program) UCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         size := uint32(0b00)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdmisc(sa_t & 1, 1, size, 29, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdmisc(mask(sa_t, 1), 1, size, 29, sa_vn, sa_vd))
     }
     // UCVTF  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
@@ -36007,16 +38706,16 @@ func (self *Program) UCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vn := uint32(v1.(asm.Register).ID())
-        switch maskp(sa_t, 1, 4) {
+        switch ubfx(sa_t, 1, 4) {
             case 0b0010: sa_fbits = 32 - uint32(asLit(vv[0]))
             case 0b0100: sa_fbits = 64 - uint32(asLit(vv[0]))
             case 0b1000: sa_fbits = 128 - uint32(asLit(vv[0]))
             default: panic("aarch64: invalid operand 'sa_fbits' for UCVTF")
         }
-        if maskp(sa_fbits, 3, 4) != maskp(sa_t, 1, 4) & maskp(sa_t__bit_mask, 1, 4) {
+        if ubfx(sa_fbits, 3, 4) != ubfx(sa_t, 1, 4) & ubfx(sa_t__bit_mask, 1, 4) {
             panic("aarch64: invalid combination of operands for UCVTF")
         }
-        return p.setins(asimdshf(sa_t & 1, 1, maskp(sa_fbits, 3, 4), mask(sa_fbits, 3), 28, sa_vn, sa_vd))
+        return p.setins(asimdshf(mask(sa_t, 1), 1, ubfx(sa_fbits, 3, 4), mask(sa_fbits, 3), 28, sa_vn, sa_vd))
     }
     // UCVTF  <V><d>, <V><n>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isSameType(v0, v1) {
@@ -36063,10 +38762,10 @@ func (self *Program) UCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
             case 0b1000: sa_fbits_1 = 128 - uint32(asLit(vv[0]))
             default: panic("aarch64: invalid operand 'sa_fbits_1' for UCVTF")
         }
-        if maskp(sa_fbits_1, 3, 4) != sa_v & sa_v__bit_mask {
+        if ubfx(sa_fbits_1, 3, 4) != sa_v & sa_v__bit_mask {
             panic("aarch64: invalid combination of operands for UCVTF")
         }
-        return p.setins(asisdshf(1, maskp(sa_fbits_1, 3, 4), mask(sa_fbits_1, 3), 28, sa_n, sa_d))
+        return p.setins(asisdshf(1, ubfx(sa_fbits_1, 3, 4), mask(sa_fbits_1, 3), 28, sa_n, sa_d))
     }
     // none of above
     p.Free()
@@ -36146,18 +38845,7 @@ func (self *Program) UDOT(v0, v1, v2 interface{}) *Instruction {
         if sa_ta != sa_tb {
             panic("aarch64: invalid combination of operands for UDOT")
         }
-        return p.setins(asimdelem(
-            sa_ta,
-            1,
-            2,
-            sa_index & 1,
-            maskp(sa_vm, 4, 1),
-            mask(sa_vm, 4),
-            14,
-            maskp(sa_index, 1, 1),
-            sa_vn,
-            sa_vd,
-        ))
+        return p.setins(asimdelem(sa_ta, 1, 2, mask(sa_index, 1), sa_vm, sa_vm, 14, ubfx(sa_index, 1, 1), sa_vn, sa_vd))
     }
     // UDOT  <Vd>.<Ta>, <Vn>.<Tb>, <Vm>.<Tb>
     if isVr(v0) &&
@@ -36219,7 +38907,7 @@ func (self *Program) UHADD(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdsame(sa_t & 1, 1, maskp(sa_t, 1, 2), sa_vm, 0, sa_vn, sa_vd))
+        return p.setins(asimdsame(mask(sa_t, 1), 1, ubfx(sa_t, 1, 2), sa_vm, 0, sa_vn, sa_vd))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for UHADD")
@@ -36252,7 +38940,7 @@ func (self *Program) UHSUB(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdsame(sa_t & 1, 1, maskp(sa_t, 1, 2), sa_vm, 4, sa_vn, sa_vd))
+        return p.setins(asimdsame(mask(sa_t, 1), 1, ubfx(sa_t, 1, 2), sa_vm, 4, sa_vn, sa_vd))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for UHSUB")
@@ -36335,7 +39023,7 @@ func (self *Program) UMAX(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdsame(sa_t & 1, 1, maskp(sa_t, 1, 2), sa_vm, 12, sa_vn, sa_vd))
+        return p.setins(asimdsame(mask(sa_t, 1), 1, ubfx(sa_t, 1, 2), sa_vm, 12, sa_vn, sa_vd))
     }
     // none of above
     p.Free()
@@ -36369,7 +39057,7 @@ func (self *Program) UMAXP(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdsame(sa_t & 1, 1, maskp(sa_t, 1, 2), sa_vm, 20, sa_vn, sa_vd))
+        return p.setins(asimdsame(mask(sa_t, 1), 1, ubfx(sa_t, 1, 2), sa_vm, 20, sa_vn, sa_vd))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for UMAXP")
@@ -36400,10 +39088,10 @@ func (self *Program) UMAXV(v0, v1 interface{}) *Instruction {
             case Vec4S: sa_t = 0b101
             default: panic("aarch64: unreachable")
         }
-        if maskp(sa_t, 1, 2) != sa_v {
+        if ubfx(sa_t, 1, 2) != sa_v {
             panic("aarch64: invalid combination of operands for UMAXV")
         }
-        return p.setins(asimdall(sa_t & 1, 1, maskp(sa_t, 1, 2), 10, sa_vn, sa_d))
+        return p.setins(asimdall(mask(sa_t, 1), 1, ubfx(sa_t, 1, 2), 10, sa_vn, sa_d))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for UMAXV")
@@ -36469,7 +39157,7 @@ func (self *Program) UMIN(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdsame(sa_t & 1, 1, maskp(sa_t, 1, 2), sa_vm, 13, sa_vn, sa_vd))
+        return p.setins(asimdsame(mask(sa_t, 1), 1, ubfx(sa_t, 1, 2), sa_vm, 13, sa_vn, sa_vd))
     }
     // none of above
     p.Free()
@@ -36503,7 +39191,7 @@ func (self *Program) UMINP(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdsame(sa_t & 1, 1, maskp(sa_t, 1, 2), sa_vm, 21, sa_vn, sa_vd))
+        return p.setins(asimdsame(mask(sa_t, 1), 1, ubfx(sa_t, 1, 2), sa_vm, 21, sa_vn, sa_vd))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for UMINP")
@@ -36534,10 +39222,10 @@ func (self *Program) UMINV(v0, v1 interface{}) *Instruction {
             case Vec4S: sa_t = 0b101
             default: panic("aarch64: unreachable")
         }
-        if maskp(sa_t, 1, 2) != sa_v {
+        if ubfx(sa_t, 1, 2) != sa_v {
             panic("aarch64: invalid combination of operands for UMINV")
         }
-        return p.setins(asimdall(sa_t & 1, 1, maskp(sa_t, 1, 2), 26, sa_vn, sa_d))
+        return p.setins(asimdall(mask(sa_t, 1), 1, ubfx(sa_t, 1, 2), 26, sa_vn, sa_d))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for UMINV")
@@ -36578,10 +39266,10 @@ func (self *Program) UMLAL(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vm := uint32(v2.(asm.Register).ID())
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for UMLAL")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for UMLAL")
         }
         return p.setins(asimddiff(0, 1, sa_ta, sa_vm, 8, sa_vn, sa_vd))
@@ -36612,27 +39300,24 @@ func (self *Program) UMLAL(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if maskp(sa_index, 3, 2) != sa_ta ||
-           sa_ta != maskp(sa_tb, 1, 2) ||
-           maskp(sa_tb, 1, 2) != sa_ts ||
-           sa_ts != maskp(sa_vm, 5, 2) {
+        if ubfx(sa_index, 3, 2) != sa_ta || sa_ta != ubfx(sa_tb, 1, 2) || ubfx(sa_tb, 1, 2) != sa_ts || sa_ts != sa_vm {
             panic("aarch64: invalid combination of operands for UMLAL")
         }
-        if sa_index & 1 != maskp(sa_vm, 4, 1) {
+        if mask(sa_index, 1) != sa_vm {
             panic("aarch64: invalid combination of operands for UMLAL")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for UMLAL")
         }
         return p.setins(asimdelem(
             0,
             1,
-            maskp(sa_index, 3, 2),
-            maskp(sa_index, 2, 1),
-            sa_index & 1,
-            mask(sa_vm, 4),
+            ubfx(sa_index, 3, 2),
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 1),
+            sa_vm,
             2,
-            maskp(sa_index, 1, 1),
+            ubfx(sa_index, 1, 1),
             sa_vn,
             sa_vd,
         ))
@@ -36677,10 +39362,10 @@ func (self *Program) UMLAL2(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vm := uint32(v2.(asm.Register).ID())
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for UMLAL2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for UMLAL2")
         }
         return p.setins(asimddiff(1, 1, sa_ta, sa_vm, 8, sa_vn, sa_vd))
@@ -36711,27 +39396,24 @@ func (self *Program) UMLAL2(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if maskp(sa_index, 3, 2) != sa_ta ||
-           sa_ta != maskp(sa_tb, 1, 2) ||
-           maskp(sa_tb, 1, 2) != sa_ts ||
-           sa_ts != maskp(sa_vm, 5, 2) {
+        if ubfx(sa_index, 3, 2) != sa_ta || sa_ta != ubfx(sa_tb, 1, 2) || ubfx(sa_tb, 1, 2) != sa_ts || sa_ts != sa_vm {
             panic("aarch64: invalid combination of operands for UMLAL2")
         }
-        if sa_index & 1 != maskp(sa_vm, 4, 1) {
+        if mask(sa_index, 1) != sa_vm {
             panic("aarch64: invalid combination of operands for UMLAL2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for UMLAL2")
         }
         return p.setins(asimdelem(
             1,
             1,
-            maskp(sa_index, 3, 2),
-            maskp(sa_index, 2, 1),
-            sa_index & 1,
-            mask(sa_vm, 4),
+            ubfx(sa_index, 3, 2),
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 1),
+            sa_vm,
             2,
-            maskp(sa_index, 1, 1),
+            ubfx(sa_index, 1, 1),
             sa_vn,
             sa_vd,
         ))
@@ -36776,10 +39458,10 @@ func (self *Program) UMLSL(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vm := uint32(v2.(asm.Register).ID())
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for UMLSL")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for UMLSL")
         }
         return p.setins(asimddiff(0, 1, sa_ta, sa_vm, 10, sa_vn, sa_vd))
@@ -36810,27 +39492,24 @@ func (self *Program) UMLSL(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if maskp(sa_index, 3, 2) != sa_ta ||
-           sa_ta != maskp(sa_tb, 1, 2) ||
-           maskp(sa_tb, 1, 2) != sa_ts ||
-           sa_ts != maskp(sa_vm, 5, 2) {
+        if ubfx(sa_index, 3, 2) != sa_ta || sa_ta != ubfx(sa_tb, 1, 2) || ubfx(sa_tb, 1, 2) != sa_ts || sa_ts != sa_vm {
             panic("aarch64: invalid combination of operands for UMLSL")
         }
-        if sa_index & 1 != maskp(sa_vm, 4, 1) {
+        if mask(sa_index, 1) != sa_vm {
             panic("aarch64: invalid combination of operands for UMLSL")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for UMLSL")
         }
         return p.setins(asimdelem(
             0,
             1,
-            maskp(sa_index, 3, 2),
-            maskp(sa_index, 2, 1),
-            sa_index & 1,
-            mask(sa_vm, 4),
+            ubfx(sa_index, 3, 2),
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 1),
+            sa_vm,
             6,
-            maskp(sa_index, 1, 1),
+            ubfx(sa_index, 1, 1),
             sa_vn,
             sa_vd,
         ))
@@ -36875,10 +39554,10 @@ func (self *Program) UMLSL2(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vm := uint32(v2.(asm.Register).ID())
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for UMLSL2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for UMLSL2")
         }
         return p.setins(asimddiff(1, 1, sa_ta, sa_vm, 10, sa_vn, sa_vd))
@@ -36909,27 +39588,24 @@ func (self *Program) UMLSL2(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if maskp(sa_index, 3, 2) != sa_ta ||
-           sa_ta != maskp(sa_tb, 1, 2) ||
-           maskp(sa_tb, 1, 2) != sa_ts ||
-           sa_ts != maskp(sa_vm, 5, 2) {
+        if ubfx(sa_index, 3, 2) != sa_ta || sa_ta != ubfx(sa_tb, 1, 2) || ubfx(sa_tb, 1, 2) != sa_ts || sa_ts != sa_vm {
             panic("aarch64: invalid combination of operands for UMLSL2")
         }
-        if sa_index & 1 != maskp(sa_vm, 4, 1) {
+        if mask(sa_index, 1) != sa_vm {
             panic("aarch64: invalid combination of operands for UMLSL2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for UMLSL2")
         }
         return p.setins(asimdelem(
             1,
             1,
-            maskp(sa_index, 3, 2),
-            maskp(sa_index, 2, 1),
-            sa_index & 1,
-            mask(sa_vm, 4),
+            ubfx(sa_index, 3, 2),
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 1),
+            sa_vm,
             6,
-            maskp(sa_index, 1, 1),
+            ubfx(sa_index, 1, 1),
             sa_vn,
             sa_vd,
         ))
@@ -36953,6 +39629,22 @@ func (self *Program) UMMLA(v0, v1, v2 interface{}) *Instruction {
     }
     p.Free()
     panic("aarch64: invalid combination of operands for UMMLA")
+}
+
+// UMNEGL instruction have one single form:
+//
+//   * UMNEGL  <Xd>, <Wn>, <Wm>
+//
+func (self *Program) UMNEGL(v0, v1, v2 interface{}) *Instruction {
+    p := self.alloc("UMNEGL", 3, Operands { v0, v1, v2 })
+    if isXr(v0) && isWr(v1) && isWr(v2) {
+        sa_xd := uint32(v0.(asm.Register).ID())
+        sa_wn := uint32(v1.(asm.Register).ID())
+        sa_wm := uint32(v2.(asm.Register).ID())
+        return p.setins(dp_3src(1, 0, 5, sa_wm, 1, 31, sa_wn, sa_xd))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for UMNEGL")
 }
 
 // UMOV instruction have 2 forms:
@@ -37044,13 +39736,21 @@ func (self *Program) UMULH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UMULH")
 }
 
-// UMULL instruction have 2 forms:
+// UMULL instruction have 3 forms:
 //
+//   * UMULL  <Xd>, <Wn>, <Wm>
 //   * UMULL  <Vd>.<Ta>, <Vn>.<Tb>, <Vm>.<Tb>
 //   * UMULL  <Vd>.<Ta>, <Vn>.<Tb>, <Vm>.<Ts>[<index>]
 //
 func (self *Program) UMULL(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("UMULL", 3, Operands { v0, v1, v2 })
+    // UMULL  <Xd>, <Wn>, <Wm>
+    if isXr(v0) && isWr(v1) && isWr(v2) {
+        sa_xd := uint32(v0.(asm.Register).ID())
+        sa_wn := uint32(v1.(asm.Register).ID())
+        sa_wm := uint32(v2.(asm.Register).ID())
+        return p.setins(dp_3src(1, 0, 5, sa_wm, 0, 31, sa_wn, sa_xd))
+    }
     // UMULL  <Vd>.<Ta>, <Vn>.<Tb>, <Vm>.<Tb>
     if isVr(v0) &&
        isVfmt(v0, Vec8H, Vec4S, Vec2D) &&
@@ -37079,10 +39779,10 @@ func (self *Program) UMULL(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vm := uint32(v2.(asm.Register).ID())
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for UMULL")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for UMULL")
         }
         return p.setins(asimddiff(0, 1, sa_ta, sa_vm, 12, sa_vn, sa_vd))
@@ -37113,27 +39813,24 @@ func (self *Program) UMULL(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if maskp(sa_index, 3, 2) != sa_ta ||
-           sa_ta != maskp(sa_tb, 1, 2) ||
-           maskp(sa_tb, 1, 2) != sa_ts ||
-           sa_ts != maskp(sa_vm, 5, 2) {
+        if ubfx(sa_index, 3, 2) != sa_ta || sa_ta != ubfx(sa_tb, 1, 2) || ubfx(sa_tb, 1, 2) != sa_ts || sa_ts != sa_vm {
             panic("aarch64: invalid combination of operands for UMULL")
         }
-        if sa_index & 1 != maskp(sa_vm, 4, 1) {
+        if mask(sa_index, 1) != sa_vm {
             panic("aarch64: invalid combination of operands for UMULL")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for UMULL")
         }
         return p.setins(asimdelem(
             0,
             1,
-            maskp(sa_index, 3, 2),
-            maskp(sa_index, 2, 1),
-            sa_index & 1,
-            mask(sa_vm, 4),
+            ubfx(sa_index, 3, 2),
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 1),
+            sa_vm,
             10,
-            maskp(sa_index, 1, 1),
+            ubfx(sa_index, 1, 1),
             sa_vn,
             sa_vd,
         ))
@@ -37178,10 +39875,10 @@ func (self *Program) UMULL2(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vm := uint32(v2.(asm.Register).ID())
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for UMULL2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for UMULL2")
         }
         return p.setins(asimddiff(1, 1, sa_ta, sa_vm, 12, sa_vn, sa_vd))
@@ -37212,27 +39909,24 @@ func (self *Program) UMULL2(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if maskp(sa_index, 3, 2) != sa_ta ||
-           sa_ta != maskp(sa_tb, 1, 2) ||
-           maskp(sa_tb, 1, 2) != sa_ts ||
-           sa_ts != maskp(sa_vm, 5, 2) {
+        if ubfx(sa_index, 3, 2) != sa_ta || sa_ta != ubfx(sa_tb, 1, 2) || ubfx(sa_tb, 1, 2) != sa_ts || sa_ts != sa_vm {
             panic("aarch64: invalid combination of operands for UMULL2")
         }
-        if sa_index & 1 != maskp(sa_vm, 4, 1) {
+        if mask(sa_index, 1) != sa_vm {
             panic("aarch64: invalid combination of operands for UMULL2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for UMULL2")
         }
         return p.setins(asimdelem(
             1,
             1,
-            maskp(sa_index, 3, 2),
-            maskp(sa_index, 2, 1),
-            sa_index & 1,
-            mask(sa_vm, 4),
+            ubfx(sa_index, 3, 2),
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 1),
+            sa_vm,
             10,
-            maskp(sa_index, 1, 1),
+            ubfx(sa_index, 1, 1),
             sa_vn,
             sa_vd,
         ))
@@ -37272,7 +39966,7 @@ func (self *Program) UQADD(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdsame(sa_t & 1, 1, maskp(sa_t, 1, 2), sa_vm, 1, sa_vn, sa_vd))
+        return p.setins(asimdsame(mask(sa_t, 1), 1, ubfx(sa_t, 1, 2), sa_vm, 1, sa_vn, sa_vd))
     }
     // UQADD  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
@@ -37324,7 +40018,7 @@ func (self *Program) UQRSHL(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdsame(sa_t & 1, 1, maskp(sa_t, 1, 2), sa_vm, 11, sa_vn, sa_vd))
+        return p.setins(asimdsame(mask(sa_t, 1), 1, ubfx(sa_t, 1, 2), sa_vm, 11, sa_vn, sa_vd))
     }
     // UQRSHL  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
@@ -37392,10 +40086,10 @@ func (self *Program) UQRSHRN(v0, v1, v2 interface{}) *Instruction {
             case 0b0100: sa_shift_1 = 64 - uint32(asLit(v2))
             default: panic("aarch64: invalid operand 'sa_shift_1' for UQRSHRN")
         }
-        if maskp(sa_shift_1, 3, 4) != sa_va & sa_va__bit_mask || sa_va & sa_va__bit_mask != sa_vb & sa_vb__bit_mask {
+        if ubfx(sa_shift_1, 3, 4) != sa_va & sa_va__bit_mask || sa_va & sa_va__bit_mask != sa_vb & sa_vb__bit_mask {
             panic("aarch64: invalid combination of operands for UQRSHRN")
         }
-        return p.setins(asisdshf(1, maskp(sa_shift_1, 3, 4), mask(sa_shift_1, 3), 19, sa_n, sa_d))
+        return p.setins(asisdshf(1, ubfx(sa_shift_1, 3, 4), mask(sa_shift_1, 3), 19, sa_n, sa_d))
     }
     // UQRSHRN  <Vd>.<Tb>, <Vn>.<Ta>, #<shift>
     if isVr(v0) &&
@@ -37440,20 +40134,20 @@ func (self *Program) UQRSHRN(v0, v1, v2 interface{}) *Instruction {
             case Vec2D: sa_ta__bit_mask = 0b1100
             default: panic("aarch64: unreachable")
         }
-        switch maskp(sa_tb, 1, 4) {
+        switch ubfx(sa_tb, 1, 4) {
             case 0b0001: sa_shift = 16 - uint32(asLit(v2))
             case 0b0010: sa_shift = 32 - uint32(asLit(v2))
             case 0b0100: sa_shift = 64 - uint32(asLit(v2))
             default: panic("aarch64: invalid operand 'sa_shift' for UQRSHRN")
         }
-        if maskp(sa_shift, 3, 4) != sa_ta & sa_ta__bit_mask ||
-           sa_ta & sa_ta__bit_mask != maskp(sa_tb, 1, 4) & maskp(sa_tb__bit_mask, 1, 4) {
+        if ubfx(sa_shift, 3, 4) != sa_ta & sa_ta__bit_mask ||
+           sa_ta & sa_ta__bit_mask != ubfx(sa_tb, 1, 4) & ubfx(sa_tb__bit_mask, 1, 4) {
             panic("aarch64: invalid combination of operands for UQRSHRN")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for UQRSHRN")
         }
-        return p.setins(asimdshf(0, 1, maskp(sa_shift, 3, 4), mask(sa_shift, 3), 19, sa_vn, sa_vd))
+        return p.setins(asimdshf(0, 1, ubfx(sa_shift, 3, 4), mask(sa_shift, 3), 19, sa_vn, sa_vd))
     }
     // none of above
     p.Free()
@@ -37508,20 +40202,20 @@ func (self *Program) UQRSHRN2(v0, v1, v2 interface{}) *Instruction {
             case Vec2D: sa_ta__bit_mask = 0b1100
             default: panic("aarch64: unreachable")
         }
-        switch maskp(sa_tb, 1, 4) {
+        switch ubfx(sa_tb, 1, 4) {
             case 0b0001: sa_shift = 16 - uint32(asLit(v2))
             case 0b0010: sa_shift = 32 - uint32(asLit(v2))
             case 0b0100: sa_shift = 64 - uint32(asLit(v2))
             default: panic("aarch64: invalid operand 'sa_shift' for UQRSHRN2")
         }
-        if maskp(sa_shift, 3, 4) != sa_ta & sa_ta__bit_mask ||
-           sa_ta & sa_ta__bit_mask != maskp(sa_tb, 1, 4) & maskp(sa_tb__bit_mask, 1, 4) {
+        if ubfx(sa_shift, 3, 4) != sa_ta & sa_ta__bit_mask ||
+           sa_ta & sa_ta__bit_mask != ubfx(sa_tb, 1, 4) & ubfx(sa_tb__bit_mask, 1, 4) {
             panic("aarch64: invalid combination of operands for UQRSHRN2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for UQRSHRN2")
         }
-        return p.setins(asimdshf(1, 1, maskp(sa_shift, 3, 4), mask(sa_shift, 3), 19, sa_vn, sa_vd))
+        return p.setins(asimdshf(1, 1, ubfx(sa_shift, 3, 4), mask(sa_shift, 3), 19, sa_vn, sa_vd))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for UQRSHRN2")
@@ -37559,7 +40253,7 @@ func (self *Program) UQSHL(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdsame(sa_t & 1, 1, maskp(sa_t, 1, 2), sa_vm, 9, sa_vn, sa_vd))
+        return p.setins(asimdsame(mask(sa_t, 1), 1, ubfx(sa_t, 1, 2), sa_vm, 9, sa_vn, sa_vd))
     }
     // UQSHL  <Vd>.<T>, <Vn>.<T>, #<shift>
     if isVr(v0) &&
@@ -37593,17 +40287,17 @@ func (self *Program) UQSHL(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vn := uint32(v1.(asm.Register).ID())
-        switch maskp(sa_t, 1, 4) {
+        switch ubfx(sa_t, 1, 4) {
             case 0b0001: sa_shift = uint32(asLit(v2)) + 8
             case 0b0010: sa_shift = uint32(asLit(v2)) + 16
             case 0b0100: sa_shift = uint32(asLit(v2)) + 32
             case 0b1000: sa_shift = uint32(asLit(v2)) + 64
             default: panic("aarch64: invalid operand 'sa_shift' for UQSHL")
         }
-        if maskp(sa_shift, 3, 4) != maskp(sa_t, 1, 4) & maskp(sa_t__bit_mask, 1, 4) {
+        if ubfx(sa_shift, 3, 4) != ubfx(sa_t, 1, 4) & ubfx(sa_t__bit_mask, 1, 4) {
             panic("aarch64: invalid combination of operands for UQSHL")
         }
-        return p.setins(asimdshf(sa_t & 1, 1, maskp(sa_shift, 3, 4), mask(sa_shift, 3), 14, sa_vn, sa_vd))
+        return p.setins(asimdshf(mask(sa_t, 1), 1, ubfx(sa_shift, 3, 4), mask(sa_shift, 3), 14, sa_vn, sa_vd))
     }
     // UQSHL  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
@@ -37648,10 +40342,10 @@ func (self *Program) UQSHL(v0, v1, v2 interface{}) *Instruction {
             case 0b1000: sa_shift_1 = uint32(asLit(v2)) + 64
             default: panic("aarch64: invalid operand 'sa_shift_1' for UQSHL")
         }
-        if maskp(sa_shift_1, 3, 4) != sa_v & sa_v__bit_mask {
+        if ubfx(sa_shift_1, 3, 4) != sa_v & sa_v__bit_mask {
             panic("aarch64: invalid combination of operands for UQSHL")
         }
-        return p.setins(asisdshf(1, maskp(sa_shift_1, 3, 4), mask(sa_shift_1, 3), 14, sa_n, sa_d))
+        return p.setins(asisdshf(1, ubfx(sa_shift_1, 3, 4), mask(sa_shift_1, 3), 14, sa_n, sa_d))
     }
     // none of above
     p.Free()
@@ -37704,10 +40398,10 @@ func (self *Program) UQSHRN(v0, v1, v2 interface{}) *Instruction {
             case 0b0100: sa_shift_1 = 64 - uint32(asLit(v2))
             default: panic("aarch64: invalid operand 'sa_shift_1' for UQSHRN")
         }
-        if maskp(sa_shift_1, 3, 4) != sa_va & sa_va__bit_mask || sa_va & sa_va__bit_mask != sa_vb & sa_vb__bit_mask {
+        if ubfx(sa_shift_1, 3, 4) != sa_va & sa_va__bit_mask || sa_va & sa_va__bit_mask != sa_vb & sa_vb__bit_mask {
             panic("aarch64: invalid combination of operands for UQSHRN")
         }
-        return p.setins(asisdshf(1, maskp(sa_shift_1, 3, 4), mask(sa_shift_1, 3), 18, sa_n, sa_d))
+        return p.setins(asisdshf(1, ubfx(sa_shift_1, 3, 4), mask(sa_shift_1, 3), 18, sa_n, sa_d))
     }
     // UQSHRN  <Vd>.<Tb>, <Vn>.<Ta>, #<shift>
     if isVr(v0) &&
@@ -37752,20 +40446,20 @@ func (self *Program) UQSHRN(v0, v1, v2 interface{}) *Instruction {
             case Vec2D: sa_ta__bit_mask = 0b1100
             default: panic("aarch64: unreachable")
         }
-        switch maskp(sa_tb, 1, 4) {
+        switch ubfx(sa_tb, 1, 4) {
             case 0b0001: sa_shift = 16 - uint32(asLit(v2))
             case 0b0010: sa_shift = 32 - uint32(asLit(v2))
             case 0b0100: sa_shift = 64 - uint32(asLit(v2))
             default: panic("aarch64: invalid operand 'sa_shift' for UQSHRN")
         }
-        if maskp(sa_shift, 3, 4) != sa_ta & sa_ta__bit_mask ||
-           sa_ta & sa_ta__bit_mask != maskp(sa_tb, 1, 4) & maskp(sa_tb__bit_mask, 1, 4) {
+        if ubfx(sa_shift, 3, 4) != sa_ta & sa_ta__bit_mask ||
+           sa_ta & sa_ta__bit_mask != ubfx(sa_tb, 1, 4) & ubfx(sa_tb__bit_mask, 1, 4) {
             panic("aarch64: invalid combination of operands for UQSHRN")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for UQSHRN")
         }
-        return p.setins(asimdshf(0, 1, maskp(sa_shift, 3, 4), mask(sa_shift, 3), 18, sa_vn, sa_vd))
+        return p.setins(asimdshf(0, 1, ubfx(sa_shift, 3, 4), mask(sa_shift, 3), 18, sa_vn, sa_vd))
     }
     // none of above
     p.Free()
@@ -37820,20 +40514,20 @@ func (self *Program) UQSHRN2(v0, v1, v2 interface{}) *Instruction {
             case Vec2D: sa_ta__bit_mask = 0b1100
             default: panic("aarch64: unreachable")
         }
-        switch maskp(sa_tb, 1, 4) {
+        switch ubfx(sa_tb, 1, 4) {
             case 0b0001: sa_shift = 16 - uint32(asLit(v2))
             case 0b0010: sa_shift = 32 - uint32(asLit(v2))
             case 0b0100: sa_shift = 64 - uint32(asLit(v2))
             default: panic("aarch64: invalid operand 'sa_shift' for UQSHRN2")
         }
-        if maskp(sa_shift, 3, 4) != sa_ta & sa_ta__bit_mask ||
-           sa_ta & sa_ta__bit_mask != maskp(sa_tb, 1, 4) & maskp(sa_tb__bit_mask, 1, 4) {
+        if ubfx(sa_shift, 3, 4) != sa_ta & sa_ta__bit_mask ||
+           sa_ta & sa_ta__bit_mask != ubfx(sa_tb, 1, 4) & ubfx(sa_tb__bit_mask, 1, 4) {
             panic("aarch64: invalid combination of operands for UQSHRN2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for UQSHRN2")
         }
-        return p.setins(asimdshf(1, 1, maskp(sa_shift, 3, 4), mask(sa_shift, 3), 18, sa_vn, sa_vd))
+        return p.setins(asimdshf(1, 1, ubfx(sa_shift, 3, 4), mask(sa_shift, 3), 18, sa_vn, sa_vd))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for UQSHRN2")
@@ -37869,7 +40563,7 @@ func (self *Program) UQSUB(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdsame(sa_t & 1, 1, maskp(sa_t, 1, 2), sa_vm, 5, sa_vn, sa_vd))
+        return p.setins(asimdsame(mask(sa_t, 1), 1, ubfx(sa_t, 1, 2), sa_vm, 5, sa_vn, sa_vd))
     }
     // UQSUB  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
@@ -37945,10 +40639,10 @@ func (self *Program) UQXTN(v0, v1 interface{}) *Instruction {
             case Vec2D: sa_ta = 0b10
             default: panic("aarch64: unreachable")
         }
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for UQXTN")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for UQXTN")
         }
         return p.setins(asimdmisc(0, 1, sa_ta, 20, sa_vn, sa_vd))
@@ -37987,10 +40681,10 @@ func (self *Program) UQXTN2(v0, v1 interface{}) *Instruction {
             case Vec2D: sa_ta = 0b10
             default: panic("aarch64: unreachable")
         }
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for UQXTN2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for UQXTN2")
         }
         return p.setins(asimdmisc(1, 1, sa_ta, 20, sa_vn, sa_vd))
@@ -38015,8 +40709,8 @@ func (self *Program) URECPE(v0, v1 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         size := uint32(0b10)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdmisc(sa_t & 1, 0, size, 28, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdmisc(mask(sa_t, 1), 0, size, 28, sa_vn, sa_vd))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for URECPE")
@@ -38049,7 +40743,7 @@ func (self *Program) URHADD(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdsame(sa_t & 1, 1, maskp(sa_t, 1, 2), sa_vm, 2, sa_vn, sa_vd))
+        return p.setins(asimdsame(mask(sa_t, 1), 1, ubfx(sa_t, 1, 2), sa_vm, 2, sa_vn, sa_vd))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for URHADD")
@@ -38085,7 +40779,7 @@ func (self *Program) URSHL(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdsame(sa_t & 1, 1, maskp(sa_t, 1, 2), sa_vm, 10, sa_vn, sa_vd))
+        return p.setins(asimdsame(mask(sa_t, 1), 1, ubfx(sa_t, 1, 2), sa_vm, 10, sa_vn, sa_vd))
     }
     // URSHL  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
@@ -38143,17 +40837,17 @@ func (self *Program) URSHR(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vn := uint32(v1.(asm.Register).ID())
-        switch maskp(sa_t, 1, 4) {
+        switch ubfx(sa_t, 1, 4) {
             case 0b0001: sa_shift = 16 - uint32(asLit(v2))
             case 0b0010: sa_shift = 32 - uint32(asLit(v2))
             case 0b0100: sa_shift = 64 - uint32(asLit(v2))
             case 0b1000: sa_shift = 128 - uint32(asLit(v2))
             default: panic("aarch64: invalid operand 'sa_shift' for URSHR")
         }
-        if maskp(sa_shift, 3, 4) != maskp(sa_t, 1, 4) & maskp(sa_t__bit_mask, 1, 4) {
+        if ubfx(sa_shift, 3, 4) != ubfx(sa_t, 1, 4) & ubfx(sa_t__bit_mask, 1, 4) {
             panic("aarch64: invalid combination of operands for URSHR")
         }
-        return p.setins(asimdshf(sa_t & 1, 1, maskp(sa_shift, 3, 4), mask(sa_shift, 3), 4, sa_vn, sa_vd))
+        return p.setins(asimdshf(mask(sa_t, 1), 1, ubfx(sa_shift, 3, 4), mask(sa_shift, 3), 4, sa_vn, sa_vd))
     }
     // URSHR  <V><d>, <V><n>, #<shift>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(v2) && isSameType(v0, v1) {
@@ -38174,10 +40868,10 @@ func (self *Program) URSHR(v0, v1, v2 interface{}) *Instruction {
             case 0b1000: sa_shift_1 = 128 - uint32(asLit(v2))
             default: panic("aarch64: invalid operand 'sa_shift_1' for URSHR")
         }
-        if maskp(sa_shift_1, 3, 4) != sa_v & sa_v__bit_mask {
+        if ubfx(sa_shift_1, 3, 4) != sa_v & sa_v__bit_mask {
             panic("aarch64: invalid combination of operands for URSHR")
         }
-        return p.setins(asisdshf(1, maskp(sa_shift_1, 3, 4), mask(sa_shift_1, 3), 4, sa_n, sa_d))
+        return p.setins(asisdshf(1, ubfx(sa_shift_1, 3, 4), mask(sa_shift_1, 3), 4, sa_n, sa_d))
     }
     // none of above
     p.Free()
@@ -38200,8 +40894,8 @@ func (self *Program) URSQRTE(v0, v1 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         size := uint32(0b10)
-        size |= maskp(sa_t, 1, 1)
-        return p.setins(asimdmisc(sa_t & 1, 1, size, 28, sa_vn, sa_vd))
+        size |= ubfx(sa_t, 1, 1)
+        return p.setins(asimdmisc(mask(sa_t, 1), 1, size, 28, sa_vn, sa_vd))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for URSQRTE")
@@ -38246,17 +40940,17 @@ func (self *Program) URSRA(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vn := uint32(v1.(asm.Register).ID())
-        switch maskp(sa_t, 1, 4) {
+        switch ubfx(sa_t, 1, 4) {
             case 0b0001: sa_shift = 16 - uint32(asLit(v2))
             case 0b0010: sa_shift = 32 - uint32(asLit(v2))
             case 0b0100: sa_shift = 64 - uint32(asLit(v2))
             case 0b1000: sa_shift = 128 - uint32(asLit(v2))
             default: panic("aarch64: invalid operand 'sa_shift' for URSRA")
         }
-        if maskp(sa_shift, 3, 4) != maskp(sa_t, 1, 4) & maskp(sa_t__bit_mask, 1, 4) {
+        if ubfx(sa_shift, 3, 4) != ubfx(sa_t, 1, 4) & ubfx(sa_t__bit_mask, 1, 4) {
             panic("aarch64: invalid combination of operands for URSRA")
         }
-        return p.setins(asimdshf(sa_t & 1, 1, maskp(sa_shift, 3, 4), mask(sa_shift, 3), 6, sa_vn, sa_vd))
+        return p.setins(asimdshf(mask(sa_t, 1), 1, ubfx(sa_shift, 3, 4), mask(sa_shift, 3), 6, sa_vn, sa_vd))
     }
     // URSRA  <V><d>, <V><n>, #<shift>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(v2) && isSameType(v0, v1) {
@@ -38277,10 +40971,10 @@ func (self *Program) URSRA(v0, v1, v2 interface{}) *Instruction {
             case 0b1000: sa_shift_1 = 128 - uint32(asLit(v2))
             default: panic("aarch64: invalid operand 'sa_shift_1' for URSRA")
         }
-        if maskp(sa_shift_1, 3, 4) != sa_v & sa_v__bit_mask {
+        if ubfx(sa_shift_1, 3, 4) != sa_v & sa_v__bit_mask {
             panic("aarch64: invalid combination of operands for URSRA")
         }
-        return p.setins(asisdshf(1, maskp(sa_shift_1, 3, 4), mask(sa_shift_1, 3), 6, sa_n, sa_d))
+        return p.setins(asisdshf(1, ubfx(sa_shift_1, 3, 4), mask(sa_shift_1, 3), 6, sa_n, sa_d))
     }
     // none of above
     p.Free()
@@ -38320,18 +41014,7 @@ func (self *Program) USDOT(v0, v1, v2 interface{}) *Instruction {
         if sa_ta != sa_tb {
             panic("aarch64: invalid combination of operands for USDOT")
         }
-        return p.setins(asimdelem(
-            sa_ta,
-            0,
-            2,
-            sa_index & 1,
-            maskp(sa_vm, 4, 1),
-            mask(sa_vm, 4),
-            15,
-            maskp(sa_index, 1, 1),
-            sa_vn,
-            sa_vd,
-        ))
+        return p.setins(asimdelem(sa_ta, 0, 2, mask(sa_index, 1), sa_vm, sa_vm, 15, ubfx(sa_index, 1, 1), sa_vn, sa_vd))
     }
     // USDOT  <Vd>.<Ta>, <Vn>.<Tb>, <Vm>.<Tb>
     if isVr(v0) &&
@@ -38396,7 +41079,7 @@ func (self *Program) USHL(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdsame(sa_t & 1, 1, maskp(sa_t, 1, 2), sa_vm, 8, sa_vn, sa_vd))
+        return p.setins(asimdsame(mask(sa_t, 1), 1, ubfx(sa_t, 1, 2), sa_vm, 8, sa_vn, sa_vd))
     }
     // USHL  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
@@ -38469,14 +41152,14 @@ func (self *Program) USHLL(v0, v1, v2 interface{}) *Instruction {
             case 0b0100: sa_shift = uint32(asLit(v2)) + 32
             default: panic("aarch64: invalid operand 'sa_shift' for USHLL")
         }
-        if maskp(sa_shift, 3, 4) != sa_ta & sa_ta__bit_mask ||
-           sa_ta & sa_ta__bit_mask != maskp(sa_tb, 1, 4) & maskp(sa_tb__bit_mask, 1, 4) {
+        if ubfx(sa_shift, 3, 4) != sa_ta & sa_ta__bit_mask ||
+           sa_ta & sa_ta__bit_mask != ubfx(sa_tb, 1, 4) & ubfx(sa_tb__bit_mask, 1, 4) {
             panic("aarch64: invalid combination of operands for USHLL")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for USHLL")
         }
-        return p.setins(asimdshf(0, 1, maskp(sa_shift, 3, 4), mask(sa_shift, 3), 20, sa_vn, sa_vd))
+        return p.setins(asimdshf(0, 1, ubfx(sa_shift, 3, 4), mask(sa_shift, 3), 20, sa_vn, sa_vd))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for USHLL")
@@ -38536,14 +41219,14 @@ func (self *Program) USHLL2(v0, v1, v2 interface{}) *Instruction {
             case 0b0100: sa_shift = uint32(asLit(v2)) + 32
             default: panic("aarch64: invalid operand 'sa_shift' for USHLL2")
         }
-        if maskp(sa_shift, 3, 4) != sa_ta & sa_ta__bit_mask ||
-           sa_ta & sa_ta__bit_mask != maskp(sa_tb, 1, 4) & maskp(sa_tb__bit_mask, 1, 4) {
+        if ubfx(sa_shift, 3, 4) != sa_ta & sa_ta__bit_mask ||
+           sa_ta & sa_ta__bit_mask != ubfx(sa_tb, 1, 4) & ubfx(sa_tb__bit_mask, 1, 4) {
             panic("aarch64: invalid combination of operands for USHLL2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for USHLL2")
         }
-        return p.setins(asimdshf(1, 1, maskp(sa_shift, 3, 4), mask(sa_shift, 3), 20, sa_vn, sa_vd))
+        return p.setins(asimdshf(1, 1, ubfx(sa_shift, 3, 4), mask(sa_shift, 3), 20, sa_vn, sa_vd))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for USHLL2")
@@ -38588,17 +41271,17 @@ func (self *Program) USHR(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vn := uint32(v1.(asm.Register).ID())
-        switch maskp(sa_t, 1, 4) {
+        switch ubfx(sa_t, 1, 4) {
             case 0b0001: sa_shift = 16 - uint32(asLit(v2))
             case 0b0010: sa_shift = 32 - uint32(asLit(v2))
             case 0b0100: sa_shift = 64 - uint32(asLit(v2))
             case 0b1000: sa_shift = 128 - uint32(asLit(v2))
             default: panic("aarch64: invalid operand 'sa_shift' for USHR")
         }
-        if maskp(sa_shift, 3, 4) != maskp(sa_t, 1, 4) & maskp(sa_t__bit_mask, 1, 4) {
+        if ubfx(sa_shift, 3, 4) != ubfx(sa_t, 1, 4) & ubfx(sa_t__bit_mask, 1, 4) {
             panic("aarch64: invalid combination of operands for USHR")
         }
-        return p.setins(asimdshf(sa_t & 1, 1, maskp(sa_shift, 3, 4), mask(sa_shift, 3), 0, sa_vn, sa_vd))
+        return p.setins(asimdshf(mask(sa_t, 1), 1, ubfx(sa_shift, 3, 4), mask(sa_shift, 3), 0, sa_vn, sa_vd))
     }
     // USHR  <V><d>, <V><n>, #<shift>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(v2) && isSameType(v0, v1) {
@@ -38619,10 +41302,10 @@ func (self *Program) USHR(v0, v1, v2 interface{}) *Instruction {
             case 0b1000: sa_shift_1 = 128 - uint32(asLit(v2))
             default: panic("aarch64: invalid operand 'sa_shift_1' for USHR")
         }
-        if maskp(sa_shift_1, 3, 4) != sa_v & sa_v__bit_mask {
+        if ubfx(sa_shift_1, 3, 4) != sa_v & sa_v__bit_mask {
             panic("aarch64: invalid combination of operands for USHR")
         }
-        return p.setins(asisdshf(1, maskp(sa_shift_1, 3, 4), mask(sa_shift_1, 3), 0, sa_n, sa_d))
+        return p.setins(asisdshf(1, ubfx(sa_shift_1, 3, 4), mask(sa_shift_1, 3), 0, sa_n, sa_d))
     }
     // none of above
     p.Free()
@@ -38671,7 +41354,7 @@ func (self *Program) USQADD(v0, v1 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vn := uint32(v1.(asm.Register).ID())
-        return p.setins(asimdmisc(sa_t & 1, 1, maskp(sa_t, 1, 2), 3, sa_vn, sa_vd))
+        return p.setins(asimdmisc(mask(sa_t, 1), 1, ubfx(sa_t, 1, 2), 3, sa_vn, sa_vd))
     }
     // USQADD  <V><d>, <V><n>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isSameType(v0, v1) {
@@ -38731,17 +41414,17 @@ func (self *Program) USRA(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vn := uint32(v1.(asm.Register).ID())
-        switch maskp(sa_t, 1, 4) {
+        switch ubfx(sa_t, 1, 4) {
             case 0b0001: sa_shift = 16 - uint32(asLit(v2))
             case 0b0010: sa_shift = 32 - uint32(asLit(v2))
             case 0b0100: sa_shift = 64 - uint32(asLit(v2))
             case 0b1000: sa_shift = 128 - uint32(asLit(v2))
             default: panic("aarch64: invalid operand 'sa_shift' for USRA")
         }
-        if maskp(sa_shift, 3, 4) != maskp(sa_t, 1, 4) & maskp(sa_t__bit_mask, 1, 4) {
+        if ubfx(sa_shift, 3, 4) != ubfx(sa_t, 1, 4) & ubfx(sa_t__bit_mask, 1, 4) {
             panic("aarch64: invalid combination of operands for USRA")
         }
-        return p.setins(asimdshf(sa_t & 1, 1, maskp(sa_shift, 3, 4), mask(sa_shift, 3), 2, sa_vn, sa_vd))
+        return p.setins(asimdshf(mask(sa_t, 1), 1, ubfx(sa_shift, 3, 4), mask(sa_shift, 3), 2, sa_vn, sa_vd))
     }
     // USRA  <V><d>, <V><n>, #<shift>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(v2) && isSameType(v0, v1) {
@@ -38762,10 +41445,10 @@ func (self *Program) USRA(v0, v1, v2 interface{}) *Instruction {
             case 0b1000: sa_shift_1 = 128 - uint32(asLit(v2))
             default: panic("aarch64: invalid operand 'sa_shift_1' for USRA")
         }
-        if maskp(sa_shift_1, 3, 4) != sa_v & sa_v__bit_mask {
+        if ubfx(sa_shift_1, 3, 4) != sa_v & sa_v__bit_mask {
             panic("aarch64: invalid combination of operands for USRA")
         }
-        return p.setins(asisdshf(1, maskp(sa_shift_1, 3, 4), mask(sa_shift_1, 3), 2, sa_n, sa_d))
+        return p.setins(asisdshf(1, ubfx(sa_shift_1, 3, 4), mask(sa_shift_1, 3), 2, sa_n, sa_d))
     }
     // none of above
     p.Free()
@@ -38805,10 +41488,10 @@ func (self *Program) USUBL(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vm := uint32(v2.(asm.Register).ID())
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for USUBL")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for USUBL")
         }
         return p.setins(asimddiff(0, 1, sa_ta, sa_vm, 2, sa_vn, sa_vd))
@@ -38850,10 +41533,10 @@ func (self *Program) USUBL2(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vm := uint32(v2.(asm.Register).ID())
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for USUBL2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for USUBL2")
         }
         return p.setins(asimddiff(1, 1, sa_ta, sa_vm, 2, sa_vn, sa_vd))
@@ -38895,10 +41578,10 @@ func (self *Program) USUBW(v0, v1, v2 interface{}) *Instruction {
             case Vec4S: sa_tb = 0b101
             default: panic("aarch64: unreachable")
         }
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for USUBW")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for USUBW")
         }
         return p.setins(asimddiff(0, 1, sa_ta, sa_vm, 3, sa_vn, sa_vd))
@@ -38940,16 +41623,162 @@ func (self *Program) USUBW2(v0, v1, v2 interface{}) *Instruction {
             case Vec4S: sa_tb = 0b101
             default: panic("aarch64: unreachable")
         }
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for USUBW2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for USUBW2")
         }
         return p.setins(asimddiff(1, 1, sa_ta, sa_vm, 3, sa_vn, sa_vd))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for USUBW2")
+}
+
+// UXTB instruction have one single form:
+//
+//   * UXTB  <Wd>, <Wn>
+//
+func (self *Program) UXTB(v0, v1 interface{}) *Instruction {
+    p := self.alloc("UXTB", 2, Operands { v0, v1 })
+    if isWr(v0) && isWr(v1) {
+        sa_wd := uint32(v0.(asm.Register).ID())
+        sa_wn := uint32(v1.(asm.Register).ID())
+        return p.setins(bitfield(0, 2, 0, 0, 7, sa_wn, sa_wd))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for UXTB")
+}
+
+// UXTH instruction have one single form:
+//
+//   * UXTH  <Wd>, <Wn>
+//
+func (self *Program) UXTH(v0, v1 interface{}) *Instruction {
+    p := self.alloc("UXTH", 2, Operands { v0, v1 })
+    if isWr(v0) && isWr(v1) {
+        sa_wd := uint32(v0.(asm.Register).ID())
+        sa_wn := uint32(v1.(asm.Register).ID())
+        return p.setins(bitfield(0, 2, 0, 0, 15, sa_wn, sa_wd))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for UXTH")
+}
+
+// UXTL instruction have one single form:
+//
+//   * UXTL  <Vd>.<Ta>, <Vn>.<Tb>
+//
+func (self *Program) UXTL(v0, v1 interface{}) *Instruction {
+    p := self.alloc("UXTL", 2, Operands { v0, v1 })
+    if isVr(v0) &&
+       isVfmt(v0, Vec8H, Vec4S, Vec2D) &&
+       isVr(v1) &&
+       isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) {
+        var sa_ta uint32
+        var sa_ta__bit_mask uint32
+        var sa_tb uint32
+        var sa_tb__bit_mask uint32
+        sa_vd := uint32(v0.(asm.Register).ID())
+        switch vfmt(v0) {
+            case Vec8H: sa_ta = 0b0001
+            case Vec4S: sa_ta = 0b0010
+            case Vec2D: sa_ta = 0b0100
+            default: panic("aarch64: unreachable")
+        }
+        switch vfmt(v0) {
+            case Vec8H: sa_ta__bit_mask = 0b1111
+            case Vec4S: sa_ta__bit_mask = 0b1110
+            case Vec2D: sa_ta__bit_mask = 0b1100
+            default: panic("aarch64: unreachable")
+        }
+        sa_vn := uint32(v1.(asm.Register).ID())
+        switch vfmt(v1) {
+            case Vec8B: sa_tb = 0b00010
+            case Vec16B: sa_tb = 0b00011
+            case Vec4H: sa_tb = 0b00100
+            case Vec8H: sa_tb = 0b00101
+            case Vec2S: sa_tb = 0b01000
+            case Vec4S: sa_tb = 0b01001
+            default: panic("aarch64: unreachable")
+        }
+        switch vfmt(v1) {
+            case Vec8B: sa_tb__bit_mask = 0b11111
+            case Vec16B: sa_tb__bit_mask = 0b11111
+            case Vec4H: sa_tb__bit_mask = 0b11101
+            case Vec8H: sa_tb__bit_mask = 0b11101
+            case Vec2S: sa_tb__bit_mask = 0b11001
+            case Vec4S: sa_tb__bit_mask = 0b11001
+            default: panic("aarch64: unreachable")
+        }
+        if sa_ta & sa_ta__bit_mask != ubfx(sa_tb, 1, 4) & ubfx(sa_tb__bit_mask, 1, 4) {
+            panic("aarch64: invalid combination of operands for UXTL")
+        }
+        if mask(sa_tb, 1) != 0 {
+            panic("aarch64: invalid combination of operands for UXTL")
+        }
+        return p.setins(asimdshf(0, 1, sa_ta, 0, 20, sa_vn, sa_vd))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for UXTL")
+}
+
+// UXTL2 instruction have one single form:
+//
+//   * UXTL2  <Vd>.<Ta>, <Vn>.<Tb>
+//
+func (self *Program) UXTL2(v0, v1 interface{}) *Instruction {
+    p := self.alloc("UXTL2", 2, Operands { v0, v1 })
+    if isVr(v0) &&
+       isVfmt(v0, Vec8H, Vec4S, Vec2D) &&
+       isVr(v1) &&
+       isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) {
+        var sa_ta uint32
+        var sa_ta__bit_mask uint32
+        var sa_tb uint32
+        var sa_tb__bit_mask uint32
+        sa_vd := uint32(v0.(asm.Register).ID())
+        switch vfmt(v0) {
+            case Vec8H: sa_ta = 0b0001
+            case Vec4S: sa_ta = 0b0010
+            case Vec2D: sa_ta = 0b0100
+            default: panic("aarch64: unreachable")
+        }
+        switch vfmt(v0) {
+            case Vec8H: sa_ta__bit_mask = 0b1111
+            case Vec4S: sa_ta__bit_mask = 0b1110
+            case Vec2D: sa_ta__bit_mask = 0b1100
+            default: panic("aarch64: unreachable")
+        }
+        sa_vn := uint32(v1.(asm.Register).ID())
+        switch vfmt(v1) {
+            case Vec8B: sa_tb = 0b00010
+            case Vec16B: sa_tb = 0b00011
+            case Vec4H: sa_tb = 0b00100
+            case Vec8H: sa_tb = 0b00101
+            case Vec2S: sa_tb = 0b01000
+            case Vec4S: sa_tb = 0b01001
+            default: panic("aarch64: unreachable")
+        }
+        switch vfmt(v1) {
+            case Vec8B: sa_tb__bit_mask = 0b11111
+            case Vec16B: sa_tb__bit_mask = 0b11111
+            case Vec4H: sa_tb__bit_mask = 0b11101
+            case Vec8H: sa_tb__bit_mask = 0b11101
+            case Vec2S: sa_tb__bit_mask = 0b11001
+            case Vec4S: sa_tb__bit_mask = 0b11001
+            default: panic("aarch64: unreachable")
+        }
+        if sa_ta & sa_ta__bit_mask != ubfx(sa_tb, 1, 4) & ubfx(sa_tb__bit_mask, 1, 4) {
+            panic("aarch64: invalid combination of operands for UXTL2")
+        }
+        if mask(sa_tb, 1) != 1 {
+            panic("aarch64: invalid combination of operands for UXTL2")
+        }
+        return p.setins(asimdshf(1, 1, sa_ta, 0, 20, sa_vn, sa_vd))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for UXTL2")
 }
 
 // UZP1 instruction have one single form:
@@ -38980,7 +41809,7 @@ func (self *Program) UZP1(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdperm(sa_t & 1, maskp(sa_t, 1, 2), sa_vm, 1, sa_vn, sa_vd))
+        return p.setins(asimdperm(mask(sa_t, 1), ubfx(sa_t, 1, 2), sa_vm, 1, sa_vn, sa_vd))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for UZP1")
@@ -39014,7 +41843,7 @@ func (self *Program) UZP2(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdperm(sa_t & 1, maskp(sa_t, 1, 2), sa_vm, 5, sa_vn, sa_vd))
+        return p.setins(asimdperm(mask(sa_t, 1), ubfx(sa_t, 1, 2), sa_vm, 5, sa_vn, sa_vd))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for UZP2")
@@ -39162,10 +41991,10 @@ func (self *Program) XTN(v0, v1 interface{}) *Instruction {
             case Vec2D: sa_ta = 0b10
             default: panic("aarch64: unreachable")
         }
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for XTN")
         }
-        if sa_tb & 1 != 0 {
+        if mask(sa_tb, 1) != 0 {
             panic("aarch64: invalid combination of operands for XTN")
         }
         return p.setins(asimdmisc(0, 0, sa_ta, 18, sa_vn, sa_vd))
@@ -39203,10 +42032,10 @@ func (self *Program) XTN2(v0, v1 interface{}) *Instruction {
             case Vec2D: sa_ta = 0b10
             default: panic("aarch64: unreachable")
         }
-        if sa_ta != maskp(sa_tb, 1, 2) {
+        if sa_ta != ubfx(sa_tb, 1, 2) {
             panic("aarch64: invalid combination of operands for XTN2")
         }
-        if sa_tb & 1 != 1 {
+        if mask(sa_tb, 1) != 1 {
             panic("aarch64: invalid combination of operands for XTN2")
         }
         return p.setins(asimdmisc(1, 0, sa_ta, 18, sa_vn, sa_vd))
@@ -39252,7 +42081,7 @@ func (self *Program) ZIP1(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdperm(sa_t & 1, maskp(sa_t, 1, 2), sa_vm, 3, sa_vn, sa_vd))
+        return p.setins(asimdperm(mask(sa_t, 1), ubfx(sa_t, 1, 2), sa_vm, 3, sa_vn, sa_vd))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for ZIP1")
@@ -39286,7 +42115,7 @@ func (self *Program) ZIP2(v0, v1, v2 interface{}) *Instruction {
         }
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
-        return p.setins(asimdperm(sa_t & 1, maskp(sa_t, 1, 2), sa_vm, 7, sa_vn, sa_vd))
+        return p.setins(asimdperm(mask(sa_t, 1), ubfx(sa_t, 1, 2), sa_vm, 7, sa_vn, sa_vd))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for ZIP2")
