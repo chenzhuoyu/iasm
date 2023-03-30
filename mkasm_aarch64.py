@@ -4,6 +4,7 @@
 import os
 import re
 import sys
+import textwrap
 
 from typing import cast
 from typing import Literal
@@ -17,6 +18,7 @@ from collections import OrderedDict
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 
+MAX_TEXT_WIDTH = 80
 MAX_LINE_WIDTH = 120
 
 class CodeGen:
@@ -206,6 +208,23 @@ class InstructionTabEntry(NamedTuple):
             '}',
         ])
 
+class DescriptionTabEntry(NamedTuple):
+    brief    : str
+    notes    : list[str]
+    authored : list[str]
+
+TEXT_ITEMS = {
+    'arm-defined-word',
+    'asm-code',
+    'binarynumber',
+    'hexnumber',
+    'instruction',
+    'para',
+    'syntax',
+    'value',
+    'xref',
+}
+
 def parse_bit(bit: str) -> int | None:
     match bit:
         case '0': return 0
@@ -213,17 +232,180 @@ def parse_bit(bit: str) -> int | None:
         case 'x': return None
         case _  : raise AssertionError('invalid bit value: ' + repr(bit))
 
+def break_line(text: str, indent: int, prefix: str = '') -> Iterator[str]:
+    yield from textwrap.wrap(
+        text              = text,
+        width             = MAX_TEXT_WIDTH - indent,
+        initial_indent    = ' ' * indent + prefix,
+        subsequent_indent = ' ' * (indent + len(prefix)),
+    )
+
+def layout_line(node: Element, indent: int, prefix: str = '') -> Iterator[str]:
+    text = []
+    head = node.text
+
+    if head:
+        text.extend(head.split())
+
+    for elem in node:
+        if elem.tag in TEXT_ITEMS:
+            if elem.text:
+                text.extend(elem.text.split())
+
+        elif elem.tag == 'sub':
+            assert elem.text, 'invalid subscript'
+            text.append('_')
+            text.extend(elem.text.split())
+
+        elif elem.tag == 'sup':
+            assert elem.text, 'invalid superscript'
+            text.append('^')
+            text.extend(elem.text.split())
+
+        elif elem.tag == 'list':
+            yield from break_line(' '.join(text), indent, prefix)
+            yield ''
+            yield from layout_element(elem, indent)
+            text.clear()
+
+        elif elem.tag == 'image':
+            yield from break_line(' '.join(text), indent, prefix)
+            yield ' ' * indent + '[image:%s]' % elem.attrib['file']
+            yield ' ' * indent + elem.attrib['label']
+            text.clear()
+
+        else:
+            raise RuntimeError('not a renderable element: ' + repr(elem.tag))
+
+        if elem.tail:
+            text.extend(elem.tail.split())
+
+    if text:
+        yield from break_line(' '.join(text), indent, prefix)
+
+def layout_element(node: Element, indent: int = 0) -> Iterator[str]:
+    match node.tag:
+        case 'para':
+            yield from layout_line(node, indent)
+            yield ''
+
+        case 'list':
+            tail = False
+            kind = node.attrib['type']
+
+            if kind != 'unordered':
+                raise RuntimeError('unsupported list type: ' + repr(kind))
+
+            for item in node.findall('listitem'):
+                content = item.find('content')
+                assert content is not None, 'missing list item content'
+
+                for line in layout_line(content, indent + 4, '* '):
+                    tail = bool(line.strip())
+                    yield line
+
+            if tail:
+                yield ''
+
+        case 'note':
+            tail = False
+            size = len(node)
+
+            if size:
+                yield ' ' * indent + 'NOTE: '
+
+            for elem in node:
+                for line in layout_element(elem, 4):
+                    tail = bool(line.strip())
+                    yield line
+
+            if tail:
+                yield ''
+
+        case 'table':
+            tgroup = node.find('tgroup')
+            assert tgroup is not None, 'invalid table'
+
+            cols, rows = int(tgroup.attrib['cols']), []
+            thead, tbody = tgroup.find('thead'), tgroup.find('tbody')
+            assert thead is not None and tbody is not None, 'invalid table element'
+
+            rr = thead.findall('row')
+            assert len(rr) == 1, 'invalid table rows'
+
+            hdr = rr[0].findall('entry')
+            rows.append([x.text or '' for x in hdr])
+            assert len(hdr) == cols, 'invalid table header'
+
+            for row in tbody.findall('row'):
+                ents = row.findall('entry')
+                rows.append([x.text or '' for x in ents])
+                assert len(ents) == cols, 'invalid table body'
+
+            maxw = list(max(map(len, v)) for v in zip(*rows))
+            rows = [[(c.ljust if i else c.center)(w, ' ') for c, w in zip(r, maxw)] for i, r in enumerate(rows)]
+
+            rows.append([])
+            rows.insert(0, [])
+            rows.insert(len(rr) + 1, [])
+
+            for row in rows:
+                if row:
+                    yield ' ' * indent + '    | %s |' % ' | '.join(row)
+                else:
+                    yield ' ' * indent + '    +-%s-+' % '-+-'.join('-' * w for w in maxw)
+            else:
+                yield ''
+
+        case tag:
+            raise RuntimeError('unrecognized tag ' + repr(tag))
+
+def layout_content(node: Element) -> Iterator[str]:
+    if node.text:
+        yield from break_line(' '.join(node.text.split()), 0)
+
+    for elem in node:
+        yield from layout_element(elem)
+
 cc = CodeGen()
 cc.line('// Code generated by "mkasm_aarch64.py", DO NOT EDIT.')
 cc.line()
 cc.line('package aarch64')
 cc.line()
 
+iidtab = dict[str, str]()
 enctab = dict[str, EncodingTabEntry]()
+destab = dict[str, DescriptionTabEntry]()
 instab = dict[str, InstructionTabEntry]()
 
 isadocs = ElementTree.parse(os.path.join(sys.argv[1], 'onebigfile.xml')).getroot()
 parent_tab = { c: p for p in isadocs.iter() for c in p }
+
+for isect in isadocs.findall('.//instructionsection'):
+    iid  = isect.attrib['id']
+    desc = isect.find('desc')
+    assert desc is not None, 'missing description for ' + repr(iid)
+    status('* Document:', iid)
+
+    brief  = desc.find('brief')
+    notes  = desc.find('encodingnotes')
+    detail = desc.find('authored') or desc.find('description')
+    assert brief is not None, 'missing brief for ' + repr(iid)
+
+    destab[iid] = DescriptionTabEntry(
+        brief    = ' '.join(layout_content(brief)),
+        notes    = list(layout_content(notes)) if notes else [],
+        authored = list(layout_content(detail)) if detail else [],
+    )
+
+    for enc in isect.findall('.//encoding'):
+        key = enc.attrib['name']
+        val = iidtab.get(key)
+
+        if val and val != iid:
+            raise RuntimeError('encoding IID confliction: %s=%s:%s' % (key, val, iid))
+        else:
+            iidtab[key] = iid
 
 for iclass in sorted(isadocs.findall('.//encodingindex/iclass_sect'), key = lambda x: x.attrib['id']):
     name = iclass.attrib['id']
@@ -2748,22 +2930,78 @@ for mnemonic, forms in preprocess_instr_forms(formtab):
     status('* Instruction:', mnemonic)
     assert forms, 'instruction %s have no form' % mnemonic
 
-    if len(forms) == 1:
-        cc.line('// %s instruction have one single form:' % mnemonic)
-        cc.line('//')
+    cid = None
+    iid = None
+    iids = sorted(set(iidtab[f.enctab.name] for f in forms))
+    forms.sort(key = lambda f: iids.index(iidtab[f.enctab.name]))
+
+    if len(iids) > 1:
+        cat_name = '%d categories' % len(iids)
     else:
-        cc.line('// %s instruction have %d forms:' % (mnemonic, len(forms)))
-        cc.line('//')
+        cat_name = 'one single category'
+
+    if len(forms) > 1:
+        form_name = '%d forms' % len(forms)
+    else:
+        form_name = 'one single form'
+
+    cc.line('// %s instruction have %s from %s:' % (mnemonic, form_name, cat_name))
+    cc.line('//')
 
     for form in forms:
+        cid = iidtab[form.enctab.name]
         nop = len(form.inst.operands.req)
+
+        if cid != iid:
+            if iid is not None:
+                des = destab[iid]
+                cc.line('//')
+
+                for line in des.authored:
+                    if not line:
+                        cc.line('//')
+                    else:
+                        cc.line('// ' + line)
+
+                for line in des.notes:
+                    if not line:
+                        cc.line('//')
+                    else:
+                        cc.line('// ' + line)
+
+            iid = cid
+            idx = iids.index(cid)
+
+            for line in break_line(destab[cid].brief.rstrip(), 0, '%d. ' % (idx + 1)):
+                if not line:
+                    cc.line('//')
+                else:
+                    cc.line('// ' + line)
+            else:
+                cc.line('//')
+
+        cc.line('//    %s' % form.text)
         nops.add(nop)
-        cc.line('//   * %s' % form.text)
 
         if form.inst.operands.opt:
             nops.add(nop + len(form.inst.operands.opt))
 
-    cc.line('//')
+    if iid is not None:
+        des = destab[iid]
+        cc.line('//')
+
+        for line in des.authored:
+            if not line:
+                cc.line('//')
+            else:
+                cc.line('// ' + line)
+
+        for line in des.notes:
+            if not line:
+                cc.line('//')
+            else:
+                cc.line('// ' + line)
+
     nfix = min(nops)
     base = ['v%d' % i for i in range(nfix)]
 
