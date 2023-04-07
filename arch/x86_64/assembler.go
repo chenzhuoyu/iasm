@@ -1532,7 +1532,7 @@ func (self *Assembler) assembleCommand(p *Program, line *ParsedCommand) error {
     }
 }
 
-func (self *Assembler) assembleCommandInt(p *Program, argv []ParsedCommandArg, addfn func(*Program, *expr.Expr) *Instruction) error {
+func (self *Assembler) assembleCommandInt(p *Program, argv []ParsedCommandArg, addfn func(*Program, *expr.Expr) asm.Instruction) error {
     var err error
     var val *expr.Expr
 
@@ -1765,7 +1765,7 @@ func (self *Assembler) Assemble(src string) error {
     }
 
     /* create a new program */
-    p := DefaultArch.CreateProgram()
+    p := asm.GetArch("x86_64").CreateProgram().(*Program)
     defer p.Free()
 
     /* process every line */

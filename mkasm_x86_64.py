@@ -236,13 +236,11 @@ def dump_form(form: x86_64.InstructionForm) -> str:
     else:
         return form.gas_name.upper() + ' ' + ', '.join(v.type for v in reversed(form.operands))
 
-def require_isa(isa: List[x86_64.ISAExtension]) -> str:
-    flags = []
+def require_isa(isa: List[x86_64.ISAExtension]) -> Iterable[str]:
     for v in isa:
         if v.name not in ISAMAPPING:
             raise RuntimeError('invalid ISA: ' + v.name)
-        flags.append(ISAMAPPING[v.name])
-    return ' | '.join(flags)
+        yield ISAMAPPING[v.name]
 
 def operand_match(ops: List[x86_64.Operand], argc: int, avx512: bool) -> Iterable[str]:
     for i, op in enumerate(ops):
@@ -664,7 +662,8 @@ for name, (ins, desc, forms) in sorted(instrs.items()):
             else:
                 must_success = True
             if form.isa_extensions:
-                cc.line('self.require(%s)' % require_isa(form.isa_extensions))
+                for isa in sorted(require_isa(form.isa_extensions)):
+                    cc.line('self.require(%s)' % isa)
             cc.line('p.domain = ' + DOMAIN_MAP[domains.get(form.name, 'misc')])
             for enc in form.encodings:
                 flags, instr = generate_encoding(enc, ops, gen_branch = False)

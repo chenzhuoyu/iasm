@@ -4,11 +4,28 @@ import (
     `sync/atomic`
 
     `github.com/chenzhuoyu/iasm/asm`
+    `github.com/chenzhuoyu/iasm/expr`
     `github.com/chenzhuoyu/iasm/internal/tag`
 )
 
 // Operands represents a sequence of operand required by an instruction.
 type Operands [_N_args]interface{}
+
+// InstructionClass represents one of the instruction classes.
+type InstructionClass uint8
+
+const (
+    ClassGeneral InstructionClass = iota
+    ClassFloat
+    ClassFpSimd
+    ClassAdvSimd
+    ClassSVE
+    ClassSVE2
+    ClassSME
+    ClassSME2
+    ClassSystem
+    ClassPseudo
+)
 
 // Instruction represents an unencoded instruction.
 type Instruction struct {
@@ -18,7 +35,9 @@ type Instruction struct {
     name    string
     argc    int
     argv    Operands
+    class   InstructionClass
     instr   uint32
+    pseudo  asm.Pseudo
     encoder func(uintptr) uint32
 }
 
@@ -63,13 +82,17 @@ func (self *Instruction) Free() {
     }
 }
 
-func (self *Instruction) Name() string {
-    return self.name
+func (self *Instruction) Class() InstructionClass {
+    return self.class
 }
 
 func (self *Instruction) Retain() asm.Instruction {
     atomic.AddInt64(&self.refs, 1)
     return self
+}
+
+func (self *Instruction) Mnemonic() string {
+    return self.name
 }
 
 func (self *Instruction) Operands() []interface{} {
@@ -78,6 +101,7 @@ func (self *Instruction) Operands() []interface{} {
 
 // Program represents a sequence of instructions.
 type Program struct {
+    arch *asm.Arch
     head *Instruction
     tail *Instruction
 }
@@ -105,14 +129,67 @@ func (self *Program) alloc(name string, argc int, argv Operands) *Instruction {
     return q
 }
 
+func (self *Program) pseudo(kind asm.PseudoType) (p *Instruction) {
+    p = self.alloc(kind.String(), 0, Operands{})
+    p.class = ClassPseudo
+    p.pseudo.Kind = kind
+    return
+}
+
+func (self *Program) require(ft Feature) {
+    if !self.arch.HasFeature(ft) {
+        panic("Feature '" + ft.String() + "' was not enabled")
+    }
+}
+
 func (self *Program) Free() {
     self.clear()
     freeProgram(self)
 }
 
 func (self *Program) Link(p *asm.Label) {
-    // TODO implement me
-    panic("implement me")
+    if p.Dest != nil {
+        panic("lable was alreay linked")
+    } else {
+        p.Dest = self.pseudo(asm.Nop).Retain()
+    }
+}
+
+func (self *Program) Data(v []byte) asm.Instruction {
+    p := self.pseudo(asm.Data)
+    p.pseudo.Data = v
+    return p
+}
+
+func (self *Program) Byte(v *expr.Expr) asm.Instruction {
+    p := self.pseudo(asm.Byte)
+    p.pseudo.Expr = v
+    return p
+}
+
+func (self *Program) Word(v *expr.Expr) asm.Instruction {
+    p := self.pseudo(asm.Word)
+    p.pseudo.Expr = v
+    return p
+}
+
+func (self *Program) Long(v *expr.Expr) asm.Instruction {
+    p := self.pseudo(asm.Long)
+    p.pseudo.Expr = v
+    return p
+}
+
+func (self *Program) Quad(v *expr.Expr) asm.Instruction {
+    p := self.pseudo(asm.Quad)
+    p.pseudo.Expr = v
+    return p
+}
+
+func (self *Program) Align(align uint64, padding *expr.Expr) asm.Instruction {
+    p := self.pseudo(asm.Align)
+    p.pseudo.Uint = align
+    p.pseudo.Expr = padding
+    return p
 }
 
 func (self *Program) Assemble(pc uintptr) []byte {

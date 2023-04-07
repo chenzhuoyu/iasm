@@ -2,13 +2,16 @@ package x86_64
 
 import (
     `fmt`
+
+    `github.com/chenzhuoyu/iasm/asm`
+    `github.com/chenzhuoyu/iasm/internal/tag`
 )
 
 // ISA represents an extension to x86-64 instruction set.
-type ISA uint64
+type ISA uint8
 
 const (
-    ISA_CPUID ISA = 1 << iota
+    ISA_CPUID ISA = iota
     ISA_RDTSC
     ISA_RDTSCP
     ISA_CMOV
@@ -63,10 +66,10 @@ const (
     ISA_SHA
     ISA_MONITOR
     ISA_MONITORX
-    ISA_ALL = ^ISA(0)
+    _ISA_MAX = ISA_MONITORX
 )
 
-var _ISA_NAMES = map[ISA]string {
+var _ISA_NAMES = [...]string {
     ISA_CPUID           : "CPUID",
     ISA_RDTSC           : "RDTSC",
     ISA_RDTSCP          : "RDTSCP",
@@ -124,7 +127,7 @@ var _ISA_NAMES = map[ISA]string {
     ISA_MONITORX        : "MONITORX",
 }
 
-var _ISA_MAPPING = map[string]ISA {
+var _ISA_MAPPINGS = map[string]ISA {
     "CPUID"           : ISA_CPUID,
     "RDTSC"           : ISA_RDTSC,
     "RDTSCP"          : ISA_RDTSCP,
@@ -182,9 +185,12 @@ var _ISA_MAPPING = map[string]ISA {
     "MONITORX"        : ISA_MONITORX,
 }
 
+func (self ISA) Sealed(tag.Tag) {}
+func (self ISA) FeatureID() uint8 { return uint8(self) }
+
 func (self ISA) String() string {
-    if v, ok := _ISA_NAMES[self]; ok {
-        return v
+    if self <= _ISA_MAX {
+        return _ISA_NAMES[self]
     } else {
         return fmt.Sprintf("(invalid: %#x)", uint64(self))
     }
@@ -192,44 +198,22 @@ func (self ISA) String() string {
 
 // ParseISA parses name into ISA, it will panic if the name is invalid.
 func ParseISA(name string) ISA {
-    if v, ok := _ISA_MAPPING[name]; ok {
+    if v, ok := _ISA_MAPPINGS[name]; ok {
         return v
     } else {
         panic("invalid ISA name: " + name)
     }
 }
 
-// Arch represents the x86_64 architecture.
-type Arch struct {
-    isa ISA
-}
+type (
+	_ProgramFactory struct{}
+)
 
-// DefaultArch is the default architecture with all ISA enabled.
-var DefaultArch = CreateArch()
+func (_ProgramFactory) Sealed(tag.Tag) {}
+func (_ProgramFactory) CreateProgram() asm.Program { return newProgram(x86_64) }
 
-// CreateArch creates a new Arch with all ISA enabled.
-func CreateArch() *Arch {
-    return new(Arch).EnableISA(ISA_ALL)
-}
-
-// HasISA checks if a particular ISA was enabled.
-func (self *Arch) HasISA(isa ISA) bool {
-    return (self.isa & isa) != 0
-}
-
-// EnableISA enables a particular ISA.
-func (self *Arch) EnableISA(isa ISA) *Arch {
-    self.isa |= isa
-    return self
-}
-
-// DisableISA disables a particular ISA.
-func (self *Arch) DisableISA(isa ISA) *Arch {
-    self.isa &^= isa
-    return self
-}
-
-// CreateProgram creates a new empty program.
-func (self *Arch) CreateProgram() *Program {
-    return newProgram(self)
-}
+var x86_64 = asm.RegisterArch(
+    "x86_64",
+    _ISA_MAX,
+    new(_ProgramFactory),
+)

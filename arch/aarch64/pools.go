@@ -2,6 +2,8 @@ package aarch64
 
 import (
     `sync`
+
+    `github.com/chenzhuoyu/iasm/asm`
 )
 
 var (
@@ -9,12 +11,20 @@ var (
     instructionPool sync.Pool
 )
 
-func newProgram() *Program {
-    if v := programPool.Get(); v != nil {
-        return v.(*Program)
+func newProgram(arch *asm.Arch) *Program {
+    var p *Program
+    var v interface{}
+
+    /* attempt to grab from the pool */
+    if v = programPool.Get(); v != nil {
+        p = v.(*Program)
     } else {
-        return new(Program)
+        p = new(Program)
     }
+
+    /* initialize the program */
+    p.arch = arch
+    return p
 }
 
 func freeProgram(p *Program) {

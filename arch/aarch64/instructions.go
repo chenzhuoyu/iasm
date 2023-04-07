@@ -37,12 +37,16 @@ func (self *Program) ABS(v0, v1 interface{}) *Instruction {
     p := self.alloc("ABS", 2, Operands { v0, v1 })
     // ABS  <Wd>, <Wn>
     if isWr(v0) && isWr(v1) {
+        self.require(FEAT_CSSC)
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         return p.setins(dp_1src(0, 0, 0, 8, sa_wn, sa_wd))
     }
     // ABS  <Xd>, <Xn>
     if isXr(v0) && isXr(v1) {
+        self.require(FEAT_CSSC)
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         return p.setins(dp_1src(1, 0, 0, 8, sa_xn, sa_xd))
@@ -53,6 +57,7 @@ func (self *Program) ABS(v0, v1 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -70,6 +75,7 @@ func (self *Program) ABS(v0, v1 interface{}) *Instruction {
     }
     // ABS  <V><d>, <V><n>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -98,6 +104,7 @@ func (self *Program) ADC(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("ADC", 3, Operands { v0, v1, v2 })
     // ADC  <Wd>, <Wn>, <Wm>
     if isWr(v0) && isWr(v1) && isWr(v2) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
@@ -105,6 +112,7 @@ func (self *Program) ADC(v0, v1, v2 interface{}) *Instruction {
     }
     // ADC  <Xd>, <Xn>, <Xm>
     if isXr(v0) && isXr(v1) && isXr(v2) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
@@ -130,6 +138,7 @@ func (self *Program) ADCS(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("ADCS", 3, Operands { v0, v1, v2 })
     // ADCS  <Wd>, <Wn>, <Wm>
     if isWr(v0) && isWr(v1) && isWr(v2) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
@@ -137,6 +146,7 @@ func (self *Program) ADCS(v0, v1, v2 interface{}) *Instruction {
     }
     // ADCS  <Xd>, <Xn>, <Xm>
     if isXr(v0) && isXr(v1) && isXr(v2) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
@@ -200,14 +210,26 @@ func (self *Program) ADD(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
        isWrOrWSP(v0) &&
        isWrOrWSP(v1) &&
        isWr(v2) &&
-       (len(vv) == 0 || isExtend(vv[0])) {
-        var sa_amount uint32
-        var sa_extend uint32
+       (len(vv) == 0 || isMods(vv[0], ModLSL, ModSXTB, ModSXTH, ModSXTW, ModSXTX, ModUXTB, ModUXTH, ModUXTW, ModUXTX)) {
+        p.class = ClassGeneral
+        sa_amount := uint32(0)
+        sa_extend := uint32(0b010)
         sa_wd_wsp := uint32(v0.(asm.Register).ID())
         sa_wn_wsp := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
         if len(vv) == 1 {
-            sa_extend = uint32(vv[0].(Extension).Extension())
+            switch vv[0].(Modifier).Type() {
+                case ModUXTB: sa_extend = 0b000
+                case ModUXTH: sa_extend = 0b001
+                case ModLSL: sa_extend = 0b010
+                case ModUXTW: sa_extend = 0b010
+                case ModUXTX: sa_extend = 0b011
+                case ModSXTB: sa_extend = 0b100
+                case ModSXTH: sa_extend = 0b101
+                case ModSXTW: sa_extend = 0b110
+                case ModSXTX: sa_extend = 0b111
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount = uint32(vv[0].(Modifier).Amount())
         }
         return p.setins(addsub_ext(0, 0, 0, 0, sa_wm, sa_extend, sa_amount, sa_wn_wsp, sa_wd_wsp))
@@ -217,9 +239,10 @@ func (self *Program) ADD(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
        isXrOrSP(v0) &&
        isXrOrSP(v1) &&
        isWrOrXr(v2) &&
-       (len(vv) == 0 || isExtend(vv[0])) {
-        var sa_amount uint32
-        var sa_extend_1 uint32
+       (len(vv) == 0 || isMods(vv[0], ModLSL, ModSXTB, ModSXTH, ModSXTW, ModSXTX, ModUXTB, ModUXTH, ModUXTW, ModUXTX)) {
+        p.class = ClassGeneral
+        sa_amount := uint32(0)
+        sa_extend_1 := uint32(0b011)
         var sa_r [4]uint32
         var sa_r__bit_mask [4]uint32
         sa_xd_sp := uint32(v0.(asm.Register).ID())
@@ -236,7 +259,18 @@ func (self *Program) ADD(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
             default: panic("aarch64: unreachable")
         }
         if len(vv) == 1 {
-            sa_extend_1 = uint32(vv[0].(Extension).Extension())
+            switch vv[0].(Modifier).Type() {
+                case ModUXTB: sa_extend_1 = 0b000
+                case ModUXTH: sa_extend_1 = 0b001
+                case ModUXTW: sa_extend_1 = 0b010
+                case ModLSL: sa_extend_1 = 0b011
+                case ModUXTX: sa_extend_1 = 0b011
+                case ModSXTB: sa_extend_1 = 0b100
+                case ModSXTH: sa_extend_1 = 0b101
+                case ModSXTW: sa_extend_1 = 0b110
+                case ModSXTX: sa_extend_1 = 0b111
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount = uint32(vv[0].(Modifier).Amount())
         }
         if !matchany(sa_extend_1, &sa_r[0], &sa_r__bit_mask[0], 4) {
@@ -249,13 +283,18 @@ func (self *Program) ADD(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
        isWrOrWSP(v0) &&
        isWrOrWSP(v1) &&
        isImm12(v2) &&
-       (len(vv) == 0 || isShift(vv[0]) && modn(vv[0]) == 0) {
+       (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) {
+        p.class = ClassGeneral
         var sa_shift uint32
         sa_wd_wsp := uint32(v0.(asm.Register).ID())
         sa_wn_wsp := uint32(v1.(asm.Register).ID())
         sa_imm := asImm12(v2)
         if len(vv) == 1 {
-            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            switch {
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
+                default: panic("aarch64: invalid modifier flags")
+            }
         }
         return p.setins(addsub_imm(0, 0, 0, sa_shift, sa_imm, sa_wn_wsp, sa_wd_wsp))
     }
@@ -264,38 +303,63 @@ func (self *Program) ADD(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
        isXrOrSP(v0) &&
        isXrOrSP(v1) &&
        isImm12(v2) &&
-       (len(vv) == 0 || isShift(vv[0]) && modn(vv[0]) == 0) {
+       (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) {
+        p.class = ClassGeneral
         var sa_shift uint32
         sa_xd_sp := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(v1.(asm.Register).ID())
         sa_imm := asImm12(v2)
         if len(vv) == 1 {
-            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            switch {
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
+                default: panic("aarch64: invalid modifier flags")
+            }
         }
         return p.setins(addsub_imm(1, 0, 0, sa_shift, sa_imm, sa_xn_sp, sa_xd_sp))
     }
     // ADD  <Wd>, <Wn>, <Wm>{, <shift> #<amount>}
-    if (len(vv) == 0 || len(vv) == 1) && isWr(v0) && isWr(v1) && isWr(v2) && (len(vv) == 0 || isShift(vv[0])) {
-        var sa_amount uint32
-        var sa_shift uint32
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isWr(v0) &&
+       isWr(v1) &&
+       isWr(v2) &&
+       (len(vv) == 0 || isMods(vv[0], ModASR, ModLSL, ModLSR)) {
+        p.class = ClassGeneral
+        sa_amount := uint32(0)
+        sa_shift := uint32(0b00)
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
         if len(vv) == 1 {
-            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            switch vv[0].(Modifier).Type() {
+                case ModLSL: sa_shift = 0b00
+                case ModLSR: sa_shift = 0b01
+                case ModASR: sa_shift = 0b10
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount = uint32(vv[0].(Modifier).Amount())
         }
         return p.setins(addsub_shift(0, 0, 0, sa_shift, sa_wm, sa_amount, sa_wn, sa_wd))
     }
     // ADD  <Xd>, <Xn>, <Xm>{, <shift> #<amount>}
-    if (len(vv) == 0 || len(vv) == 1) && isXr(v0) && isXr(v1) && isXr(v2) && (len(vv) == 0 || isShift(vv[0])) {
-        var sa_amount_1 uint32
-        var sa_shift uint32
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isXr(v0) &&
+       isXr(v1) &&
+       isXr(v2) &&
+       (len(vv) == 0 || isMods(vv[0], ModASR, ModLSL, ModLSR)) {
+        p.class = ClassGeneral
+        sa_amount_1 := uint32(0)
+        sa_shift := uint32(0b00)
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
         if len(vv) == 1 {
-            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            switch vv[0].(Modifier).Type() {
+                case ModLSL: sa_shift = 0b00
+                case ModLSR: sa_shift = 0b01
+                case ModASR: sa_shift = 0b10
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount_1 = uint32(vv[0].(Modifier).Amount())
         }
         return p.setins(addsub_shift(1, 0, 0, sa_shift, sa_xm, sa_amount_1, sa_xn, sa_xd))
@@ -309,6 +373,7 @@ func (self *Program) ADD(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -327,6 +392,7 @@ func (self *Program) ADD(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
     }
     // ADD  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -357,6 +423,8 @@ func (self *Program) ADD(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
 func (self *Program) ADDG(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("ADDG", 4, Operands { v0, v1, v2, v3 })
     if isXrOrSP(v0) && isXrOrSP(v1) && isUimm6(v2) && isUimm4(v3) {
+        self.require(FEAT_MTE)
+        p.class = ClassGeneral
         sa_xd_sp := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(v1.(asm.Register).ID())
         sa_uimm6 := asUimm6(v2)
@@ -403,6 +471,7 @@ func (self *Program) ADDHN(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8H, Vec4S, Vec2D) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -467,6 +536,7 @@ func (self *Program) ADDHN2(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8H, Vec4S, Vec2D) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -537,6 +607,7 @@ func (self *Program) ADDP(v0, v1 interface{}, vv ...interface{}) *Instruction {
     }
     // ADDP  <V><d>, <Vn>.<T>
     if isAdvSIMD(v0) && isVr(v1) && vfmt(v1) == Vec2D {
+        p.class = ClassAdvSimd
         var sa_t uint32
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
@@ -564,6 +635,7 @@ func (self *Program) ADDP(v0, v1 interface{}, vv ...interface{}) *Instruction {
        isVfmt(vv[0], Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(vv[0]) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -624,22 +696,43 @@ func (self *Program) ADDS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
         default : panic("instruction ADDS takes 3 or 4 operands")
     }
     // ADDS  <Wd>, <Wn|WSP>, <Wm>{, <extend> {#<amount>}}
-    if (len(vv) == 0 || len(vv) == 1) && isWr(v0) && isWrOrWSP(v1) && isWr(v2) && (len(vv) == 0 || isExtend(vv[0])) {
-        var sa_amount uint32
-        var sa_extend uint32
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isWr(v0) &&
+       isWrOrWSP(v1) &&
+       isWr(v2) &&
+       (len(vv) == 0 || isMods(vv[0], ModLSL, ModSXTB, ModSXTH, ModSXTW, ModSXTX, ModUXTB, ModUXTH, ModUXTW, ModUXTX)) {
+        p.class = ClassGeneral
+        sa_amount := uint32(0)
+        sa_extend := uint32(0b010)
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn_wsp := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
         if len(vv) == 1 {
-            sa_extend = uint32(vv[0].(Extension).Extension())
+            switch vv[0].(Modifier).Type() {
+                case ModUXTB: sa_extend = 0b000
+                case ModUXTH: sa_extend = 0b001
+                case ModLSL: sa_extend = 0b010
+                case ModUXTW: sa_extend = 0b010
+                case ModUXTX: sa_extend = 0b011
+                case ModSXTB: sa_extend = 0b100
+                case ModSXTH: sa_extend = 0b101
+                case ModSXTW: sa_extend = 0b110
+                case ModSXTX: sa_extend = 0b111
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount = uint32(vv[0].(Modifier).Amount())
         }
         return p.setins(addsub_ext(0, 0, 1, 0, sa_wm, sa_extend, sa_amount, sa_wn_wsp, sa_wd))
     }
     // ADDS  <Xd>, <Xn|SP>, <R><m>{, <extend> {#<amount>}}
-    if (len(vv) == 0 || len(vv) == 1) && isXr(v0) && isXrOrSP(v1) && isWrOrXr(v2) && (len(vv) == 0 || isExtend(vv[0])) {
-        var sa_amount uint32
-        var sa_extend_1 uint32
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isXr(v0) &&
+       isXrOrSP(v1) &&
+       isWrOrXr(v2) &&
+       (len(vv) == 0 || isMods(vv[0], ModLSL, ModSXTB, ModSXTH, ModSXTW, ModSXTX, ModUXTB, ModUXTH, ModUXTW, ModUXTX)) {
+        p.class = ClassGeneral
+        sa_amount := uint32(0)
+        sa_extend_1 := uint32(0b011)
         var sa_r [4]uint32
         var sa_r__bit_mask [4]uint32
         sa_xd := uint32(v0.(asm.Register).ID())
@@ -656,7 +749,18 @@ func (self *Program) ADDS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
             default: panic("aarch64: unreachable")
         }
         if len(vv) == 1 {
-            sa_extend_1 = uint32(vv[0].(Extension).Extension())
+            switch vv[0].(Modifier).Type() {
+                case ModUXTB: sa_extend_1 = 0b000
+                case ModUXTH: sa_extend_1 = 0b001
+                case ModUXTW: sa_extend_1 = 0b010
+                case ModLSL: sa_extend_1 = 0b011
+                case ModUXTX: sa_extend_1 = 0b011
+                case ModSXTB: sa_extend_1 = 0b100
+                case ModSXTH: sa_extend_1 = 0b101
+                case ModSXTW: sa_extend_1 = 0b110
+                case ModSXTX: sa_extend_1 = 0b111
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount = uint32(vv[0].(Modifier).Amount())
         }
         if !matchany(sa_extend_1, &sa_r[0], &sa_r__bit_mask[0], 4) {
@@ -669,13 +773,18 @@ func (self *Program) ADDS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
        isWr(v0) &&
        isWrOrWSP(v1) &&
        isImm12(v2) &&
-       (len(vv) == 0 || isShift(vv[0]) && modn(vv[0]) == 0) {
+       (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) {
+        p.class = ClassGeneral
         var sa_shift uint32
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn_wsp := uint32(v1.(asm.Register).ID())
         sa_imm := asImm12(v2)
         if len(vv) == 1 {
-            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            switch {
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
+                default: panic("aarch64: invalid modifier flags")
+            }
         }
         return p.setins(addsub_imm(0, 0, 1, sa_shift, sa_imm, sa_wn_wsp, sa_wd))
     }
@@ -684,38 +793,63 @@ func (self *Program) ADDS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
        isXr(v0) &&
        isXrOrSP(v1) &&
        isImm12(v2) &&
-       (len(vv) == 0 || isShift(vv[0]) && modn(vv[0]) == 0) {
+       (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) {
+        p.class = ClassGeneral
         var sa_shift uint32
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(v1.(asm.Register).ID())
         sa_imm := asImm12(v2)
         if len(vv) == 1 {
-            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            switch {
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
+                default: panic("aarch64: invalid modifier flags")
+            }
         }
         return p.setins(addsub_imm(1, 0, 1, sa_shift, sa_imm, sa_xn_sp, sa_xd))
     }
     // ADDS  <Wd>, <Wn>, <Wm>{, <shift> #<amount>}
-    if (len(vv) == 0 || len(vv) == 1) && isWr(v0) && isWr(v1) && isWr(v2) && (len(vv) == 0 || isShift(vv[0])) {
-        var sa_amount uint32
-        var sa_shift uint32
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isWr(v0) &&
+       isWr(v1) &&
+       isWr(v2) &&
+       (len(vv) == 0 || isMods(vv[0], ModASR, ModLSL, ModLSR)) {
+        p.class = ClassGeneral
+        sa_amount := uint32(0)
+        sa_shift := uint32(0b00)
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
         if len(vv) == 1 {
-            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            switch vv[0].(Modifier).Type() {
+                case ModLSL: sa_shift = 0b00
+                case ModLSR: sa_shift = 0b01
+                case ModASR: sa_shift = 0b10
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount = uint32(vv[0].(Modifier).Amount())
         }
         return p.setins(addsub_shift(0, 0, 1, sa_shift, sa_wm, sa_amount, sa_wn, sa_wd))
     }
     // ADDS  <Xd>, <Xn>, <Xm>{, <shift> #<amount>}
-    if (len(vv) == 0 || len(vv) == 1) && isXr(v0) && isXr(v1) && isXr(v2) && (len(vv) == 0 || isShift(vv[0])) {
-        var sa_amount_1 uint32
-        var sa_shift uint32
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isXr(v0) &&
+       isXr(v1) &&
+       isXr(v2) &&
+       (len(vv) == 0 || isMods(vv[0], ModASR, ModLSL, ModLSR)) {
+        p.class = ClassGeneral
+        sa_amount_1 := uint32(0)
+        sa_shift := uint32(0b00)
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
         if len(vv) == 1 {
-            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            switch vv[0].(Modifier).Type() {
+                case ModLSL: sa_shift = 0b00
+                case ModLSR: sa_shift = 0b01
+                case ModASR: sa_shift = 0b10
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount_1 = uint32(vv[0].(Modifier).Amount())
         }
         return p.setins(addsub_shift(1, 0, 1, sa_shift, sa_xm, sa_amount_1, sa_xn, sa_xd))
@@ -742,6 +876,7 @@ func (self *Program) ADDS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
 func (self *Program) ADDV(v0, v1 interface{}) *Instruction {
     p := self.alloc("ADDV", 2, Operands { v0, v1 })
     if isAdvSIMD(v0) && isVr(v1) && isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec4S) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
@@ -781,6 +916,7 @@ func (self *Program) ADDV(v0, v1 interface{}) *Instruction {
 func (self *Program) ADR(v0, v1 interface{}) *Instruction {
     p := self.alloc("ADR", 2, Operands { v0, v1 })
     if isXr(v0) && isLabel(v1) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_label := v1.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 {
@@ -805,6 +941,7 @@ func (self *Program) ADR(v0, v1 interface{}) *Instruction {
 func (self *Program) ADRP(v0, v1 interface{}) *Instruction {
     p := self.alloc("ADRP", 2, Operands { v0, v1 })
     if isXr(v0) && isLabel(v1) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_label := v1.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 {
@@ -827,6 +964,8 @@ func (self *Program) ADRP(v0, v1 interface{}) *Instruction {
 func (self *Program) AESD(v0, v1 interface{}) *Instruction {
     p := self.alloc("AESD", 2, Operands { v0, v1 })
     if isVr(v0) && vfmt(v0) == Vec16B && isVr(v1) && vfmt(v1) == Vec16B {
+        self.require(FEAT_AES)
+        p.class = ClassAdvSimd
         sa_vd := uint32(v0.(asm.Register).ID())
         sa_vn := uint32(v1.(asm.Register).ID())
         return p.setins(cryptoaes(0, 5, sa_vn, sa_vd))
@@ -846,6 +985,8 @@ func (self *Program) AESD(v0, v1 interface{}) *Instruction {
 func (self *Program) AESE(v0, v1 interface{}) *Instruction {
     p := self.alloc("AESE", 2, Operands { v0, v1 })
     if isVr(v0) && vfmt(v0) == Vec16B && isVr(v1) && vfmt(v1) == Vec16B {
+        self.require(FEAT_AES)
+        p.class = ClassAdvSimd
         sa_vd := uint32(v0.(asm.Register).ID())
         sa_vn := uint32(v1.(asm.Register).ID())
         return p.setins(cryptoaes(0, 4, sa_vn, sa_vd))
@@ -865,6 +1006,8 @@ func (self *Program) AESE(v0, v1 interface{}) *Instruction {
 func (self *Program) AESIMC(v0, v1 interface{}) *Instruction {
     p := self.alloc("AESIMC", 2, Operands { v0, v1 })
     if isVr(v0) && vfmt(v0) == Vec16B && isVr(v1) && vfmt(v1) == Vec16B {
+        self.require(FEAT_AES)
+        p.class = ClassAdvSimd
         sa_vd := uint32(v0.(asm.Register).ID())
         sa_vn := uint32(v1.(asm.Register).ID())
         return p.setins(cryptoaes(0, 7, sa_vn, sa_vd))
@@ -884,6 +1027,8 @@ func (self *Program) AESIMC(v0, v1 interface{}) *Instruction {
 func (self *Program) AESMC(v0, v1 interface{}) *Instruction {
     p := self.alloc("AESMC", 2, Operands { v0, v1 })
     if isVr(v0) && vfmt(v0) == Vec16B && isVr(v1) && vfmt(v1) == Vec16B {
+        self.require(FEAT_AES)
+        p.class = ClassAdvSimd
         sa_vd := uint32(v0.(asm.Register).ID())
         sa_vn := uint32(v1.(asm.Register).ID())
         return p.setins(cryptoaes(0, 6, sa_vn, sa_vd))
@@ -939,6 +1084,7 @@ func (self *Program) AND(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
        isVfmt(v2, Vec8B, Vec16B) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -952,6 +1098,7 @@ func (self *Program) AND(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
     }
     // AND  <Wd|WSP>, <Wn>, #<imm>
     if isWrOrWSP(v0) && isWr(v1) && isMask32(v2) {
+        p.class = ClassGeneral
         sa_wd_wsp := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_imm := asMaskOp(v2)
@@ -959,33 +1106,56 @@ func (self *Program) AND(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
     }
     // AND  <Xd|SP>, <Xn>, #<imm>
     if isXrOrSP(v0) && isXr(v1) && isMask64(v2) {
+        p.class = ClassGeneral
         sa_xd_sp := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_imm_1 := asMaskOp(v2)
         return p.setins(log_imm(1, 0, ubfx(sa_imm_1, 12, 1), ubfx(sa_imm_1, 6, 6), mask(sa_imm_1, 6), sa_xn, sa_xd_sp))
     }
     // AND  <Wd>, <Wn>, <Wm>{, <shift> #<amount>}
-    if (len(vv) == 0 || len(vv) == 1) && isWr(v0) && isWr(v1) && isWr(v2) && (len(vv) == 0 || isShift(vv[0])) {
-        var sa_amount uint32
-        var sa_shift uint32
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isWr(v0) &&
+       isWr(v1) &&
+       isWr(v2) &&
+       (len(vv) == 0 || isMods(vv[0], ModASR, ModLSL, ModLSR, ModROR)) {
+        p.class = ClassGeneral
+        sa_amount := uint32(0)
+        sa_shift := uint32(0b00)
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
         if len(vv) == 1 {
-            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            switch vv[0].(Modifier).Type() {
+                case ModLSL: sa_shift = 0b00
+                case ModLSR: sa_shift = 0b01
+                case ModASR: sa_shift = 0b10
+                case ModROR: sa_shift = 0b11
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount = uint32(vv[0].(Modifier).Amount())
         }
         return p.setins(log_shift(0, 0, sa_shift, 0, sa_wm, sa_amount, sa_wn, sa_wd))
     }
     // AND  <Xd>, <Xn>, <Xm>{, <shift> #<amount>}
-    if (len(vv) == 0 || len(vv) == 1) && isXr(v0) && isXr(v1) && isXr(v2) && (len(vv) == 0 || isShift(vv[0])) {
-        var sa_amount_1 uint32
-        var sa_shift uint32
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isXr(v0) &&
+       isXr(v1) &&
+       isXr(v2) &&
+       (len(vv) == 0 || isMods(vv[0], ModASR, ModLSL, ModLSR, ModROR)) {
+        p.class = ClassGeneral
+        sa_amount_1 := uint32(0)
+        sa_shift := uint32(0b00)
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
         if len(vv) == 1 {
-            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            switch vv[0].(Modifier).Type() {
+                case ModLSL: sa_shift = 0b00
+                case ModLSR: sa_shift = 0b01
+                case ModASR: sa_shift = 0b10
+                case ModROR: sa_shift = 0b11
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount_1 = uint32(vv[0].(Modifier).Amount())
         }
         return p.setins(log_shift(1, 0, sa_shift, 0, sa_xm, sa_amount_1, sa_xn, sa_xd))
@@ -1024,6 +1194,7 @@ func (self *Program) ANDS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
     }
     // ANDS  <Wd>, <Wn>, #<imm>
     if isWr(v0) && isWr(v1) && isMask32(v2) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_imm := asMaskOp(v2)
@@ -1031,33 +1202,56 @@ func (self *Program) ANDS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
     }
     // ANDS  <Xd>, <Xn>, #<imm>
     if isXr(v0) && isXr(v1) && isMask64(v2) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_imm_1 := asMaskOp(v2)
         return p.setins(log_imm(1, 3, ubfx(sa_imm_1, 12, 1), ubfx(sa_imm_1, 6, 6), mask(sa_imm_1, 6), sa_xn, sa_xd))
     }
     // ANDS  <Wd>, <Wn>, <Wm>{, <shift> #<amount>}
-    if (len(vv) == 0 || len(vv) == 1) && isWr(v0) && isWr(v1) && isWr(v2) && (len(vv) == 0 || isShift(vv[0])) {
-        var sa_amount uint32
-        var sa_shift uint32
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isWr(v0) &&
+       isWr(v1) &&
+       isWr(v2) &&
+       (len(vv) == 0 || isMods(vv[0], ModASR, ModLSL, ModLSR, ModROR)) {
+        p.class = ClassGeneral
+        sa_amount := uint32(0)
+        sa_shift := uint32(0b00)
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
         if len(vv) == 1 {
-            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            switch vv[0].(Modifier).Type() {
+                case ModLSL: sa_shift = 0b00
+                case ModLSR: sa_shift = 0b01
+                case ModASR: sa_shift = 0b10
+                case ModROR: sa_shift = 0b11
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount = uint32(vv[0].(Modifier).Amount())
         }
         return p.setins(log_shift(0, 3, sa_shift, 0, sa_wm, sa_amount, sa_wn, sa_wd))
     }
     // ANDS  <Xd>, <Xn>, <Xm>{, <shift> #<amount>}
-    if (len(vv) == 0 || len(vv) == 1) && isXr(v0) && isXr(v1) && isXr(v2) && (len(vv) == 0 || isShift(vv[0])) {
-        var sa_amount_1 uint32
-        var sa_shift uint32
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isXr(v0) &&
+       isXr(v1) &&
+       isXr(v2) &&
+       (len(vv) == 0 || isMods(vv[0], ModASR, ModLSL, ModLSR, ModROR)) {
+        p.class = ClassGeneral
+        sa_amount_1 := uint32(0)
+        sa_shift := uint32(0b00)
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
         if len(vv) == 1 {
-            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            switch vv[0].(Modifier).Type() {
+                case ModLSL: sa_shift = 0b00
+                case ModLSR: sa_shift = 0b01
+                case ModASR: sa_shift = 0b10
+                case ModROR: sa_shift = 0b11
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount_1 = uint32(vv[0].(Modifier).Amount())
         }
         return p.setins(log_shift(1, 3, sa_shift, 0, sa_xm, sa_amount_1, sa_xn, sa_xd))
@@ -1093,6 +1287,7 @@ func (self *Program) ASR(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("ASR", 3, Operands { v0, v1, v2 })
     // ASR  <Wd>, <Wn>, <Wm>
     if isWr(v0) && isWr(v1) && isWr(v2) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
@@ -1100,6 +1295,7 @@ func (self *Program) ASR(v0, v1, v2 interface{}) *Instruction {
     }
     // ASR  <Xd>, <Xn>, <Xm>
     if isXr(v0) && isXr(v1) && isXr(v2) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
@@ -1107,6 +1303,7 @@ func (self *Program) ASR(v0, v1, v2 interface{}) *Instruction {
     }
     // ASR  <Wd>, <Wn>, #<shift>
     if isWr(v0) && isWr(v1) && isUimm6(v2) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_shift := asUimm6(v2)
@@ -1114,6 +1311,7 @@ func (self *Program) ASR(v0, v1, v2 interface{}) *Instruction {
     }
     // ASR  <Xd>, <Xn>, #<shift>
     if isXr(v0) && isXr(v1) && isUimm6(v2) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_shift_1 := asUimm6(v2)
@@ -1141,6 +1339,7 @@ func (self *Program) ASRV(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("ASRV", 3, Operands { v0, v1, v2 })
     // ASRV  <Wd>, <Wn>, <Wm>
     if isWr(v0) && isWr(v1) && isWr(v2) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
@@ -1148,6 +1347,7 @@ func (self *Program) ASRV(v0, v1, v2 interface{}) *Instruction {
     }
     // ASRV  <Xd>, <Xn>, <Xm>
     if isXr(v0) && isXr(v1) && isXr(v2) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
@@ -1170,6 +1370,7 @@ func (self *Program) ASRV(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) AT(v0, v1 interface{}) *Instruction {
     p := self.alloc("AT", 2, Operands { v0, v1 })
     if isATOption(v0) && isXr(v1) {
+        p.class = ClassSystem
         sa_at_op := uint32(v0.(ATOption))
         sa_xt_1 := uint32(v1.(asm.Register).ID())
         return p.setins(systeminstrs(0, ubfx(sa_at_op, 7, 3), 7, ubfx(sa_at_op, 3, 4), mask(sa_at_op, 3), sa_xt_1))
@@ -1202,6 +1403,8 @@ func (self *Program) AT(v0, v1 interface{}) *Instruction {
 func (self *Program) AUTDA(v0, v1 interface{}) *Instruction {
     p := self.alloc("AUTDA", 2, Operands { v0, v1 })
     if isXr(v0) && isXrOrSP(v1) {
+        self.require(FEAT_PAuth)
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(v1.(asm.Register).ID())
         return p.setins(dp_1src(1, 0, 1, 6, sa_xn_sp, sa_xd))
@@ -1234,6 +1437,8 @@ func (self *Program) AUTDA(v0, v1 interface{}) *Instruction {
 func (self *Program) AUTDB(v0, v1 interface{}) *Instruction {
     p := self.alloc("AUTDB", 2, Operands { v0, v1 })
     if isXr(v0) && isXrOrSP(v1) {
+        self.require(FEAT_PAuth)
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(v1.(asm.Register).ID())
         return p.setins(dp_1src(1, 0, 1, 7, sa_xn_sp, sa_xd))
@@ -1266,6 +1471,8 @@ func (self *Program) AUTDB(v0, v1 interface{}) *Instruction {
 func (self *Program) AUTDZA(v0 interface{}) *Instruction {
     p := self.alloc("AUTDZA", 1, Operands { v0 })
     if isXr(v0) {
+        self.require(FEAT_PAuth)
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         return p.setins(dp_1src(1, 0, 1, 14, 31, sa_xd))
     }
@@ -1297,6 +1504,8 @@ func (self *Program) AUTDZA(v0 interface{}) *Instruction {
 func (self *Program) AUTDZB(v0 interface{}) *Instruction {
     p := self.alloc("AUTDZB", 1, Operands { v0 })
     if isXr(v0) {
+        self.require(FEAT_PAuth)
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         return p.setins(dp_1src(1, 0, 1, 15, 31, sa_xd))
     }
@@ -1335,6 +1544,8 @@ func (self *Program) AUTDZB(v0 interface{}) *Instruction {
 func (self *Program) AUTIA(v0, v1 interface{}) *Instruction {
     p := self.alloc("AUTIA", 2, Operands { v0, v1 })
     if isXr(v0) && isXrOrSP(v1) {
+        self.require(FEAT_PAuth)
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(v1.(asm.Register).ID())
         return p.setins(dp_1src(1, 0, 1, 4, sa_xn_sp, sa_xd))
@@ -1373,6 +1584,8 @@ func (self *Program) AUTIA(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) AUTIA1716() *Instruction {
     p := self.alloc("AUTIA1716", 0, Operands {})
+    self.require(FEAT_PAuth)
+    p.class = ClassSystem
     return p.setins(hints(1, 4))
 }
 
@@ -1406,6 +1619,8 @@ func (self *Program) AUTIA1716() *Instruction {
 //
 func (self *Program) AUTIASP() *Instruction {
     p := self.alloc("AUTIASP", 0, Operands {})
+    self.require(FEAT_PAuth)
+    p.class = ClassSystem
     return p.setins(hints(3, 5))
 }
 
@@ -1439,6 +1654,8 @@ func (self *Program) AUTIASP() *Instruction {
 //
 func (self *Program) AUTIAZ() *Instruction {
     p := self.alloc("AUTIAZ", 0, Operands {})
+    self.require(FEAT_PAuth)
+    p.class = ClassSystem
     return p.setins(hints(3, 4))
 }
 
@@ -1473,6 +1690,8 @@ func (self *Program) AUTIAZ() *Instruction {
 func (self *Program) AUTIB(v0, v1 interface{}) *Instruction {
     p := self.alloc("AUTIB", 2, Operands { v0, v1 })
     if isXr(v0) && isXrOrSP(v1) {
+        self.require(FEAT_PAuth)
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(v1.(asm.Register).ID())
         return p.setins(dp_1src(1, 0, 1, 5, sa_xn_sp, sa_xd))
@@ -1511,6 +1730,8 @@ func (self *Program) AUTIB(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) AUTIB1716() *Instruction {
     p := self.alloc("AUTIB1716", 0, Operands {})
+    self.require(FEAT_PAuth)
+    p.class = ClassSystem
     return p.setins(hints(1, 6))
 }
 
@@ -1544,6 +1765,8 @@ func (self *Program) AUTIB1716() *Instruction {
 //
 func (self *Program) AUTIBSP() *Instruction {
     p := self.alloc("AUTIBSP", 0, Operands {})
+    self.require(FEAT_PAuth)
+    p.class = ClassSystem
     return p.setins(hints(3, 7))
 }
 
@@ -1577,6 +1800,8 @@ func (self *Program) AUTIBSP() *Instruction {
 //
 func (self *Program) AUTIBZ() *Instruction {
     p := self.alloc("AUTIBZ", 0, Operands {})
+    self.require(FEAT_PAuth)
+    p.class = ClassSystem
     return p.setins(hints(3, 6))
 }
 
@@ -1611,6 +1836,8 @@ func (self *Program) AUTIBZ() *Instruction {
 func (self *Program) AUTIZA(v0 interface{}) *Instruction {
     p := self.alloc("AUTIZA", 1, Operands { v0 })
     if isXr(v0) {
+        self.require(FEAT_PAuth)
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         return p.setins(dp_1src(1, 0, 1, 12, 31, sa_xd))
     }
@@ -1649,6 +1876,8 @@ func (self *Program) AUTIZA(v0 interface{}) *Instruction {
 func (self *Program) AUTIZB(v0 interface{}) *Instruction {
     p := self.alloc("AUTIZB", 1, Operands { v0 })
     if isXr(v0) {
+        self.require(FEAT_PAuth)
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         return p.setins(dp_1src(1, 0, 1, 13, 31, sa_xd))
     }
@@ -1669,6 +1898,8 @@ func (self *Program) AUTIZB(v0 interface{}) *Instruction {
 //
 func (self *Program) AXFLAG() *Instruction {
     p := self.alloc("AXFLAG", 0, Operands {})
+    self.require(FEAT_FlagM2)
+    p.class = ClassSystem
     return p.setins(pstate(0, 0, 2, 31))
 }
 
@@ -1684,6 +1915,7 @@ func (self *Program) AXFLAG() *Instruction {
 func (self *Program) B(v0 interface{}) *Instruction {
     p := self.alloc("B", 1, Operands { v0 })
     if isLabel(v0) {
+        p.class = ClassGeneral
         sa_label := v0.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return branch_imm(0, uint32(sa_label.RelativeTo(pc))) })
     }
@@ -1703,6 +1935,7 @@ func (self *Program) B(v0 interface{}) *Instruction {
 func (self *Program) BEQ(v0 interface{}) *Instruction {
     p := self.alloc("BEQ", 1, Operands { v0 })
     if isLabel(v0) {
+        p.class = ClassGeneral
         sa_label := v0.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 0, 0) })
     }
@@ -1722,6 +1955,7 @@ func (self *Program) BEQ(v0 interface{}) *Instruction {
 func (self *Program) BNE(v0 interface{}) *Instruction {
     p := self.alloc("BNE", 1, Operands { v0 })
     if isLabel(v0) {
+        p.class = ClassGeneral
         sa_label := v0.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 0, 1) })
     }
@@ -1741,6 +1975,7 @@ func (self *Program) BNE(v0 interface{}) *Instruction {
 func (self *Program) BCS(v0 interface{}) *Instruction {
     p := self.alloc("BCS", 1, Operands { v0 })
     if isLabel(v0) {
+        p.class = ClassGeneral
         sa_label := v0.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 0, 2) })
     }
@@ -1760,6 +1995,7 @@ func (self *Program) BCS(v0 interface{}) *Instruction {
 func (self *Program) BHS(v0 interface{}) *Instruction {
     p := self.alloc("BHS", 1, Operands { v0 })
     if isLabel(v0) {
+        p.class = ClassGeneral
         sa_label := v0.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 0, 2) })
     }
@@ -1779,6 +2015,7 @@ func (self *Program) BHS(v0 interface{}) *Instruction {
 func (self *Program) BCC(v0 interface{}) *Instruction {
     p := self.alloc("BCC", 1, Operands { v0 })
     if isLabel(v0) {
+        p.class = ClassGeneral
         sa_label := v0.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 0, 3) })
     }
@@ -1798,6 +2035,7 @@ func (self *Program) BCC(v0 interface{}) *Instruction {
 func (self *Program) BLO(v0 interface{}) *Instruction {
     p := self.alloc("BLO", 1, Operands { v0 })
     if isLabel(v0) {
+        p.class = ClassGeneral
         sa_label := v0.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 0, 3) })
     }
@@ -1817,6 +2055,7 @@ func (self *Program) BLO(v0 interface{}) *Instruction {
 func (self *Program) BMI(v0 interface{}) *Instruction {
     p := self.alloc("BMI", 1, Operands { v0 })
     if isLabel(v0) {
+        p.class = ClassGeneral
         sa_label := v0.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 0, 4) })
     }
@@ -1836,6 +2075,7 @@ func (self *Program) BMI(v0 interface{}) *Instruction {
 func (self *Program) BPL(v0 interface{}) *Instruction {
     p := self.alloc("BPL", 1, Operands { v0 })
     if isLabel(v0) {
+        p.class = ClassGeneral
         sa_label := v0.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 0, 5) })
     }
@@ -1855,6 +2095,7 @@ func (self *Program) BPL(v0 interface{}) *Instruction {
 func (self *Program) BVS(v0 interface{}) *Instruction {
     p := self.alloc("BVS", 1, Operands { v0 })
     if isLabel(v0) {
+        p.class = ClassGeneral
         sa_label := v0.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 0, 6) })
     }
@@ -1874,6 +2115,7 @@ func (self *Program) BVS(v0 interface{}) *Instruction {
 func (self *Program) BVC(v0 interface{}) *Instruction {
     p := self.alloc("BVC", 1, Operands { v0 })
     if isLabel(v0) {
+        p.class = ClassGeneral
         sa_label := v0.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 0, 7) })
     }
@@ -1893,6 +2135,7 @@ func (self *Program) BVC(v0 interface{}) *Instruction {
 func (self *Program) BHI(v0 interface{}) *Instruction {
     p := self.alloc("BHI", 1, Operands { v0 })
     if isLabel(v0) {
+        p.class = ClassGeneral
         sa_label := v0.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 0, 8) })
     }
@@ -1912,6 +2155,7 @@ func (self *Program) BHI(v0 interface{}) *Instruction {
 func (self *Program) BLS(v0 interface{}) *Instruction {
     p := self.alloc("BLS", 1, Operands { v0 })
     if isLabel(v0) {
+        p.class = ClassGeneral
         sa_label := v0.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 0, 9) })
     }
@@ -1931,6 +2175,7 @@ func (self *Program) BLS(v0 interface{}) *Instruction {
 func (self *Program) BGE(v0 interface{}) *Instruction {
     p := self.alloc("BGE", 1, Operands { v0 })
     if isLabel(v0) {
+        p.class = ClassGeneral
         sa_label := v0.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 0, 10) })
     }
@@ -1950,6 +2195,7 @@ func (self *Program) BGE(v0 interface{}) *Instruction {
 func (self *Program) BLT(v0 interface{}) *Instruction {
     p := self.alloc("BLT", 1, Operands { v0 })
     if isLabel(v0) {
+        p.class = ClassGeneral
         sa_label := v0.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 0, 11) })
     }
@@ -1969,6 +2215,7 @@ func (self *Program) BLT(v0 interface{}) *Instruction {
 func (self *Program) BGT(v0 interface{}) *Instruction {
     p := self.alloc("BGT", 1, Operands { v0 })
     if isLabel(v0) {
+        p.class = ClassGeneral
         sa_label := v0.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 0, 12) })
     }
@@ -1988,6 +2235,7 @@ func (self *Program) BGT(v0 interface{}) *Instruction {
 func (self *Program) BLE(v0 interface{}) *Instruction {
     p := self.alloc("BLE", 1, Operands { v0 })
     if isLabel(v0) {
+        p.class = ClassGeneral
         sa_label := v0.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 0, 13) })
     }
@@ -2007,6 +2255,7 @@ func (self *Program) BLE(v0 interface{}) *Instruction {
 func (self *Program) BAL(v0 interface{}) *Instruction {
     p := self.alloc("BAL", 1, Operands { v0 })
     if isLabel(v0) {
+        p.class = ClassGeneral
         sa_label := v0.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 0, 14) })
     }
@@ -2027,6 +2276,8 @@ func (self *Program) BAL(v0 interface{}) *Instruction {
 func (self *Program) BCEQ(v0 interface{}) *Instruction {
     p := self.alloc("BCEQ", 1, Operands { v0 })
     if isLabel(v0) {
+        self.require(FEAT_HBC)
+        p.class = ClassGeneral
         sa_label := v0.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 1, 0) })
     }
@@ -2047,6 +2298,8 @@ func (self *Program) BCEQ(v0 interface{}) *Instruction {
 func (self *Program) BCNE(v0 interface{}) *Instruction {
     p := self.alloc("BCNE", 1, Operands { v0 })
     if isLabel(v0) {
+        self.require(FEAT_HBC)
+        p.class = ClassGeneral
         sa_label := v0.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 1, 1) })
     }
@@ -2067,6 +2320,8 @@ func (self *Program) BCNE(v0 interface{}) *Instruction {
 func (self *Program) BCCS(v0 interface{}) *Instruction {
     p := self.alloc("BCCS", 1, Operands { v0 })
     if isLabel(v0) {
+        self.require(FEAT_HBC)
+        p.class = ClassGeneral
         sa_label := v0.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 1, 2) })
     }
@@ -2087,6 +2342,8 @@ func (self *Program) BCCS(v0 interface{}) *Instruction {
 func (self *Program) BCHS(v0 interface{}) *Instruction {
     p := self.alloc("BCHS", 1, Operands { v0 })
     if isLabel(v0) {
+        self.require(FEAT_HBC)
+        p.class = ClassGeneral
         sa_label := v0.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 1, 2) })
     }
@@ -2107,6 +2364,8 @@ func (self *Program) BCHS(v0 interface{}) *Instruction {
 func (self *Program) BCCC(v0 interface{}) *Instruction {
     p := self.alloc("BCCC", 1, Operands { v0 })
     if isLabel(v0) {
+        self.require(FEAT_HBC)
+        p.class = ClassGeneral
         sa_label := v0.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 1, 3) })
     }
@@ -2127,6 +2386,8 @@ func (self *Program) BCCC(v0 interface{}) *Instruction {
 func (self *Program) BCLO(v0 interface{}) *Instruction {
     p := self.alloc("BCLO", 1, Operands { v0 })
     if isLabel(v0) {
+        self.require(FEAT_HBC)
+        p.class = ClassGeneral
         sa_label := v0.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 1, 3) })
     }
@@ -2147,6 +2408,8 @@ func (self *Program) BCLO(v0 interface{}) *Instruction {
 func (self *Program) BCMI(v0 interface{}) *Instruction {
     p := self.alloc("BCMI", 1, Operands { v0 })
     if isLabel(v0) {
+        self.require(FEAT_HBC)
+        p.class = ClassGeneral
         sa_label := v0.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 1, 4) })
     }
@@ -2167,6 +2430,8 @@ func (self *Program) BCMI(v0 interface{}) *Instruction {
 func (self *Program) BCPL(v0 interface{}) *Instruction {
     p := self.alloc("BCPL", 1, Operands { v0 })
     if isLabel(v0) {
+        self.require(FEAT_HBC)
+        p.class = ClassGeneral
         sa_label := v0.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 1, 5) })
     }
@@ -2187,6 +2452,8 @@ func (self *Program) BCPL(v0 interface{}) *Instruction {
 func (self *Program) BCVS(v0 interface{}) *Instruction {
     p := self.alloc("BCVS", 1, Operands { v0 })
     if isLabel(v0) {
+        self.require(FEAT_HBC)
+        p.class = ClassGeneral
         sa_label := v0.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 1, 6) })
     }
@@ -2207,6 +2474,8 @@ func (self *Program) BCVS(v0 interface{}) *Instruction {
 func (self *Program) BCVC(v0 interface{}) *Instruction {
     p := self.alloc("BCVC", 1, Operands { v0 })
     if isLabel(v0) {
+        self.require(FEAT_HBC)
+        p.class = ClassGeneral
         sa_label := v0.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 1, 7) })
     }
@@ -2227,6 +2496,8 @@ func (self *Program) BCVC(v0 interface{}) *Instruction {
 func (self *Program) BCHI(v0 interface{}) *Instruction {
     p := self.alloc("BCHI", 1, Operands { v0 })
     if isLabel(v0) {
+        self.require(FEAT_HBC)
+        p.class = ClassGeneral
         sa_label := v0.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 1, 8) })
     }
@@ -2247,6 +2518,8 @@ func (self *Program) BCHI(v0 interface{}) *Instruction {
 func (self *Program) BCLS(v0 interface{}) *Instruction {
     p := self.alloc("BCLS", 1, Operands { v0 })
     if isLabel(v0) {
+        self.require(FEAT_HBC)
+        p.class = ClassGeneral
         sa_label := v0.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 1, 9) })
     }
@@ -2267,6 +2540,8 @@ func (self *Program) BCLS(v0 interface{}) *Instruction {
 func (self *Program) BCGE(v0 interface{}) *Instruction {
     p := self.alloc("BCGE", 1, Operands { v0 })
     if isLabel(v0) {
+        self.require(FEAT_HBC)
+        p.class = ClassGeneral
         sa_label := v0.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 1, 10) })
     }
@@ -2287,6 +2562,8 @@ func (self *Program) BCGE(v0 interface{}) *Instruction {
 func (self *Program) BCLT(v0 interface{}) *Instruction {
     p := self.alloc("BCLT", 1, Operands { v0 })
     if isLabel(v0) {
+        self.require(FEAT_HBC)
+        p.class = ClassGeneral
         sa_label := v0.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 1, 11) })
     }
@@ -2307,6 +2584,8 @@ func (self *Program) BCLT(v0 interface{}) *Instruction {
 func (self *Program) BCGT(v0 interface{}) *Instruction {
     p := self.alloc("BCGT", 1, Operands { v0 })
     if isLabel(v0) {
+        self.require(FEAT_HBC)
+        p.class = ClassGeneral
         sa_label := v0.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 1, 12) })
     }
@@ -2327,6 +2606,8 @@ func (self *Program) BCGT(v0 interface{}) *Instruction {
 func (self *Program) BCLE(v0 interface{}) *Instruction {
     p := self.alloc("BCLE", 1, Operands { v0 })
     if isLabel(v0) {
+        self.require(FEAT_HBC)
+        p.class = ClassGeneral
         sa_label := v0.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 1, 13) })
     }
@@ -2347,6 +2628,8 @@ func (self *Program) BCLE(v0 interface{}) *Instruction {
 func (self *Program) BCAL(v0 interface{}) *Instruction {
     p := self.alloc("BCAL", 1, Operands { v0 })
     if isLabel(v0) {
+        self.require(FEAT_HBC)
+        p.class = ClassGeneral
         sa_label := v0.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 1, 14) })
     }
@@ -2378,6 +2661,8 @@ func (self *Program) BCAX(v0, v1, v2, v3 interface{}) *Instruction {
        vfmt(v2) == Vec16B &&
        isVr(v3) &&
        vfmt(v3) == Vec16B {
+        self.require(FEAT_SHA3)
+        p.class = ClassAdvSimd
         sa_vd := uint32(v0.(asm.Register).ID())
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
@@ -2402,6 +2687,8 @@ func (self *Program) BFC(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("BFC", 3, Operands { v0, v1, v2 })
     // BFC  <Wd>, #<lsb>, #<width>
     if isWr(v0) && isUimm5(v1) && isBFxWidth(v1, v2, 32) {
+        self.require(FEAT_ASMv8p2)
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_lsb := -asUimm5(v1) % 32
         sa_width := asUimm5(v2) - 1
@@ -2409,6 +2696,8 @@ func (self *Program) BFC(v0, v1, v2 interface{}) *Instruction {
     }
     // BFC  <Xd>, #<lsb>, #<width>
     if isXr(v0) && isUimm6(v1) && isBFxWidth(v1, v2, 64) {
+        self.require(FEAT_ASMv8p2)
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_lsb_2 := -asUimm6(v1) % 64
         sa_width_1 := asUimm6(v2) - 1
@@ -2435,6 +2724,8 @@ func (self *Program) BFC(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) BFCVT(v0, v1 interface{}) *Instruction {
     p := self.alloc("BFCVT", 2, Operands { v0, v1 })
     if isHr(v0) && isSr(v1) {
+        self.require(FEAT_BF16)
+        p.class = ClassFloat
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 1, 6, sa_sn, sa_hd))
@@ -2463,6 +2754,8 @@ func (self *Program) BFCVT(v0, v1 interface{}) *Instruction {
 func (self *Program) BFCVTN(v0, v1 interface{}) *Instruction {
     p := self.alloc("BFCVTN", 2, Operands { v0, v1 })
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && vfmt(v1) == Vec4S {
+        self.require(FEAT_BF16)
+        p.class = ClassAdvSimd
         var sa_ta uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -2500,6 +2793,8 @@ func (self *Program) BFCVTN(v0, v1 interface{}) *Instruction {
 func (self *Program) BFCVTN2(v0, v1 interface{}) *Instruction {
     p := self.alloc("BFCVTN2", 2, Operands { v0, v1 })
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && vfmt(v1) == Vec4S {
+        self.require(FEAT_BF16)
+        p.class = ClassAdvSimd
         var sa_ta uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -2620,6 +2915,8 @@ func (self *Program) BFDOT(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec4H, Vec8H) &&
        isVri(v2) &&
        vmoder(v2) == Mode2H {
+        self.require(FEAT_BF16)
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -2649,6 +2946,8 @@ func (self *Program) BFDOT(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec4H, Vec8H) &&
        vfmt(v1) == vfmt(v2) {
+        self.require(FEAT_BF16)
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -2689,6 +2988,7 @@ func (self *Program) BFI(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("BFI", 4, Operands { v0, v1, v2, v3 })
     // BFI  <Wd>, <Wn>, #<lsb>, #<width>
     if isWr(v0) && isWr(v1) && isUimm5(v2) && isBFxWidth(v2, v3, 32) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_lsb := -asUimm5(v2) % 32
@@ -2697,6 +2997,7 @@ func (self *Program) BFI(v0, v1, v2, v3 interface{}) *Instruction {
     }
     // BFI  <Xd>, <Xn>, #<lsb>, #<width>
     if isXr(v0) && isXr(v1) && isUimm6(v2) && isBFxWidth(v2, v3, 64) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_lsb_2 := -asUimm6(v2) % 64
@@ -2733,6 +3034,7 @@ func (self *Program) BFM(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("BFM", 4, Operands { v0, v1, v2, v3 })
     // BFM  <Wd>, <Wn>, #<immr>, #<imms>
     if isWr(v0) && isWr(v1) && isUimm6(v2) && isUimm6(v3) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_immr := asUimm6(v2)
@@ -2741,6 +3043,7 @@ func (self *Program) BFM(v0, v1, v2, v3 interface{}) *Instruction {
     }
     // BFM  <Xd>, <Xn>, #<immr>, #<imms>
     if isXr(v0) && isXr(v1) && isUimm6(v2) && isUimm6(v3) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_immr_1 := asUimm6(v2)
@@ -2785,6 +3088,8 @@ func (self *Program) BFMLALB(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("BFMLALB", 3, Operands { v0, v1, v2 })
     // BFMLALB  <Vd>.4S, <Vn>.8H, <Vm>.H[<index>]
     if isVr(v0) && vfmt(v0) == Vec4S && isVr(v1) && vfmt(v1) == Vec8H && isVri(v2) && vmoder(v2) == ModeH {
+        self.require(FEAT_BF16)
+        p.class = ClassAdvSimd
         sa_vd := uint32(v0.(asm.Register).ID())
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(VidxRegister).ID())
@@ -2804,6 +3109,8 @@ func (self *Program) BFMLALB(v0, v1, v2 interface{}) *Instruction {
     }
     // BFMLALB  <Vd>.4S, <Vn>.8H, <Vm>.8H
     if isVr(v0) && vfmt(v0) == Vec4S && isVr(v1) && vfmt(v1) == Vec8H && isVr(v2) && vfmt(v2) == Vec8H {
+        self.require(FEAT_BF16)
+        p.class = ClassAdvSimd
         sa_vd := uint32(v0.(asm.Register).ID())
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
@@ -2847,6 +3154,8 @@ func (self *Program) BFMLALT(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("BFMLALT", 3, Operands { v0, v1, v2 })
     // BFMLALT  <Vd>.4S, <Vn>.8H, <Vm>.H[<index>]
     if isVr(v0) && vfmt(v0) == Vec4S && isVr(v1) && vfmt(v1) == Vec8H && isVri(v2) && vmoder(v2) == ModeH {
+        self.require(FEAT_BF16)
+        p.class = ClassAdvSimd
         sa_vd := uint32(v0.(asm.Register).ID())
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(VidxRegister).ID())
@@ -2866,6 +3175,8 @@ func (self *Program) BFMLALT(v0, v1, v2 interface{}) *Instruction {
     }
     // BFMLALT  <Vd>.4S, <Vn>.8H, <Vm>.8H
     if isVr(v0) && vfmt(v0) == Vec4S && isVr(v1) && vfmt(v1) == Vec8H && isVr(v2) && vfmt(v2) == Vec8H {
+        self.require(FEAT_BF16)
+        p.class = ClassAdvSimd
         sa_vd := uint32(v0.(asm.Register).ID())
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
@@ -2934,6 +3245,8 @@ func (self *Program) BFMLALT(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) BFMMLA(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("BFMMLA", 3, Operands { v0, v1, v2 })
     if isVr(v0) && vfmt(v0) == Vec4S && isVr(v1) && vfmt(v1) == Vec8H && isVr(v2) && vfmt(v2) == Vec8H {
+        self.require(FEAT_BF16)
+        p.class = ClassAdvSimd
         sa_vd := uint32(v0.(asm.Register).ID())
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
@@ -2958,6 +3271,7 @@ func (self *Program) BFXIL(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("BFXIL", 4, Operands { v0, v1, v2, v3 })
     // BFXIL  <Wd>, <Wn>, #<lsb>, #<width>
     if isWr(v0) && isWr(v1) && isUimm5(v2) && isBFxWidth(v2, v3, 32) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_lsb_1 := asUimm5(v2)
@@ -2966,6 +3280,7 @@ func (self *Program) BFXIL(v0, v1, v2, v3 interface{}) *Instruction {
     }
     // BFXIL  <Xd>, <Xn>, #<lsb>, #<width>
     if isXr(v0) && isXr(v1) && isUimm6(v2) && isBFxWidth(v2, v3, 64) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_lsb_3 := asUimm6(v2)
@@ -3028,8 +3343,9 @@ func (self *Program) BIC(v0, v1 interface{}, vv ...interface{}) *Instruction {
        isVr(v0) &&
        isVfmt(v0, Vec4H, Vec8H) &&
        isUimm8(v1) &&
-       (len(vv) == 0 || isSameMod(vv[0], LSL(0))) {
-        var sa_amount uint32
+       (len(vv) == 0 || modt(vv[0]) == ModLSL) {
+        p.class = ClassAdvSimd
+        sa_amount := uint32(0b0)
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -3038,8 +3354,10 @@ func (self *Program) BIC(v0, v1 interface{}, vv ...interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_imm8 := asUimm8(v1)
-        if len(vv) == 1 {
-            sa_amount = uint32(vv[0].(Modifier).Amount())
+        switch uint32(vv[0].(Modifier).Amount()) {
+            case 0: sa_amount = 0b0
+            case 8: sa_amount = 0b1
+            default: panic("aarch64: invalid modifier amount")
         }
         cmode := uint32(0b1001)
         switch sa_amount {
@@ -3068,8 +3386,9 @@ func (self *Program) BIC(v0, v1 interface{}, vv ...interface{}) *Instruction {
        isVr(v0) &&
        isVfmt(v0, Vec2S, Vec4S) &&
        isUimm8(v1) &&
-       (len(vv) == 0 || isSameMod(vv[0], LSL(0))) {
-        var sa_amount_1 uint32
+       (len(vv) == 0 || modt(vv[0]) == ModLSL) {
+        p.class = ClassAdvSimd
+        sa_amount_1 := uint32(0b00)
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -3078,8 +3397,12 @@ func (self *Program) BIC(v0, v1 interface{}, vv ...interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_imm8 := asUimm8(v1)
-        if len(vv) == 1 {
-            sa_amount_1 = uint32(vv[0].(Modifier).Amount())
+        switch uint32(vv[0].(Modifier).Amount()) {
+            case 0: sa_amount_1 = 0b00
+            case 8: sa_amount_1 = 0b01
+            case 16: sa_amount_1 = 0b10
+            case 24: sa_amount_1 = 0b11
+            default: panic("aarch64: invalid modifier amount")
         }
         cmode := uint32(0b0001)
         switch sa_amount_1 {
@@ -3115,6 +3438,7 @@ func (self *Program) BIC(v0, v1 interface{}, vv ...interface{}) *Instruction {
        isVfmt(vv[0], Vec8B, Vec16B) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(vv[0]) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -3127,27 +3451,49 @@ func (self *Program) BIC(v0, v1 interface{}, vv ...interface{}) *Instruction {
         return p.setins(asimdsame(sa_t, 0, 1, sa_vm, 3, sa_vn, sa_vd))
     }
     // BIC  <Wd>, <Wn>, <Wm>{, <shift> #<amount>}
-    if (len(vv) == 1 || len(vv) == 2) && isWr(v0) && isWr(v1) && isWr(vv[0]) && (len(vv) == 0 || isShift(vv[1])) {
-        var sa_amount uint32
-        var sa_shift uint32
+    if (len(vv) == 1 || len(vv) == 2) &&
+       isWr(v0) &&
+       isWr(v1) &&
+       isWr(vv[0]) &&
+       (len(vv) == 0 || isMods(vv[1], ModASR, ModLSL, ModLSR, ModROR)) {
+        p.class = ClassGeneral
+        sa_amount := uint32(0)
+        sa_shift := uint32(0b00)
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(vv[0].(asm.Register).ID())
         if len(vv) == 1 {
-            sa_shift = uint32(vv[1].(ShiftType).ShiftType())
+            switch vv[1].(Modifier).Type() {
+                case ModLSL: sa_shift = 0b00
+                case ModLSR: sa_shift = 0b01
+                case ModASR: sa_shift = 0b10
+                case ModROR: sa_shift = 0b11
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount = uint32(vv[1].(Modifier).Amount())
         }
         return p.setins(log_shift(0, 0, sa_shift, 1, sa_wm, sa_amount, sa_wn, sa_wd))
     }
     // BIC  <Xd>, <Xn>, <Xm>{, <shift> #<amount>}
-    if (len(vv) == 1 || len(vv) == 2) && isXr(v0) && isXr(v1) && isXr(vv[0]) && (len(vv) == 0 || isShift(vv[1])) {
-        var sa_amount_1 uint32
-        var sa_shift uint32
+    if (len(vv) == 1 || len(vv) == 2) &&
+       isXr(v0) &&
+       isXr(v1) &&
+       isXr(vv[0]) &&
+       (len(vv) == 0 || isMods(vv[1], ModASR, ModLSL, ModLSR, ModROR)) {
+        p.class = ClassGeneral
+        sa_amount_1 := uint32(0)
+        sa_shift := uint32(0b00)
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(vv[0].(asm.Register).ID())
         if len(vv) == 1 {
-            sa_shift = uint32(vv[1].(ShiftType).ShiftType())
+            switch vv[1].(Modifier).Type() {
+                case ModLSL: sa_shift = 0b00
+                case ModLSR: sa_shift = 0b01
+                case ModASR: sa_shift = 0b10
+                case ModROR: sa_shift = 0b11
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount_1 = uint32(vv[1].(Modifier).Amount())
         }
         return p.setins(log_shift(1, 0, sa_shift, 1, sa_xm, sa_amount_1, sa_xn, sa_xd))
@@ -3177,27 +3523,49 @@ func (self *Program) BICS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
         default : panic("instruction BICS takes 3 or 4 operands")
     }
     // BICS  <Wd>, <Wn>, <Wm>{, <shift> #<amount>}
-    if (len(vv) == 0 || len(vv) == 1) && isWr(v0) && isWr(v1) && isWr(v2) && (len(vv) == 0 || isShift(vv[0])) {
-        var sa_amount uint32
-        var sa_shift uint32
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isWr(v0) &&
+       isWr(v1) &&
+       isWr(v2) &&
+       (len(vv) == 0 || isMods(vv[0], ModASR, ModLSL, ModLSR, ModROR)) {
+        p.class = ClassGeneral
+        sa_amount := uint32(0)
+        sa_shift := uint32(0b00)
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
         if len(vv) == 1 {
-            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            switch vv[0].(Modifier).Type() {
+                case ModLSL: sa_shift = 0b00
+                case ModLSR: sa_shift = 0b01
+                case ModASR: sa_shift = 0b10
+                case ModROR: sa_shift = 0b11
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount = uint32(vv[0].(Modifier).Amount())
         }
         return p.setins(log_shift(0, 3, sa_shift, 1, sa_wm, sa_amount, sa_wn, sa_wd))
     }
     // BICS  <Xd>, <Xn>, <Xm>{, <shift> #<amount>}
-    if (len(vv) == 0 || len(vv) == 1) && isXr(v0) && isXr(v1) && isXr(v2) && (len(vv) == 0 || isShift(vv[0])) {
-        var sa_amount_1 uint32
-        var sa_shift uint32
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isXr(v0) &&
+       isXr(v1) &&
+       isXr(v2) &&
+       (len(vv) == 0 || isMods(vv[0], ModASR, ModLSL, ModLSR, ModROR)) {
+        p.class = ClassGeneral
+        sa_amount_1 := uint32(0)
+        sa_shift := uint32(0b00)
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
         if len(vv) == 1 {
-            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            switch vv[0].(Modifier).Type() {
+                case ModLSL: sa_shift = 0b00
+                case ModLSR: sa_shift = 0b01
+                case ModASR: sa_shift = 0b10
+                case ModROR: sa_shift = 0b11
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount_1 = uint32(vv[0].(Modifier).Amount())
         }
         return p.setins(log_shift(1, 3, sa_shift, 1, sa_xm, sa_amount_1, sa_xn, sa_xd))
@@ -3232,6 +3600,7 @@ func (self *Program) BIF(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -3272,6 +3641,7 @@ func (self *Program) BIT(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -3299,6 +3669,7 @@ func (self *Program) BIT(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) BL(v0 interface{}) *Instruction {
     p := self.alloc("BL", 1, Operands { v0 })
     if isLabel(v0) {
+        p.class = ClassGeneral
         sa_label := v0.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return branch_imm(1, uint32(sa_label.RelativeTo(pc))) })
     }
@@ -3318,6 +3689,7 @@ func (self *Program) BL(v0 interface{}) *Instruction {
 func (self *Program) BLR(v0 interface{}) *Instruction {
     p := self.alloc("BLR", 1, Operands { v0 })
     if isXr(v0) {
+        p.class = ClassGeneral
         sa_xn := uint32(v0.(asm.Register).ID())
         return p.setins(branch_reg(1, 31, 0, sa_xn, 0))
     }
@@ -3353,6 +3725,8 @@ func (self *Program) BLR(v0 interface{}) *Instruction {
 func (self *Program) BLRAA(v0, v1 interface{}) *Instruction {
     p := self.alloc("BLRAA", 2, Operands { v0, v1 })
     if isXr(v0) && isXrOrSP(v1) {
+        self.require(FEAT_PAuth)
+        p.class = ClassGeneral
         sa_xn := uint32(v0.(asm.Register).ID())
         sa_xm_sp := uint32(v1.(asm.Register).ID())
         op4 := uint32(0b00000)
@@ -3391,6 +3765,8 @@ func (self *Program) BLRAA(v0, v1 interface{}) *Instruction {
 func (self *Program) BLRAAZ(v0 interface{}) *Instruction {
     p := self.alloc("BLRAAZ", 1, Operands { v0 })
     if isXr(v0) {
+        self.require(FEAT_PAuth)
+        p.class = ClassGeneral
         sa_xn := uint32(v0.(asm.Register).ID())
         return p.setins(branch_reg(1, 31, 2, sa_xn, 31))
     }
@@ -3426,6 +3802,8 @@ func (self *Program) BLRAAZ(v0 interface{}) *Instruction {
 func (self *Program) BLRAB(v0, v1 interface{}) *Instruction {
     p := self.alloc("BLRAB", 2, Operands { v0, v1 })
     if isXr(v0) && isXrOrSP(v1) {
+        self.require(FEAT_PAuth)
+        p.class = ClassGeneral
         sa_xn := uint32(v0.(asm.Register).ID())
         sa_xm_sp := uint32(v1.(asm.Register).ID())
         op4 := uint32(0b00000)
@@ -3464,6 +3842,8 @@ func (self *Program) BLRAB(v0, v1 interface{}) *Instruction {
 func (self *Program) BLRABZ(v0 interface{}) *Instruction {
     p := self.alloc("BLRABZ", 1, Operands { v0 })
     if isXr(v0) {
+        self.require(FEAT_PAuth)
+        p.class = ClassGeneral
         sa_xn := uint32(v0.(asm.Register).ID())
         return p.setins(branch_reg(1, 31, 3, sa_xn, 31))
     }
@@ -3483,6 +3863,7 @@ func (self *Program) BLRABZ(v0 interface{}) *Instruction {
 func (self *Program) BR(v0 interface{}) *Instruction {
     p := self.alloc("BR", 1, Operands { v0 })
     if isXr(v0) {
+        p.class = ClassGeneral
         sa_xn := uint32(v0.(asm.Register).ID())
         return p.setins(branch_reg(0, 31, 0, sa_xn, 0))
     }
@@ -3517,6 +3898,8 @@ func (self *Program) BR(v0 interface{}) *Instruction {
 func (self *Program) BRAA(v0, v1 interface{}) *Instruction {
     p := self.alloc("BRAA", 2, Operands { v0, v1 })
     if isXr(v0) && isXrOrSP(v1) {
+        self.require(FEAT_PAuth)
+        p.class = ClassGeneral
         sa_xn := uint32(v0.(asm.Register).ID())
         sa_xm_sp := uint32(v1.(asm.Register).ID())
         op4 := uint32(0b00000)
@@ -3554,6 +3937,8 @@ func (self *Program) BRAA(v0, v1 interface{}) *Instruction {
 func (self *Program) BRAAZ(v0 interface{}) *Instruction {
     p := self.alloc("BRAAZ", 1, Operands { v0 })
     if isXr(v0) {
+        self.require(FEAT_PAuth)
+        p.class = ClassGeneral
         sa_xn := uint32(v0.(asm.Register).ID())
         return p.setins(branch_reg(0, 31, 2, sa_xn, 31))
     }
@@ -3588,6 +3973,8 @@ func (self *Program) BRAAZ(v0 interface{}) *Instruction {
 func (self *Program) BRAB(v0, v1 interface{}) *Instruction {
     p := self.alloc("BRAB", 2, Operands { v0, v1 })
     if isXr(v0) && isXrOrSP(v1) {
+        self.require(FEAT_PAuth)
+        p.class = ClassGeneral
         sa_xn := uint32(v0.(asm.Register).ID())
         sa_xm_sp := uint32(v1.(asm.Register).ID())
         op4 := uint32(0b00000)
@@ -3625,6 +4012,8 @@ func (self *Program) BRAB(v0, v1 interface{}) *Instruction {
 func (self *Program) BRABZ(v0 interface{}) *Instruction {
     p := self.alloc("BRABZ", 1, Operands { v0 })
     if isXr(v0) {
+        self.require(FEAT_PAuth)
+        p.class = ClassGeneral
         sa_xn := uint32(v0.(asm.Register).ID())
         return p.setins(branch_reg(0, 31, 3, sa_xn, 31))
     }
@@ -3649,7 +4038,9 @@ func (self *Program) BRB(v0 interface{}, vv ...interface{}) *Instruction {
         default : panic("instruction BRB takes 1 or 2 operands")
     }
     if (len(vv) == 0 || len(vv) == 1) && isBRBOption(v0) && (len(vv) == 0 || isXr(vv[0])) {
-        var sa_xt uint32
+        self.require(FEAT_BRBE)
+        p.class = ClassSystem
+        sa_xt := uint32(0b11111)
         sa_brb_op := uint32(v0.(BRBOption))
         if len(vv) == 1 {
             sa_xt = uint32(vv[0].(asm.Register).ID())
@@ -3673,6 +4064,7 @@ func (self *Program) BRB(v0 interface{}, vv ...interface{}) *Instruction {
 func (self *Program) BRK(v0 interface{}) *Instruction {
     p := self.alloc("BRK", 1, Operands { v0 })
     if isUimm16(v0) {
+        p.class = ClassSystem
         sa_imm := asUimm16(v0)
         return p.setins(exception(1, sa_imm, 0, 0))
     }
@@ -3705,6 +4097,7 @@ func (self *Program) BSL(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -3752,6 +4145,8 @@ func (self *Program) BTI(vv ...interface{}) *Instruction {
         default : panic("instruction BTI takes 0 or 1 operands")
     }
     if (len(vv) == 0 || len(vv) == 1) && (len(vv) == 0 || isTargets(vv[0])) {
+        self.require(FEAT_BTI)
+        p.class = ClassSystem
         sa_targets := _BrOmitted
         if len(vv) == 1 {
             sa_targets = vv[0].(BranchTarget)
@@ -3810,6 +4205,8 @@ func (self *Program) CAS(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -3823,6 +4220,8 @@ func (self *Program) CAS(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -3873,6 +4272,8 @@ func (self *Program) CASA(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -3886,6 +4287,8 @@ func (self *Program) CASA(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -3933,6 +4336,8 @@ func (self *Program) CASAB(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -3979,6 +4384,8 @@ func (self *Program) CASAH(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -4028,6 +4435,8 @@ func (self *Program) CASAL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -4041,6 +4450,8 @@ func (self *Program) CASAL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -4088,6 +4499,8 @@ func (self *Program) CASALB(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -4134,6 +4547,8 @@ func (self *Program) CASALH(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -4180,6 +4595,8 @@ func (self *Program) CASB(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -4226,6 +4643,8 @@ func (self *Program) CASH(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -4275,6 +4694,8 @@ func (self *Program) CASL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -4288,6 +4709,8 @@ func (self *Program) CASL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -4335,6 +4758,8 @@ func (self *Program) CASLB(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -4381,6 +4806,8 @@ func (self *Program) CASLH(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -4435,6 +4862,8 @@ func (self *Program) CASP(v0, v1, v2, v3, v4 interface{}) *Instruction {
        midx(v4) == nil &&
        (moffs(v4) == 0 || moffs(v4) == 0) &&
        mext(v4) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v2.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v4).ID())
@@ -4452,6 +4881,8 @@ func (self *Program) CASP(v0, v1, v2, v3, v4 interface{}) *Instruction {
        midx(v4) == nil &&
        (moffs(v4) == 0 || moffs(v4) == 0) &&
        mext(v4) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v2.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v4).ID())
@@ -4507,6 +4938,8 @@ func (self *Program) CASPA(v0, v1, v2, v3, v4 interface{}) *Instruction {
        midx(v4) == nil &&
        (moffs(v4) == 0 || moffs(v4) == 0) &&
        mext(v4) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v2.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v4).ID())
@@ -4524,6 +4957,8 @@ func (self *Program) CASPA(v0, v1, v2, v3, v4 interface{}) *Instruction {
        midx(v4) == nil &&
        (moffs(v4) == 0 || moffs(v4) == 0) &&
        mext(v4) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v2.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v4).ID())
@@ -4579,6 +5014,8 @@ func (self *Program) CASPAL(v0, v1, v2, v3, v4 interface{}) *Instruction {
        midx(v4) == nil &&
        (moffs(v4) == 0 || moffs(v4) == 0) &&
        mext(v4) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v2.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v4).ID())
@@ -4596,6 +5033,8 @@ func (self *Program) CASPAL(v0, v1, v2, v3, v4 interface{}) *Instruction {
        midx(v4) == nil &&
        (moffs(v4) == 0 || moffs(v4) == 0) &&
        mext(v4) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v2.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v4).ID())
@@ -4651,6 +5090,8 @@ func (self *Program) CASPL(v0, v1, v2, v3, v4 interface{}) *Instruction {
        midx(v4) == nil &&
        (moffs(v4) == 0 || moffs(v4) == 0) &&
        mext(v4) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v2.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v4).ID())
@@ -4668,6 +5109,8 @@ func (self *Program) CASPL(v0, v1, v2, v3, v4 interface{}) *Instruction {
        midx(v4) == nil &&
        (moffs(v4) == 0 || moffs(v4) == 0) &&
        mext(v4) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v2.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v4).ID())
@@ -4694,12 +5137,14 @@ func (self *Program) CBNZ(v0, v1 interface{}) *Instruction {
     p := self.alloc("CBNZ", 2, Operands { v0, v1 })
     // CBNZ  <Wt>, <label>
     if isWr(v0) && isLabel(v1) {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_label := v1.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return compbranch(0, 1, uint32(sa_label.RelativeTo(pc)), sa_wt) })
     }
     // CBNZ  <Xt>, <label>
     if isXr(v0) && isLabel(v1) {
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_label := v1.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return compbranch(1, 1, uint32(sa_label.RelativeTo(pc)), sa_xt) })
@@ -4725,12 +5170,14 @@ func (self *Program) CBZ(v0, v1 interface{}) *Instruction {
     p := self.alloc("CBZ", 2, Operands { v0, v1 })
     // CBZ  <Wt>, <label>
     if isWr(v0) && isLabel(v1) {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_label := v1.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return compbranch(0, 0, uint32(sa_label.RelativeTo(pc)), sa_wt) })
     }
     // CBZ  <Xt>, <label>
     if isXr(v0) && isLabel(v1) {
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_label := v1.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return compbranch(1, 0, uint32(sa_label.RelativeTo(pc)), sa_xt) })
@@ -4764,6 +5211,7 @@ func (self *Program) CCMN(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("CCMN", 4, Operands { v0, v1, v2, v3 })
     // CCMN  <Wn>, #<imm>, #<nzcv>, <cond>
     if isWr(v0) && isUimm5(v1) && isUimm4(v2) && isBrCond(v3) {
+        p.class = ClassGeneral
         sa_wn := uint32(v0.(asm.Register).ID())
         sa_imm := asUimm5(v1)
         sa_nzcv := asUimm4(v2)
@@ -4772,6 +5220,7 @@ func (self *Program) CCMN(v0, v1, v2, v3 interface{}) *Instruction {
     }
     // CCMN  <Xn>, #<imm>, #<nzcv>, <cond>
     if isXr(v0) && isUimm5(v1) && isUimm4(v2) && isBrCond(v3) {
+        p.class = ClassGeneral
         sa_xn := uint32(v0.(asm.Register).ID())
         sa_imm := asUimm5(v1)
         sa_nzcv := asUimm4(v2)
@@ -4780,6 +5229,7 @@ func (self *Program) CCMN(v0, v1, v2, v3 interface{}) *Instruction {
     }
     // CCMN  <Wn>, <Wm>, #<nzcv>, <cond>
     if isWr(v0) && isWr(v1) && isUimm4(v2) && isBrCond(v3) {
+        p.class = ClassGeneral
         sa_wn := uint32(v0.(asm.Register).ID())
         sa_wm := uint32(v1.(asm.Register).ID())
         sa_nzcv := asUimm4(v2)
@@ -4788,6 +5238,7 @@ func (self *Program) CCMN(v0, v1, v2, v3 interface{}) *Instruction {
     }
     // CCMN  <Xn>, <Xm>, #<nzcv>, <cond>
     if isXr(v0) && isXr(v1) && isUimm4(v2) && isBrCond(v3) {
+        p.class = ClassGeneral
         sa_xn := uint32(v0.(asm.Register).ID())
         sa_xm := uint32(v1.(asm.Register).ID())
         sa_nzcv := asUimm4(v2)
@@ -4823,6 +5274,7 @@ func (self *Program) CCMP(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("CCMP", 4, Operands { v0, v1, v2, v3 })
     // CCMP  <Wn>, #<imm>, #<nzcv>, <cond>
     if isWr(v0) && isUimm5(v1) && isUimm4(v2) && isBrCond(v3) {
+        p.class = ClassGeneral
         sa_wn := uint32(v0.(asm.Register).ID())
         sa_imm := asUimm5(v1)
         sa_nzcv := asUimm4(v2)
@@ -4831,6 +5283,7 @@ func (self *Program) CCMP(v0, v1, v2, v3 interface{}) *Instruction {
     }
     // CCMP  <Xn>, #<imm>, #<nzcv>, <cond>
     if isXr(v0) && isUimm5(v1) && isUimm4(v2) && isBrCond(v3) {
+        p.class = ClassGeneral
         sa_xn := uint32(v0.(asm.Register).ID())
         sa_imm := asUimm5(v1)
         sa_nzcv := asUimm4(v2)
@@ -4839,6 +5292,7 @@ func (self *Program) CCMP(v0, v1, v2, v3 interface{}) *Instruction {
     }
     // CCMP  <Wn>, <Wm>, #<nzcv>, <cond>
     if isWr(v0) && isWr(v1) && isUimm4(v2) && isBrCond(v3) {
+        p.class = ClassGeneral
         sa_wn := uint32(v0.(asm.Register).ID())
         sa_wm := uint32(v1.(asm.Register).ID())
         sa_nzcv := asUimm4(v2)
@@ -4847,6 +5301,7 @@ func (self *Program) CCMP(v0, v1, v2, v3 interface{}) *Instruction {
     }
     // CCMP  <Xn>, <Xm>, #<nzcv>, <cond>
     if isXr(v0) && isXr(v1) && isUimm4(v2) && isBrCond(v3) {
+        p.class = ClassGeneral
         sa_xn := uint32(v0.(asm.Register).ID())
         sa_xm := uint32(v1.(asm.Register).ID())
         sa_nzcv := asUimm4(v2)
@@ -4868,6 +5323,8 @@ func (self *Program) CCMP(v0, v1, v2, v3 interface{}) *Instruction {
 //
 func (self *Program) CFINV() *Instruction {
     p := self.alloc("CFINV", 0, Operands {})
+    self.require(FEAT_FlagM)
+    p.class = ClassSystem
     return p.setins(pstate(0, 0, 0, 31))
 }
 
@@ -4891,6 +5348,8 @@ func (self *Program) CFINV() *Instruction {
 func (self *Program) CFP(v0, v1 interface{}) *Instruction {
     p := self.alloc("CFP", 2, Operands { v0, v1 })
     if v0 == RCTX && isXr(v1) {
+        self.require(FEAT_SPECRES)
+        p.class = ClassSystem
         sa_xt_1 := uint32(v1.(asm.Register).ID())
         return p.setins(systeminstrs(0, 3, 7, 3, 4, sa_xt_1))
     }
@@ -4910,6 +5369,8 @@ func (self *Program) CFP(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) CHKFEAT() *Instruction {
     p := self.alloc("CHKFEAT", 0, Operands {})
+    self.require(FEAT_CHK)
+    p.class = ClassSystem
     return p.setins(hints(5, 0))
 }
 
@@ -4928,6 +5389,7 @@ func (self *Program) CINC(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("CINC", 3, Operands { v0, v1, v2 })
     // CINC  <Wd>, <Wn>, <cond>
     if isWr(v0) && isWr(v1) && isBrCond(v2) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn_1 := uint32(v1.(asm.Register).ID())
         sa_cond_1 := uint32(v2.(ConditionCode) ^ 1)
@@ -4935,6 +5397,7 @@ func (self *Program) CINC(v0, v1, v2 interface{}) *Instruction {
     }
     // CINC  <Xd>, <Xn>, <cond>
     if isXr(v0) && isXr(v1) && isBrCond(v2) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn_1 := uint32(v1.(asm.Register).ID())
         sa_cond_1 := uint32(v2.(ConditionCode) ^ 1)
@@ -4960,6 +5423,7 @@ func (self *Program) CINV(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("CINV", 3, Operands { v0, v1, v2 })
     // CINV  <Wd>, <Wn>, <cond>
     if isWr(v0) && isWr(v1) && isBrCond(v2) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn_1 := uint32(v1.(asm.Register).ID())
         sa_cond_1 := uint32(v2.(ConditionCode) ^ 1)
@@ -4967,6 +5431,7 @@ func (self *Program) CINV(v0, v1, v2 interface{}) *Instruction {
     }
     // CINV  <Xd>, <Xn>, <cond>
     if isXr(v0) && isXr(v1) && isBrCond(v2) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn_1 := uint32(v1.(asm.Register).ID())
         sa_cond_1 := uint32(v2.(ConditionCode) ^ 1)
@@ -4991,6 +5456,8 @@ func (self *Program) CINV(v0, v1, v2 interface{}) *Instruction {
 //
 func (self *Program) CLRBHB() *Instruction {
     p := self.alloc("CLRBHB", 0, Operands {})
+    self.require(FEAT_CLRBHB)
+    p.class = ClassSystem
     return p.setins(hints(2, 6))
 }
 
@@ -5010,7 +5477,8 @@ func (self *Program) CLREX(vv ...interface{}) *Instruction {
         default : panic("instruction CLREX takes 0 or 1 operands")
     }
     if (len(vv) == 0 || len(vv) == 1) && (len(vv) == 0 || isUimm4(vv[0])) {
-        var sa_imm uint32
+        p.class = ClassSystem
+        sa_imm := uint32(15)
         if len(vv) == 1 {
             sa_imm = asUimm4(vv[0])
         }
@@ -5054,6 +5522,7 @@ func (self *Program) CLS(v0, v1 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -5070,12 +5539,14 @@ func (self *Program) CLS(v0, v1 interface{}) *Instruction {
     }
     // CLS  <Wd>, <Wn>
     if isWr(v0) && isWr(v1) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         return p.setins(dp_1src(0, 0, 0, 5, sa_wn, sa_wd))
     }
     // CLS  <Xd>, <Xn>
     if isXr(v0) && isXr(v1) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         return p.setins(dp_1src(1, 0, 0, 5, sa_xn, sa_xd))
@@ -5117,6 +5588,7 @@ func (self *Program) CLZ(v0, v1 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -5133,12 +5605,14 @@ func (self *Program) CLZ(v0, v1 interface{}) *Instruction {
     }
     // CLZ  <Wd>, <Wn>
     if isWr(v0) && isWr(v1) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         return p.setins(dp_1src(0, 0, 0, 4, sa_wn, sa_wd))
     }
     // CLZ  <Xd>, <Xn>
     if isXr(v0) && isXr(v1) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         return p.setins(dp_1src(1, 0, 0, 4, sa_xn, sa_xd))
@@ -5192,6 +5666,7 @@ func (self *Program) CMEQ(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -5210,6 +5685,7 @@ func (self *Program) CMEQ(v0, v1, v2 interface{}) *Instruction {
     }
     // CMEQ  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -5227,6 +5703,7 @@ func (self *Program) CMEQ(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        isIntLit(v2, 0) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -5244,6 +5721,7 @@ func (self *Program) CMEQ(v0, v1, v2 interface{}) *Instruction {
     }
     // CMEQ  <V><d>, <V><n>, #0
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isIntLit(v2, 0) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -5304,6 +5782,7 @@ func (self *Program) CMGE(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -5322,6 +5801,7 @@ func (self *Program) CMGE(v0, v1, v2 interface{}) *Instruction {
     }
     // CMGE  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -5339,6 +5819,7 @@ func (self *Program) CMGE(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        isIntLit(v2, 0) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -5356,6 +5837,7 @@ func (self *Program) CMGE(v0, v1, v2 interface{}) *Instruction {
     }
     // CMGE  <V><d>, <V><n>, #0
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isIntLit(v2, 0) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -5415,6 +5897,7 @@ func (self *Program) CMGT(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -5433,6 +5916,7 @@ func (self *Program) CMGT(v0, v1, v2 interface{}) *Instruction {
     }
     // CMGT  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -5450,6 +5934,7 @@ func (self *Program) CMGT(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        isIntLit(v2, 0) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -5467,6 +5952,7 @@ func (self *Program) CMGT(v0, v1, v2 interface{}) *Instruction {
     }
     // CMGT  <V><d>, <V><n>, #0
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isIntLit(v2, 0) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -5511,6 +5997,7 @@ func (self *Program) CMHI(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -5529,6 +6016,7 @@ func (self *Program) CMHI(v0, v1, v2 interface{}) *Instruction {
     }
     // CMHI  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -5574,6 +6062,7 @@ func (self *Program) CMHS(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -5592,6 +6081,7 @@ func (self *Program) CMHS(v0, v1, v2 interface{}) *Instruction {
     }
     // CMHS  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -5633,6 +6123,7 @@ func (self *Program) CMLE(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        isIntLit(v2, 0) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -5650,6 +6141,7 @@ func (self *Program) CMLE(v0, v1, v2 interface{}) *Instruction {
     }
     // CMLE  <V><d>, <V><n>, #0
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isIntLit(v2, 0) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -5690,6 +6182,7 @@ func (self *Program) CMLT(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        isIntLit(v2, 0) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -5707,6 +6200,7 @@ func (self *Program) CMLT(v0, v1, v2 interface{}) *Instruction {
     }
     // CMLT  <V><d>, <V><n>, #0
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isIntLit(v2, 0) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -5760,21 +6254,40 @@ func (self *Program) CMN(v0, v1 interface{}, vv ...interface{}) *Instruction {
         default : panic("instruction CMN takes 2 or 3 operands")
     }
     // CMN  <Wn|WSP>, <Wm>{, <extend> {#<amount>}}
-    if (len(vv) == 0 || len(vv) == 1) && isWrOrWSP(v0) && isWr(v1) && (len(vv) == 0 || isExtend(vv[0])) {
-        var sa_amount uint32
-        var sa_extend uint32
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isWrOrWSP(v0) &&
+       isWr(v1) &&
+       (len(vv) == 0 || isMods(vv[0], ModLSL, ModSXTB, ModSXTH, ModSXTW, ModSXTX, ModUXTB, ModUXTH, ModUXTW, ModUXTX)) {
+        p.class = ClassGeneral
+        sa_amount := uint32(0)
+        sa_extend := uint32(0b010)
         sa_wn_wsp := uint32(v0.(asm.Register).ID())
         sa_wm := uint32(v1.(asm.Register).ID())
         if len(vv) == 1 {
-            sa_extend = uint32(vv[0].(Extension).Extension())
+            switch vv[0].(Modifier).Type() {
+                case ModUXTB: sa_extend = 0b000
+                case ModUXTH: sa_extend = 0b001
+                case ModLSL: sa_extend = 0b010
+                case ModUXTW: sa_extend = 0b010
+                case ModUXTX: sa_extend = 0b011
+                case ModSXTB: sa_extend = 0b100
+                case ModSXTH: sa_extend = 0b101
+                case ModSXTW: sa_extend = 0b110
+                case ModSXTX: sa_extend = 0b111
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount = uint32(vv[0].(Modifier).Amount())
         }
         return p.setins(addsub_ext(0, 0, 1, 0, sa_wm, sa_extend, sa_amount, sa_wn_wsp, 31))
     }
     // CMN  <Xn|SP>, <R><m>{, <extend> {#<amount>}}
-    if (len(vv) == 0 || len(vv) == 1) && isXrOrSP(v0) && isWrOrXr(v1) && (len(vv) == 0 || isExtend(vv[0])) {
-        var sa_amount uint32
-        var sa_extend_1 uint32
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isXrOrSP(v0) &&
+       isWrOrXr(v1) &&
+       (len(vv) == 0 || isMods(vv[0], ModLSL, ModSXTB, ModSXTH, ModSXTW, ModSXTX, ModUXTB, ModUXTH, ModUXTW, ModUXTX)) {
+        p.class = ClassGeneral
+        sa_amount := uint32(0)
+        sa_extend_1 := uint32(0b011)
         var sa_r [4]uint32
         var sa_r__bit_mask [4]uint32
         sa_xn_sp := uint32(v0.(asm.Register).ID())
@@ -5790,7 +6303,18 @@ func (self *Program) CMN(v0, v1 interface{}, vv ...interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         if len(vv) == 1 {
-            sa_extend_1 = uint32(vv[0].(Extension).Extension())
+            switch vv[0].(Modifier).Type() {
+                case ModUXTB: sa_extend_1 = 0b000
+                case ModUXTH: sa_extend_1 = 0b001
+                case ModUXTW: sa_extend_1 = 0b010
+                case ModLSL: sa_extend_1 = 0b011
+                case ModUXTX: sa_extend_1 = 0b011
+                case ModSXTB: sa_extend_1 = 0b100
+                case ModSXTH: sa_extend_1 = 0b101
+                case ModSXTW: sa_extend_1 = 0b110
+                case ModSXTX: sa_extend_1 = 0b111
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount = uint32(vv[0].(Modifier).Amount())
         }
         if !matchany(sa_extend_1, &sa_r[0], &sa_r__bit_mask[0], 4) {
@@ -5802,12 +6326,17 @@ func (self *Program) CMN(v0, v1 interface{}, vv ...interface{}) *Instruction {
     if (len(vv) == 0 || len(vv) == 1) &&
        isWrOrWSP(v0) &&
        isImm12(v1) &&
-       (len(vv) == 0 || isShift(vv[0]) && modn(vv[0]) == 0) {
+       (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) {
+        p.class = ClassGeneral
         var sa_shift uint32
         sa_wn_wsp := uint32(v0.(asm.Register).ID())
         sa_imm := asImm12(v1)
         if len(vv) == 1 {
-            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            switch {
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
+                default: panic("aarch64: invalid modifier flags")
+            }
         }
         return p.setins(addsub_imm(0, 0, 1, sa_shift, sa_imm, sa_wn_wsp, 31))
     }
@@ -5815,35 +6344,58 @@ func (self *Program) CMN(v0, v1 interface{}, vv ...interface{}) *Instruction {
     if (len(vv) == 0 || len(vv) == 1) &&
        isXrOrSP(v0) &&
        isImm12(v1) &&
-       (len(vv) == 0 || isShift(vv[0]) && modn(vv[0]) == 0) {
+       (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) {
+        p.class = ClassGeneral
         var sa_shift uint32
         sa_xn_sp := uint32(v0.(asm.Register).ID())
         sa_imm := asImm12(v1)
         if len(vv) == 1 {
-            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            switch {
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
+                default: panic("aarch64: invalid modifier flags")
+            }
         }
         return p.setins(addsub_imm(1, 0, 1, sa_shift, sa_imm, sa_xn_sp, 31))
     }
     // CMN  <Wn>, <Wm>{, <shift> #<amount>}
-    if (len(vv) == 0 || len(vv) == 1) && isWr(v0) && isWr(v1) && (len(vv) == 0 || isShift(vv[0])) {
-        var sa_amount uint32
-        var sa_shift uint32
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isWr(v0) &&
+       isWr(v1) &&
+       (len(vv) == 0 || isMods(vv[0], ModASR, ModLSL, ModLSR)) {
+        p.class = ClassGeneral
+        sa_amount := uint32(0)
+        sa_shift := uint32(0b00)
         sa_wn := uint32(v0.(asm.Register).ID())
         sa_wm := uint32(v1.(asm.Register).ID())
         if len(vv) == 1 {
-            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            switch vv[0].(Modifier).Type() {
+                case ModLSL: sa_shift = 0b00
+                case ModLSR: sa_shift = 0b01
+                case ModASR: sa_shift = 0b10
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount = uint32(vv[0].(Modifier).Amount())
         }
         return p.setins(addsub_shift(0, 0, 1, sa_shift, sa_wm, sa_amount, sa_wn, 31))
     }
     // CMN  <Xn>, <Xm>{, <shift> #<amount>}
-    if (len(vv) == 0 || len(vv) == 1) && isXr(v0) && isXr(v1) && (len(vv) == 0 || isShift(vv[0])) {
-        var sa_amount_1 uint32
-        var sa_shift uint32
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isXr(v0) &&
+       isXr(v1) &&
+       (len(vv) == 0 || isMods(vv[0], ModASR, ModLSL, ModLSR)) {
+        p.class = ClassGeneral
+        sa_amount_1 := uint32(0)
+        sa_shift := uint32(0b00)
         sa_xn := uint32(v0.(asm.Register).ID())
         sa_xm := uint32(v1.(asm.Register).ID())
         if len(vv) == 1 {
-            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            switch vv[0].(Modifier).Type() {
+                case ModLSL: sa_shift = 0b00
+                case ModLSR: sa_shift = 0b01
+                case ModASR: sa_shift = 0b10
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount_1 = uint32(vv[0].(Modifier).Amount())
         }
         return p.setins(addsub_shift(1, 0, 1, sa_shift, sa_xm, sa_amount_1, sa_xn, 31))
@@ -5892,21 +6444,40 @@ func (self *Program) CMP(v0, v1 interface{}, vv ...interface{}) *Instruction {
         default : panic("instruction CMP takes 2 or 3 operands")
     }
     // CMP  <Wn|WSP>, <Wm>{, <extend> {#<amount>}}
-    if (len(vv) == 0 || len(vv) == 1) && isWrOrWSP(v0) && isWr(v1) && (len(vv) == 0 || isExtend(vv[0])) {
-        var sa_amount uint32
-        var sa_extend uint32
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isWrOrWSP(v0) &&
+       isWr(v1) &&
+       (len(vv) == 0 || isMods(vv[0], ModLSL, ModSXTB, ModSXTH, ModSXTW, ModSXTX, ModUXTB, ModUXTH, ModUXTW, ModUXTX)) {
+        p.class = ClassGeneral
+        sa_amount := uint32(0)
+        sa_extend := uint32(0b010)
         sa_wn_wsp := uint32(v0.(asm.Register).ID())
         sa_wm := uint32(v1.(asm.Register).ID())
         if len(vv) == 1 {
-            sa_extend = uint32(vv[0].(Extension).Extension())
+            switch vv[0].(Modifier).Type() {
+                case ModUXTB: sa_extend = 0b000
+                case ModUXTH: sa_extend = 0b001
+                case ModLSL: sa_extend = 0b010
+                case ModUXTW: sa_extend = 0b010
+                case ModUXTX: sa_extend = 0b011
+                case ModSXTB: sa_extend = 0b100
+                case ModSXTH: sa_extend = 0b101
+                case ModSXTW: sa_extend = 0b110
+                case ModSXTX: sa_extend = 0b111
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount = uint32(vv[0].(Modifier).Amount())
         }
         return p.setins(addsub_ext(0, 1, 1, 0, sa_wm, sa_extend, sa_amount, sa_wn_wsp, 31))
     }
     // CMP  <Xn|SP>, <R><m>{, <extend> {#<amount>}}
-    if (len(vv) == 0 || len(vv) == 1) && isXrOrSP(v0) && isWrOrXr(v1) && (len(vv) == 0 || isExtend(vv[0])) {
-        var sa_amount uint32
-        var sa_extend_1 uint32
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isXrOrSP(v0) &&
+       isWrOrXr(v1) &&
+       (len(vv) == 0 || isMods(vv[0], ModLSL, ModSXTB, ModSXTH, ModSXTW, ModSXTX, ModUXTB, ModUXTH, ModUXTW, ModUXTX)) {
+        p.class = ClassGeneral
+        sa_amount := uint32(0)
+        sa_extend_1 := uint32(0b011)
         var sa_r [4]uint32
         var sa_r__bit_mask [4]uint32
         sa_xn_sp := uint32(v0.(asm.Register).ID())
@@ -5922,7 +6493,18 @@ func (self *Program) CMP(v0, v1 interface{}, vv ...interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         if len(vv) == 1 {
-            sa_extend_1 = uint32(vv[0].(Extension).Extension())
+            switch vv[0].(Modifier).Type() {
+                case ModUXTB: sa_extend_1 = 0b000
+                case ModUXTH: sa_extend_1 = 0b001
+                case ModUXTW: sa_extend_1 = 0b010
+                case ModLSL: sa_extend_1 = 0b011
+                case ModUXTX: sa_extend_1 = 0b011
+                case ModSXTB: sa_extend_1 = 0b100
+                case ModSXTH: sa_extend_1 = 0b101
+                case ModSXTW: sa_extend_1 = 0b110
+                case ModSXTX: sa_extend_1 = 0b111
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount = uint32(vv[0].(Modifier).Amount())
         }
         if !matchany(sa_extend_1, &sa_r[0], &sa_r__bit_mask[0], 4) {
@@ -5934,12 +6516,17 @@ func (self *Program) CMP(v0, v1 interface{}, vv ...interface{}) *Instruction {
     if (len(vv) == 0 || len(vv) == 1) &&
        isWrOrWSP(v0) &&
        isImm12(v1) &&
-       (len(vv) == 0 || isShift(vv[0]) && modn(vv[0]) == 0) {
+       (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) {
+        p.class = ClassGeneral
         var sa_shift uint32
         sa_wn_wsp := uint32(v0.(asm.Register).ID())
         sa_imm := asImm12(v1)
         if len(vv) == 1 {
-            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            switch {
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
+                default: panic("aarch64: invalid modifier flags")
+            }
         }
         return p.setins(addsub_imm(0, 1, 1, sa_shift, sa_imm, sa_wn_wsp, 31))
     }
@@ -5947,35 +6534,58 @@ func (self *Program) CMP(v0, v1 interface{}, vv ...interface{}) *Instruction {
     if (len(vv) == 0 || len(vv) == 1) &&
        isXrOrSP(v0) &&
        isImm12(v1) &&
-       (len(vv) == 0 || isShift(vv[0]) && modn(vv[0]) == 0) {
+       (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) {
+        p.class = ClassGeneral
         var sa_shift uint32
         sa_xn_sp := uint32(v0.(asm.Register).ID())
         sa_imm := asImm12(v1)
         if len(vv) == 1 {
-            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            switch {
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
+                default: panic("aarch64: invalid modifier flags")
+            }
         }
         return p.setins(addsub_imm(1, 1, 1, sa_shift, sa_imm, sa_xn_sp, 31))
     }
     // CMP  <Wn>, <Wm>{, <shift> #<amount>}
-    if (len(vv) == 0 || len(vv) == 1) && isWr(v0) && isWr(v1) && (len(vv) == 0 || isShift(vv[0])) {
-        var sa_amount uint32
-        var sa_shift uint32
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isWr(v0) &&
+       isWr(v1) &&
+       (len(vv) == 0 || isMods(vv[0], ModASR, ModLSL, ModLSR)) {
+        p.class = ClassGeneral
+        sa_amount := uint32(0)
+        sa_shift := uint32(0b00)
         sa_wn := uint32(v0.(asm.Register).ID())
         sa_wm := uint32(v1.(asm.Register).ID())
         if len(vv) == 1 {
-            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            switch vv[0].(Modifier).Type() {
+                case ModLSL: sa_shift = 0b00
+                case ModLSR: sa_shift = 0b01
+                case ModASR: sa_shift = 0b10
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount = uint32(vv[0].(Modifier).Amount())
         }
         return p.setins(addsub_shift(0, 1, 1, sa_shift, sa_wm, sa_amount, sa_wn, 31))
     }
     // CMP  <Xn>, <Xm>{, <shift> #<amount>}
-    if (len(vv) == 0 || len(vv) == 1) && isXr(v0) && isXr(v1) && (len(vv) == 0 || isShift(vv[0])) {
-        var sa_amount_1 uint32
-        var sa_shift uint32
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isXr(v0) &&
+       isXr(v1) &&
+       (len(vv) == 0 || isMods(vv[0], ModASR, ModLSL, ModLSR)) {
+        p.class = ClassGeneral
+        sa_amount_1 := uint32(0)
+        sa_shift := uint32(0b00)
         sa_xn := uint32(v0.(asm.Register).ID())
         sa_xm := uint32(v1.(asm.Register).ID())
         if len(vv) == 1 {
-            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            switch vv[0].(Modifier).Type() {
+                case ModLSL: sa_shift = 0b00
+                case ModLSR: sa_shift = 0b01
+                case ModASR: sa_shift = 0b10
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount_1 = uint32(vv[0].(Modifier).Amount())
         }
         return p.setins(addsub_shift(1, 1, 1, sa_shift, sa_xm, sa_amount_1, sa_xn, 31))
@@ -5998,6 +6608,8 @@ func (self *Program) CMP(v0, v1 interface{}, vv ...interface{}) *Instruction {
 func (self *Program) CMPP(v0, v1 interface{}) *Instruction {
     p := self.alloc("CMPP", 2, Operands { v0, v1 })
     if isXrOrSP(v0) && isXrOrSP(v1) {
+        self.require(FEAT_MTE)
+        p.class = ClassGeneral
         sa_xn_sp := uint32(v0.(asm.Register).ID())
         sa_xm_sp := uint32(v1.(asm.Register).ID())
         Rm := uint32(0b00000)
@@ -6039,6 +6651,7 @@ func (self *Program) CMTST(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -6057,6 +6670,7 @@ func (self *Program) CMTST(v0, v1, v2 interface{}) *Instruction {
     }
     // CMTST  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -6087,6 +6701,7 @@ func (self *Program) CNEG(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("CNEG", 3, Operands { v0, v1, v2 })
     // CNEG  <Wd>, <Wn>, <cond>
     if isWr(v0) && isWr(v1) && isBrCond(v2) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn_1 := uint32(v1.(asm.Register).ID())
         sa_cond_1 := uint32(v2.(ConditionCode) ^ 1)
@@ -6094,6 +6709,7 @@ func (self *Program) CNEG(v0, v1, v2 interface{}) *Instruction {
     }
     // CNEG  <Xd>, <Xn>, <cond>
     if isXr(v0) && isXr(v1) && isBrCond(v2) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn_1 := uint32(v1.(asm.Register).ID())
         sa_cond_1 := uint32(v2.(ConditionCode) ^ 1)
@@ -6130,18 +6746,23 @@ func (self *Program) CNT(v0, v1 interface{}) *Instruction {
     p := self.alloc("CNT", 2, Operands { v0, v1 })
     // CNT  <Wd>, <Wn>
     if isWr(v0) && isWr(v1) {
+        self.require(FEAT_CSSC)
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         return p.setins(dp_1src(0, 0, 0, 7, sa_wn, sa_wd))
     }
     // CNT  <Xd>, <Xn>
     if isXr(v0) && isXr(v1) {
+        self.require(FEAT_CSSC)
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         return p.setins(dp_1src(1, 0, 0, 7, sa_xn, sa_xd))
     }
     // CNT  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec8B, Vec16B) && isVr(v1) && isVfmt(v1, Vec8B, Vec16B) && vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -6175,6 +6796,8 @@ func (self *Program) CNT(v0, v1 interface{}) *Instruction {
 func (self *Program) COSP(v0, v1 interface{}) *Instruction {
     p := self.alloc("COSP", 2, Operands { v0, v1 })
     if v0 == RCTX && isXr(v1) {
+        self.require(FEAT_SPECRES2)
+        p.class = ClassSystem
         sa_xt_1 := uint32(v1.(asm.Register).ID())
         return p.setins(systeminstrs(0, 3, 7, 3, 6, sa_xt_1))
     }
@@ -6201,6 +6824,8 @@ func (self *Program) COSP(v0, v1 interface{}) *Instruction {
 func (self *Program) CPP(v0, v1 interface{}) *Instruction {
     p := self.alloc("CPP", 2, Operands { v0, v1 })
     if v0 == RCTX && isXr(v1) {
+        self.require(FEAT_SPECRES)
+        p.class = ClassSystem
         sa_xt_1 := uint32(v1.(asm.Register).ID())
         return p.setins(systeminstrs(0, 3, 7, 3, 7, sa_xt_1))
     }
@@ -6410,6 +7035,8 @@ func (self *Program) CPYE(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_2 := uint32(v2.(asm.Register).ID())
@@ -6622,6 +7249,8 @@ func (self *Program) CPYEN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_2 := uint32(v2.(asm.Register).ID())
@@ -6833,6 +7462,8 @@ func (self *Program) CPYERN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_2 := uint32(v2.(asm.Register).ID())
@@ -7044,6 +7675,8 @@ func (self *Program) CPYERT(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_2 := uint32(v2.(asm.Register).ID())
@@ -7256,6 +7889,8 @@ func (self *Program) CPYERTN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_2 := uint32(v2.(asm.Register).ID())
@@ -7472,6 +8107,8 @@ func (self *Program) CPYERTRN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_2 := uint32(v2.(asm.Register).ID())
@@ -7688,6 +8325,8 @@ func (self *Program) CPYERTWN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_2 := uint32(v2.(asm.Register).ID())
@@ -7900,6 +8539,8 @@ func (self *Program) CPYET(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_2 := uint32(v2.(asm.Register).ID())
@@ -8112,6 +8753,8 @@ func (self *Program) CPYETN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_2 := uint32(v2.(asm.Register).ID())
@@ -8324,6 +8967,8 @@ func (self *Program) CPYETRN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_2 := uint32(v2.(asm.Register).ID())
@@ -8536,6 +9181,8 @@ func (self *Program) CPYETWN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_2 := uint32(v2.(asm.Register).ID())
@@ -8747,6 +9394,8 @@ func (self *Program) CPYEWN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_2 := uint32(v2.(asm.Register).ID())
@@ -8958,6 +9607,8 @@ func (self *Program) CPYEWT(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_2 := uint32(v2.(asm.Register).ID())
@@ -9170,6 +9821,8 @@ func (self *Program) CPYEWTN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_2 := uint32(v2.(asm.Register).ID())
@@ -9386,6 +10039,8 @@ func (self *Program) CPYEWTRN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_2 := uint32(v2.(asm.Register).ID())
@@ -9602,6 +10257,8 @@ func (self *Program) CPYEWTWN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_2 := uint32(v2.(asm.Register).ID())
@@ -9726,6 +10383,8 @@ func (self *Program) CPYFE(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_2 := uint32(v2.(asm.Register).ID())
@@ -9851,6 +10510,8 @@ func (self *Program) CPYFEN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_2 := uint32(v2.(asm.Register).ID())
@@ -9976,6 +10637,8 @@ func (self *Program) CPYFERN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_2 := uint32(v2.(asm.Register).ID())
@@ -10101,6 +10764,8 @@ func (self *Program) CPYFERT(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_2 := uint32(v2.(asm.Register).ID())
@@ -10230,6 +10895,8 @@ func (self *Program) CPYFERTN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_2 := uint32(v2.(asm.Register).ID())
@@ -10359,6 +11026,8 @@ func (self *Program) CPYFERTRN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_2 := uint32(v2.(asm.Register).ID())
@@ -10488,6 +11157,8 @@ func (self *Program) CPYFERTWN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_2 := uint32(v2.(asm.Register).ID())
@@ -10613,6 +11284,8 @@ func (self *Program) CPYFET(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_2 := uint32(v2.(asm.Register).ID())
@@ -10738,6 +11411,8 @@ func (self *Program) CPYFETN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_2 := uint32(v2.(asm.Register).ID())
@@ -10867,6 +11542,8 @@ func (self *Program) CPYFETRN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_2 := uint32(v2.(asm.Register).ID())
@@ -10996,6 +11673,8 @@ func (self *Program) CPYFETWN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_2 := uint32(v2.(asm.Register).ID())
@@ -11121,6 +11800,8 @@ func (self *Program) CPYFEWN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_2 := uint32(v2.(asm.Register).ID())
@@ -11246,6 +11927,8 @@ func (self *Program) CPYFEWT(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_2 := uint32(v2.(asm.Register).ID())
@@ -11375,6 +12058,8 @@ func (self *Program) CPYFEWTN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_2 := uint32(v2.(asm.Register).ID())
@@ -11504,6 +12189,8 @@ func (self *Program) CPYFEWTRN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_2 := uint32(v2.(asm.Register).ID())
@@ -11633,6 +12320,8 @@ func (self *Program) CPYFEWTWN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_2 := uint32(v2.(asm.Register).ID())
@@ -11757,6 +12446,8 @@ func (self *Program) CPYFM(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_1 := uint32(v2.(asm.Register).ID())
@@ -11882,6 +12573,8 @@ func (self *Program) CPYFMN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_1 := uint32(v2.(asm.Register).ID())
@@ -12007,6 +12700,8 @@ func (self *Program) CPYFMRN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_1 := uint32(v2.(asm.Register).ID())
@@ -12132,6 +12827,8 @@ func (self *Program) CPYFMRT(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_1 := uint32(v2.(asm.Register).ID())
@@ -12261,6 +12958,8 @@ func (self *Program) CPYFMRTN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_1 := uint32(v2.(asm.Register).ID())
@@ -12390,6 +13089,8 @@ func (self *Program) CPYFMRTRN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_1 := uint32(v2.(asm.Register).ID())
@@ -12519,6 +13220,8 @@ func (self *Program) CPYFMRTWN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_1 := uint32(v2.(asm.Register).ID())
@@ -12644,6 +13347,8 @@ func (self *Program) CPYFMT(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_1 := uint32(v2.(asm.Register).ID())
@@ -12769,6 +13474,8 @@ func (self *Program) CPYFMTN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_1 := uint32(v2.(asm.Register).ID())
@@ -12898,6 +13605,8 @@ func (self *Program) CPYFMTRN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_1 := uint32(v2.(asm.Register).ID())
@@ -13027,6 +13736,8 @@ func (self *Program) CPYFMTWN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_1 := uint32(v2.(asm.Register).ID())
@@ -13152,6 +13863,8 @@ func (self *Program) CPYFMWN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_1 := uint32(v2.(asm.Register).ID())
@@ -13277,6 +13990,8 @@ func (self *Program) CPYFMWT(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_1 := uint32(v2.(asm.Register).ID())
@@ -13406,6 +14121,8 @@ func (self *Program) CPYFMWTN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_1 := uint32(v2.(asm.Register).ID())
@@ -13535,6 +14252,8 @@ func (self *Program) CPYFMWTRN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_1 := uint32(v2.(asm.Register).ID())
@@ -13664,6 +14383,8 @@ func (self *Program) CPYFMWTWN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_1 := uint32(v2.(asm.Register).ID())
@@ -13788,6 +14509,8 @@ func (self *Program) CPYFP(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd := uint32(mbase(v0).ID())
         sa_xs := uint32(mbase(v1).ID())
         sa_xn := uint32(v2.(asm.Register).ID())
@@ -13913,6 +14636,8 @@ func (self *Program) CPYFPN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd := uint32(mbase(v0).ID())
         sa_xs := uint32(mbase(v1).ID())
         sa_xn := uint32(v2.(asm.Register).ID())
@@ -14038,6 +14763,8 @@ func (self *Program) CPYFPRN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd := uint32(mbase(v0).ID())
         sa_xs := uint32(mbase(v1).ID())
         sa_xn := uint32(v2.(asm.Register).ID())
@@ -14163,6 +14890,8 @@ func (self *Program) CPYFPRT(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd := uint32(mbase(v0).ID())
         sa_xs := uint32(mbase(v1).ID())
         sa_xn := uint32(v2.(asm.Register).ID())
@@ -14292,6 +15021,8 @@ func (self *Program) CPYFPRTN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd := uint32(mbase(v0).ID())
         sa_xs := uint32(mbase(v1).ID())
         sa_xn := uint32(v2.(asm.Register).ID())
@@ -14421,6 +15152,8 @@ func (self *Program) CPYFPRTRN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd := uint32(mbase(v0).ID())
         sa_xs := uint32(mbase(v1).ID())
         sa_xn := uint32(v2.(asm.Register).ID())
@@ -14550,6 +15283,8 @@ func (self *Program) CPYFPRTWN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd := uint32(mbase(v0).ID())
         sa_xs := uint32(mbase(v1).ID())
         sa_xn := uint32(v2.(asm.Register).ID())
@@ -14675,6 +15410,8 @@ func (self *Program) CPYFPT(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd := uint32(mbase(v0).ID())
         sa_xs := uint32(mbase(v1).ID())
         sa_xn := uint32(v2.(asm.Register).ID())
@@ -14800,6 +15537,8 @@ func (self *Program) CPYFPTN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd := uint32(mbase(v0).ID())
         sa_xs := uint32(mbase(v1).ID())
         sa_xn := uint32(v2.(asm.Register).ID())
@@ -14929,6 +15668,8 @@ func (self *Program) CPYFPTRN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd := uint32(mbase(v0).ID())
         sa_xs := uint32(mbase(v1).ID())
         sa_xn := uint32(v2.(asm.Register).ID())
@@ -15058,6 +15799,8 @@ func (self *Program) CPYFPTWN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd := uint32(mbase(v0).ID())
         sa_xs := uint32(mbase(v1).ID())
         sa_xn := uint32(v2.(asm.Register).ID())
@@ -15183,6 +15926,8 @@ func (self *Program) CPYFPWN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd := uint32(mbase(v0).ID())
         sa_xs := uint32(mbase(v1).ID())
         sa_xn := uint32(v2.(asm.Register).ID())
@@ -15308,6 +16053,8 @@ func (self *Program) CPYFPWT(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd := uint32(mbase(v0).ID())
         sa_xs := uint32(mbase(v1).ID())
         sa_xn := uint32(v2.(asm.Register).ID())
@@ -15437,6 +16184,8 @@ func (self *Program) CPYFPWTN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd := uint32(mbase(v0).ID())
         sa_xs := uint32(mbase(v1).ID())
         sa_xn := uint32(v2.(asm.Register).ID())
@@ -15566,6 +16315,8 @@ func (self *Program) CPYFPWTRN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd := uint32(mbase(v0).ID())
         sa_xs := uint32(mbase(v1).ID())
         sa_xn := uint32(v2.(asm.Register).ID())
@@ -15695,6 +16446,8 @@ func (self *Program) CPYFPWTWN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd := uint32(mbase(v0).ID())
         sa_xs := uint32(mbase(v1).ID())
         sa_xn := uint32(v2.(asm.Register).ID())
@@ -15906,6 +16659,8 @@ func (self *Program) CPYM(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_1 := uint32(v2.(asm.Register).ID())
@@ -16118,6 +16873,8 @@ func (self *Program) CPYMN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_1 := uint32(v2.(asm.Register).ID())
@@ -16329,6 +17086,8 @@ func (self *Program) CPYMRN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_1 := uint32(v2.(asm.Register).ID())
@@ -16540,6 +17299,8 @@ func (self *Program) CPYMRT(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_1 := uint32(v2.(asm.Register).ID())
@@ -16752,6 +17513,8 @@ func (self *Program) CPYMRTN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_1 := uint32(v2.(asm.Register).ID())
@@ -16968,6 +17731,8 @@ func (self *Program) CPYMRTRN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_1 := uint32(v2.(asm.Register).ID())
@@ -17184,6 +17949,8 @@ func (self *Program) CPYMRTWN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_1 := uint32(v2.(asm.Register).ID())
@@ -17396,6 +18163,8 @@ func (self *Program) CPYMT(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_1 := uint32(v2.(asm.Register).ID())
@@ -17608,6 +18377,8 @@ func (self *Program) CPYMTN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_1 := uint32(v2.(asm.Register).ID())
@@ -17820,6 +18591,8 @@ func (self *Program) CPYMTRN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_1 := uint32(v2.(asm.Register).ID())
@@ -18032,6 +18805,8 @@ func (self *Program) CPYMTWN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_1 := uint32(v2.(asm.Register).ID())
@@ -18243,6 +19018,8 @@ func (self *Program) CPYMWN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_1 := uint32(v2.(asm.Register).ID())
@@ -18454,6 +19231,8 @@ func (self *Program) CPYMWT(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_1 := uint32(v2.(asm.Register).ID())
@@ -18666,6 +19445,8 @@ func (self *Program) CPYMWTN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_1 := uint32(v2.(asm.Register).ID())
@@ -18882,6 +19663,8 @@ func (self *Program) CPYMWTRN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_1 := uint32(v2.(asm.Register).ID())
@@ -19098,6 +19881,8 @@ func (self *Program) CPYMWTWN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xs_1 := uint32(mbase(v1).ID())
         sa_xn_1 := uint32(v2.(asm.Register).ID())
@@ -19309,6 +20094,8 @@ func (self *Program) CPYP(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd := uint32(mbase(v0).ID())
         sa_xs := uint32(mbase(v1).ID())
         sa_xn := uint32(v2.(asm.Register).ID())
@@ -19521,6 +20308,8 @@ func (self *Program) CPYPN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd := uint32(mbase(v0).ID())
         sa_xs := uint32(mbase(v1).ID())
         sa_xn := uint32(v2.(asm.Register).ID())
@@ -19732,6 +20521,8 @@ func (self *Program) CPYPRN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd := uint32(mbase(v0).ID())
         sa_xs := uint32(mbase(v1).ID())
         sa_xn := uint32(v2.(asm.Register).ID())
@@ -19943,6 +20734,8 @@ func (self *Program) CPYPRT(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd := uint32(mbase(v0).ID())
         sa_xs := uint32(mbase(v1).ID())
         sa_xn := uint32(v2.(asm.Register).ID())
@@ -20155,6 +20948,8 @@ func (self *Program) CPYPRTN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd := uint32(mbase(v0).ID())
         sa_xs := uint32(mbase(v1).ID())
         sa_xn := uint32(v2.(asm.Register).ID())
@@ -20371,6 +21166,8 @@ func (self *Program) CPYPRTRN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd := uint32(mbase(v0).ID())
         sa_xs := uint32(mbase(v1).ID())
         sa_xn := uint32(v2.(asm.Register).ID())
@@ -20587,6 +21384,8 @@ func (self *Program) CPYPRTWN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd := uint32(mbase(v0).ID())
         sa_xs := uint32(mbase(v1).ID())
         sa_xn := uint32(v2.(asm.Register).ID())
@@ -20799,6 +21598,8 @@ func (self *Program) CPYPT(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd := uint32(mbase(v0).ID())
         sa_xs := uint32(mbase(v1).ID())
         sa_xn := uint32(v2.(asm.Register).ID())
@@ -21011,6 +21812,8 @@ func (self *Program) CPYPTN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd := uint32(mbase(v0).ID())
         sa_xs := uint32(mbase(v1).ID())
         sa_xn := uint32(v2.(asm.Register).ID())
@@ -21223,6 +22026,8 @@ func (self *Program) CPYPTRN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd := uint32(mbase(v0).ID())
         sa_xs := uint32(mbase(v1).ID())
         sa_xn := uint32(v2.(asm.Register).ID())
@@ -21435,6 +22240,8 @@ func (self *Program) CPYPTWN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd := uint32(mbase(v0).ID())
         sa_xs := uint32(mbase(v1).ID())
         sa_xn := uint32(v2.(asm.Register).ID())
@@ -21646,6 +22453,8 @@ func (self *Program) CPYPWN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd := uint32(mbase(v0).ID())
         sa_xs := uint32(mbase(v1).ID())
         sa_xn := uint32(v2.(asm.Register).ID())
@@ -21857,6 +22666,8 @@ func (self *Program) CPYPWT(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd := uint32(mbase(v0).ID())
         sa_xs := uint32(mbase(v1).ID())
         sa_xn := uint32(v2.(asm.Register).ID())
@@ -22069,6 +22880,8 @@ func (self *Program) CPYPWTN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd := uint32(mbase(v0).ID())
         sa_xs := uint32(mbase(v1).ID())
         sa_xn := uint32(v2.(asm.Register).ID())
@@ -22285,6 +23098,8 @@ func (self *Program) CPYPWTRN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd := uint32(mbase(v0).ID())
         sa_xs := uint32(mbase(v1).ID())
         sa_xn := uint32(v2.(asm.Register).ID())
@@ -22501,6 +23316,8 @@ func (self *Program) CPYPWTWN(v0, v1, v2 interface{}) *Instruction {
        moffs(v1) == 0 &&
        mext(v1) == PreIndex &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd := uint32(mbase(v0).ID())
         sa_xs := uint32(mbase(v1).ID())
         sa_xn := uint32(v2.(asm.Register).ID())
@@ -22533,6 +23350,8 @@ func (self *Program) CPYPWTWN(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) CRC32B(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("CRC32B", 3, Operands { v0, v1, v2 })
     if isWr(v0) && isWr(v1) && isWr(v2) {
+        self.require(FEAT_CRC32)
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
@@ -22565,6 +23384,8 @@ func (self *Program) CRC32B(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) CRC32CB(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("CRC32CB", 3, Operands { v0, v1, v2 })
     if isWr(v0) && isWr(v1) && isWr(v2) {
+        self.require(FEAT_CRC32)
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
@@ -22597,6 +23418,8 @@ func (self *Program) CRC32CB(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) CRC32CH(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("CRC32CH", 3, Operands { v0, v1, v2 })
     if isWr(v0) && isWr(v1) && isWr(v2) {
+        self.require(FEAT_CRC32)
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
@@ -22629,6 +23452,8 @@ func (self *Program) CRC32CH(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) CRC32CW(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("CRC32CW", 3, Operands { v0, v1, v2 })
     if isWr(v0) && isWr(v1) && isWr(v2) {
+        self.require(FEAT_CRC32)
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
@@ -22661,6 +23486,8 @@ func (self *Program) CRC32CW(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) CRC32CX(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("CRC32CX", 3, Operands { v0, v1, v2 })
     if isWr(v0) && isWr(v1) && isXr(v2) {
+        self.require(FEAT_CRC32)
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
@@ -22693,6 +23520,8 @@ func (self *Program) CRC32CX(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) CRC32H(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("CRC32H", 3, Operands { v0, v1, v2 })
     if isWr(v0) && isWr(v1) && isWr(v2) {
+        self.require(FEAT_CRC32)
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
@@ -22725,6 +23554,8 @@ func (self *Program) CRC32H(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) CRC32W(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("CRC32W", 3, Operands { v0, v1, v2 })
     if isWr(v0) && isWr(v1) && isWr(v2) {
+        self.require(FEAT_CRC32)
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
@@ -22757,6 +23588,8 @@ func (self *Program) CRC32W(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) CRC32X(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("CRC32X", 3, Operands { v0, v1, v2 })
     if isWr(v0) && isWr(v1) && isXr(v2) {
+        self.require(FEAT_CRC32)
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
@@ -22797,6 +23630,7 @@ func (self *Program) CRC32X(v0, v1, v2 interface{}) *Instruction {
 //
 func (self *Program) CSDB() *Instruction {
     p := self.alloc("CSDB", 0, Operands {})
+    p.class = ClassSystem
     return p.setins(hints(2, 4))
 }
 
@@ -22815,6 +23649,7 @@ func (self *Program) CSEL(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("CSEL", 4, Operands { v0, v1, v2, v3 })
     // CSEL  <Wd>, <Wn>, <Wm>, <cond>
     if isWr(v0) && isWr(v1) && isWr(v2) && isBrCond(v3) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
@@ -22823,6 +23658,7 @@ func (self *Program) CSEL(v0, v1, v2, v3 interface{}) *Instruction {
     }
     // CSEL  <Xd>, <Xn>, <Xm>, <cond>
     if isXr(v0) && isXr(v1) && isXr(v2) && isBrCond(v3) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
@@ -22848,12 +23684,14 @@ func (self *Program) CSET(v0, v1 interface{}) *Instruction {
     p := self.alloc("CSET", 2, Operands { v0, v1 })
     // CSET  <Wd>, <cond>
     if isWr(v0) && isBrCond(v1) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_cond_1 := uint32(v1.(ConditionCode) ^ 1)
         return p.setins(condsel(0, 0, 0, 31, sa_cond_1, 1, 31, sa_wd))
     }
     // CSET  <Xd>, <cond>
     if isXr(v0) && isBrCond(v1) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_cond_1 := uint32(v1.(ConditionCode) ^ 1)
         return p.setins(condsel(1, 0, 0, 31, sa_cond_1, 1, 31, sa_xd))
@@ -22877,12 +23715,14 @@ func (self *Program) CSETM(v0, v1 interface{}) *Instruction {
     p := self.alloc("CSETM", 2, Operands { v0, v1 })
     // CSETM  <Wd>, <cond>
     if isWr(v0) && isBrCond(v1) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_cond_1 := uint32(v1.(ConditionCode) ^ 1)
         return p.setins(condsel(0, 1, 0, 31, sa_cond_1, 0, 31, sa_wd))
     }
     // CSETM  <Xd>, <cond>
     if isXr(v0) && isBrCond(v1) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_cond_1 := uint32(v1.(ConditionCode) ^ 1)
         return p.setins(condsel(1, 1, 0, 31, sa_cond_1, 0, 31, sa_xd))
@@ -22907,6 +23747,7 @@ func (self *Program) CSINC(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("CSINC", 4, Operands { v0, v1, v2, v3 })
     // CSINC  <Wd>, <Wn>, <Wm>, <cond>
     if isWr(v0) && isWr(v1) && isWr(v2) && isBrCond(v3) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
@@ -22915,6 +23756,7 @@ func (self *Program) CSINC(v0, v1, v2, v3 interface{}) *Instruction {
     }
     // CSINC  <Xd>, <Xn>, <Xm>, <cond>
     if isXr(v0) && isXr(v1) && isXr(v2) && isBrCond(v3) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
@@ -22941,6 +23783,7 @@ func (self *Program) CSINV(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("CSINV", 4, Operands { v0, v1, v2, v3 })
     // CSINV  <Wd>, <Wn>, <Wm>, <cond>
     if isWr(v0) && isWr(v1) && isWr(v2) && isBrCond(v3) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
@@ -22949,6 +23792,7 @@ func (self *Program) CSINV(v0, v1, v2, v3 interface{}) *Instruction {
     }
     // CSINV  <Xd>, <Xn>, <Xm>, <cond>
     if isXr(v0) && isXr(v1) && isXr(v2) && isBrCond(v3) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
@@ -22975,6 +23819,7 @@ func (self *Program) CSNEG(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("CSNEG", 4, Operands { v0, v1, v2, v3 })
     // CSNEG  <Wd>, <Wn>, <Wm>, <cond>
     if isWr(v0) && isWr(v1) && isWr(v2) && isBrCond(v3) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
@@ -22983,6 +23828,7 @@ func (self *Program) CSNEG(v0, v1, v2, v3 interface{}) *Instruction {
     }
     // CSNEG  <Xd>, <Xn>, <Xm>, <cond>
     if isXr(v0) && isXr(v1) && isXr(v2) && isBrCond(v3) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
@@ -23009,12 +23855,16 @@ func (self *Program) CTZ(v0, v1 interface{}) *Instruction {
     p := self.alloc("CTZ", 2, Operands { v0, v1 })
     // CTZ  <Wd>, <Wn>
     if isWr(v0) && isWr(v1) {
+        self.require(FEAT_CSSC)
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         return p.setins(dp_1src(0, 0, 0, 6, sa_wn, sa_wd))
     }
     // CTZ  <Xd>, <Xn>
     if isXr(v0) && isXr(v1) {
+        self.require(FEAT_CSSC)
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         return p.setins(dp_1src(1, 0, 0, 6, sa_xn, sa_xd))
@@ -23036,6 +23886,7 @@ func (self *Program) CTZ(v0, v1 interface{}) *Instruction {
 func (self *Program) DC(v0, v1 interface{}) *Instruction {
     p := self.alloc("DC", 2, Operands { v0, v1 })
     if isDCOption(v0) && isXr(v1) {
+        p.class = ClassSystem
         sa_dc_op := uint32(v0.(DCOption))
         sa_xt_1 := uint32(v1.(asm.Register).ID())
         return p.setins(systeminstrs(0, ubfx(sa_dc_op, 7, 3), 7, ubfx(sa_dc_op, 3, 4), mask(sa_dc_op, 3), sa_xt_1))
@@ -23085,7 +23936,8 @@ func (self *Program) DCPS1(vv ...interface{}) *Instruction {
         default : panic("instruction DCPS1 takes 0 or 1 operands")
     }
     if (len(vv) == 0 || len(vv) == 1) && (len(vv) == 0 || isUimm16(vv[0])) {
-        var sa_imm uint32
+        p.class = ClassSystem
+        sa_imm := uint32(0)
         if len(vv) == 1 {
             sa_imm = asUimm16(vv[0])
         }
@@ -23139,7 +23991,8 @@ func (self *Program) DCPS2(vv ...interface{}) *Instruction {
         default : panic("instruction DCPS2 takes 0 or 1 operands")
     }
     if (len(vv) == 0 || len(vv) == 1) && (len(vv) == 0 || isUimm16(vv[0])) {
-        var sa_imm uint32
+        p.class = ClassSystem
+        sa_imm := uint32(0)
         if len(vv) == 1 {
             sa_imm = asUimm16(vv[0])
         }
@@ -23188,7 +24041,8 @@ func (self *Program) DCPS3(vv ...interface{}) *Instruction {
         default : panic("instruction DCPS3 takes 0 or 1 operands")
     }
     if (len(vv) == 0 || len(vv) == 1) && (len(vv) == 0 || isUimm16(vv[0])) {
-        var sa_imm uint32
+        p.class = ClassSystem
+        sa_imm := uint32(0)
         if len(vv) == 1 {
             sa_imm = asUimm16(vv[0])
         }
@@ -23212,6 +24066,8 @@ func (self *Program) DCPS3(vv ...interface{}) *Instruction {
 //
 func (self *Program) DGH() *Instruction {
     p := self.alloc("DGH", 0, Operands {})
+    self.require(FEAT_DGH)
+    p.class = ClassSystem
     return p.setins(hints(0, 6))
 }
 
@@ -23227,6 +24083,7 @@ func (self *Program) DGH() *Instruction {
 func (self *Program) DMB(v0 interface{}) *Instruction {
     p := self.alloc("DMB", 1, Operands { v0 })
     if isOption(v0) {
+        p.class = ClassSystem
         sa_option := v0.(BarrierOption)
         sa_imm := uint32(sa_option)
         return p.setins(barriers(sa_imm, 5, 31))
@@ -23243,6 +24100,7 @@ func (self *Program) DMB(v0 interface{}) *Instruction {
 //
 func (self *Program) DRPS() *Instruction {
     p := self.alloc("DRPS", 0, Operands {})
+    p.class = ClassSystem
     return p.setins(branch_reg(5, 31, 0, 31, 0))
 }
 
@@ -23264,12 +24122,15 @@ func (self *Program) DSB(v0 interface{}) *Instruction {
     p := self.alloc("DSB", 1, Operands { v0 })
     // DSB  <option>|#<imm>
     if isOption(v0) {
+        p.class = ClassSystem
         sa_option := v0.(BarrierOption)
         sa_imm := uint32(sa_option)
         return p.setins(barriers(sa_imm, 4, 31))
     }
     // DSB  <option>nXS
     if isOptionNXS(v0) {
+        self.require(FEAT_XS)
+        p.class = ClassSystem
         sa_option_1 := v0.(BarrierOption).nxs()
         CRm := uint32(0b0010)
         CRm |= sa_option_1 << 2
@@ -23312,6 +24173,7 @@ func (self *Program) DUP(v0, v1 interface{}) *Instruction {
     p := self.alloc("DUP", 2, Operands { v0, v1 })
     // DUP  <Vd>.<T>, <Vn>.<Ts>[<index>]
     if isVr(v0) && isVfmt(v0, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) && isVri(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         var sa_t__bit_mask uint32
         var sa_ts uint32
@@ -23361,6 +24223,7 @@ func (self *Program) DUP(v0, v1 interface{}) *Instruction {
     }
     // DUP  <V><d>, <Vn>.<T>[<index>]
     if isAdvSIMD(v0) && isVri(v1) {
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         var sa_t_1__bit_mask uint32
         var sa_v uint32
@@ -23403,6 +24266,7 @@ func (self *Program) DUP(v0, v1 interface{}) *Instruction {
     }
     // DUP  <Vd>.<T>, <R><n>
     if isVr(v0) && isVfmt(v0, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) && isWrOrXr(v1) {
+        p.class = ClassAdvSimd
         var sa_r [3]uint32
         var sa_r__bit_mask [3]uint32
         var sa_t uint32
@@ -23469,6 +24333,8 @@ func (self *Program) DUP(v0, v1 interface{}) *Instruction {
 func (self *Program) DVP(v0, v1 interface{}) *Instruction {
     p := self.alloc("DVP", 2, Operands { v0, v1 })
     if v0 == RCTX && isXr(v1) {
+        self.require(FEAT_SPECRES)
+        p.class = ClassSystem
         sa_xt_1 := uint32(v1.(asm.Register).ID())
         return p.setins(systeminstrs(0, 3, 7, 3, 5, sa_xt_1))
     }
@@ -23495,27 +24361,49 @@ func (self *Program) EON(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
         default : panic("instruction EON takes 3 or 4 operands")
     }
     // EON  <Wd>, <Wn>, <Wm>{, <shift> #<amount>}
-    if (len(vv) == 0 || len(vv) == 1) && isWr(v0) && isWr(v1) && isWr(v2) && (len(vv) == 0 || isShift(vv[0])) {
-        var sa_amount uint32
-        var sa_shift uint32
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isWr(v0) &&
+       isWr(v1) &&
+       isWr(v2) &&
+       (len(vv) == 0 || isMods(vv[0], ModASR, ModLSL, ModLSR, ModROR)) {
+        p.class = ClassGeneral
+        sa_amount := uint32(0)
+        sa_shift := uint32(0b00)
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
         if len(vv) == 1 {
-            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            switch vv[0].(Modifier).Type() {
+                case ModLSL: sa_shift = 0b00
+                case ModLSR: sa_shift = 0b01
+                case ModASR: sa_shift = 0b10
+                case ModROR: sa_shift = 0b11
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount = uint32(vv[0].(Modifier).Amount())
         }
         return p.setins(log_shift(0, 2, sa_shift, 1, sa_wm, sa_amount, sa_wn, sa_wd))
     }
     // EON  <Xd>, <Xn>, <Xm>{, <shift> #<amount>}
-    if (len(vv) == 0 || len(vv) == 1) && isXr(v0) && isXr(v1) && isXr(v2) && (len(vv) == 0 || isShift(vv[0])) {
-        var sa_amount_1 uint32
-        var sa_shift uint32
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isXr(v0) &&
+       isXr(v1) &&
+       isXr(v2) &&
+       (len(vv) == 0 || isMods(vv[0], ModASR, ModLSL, ModLSR, ModROR)) {
+        p.class = ClassGeneral
+        sa_amount_1 := uint32(0)
+        sa_shift := uint32(0b00)
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
         if len(vv) == 1 {
-            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            switch vv[0].(Modifier).Type() {
+                case ModLSL: sa_shift = 0b00
+                case ModLSR: sa_shift = 0b01
+                case ModASR: sa_shift = 0b10
+                case ModROR: sa_shift = 0b11
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount_1 = uint32(vv[0].(Modifier).Amount())
         }
         return p.setins(log_shift(1, 2, sa_shift, 1, sa_xm, sa_amount_1, sa_xn, sa_xd))
@@ -23572,6 +24460,7 @@ func (self *Program) EOR(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
        isVfmt(v2, Vec8B, Vec16B) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -23585,6 +24474,7 @@ func (self *Program) EOR(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
     }
     // EOR  <Wd|WSP>, <Wn>, #<imm>
     if isWrOrWSP(v0) && isWr(v1) && isMask32(v2) {
+        p.class = ClassGeneral
         sa_wd_wsp := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_imm := asMaskOp(v2)
@@ -23592,33 +24482,56 @@ func (self *Program) EOR(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
     }
     // EOR  <Xd|SP>, <Xn>, #<imm>
     if isXrOrSP(v0) && isXr(v1) && isMask64(v2) {
+        p.class = ClassGeneral
         sa_xd_sp := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_imm_1 := asMaskOp(v2)
         return p.setins(log_imm(1, 2, ubfx(sa_imm_1, 12, 1), ubfx(sa_imm_1, 6, 6), mask(sa_imm_1, 6), sa_xn, sa_xd_sp))
     }
     // EOR  <Wd>, <Wn>, <Wm>{, <shift> #<amount>}
-    if (len(vv) == 0 || len(vv) == 1) && isWr(v0) && isWr(v1) && isWr(v2) && (len(vv) == 0 || isShift(vv[0])) {
-        var sa_amount uint32
-        var sa_shift uint32
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isWr(v0) &&
+       isWr(v1) &&
+       isWr(v2) &&
+       (len(vv) == 0 || isMods(vv[0], ModASR, ModLSL, ModLSR, ModROR)) {
+        p.class = ClassGeneral
+        sa_amount := uint32(0)
+        sa_shift := uint32(0b00)
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
         if len(vv) == 1 {
-            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            switch vv[0].(Modifier).Type() {
+                case ModLSL: sa_shift = 0b00
+                case ModLSR: sa_shift = 0b01
+                case ModASR: sa_shift = 0b10
+                case ModROR: sa_shift = 0b11
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount = uint32(vv[0].(Modifier).Amount())
         }
         return p.setins(log_shift(0, 2, sa_shift, 0, sa_wm, sa_amount, sa_wn, sa_wd))
     }
     // EOR  <Xd>, <Xn>, <Xm>{, <shift> #<amount>}
-    if (len(vv) == 0 || len(vv) == 1) && isXr(v0) && isXr(v1) && isXr(v2) && (len(vv) == 0 || isShift(vv[0])) {
-        var sa_amount_1 uint32
-        var sa_shift uint32
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isXr(v0) &&
+       isXr(v1) &&
+       isXr(v2) &&
+       (len(vv) == 0 || isMods(vv[0], ModASR, ModLSL, ModLSR, ModROR)) {
+        p.class = ClassGeneral
+        sa_amount_1 := uint32(0)
+        sa_shift := uint32(0b00)
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
         if len(vv) == 1 {
-            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            switch vv[0].(Modifier).Type() {
+                case ModLSL: sa_shift = 0b00
+                case ModLSR: sa_shift = 0b01
+                case ModASR: sa_shift = 0b10
+                case ModROR: sa_shift = 0b11
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount_1 = uint32(vv[0].(Modifier).Amount())
         }
         return p.setins(log_shift(1, 2, sa_shift, 0, sa_xm, sa_amount_1, sa_xn, sa_xd))
@@ -23650,6 +24563,8 @@ func (self *Program) EOR3(v0, v1, v2, v3 interface{}) *Instruction {
        vfmt(v2) == Vec16B &&
        isVr(v3) &&
        vfmt(v3) == Vec16B {
+        self.require(FEAT_SHA3)
+        p.class = ClassAdvSimd
         sa_vd := uint32(v0.(asm.Register).ID())
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
@@ -23677,6 +24592,7 @@ func (self *Program) EOR3(v0, v1, v2, v3 interface{}) *Instruction {
 //
 func (self *Program) ERET() *Instruction {
     p := self.alloc("ERET", 0, Operands {})
+    p.class = ClassSystem
     return p.setins(branch_reg(4, 31, 0, 31, 0))
 }
 
@@ -23706,6 +24622,8 @@ func (self *Program) ERET() *Instruction {
 //
 func (self *Program) ERETAA() *Instruction {
     p := self.alloc("ERETAA", 0, Operands {})
+    self.require(FEAT_PAuth)
+    p.class = ClassGeneral
     return p.setins(branch_reg(4, 31, 2, 31, 31))
 }
 
@@ -23735,6 +24653,8 @@ func (self *Program) ERETAA() *Instruction {
 //
 func (self *Program) ERETAB() *Instruction {
     p := self.alloc("ERETAB", 0, Operands {})
+    self.require(FEAT_PAuth)
+    p.class = ClassGeneral
     return p.setins(branch_reg(4, 31, 3, 31, 31))
 }
 
@@ -23758,6 +24678,8 @@ func (self *Program) ERETAB() *Instruction {
 //
 func (self *Program) ESB() *Instruction {
     p := self.alloc("ESB", 0, Operands {})
+    self.require(FEAT_RAS)
+    p.class = ClassSystem
     return p.setins(hints(2, 0))
 }
 
@@ -23775,7 +24697,7 @@ func (self *Program) ESB() *Instruction {
 // register, and consecutive elements are extracted from the first, then second,
 // source registers until the destination vector is filled.
 //
-// [image:A64.ext_doubleword_operation_for_imm3.svg]
+// [image:isa_docs/ISA_A64_xml_A_profile-2022-12_OPT/A64.ext_doubleword_operation_for_imm3.svg]
 // EXT doubleword operation for Q = 0 and imm4<2:0> = 3
 //
 // Depending on the settings in the CPACR_EL1 , CPTR_EL2 , and CPTR_EL3 registers,
@@ -23793,6 +24715,7 @@ func (self *Program) EXT(v0, v1, v2, v3 interface{}) *Instruction {
        isExtIndex(v0, v3) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -23825,6 +24748,7 @@ func (self *Program) EXTR(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("EXTR", 4, Operands { v0, v1, v2, v3 })
     // EXTR  <Wd>, <Wn>, <Wm>, #<lsb>
     if isWr(v0) && isWr(v1) && isWr(v2) && isUimm6(v3) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
@@ -23833,6 +24757,7 @@ func (self *Program) EXTR(v0, v1, v2, v3 interface{}) *Instruction {
     }
     // EXTR  <Xd>, <Xn>, <Xm>, #<lsb>
     if isXr(v0) && isXr(v1) && isXr(v2) && isUimm6(v3) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
@@ -23879,6 +24804,7 @@ func (self *Program) FABD(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -23902,6 +24828,8 @@ func (self *Program) FABD(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec4H, Vec8H) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -23915,6 +24843,7 @@ func (self *Program) FABD(v0, v1, v2 interface{}) *Instruction {
     }
     // FABD  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -23930,6 +24859,8 @@ func (self *Program) FABD(v0, v1, v2 interface{}) *Instruction {
     }
     // FABD  <Hd>, <Hn>, <Hm>
     if isHr(v0) && isHr(v1) && isHr(v2) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         sa_hm := uint32(v2.(asm.Register).ID())
@@ -23977,6 +24908,7 @@ func (self *Program) FABS(v0, v1 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -23992,6 +24924,8 @@ func (self *Program) FABS(v0, v1 interface{}) *Instruction {
     }
     // FABS  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -24004,18 +24938,21 @@ func (self *Program) FABS(v0, v1 interface{}) *Instruction {
     }
     // FABS  <Dd>, <Dn>
     if isDr(v0) && isDr(v1) {
+        p.class = ClassFloat
         sa_dd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 1, 1, sa_dn, sa_dd))
     }
     // FABS  <Hd>, <Hn>
     if isHr(v0) && isHr(v1) {
+        p.class = ClassFloat
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 3, 1, sa_hn, sa_hd))
     }
     // FABS  <Sd>, <Sn>
     if isSr(v0) && isSr(v1) {
+        p.class = ClassFloat
         sa_sd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 0, 1, sa_sn, sa_sd))
@@ -24062,6 +24999,7 @@ func (self *Program) FACGE(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -24085,6 +25023,8 @@ func (self *Program) FACGE(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec4H, Vec8H) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -24098,6 +25038,7 @@ func (self *Program) FACGE(v0, v1, v2 interface{}) *Instruction {
     }
     // FACGE  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -24113,6 +25054,8 @@ func (self *Program) FACGE(v0, v1, v2 interface{}) *Instruction {
     }
     // FACGE  <Hd>, <Hn>, <Hm>
     if isHr(v0) && isHr(v1) && isHr(v2) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         sa_hm := uint32(v2.(asm.Register).ID())
@@ -24160,6 +25103,7 @@ func (self *Program) FACGT(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -24183,6 +25127,8 @@ func (self *Program) FACGT(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec4H, Vec8H) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -24196,6 +25142,7 @@ func (self *Program) FACGT(v0, v1, v2 interface{}) *Instruction {
     }
     // FACGT  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -24211,6 +25158,8 @@ func (self *Program) FACGT(v0, v1, v2 interface{}) *Instruction {
     }
     // FACGT  <Hd>, <Hn>, <Hm>
     if isHr(v0) && isHr(v1) && isHr(v2) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         sa_hm := uint32(v2.(asm.Register).ID())
@@ -24272,6 +25221,7 @@ func (self *Program) FADD(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -24295,6 +25245,8 @@ func (self *Program) FADD(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec4H, Vec8H) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -24308,6 +25260,7 @@ func (self *Program) FADD(v0, v1, v2 interface{}) *Instruction {
     }
     // FADD  <Dd>, <Dn>, <Dm>
     if isDr(v0) && isDr(v1) && isDr(v2) {
+        p.class = ClassFloat
         sa_dd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         sa_dm := uint32(v2.(asm.Register).ID())
@@ -24315,6 +25268,7 @@ func (self *Program) FADD(v0, v1, v2 interface{}) *Instruction {
     }
     // FADD  <Hd>, <Hn>, <Hm>
     if isHr(v0) && isHr(v1) && isHr(v2) {
+        p.class = ClassFloat
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         sa_hm := uint32(v2.(asm.Register).ID())
@@ -24322,6 +25276,7 @@ func (self *Program) FADD(v0, v1, v2 interface{}) *Instruction {
     }
     // FADD  <Sd>, <Sn>, <Sm>
     if isSr(v0) && isSr(v1) && isSr(v2) {
+        p.class = ClassFloat
         sa_sd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         sa_sm := uint32(v2.(asm.Register).ID())
@@ -24383,6 +25338,8 @@ func (self *Program) FADDP(v0, v1 interface{}, vv ...interface{}) *Instruction {
     }
     // FADDP  <V><d>, <Vn>.<T>
     if isAdvSIMD(v0) && isVr(v1) && vfmt(v1) == Vec2H {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t uint32
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
@@ -24404,6 +25361,7 @@ func (self *Program) FADDP(v0, v1 interface{}, vv ...interface{}) *Instruction {
     }
     // FADDP  <V><d>, <Vn>.<T>
     if isAdvSIMD(v0) && isVr(v1) && isVfmt(v1, Vec2S, Vec2D) {
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         var sa_v_1 uint32
         sa_d := uint32(v0.(asm.Register).ID())
@@ -24435,6 +25393,7 @@ func (self *Program) FADDP(v0, v1 interface{}, vv ...interface{}) *Instruction {
        isVfmt(vv[0], Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(vv[0]) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -24459,6 +25418,8 @@ func (self *Program) FADDP(v0, v1 interface{}, vv ...interface{}) *Instruction {
        isVfmt(vv[0], Vec4H, Vec8H) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(vv[0]) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -24516,6 +25477,8 @@ func (self *Program) FCADD(v0, v1, v2, v3 interface{}) *Instruction {
        isIntLit(v3, 90, 270) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        self.require(FEAT_FCMA)
+        p.class = ClassAdvSimd
         var sa_rotate uint32
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -24571,6 +25534,7 @@ func (self *Program) FCCMP(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("FCCMP", 4, Operands { v0, v1, v2, v3 })
     // FCCMP  <Dn>, <Dm>, #<nzcv>, <cond>
     if isDr(v0) && isDr(v1) && isUimm4(v2) && isBrCond(v3) {
+        p.class = ClassFloat
         sa_dn := uint32(v0.(asm.Register).ID())
         sa_dm := uint32(v1.(asm.Register).ID())
         sa_nzcv := asUimm4(v2)
@@ -24579,6 +25543,7 @@ func (self *Program) FCCMP(v0, v1, v2, v3 interface{}) *Instruction {
     }
     // FCCMP  <Hn>, <Hm>, #<nzcv>, <cond>
     if isHr(v0) && isHr(v1) && isUimm4(v2) && isBrCond(v3) {
+        p.class = ClassFloat
         sa_hn := uint32(v0.(asm.Register).ID())
         sa_hm := uint32(v1.(asm.Register).ID())
         sa_nzcv := asUimm4(v2)
@@ -24587,6 +25552,7 @@ func (self *Program) FCCMP(v0, v1, v2, v3 interface{}) *Instruction {
     }
     // FCCMP  <Sn>, <Sm>, #<nzcv>, <cond>
     if isSr(v0) && isSr(v1) && isUimm4(v2) && isBrCond(v3) {
+        p.class = ClassFloat
         sa_sn := uint32(v0.(asm.Register).ID())
         sa_sm := uint32(v1.(asm.Register).ID())
         sa_nzcv := asUimm4(v2)
@@ -24627,6 +25593,7 @@ func (self *Program) FCCMPE(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("FCCMPE", 4, Operands { v0, v1, v2, v3 })
     // FCCMPE  <Dn>, <Dm>, #<nzcv>, <cond>
     if isDr(v0) && isDr(v1) && isUimm4(v2) && isBrCond(v3) {
+        p.class = ClassFloat
         sa_dn := uint32(v0.(asm.Register).ID())
         sa_dm := uint32(v1.(asm.Register).ID())
         sa_nzcv := asUimm4(v2)
@@ -24635,6 +25602,7 @@ func (self *Program) FCCMPE(v0, v1, v2, v3 interface{}) *Instruction {
     }
     // FCCMPE  <Hn>, <Hm>, #<nzcv>, <cond>
     if isHr(v0) && isHr(v1) && isUimm4(v2) && isBrCond(v3) {
+        p.class = ClassFloat
         sa_hn := uint32(v0.(asm.Register).ID())
         sa_hm := uint32(v1.(asm.Register).ID())
         sa_nzcv := asUimm4(v2)
@@ -24643,6 +25611,7 @@ func (self *Program) FCCMPE(v0, v1, v2, v3 interface{}) *Instruction {
     }
     // FCCMPE  <Sn>, <Sm>, #<nzcv>, <cond>
     if isSr(v0) && isSr(v1) && isUimm4(v2) && isBrCond(v3) {
+        p.class = ClassFloat
         sa_sn := uint32(v0.(asm.Register).ID())
         sa_sm := uint32(v1.(asm.Register).ID())
         sa_nzcv := asUimm4(v2)
@@ -24712,6 +25681,7 @@ func (self *Program) FCMEQ(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -24735,6 +25705,8 @@ func (self *Program) FCMEQ(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec4H, Vec8H) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -24748,6 +25720,7 @@ func (self *Program) FCMEQ(v0, v1, v2 interface{}) *Instruction {
     }
     // FCMEQ  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -24763,6 +25736,8 @@ func (self *Program) FCMEQ(v0, v1, v2 interface{}) *Instruction {
     }
     // FCMEQ  <Hd>, <Hn>, <Hm>
     if isHr(v0) && isHr(v1) && isHr(v2) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         sa_hm := uint32(v2.(asm.Register).ID())
@@ -24775,6 +25750,7 @@ func (self *Program) FCMEQ(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec2S, Vec4S, Vec2D) &&
        isFloatLit(v2, 0.0) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -24795,6 +25771,8 @@ func (self *Program) FCMEQ(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec4H, Vec8H) &&
        isFloatLit(v2, 0.0) &&
        vfmt(v0) == vfmt(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -24807,6 +25785,7 @@ func (self *Program) FCMEQ(v0, v1, v2 interface{}) *Instruction {
     }
     // FCMEQ  <V><d>, <V><n>, #0.0
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isFloatLit(v2, 0.0) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -24821,6 +25800,8 @@ func (self *Program) FCMEQ(v0, v1, v2 interface{}) *Instruction {
     }
     // FCMEQ  <Hd>, <Hn>, #0.0
     if isHr(v0) && isHr(v1) && isFloatLit(v2, 0.0) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(asisdmiscfp16(0, 1, 13, sa_hn, sa_hd))
@@ -24888,6 +25869,7 @@ func (self *Program) FCMGE(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -24911,6 +25893,8 @@ func (self *Program) FCMGE(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec4H, Vec8H) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -24924,6 +25908,7 @@ func (self *Program) FCMGE(v0, v1, v2 interface{}) *Instruction {
     }
     // FCMGE  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -24939,6 +25924,8 @@ func (self *Program) FCMGE(v0, v1, v2 interface{}) *Instruction {
     }
     // FCMGE  <Hd>, <Hn>, <Hm>
     if isHr(v0) && isHr(v1) && isHr(v2) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         sa_hm := uint32(v2.(asm.Register).ID())
@@ -24951,6 +25938,7 @@ func (self *Program) FCMGE(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec2S, Vec4S, Vec2D) &&
        isFloatLit(v2, 0.0) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -24971,6 +25959,8 @@ func (self *Program) FCMGE(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec4H, Vec8H) &&
        isFloatLit(v2, 0.0) &&
        vfmt(v0) == vfmt(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -24983,6 +25973,7 @@ func (self *Program) FCMGE(v0, v1, v2 interface{}) *Instruction {
     }
     // FCMGE  <V><d>, <V><n>, #0.0
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isFloatLit(v2, 0.0) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -24997,6 +25988,8 @@ func (self *Program) FCMGE(v0, v1, v2 interface{}) *Instruction {
     }
     // FCMGE  <Hd>, <Hn>, #0.0
     if isHr(v0) && isHr(v1) && isFloatLit(v2, 0.0) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(asisdmiscfp16(1, 1, 12, sa_hn, sa_hd))
@@ -25064,6 +26057,7 @@ func (self *Program) FCMGT(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -25087,6 +26081,8 @@ func (self *Program) FCMGT(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec4H, Vec8H) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -25100,6 +26096,7 @@ func (self *Program) FCMGT(v0, v1, v2 interface{}) *Instruction {
     }
     // FCMGT  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -25115,6 +26112,8 @@ func (self *Program) FCMGT(v0, v1, v2 interface{}) *Instruction {
     }
     // FCMGT  <Hd>, <Hn>, <Hm>
     if isHr(v0) && isHr(v1) && isHr(v2) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         sa_hm := uint32(v2.(asm.Register).ID())
@@ -25127,6 +26126,7 @@ func (self *Program) FCMGT(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec2S, Vec4S, Vec2D) &&
        isFloatLit(v2, 0.0) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -25147,6 +26147,8 @@ func (self *Program) FCMGT(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec4H, Vec8H) &&
        isFloatLit(v2, 0.0) &&
        vfmt(v0) == vfmt(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -25159,6 +26161,7 @@ func (self *Program) FCMGT(v0, v1, v2 interface{}) *Instruction {
     }
     // FCMGT  <V><d>, <V><n>, #0.0
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isFloatLit(v2, 0.0) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -25173,6 +26176,8 @@ func (self *Program) FCMGT(v0, v1, v2 interface{}) *Instruction {
     }
     // FCMGT  <Hd>, <Hn>, #0.0
     if isHr(v0) && isHr(v1) && isFloatLit(v2, 0.0) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(asisdmiscfp16(0, 1, 12, sa_hn, sa_hd))
@@ -25276,6 +26281,8 @@ func (self *Program) FCMLA(v0, v1, v2, v3 interface{}) *Instruction {
        isVri(v2) &&
        isIntLit(v3, 0, 90, 180, 270) &&
        vfmt(v0) == vfmt(v1) {
+        self.require(FEAT_FCMA)
+        p.class = ClassAdvSimd
         var sa_rotate uint32
         var sa_t uint32
         var sa_ts uint32
@@ -25327,6 +26334,8 @@ func (self *Program) FCMLA(v0, v1, v2, v3 interface{}) *Instruction {
        isVri(v2) &&
        isIntLit(v3, 0, 90, 180, 270) &&
        vfmt(v0) == vfmt(v1) {
+        self.require(FEAT_FCMA)
+        p.class = ClassAdvSimd
         var sa_rotate uint32
         var sa_t uint32
         var sa_ts uint32
@@ -25380,6 +26389,8 @@ func (self *Program) FCMLA(v0, v1, v2, v3 interface{}) *Instruction {
        isIntLit(v3, 0, 90, 180, 270) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        self.require(FEAT_FCMA)
+        p.class = ClassAdvSimd
         var sa_rotate uint32
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -25442,6 +26453,7 @@ func (self *Program) FCMLE(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec2S, Vec4S, Vec2D) &&
        isFloatLit(v2, 0.0) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -25462,6 +26474,8 @@ func (self *Program) FCMLE(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec4H, Vec8H) &&
        isFloatLit(v2, 0.0) &&
        vfmt(v0) == vfmt(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -25474,6 +26488,7 @@ func (self *Program) FCMLE(v0, v1, v2 interface{}) *Instruction {
     }
     // FCMLE  <V><d>, <V><n>, #0.0
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isFloatLit(v2, 0.0) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -25488,6 +26503,8 @@ func (self *Program) FCMLE(v0, v1, v2 interface{}) *Instruction {
     }
     // FCMLE  <Hd>, <Hn>, #0.0
     if isHr(v0) && isHr(v1) && isFloatLit(v2, 0.0) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(asisdmiscfp16(1, 1, 13, sa_hn, sa_hd))
@@ -25530,6 +26547,7 @@ func (self *Program) FCMLT(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec2S, Vec4S, Vec2D) &&
        isFloatLit(v2, 0.0) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -25550,6 +26568,8 @@ func (self *Program) FCMLT(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec4H, Vec8H) &&
        isFloatLit(v2, 0.0) &&
        vfmt(v0) == vfmt(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -25562,6 +26582,7 @@ func (self *Program) FCMLT(v0, v1, v2 interface{}) *Instruction {
     }
     // FCMLT  <V><d>, <V><n>, #0.0
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isFloatLit(v2, 0.0) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -25576,6 +26597,8 @@ func (self *Program) FCMLT(v0, v1, v2 interface{}) *Instruction {
     }
     // FCMLT  <Hd>, <Hn>, #0.0
     if isHr(v0) && isHr(v1) && isFloatLit(v2, 0.0) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(asisdmiscfp16(0, 1, 14, sa_hn, sa_hd))
@@ -25616,33 +26639,39 @@ func (self *Program) FCMP(v0, v1 interface{}) *Instruction {
     p := self.alloc("FCMP", 2, Operands { v0, v1 })
     // FCMP  <Dn>, #0.0
     if isDr(v0) && isFloatLit(v1, 0.0) {
+        p.class = ClassFloat
         sa_dn := uint32(v0.(asm.Register).ID())
         return p.setins(floatcmp(0, 0, 1, 0, 0, sa_dn, 8))
     }
     // FCMP  <Dn>, <Dm>
     if isDr(v0) && isDr(v1) {
+        p.class = ClassFloat
         sa_dn_1 := uint32(v0.(asm.Register).ID())
         sa_dm := uint32(v1.(asm.Register).ID())
         return p.setins(floatcmp(0, 0, 1, sa_dm, 0, sa_dn_1, 0))
     }
     // FCMP  <Hn>, #0.0
     if isHr(v0) && isFloatLit(v1, 0.0) {
+        p.class = ClassFloat
         sa_hn := uint32(v0.(asm.Register).ID())
         return p.setins(floatcmp(0, 0, 3, 0, 0, sa_hn, 8))
     }
     // FCMP  <Hn>, <Hm>
     if isHr(v0) && isHr(v1) {
+        p.class = ClassFloat
         sa_hn_1 := uint32(v0.(asm.Register).ID())
         sa_hm := uint32(v1.(asm.Register).ID())
         return p.setins(floatcmp(0, 0, 3, sa_hm, 0, sa_hn_1, 0))
     }
     // FCMP  <Sn>, #0.0
     if isSr(v0) && isFloatLit(v1, 0.0) {
+        p.class = ClassFloat
         sa_sn := uint32(v0.(asm.Register).ID())
         return p.setins(floatcmp(0, 0, 0, 0, 0, sa_sn, 8))
     }
     // FCMP  <Sn>, <Sm>
     if isSr(v0) && isSr(v1) {
+        p.class = ClassFloat
         sa_sn_1 := uint32(v0.(asm.Register).ID())
         sa_sm := uint32(v1.(asm.Register).ID())
         return p.setins(floatcmp(0, 0, 0, sa_sm, 0, sa_sn_1, 0))
@@ -25683,33 +26712,39 @@ func (self *Program) FCMPE(v0, v1 interface{}) *Instruction {
     p := self.alloc("FCMPE", 2, Operands { v0, v1 })
     // FCMPE  <Dn>, #0.0
     if isDr(v0) && isFloatLit(v1, 0.0) {
+        p.class = ClassFloat
         sa_dn := uint32(v0.(asm.Register).ID())
         return p.setins(floatcmp(0, 0, 1, 0, 0, sa_dn, 24))
     }
     // FCMPE  <Dn>, <Dm>
     if isDr(v0) && isDr(v1) {
+        p.class = ClassFloat
         sa_dn_1 := uint32(v0.(asm.Register).ID())
         sa_dm := uint32(v1.(asm.Register).ID())
         return p.setins(floatcmp(0, 0, 1, sa_dm, 0, sa_dn_1, 16))
     }
     // FCMPE  <Hn>, #0.0
     if isHr(v0) && isFloatLit(v1, 0.0) {
+        p.class = ClassFloat
         sa_hn := uint32(v0.(asm.Register).ID())
         return p.setins(floatcmp(0, 0, 3, 0, 0, sa_hn, 24))
     }
     // FCMPE  <Hn>, <Hm>
     if isHr(v0) && isHr(v1) {
+        p.class = ClassFloat
         sa_hn_1 := uint32(v0.(asm.Register).ID())
         sa_hm := uint32(v1.(asm.Register).ID())
         return p.setins(floatcmp(0, 0, 3, sa_hm, 0, sa_hn_1, 16))
     }
     // FCMPE  <Sn>, #0.0
     if isSr(v0) && isFloatLit(v1, 0.0) {
+        p.class = ClassFloat
         sa_sn := uint32(v0.(asm.Register).ID())
         return p.setins(floatcmp(0, 0, 0, 0, 0, sa_sn, 24))
     }
     // FCMPE  <Sn>, <Sm>
     if isSr(v0) && isSr(v1) {
+        p.class = ClassFloat
         sa_sn_1 := uint32(v0.(asm.Register).ID())
         sa_sm := uint32(v1.(asm.Register).ID())
         return p.setins(floatcmp(0, 0, 0, sa_sm, 0, sa_sn_1, 16))
@@ -25741,6 +26776,7 @@ func (self *Program) FCSEL(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("FCSEL", 4, Operands { v0, v1, v2, v3 })
     // FCSEL  <Dd>, <Dn>, <Dm>, <cond>
     if isDr(v0) && isDr(v1) && isDr(v2) && isBrCond(v3) {
+        p.class = ClassFloat
         sa_dd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         sa_dm := uint32(v2.(asm.Register).ID())
@@ -25749,6 +26785,7 @@ func (self *Program) FCSEL(v0, v1, v2, v3 interface{}) *Instruction {
     }
     // FCSEL  <Hd>, <Hn>, <Hm>, <cond>
     if isHr(v0) && isHr(v1) && isHr(v2) && isBrCond(v3) {
+        p.class = ClassFloat
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         sa_hm := uint32(v2.(asm.Register).ID())
@@ -25757,6 +26794,7 @@ func (self *Program) FCSEL(v0, v1, v2, v3 interface{}) *Instruction {
     }
     // FCSEL  <Sd>, <Sn>, <Sm>, <cond>
     if isSr(v0) && isSr(v1) && isSr(v2) && isBrCond(v3) {
+        p.class = ClassFloat
         sa_sd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         sa_sm := uint32(v2.(asm.Register).ID())
@@ -25792,36 +26830,42 @@ func (self *Program) FCVT(v0, v1 interface{}) *Instruction {
     p := self.alloc("FCVT", 2, Operands { v0, v1 })
     // FCVT  <Dd>, <Hn>
     if isDr(v0) && isHr(v1) {
+        p.class = ClassFloat
         sa_dd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 3, 5, sa_hn, sa_dd))
     }
     // FCVT  <Dd>, <Sn>
     if isDr(v0) && isSr(v1) {
+        p.class = ClassFloat
         sa_dd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 0, 5, sa_sn, sa_dd))
     }
     // FCVT  <Hd>, <Dn>
     if isHr(v0) && isDr(v1) {
+        p.class = ClassFloat
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 1, 7, sa_dn, sa_hd))
     }
     // FCVT  <Hd>, <Sn>
     if isHr(v0) && isSr(v1) {
+        p.class = ClassFloat
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 0, 7, sa_sn, sa_hd))
     }
     // FCVT  <Sd>, <Dn>
     if isSr(v0) && isDr(v1) {
+        p.class = ClassFloat
         sa_sd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 1, 4, sa_dn, sa_sd))
     }
     // FCVT  <Sd>, <Hn>
     if isSr(v0) && isHr(v1) {
+        p.class = ClassFloat
         sa_sd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 3, 4, sa_hn, sa_sd))
@@ -25888,6 +26932,7 @@ func (self *Program) FCVTAS(v0, v1 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -25903,6 +26948,8 @@ func (self *Program) FCVTAS(v0, v1 interface{}) *Instruction {
     }
     // FCVTAS  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -25915,6 +26962,7 @@ func (self *Program) FCVTAS(v0, v1 interface{}) *Instruction {
     }
     // FCVTAS  <V><d>, <V><n>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -25929,42 +26977,50 @@ func (self *Program) FCVTAS(v0, v1 interface{}) *Instruction {
     }
     // FCVTAS  <Hd>, <Hn>
     if isHr(v0) && isHr(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(asisdmiscfp16(0, 0, 28, sa_hn, sa_hd))
     }
     // FCVTAS  <Wd>, <Dn>
     if isWr(v0) && isDr(v1) {
+        p.class = ClassFloat
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(0, 0, 1, 0, 4, sa_dn, sa_wd))
     }
     // FCVTAS  <Wd>, <Hn>
     if isWr(v0) && isHr(v1) {
+        p.class = ClassFloat
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(0, 0, 3, 0, 4, sa_hn, sa_wd))
     }
     // FCVTAS  <Wd>, <Sn>
     if isWr(v0) && isSr(v1) {
+        p.class = ClassFloat
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(0, 0, 0, 0, 4, sa_sn, sa_wd))
     }
     // FCVTAS  <Xd>, <Dn>
     if isXr(v0) && isDr(v1) {
+        p.class = ClassFloat
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(1, 0, 1, 0, 4, sa_dn, sa_xd))
     }
     // FCVTAS  <Xd>, <Hn>
     if isXr(v0) && isHr(v1) {
+        p.class = ClassFloat
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(1, 0, 3, 0, 4, sa_hn, sa_xd))
     }
     // FCVTAS  <Xd>, <Sn>
     if isXr(v0) && isSr(v1) {
+        p.class = ClassFloat
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(1, 0, 0, 0, 4, sa_sn, sa_xd))
@@ -26032,6 +27088,7 @@ func (self *Program) FCVTAU(v0, v1 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -26047,6 +27104,8 @@ func (self *Program) FCVTAU(v0, v1 interface{}) *Instruction {
     }
     // FCVTAU  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -26059,6 +27118,7 @@ func (self *Program) FCVTAU(v0, v1 interface{}) *Instruction {
     }
     // FCVTAU  <V><d>, <V><n>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -26073,42 +27133,50 @@ func (self *Program) FCVTAU(v0, v1 interface{}) *Instruction {
     }
     // FCVTAU  <Hd>, <Hn>
     if isHr(v0) && isHr(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(asisdmiscfp16(1, 0, 28, sa_hn, sa_hd))
     }
     // FCVTAU  <Wd>, <Dn>
     if isWr(v0) && isDr(v1) {
+        p.class = ClassFloat
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(0, 0, 1, 0, 5, sa_dn, sa_wd))
     }
     // FCVTAU  <Wd>, <Hn>
     if isWr(v0) && isHr(v1) {
+        p.class = ClassFloat
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(0, 0, 3, 0, 5, sa_hn, sa_wd))
     }
     // FCVTAU  <Wd>, <Sn>
     if isWr(v0) && isSr(v1) {
+        p.class = ClassFloat
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(0, 0, 0, 0, 5, sa_sn, sa_wd))
     }
     // FCVTAU  <Xd>, <Dn>
     if isXr(v0) && isDr(v1) {
+        p.class = ClassFloat
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(1, 0, 1, 0, 5, sa_dn, sa_xd))
     }
     // FCVTAU  <Xd>, <Hn>
     if isXr(v0) && isHr(v1) {
+        p.class = ClassFloat
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(1, 0, 3, 0, 5, sa_hn, sa_xd))
     }
     // FCVTAU  <Xd>, <Sn>
     if isXr(v0) && isSr(v1) {
+        p.class = ClassFloat
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(1, 0, 0, 0, 5, sa_sn, sa_xd))
@@ -26145,6 +27213,7 @@ func (self *Program) FCVTAU(v0, v1 interface{}) *Instruction {
 func (self *Program) FCVTL(v0, v1 interface{}) *Instruction {
     p := self.alloc("FCVTL", 2, Operands { v0, v1 })
     if isVr(v0) && isVfmt(v0, Vec4S, Vec2D) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H, Vec2S, Vec4S) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -26202,6 +27271,7 @@ func (self *Program) FCVTL(v0, v1 interface{}) *Instruction {
 func (self *Program) FCVTL2(v0, v1 interface{}) *Instruction {
     p := self.alloc("FCVTL2", 2, Operands { v0, v1 })
     if isVr(v0) && isVfmt(v0, Vec4S, Vec2D) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H, Vec2S, Vec4S) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -26290,6 +27360,7 @@ func (self *Program) FCVTMS(v0, v1 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -26305,6 +27376,8 @@ func (self *Program) FCVTMS(v0, v1 interface{}) *Instruction {
     }
     // FCVTMS  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -26317,6 +27390,7 @@ func (self *Program) FCVTMS(v0, v1 interface{}) *Instruction {
     }
     // FCVTMS  <V><d>, <V><n>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -26331,42 +27405,50 @@ func (self *Program) FCVTMS(v0, v1 interface{}) *Instruction {
     }
     // FCVTMS  <Hd>, <Hn>
     if isHr(v0) && isHr(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(asisdmiscfp16(0, 0, 27, sa_hn, sa_hd))
     }
     // FCVTMS  <Wd>, <Dn>
     if isWr(v0) && isDr(v1) {
+        p.class = ClassFloat
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(0, 0, 1, 2, 0, sa_dn, sa_wd))
     }
     // FCVTMS  <Wd>, <Hn>
     if isWr(v0) && isHr(v1) {
+        p.class = ClassFloat
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(0, 0, 3, 2, 0, sa_hn, sa_wd))
     }
     // FCVTMS  <Wd>, <Sn>
     if isWr(v0) && isSr(v1) {
+        p.class = ClassFloat
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(0, 0, 0, 2, 0, sa_sn, sa_wd))
     }
     // FCVTMS  <Xd>, <Dn>
     if isXr(v0) && isDr(v1) {
+        p.class = ClassFloat
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(1, 0, 1, 2, 0, sa_dn, sa_xd))
     }
     // FCVTMS  <Xd>, <Hn>
     if isXr(v0) && isHr(v1) {
+        p.class = ClassFloat
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(1, 0, 3, 2, 0, sa_hn, sa_xd))
     }
     // FCVTMS  <Xd>, <Sn>
     if isXr(v0) && isSr(v1) {
+        p.class = ClassFloat
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(1, 0, 0, 2, 0, sa_sn, sa_xd))
@@ -26434,6 +27516,7 @@ func (self *Program) FCVTMU(v0, v1 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -26449,6 +27532,8 @@ func (self *Program) FCVTMU(v0, v1 interface{}) *Instruction {
     }
     // FCVTMU  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -26461,6 +27546,7 @@ func (self *Program) FCVTMU(v0, v1 interface{}) *Instruction {
     }
     // FCVTMU  <V><d>, <V><n>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -26475,42 +27561,50 @@ func (self *Program) FCVTMU(v0, v1 interface{}) *Instruction {
     }
     // FCVTMU  <Hd>, <Hn>
     if isHr(v0) && isHr(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(asisdmiscfp16(1, 0, 27, sa_hn, sa_hd))
     }
     // FCVTMU  <Wd>, <Dn>
     if isWr(v0) && isDr(v1) {
+        p.class = ClassFloat
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(0, 0, 1, 2, 1, sa_dn, sa_wd))
     }
     // FCVTMU  <Wd>, <Hn>
     if isWr(v0) && isHr(v1) {
+        p.class = ClassFloat
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(0, 0, 3, 2, 1, sa_hn, sa_wd))
     }
     // FCVTMU  <Wd>, <Sn>
     if isWr(v0) && isSr(v1) {
+        p.class = ClassFloat
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(0, 0, 0, 2, 1, sa_sn, sa_wd))
     }
     // FCVTMU  <Xd>, <Dn>
     if isXr(v0) && isDr(v1) {
+        p.class = ClassFloat
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(1, 0, 1, 2, 1, sa_dn, sa_xd))
     }
     // FCVTMU  <Xd>, <Hn>
     if isXr(v0) && isHr(v1) {
+        p.class = ClassFloat
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(1, 0, 3, 2, 1, sa_hn, sa_xd))
     }
     // FCVTMU  <Xd>, <Sn>
     if isXr(v0) && isSr(v1) {
+        p.class = ClassFloat
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(1, 0, 0, 2, 1, sa_sn, sa_xd))
@@ -26550,6 +27644,7 @@ func (self *Program) FCVTMU(v0, v1 interface{}) *Instruction {
 func (self *Program) FCVTN(v0, v1 interface{}) *Instruction {
     p := self.alloc("FCVTN", 2, Operands { v0, v1 })
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H, Vec2S, Vec4S) && isVr(v1) && isVfmt(v1, Vec4S, Vec2D) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -26610,6 +27705,7 @@ func (self *Program) FCVTN(v0, v1 interface{}) *Instruction {
 func (self *Program) FCVTN2(v0, v1 interface{}) *Instruction {
     p := self.alloc("FCVTN2", 2, Operands { v0, v1 })
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H, Vec2S, Vec4S) && isVr(v1) && isVfmt(v1, Vec4S, Vec2D) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -26697,6 +27793,7 @@ func (self *Program) FCVTNS(v0, v1 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -26712,6 +27809,8 @@ func (self *Program) FCVTNS(v0, v1 interface{}) *Instruction {
     }
     // FCVTNS  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -26724,6 +27823,7 @@ func (self *Program) FCVTNS(v0, v1 interface{}) *Instruction {
     }
     // FCVTNS  <V><d>, <V><n>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -26738,42 +27838,50 @@ func (self *Program) FCVTNS(v0, v1 interface{}) *Instruction {
     }
     // FCVTNS  <Hd>, <Hn>
     if isHr(v0) && isHr(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(asisdmiscfp16(0, 0, 26, sa_hn, sa_hd))
     }
     // FCVTNS  <Wd>, <Dn>
     if isWr(v0) && isDr(v1) {
+        p.class = ClassFloat
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(0, 0, 1, 0, 0, sa_dn, sa_wd))
     }
     // FCVTNS  <Wd>, <Hn>
     if isWr(v0) && isHr(v1) {
+        p.class = ClassFloat
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(0, 0, 3, 0, 0, sa_hn, sa_wd))
     }
     // FCVTNS  <Wd>, <Sn>
     if isWr(v0) && isSr(v1) {
+        p.class = ClassFloat
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(0, 0, 0, 0, 0, sa_sn, sa_wd))
     }
     // FCVTNS  <Xd>, <Dn>
     if isXr(v0) && isDr(v1) {
+        p.class = ClassFloat
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(1, 0, 1, 0, 0, sa_dn, sa_xd))
     }
     // FCVTNS  <Xd>, <Hn>
     if isXr(v0) && isHr(v1) {
+        p.class = ClassFloat
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(1, 0, 3, 0, 0, sa_hn, sa_xd))
     }
     // FCVTNS  <Xd>, <Sn>
     if isXr(v0) && isSr(v1) {
+        p.class = ClassFloat
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(1, 0, 0, 0, 0, sa_sn, sa_xd))
@@ -26841,6 +27949,7 @@ func (self *Program) FCVTNU(v0, v1 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -26856,6 +27965,8 @@ func (self *Program) FCVTNU(v0, v1 interface{}) *Instruction {
     }
     // FCVTNU  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -26868,6 +27979,7 @@ func (self *Program) FCVTNU(v0, v1 interface{}) *Instruction {
     }
     // FCVTNU  <V><d>, <V><n>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -26882,42 +27994,50 @@ func (self *Program) FCVTNU(v0, v1 interface{}) *Instruction {
     }
     // FCVTNU  <Hd>, <Hn>
     if isHr(v0) && isHr(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(asisdmiscfp16(1, 0, 26, sa_hn, sa_hd))
     }
     // FCVTNU  <Wd>, <Dn>
     if isWr(v0) && isDr(v1) {
+        p.class = ClassFloat
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(0, 0, 1, 0, 1, sa_dn, sa_wd))
     }
     // FCVTNU  <Wd>, <Hn>
     if isWr(v0) && isHr(v1) {
+        p.class = ClassFloat
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(0, 0, 3, 0, 1, sa_hn, sa_wd))
     }
     // FCVTNU  <Wd>, <Sn>
     if isWr(v0) && isSr(v1) {
+        p.class = ClassFloat
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(0, 0, 0, 0, 1, sa_sn, sa_wd))
     }
     // FCVTNU  <Xd>, <Dn>
     if isXr(v0) && isDr(v1) {
+        p.class = ClassFloat
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(1, 0, 1, 0, 1, sa_dn, sa_xd))
     }
     // FCVTNU  <Xd>, <Hn>
     if isXr(v0) && isHr(v1) {
+        p.class = ClassFloat
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(1, 0, 3, 0, 1, sa_hn, sa_xd))
     }
     // FCVTNU  <Xd>, <Sn>
     if isXr(v0) && isSr(v1) {
+        p.class = ClassFloat
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(1, 0, 0, 0, 1, sa_sn, sa_xd))
@@ -26985,6 +28105,7 @@ func (self *Program) FCVTPS(v0, v1 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -27000,6 +28121,8 @@ func (self *Program) FCVTPS(v0, v1 interface{}) *Instruction {
     }
     // FCVTPS  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -27012,6 +28135,7 @@ func (self *Program) FCVTPS(v0, v1 interface{}) *Instruction {
     }
     // FCVTPS  <V><d>, <V><n>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -27026,42 +28150,50 @@ func (self *Program) FCVTPS(v0, v1 interface{}) *Instruction {
     }
     // FCVTPS  <Hd>, <Hn>
     if isHr(v0) && isHr(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(asisdmiscfp16(0, 1, 26, sa_hn, sa_hd))
     }
     // FCVTPS  <Wd>, <Dn>
     if isWr(v0) && isDr(v1) {
+        p.class = ClassFloat
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(0, 0, 1, 1, 0, sa_dn, sa_wd))
     }
     // FCVTPS  <Wd>, <Hn>
     if isWr(v0) && isHr(v1) {
+        p.class = ClassFloat
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(0, 0, 3, 1, 0, sa_hn, sa_wd))
     }
     // FCVTPS  <Wd>, <Sn>
     if isWr(v0) && isSr(v1) {
+        p.class = ClassFloat
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(0, 0, 0, 1, 0, sa_sn, sa_wd))
     }
     // FCVTPS  <Xd>, <Dn>
     if isXr(v0) && isDr(v1) {
+        p.class = ClassFloat
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(1, 0, 1, 1, 0, sa_dn, sa_xd))
     }
     // FCVTPS  <Xd>, <Hn>
     if isXr(v0) && isHr(v1) {
+        p.class = ClassFloat
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(1, 0, 3, 1, 0, sa_hn, sa_xd))
     }
     // FCVTPS  <Xd>, <Sn>
     if isXr(v0) && isSr(v1) {
+        p.class = ClassFloat
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(1, 0, 0, 1, 0, sa_sn, sa_xd))
@@ -27129,6 +28261,7 @@ func (self *Program) FCVTPU(v0, v1 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -27144,6 +28277,8 @@ func (self *Program) FCVTPU(v0, v1 interface{}) *Instruction {
     }
     // FCVTPU  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -27156,6 +28291,7 @@ func (self *Program) FCVTPU(v0, v1 interface{}) *Instruction {
     }
     // FCVTPU  <V><d>, <V><n>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -27170,42 +28306,50 @@ func (self *Program) FCVTPU(v0, v1 interface{}) *Instruction {
     }
     // FCVTPU  <Hd>, <Hn>
     if isHr(v0) && isHr(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(asisdmiscfp16(1, 1, 26, sa_hn, sa_hd))
     }
     // FCVTPU  <Wd>, <Dn>
     if isWr(v0) && isDr(v1) {
+        p.class = ClassFloat
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(0, 0, 1, 1, 1, sa_dn, sa_wd))
     }
     // FCVTPU  <Wd>, <Hn>
     if isWr(v0) && isHr(v1) {
+        p.class = ClassFloat
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(0, 0, 3, 1, 1, sa_hn, sa_wd))
     }
     // FCVTPU  <Wd>, <Sn>
     if isWr(v0) && isSr(v1) {
+        p.class = ClassFloat
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(0, 0, 0, 1, 1, sa_sn, sa_wd))
     }
     // FCVTPU  <Xd>, <Dn>
     if isXr(v0) && isDr(v1) {
+        p.class = ClassFloat
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(1, 0, 1, 1, 1, sa_dn, sa_xd))
     }
     // FCVTPU  <Xd>, <Hn>
     if isXr(v0) && isHr(v1) {
+        p.class = ClassFloat
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(1, 0, 3, 1, 1, sa_hn, sa_xd))
     }
     // FCVTPU  <Xd>, <Sn>
     if isXr(v0) && isSr(v1) {
+        p.class = ClassFloat
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(1, 0, 0, 1, 1, sa_sn, sa_xd))
@@ -27259,6 +28403,7 @@ func (self *Program) FCVTXN(v0, v1 interface{}) *Instruction {
     p := self.alloc("FCVTXN", 2, Operands { v0, v1 })
     // FCVTXN  <Vb><d>, <Va><n>
     if isAdvSIMD(v0) && isAdvSIMD(v1) {
+        p.class = ClassAdvSimd
         var sa_va uint32
         var sa_vb uint32
         sa_d := uint32(v0.(asm.Register).ID())
@@ -27280,6 +28425,7 @@ func (self *Program) FCVTXN(v0, v1 interface{}) *Instruction {
     }
     // FCVTXN  <Vd>.<Tb>, <Vn>.<Ta>
     if isVr(v0) && isVfmt(v0, Vec2S, Vec4S) && isVr(v1) && vfmt(v1) == Vec2D {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -27350,6 +28496,7 @@ func (self *Program) FCVTXN(v0, v1 interface{}) *Instruction {
 func (self *Program) FCVTXN2(v0, v1 interface{}) *Instruction {
     p := self.alloc("FCVTXN2", 2, Operands { v0, v1 })
     if isVr(v0) && isVfmt(v0, Vec2S, Vec4S) && isVr(v1) && vfmt(v1) == Vec2D {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -27481,6 +28628,7 @@ func (self *Program) FCVTZS(v0, v1 interface{}, vv ...interface{}) *Instruction 
        isVfmt(v1, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        isFpBits(vv[0]) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_fbits uint32
         var sa_t uint32
         var sa_t__bit_mask uint32
@@ -27515,6 +28663,7 @@ func (self *Program) FCVTZS(v0, v1 interface{}, vv ...interface{}) *Instruction 
     }
     // FCVTZS  <V><d>, <V><n>, #<fbits>
     if len(vv) == 1 && isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(vv[0]) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_fbits_1 uint32
         var sa_v uint32
         var sa_v__bit_mask uint32
@@ -27549,6 +28698,7 @@ func (self *Program) FCVTZS(v0, v1 interface{}, vv ...interface{}) *Instruction 
        isVr(v1) &&
        isVfmt(v1, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -27564,6 +28714,8 @@ func (self *Program) FCVTZS(v0, v1 interface{}, vv ...interface{}) *Instruction 
     }
     // FCVTZS  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -27576,6 +28728,7 @@ func (self *Program) FCVTZS(v0, v1 interface{}, vv ...interface{}) *Instruction 
     }
     // FCVTZS  <V><d>, <V><n>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -27590,12 +28743,15 @@ func (self *Program) FCVTZS(v0, v1 interface{}, vv ...interface{}) *Instruction 
     }
     // FCVTZS  <Hd>, <Hn>
     if isHr(v0) && isHr(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(asisdmiscfp16(0, 1, 27, sa_hn, sa_hd))
     }
     // FCVTZS  <Wd>, <Dn>, #<fbits>
     if len(vv) == 1 && isWr(v0) && isDr(v1) && isFpBits(vv[0]) {
+        p.class = ClassFloat
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         sa_fbits := asFpScale(vv[0])
@@ -27603,6 +28759,7 @@ func (self *Program) FCVTZS(v0, v1 interface{}, vv ...interface{}) *Instruction 
     }
     // FCVTZS  <Wd>, <Hn>, #<fbits>
     if len(vv) == 1 && isWr(v0) && isHr(v1) && isFpBits(vv[0]) {
+        p.class = ClassFloat
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         sa_fbits := asFpScale(vv[0])
@@ -27610,6 +28767,7 @@ func (self *Program) FCVTZS(v0, v1 interface{}, vv ...interface{}) *Instruction 
     }
     // FCVTZS  <Wd>, <Sn>, #<fbits>
     if len(vv) == 1 && isWr(v0) && isSr(v1) && isFpBits(vv[0]) {
+        p.class = ClassFloat
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         sa_fbits := asFpScale(vv[0])
@@ -27617,6 +28775,7 @@ func (self *Program) FCVTZS(v0, v1 interface{}, vv ...interface{}) *Instruction 
     }
     // FCVTZS  <Xd>, <Dn>, #<fbits>
     if len(vv) == 1 && isXr(v0) && isDr(v1) && isFpBits(vv[0]) {
+        p.class = ClassFloat
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         sa_fbits_1 := asFpScale(vv[0])
@@ -27624,6 +28783,7 @@ func (self *Program) FCVTZS(v0, v1 interface{}, vv ...interface{}) *Instruction 
     }
     // FCVTZS  <Xd>, <Hn>, #<fbits>
     if len(vv) == 1 && isXr(v0) && isHr(v1) && isFpBits(vv[0]) {
+        p.class = ClassFloat
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         sa_fbits_1 := asFpScale(vv[0])
@@ -27631,6 +28791,7 @@ func (self *Program) FCVTZS(v0, v1 interface{}, vv ...interface{}) *Instruction 
     }
     // FCVTZS  <Xd>, <Sn>, #<fbits>
     if len(vv) == 1 && isXr(v0) && isSr(v1) && isFpBits(vv[0]) {
+        p.class = ClassFloat
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         sa_fbits_1 := asFpScale(vv[0])
@@ -27638,36 +28799,42 @@ func (self *Program) FCVTZS(v0, v1 interface{}, vv ...interface{}) *Instruction 
     }
     // FCVTZS  <Wd>, <Dn>
     if isWr(v0) && isDr(v1) {
+        p.class = ClassFloat
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(0, 0, 1, 3, 0, sa_dn, sa_wd))
     }
     // FCVTZS  <Wd>, <Hn>
     if isWr(v0) && isHr(v1) {
+        p.class = ClassFloat
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(0, 0, 3, 3, 0, sa_hn, sa_wd))
     }
     // FCVTZS  <Wd>, <Sn>
     if isWr(v0) && isSr(v1) {
+        p.class = ClassFloat
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(0, 0, 0, 3, 0, sa_sn, sa_wd))
     }
     // FCVTZS  <Xd>, <Dn>
     if isXr(v0) && isDr(v1) {
+        p.class = ClassFloat
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(1, 0, 1, 3, 0, sa_dn, sa_xd))
     }
     // FCVTZS  <Xd>, <Hn>
     if isXr(v0) && isHr(v1) {
+        p.class = ClassFloat
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(1, 0, 3, 3, 0, sa_hn, sa_xd))
     }
     // FCVTZS  <Xd>, <Sn>
     if isXr(v0) && isSr(v1) {
+        p.class = ClassFloat
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(1, 0, 0, 3, 0, sa_sn, sa_xd))
@@ -27781,6 +28948,7 @@ func (self *Program) FCVTZU(v0, v1 interface{}, vv ...interface{}) *Instruction 
        isVfmt(v1, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        isFpBits(vv[0]) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_fbits uint32
         var sa_t uint32
         var sa_t__bit_mask uint32
@@ -27815,6 +28983,7 @@ func (self *Program) FCVTZU(v0, v1 interface{}, vv ...interface{}) *Instruction 
     }
     // FCVTZU  <V><d>, <V><n>, #<fbits>
     if len(vv) == 1 && isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(vv[0]) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_fbits_1 uint32
         var sa_v uint32
         var sa_v__bit_mask uint32
@@ -27849,6 +29018,7 @@ func (self *Program) FCVTZU(v0, v1 interface{}, vv ...interface{}) *Instruction 
        isVr(v1) &&
        isVfmt(v1, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -27864,6 +29034,8 @@ func (self *Program) FCVTZU(v0, v1 interface{}, vv ...interface{}) *Instruction 
     }
     // FCVTZU  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -27876,6 +29048,7 @@ func (self *Program) FCVTZU(v0, v1 interface{}, vv ...interface{}) *Instruction 
     }
     // FCVTZU  <V><d>, <V><n>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -27890,12 +29063,15 @@ func (self *Program) FCVTZU(v0, v1 interface{}, vv ...interface{}) *Instruction 
     }
     // FCVTZU  <Hd>, <Hn>
     if isHr(v0) && isHr(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(asisdmiscfp16(1, 1, 27, sa_hn, sa_hd))
     }
     // FCVTZU  <Wd>, <Dn>, #<fbits>
     if len(vv) == 1 && isWr(v0) && isDr(v1) && isFpBits(vv[0]) {
+        p.class = ClassFloat
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         sa_fbits := asFpScale(vv[0])
@@ -27903,6 +29079,7 @@ func (self *Program) FCVTZU(v0, v1 interface{}, vv ...interface{}) *Instruction 
     }
     // FCVTZU  <Wd>, <Hn>, #<fbits>
     if len(vv) == 1 && isWr(v0) && isHr(v1) && isFpBits(vv[0]) {
+        p.class = ClassFloat
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         sa_fbits := asFpScale(vv[0])
@@ -27910,6 +29087,7 @@ func (self *Program) FCVTZU(v0, v1 interface{}, vv ...interface{}) *Instruction 
     }
     // FCVTZU  <Wd>, <Sn>, #<fbits>
     if len(vv) == 1 && isWr(v0) && isSr(v1) && isFpBits(vv[0]) {
+        p.class = ClassFloat
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         sa_fbits := asFpScale(vv[0])
@@ -27917,6 +29095,7 @@ func (self *Program) FCVTZU(v0, v1 interface{}, vv ...interface{}) *Instruction 
     }
     // FCVTZU  <Xd>, <Dn>, #<fbits>
     if len(vv) == 1 && isXr(v0) && isDr(v1) && isFpBits(vv[0]) {
+        p.class = ClassFloat
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         sa_fbits_1 := asFpScale(vv[0])
@@ -27924,6 +29103,7 @@ func (self *Program) FCVTZU(v0, v1 interface{}, vv ...interface{}) *Instruction 
     }
     // FCVTZU  <Xd>, <Hn>, #<fbits>
     if len(vv) == 1 && isXr(v0) && isHr(v1) && isFpBits(vv[0]) {
+        p.class = ClassFloat
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         sa_fbits_1 := asFpScale(vv[0])
@@ -27931,6 +29111,7 @@ func (self *Program) FCVTZU(v0, v1 interface{}, vv ...interface{}) *Instruction 
     }
     // FCVTZU  <Xd>, <Sn>, #<fbits>
     if len(vv) == 1 && isXr(v0) && isSr(v1) && isFpBits(vv[0]) {
+        p.class = ClassFloat
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         sa_fbits_1 := asFpScale(vv[0])
@@ -27938,36 +29119,42 @@ func (self *Program) FCVTZU(v0, v1 interface{}, vv ...interface{}) *Instruction 
     }
     // FCVTZU  <Wd>, <Dn>
     if isWr(v0) && isDr(v1) {
+        p.class = ClassFloat
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(0, 0, 1, 3, 1, sa_dn, sa_wd))
     }
     // FCVTZU  <Wd>, <Hn>
     if isWr(v0) && isHr(v1) {
+        p.class = ClassFloat
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(0, 0, 3, 3, 1, sa_hn, sa_wd))
     }
     // FCVTZU  <Wd>, <Sn>
     if isWr(v0) && isSr(v1) {
+        p.class = ClassFloat
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(0, 0, 0, 3, 1, sa_sn, sa_wd))
     }
     // FCVTZU  <Xd>, <Dn>
     if isXr(v0) && isDr(v1) {
+        p.class = ClassFloat
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(1, 0, 1, 3, 1, sa_dn, sa_xd))
     }
     // FCVTZU  <Xd>, <Hn>
     if isXr(v0) && isHr(v1) {
+        p.class = ClassFloat
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(1, 0, 3, 3, 1, sa_hn, sa_xd))
     }
     // FCVTZU  <Xd>, <Sn>
     if isXr(v0) && isSr(v1) {
+        p.class = ClassFloat
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(1, 0, 0, 3, 1, sa_sn, sa_xd))
@@ -28030,6 +29217,7 @@ func (self *Program) FDIV(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -28053,6 +29241,8 @@ func (self *Program) FDIV(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec4H, Vec8H) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -28066,6 +29256,7 @@ func (self *Program) FDIV(v0, v1, v2 interface{}) *Instruction {
     }
     // FDIV  <Dd>, <Dn>, <Dm>
     if isDr(v0) && isDr(v1) && isDr(v2) {
+        p.class = ClassFloat
         sa_dd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         sa_dm := uint32(v2.(asm.Register).ID())
@@ -28073,6 +29264,7 @@ func (self *Program) FDIV(v0, v1, v2 interface{}) *Instruction {
     }
     // FDIV  <Hd>, <Hn>, <Hm>
     if isHr(v0) && isHr(v1) && isHr(v2) {
+        p.class = ClassFloat
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         sa_hm := uint32(v2.(asm.Register).ID())
@@ -28080,6 +29272,7 @@ func (self *Program) FDIV(v0, v1, v2 interface{}) *Instruction {
     }
     // FDIV  <Sd>, <Sn>, <Sm>
     if isSr(v0) && isSr(v1) && isSr(v2) {
+        p.class = ClassFloat
         sa_sd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         sa_sm := uint32(v2.(asm.Register).ID())
@@ -28116,6 +29309,8 @@ func (self *Program) FDIV(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) FJCVTZS(v0, v1 interface{}) *Instruction {
     p := self.alloc("FJCVTZS", 2, Operands { v0, v1 })
     if isWr(v0) && isDr(v1) {
+        self.require(FEAT_JSCVT)
+        p.class = ClassFloat
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(0, 0, 1, 3, 6, sa_dn, sa_wd))
@@ -28150,6 +29345,7 @@ func (self *Program) FMADD(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("FMADD", 4, Operands { v0, v1, v2, v3 })
     // FMADD  <Dd>, <Dn>, <Dm>, <Da>
     if isDr(v0) && isDr(v1) && isDr(v2) && isDr(v3) {
+        p.class = ClassFloat
         sa_dd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         sa_dm := uint32(v2.(asm.Register).ID())
@@ -28158,6 +29354,7 @@ func (self *Program) FMADD(v0, v1, v2, v3 interface{}) *Instruction {
     }
     // FMADD  <Hd>, <Hn>, <Hm>, <Ha>
     if isHr(v0) && isHr(v1) && isHr(v2) && isHr(v3) {
+        p.class = ClassFloat
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         sa_hm := uint32(v2.(asm.Register).ID())
@@ -28166,6 +29363,7 @@ func (self *Program) FMADD(v0, v1, v2, v3 interface{}) *Instruction {
     }
     // FMADD  <Sd>, <Sn>, <Sm>, <Sa>
     if isSr(v0) && isSr(v1) && isSr(v2) && isSr(v3) {
+        p.class = ClassFloat
         sa_sd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         sa_sm := uint32(v2.(asm.Register).ID())
@@ -28228,6 +29426,7 @@ func (self *Program) FMAX(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -28251,6 +29450,8 @@ func (self *Program) FMAX(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec4H, Vec8H) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -28264,6 +29465,7 @@ func (self *Program) FMAX(v0, v1, v2 interface{}) *Instruction {
     }
     // FMAX  <Dd>, <Dn>, <Dm>
     if isDr(v0) && isDr(v1) && isDr(v2) {
+        p.class = ClassFloat
         sa_dd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         sa_dm := uint32(v2.(asm.Register).ID())
@@ -28271,6 +29473,7 @@ func (self *Program) FMAX(v0, v1, v2 interface{}) *Instruction {
     }
     // FMAX  <Hd>, <Hn>, <Hm>
     if isHr(v0) && isHr(v1) && isHr(v2) {
+        p.class = ClassFloat
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         sa_hm := uint32(v2.(asm.Register).ID())
@@ -28278,6 +29481,7 @@ func (self *Program) FMAX(v0, v1, v2 interface{}) *Instruction {
     }
     // FMAX  <Sd>, <Sn>, <Sm>
     if isSr(v0) && isSr(v1) && isSr(v2) {
+        p.class = ClassFloat
         sa_sd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         sa_sm := uint32(v2.(asm.Register).ID())
@@ -28347,6 +29551,7 @@ func (self *Program) FMAXNM(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -28370,6 +29575,8 @@ func (self *Program) FMAXNM(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec4H, Vec8H) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -28383,6 +29590,7 @@ func (self *Program) FMAXNM(v0, v1, v2 interface{}) *Instruction {
     }
     // FMAXNM  <Dd>, <Dn>, <Dm>
     if isDr(v0) && isDr(v1) && isDr(v2) {
+        p.class = ClassFloat
         sa_dd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         sa_dm := uint32(v2.(asm.Register).ID())
@@ -28390,6 +29598,7 @@ func (self *Program) FMAXNM(v0, v1, v2 interface{}) *Instruction {
     }
     // FMAXNM  <Hd>, <Hn>, <Hm>
     if isHr(v0) && isHr(v1) && isHr(v2) {
+        p.class = ClassFloat
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         sa_hm := uint32(v2.(asm.Register).ID())
@@ -28397,6 +29606,7 @@ func (self *Program) FMAXNM(v0, v1, v2 interface{}) *Instruction {
     }
     // FMAXNM  <Sd>, <Sn>, <Sm>
     if isSr(v0) && isSr(v1) && isSr(v2) {
+        p.class = ClassFloat
         sa_sd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         sa_sm := uint32(v2.(asm.Register).ID())
@@ -28463,6 +29673,8 @@ func (self *Program) FMAXNMP(v0, v1 interface{}, vv ...interface{}) *Instruction
     }
     // FMAXNMP  <V><d>, <Vn>.<T>
     if isAdvSIMD(v0) && isVr(v1) && vfmt(v1) == Vec2H {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t uint32
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
@@ -28484,6 +29696,7 @@ func (self *Program) FMAXNMP(v0, v1 interface{}, vv ...interface{}) *Instruction
     }
     // FMAXNMP  <V><d>, <Vn>.<T>
     if isAdvSIMD(v0) && isVr(v1) && isVfmt(v1, Vec2S, Vec2D) {
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         var sa_v_1 uint32
         sa_d := uint32(v0.(asm.Register).ID())
@@ -28515,6 +29728,7 @@ func (self *Program) FMAXNMP(v0, v1 interface{}, vv ...interface{}) *Instruction
        isVfmt(vv[0], Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(vv[0]) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -28539,6 +29753,8 @@ func (self *Program) FMAXNMP(v0, v1 interface{}, vv ...interface{}) *Instruction
        isVfmt(vv[0], Vec4H, Vec8H) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(vv[0]) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -28584,6 +29800,8 @@ func (self *Program) FMAXNMV(v0, v1 interface{}) *Instruction {
     p := self.alloc("FMAXNMV", 2, Operands { v0, v1 })
     // FMAXNMV  <V><d>, <Vn>.<T>
     if isHr(v0) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_d := uint32(v0.(asm.Register).ID())
         sa_vn := uint32(v1.(asm.Register).ID())
@@ -28596,6 +29814,7 @@ func (self *Program) FMAXNMV(v0, v1 interface{}) *Instruction {
     }
     // FMAXNMV  <V><d>, <Vn>.<T>
     if isAdvSIMD(v0) && isVr(v1) && vfmt(v1) == Vec4S {
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         var sa_v_1 uint32
         sa_d := uint32(v0.(asm.Register).ID())
@@ -28670,6 +29889,8 @@ func (self *Program) FMAXP(v0, v1 interface{}, vv ...interface{}) *Instruction {
     }
     // FMAXP  <V><d>, <Vn>.<T>
     if isAdvSIMD(v0) && isVr(v1) && vfmt(v1) == Vec2H {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t uint32
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
@@ -28691,6 +29912,7 @@ func (self *Program) FMAXP(v0, v1 interface{}, vv ...interface{}) *Instruction {
     }
     // FMAXP  <V><d>, <Vn>.<T>
     if isAdvSIMD(v0) && isVr(v1) && isVfmt(v1, Vec2S, Vec2D) {
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         var sa_v_1 uint32
         sa_d := uint32(v0.(asm.Register).ID())
@@ -28722,6 +29944,7 @@ func (self *Program) FMAXP(v0, v1 interface{}, vv ...interface{}) *Instruction {
        isVfmt(vv[0], Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(vv[0]) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -28746,6 +29969,8 @@ func (self *Program) FMAXP(v0, v1 interface{}, vv ...interface{}) *Instruction {
        isVfmt(vv[0], Vec4H, Vec8H) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(vv[0]) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -28787,6 +30012,8 @@ func (self *Program) FMAXV(v0, v1 interface{}) *Instruction {
     p := self.alloc("FMAXV", 2, Operands { v0, v1 })
     // FMAXV  <V><d>, <Vn>.<T>
     if isHr(v0) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_d := uint32(v0.(asm.Register).ID())
         sa_vn := uint32(v1.(asm.Register).ID())
@@ -28799,6 +30026,7 @@ func (self *Program) FMAXV(v0, v1 interface{}) *Instruction {
     }
     // FMAXV  <V><d>, <Vn>.<T>
     if isAdvSIMD(v0) && isVr(v1) && vfmt(v1) == Vec4S {
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         var sa_v_1 uint32
         sa_d := uint32(v0.(asm.Register).ID())
@@ -28874,6 +30102,7 @@ func (self *Program) FMIN(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -28897,6 +30126,8 @@ func (self *Program) FMIN(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec4H, Vec8H) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -28910,6 +30141,7 @@ func (self *Program) FMIN(v0, v1, v2 interface{}) *Instruction {
     }
     // FMIN  <Dd>, <Dn>, <Dm>
     if isDr(v0) && isDr(v1) && isDr(v2) {
+        p.class = ClassFloat
         sa_dd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         sa_dm := uint32(v2.(asm.Register).ID())
@@ -28917,6 +30149,7 @@ func (self *Program) FMIN(v0, v1, v2 interface{}) *Instruction {
     }
     // FMIN  <Hd>, <Hn>, <Hm>
     if isHr(v0) && isHr(v1) && isHr(v2) {
+        p.class = ClassFloat
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         sa_hm := uint32(v2.(asm.Register).ID())
@@ -28924,6 +30157,7 @@ func (self *Program) FMIN(v0, v1, v2 interface{}) *Instruction {
     }
     // FMIN  <Sd>, <Sn>, <Sm>
     if isSr(v0) && isSr(v1) && isSr(v2) {
+        p.class = ClassFloat
         sa_sd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         sa_sm := uint32(v2.(asm.Register).ID())
@@ -28993,6 +30227,7 @@ func (self *Program) FMINNM(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -29016,6 +30251,8 @@ func (self *Program) FMINNM(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec4H, Vec8H) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -29029,6 +30266,7 @@ func (self *Program) FMINNM(v0, v1, v2 interface{}) *Instruction {
     }
     // FMINNM  <Dd>, <Dn>, <Dm>
     if isDr(v0) && isDr(v1) && isDr(v2) {
+        p.class = ClassFloat
         sa_dd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         sa_dm := uint32(v2.(asm.Register).ID())
@@ -29036,6 +30274,7 @@ func (self *Program) FMINNM(v0, v1, v2 interface{}) *Instruction {
     }
     // FMINNM  <Hd>, <Hn>, <Hm>
     if isHr(v0) && isHr(v1) && isHr(v2) {
+        p.class = ClassFloat
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         sa_hm := uint32(v2.(asm.Register).ID())
@@ -29043,6 +30282,7 @@ func (self *Program) FMINNM(v0, v1, v2 interface{}) *Instruction {
     }
     // FMINNM  <Sd>, <Sn>, <Sm>
     if isSr(v0) && isSr(v1) && isSr(v2) {
+        p.class = ClassFloat
         sa_sd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         sa_sm := uint32(v2.(asm.Register).ID())
@@ -29109,6 +30349,8 @@ func (self *Program) FMINNMP(v0, v1 interface{}, vv ...interface{}) *Instruction
     }
     // FMINNMP  <V><d>, <Vn>.<T>
     if isAdvSIMD(v0) && isVr(v1) && vfmt(v1) == Vec2H {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t uint32
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
@@ -29130,6 +30372,7 @@ func (self *Program) FMINNMP(v0, v1 interface{}, vv ...interface{}) *Instruction
     }
     // FMINNMP  <V><d>, <Vn>.<T>
     if isAdvSIMD(v0) && isVr(v1) && isVfmt(v1, Vec2S, Vec2D) {
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         var sa_v_1 uint32
         sa_d := uint32(v0.(asm.Register).ID())
@@ -29161,6 +30404,7 @@ func (self *Program) FMINNMP(v0, v1 interface{}, vv ...interface{}) *Instruction
        isVfmt(vv[0], Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(vv[0]) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -29185,6 +30429,8 @@ func (self *Program) FMINNMP(v0, v1 interface{}, vv ...interface{}) *Instruction
        isVfmt(vv[0], Vec4H, Vec8H) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(vv[0]) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -29230,6 +30476,8 @@ func (self *Program) FMINNMV(v0, v1 interface{}) *Instruction {
     p := self.alloc("FMINNMV", 2, Operands { v0, v1 })
     // FMINNMV  <V><d>, <Vn>.<T>
     if isHr(v0) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_d := uint32(v0.(asm.Register).ID())
         sa_vn := uint32(v1.(asm.Register).ID())
@@ -29242,6 +30490,7 @@ func (self *Program) FMINNMV(v0, v1 interface{}) *Instruction {
     }
     // FMINNMV  <V><d>, <Vn>.<T>
     if isAdvSIMD(v0) && isVr(v1) && vfmt(v1) == Vec4S {
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         var sa_v_1 uint32
         sa_d := uint32(v0.(asm.Register).ID())
@@ -29316,6 +30565,8 @@ func (self *Program) FMINP(v0, v1 interface{}, vv ...interface{}) *Instruction {
     }
     // FMINP  <V><d>, <Vn>.<T>
     if isAdvSIMD(v0) && isVr(v1) && vfmt(v1) == Vec2H {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t uint32
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
@@ -29337,6 +30588,7 @@ func (self *Program) FMINP(v0, v1 interface{}, vv ...interface{}) *Instruction {
     }
     // FMINP  <V><d>, <Vn>.<T>
     if isAdvSIMD(v0) && isVr(v1) && isVfmt(v1, Vec2S, Vec2D) {
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         var sa_v_1 uint32
         sa_d := uint32(v0.(asm.Register).ID())
@@ -29368,6 +30620,7 @@ func (self *Program) FMINP(v0, v1 interface{}, vv ...interface{}) *Instruction {
        isVfmt(vv[0], Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(vv[0]) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -29392,6 +30645,8 @@ func (self *Program) FMINP(v0, v1 interface{}, vv ...interface{}) *Instruction {
        isVfmt(vv[0], Vec4H, Vec8H) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(vv[0]) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -29433,6 +30688,8 @@ func (self *Program) FMINV(v0, v1 interface{}) *Instruction {
     p := self.alloc("FMINV", 2, Operands { v0, v1 })
     // FMINV  <V><d>, <Vn>.<T>
     if isHr(v0) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_d := uint32(v0.(asm.Register).ID())
         sa_vn := uint32(v1.(asm.Register).ID())
@@ -29445,6 +30702,7 @@ func (self *Program) FMINV(v0, v1 interface{}) *Instruction {
     }
     // FMINV  <V><d>, <Vn>.<T>
     if isAdvSIMD(v0) && isVr(v1) && vfmt(v1) == Vec4S {
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         var sa_v_1 uint32
         sa_d := uint32(v0.(asm.Register).ID())
@@ -29523,6 +30781,8 @@ func (self *Program) FMLA(v0, v1, v2 interface{}) *Instruction {
        isVri(v2) &&
        vmoder(v2) == ModeH &&
        vfmt(v0) == vfmt(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -29553,6 +30813,7 @@ func (self *Program) FMLA(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec2S, Vec4S, Vec2D) &&
        isVri(v2) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         var sa_ts uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -29590,6 +30851,8 @@ func (self *Program) FMLA(v0, v1, v2 interface{}) *Instruction {
     }
     // FMLA  <Hd>, <Hn>, <Vm>.H[<index>]
     if isHr(v0) && isHr(v1) && isVri(v2) && vmoder(v2) == ModeH {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(VidxRegister).ID())
@@ -29598,6 +30861,7 @@ func (self *Program) FMLA(v0, v1, v2 interface{}) *Instruction {
     }
     // FMLA  <V><d>, <V><n>, <Vm>.<Ts>[<index>]
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isVri(v2) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_ts uint32
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
@@ -29640,6 +30904,7 @@ func (self *Program) FMLA(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -29663,6 +30928,8 @@ func (self *Program) FMLA(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec4H, Vec8H) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -29741,6 +31008,8 @@ func (self *Program) FMLAL(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec2H, Vec4H) &&
        isVri(v2) &&
        vmoder(v2) == ModeH {
+        self.require(FEAT_FHM)
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -29781,6 +31050,8 @@ func (self *Program) FMLAL(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec2H, Vec4H) &&
        vfmt(v1) == vfmt(v2) {
+        self.require(FEAT_FHM)
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -29868,6 +31139,8 @@ func (self *Program) FMLAL2(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec2H, Vec4H) &&
        isVri(v2) &&
        vmoder(v2) == ModeH {
+        self.require(FEAT_FHM)
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -29908,6 +31181,8 @@ func (self *Program) FMLAL2(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec2H, Vec4H) &&
        vfmt(v1) == vfmt(v2) {
+        self.require(FEAT_FHM)
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -29987,6 +31262,8 @@ func (self *Program) FMLS(v0, v1, v2 interface{}) *Instruction {
        isVri(v2) &&
        vmoder(v2) == ModeH &&
        vfmt(v0) == vfmt(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -30017,6 +31294,7 @@ func (self *Program) FMLS(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec2S, Vec4S, Vec2D) &&
        isVri(v2) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         var sa_ts uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -30054,6 +31332,8 @@ func (self *Program) FMLS(v0, v1, v2 interface{}) *Instruction {
     }
     // FMLS  <Hd>, <Hn>, <Vm>.H[<index>]
     if isHr(v0) && isHr(v1) && isVri(v2) && vmoder(v2) == ModeH {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(VidxRegister).ID())
@@ -30062,6 +31342,7 @@ func (self *Program) FMLS(v0, v1, v2 interface{}) *Instruction {
     }
     // FMLS  <V><d>, <V><n>, <Vm>.<Ts>[<index>]
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isVri(v2) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_ts uint32
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
@@ -30104,6 +31385,7 @@ func (self *Program) FMLS(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -30127,6 +31409,8 @@ func (self *Program) FMLS(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec4H, Vec8H) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -30206,6 +31490,8 @@ func (self *Program) FMLSL(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec2H, Vec4H) &&
        isVri(v2) &&
        vmoder(v2) == ModeH {
+        self.require(FEAT_FHM)
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -30246,6 +31532,8 @@ func (self *Program) FMLSL(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec2H, Vec4H) &&
        vfmt(v1) == vfmt(v2) {
+        self.require(FEAT_FHM)
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -30334,6 +31622,8 @@ func (self *Program) FMLSL2(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec2H, Vec4H) &&
        isVri(v2) &&
        vmoder(v2) == ModeH {
+        self.require(FEAT_FHM)
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -30374,6 +31664,8 @@ func (self *Program) FMLSL2(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec2H, Vec4H) &&
        vfmt(v1) == vfmt(v2) {
+        self.require(FEAT_FHM)
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -30466,6 +31758,7 @@ func (self *Program) FMOV(v0, v1 interface{}) *Instruction {
     p := self.alloc("FMOV", 2, Operands { v0, v1 })
     // FMOV  <Vd>.2D, #<imm>
     if isVr(v0) && vfmt(v0) == Vec2D && isUimm8(v1) {
+        p.class = ClassAdvSimd
         sa_vd := uint32(v0.(asm.Register).ID())
         sa_imm := asUimm8(v1)
         return p.setins(asimdimm(
@@ -30486,6 +31779,8 @@ func (self *Program) FMOV(v0, v1 interface{}) *Instruction {
     }
     // FMOV  <Vd>.<T>, #<imm>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isUimm8(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -30512,6 +31807,7 @@ func (self *Program) FMOV(v0, v1 interface{}) *Instruction {
     }
     // FMOV  <Vd>.<T>, #<imm>
     if isVr(v0) && isVfmt(v0, Vec2S, Vec4S) && isUimm8(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -30538,96 +31834,112 @@ func (self *Program) FMOV(v0, v1 interface{}) *Instruction {
     }
     // FMOV  <Dd>, <Dn>
     if isDr(v0) && isDr(v1) {
+        p.class = ClassFloat
         sa_dd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 1, 0, sa_dn, sa_dd))
     }
     // FMOV  <Hd>, <Hn>
     if isHr(v0) && isHr(v1) {
+        p.class = ClassFloat
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 3, 0, sa_hn, sa_hd))
     }
     // FMOV  <Sd>, <Sn>
     if isSr(v0) && isSr(v1) {
+        p.class = ClassFloat
         sa_sd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 0, 0, sa_sn, sa_sd))
     }
     // FMOV  <Wd>, <Hn>
     if isWr(v0) && isHr(v1) {
+        p.class = ClassFloat
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(0, 0, 3, 0, 6, sa_hn, sa_wd))
     }
     // FMOV  <Wd>, <Sn>
     if isWr(v0) && isSr(v1) {
+        p.class = ClassFloat
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(0, 0, 0, 0, 6, sa_sn, sa_wd))
     }
     // FMOV  <Xd>, <Dn>
     if isXr(v0) && isDr(v1) {
+        p.class = ClassFloat
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(1, 0, 1, 0, 6, sa_dn, sa_xd))
     }
     // FMOV  <Xd>, <Hn>
     if isXr(v0) && isHr(v1) {
+        p.class = ClassFloat
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(1, 0, 3, 0, 6, sa_hn, sa_xd))
     }
     // FMOV  <Xd>, <Vn>.D[1]
     if isXr(v0) && isVri(v1) && vmoder(v1) == ModeD && vidxr(v1) == 1 {
+        p.class = ClassFloat
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_vn := uint32(v1.(VidxRegister).ID())
         return p.setins(float2int(1, 0, 2, 1, 6, sa_vn, sa_xd))
     }
     // FMOV  <Dd>, <Xn>
     if isDr(v0) && isXr(v1) {
+        p.class = ClassFloat
         sa_dd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(1, 0, 1, 0, 7, sa_xn, sa_dd))
     }
     // FMOV  <Hd>, <Wn>
     if isHr(v0) && isWr(v1) {
+        p.class = ClassFloat
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(0, 0, 3, 0, 7, sa_wn, sa_hd))
     }
     // FMOV  <Hd>, <Xn>
     if isHr(v0) && isXr(v1) {
+        p.class = ClassFloat
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(1, 0, 3, 0, 7, sa_xn, sa_hd))
     }
     // FMOV  <Sd>, <Wn>
     if isSr(v0) && isWr(v1) {
+        p.class = ClassFloat
         sa_sd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(0, 0, 0, 0, 7, sa_wn, sa_sd))
     }
     // FMOV  <Vd>.D[1], <Xn>
     if isVri(v0) && vmoder(v0) == ModeD && vidxr(v0) == 1 && isXr(v1) {
+        p.class = ClassFloat
         sa_vd := uint32(v0.(VidxRegister).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(1, 0, 2, 1, 7, sa_xn, sa_vd))
     }
     // FMOV  <Dd>, #<imm>
     if isDr(v0) && isFpImm8(v1) {
+        p.class = ClassFloat
         sa_dd := uint32(v0.(asm.Register).ID())
         sa_imm := asFpImm8(v1)
         return p.setins(floatimm(0, 0, 1, sa_imm, 0, sa_dd))
     }
     // FMOV  <Hd>, #<imm>
     if isHr(v0) && isFpImm8(v1) {
+        p.class = ClassFloat
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_imm := asFpImm8(v1)
         return p.setins(floatimm(0, 0, 3, sa_imm, 0, sa_hd))
     }
     // FMOV  <Sd>, #<imm>
     if isSr(v0) && isFpImm8(v1) {
+        p.class = ClassFloat
         sa_sd := uint32(v0.(asm.Register).ID())
         sa_imm := asFpImm8(v1)
         return p.setins(floatimm(0, 0, 0, sa_imm, 0, sa_sd))
@@ -30663,6 +31975,7 @@ func (self *Program) FMSUB(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("FMSUB", 4, Operands { v0, v1, v2, v3 })
     // FMSUB  <Dd>, <Dn>, <Dm>, <Da>
     if isDr(v0) && isDr(v1) && isDr(v2) && isDr(v3) {
+        p.class = ClassFloat
         sa_dd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         sa_dm := uint32(v2.(asm.Register).ID())
@@ -30671,6 +31984,7 @@ func (self *Program) FMSUB(v0, v1, v2, v3 interface{}) *Instruction {
     }
     // FMSUB  <Hd>, <Hn>, <Hm>, <Ha>
     if isHr(v0) && isHr(v1) && isHr(v2) && isHr(v3) {
+        p.class = ClassFloat
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         sa_hm := uint32(v2.(asm.Register).ID())
@@ -30679,6 +31993,7 @@ func (self *Program) FMSUB(v0, v1, v2, v3 interface{}) *Instruction {
     }
     // FMSUB  <Sd>, <Sn>, <Sm>, <Sa>
     if isSr(v0) && isSr(v1) && isSr(v2) && isSr(v3) {
+        p.class = ClassFloat
         sa_sd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         sa_sm := uint32(v2.(asm.Register).ID())
@@ -30762,6 +32077,8 @@ func (self *Program) FMUL(v0, v1, v2 interface{}) *Instruction {
        isVri(v2) &&
        vmoder(v2) == ModeH &&
        vfmt(v0) == vfmt(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -30792,6 +32109,7 @@ func (self *Program) FMUL(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec2S, Vec4S, Vec2D) &&
        isVri(v2) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         var sa_ts uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -30829,6 +32147,8 @@ func (self *Program) FMUL(v0, v1, v2 interface{}) *Instruction {
     }
     // FMUL  <Hd>, <Hn>, <Vm>.H[<index>]
     if isHr(v0) && isHr(v1) && isVri(v2) && vmoder(v2) == ModeH {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(VidxRegister).ID())
@@ -30837,6 +32157,7 @@ func (self *Program) FMUL(v0, v1, v2 interface{}) *Instruction {
     }
     // FMUL  <V><d>, <V><n>, <Vm>.<Ts>[<index>]
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isVri(v2) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_ts uint32
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
@@ -30879,6 +32200,7 @@ func (self *Program) FMUL(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -30902,6 +32224,8 @@ func (self *Program) FMUL(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec4H, Vec8H) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -30915,6 +32239,7 @@ func (self *Program) FMUL(v0, v1, v2 interface{}) *Instruction {
     }
     // FMUL  <Dd>, <Dn>, <Dm>
     if isDr(v0) && isDr(v1) && isDr(v2) {
+        p.class = ClassFloat
         sa_dd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         sa_dm := uint32(v2.(asm.Register).ID())
@@ -30922,6 +32247,7 @@ func (self *Program) FMUL(v0, v1, v2 interface{}) *Instruction {
     }
     // FMUL  <Hd>, <Hn>, <Hm>
     if isHr(v0) && isHr(v1) && isHr(v2) {
+        p.class = ClassFloat
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         sa_hm := uint32(v2.(asm.Register).ID())
@@ -30929,6 +32255,7 @@ func (self *Program) FMUL(v0, v1, v2 interface{}) *Instruction {
     }
     // FMUL  <Sd>, <Sn>, <Sm>
     if isSr(v0) && isSr(v1) && isSr(v2) {
+        p.class = ClassFloat
         sa_sd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         sa_sm := uint32(v2.(asm.Register).ID())
@@ -31002,6 +32329,8 @@ func (self *Program) FMULX(v0, v1, v2 interface{}) *Instruction {
        isVri(v2) &&
        vmoder(v2) == ModeH &&
        vfmt(v0) == vfmt(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -31032,6 +32361,7 @@ func (self *Program) FMULX(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec2S, Vec4S, Vec2D) &&
        isVri(v2) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         var sa_ts uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -31069,6 +32399,8 @@ func (self *Program) FMULX(v0, v1, v2 interface{}) *Instruction {
     }
     // FMULX  <Hd>, <Hn>, <Vm>.H[<index>]
     if isHr(v0) && isHr(v1) && isVri(v2) && vmoder(v2) == ModeH {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(VidxRegister).ID())
@@ -31077,6 +32409,7 @@ func (self *Program) FMULX(v0, v1, v2 interface{}) *Instruction {
     }
     // FMULX  <V><d>, <V><n>, <Vm>.<Ts>[<index>]
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isVri(v2) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_ts uint32
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
@@ -31119,6 +32452,7 @@ func (self *Program) FMULX(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -31142,6 +32476,8 @@ func (self *Program) FMULX(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec4H, Vec8H) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -31155,6 +32491,7 @@ func (self *Program) FMULX(v0, v1, v2 interface{}) *Instruction {
     }
     // FMULX  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -31170,6 +32507,8 @@ func (self *Program) FMULX(v0, v1, v2 interface{}) *Instruction {
     }
     // FMULX  <Hd>, <Hn>, <Hm>
     if isHr(v0) && isHr(v1) && isHr(v2) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         sa_hm := uint32(v2.(asm.Register).ID())
@@ -31217,6 +32556,7 @@ func (self *Program) FNEG(v0, v1 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -31232,6 +32572,8 @@ func (self *Program) FNEG(v0, v1 interface{}) *Instruction {
     }
     // FNEG  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -31244,18 +32586,21 @@ func (self *Program) FNEG(v0, v1 interface{}) *Instruction {
     }
     // FNEG  <Dd>, <Dn>
     if isDr(v0) && isDr(v1) {
+        p.class = ClassFloat
         sa_dd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 1, 2, sa_dn, sa_dd))
     }
     // FNEG  <Hd>, <Hn>
     if isHr(v0) && isHr(v1) {
+        p.class = ClassFloat
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 3, 2, sa_hn, sa_hd))
     }
     // FNEG  <Sd>, <Sn>
     if isSr(v0) && isSr(v1) {
+        p.class = ClassFloat
         sa_sd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 0, 2, sa_sn, sa_sd))
@@ -31291,6 +32636,7 @@ func (self *Program) FNMADD(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("FNMADD", 4, Operands { v0, v1, v2, v3 })
     // FNMADD  <Dd>, <Dn>, <Dm>, <Da>
     if isDr(v0) && isDr(v1) && isDr(v2) && isDr(v3) {
+        p.class = ClassFloat
         sa_dd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         sa_dm := uint32(v2.(asm.Register).ID())
@@ -31299,6 +32645,7 @@ func (self *Program) FNMADD(v0, v1, v2, v3 interface{}) *Instruction {
     }
     // FNMADD  <Hd>, <Hn>, <Hm>, <Ha>
     if isHr(v0) && isHr(v1) && isHr(v2) && isHr(v3) {
+        p.class = ClassFloat
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         sa_hm := uint32(v2.(asm.Register).ID())
@@ -31307,6 +32654,7 @@ func (self *Program) FNMADD(v0, v1, v2, v3 interface{}) *Instruction {
     }
     // FNMADD  <Sd>, <Sn>, <Sm>, <Sa>
     if isSr(v0) && isSr(v1) && isSr(v2) && isSr(v3) {
+        p.class = ClassFloat
         sa_sd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         sa_sm := uint32(v2.(asm.Register).ID())
@@ -31344,6 +32692,7 @@ func (self *Program) FNMSUB(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("FNMSUB", 4, Operands { v0, v1, v2, v3 })
     // FNMSUB  <Dd>, <Dn>, <Dm>, <Da>
     if isDr(v0) && isDr(v1) && isDr(v2) && isDr(v3) {
+        p.class = ClassFloat
         sa_dd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         sa_dm := uint32(v2.(asm.Register).ID())
@@ -31352,6 +32701,7 @@ func (self *Program) FNMSUB(v0, v1, v2, v3 interface{}) *Instruction {
     }
     // FNMSUB  <Hd>, <Hn>, <Hm>, <Ha>
     if isHr(v0) && isHr(v1) && isHr(v2) && isHr(v3) {
+        p.class = ClassFloat
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         sa_hm := uint32(v2.(asm.Register).ID())
@@ -31360,6 +32710,7 @@ func (self *Program) FNMSUB(v0, v1, v2, v3 interface{}) *Instruction {
     }
     // FNMSUB  <Sd>, <Sn>, <Sm>, <Sa>
     if isSr(v0) && isSr(v1) && isSr(v2) && isSr(v3) {
+        p.class = ClassFloat
         sa_sd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         sa_sm := uint32(v2.(asm.Register).ID())
@@ -31396,6 +32747,7 @@ func (self *Program) FNMUL(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("FNMUL", 3, Operands { v0, v1, v2 })
     // FNMUL  <Dd>, <Dn>, <Dm>
     if isDr(v0) && isDr(v1) && isDr(v2) {
+        p.class = ClassFloat
         sa_dd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         sa_dm := uint32(v2.(asm.Register).ID())
@@ -31403,6 +32755,7 @@ func (self *Program) FNMUL(v0, v1, v2 interface{}) *Instruction {
     }
     // FNMUL  <Hd>, <Hn>, <Hm>
     if isHr(v0) && isHr(v1) && isHr(v2) {
+        p.class = ClassFloat
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         sa_hm := uint32(v2.(asm.Register).ID())
@@ -31410,6 +32763,7 @@ func (self *Program) FNMUL(v0, v1, v2 interface{}) *Instruction {
     }
     // FNMUL  <Sd>, <Sn>, <Sm>
     if isSr(v0) && isSr(v1) && isSr(v2) {
+        p.class = ClassFloat
         sa_sd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         sa_sm := uint32(v2.(asm.Register).ID())
@@ -31451,6 +32805,7 @@ func (self *Program) FRECPE(v0, v1 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -31466,6 +32821,8 @@ func (self *Program) FRECPE(v0, v1 interface{}) *Instruction {
     }
     // FRECPE  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -31478,6 +32835,7 @@ func (self *Program) FRECPE(v0, v1 interface{}) *Instruction {
     }
     // FRECPE  <V><d>, <V><n>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -31492,6 +32850,8 @@ func (self *Program) FRECPE(v0, v1 interface{}) *Instruction {
     }
     // FRECPE  <Hd>, <Hn>
     if isHr(v0) && isHr(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(asisdmiscfp16(0, 1, 29, sa_hn, sa_hd))
@@ -31535,6 +32895,7 @@ func (self *Program) FRECPS(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -31558,6 +32919,8 @@ func (self *Program) FRECPS(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec4H, Vec8H) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -31571,6 +32934,7 @@ func (self *Program) FRECPS(v0, v1, v2 interface{}) *Instruction {
     }
     // FRECPS  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -31586,6 +32950,8 @@ func (self *Program) FRECPS(v0, v1, v2 interface{}) *Instruction {
     }
     // FRECPS  <Hd>, <Hn>, <Hm>
     if isHr(v0) && isHr(v1) && isHr(v2) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         sa_hm := uint32(v2.(asm.Register).ID())
@@ -31620,6 +32986,7 @@ func (self *Program) FRECPX(v0, v1 interface{}) *Instruction {
     p := self.alloc("FRECPX", 2, Operands { v0, v1 })
     // FRECPX  <V><d>, <V><n>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -31634,6 +33001,8 @@ func (self *Program) FRECPX(v0, v1 interface{}) *Instruction {
     }
     // FRECPX  <Hd>, <Hn>
     if isHr(v0) && isHr(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(asisdmiscfp16(0, 1, 31, sa_hn, sa_hd))
@@ -31705,6 +33074,8 @@ func (self *Program) FRINT32X(v0, v1 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) {
+        self.require(FEAT_FRINTTS)
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -31720,12 +33091,16 @@ func (self *Program) FRINT32X(v0, v1 interface{}) *Instruction {
     }
     // FRINT32X  <Dd>, <Dn>
     if isDr(v0) && isDr(v1) {
+        self.require(FEAT_FRINTTS)
+        p.class = ClassFloat
         sa_dd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 1, 17, sa_dn, sa_dd))
     }
     // FRINT32X  <Sd>, <Sn>
     if isSr(v0) && isSr(v1) {
+        self.require(FEAT_FRINTTS)
+        p.class = ClassFloat
         sa_sd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 0, 17, sa_sn, sa_sd))
@@ -31798,6 +33173,8 @@ func (self *Program) FRINT32Z(v0, v1 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) {
+        self.require(FEAT_FRINTTS)
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -31813,12 +33190,16 @@ func (self *Program) FRINT32Z(v0, v1 interface{}) *Instruction {
     }
     // FRINT32Z  <Dd>, <Dn>
     if isDr(v0) && isDr(v1) {
+        self.require(FEAT_FRINTTS)
+        p.class = ClassFloat
         sa_dd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 1, 16, sa_dn, sa_dd))
     }
     // FRINT32Z  <Sd>, <Sn>
     if isSr(v0) && isSr(v1) {
+        self.require(FEAT_FRINTTS)
+        p.class = ClassFloat
         sa_sd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 0, 16, sa_sn, sa_sd))
@@ -31890,6 +33271,8 @@ func (self *Program) FRINT64X(v0, v1 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) {
+        self.require(FEAT_FRINTTS)
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -31905,12 +33288,16 @@ func (self *Program) FRINT64X(v0, v1 interface{}) *Instruction {
     }
     // FRINT64X  <Dd>, <Dn>
     if isDr(v0) && isDr(v1) {
+        self.require(FEAT_FRINTTS)
+        p.class = ClassFloat
         sa_dd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 1, 19, sa_dn, sa_dd))
     }
     // FRINT64X  <Sd>, <Sn>
     if isSr(v0) && isSr(v1) {
+        self.require(FEAT_FRINTTS)
+        p.class = ClassFloat
         sa_sd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 0, 19, sa_sn, sa_sd))
@@ -31983,6 +33370,8 @@ func (self *Program) FRINT64Z(v0, v1 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) {
+        self.require(FEAT_FRINTTS)
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -31998,12 +33387,16 @@ func (self *Program) FRINT64Z(v0, v1 interface{}) *Instruction {
     }
     // FRINT64Z  <Dd>, <Dn>
     if isDr(v0) && isDr(v1) {
+        self.require(FEAT_FRINTTS)
+        p.class = ClassFloat
         sa_dd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 1, 18, sa_dn, sa_dd))
     }
     // FRINT64Z  <Sd>, <Sn>
     if isSr(v0) && isSr(v1) {
+        self.require(FEAT_FRINTTS)
+        p.class = ClassFloat
         sa_sd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 0, 18, sa_sn, sa_sd))
@@ -32072,6 +33465,7 @@ func (self *Program) FRINTA(v0, v1 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -32087,6 +33481,8 @@ func (self *Program) FRINTA(v0, v1 interface{}) *Instruction {
     }
     // FRINTA  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -32099,18 +33495,21 @@ func (self *Program) FRINTA(v0, v1 interface{}) *Instruction {
     }
     // FRINTA  <Dd>, <Dn>
     if isDr(v0) && isDr(v1) {
+        p.class = ClassFloat
         sa_dd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 1, 12, sa_dn, sa_dd))
     }
     // FRINTA  <Hd>, <Hn>
     if isHr(v0) && isHr(v1) {
+        p.class = ClassFloat
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 3, 12, sa_hn, sa_hd))
     }
     // FRINTA  <Sd>, <Sn>
     if isSr(v0) && isSr(v1) {
+        p.class = ClassFloat
         sa_sd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 0, 12, sa_sn, sa_sd))
@@ -32179,6 +33578,7 @@ func (self *Program) FRINTI(v0, v1 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -32194,6 +33594,8 @@ func (self *Program) FRINTI(v0, v1 interface{}) *Instruction {
     }
     // FRINTI  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -32206,18 +33608,21 @@ func (self *Program) FRINTI(v0, v1 interface{}) *Instruction {
     }
     // FRINTI  <Dd>, <Dn>
     if isDr(v0) && isDr(v1) {
+        p.class = ClassFloat
         sa_dd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 1, 15, sa_dn, sa_dd))
     }
     // FRINTI  <Hd>, <Hn>
     if isHr(v0) && isHr(v1) {
+        p.class = ClassFloat
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 3, 15, sa_hn, sa_hd))
     }
     // FRINTI  <Sd>, <Sn>
     if isSr(v0) && isSr(v1) {
+        p.class = ClassFloat
         sa_sd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 0, 15, sa_sn, sa_sd))
@@ -32286,6 +33691,7 @@ func (self *Program) FRINTM(v0, v1 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -32301,6 +33707,8 @@ func (self *Program) FRINTM(v0, v1 interface{}) *Instruction {
     }
     // FRINTM  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -32313,18 +33721,21 @@ func (self *Program) FRINTM(v0, v1 interface{}) *Instruction {
     }
     // FRINTM  <Dd>, <Dn>
     if isDr(v0) && isDr(v1) {
+        p.class = ClassFloat
         sa_dd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 1, 10, sa_dn, sa_dd))
     }
     // FRINTM  <Hd>, <Hn>
     if isHr(v0) && isHr(v1) {
+        p.class = ClassFloat
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 3, 10, sa_hn, sa_hd))
     }
     // FRINTM  <Sd>, <Sn>
     if isSr(v0) && isSr(v1) {
+        p.class = ClassFloat
         sa_sd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 0, 10, sa_sn, sa_sd))
@@ -32392,6 +33803,7 @@ func (self *Program) FRINTN(v0, v1 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -32407,6 +33819,8 @@ func (self *Program) FRINTN(v0, v1 interface{}) *Instruction {
     }
     // FRINTN  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -32419,18 +33833,21 @@ func (self *Program) FRINTN(v0, v1 interface{}) *Instruction {
     }
     // FRINTN  <Dd>, <Dn>
     if isDr(v0) && isDr(v1) {
+        p.class = ClassFloat
         sa_dd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 1, 8, sa_dn, sa_dd))
     }
     // FRINTN  <Hd>, <Hn>
     if isHr(v0) && isHr(v1) {
+        p.class = ClassFloat
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 3, 8, sa_hn, sa_hd))
     }
     // FRINTN  <Sd>, <Sn>
     if isSr(v0) && isSr(v1) {
+        p.class = ClassFloat
         sa_sd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 0, 8, sa_sn, sa_sd))
@@ -32499,6 +33916,7 @@ func (self *Program) FRINTP(v0, v1 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -32514,6 +33932,8 @@ func (self *Program) FRINTP(v0, v1 interface{}) *Instruction {
     }
     // FRINTP  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -32526,18 +33946,21 @@ func (self *Program) FRINTP(v0, v1 interface{}) *Instruction {
     }
     // FRINTP  <Dd>, <Dn>
     if isDr(v0) && isDr(v1) {
+        p.class = ClassFloat
         sa_dd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 1, 9, sa_dn, sa_dd))
     }
     // FRINTP  <Hd>, <Hn>
     if isHr(v0) && isHr(v1) {
+        p.class = ClassFloat
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 3, 9, sa_hn, sa_hd))
     }
     // FRINTP  <Sd>, <Sn>
     if isSr(v0) && isSr(v1) {
+        p.class = ClassFloat
         sa_sd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 0, 9, sa_sn, sa_sd))
@@ -32608,6 +34031,7 @@ func (self *Program) FRINTX(v0, v1 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -32623,6 +34047,8 @@ func (self *Program) FRINTX(v0, v1 interface{}) *Instruction {
     }
     // FRINTX  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -32635,18 +34061,21 @@ func (self *Program) FRINTX(v0, v1 interface{}) *Instruction {
     }
     // FRINTX  <Dd>, <Dn>
     if isDr(v0) && isDr(v1) {
+        p.class = ClassFloat
         sa_dd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 1, 14, sa_dn, sa_dd))
     }
     // FRINTX  <Hd>, <Hn>
     if isHr(v0) && isHr(v1) {
+        p.class = ClassFloat
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 3, 14, sa_hn, sa_hd))
     }
     // FRINTX  <Sd>, <Sn>
     if isSr(v0) && isSr(v1) {
+        p.class = ClassFloat
         sa_sd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 0, 14, sa_sn, sa_sd))
@@ -32713,6 +34142,7 @@ func (self *Program) FRINTZ(v0, v1 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -32728,6 +34158,8 @@ func (self *Program) FRINTZ(v0, v1 interface{}) *Instruction {
     }
     // FRINTZ  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -32740,18 +34172,21 @@ func (self *Program) FRINTZ(v0, v1 interface{}) *Instruction {
     }
     // FRINTZ  <Dd>, <Dn>
     if isDr(v0) && isDr(v1) {
+        p.class = ClassFloat
         sa_dd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 1, 11, sa_dn, sa_dd))
     }
     // FRINTZ  <Hd>, <Hn>
     if isHr(v0) && isHr(v1) {
+        p.class = ClassFloat
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 3, 11, sa_hn, sa_hd))
     }
     // FRINTZ  <Sd>, <Sn>
     if isSr(v0) && isSr(v1) {
+        p.class = ClassFloat
         sa_sd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 0, 11, sa_sn, sa_sd))
@@ -32792,6 +34227,7 @@ func (self *Program) FRSQRTE(v0, v1 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -32807,6 +34243,8 @@ func (self *Program) FRSQRTE(v0, v1 interface{}) *Instruction {
     }
     // FRSQRTE  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -32819,6 +34257,7 @@ func (self *Program) FRSQRTE(v0, v1 interface{}) *Instruction {
     }
     // FRSQRTE  <V><d>, <V><n>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -32833,6 +34272,8 @@ func (self *Program) FRSQRTE(v0, v1 interface{}) *Instruction {
     }
     // FRSQRTE  <Hd>, <Hn>
     if isHr(v0) && isHr(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(asisdmiscfp16(1, 1, 29, sa_hn, sa_hd))
@@ -32877,6 +34318,7 @@ func (self *Program) FRSQRTS(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -32900,6 +34342,8 @@ func (self *Program) FRSQRTS(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec4H, Vec8H) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -32913,6 +34357,7 @@ func (self *Program) FRSQRTS(v0, v1, v2 interface{}) *Instruction {
     }
     // FRSQRTS  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -32928,6 +34373,8 @@ func (self *Program) FRSQRTS(v0, v1, v2 interface{}) *Instruction {
     }
     // FRSQRTS  <Hd>, <Hn>, <Hm>
     if isHr(v0) && isHr(v1) && isHr(v2) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         sa_hm := uint32(v2.(asm.Register).ID())
@@ -32985,6 +34432,7 @@ func (self *Program) FSQRT(v0, v1 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -33000,6 +34448,8 @@ func (self *Program) FSQRT(v0, v1 interface{}) *Instruction {
     }
     // FSQRT  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -33012,18 +34462,21 @@ func (self *Program) FSQRT(v0, v1 interface{}) *Instruction {
     }
     // FSQRT  <Dd>, <Dn>
     if isDr(v0) && isDr(v1) {
+        p.class = ClassFloat
         sa_dd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 1, 3, sa_dn, sa_dd))
     }
     // FSQRT  <Hd>, <Hn>
     if isHr(v0) && isHr(v1) {
+        p.class = ClassFloat
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 3, 3, sa_hn, sa_hd))
     }
     // FSQRT  <Sd>, <Sn>
     if isSr(v0) && isSr(v1) {
+        p.class = ClassFloat
         sa_sd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         return p.setins(floatdp1(0, 0, 0, 3, sa_sn, sa_sd))
@@ -33085,6 +34538,7 @@ func (self *Program) FSUB(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -33108,6 +34562,8 @@ func (self *Program) FSUB(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec4H, Vec8H) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -33121,6 +34577,7 @@ func (self *Program) FSUB(v0, v1, v2 interface{}) *Instruction {
     }
     // FSUB  <Dd>, <Dn>, <Dm>
     if isDr(v0) && isDr(v1) && isDr(v2) {
+        p.class = ClassFloat
         sa_dd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
         sa_dm := uint32(v2.(asm.Register).ID())
@@ -33128,6 +34585,7 @@ func (self *Program) FSUB(v0, v1, v2 interface{}) *Instruction {
     }
     // FSUB  <Hd>, <Hn>, <Hm>
     if isHr(v0) && isHr(v1) && isHr(v2) {
+        p.class = ClassFloat
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         sa_hm := uint32(v2.(asm.Register).ID())
@@ -33135,6 +34593,7 @@ func (self *Program) FSUB(v0, v1, v2 interface{}) *Instruction {
     }
     // FSUB  <Sd>, <Sn>, <Sm>
     if isSr(v0) && isSr(v1) && isSr(v2) {
+        p.class = ClassFloat
         sa_sd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         sa_sm := uint32(v2.(asm.Register).ID())
@@ -33159,6 +34618,8 @@ func (self *Program) FSUB(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) GCSB(v0 interface{}) *Instruction {
     p := self.alloc("GCSB", 1, Operands { v0 })
     if v0 == DSYNC {
+        self.require(FEAT_GCS)
+        p.class = ClassSystem
         return p.setins(hints(2, 3))
     }
     p.Free()
@@ -33185,7 +34646,9 @@ func (self *Program) GCSPOPCX(vv ...interface{}) *Instruction {
         default : panic("instruction GCSPOPCX takes 0 or 1 operands")
     }
     if (len(vv) == 0 || len(vv) == 1) && (len(vv) == 0 || isXr(vv[0])) {
-        var sa_xt uint32
+        self.require(FEAT_GCS)
+        p.class = ClassSystem
+        sa_xt := uint32(0b11111)
         if len(vv) == 1 {
             sa_xt = uint32(vv[0].(asm.Register).ID())
         }
@@ -33209,6 +34672,8 @@ func (self *Program) GCSPOPCX(vv ...interface{}) *Instruction {
 func (self *Program) GCSPOPM(v0 interface{}) *Instruction {
     p := self.alloc("GCSPOPM", 1, Operands { v0 })
     if isXr(v0) {
+        self.require(FEAT_GCS)
+        p.class = ClassSystem
         sa_xt := uint32(v0.(asm.Register).ID())
         return p.setins(systeminstrs(1, 3, 7, 7, 1, sa_xt))
     }
@@ -33235,7 +34700,9 @@ func (self *Program) GCSPOPX(vv ...interface{}) *Instruction {
         default : panic("instruction GCSPOPX takes 0 or 1 operands")
     }
     if (len(vv) == 0 || len(vv) == 1) && (len(vv) == 0 || isXr(vv[0])) {
-        var sa_xt uint32
+        self.require(FEAT_GCS)
+        p.class = ClassSystem
+        sa_xt := uint32(0b11111)
         if len(vv) == 1 {
             sa_xt = uint32(vv[0].(asm.Register).ID())
         }
@@ -33258,6 +34725,8 @@ func (self *Program) GCSPOPX(vv ...interface{}) *Instruction {
 func (self *Program) GCSPUSHM(v0 interface{}) *Instruction {
     p := self.alloc("GCSPUSHM", 1, Operands { v0 })
     if isXr(v0) {
+        self.require(FEAT_GCS)
+        p.class = ClassSystem
         sa_xt_1 := uint32(v0.(asm.Register).ID())
         return p.setins(systeminstrs(0, 3, 7, 7, 0, sa_xt_1))
     }
@@ -33284,7 +34753,9 @@ func (self *Program) GCSPUSHX(vv ...interface{}) *Instruction {
         default : panic("instruction GCSPUSHX takes 0 or 1 operands")
     }
     if (len(vv) == 0 || len(vv) == 1) && (len(vv) == 0 || isXr(vv[0])) {
-        var sa_xt uint32
+        self.require(FEAT_GCS)
+        p.class = ClassSystem
+        sa_xt := uint32(0b11111)
         if len(vv) == 1 {
             sa_xt = uint32(vv[0].(asm.Register).ID())
         }
@@ -33308,6 +34779,8 @@ func (self *Program) GCSPUSHX(vv ...interface{}) *Instruction {
 func (self *Program) GCSSS1(v0 interface{}) *Instruction {
     p := self.alloc("GCSSS1", 1, Operands { v0 })
     if isXr(v0) {
+        self.require(FEAT_GCS)
+        p.class = ClassSystem
         sa_xt_1 := uint32(v0.(asm.Register).ID())
         return p.setins(systeminstrs(0, 3, 7, 7, 2, sa_xt_1))
     }
@@ -33330,6 +34803,8 @@ func (self *Program) GCSSS1(v0 interface{}) *Instruction {
 func (self *Program) GCSSS2(v0 interface{}) *Instruction {
     p := self.alloc("GCSSS2", 1, Operands { v0 })
     if isXr(v0) {
+        self.require(FEAT_GCS)
+        p.class = ClassSystem
         sa_xt := uint32(v0.(asm.Register).ID())
         return p.setins(systeminstrs(1, 3, 7, 7, 3, sa_xt))
     }
@@ -33349,6 +34824,8 @@ func (self *Program) GCSSS2(v0 interface{}) *Instruction {
 func (self *Program) GCSSTR(v0, v1 interface{}) *Instruction {
     p := self.alloc("GCSSTR", 2, Operands { v0, v1 })
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_GCS)
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(ldst_gcs(0, sa_xn_sp, sa_xt))
@@ -33381,6 +34858,8 @@ func (self *Program) GCSSTR(v0, v1 interface{}) *Instruction {
 func (self *Program) GCSSTTR(v0, v1 interface{}) *Instruction {
     p := self.alloc("GCSSTTR", 2, Operands { v0, v1 })
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_GCS)
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(ldst_gcs(1, sa_xn_sp, sa_xt))
@@ -33402,6 +34881,8 @@ func (self *Program) GCSSTTR(v0, v1 interface{}) *Instruction {
 func (self *Program) GMI(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("GMI", 3, Operands { v0, v1, v2 })
     if isXr(v0) && isXrOrSP(v1) && isXr(v2) {
+        self.require(FEAT_MTE)
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
@@ -33434,6 +34915,7 @@ func (self *Program) GMI(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) HINT(v0 interface{}) *Instruction {
     p := self.alloc("HINT", 1, Operands { v0 })
     if isUimm7(v0) {
+        p.class = ClassSystem
         sa_imm := asUimm7(v0)
         return p.setins(hints(ubfx(sa_imm, 3, 4), mask(sa_imm, 3)))
     }
@@ -33453,6 +34935,7 @@ func (self *Program) HINT(v0 interface{}) *Instruction {
 func (self *Program) HLT(v0 interface{}) *Instruction {
     p := self.alloc("HLT", 1, Operands { v0 })
     if isUimm16(v0) {
+        p.class = ClassSystem
         sa_imm := asUimm16(v0)
         return p.setins(exception(2, sa_imm, 0, 0))
     }
@@ -33484,6 +34967,7 @@ func (self *Program) HLT(v0 interface{}) *Instruction {
 func (self *Program) HVC(v0 interface{}) *Instruction {
     p := self.alloc("HVC", 1, Operands { v0 })
     if isUimm16(v0) {
+        p.class = ClassSystem
         sa_imm := asUimm16(v0)
         return p.setins(exception(0, sa_imm, 0, 2))
     }
@@ -33508,7 +34992,8 @@ func (self *Program) IC(v0 interface{}, vv ...interface{}) *Instruction {
         default : panic("instruction IC takes 1 or 2 operands")
     }
     if (len(vv) == 0 || len(vv) == 1) && isICOption(v0) && (len(vv) == 0 || isXr(vv[0])) {
-        var sa_xt uint32
+        p.class = ClassSystem
+        sa_xt := uint32(0b11111)
         sa_ic_op := uint32(v0.(ICOption))
         if len(vv) == 1 {
             sa_xt = uint32(vv[0].(asm.Register).ID())
@@ -33555,6 +35040,7 @@ func (self *Program) INS(v0, v1 interface{}) *Instruction {
     p := self.alloc("INS", 2, Operands { v0, v1 })
     // INS  <Vd>.<Ts>[<index1>], <Vn>.<Ts>[<index2>]
     if isVri(v0) && isVri(v1) {
+        p.class = ClassAdvSimd
         var sa_ts uint32
         var sa_ts__bit_mask uint32
         sa_vd := uint32(v0.(VidxRegister).ID())
@@ -33582,6 +35068,7 @@ func (self *Program) INS(v0, v1 interface{}) *Instruction {
     }
     // INS  <Vd>.<Ts>[<index>], <R><n>
     if isVri(v0) && isWrOrXr(v1) {
+        p.class = ClassAdvSimd
         var sa_r [3]uint32
         var sa_r__bit_mask [3]uint32
         var sa_ts uint32
@@ -33642,7 +35129,9 @@ func (self *Program) IRG(v0, v1 interface{}, vv ...interface{}) *Instruction {
         default : panic("instruction IRG takes 2 or 3 operands")
     }
     if (len(vv) == 0 || len(vv) == 1) && isXrOrSP(v0) && isXrOrSP(v1) && (len(vv) == 0 || isXr(vv[0])) {
-        var sa_xm uint32
+        self.require(FEAT_MTE)
+        p.class = ClassGeneral
+        sa_xm := uint32(XZR.ID())
         sa_xd_sp := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(v1.(asm.Register).ID())
         if len(vv) == 1 {
@@ -33678,6 +35167,7 @@ func (self *Program) ISB(vv ...interface{}) *Instruction {
         default : panic("instruction ISB takes 0 or 1 operands")
     }
     if (len(vv) == 0 || len(vv) == 1) && (len(vv) == 0 || isOption(vv[0])) {
+        p.class = ClassSystem
         sa_option := SY
         if len(vv) == 1 {
             sa_option = vv[0].(BarrierOption)
@@ -33742,6 +35232,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
     p := self.alloc("LD1", 2, Operands { v0, v1 })
     // LD1  { <Vt>.<T> }, [<Xn|SP>]
     if isVec1(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -33760,6 +35251,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
     }
     // LD1  { <Vt>.<T>, <Vt2>.<T> }, [<Xn|SP>]
     if isVec2(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -33778,6 +35270,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
     }
     // LD1  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T> }, [<Xn|SP>]
     if isVec3(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -33796,6 +35289,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
     }
     // LD1  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T>, <Vt4>.<T> }, [<Xn|SP>]
     if isVec4(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -33814,6 +35308,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
     }
     // LD1  { <Vt>.<T> }, [<Xn|SP>], <imm>
     if isVec1(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -33836,6 +35331,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
     }
     // LD1  { <Vt>.<T>, <Vt2>.<T> }, [<Xn|SP>], <imm>
     if isVec2(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -33858,6 +35354,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
     }
     // LD1  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T> }, [<Xn|SP>], <imm>
     if isVec3(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -33880,6 +35377,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
     }
     // LD1  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T>, <Vt4>.<T> }, [<Xn|SP>], <imm>
     if isVec4(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -33902,6 +35400,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
     }
     // LD1  { <Vt>.<T> }, [<Xn|SP>], <Xm>
     if isVec1(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -33921,6 +35420,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
     }
     // LD1  { <Vt>.<T>, <Vt2>.<T> }, [<Xn|SP>], <Xm>
     if isVec2(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -33940,6 +35440,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
     }
     // LD1  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T> }, [<Xn|SP>], <Xm>
     if isVec3(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -33959,6 +35460,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
     }
     // LD1  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T>, <Vt4>.<T> }, [<Xn|SP>], <Xm>
     if isVec4(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -33984,6 +35486,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 0 &&
        mext(v1) == nil {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -33997,6 +35500,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 0 &&
        mext(v1) == nil {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_1 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -34010,6 +35514,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 0 &&
        mext(v1) == nil {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_2 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -34033,6 +35538,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 0 &&
        mext(v1) == nil {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -34046,6 +35552,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 1 &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -34059,6 +35566,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -34083,6 +35591,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 8 &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_1 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -34096,6 +35605,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_1 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -34110,6 +35620,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 2 &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_2 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -34133,6 +35644,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_2 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -34157,6 +35669,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 4 &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -34170,6 +35683,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -34202,6 +35716,7 @@ func (self *Program) LD1R(v0, v1 interface{}) *Instruction {
     p := self.alloc("LD1R", 2, Operands { v0, v1 })
     // LD1R  { <Vt>.<T> }, [<Xn|SP>]
     if isVec1(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -34220,6 +35735,7 @@ func (self *Program) LD1R(v0, v1 interface{}) *Instruction {
     }
     // LD1R  { <Vt>.<T> }, [<Xn|SP>], <imm>
     if isVec1(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -34242,6 +35758,7 @@ func (self *Program) LD1R(v0, v1 interface{}) *Instruction {
     }
     // LD1R  { <Vt>.<T> }, [<Xn|SP>], <Xm>
     if isVec1(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -34310,6 +35827,7 @@ func (self *Program) LD2(v0, v1 interface{}) *Instruction {
     p := self.alloc("LD2", 2, Operands { v0, v1 })
     // LD2  { <Vt>.<T>, <Vt2>.<T> }, [<Xn|SP>]
     if isVec2(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -34327,6 +35845,7 @@ func (self *Program) LD2(v0, v1 interface{}) *Instruction {
     }
     // LD2  { <Vt>.<T>, <Vt2>.<T> }, [<Xn|SP>], <imm>
     if isVec2(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -34348,6 +35867,7 @@ func (self *Program) LD2(v0, v1 interface{}) *Instruction {
     }
     // LD2  { <Vt>.<T>, <Vt2>.<T> }, [<Xn|SP>], <Xm>
     if isVec2(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -34372,6 +35892,7 @@ func (self *Program) LD2(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 0 &&
        mext(v1) == nil {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -34385,6 +35906,7 @@ func (self *Program) LD2(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 0 &&
        mext(v1) == nil {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_1 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -34398,6 +35920,7 @@ func (self *Program) LD2(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 0 &&
        mext(v1) == nil {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_2 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -34421,6 +35944,7 @@ func (self *Program) LD2(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 0 &&
        mext(v1) == nil {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -34434,6 +35958,7 @@ func (self *Program) LD2(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 2 &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -34447,6 +35972,7 @@ func (self *Program) LD2(v0, v1 interface{}) *Instruction {
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -34471,6 +35997,7 @@ func (self *Program) LD2(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 16 &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_1 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -34484,6 +36011,7 @@ func (self *Program) LD2(v0, v1 interface{}) *Instruction {
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_1 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -34498,6 +36026,7 @@ func (self *Program) LD2(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 4 &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_2 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -34521,6 +36050,7 @@ func (self *Program) LD2(v0, v1 interface{}) *Instruction {
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_2 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -34545,6 +36075,7 @@ func (self *Program) LD2(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 8 &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -34558,6 +36089,7 @@ func (self *Program) LD2(v0, v1 interface{}) *Instruction {
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -34589,6 +36121,7 @@ func (self *Program) LD2R(v0, v1 interface{}) *Instruction {
     p := self.alloc("LD2R", 2, Operands { v0, v1 })
     // LD2R  { <Vt>.<T>, <Vt2>.<T> }, [<Xn|SP>]
     if isVec2(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -34607,6 +36140,7 @@ func (self *Program) LD2R(v0, v1 interface{}) *Instruction {
     }
     // LD2R  { <Vt>.<T>, <Vt2>.<T> }, [<Xn|SP>], <imm>
     if isVec2(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -34629,6 +36163,7 @@ func (self *Program) LD2R(v0, v1 interface{}) *Instruction {
     }
     // LD2R  { <Vt>.<T>, <Vt2>.<T> }, [<Xn|SP>], <Xm>
     if isVec2(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -34663,7 +36198,7 @@ func (self *Program) LD2R(v0, v1 interface{}) *Instruction {
 // multiple 3-element structures from memory and writes the result to the three
 // SIMD&FP registers, with de-interleaving.
 //
-// [image:A64.deinterleaving_an_array_of_3_element_structures.svg]
+// [image:isa_docs/ISA_A64_xml_A_profile-2022-12_OPT/A64.deinterleaving_an_array_of_3_element_structures.svg]
 // de-interleaving of a LD3.16 (multiple 3-element structures) instruction:
 //
 // Depending on the settings in the CPACR_EL1 , CPTR_EL2 , and CPTR_EL3 registers,
@@ -34698,6 +36233,7 @@ func (self *Program) LD3(v0, v1 interface{}) *Instruction {
     p := self.alloc("LD3", 2, Operands { v0, v1 })
     // LD3  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T> }, [<Xn|SP>]
     if isVec3(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -34715,6 +36251,7 @@ func (self *Program) LD3(v0, v1 interface{}) *Instruction {
     }
     // LD3  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T> }, [<Xn|SP>], <imm>
     if isVec3(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -34736,6 +36273,7 @@ func (self *Program) LD3(v0, v1 interface{}) *Instruction {
     }
     // LD3  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T> }, [<Xn|SP>], <Xm>
     if isVec3(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -34760,6 +36298,7 @@ func (self *Program) LD3(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 0 &&
        mext(v1) == nil {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -34773,6 +36312,7 @@ func (self *Program) LD3(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 0 &&
        mext(v1) == nil {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_1 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -34786,6 +36326,7 @@ func (self *Program) LD3(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 0 &&
        mext(v1) == nil {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_2 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -34809,6 +36350,7 @@ func (self *Program) LD3(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 0 &&
        mext(v1) == nil {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -34822,6 +36364,7 @@ func (self *Program) LD3(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 3 &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -34835,6 +36378,7 @@ func (self *Program) LD3(v0, v1 interface{}) *Instruction {
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -34859,6 +36403,7 @@ func (self *Program) LD3(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 24 &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_1 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -34872,6 +36417,7 @@ func (self *Program) LD3(v0, v1 interface{}) *Instruction {
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_1 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -34886,6 +36432,7 @@ func (self *Program) LD3(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 6 &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_2 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -34909,6 +36456,7 @@ func (self *Program) LD3(v0, v1 interface{}) *Instruction {
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_2 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -34933,6 +36481,7 @@ func (self *Program) LD3(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 12 &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -34946,6 +36495,7 @@ func (self *Program) LD3(v0, v1 interface{}) *Instruction {
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -34977,6 +36527,7 @@ func (self *Program) LD3R(v0, v1 interface{}) *Instruction {
     p := self.alloc("LD3R", 2, Operands { v0, v1 })
     // LD3R  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T> }, [<Xn|SP>]
     if isVec3(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -34995,6 +36546,7 @@ func (self *Program) LD3R(v0, v1 interface{}) *Instruction {
     }
     // LD3R  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T> }, [<Xn|SP>], <imm>
     if isVec3(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -35017,6 +36569,7 @@ func (self *Program) LD3R(v0, v1 interface{}) *Instruction {
     }
     // LD3R  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T> }, [<Xn|SP>], <Xm>
     if isVec3(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -35085,6 +36638,7 @@ func (self *Program) LD4(v0, v1 interface{}) *Instruction {
     p := self.alloc("LD4", 2, Operands { v0, v1 })
     // LD4  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T>, <Vt4>.<T> }, [<Xn|SP>]
     if isVec4(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -35102,6 +36656,7 @@ func (self *Program) LD4(v0, v1 interface{}) *Instruction {
     }
     // LD4  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T>, <Vt4>.<T> }, [<Xn|SP>], <imm>
     if isVec4(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -35123,6 +36678,7 @@ func (self *Program) LD4(v0, v1 interface{}) *Instruction {
     }
     // LD4  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T>, <Vt4>.<T> }, [<Xn|SP>], <Xm>
     if isVec4(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -35147,6 +36703,7 @@ func (self *Program) LD4(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 0 &&
        mext(v1) == nil {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -35160,6 +36717,7 @@ func (self *Program) LD4(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 0 &&
        mext(v1) == nil {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_1 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -35173,6 +36731,7 @@ func (self *Program) LD4(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 0 &&
        mext(v1) == nil {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_2 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -35196,6 +36755,7 @@ func (self *Program) LD4(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 0 &&
        mext(v1) == nil {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -35209,6 +36769,7 @@ func (self *Program) LD4(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 4 &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -35222,6 +36783,7 @@ func (self *Program) LD4(v0, v1 interface{}) *Instruction {
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -35246,6 +36808,7 @@ func (self *Program) LD4(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 32 &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_1 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -35259,6 +36822,7 @@ func (self *Program) LD4(v0, v1 interface{}) *Instruction {
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_1 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -35273,6 +36837,7 @@ func (self *Program) LD4(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 8 &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_2 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -35296,6 +36861,7 @@ func (self *Program) LD4(v0, v1 interface{}) *Instruction {
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_2 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -35320,6 +36886,7 @@ func (self *Program) LD4(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 16 &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -35333,6 +36900,7 @@ func (self *Program) LD4(v0, v1 interface{}) *Instruction {
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -35364,6 +36932,7 @@ func (self *Program) LD4R(v0, v1 interface{}) *Instruction {
     p := self.alloc("LD4R", 2, Operands { v0, v1 })
     // LD4R  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T>, <Vt4>.<T> }, [<Xn|SP>]
     if isVec4(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -35382,6 +36951,7 @@ func (self *Program) LD4R(v0, v1 interface{}) *Instruction {
     }
     // LD4R  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T>, <Vt4>.<T> }, [<Xn|SP>], <imm>
     if isVec4(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -35404,6 +36974,7 @@ func (self *Program) LD4R(v0, v1 interface{}) *Instruction {
     }
     // LD4R  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T>, <Vt4>.<T> }, [<Xn|SP>], <Xm>
     if isVec4(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -35445,6 +37016,8 @@ func (self *Program) LD64B(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
        mext(v1) == nil {
+        self.require(FEAT_LS64)
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(3, 0, 0, 0, 31, 1, 5, sa_xn_sp, sa_xt))
@@ -35485,6 +37058,8 @@ func (self *Program) LDADD(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -35498,6 +37073,8 @@ func (self *Program) LDADD(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -35540,6 +37117,8 @@ func (self *Program) LDADDA(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -35553,6 +37132,8 @@ func (self *Program) LDADDA(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -35592,6 +37173,8 @@ func (self *Program) LDADDAB(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -35630,6 +37213,8 @@ func (self *Program) LDADDAH(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -35671,6 +37256,8 @@ func (self *Program) LDADDAL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -35684,6 +37271,8 @@ func (self *Program) LDADDAL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -35723,6 +37312,8 @@ func (self *Program) LDADDALB(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -35761,6 +37352,8 @@ func (self *Program) LDADDALH(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -35799,6 +37392,8 @@ func (self *Program) LDADDB(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -35837,6 +37432,8 @@ func (self *Program) LDADDH(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -35878,6 +37475,8 @@ func (self *Program) LDADDL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -35891,6 +37490,8 @@ func (self *Program) LDADDL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -35930,6 +37531,8 @@ func (self *Program) LDADDLB(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -35968,6 +37571,8 @@ func (self *Program) LDADDLH(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -36015,6 +37620,8 @@ func (self *Program) LDAP1(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 0 &&
        mext(v1) == nil {
+        self.require(FEAT_LRCPC3)
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -36055,6 +37662,8 @@ func (self *Program) LDAPR(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDAPR", 2, Operands { v0, v1 })
     // LDAPR  <Wt>, [<Xn|SP>], #4
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 4 && mext(v1) == PostIndex {
+        self.require(FEAT_LRCPC3)
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(ldapstl_writeback(2, 1, sa_xn_sp, sa_wt))
@@ -36066,12 +37675,16 @@ func (self *Program) LDAPR(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
        mext(v1) == nil {
+        self.require(FEAT_LRCPC)
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(2, 0, 1, 0, 31, 1, 4, sa_xn_sp, sa_wt))
     }
     // LDAPR  <Xt>, [<Xn|SP>], #8
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 8 && mext(v1) == PostIndex {
+        self.require(FEAT_LRCPC3)
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(ldapstl_writeback(3, 1, sa_xn_sp, sa_xt))
@@ -36083,6 +37696,8 @@ func (self *Program) LDAPR(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
        mext(v1) == nil {
+        self.require(FEAT_LRCPC)
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(3, 0, 1, 0, 31, 1, 4, sa_xn_sp, sa_xt))
@@ -36124,6 +37739,8 @@ func (self *Program) LDAPRB(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
        mext(v1) == nil {
+        self.require(FEAT_LRCPC)
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(0, 0, 1, 0, 31, 1, 4, sa_xn_sp, sa_wt))
@@ -36164,6 +37781,8 @@ func (self *Program) LDAPRH(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
        mext(v1) == nil {
+        self.require(FEAT_LRCPC)
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(1, 0, 1, 0, 31, 1, 4, sa_xn_sp, sa_wt))
@@ -36229,6 +37848,8 @@ func (self *Program) LDAPUR(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDAPUR", 2, Operands { v0, v1 })
     // LDAPUR  <Bt>, [<Xn|SP>{, #<simm>}]
     if isBr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        self.require(FEAT_LRCPC3)
+        p.class = ClassFpSimd
         sa_bt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -36236,6 +37857,8 @@ func (self *Program) LDAPUR(v0, v1 interface{}) *Instruction {
     }
     // LDAPUR  <Dt>, [<Xn|SP>{, #<simm>}]
     if isDr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        self.require(FEAT_LRCPC3)
+        p.class = ClassFpSimd
         sa_dt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -36243,6 +37866,8 @@ func (self *Program) LDAPUR(v0, v1 interface{}) *Instruction {
     }
     // LDAPUR  <Ht>, [<Xn|SP>{, #<simm>}]
     if isHr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        self.require(FEAT_LRCPC3)
+        p.class = ClassFpSimd
         sa_ht := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -36250,6 +37875,8 @@ func (self *Program) LDAPUR(v0, v1 interface{}) *Instruction {
     }
     // LDAPUR  <Qt>, [<Xn|SP>{, #<simm>}]
     if isQr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        self.require(FEAT_LRCPC3)
+        p.class = ClassFpSimd
         sa_qt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -36257,6 +37884,8 @@ func (self *Program) LDAPUR(v0, v1 interface{}) *Instruction {
     }
     // LDAPUR  <St>, [<Xn|SP>{, #<simm>}]
     if isSr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        self.require(FEAT_LRCPC3)
+        p.class = ClassFpSimd
         sa_st := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -36264,6 +37893,8 @@ func (self *Program) LDAPUR(v0, v1 interface{}) *Instruction {
     }
     // LDAPUR  <Wt>, [<Xn|SP>{, #<simm>}]
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        self.require(FEAT_LRCPC2)
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -36271,6 +37902,8 @@ func (self *Program) LDAPUR(v0, v1 interface{}) *Instruction {
     }
     // LDAPUR  <Xt>, [<Xn|SP>{, #<simm>}]
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        self.require(FEAT_LRCPC2)
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -36308,6 +37941,8 @@ func (self *Program) LDAPUR(v0, v1 interface{}) *Instruction {
 func (self *Program) LDAPURB(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDAPURB", 2, Operands { v0, v1 })
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        self.require(FEAT_LRCPC2)
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -36344,6 +37979,8 @@ func (self *Program) LDAPURB(v0, v1 interface{}) *Instruction {
 func (self *Program) LDAPURH(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDAPURH", 2, Operands { v0, v1 })
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        self.require(FEAT_LRCPC2)
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -36382,6 +38019,8 @@ func (self *Program) LDAPURSB(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDAPURSB", 2, Operands { v0, v1 })
     // LDAPURSB  <Wt>, [<Xn|SP>{, #<simm>}]
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        self.require(FEAT_LRCPC2)
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -36389,6 +38028,8 @@ func (self *Program) LDAPURSB(v0, v1 interface{}) *Instruction {
     }
     // LDAPURSB  <Xt>, [<Xn|SP>{, #<simm>}]
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        self.require(FEAT_LRCPC2)
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -36428,6 +38069,8 @@ func (self *Program) LDAPURSH(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDAPURSH", 2, Operands { v0, v1 })
     // LDAPURSH  <Wt>, [<Xn|SP>{, #<simm>}]
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        self.require(FEAT_LRCPC2)
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -36435,6 +38078,8 @@ func (self *Program) LDAPURSH(v0, v1 interface{}) *Instruction {
     }
     // LDAPURSH  <Xt>, [<Xn|SP>{, #<simm>}]
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        self.require(FEAT_LRCPC2)
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -36472,6 +38117,8 @@ func (self *Program) LDAPURSH(v0, v1 interface{}) *Instruction {
 func (self *Program) LDAPURSW(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDAPURSW", 2, Operands { v0, v1 })
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        self.require(FEAT_LRCPC2)
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -36508,6 +38155,7 @@ func (self *Program) LDAR(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
        mext(v1) == nil {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(ldstord(2, 1, 31, 1, 31, sa_xn_sp, sa_wt))
@@ -36519,6 +38167,7 @@ func (self *Program) LDAR(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
        mext(v1) == nil {
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(ldstord(3, 1, 31, 1, 31, sa_xn_sp, sa_xt))
@@ -36552,6 +38201,7 @@ func (self *Program) LDARB(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
        mext(v1) == nil {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(ldstord(0, 1, 31, 1, 31, sa_xn_sp, sa_wt))
@@ -36585,6 +38235,7 @@ func (self *Program) LDARH(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
        mext(v1) == nil {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(ldstord(1, 1, 31, 1, 31, sa_xn_sp, sa_wt))
@@ -36624,6 +38275,7 @@ func (self *Program) LDAXP(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
        mext(v2) == nil {
+        p.class = ClassGeneral
         sa_wt1 := uint32(v0.(asm.Register).ID())
         sa_wt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -36637,6 +38289,7 @@ func (self *Program) LDAXP(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
        mext(v2) == nil {
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -36671,6 +38324,7 @@ func (self *Program) LDAXR(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
        mext(v1) == nil {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(ldstexclr(2, 1, 31, 1, 31, sa_xn_sp, sa_wt))
@@ -36682,6 +38336,7 @@ func (self *Program) LDAXR(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
        mext(v1) == nil {
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(ldstexclr(3, 1, 31, 1, 31, sa_xn_sp, sa_xt))
@@ -36713,6 +38368,7 @@ func (self *Program) LDAXRB(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
        mext(v1) == nil {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(ldstexclr(0, 1, 31, 1, 31, sa_xn_sp, sa_wt))
@@ -36743,6 +38399,7 @@ func (self *Program) LDAXRH(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
        mext(v1) == nil {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(ldstexclr(1, 1, 31, 1, 31, sa_xn_sp, sa_wt))
@@ -36783,6 +38440,8 @@ func (self *Program) LDCLR(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -36796,6 +38455,8 @@ func (self *Program) LDCLR(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -36838,6 +38499,8 @@ func (self *Program) LDCLRA(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -36851,6 +38514,8 @@ func (self *Program) LDCLRA(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -36891,6 +38556,8 @@ func (self *Program) LDCLRAB(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -36930,6 +38597,8 @@ func (self *Program) LDCLRAH(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -36971,6 +38640,8 @@ func (self *Program) LDCLRAL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -36984,6 +38655,8 @@ func (self *Program) LDCLRAL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -37024,6 +38697,8 @@ func (self *Program) LDCLRALB(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -37063,6 +38738,8 @@ func (self *Program) LDCLRALH(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -37102,6 +38779,8 @@ func (self *Program) LDCLRB(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -37141,6 +38820,8 @@ func (self *Program) LDCLRH(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -37182,6 +38863,8 @@ func (self *Program) LDCLRL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -37195,6 +38878,8 @@ func (self *Program) LDCLRL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -37235,6 +38920,8 @@ func (self *Program) LDCLRLB(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -37274,6 +38961,8 @@ func (self *Program) LDCLRLH(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -37307,6 +38996,8 @@ func (self *Program) LDCLRP(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE128)
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -37340,6 +39031,8 @@ func (self *Program) LDCLRPA(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE128)
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -37373,6 +39066,8 @@ func (self *Program) LDCLRPAL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE128)
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -37406,6 +39101,8 @@ func (self *Program) LDCLRPL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE128)
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -37447,6 +39144,8 @@ func (self *Program) LDEOR(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -37460,6 +39159,8 @@ func (self *Program) LDEOR(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -37502,6 +39203,8 @@ func (self *Program) LDEORA(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -37515,6 +39218,8 @@ func (self *Program) LDEORA(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -37555,6 +39260,8 @@ func (self *Program) LDEORAB(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -37594,6 +39301,8 @@ func (self *Program) LDEORAH(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -37635,6 +39344,8 @@ func (self *Program) LDEORAL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -37648,6 +39359,8 @@ func (self *Program) LDEORAL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -37688,6 +39401,8 @@ func (self *Program) LDEORALB(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -37727,6 +39442,8 @@ func (self *Program) LDEORALH(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -37766,6 +39483,8 @@ func (self *Program) LDEORB(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -37805,6 +39524,8 @@ func (self *Program) LDEORH(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -37846,6 +39567,8 @@ func (self *Program) LDEORL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -37859,6 +39582,8 @@ func (self *Program) LDEORL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -37899,6 +39624,8 @@ func (self *Program) LDEORLB(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -37938,6 +39665,8 @@ func (self *Program) LDEORLH(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -37961,6 +39690,8 @@ func (self *Program) LDEORLH(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) LDG(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDG", 2, Operands { v0, v1 })
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        self.require(FEAT_MTE)
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -37992,6 +39723,8 @@ func (self *Program) LDG(v0, v1 interface{}) *Instruction {
 func (self *Program) LDGM(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDGM", 2, Operands { v0, v1 })
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_MTE2)
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         Rn := uint32(0b00000)
@@ -38046,6 +39779,8 @@ func (self *Program) LDIAPP(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 8 &&
        mext(v2) == PostIndex {
+        self.require(FEAT_LRCPC3)
+        p.class = ClassGeneral
         sa_wt1 := uint32(v0.(asm.Register).ID())
         sa_wt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -38059,6 +39794,8 @@ func (self *Program) LDIAPP(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LRCPC3)
+        p.class = ClassGeneral
         sa_wt1 := uint32(v0.(asm.Register).ID())
         sa_wt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -38072,6 +39809,8 @@ func (self *Program) LDIAPP(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 16 &&
        mext(v2) == PostIndex {
+        self.require(FEAT_LRCPC3)
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -38085,6 +39824,8 @@ func (self *Program) LDIAPP(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LRCPC3)
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -38121,6 +39862,8 @@ func (self *Program) LDLAR(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
        mext(v1) == nil {
+        self.require(FEAT_LOR)
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(ldstord(2, 1, 31, 0, 31, sa_xn_sp, sa_wt))
@@ -38132,6 +39875,8 @@ func (self *Program) LDLAR(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
        mext(v1) == nil {
+        self.require(FEAT_LOR)
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(ldstord(3, 1, 31, 0, 31, sa_xn_sp, sa_xt))
@@ -38165,6 +39910,8 @@ func (self *Program) LDLARB(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
        mext(v1) == nil {
+        self.require(FEAT_LOR)
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(ldstord(0, 1, 31, 0, 31, sa_xn_sp, sa_wt))
@@ -38197,6 +39944,8 @@ func (self *Program) LDLARH(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
        mext(v1) == nil {
+        self.require(FEAT_LOR)
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(ldstord(1, 1, 31, 0, 31, sa_xn_sp, sa_wt))
@@ -38250,6 +39999,7 @@ func (self *Program) LDNP(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDNP", 3, Operands { v0, v1, v2 })
     // LDNP  <Dt1>, <Dt2>, [<Xn|SP>{, #<imm>}]
     if isDr(v0) && isDr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == nil {
+        p.class = ClassFpSimd
         sa_dt1 := uint32(v0.(asm.Register).ID())
         sa_dt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -38258,6 +40008,7 @@ func (self *Program) LDNP(v0, v1, v2 interface{}) *Instruction {
     }
     // LDNP  <Qt1>, <Qt2>, [<Xn|SP>{, #<imm>}]
     if isQr(v0) && isQr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == nil {
+        p.class = ClassFpSimd
         sa_qt1 := uint32(v0.(asm.Register).ID())
         sa_qt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -38266,6 +40017,7 @@ func (self *Program) LDNP(v0, v1, v2 interface{}) *Instruction {
     }
     // LDNP  <St1>, <St2>, [<Xn|SP>{, #<imm>}]
     if isSr(v0) && isSr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == nil {
+        p.class = ClassFpSimd
         sa_st1 := uint32(v0.(asm.Register).ID())
         sa_st2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -38274,6 +40026,7 @@ func (self *Program) LDNP(v0, v1, v2 interface{}) *Instruction {
     }
     // LDNP  <Wt1>, <Wt2>, [<Xn|SP>{, #<imm>}]
     if isWr(v0) && isWr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == nil {
+        p.class = ClassGeneral
         sa_wt1 := uint32(v0.(asm.Register).ID())
         sa_wt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -38282,6 +40035,7 @@ func (self *Program) LDNP(v0, v1, v2 interface{}) *Instruction {
     }
     // LDNP  <Xt1>, <Xt2>, [<Xn|SP>{, #<imm>}]
     if isXr(v0) && isXr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == nil {
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -38341,6 +40095,7 @@ func (self *Program) LDP(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDP", 3, Operands { v0, v1, v2 })
     // LDP  <Dt1>, <Dt2>, [<Xn|SP>{, #<imm>}]
     if isDr(v0) && isDr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == nil {
+        p.class = ClassFpSimd
         sa_dt1 := uint32(v0.(asm.Register).ID())
         sa_dt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -38349,6 +40104,7 @@ func (self *Program) LDP(v0, v1, v2 interface{}) *Instruction {
     }
     // LDP  <Dt1>, <Dt2>, [<Xn|SP>], #<imm>
     if isDr(v0) && isDr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PostIndex {
+        p.class = ClassFpSimd
         sa_dt1 := uint32(v0.(asm.Register).ID())
         sa_dt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -38357,6 +40113,7 @@ func (self *Program) LDP(v0, v1, v2 interface{}) *Instruction {
     }
     // LDP  <Dt1>, <Dt2>, [<Xn|SP>, #<imm>]!
     if isDr(v0) && isDr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PreIndex {
+        p.class = ClassFpSimd
         sa_dt1 := uint32(v0.(asm.Register).ID())
         sa_dt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -38365,6 +40122,7 @@ func (self *Program) LDP(v0, v1, v2 interface{}) *Instruction {
     }
     // LDP  <Qt1>, <Qt2>, [<Xn|SP>{, #<imm>}]
     if isQr(v0) && isQr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == nil {
+        p.class = ClassFpSimd
         sa_qt1 := uint32(v0.(asm.Register).ID())
         sa_qt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -38373,6 +40131,7 @@ func (self *Program) LDP(v0, v1, v2 interface{}) *Instruction {
     }
     // LDP  <Qt1>, <Qt2>, [<Xn|SP>], #<imm>
     if isQr(v0) && isQr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PostIndex {
+        p.class = ClassFpSimd
         sa_qt1 := uint32(v0.(asm.Register).ID())
         sa_qt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -38381,6 +40140,7 @@ func (self *Program) LDP(v0, v1, v2 interface{}) *Instruction {
     }
     // LDP  <Qt1>, <Qt2>, [<Xn|SP>, #<imm>]!
     if isQr(v0) && isQr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PreIndex {
+        p.class = ClassFpSimd
         sa_qt1 := uint32(v0.(asm.Register).ID())
         sa_qt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -38389,6 +40149,7 @@ func (self *Program) LDP(v0, v1, v2 interface{}) *Instruction {
     }
     // LDP  <St1>, <St2>, [<Xn|SP>{, #<imm>}]
     if isSr(v0) && isSr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == nil {
+        p.class = ClassFpSimd
         sa_st1 := uint32(v0.(asm.Register).ID())
         sa_st2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -38397,6 +40158,7 @@ func (self *Program) LDP(v0, v1, v2 interface{}) *Instruction {
     }
     // LDP  <St1>, <St2>, [<Xn|SP>], #<imm>
     if isSr(v0) && isSr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PostIndex {
+        p.class = ClassFpSimd
         sa_st1 := uint32(v0.(asm.Register).ID())
         sa_st2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -38405,6 +40167,7 @@ func (self *Program) LDP(v0, v1, v2 interface{}) *Instruction {
     }
     // LDP  <St1>, <St2>, [<Xn|SP>, #<imm>]!
     if isSr(v0) && isSr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PreIndex {
+        p.class = ClassFpSimd
         sa_st1 := uint32(v0.(asm.Register).ID())
         sa_st2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -38413,6 +40176,7 @@ func (self *Program) LDP(v0, v1, v2 interface{}) *Instruction {
     }
     // LDP  <Wt1>, <Wt2>, [<Xn|SP>{, #<imm>}]
     if isWr(v0) && isWr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == nil {
+        p.class = ClassGeneral
         sa_wt1 := uint32(v0.(asm.Register).ID())
         sa_wt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -38421,6 +40185,7 @@ func (self *Program) LDP(v0, v1, v2 interface{}) *Instruction {
     }
     // LDP  <Wt1>, <Wt2>, [<Xn|SP>], #<imm>
     if isWr(v0) && isWr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PostIndex {
+        p.class = ClassGeneral
         sa_wt1 := uint32(v0.(asm.Register).ID())
         sa_wt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -38429,6 +40194,7 @@ func (self *Program) LDP(v0, v1, v2 interface{}) *Instruction {
     }
     // LDP  <Wt1>, <Wt2>, [<Xn|SP>, #<imm>]!
     if isWr(v0) && isWr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PreIndex {
+        p.class = ClassGeneral
         sa_wt1 := uint32(v0.(asm.Register).ID())
         sa_wt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -38437,6 +40203,7 @@ func (self *Program) LDP(v0, v1, v2 interface{}) *Instruction {
     }
     // LDP  <Xt1>, <Xt2>, [<Xn|SP>{, #<imm>}]
     if isXr(v0) && isXr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == nil {
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -38445,6 +40212,7 @@ func (self *Program) LDP(v0, v1, v2 interface{}) *Instruction {
     }
     // LDP  <Xt1>, <Xt2>, [<Xn|SP>], #<imm>
     if isXr(v0) && isXr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PostIndex {
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -38453,6 +40221,7 @@ func (self *Program) LDP(v0, v1, v2 interface{}) *Instruction {
     }
     // LDP  <Xt1>, <Xt2>, [<Xn|SP>, #<imm>]!
     if isXr(v0) && isXr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PreIndex {
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -38485,6 +40254,7 @@ func (self *Program) LDPSW(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDPSW", 3, Operands { v0, v1, v2 })
     // LDPSW  <Xt1>, <Xt2>, [<Xn|SP>{, #<imm>}]
     if isXr(v0) && isXr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == nil {
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -38493,6 +40263,7 @@ func (self *Program) LDPSW(v0, v1, v2 interface{}) *Instruction {
     }
     // LDPSW  <Xt1>, <Xt2>, [<Xn|SP>], #<imm>
     if isXr(v0) && isXr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PostIndex {
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -38501,6 +40272,7 @@ func (self *Program) LDPSW(v0, v1, v2 interface{}) *Instruction {
     }
     // LDPSW  <Xt1>, <Xt2>, [<Xn|SP>, #<imm>]!
     if isXr(v0) && isXr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PreIndex {
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -38616,6 +40388,7 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDR", 2, Operands { v0, v1 })
     // LDR  <Bt>, [<Xn|SP>], #<simm>
     if isBr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        p.class = ClassFpSimd
         sa_bt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -38623,6 +40396,7 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
     }
     // LDR  <Bt>, [<Xn|SP>, #<simm>]!
     if isBr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+        p.class = ClassFpSimd
         sa_bt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -38630,6 +40404,7 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
     }
     // LDR  <Bt>, [<Xn|SP>{, #<pimm>}]
     if isBr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassFpSimd
         sa_bt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_pimm := uint32(moffs(v1))
@@ -38637,6 +40412,7 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
     }
     // LDR  <Dt>, [<Xn|SP>], #<simm>
     if isDr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        p.class = ClassFpSimd
         sa_dt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -38644,6 +40420,7 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
     }
     // LDR  <Dt>, [<Xn|SP>, #<simm>]!
     if isDr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+        p.class = ClassFpSimd
         sa_dt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -38651,6 +40428,7 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
     }
     // LDR  <Dt>, [<Xn|SP>{, #<pimm>}]
     if isDr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassFpSimd
         sa_dt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_pimm_1 := uint32(moffs(v1))
@@ -38658,6 +40436,7 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
     }
     // LDR  <Ht>, [<Xn|SP>], #<simm>
     if isHr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        p.class = ClassFpSimd
         sa_ht := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -38665,6 +40444,7 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
     }
     // LDR  <Ht>, [<Xn|SP>, #<simm>]!
     if isHr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+        p.class = ClassFpSimd
         sa_ht := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -38672,6 +40452,7 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
     }
     // LDR  <Ht>, [<Xn|SP>{, #<pimm>}]
     if isHr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassFpSimd
         sa_ht := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_pimm_2 := uint32(moffs(v1))
@@ -38679,6 +40460,7 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
     }
     // LDR  <Qt>, [<Xn|SP>], #<simm>
     if isQr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        p.class = ClassFpSimd
         sa_qt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -38686,6 +40468,7 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
     }
     // LDR  <Qt>, [<Xn|SP>, #<simm>]!
     if isQr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+        p.class = ClassFpSimd
         sa_qt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -38693,6 +40476,7 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
     }
     // LDR  <Qt>, [<Xn|SP>{, #<pimm>}]
     if isQr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassFpSimd
         sa_qt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_pimm_3 := uint32(moffs(v1))
@@ -38700,6 +40484,7 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
     }
     // LDR  <St>, [<Xn|SP>], #<simm>
     if isSr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        p.class = ClassFpSimd
         sa_st := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -38707,6 +40492,7 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
     }
     // LDR  <St>, [<Xn|SP>, #<simm>]!
     if isSr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+        p.class = ClassFpSimd
         sa_st := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -38714,6 +40500,7 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
     }
     // LDR  <St>, [<Xn|SP>{, #<pimm>}]
     if isSr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassFpSimd
         sa_st := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_pimm_4 := uint32(moffs(v1))
@@ -38721,6 +40508,7 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
     }
     // LDR  <Wt>, [<Xn|SP>], #<simm>
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -38728,6 +40516,7 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
     }
     // LDR  <Wt>, [<Xn|SP>, #<simm>]!
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -38735,6 +40524,7 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
     }
     // LDR  <Wt>, [<Xn|SP>{, #<pimm>}]
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_pimm := uint32(moffs(v1))
@@ -38742,6 +40532,7 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
     }
     // LDR  <Xt>, [<Xn|SP>], #<simm>
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -38749,6 +40540,7 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
     }
     // LDR  <Xt>, [<Xn|SP>, #<simm>]!
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -38756,6 +40548,7 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
     }
     // LDR  <Xt>, [<Xn|SP>{, #<pimm>}]
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_pimm_1 := uint32(moffs(v1))
@@ -38763,30 +40556,35 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
     }
     // LDR  <Dt>, <label>
     if isDr(v0) && isLabel(v1) {
+        p.class = ClassFpSimd
         sa_dt := uint32(v0.(asm.Register).ID())
         sa_label := v1.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return loadlit(1, 1, uint32(sa_label.RelativeTo(pc)), sa_dt) })
     }
     // LDR  <Qt>, <label>
     if isQr(v0) && isLabel(v1) {
+        p.class = ClassFpSimd
         sa_qt := uint32(v0.(asm.Register).ID())
         sa_label := v1.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return loadlit(2, 1, uint32(sa_label.RelativeTo(pc)), sa_qt) })
     }
     // LDR  <St>, <label>
     if isSr(v0) && isLabel(v1) {
+        p.class = ClassFpSimd
         sa_st := uint32(v0.(asm.Register).ID())
         sa_label := v1.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return loadlit(0, 1, uint32(sa_label.RelativeTo(pc)), sa_st) })
     }
     // LDR  <Wt>, <label>
     if isWr(v0) && isLabel(v1) {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_label := v1.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return loadlit(0, 0, uint32(sa_label.RelativeTo(pc)), sa_wt) })
     }
     // LDR  <Xt>, <label>
     if isXr(v0) && isLabel(v1) {
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_label := v1.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return loadlit(1, 0, uint32(sa_label.RelativeTo(pc)), sa_xt) })
@@ -38797,7 +40595,8 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
-       (mext(v1) == nil || isSameMod(mext(v1), LSL(0))) {
+       (mext(v1) == nil || modt(mext(v1)) == ModLSL) {
+        p.class = ClassFpSimd
         var sa_amount uint32
         sa_bt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -38809,10 +40608,17 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
     }
     // LDR  <Bt>, [<Xn|SP>, (<Wm>|<Xm>), <extend> {<amount>}]
     if isBr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isWrOrXr(midx(v1)) && isMod(mext(v1)) {
+        p.class = ClassFpSimd
+        var sa_extend uint32
         sa_bt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
-        sa_extend := uint32(mext(v1).(Extension).Extension())
+        switch mext(v1).(Modifier).Type() {
+            case ModUXTW: sa_extend = 0b010
+            case ModSXTW: sa_extend = 0b110
+            case ModSXTX: sa_extend = 0b111
+            default: panic("aarch64: invalid modifier flags")
+        }
         sa_amount := uint32(mext(v1).(Modifier).Amount())
         return p.setins(ldst_regoff(0, 1, 1, sa_xm, sa_extend, sa_amount, sa_xn_sp, sa_bt))
     }
@@ -38822,15 +40628,26 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isWrOrXr(midx(v1)) &&
-       (mext(v1) == nil || isExtend(mext(v1))) {
+       (mext(v1) == nil || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
+        p.class = ClassFpSimd
         var sa_amount_1 uint32
-        var sa_extend_1 uint32
+        sa_extend_1 := uint32(0b011)
         sa_dt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
         if isMod(mext(v1)) {
-            sa_extend_1 = uint32(mext(v1).(Extension).Extension())
-            sa_amount_1 = uint32(mext(v1).(Modifier).Amount())
+            switch mext(v1).(Modifier).Type() {
+                case ModUXTW: sa_extend_1 = 0b010
+                case ModLSL: sa_extend_1 = 0b011
+                case ModSXTW: sa_extend_1 = 0b110
+                case ModSXTX: sa_extend_1 = 0b111
+                default: panic("aarch64: invalid modifier flags")
+            }
+        }
+        switch uint32(mext(v1).(Modifier).Amount()) {
+            case 0: sa_amount_1 = 0b0
+            case 3: sa_amount_1 = 0b1
+            default: panic("aarch64: invalid modifier amount")
         }
         return p.setins(ldst_regoff(3, 1, 1, sa_xm, sa_extend_1, sa_amount_1, sa_xn_sp, sa_dt))
     }
@@ -38840,15 +40657,26 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isWrOrXr(midx(v1)) &&
-       (mext(v1) == nil || isExtend(mext(v1))) {
+       (mext(v1) == nil || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
+        p.class = ClassFpSimd
         var sa_amount_2 uint32
-        var sa_extend_1 uint32
+        sa_extend_1 := uint32(0b011)
         sa_ht := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
         if isMod(mext(v1)) {
-            sa_extend_1 = uint32(mext(v1).(Extension).Extension())
-            sa_amount_2 = uint32(mext(v1).(Modifier).Amount())
+            switch mext(v1).(Modifier).Type() {
+                case ModUXTW: sa_extend_1 = 0b010
+                case ModLSL: sa_extend_1 = 0b011
+                case ModSXTW: sa_extend_1 = 0b110
+                case ModSXTX: sa_extend_1 = 0b111
+                default: panic("aarch64: invalid modifier flags")
+            }
+        }
+        switch uint32(mext(v1).(Modifier).Amount()) {
+            case 0: sa_amount_2 = 0b0
+            case 1: sa_amount_2 = 0b1
+            default: panic("aarch64: invalid modifier amount")
         }
         return p.setins(ldst_regoff(1, 1, 1, sa_xm, sa_extend_1, sa_amount_2, sa_xn_sp, sa_ht))
     }
@@ -38858,15 +40686,26 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isWrOrXr(midx(v1)) &&
-       (mext(v1) == nil || isExtend(mext(v1))) {
+       (mext(v1) == nil || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
+        p.class = ClassFpSimd
         var sa_amount_3 uint32
-        var sa_extend_1 uint32
+        sa_extend_1 := uint32(0b011)
         sa_qt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
         if isMod(mext(v1)) {
-            sa_extend_1 = uint32(mext(v1).(Extension).Extension())
-            sa_amount_3 = uint32(mext(v1).(Modifier).Amount())
+            switch mext(v1).(Modifier).Type() {
+                case ModUXTW: sa_extend_1 = 0b010
+                case ModLSL: sa_extend_1 = 0b011
+                case ModSXTW: sa_extend_1 = 0b110
+                case ModSXTX: sa_extend_1 = 0b111
+                default: panic("aarch64: invalid modifier flags")
+            }
+        }
+        switch uint32(mext(v1).(Modifier).Amount()) {
+            case 0: sa_amount_3 = 0b0
+            case 4: sa_amount_3 = 0b1
+            default: panic("aarch64: invalid modifier amount")
         }
         return p.setins(ldst_regoff(0, 1, 3, sa_xm, sa_extend_1, sa_amount_3, sa_xn_sp, sa_qt))
     }
@@ -38876,15 +40715,26 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isWrOrXr(midx(v1)) &&
-       (mext(v1) == nil || isExtend(mext(v1))) {
+       (mext(v1) == nil || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
+        p.class = ClassFpSimd
         var sa_amount_4 uint32
-        var sa_extend_1 uint32
+        sa_extend_1 := uint32(0b011)
         sa_st := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
         if isMod(mext(v1)) {
-            sa_extend_1 = uint32(mext(v1).(Extension).Extension())
-            sa_amount_4 = uint32(mext(v1).(Modifier).Amount())
+            switch mext(v1).(Modifier).Type() {
+                case ModUXTW: sa_extend_1 = 0b010
+                case ModLSL: sa_extend_1 = 0b011
+                case ModSXTW: sa_extend_1 = 0b110
+                case ModSXTX: sa_extend_1 = 0b111
+                default: panic("aarch64: invalid modifier flags")
+            }
+        }
+        switch uint32(mext(v1).(Modifier).Amount()) {
+            case 0: sa_amount_4 = 0b0
+            case 2: sa_amount_4 = 0b1
+            default: panic("aarch64: invalid modifier amount")
         }
         return p.setins(ldst_regoff(2, 1, 1, sa_xm, sa_extend_1, sa_amount_4, sa_xn_sp, sa_st))
     }
@@ -38894,15 +40744,26 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isWrOrXr(midx(v1)) &&
-       (mext(v1) == nil || isExtend(mext(v1))) {
+       (mext(v1) == nil || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
+        p.class = ClassGeneral
         var sa_amount uint32
-        var sa_extend uint32
+        sa_extend := uint32(0b011)
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
         if isMod(mext(v1)) {
-            sa_extend = uint32(mext(v1).(Extension).Extension())
-            sa_amount = uint32(mext(v1).(Modifier).Amount())
+            switch mext(v1).(Modifier).Type() {
+                case ModUXTW: sa_extend = 0b010
+                case ModLSL: sa_extend = 0b011
+                case ModSXTW: sa_extend = 0b110
+                case ModSXTX: sa_extend = 0b111
+                default: panic("aarch64: invalid modifier flags")
+            }
+        }
+        switch uint32(mext(v1).(Modifier).Amount()) {
+            case 0: sa_amount = 0b0
+            case 2: sa_amount = 0b1
+            default: panic("aarch64: invalid modifier amount")
         }
         return p.setins(ldst_regoff(2, 0, 1, sa_xm, sa_extend, sa_amount, sa_xn_sp, sa_wt))
     }
@@ -38912,15 +40773,26 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isWrOrXr(midx(v1)) &&
-       (mext(v1) == nil || isExtend(mext(v1))) {
+       (mext(v1) == nil || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
+        p.class = ClassGeneral
         var sa_amount_1 uint32
-        var sa_extend uint32
+        sa_extend := uint32(0b011)
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
         if isMod(mext(v1)) {
-            sa_extend = uint32(mext(v1).(Extension).Extension())
-            sa_amount_1 = uint32(mext(v1).(Modifier).Amount())
+            switch mext(v1).(Modifier).Type() {
+                case ModUXTW: sa_extend = 0b010
+                case ModLSL: sa_extend = 0b011
+                case ModSXTW: sa_extend = 0b110
+                case ModSXTX: sa_extend = 0b111
+                default: panic("aarch64: invalid modifier flags")
+            }
+        }
+        switch uint32(mext(v1).(Modifier).Amount()) {
+            case 0: sa_amount_1 = 0b0
+            case 3: sa_amount_1 = 0b1
+            default: panic("aarch64: invalid modifier amount")
         }
         return p.setins(ldst_regoff(3, 0, 1, sa_xm, sa_extend, sa_amount_1, sa_xn_sp, sa_xt))
     }
@@ -38958,6 +40830,8 @@ func (self *Program) LDRAA(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDRAA", 2, Operands { v0, v1 })
     // LDRAA  <Xt>, [<Xn|SP>{, #<simm>}]!
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+        self.require(FEAT_PAuth)
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -38965,6 +40839,8 @@ func (self *Program) LDRAA(v0, v1 interface{}) *Instruction {
     }
     // LDRAA  <Xt>, [<Xn|SP>{, #<simm>}]
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        self.require(FEAT_PAuth)
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -39004,6 +40880,8 @@ func (self *Program) LDRAB(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDRAB", 2, Operands { v0, v1 })
     // LDRAB  <Xt>, [<Xn|SP>{, #<simm>}]!
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+        self.require(FEAT_PAuth)
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -39011,6 +40889,8 @@ func (self *Program) LDRAB(v0, v1 interface{}) *Instruction {
     }
     // LDRAB  <Xt>, [<Xn|SP>{, #<simm>}]
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        self.require(FEAT_PAuth)
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -39052,6 +40932,7 @@ func (self *Program) LDRB(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDRB", 2, Operands { v0, v1 })
     // LDRB  <Wt>, [<Xn|SP>], #<simm>
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -39059,6 +40940,7 @@ func (self *Program) LDRB(v0, v1 interface{}) *Instruction {
     }
     // LDRB  <Wt>, [<Xn|SP>, #<simm>]!
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -39066,6 +40948,7 @@ func (self *Program) LDRB(v0, v1 interface{}) *Instruction {
     }
     // LDRB  <Wt>, [<Xn|SP>{, #<pimm>}]
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_pimm := uint32(moffs(v1))
@@ -39077,7 +40960,8 @@ func (self *Program) LDRB(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
-       (mext(v1) == nil || isSameMod(mext(v1), LSL(0))) {
+       (mext(v1) == nil || modt(mext(v1)) == ModLSL) {
+        p.class = ClassGeneral
         var sa_amount uint32
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -39089,10 +40973,17 @@ func (self *Program) LDRB(v0, v1 interface{}) *Instruction {
     }
     // LDRB  <Wt>, [<Xn|SP>, (<Wm>|<Xm>), <extend> {<amount>}]
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isWrOrXr(midx(v1)) && isMod(mext(v1)) {
+        p.class = ClassGeneral
+        var sa_extend uint32
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
-        sa_extend := uint32(mext(v1).(Extension).Extension())
+        switch mext(v1).(Modifier).Type() {
+            case ModUXTW: sa_extend = 0b010
+            case ModSXTW: sa_extend = 0b110
+            case ModSXTX: sa_extend = 0b111
+            default: panic("aarch64: invalid modifier flags")
+        }
         sa_amount := uint32(mext(v1).(Modifier).Amount())
         return p.setins(ldst_regoff(0, 0, 1, sa_xm, sa_extend, sa_amount, sa_xn_sp, sa_wt))
     }
@@ -39131,6 +41022,7 @@ func (self *Program) LDRH(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDRH", 2, Operands { v0, v1 })
     // LDRH  <Wt>, [<Xn|SP>], #<simm>
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -39138,6 +41030,7 @@ func (self *Program) LDRH(v0, v1 interface{}) *Instruction {
     }
     // LDRH  <Wt>, [<Xn|SP>, #<simm>]!
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -39145,6 +41038,7 @@ func (self *Program) LDRH(v0, v1 interface{}) *Instruction {
     }
     // LDRH  <Wt>, [<Xn|SP>{, #<pimm>}]
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_pimm := uint32(moffs(v1))
@@ -39156,15 +41050,26 @@ func (self *Program) LDRH(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isWrOrXr(midx(v1)) &&
-       (mext(v1) == nil || isExtend(mext(v1))) {
+       (mext(v1) == nil || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
+        p.class = ClassGeneral
         var sa_amount uint32
-        var sa_extend uint32
+        sa_extend := uint32(0b011)
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
         if isMod(mext(v1)) {
-            sa_extend = uint32(mext(v1).(Extension).Extension())
-            sa_amount = uint32(mext(v1).(Modifier).Amount())
+            switch mext(v1).(Modifier).Type() {
+                case ModUXTW: sa_extend = 0b010
+                case ModLSL: sa_extend = 0b011
+                case ModSXTW: sa_extend = 0b110
+                case ModSXTX: sa_extend = 0b111
+                default: panic("aarch64: invalid modifier flags")
+            }
+        }
+        switch uint32(mext(v1).(Modifier).Amount()) {
+            case 0: sa_amount = 0b0
+            case 1: sa_amount = 0b1
+            default: panic("aarch64: invalid modifier amount")
         }
         return p.setins(ldst_regoff(1, 0, 1, sa_xm, sa_extend, sa_amount, sa_xn_sp, sa_wt))
     }
@@ -39209,6 +41114,7 @@ func (self *Program) LDRSB(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDRSB", 2, Operands { v0, v1 })
     // LDRSB  <Wt>, [<Xn|SP>], #<simm>
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -39216,6 +41122,7 @@ func (self *Program) LDRSB(v0, v1 interface{}) *Instruction {
     }
     // LDRSB  <Wt>, [<Xn|SP>, #<simm>]!
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -39223,6 +41130,7 @@ func (self *Program) LDRSB(v0, v1 interface{}) *Instruction {
     }
     // LDRSB  <Wt>, [<Xn|SP>{, #<pimm>}]
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_pimm := uint32(moffs(v1))
@@ -39230,6 +41138,7 @@ func (self *Program) LDRSB(v0, v1 interface{}) *Instruction {
     }
     // LDRSB  <Xt>, [<Xn|SP>], #<simm>
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -39237,6 +41146,7 @@ func (self *Program) LDRSB(v0, v1 interface{}) *Instruction {
     }
     // LDRSB  <Xt>, [<Xn|SP>, #<simm>]!
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -39244,6 +41154,7 @@ func (self *Program) LDRSB(v0, v1 interface{}) *Instruction {
     }
     // LDRSB  <Xt>, [<Xn|SP>{, #<pimm>}]
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_pimm := uint32(moffs(v1))
@@ -39255,7 +41166,8 @@ func (self *Program) LDRSB(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
-       (mext(v1) == nil || isSameMod(mext(v1), LSL(0))) {
+       (mext(v1) == nil || modt(mext(v1)) == ModLSL) {
+        p.class = ClassGeneral
         var sa_amount uint32
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -39267,10 +41179,17 @@ func (self *Program) LDRSB(v0, v1 interface{}) *Instruction {
     }
     // LDRSB  <Wt>, [<Xn|SP>, (<Wm>|<Xm>), <extend> {<amount>}]
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isWrOrXr(midx(v1)) && isMod(mext(v1)) {
+        p.class = ClassGeneral
+        var sa_extend uint32
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
-        sa_extend := uint32(mext(v1).(Extension).Extension())
+        switch mext(v1).(Modifier).Type() {
+            case ModUXTW: sa_extend = 0b010
+            case ModSXTW: sa_extend = 0b110
+            case ModSXTX: sa_extend = 0b111
+            default: panic("aarch64: invalid modifier flags")
+        }
         sa_amount := uint32(mext(v1).(Modifier).Amount())
         return p.setins(ldst_regoff(0, 0, 3, sa_xm, sa_extend, sa_amount, sa_xn_sp, sa_wt))
     }
@@ -39280,7 +41199,8 @@ func (self *Program) LDRSB(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
-       (mext(v1) == nil || isSameMod(mext(v1), LSL(0))) {
+       (mext(v1) == nil || modt(mext(v1)) == ModLSL) {
+        p.class = ClassGeneral
         var sa_amount uint32
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -39292,10 +41212,17 @@ func (self *Program) LDRSB(v0, v1 interface{}) *Instruction {
     }
     // LDRSB  <Xt>, [<Xn|SP>, (<Wm>|<Xm>), <extend> {<amount>}]
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isWrOrXr(midx(v1)) && isMod(mext(v1)) {
+        p.class = ClassGeneral
+        var sa_extend uint32
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
-        sa_extend := uint32(mext(v1).(Extension).Extension())
+        switch mext(v1).(Modifier).Type() {
+            case ModUXTW: sa_extend = 0b010
+            case ModSXTW: sa_extend = 0b110
+            case ModSXTX: sa_extend = 0b111
+            default: panic("aarch64: invalid modifier flags")
+        }
         sa_amount := uint32(mext(v1).(Modifier).Amount())
         return p.setins(ldst_regoff(0, 0, 2, sa_xm, sa_extend, sa_amount, sa_xn_sp, sa_xt))
     }
@@ -39339,6 +41266,7 @@ func (self *Program) LDRSH(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDRSH", 2, Operands { v0, v1 })
     // LDRSH  <Wt>, [<Xn|SP>], #<simm>
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -39346,6 +41274,7 @@ func (self *Program) LDRSH(v0, v1 interface{}) *Instruction {
     }
     // LDRSH  <Wt>, [<Xn|SP>, #<simm>]!
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -39353,6 +41282,7 @@ func (self *Program) LDRSH(v0, v1 interface{}) *Instruction {
     }
     // LDRSH  <Wt>, [<Xn|SP>{, #<pimm>}]
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_pimm := uint32(moffs(v1))
@@ -39360,6 +41290,7 @@ func (self *Program) LDRSH(v0, v1 interface{}) *Instruction {
     }
     // LDRSH  <Xt>, [<Xn|SP>], #<simm>
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -39367,6 +41298,7 @@ func (self *Program) LDRSH(v0, v1 interface{}) *Instruction {
     }
     // LDRSH  <Xt>, [<Xn|SP>, #<simm>]!
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -39374,6 +41306,7 @@ func (self *Program) LDRSH(v0, v1 interface{}) *Instruction {
     }
     // LDRSH  <Xt>, [<Xn|SP>{, #<pimm>}]
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_pimm := uint32(moffs(v1))
@@ -39385,15 +41318,26 @@ func (self *Program) LDRSH(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isWrOrXr(midx(v1)) &&
-       (mext(v1) == nil || isExtend(mext(v1))) {
+       (mext(v1) == nil || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
+        p.class = ClassGeneral
         var sa_amount uint32
-        var sa_extend uint32
+        sa_extend := uint32(0b011)
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
         if isMod(mext(v1)) {
-            sa_extend = uint32(mext(v1).(Extension).Extension())
-            sa_amount = uint32(mext(v1).(Modifier).Amount())
+            switch mext(v1).(Modifier).Type() {
+                case ModUXTW: sa_extend = 0b010
+                case ModLSL: sa_extend = 0b011
+                case ModSXTW: sa_extend = 0b110
+                case ModSXTX: sa_extend = 0b111
+                default: panic("aarch64: invalid modifier flags")
+            }
+        }
+        switch uint32(mext(v1).(Modifier).Amount()) {
+            case 0: sa_amount = 0b0
+            case 1: sa_amount = 0b1
+            default: panic("aarch64: invalid modifier amount")
         }
         return p.setins(ldst_regoff(1, 0, 3, sa_xm, sa_extend, sa_amount, sa_xn_sp, sa_wt))
     }
@@ -39403,15 +41347,26 @@ func (self *Program) LDRSH(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isWrOrXr(midx(v1)) &&
-       (mext(v1) == nil || isExtend(mext(v1))) {
+       (mext(v1) == nil || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
+        p.class = ClassGeneral
         var sa_amount uint32
-        var sa_extend uint32
+        sa_extend := uint32(0b011)
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
         if isMod(mext(v1)) {
-            sa_extend = uint32(mext(v1).(Extension).Extension())
-            sa_amount = uint32(mext(v1).(Modifier).Amount())
+            switch mext(v1).(Modifier).Type() {
+                case ModUXTW: sa_extend = 0b010
+                case ModLSL: sa_extend = 0b011
+                case ModSXTW: sa_extend = 0b110
+                case ModSXTX: sa_extend = 0b111
+                default: panic("aarch64: invalid modifier flags")
+            }
+        }
+        switch uint32(mext(v1).(Modifier).Amount()) {
+            case 0: sa_amount = 0b0
+            case 1: sa_amount = 0b1
+            default: panic("aarch64: invalid modifier amount")
         }
         return p.setins(ldst_regoff(1, 0, 2, sa_xm, sa_extend, sa_amount, sa_xn_sp, sa_xt))
     }
@@ -39459,6 +41414,7 @@ func (self *Program) LDRSW(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDRSW", 2, Operands { v0, v1 })
     // LDRSW  <Xt>, [<Xn|SP>], #<simm>
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -39466,6 +41422,7 @@ func (self *Program) LDRSW(v0, v1 interface{}) *Instruction {
     }
     // LDRSW  <Xt>, [<Xn|SP>, #<simm>]!
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -39473,6 +41430,7 @@ func (self *Program) LDRSW(v0, v1 interface{}) *Instruction {
     }
     // LDRSW  <Xt>, [<Xn|SP>{, #<pimm>}]
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_pimm := uint32(moffs(v1))
@@ -39480,6 +41438,7 @@ func (self *Program) LDRSW(v0, v1 interface{}) *Instruction {
     }
     // LDRSW  <Xt>, <label>
     if isXr(v0) && isLabel(v1) {
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_label := v1.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return loadlit(2, 0, uint32(sa_label.RelativeTo(pc)), sa_xt) })
@@ -39490,15 +41449,26 @@ func (self *Program) LDRSW(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isWrOrXr(midx(v1)) &&
-       (mext(v1) == nil || isExtend(mext(v1))) {
+       (mext(v1) == nil || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
+        p.class = ClassGeneral
         var sa_amount uint32
-        var sa_extend uint32
+        sa_extend := uint32(0b011)
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
         if isMod(mext(v1)) {
-            sa_extend = uint32(mext(v1).(Extension).Extension())
-            sa_amount = uint32(mext(v1).(Modifier).Amount())
+            switch mext(v1).(Modifier).Type() {
+                case ModUXTW: sa_extend = 0b010
+                case ModLSL: sa_extend = 0b011
+                case ModSXTW: sa_extend = 0b110
+                case ModSXTX: sa_extend = 0b111
+                default: panic("aarch64: invalid modifier flags")
+            }
+        }
+        switch uint32(mext(v1).(Modifier).Amount()) {
+            case 0: sa_amount = 0b0
+            case 2: sa_amount = 0b1
+            default: panic("aarch64: invalid modifier amount")
         }
         return p.setins(ldst_regoff(2, 0, 2, sa_xm, sa_extend, sa_amount, sa_xn_sp, sa_xt))
     }
@@ -39539,6 +41509,8 @@ func (self *Program) LDSET(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -39552,6 +41524,8 @@ func (self *Program) LDSET(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -39594,6 +41568,8 @@ func (self *Program) LDSETA(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -39607,6 +41583,8 @@ func (self *Program) LDSETA(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -39647,6 +41625,8 @@ func (self *Program) LDSETAB(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -39686,6 +41666,8 @@ func (self *Program) LDSETAH(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -39727,6 +41709,8 @@ func (self *Program) LDSETAL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -39740,6 +41724,8 @@ func (self *Program) LDSETAL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -39780,6 +41766,8 @@ func (self *Program) LDSETALB(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -39819,6 +41807,8 @@ func (self *Program) LDSETALH(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -39858,6 +41848,8 @@ func (self *Program) LDSETB(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -39897,6 +41889,8 @@ func (self *Program) LDSETH(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -39938,6 +41932,8 @@ func (self *Program) LDSETL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -39951,6 +41947,8 @@ func (self *Program) LDSETL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -39991,6 +41989,8 @@ func (self *Program) LDSETLB(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -40030,6 +42030,8 @@ func (self *Program) LDSETLH(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -40063,6 +42065,8 @@ func (self *Program) LDSETP(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE128)
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -40096,6 +42100,8 @@ func (self *Program) LDSETPA(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE128)
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -40129,6 +42135,8 @@ func (self *Program) LDSETPAL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE128)
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -40162,6 +42170,8 @@ func (self *Program) LDSETPL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE128)
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -40204,6 +42214,8 @@ func (self *Program) LDSMAX(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -40217,6 +42229,8 @@ func (self *Program) LDSMAX(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -40260,6 +42274,8 @@ func (self *Program) LDSMAXA(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -40273,6 +42289,8 @@ func (self *Program) LDSMAXA(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -40313,6 +42331,8 @@ func (self *Program) LDSMAXAB(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -40352,6 +42372,8 @@ func (self *Program) LDSMAXAH(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -40394,6 +42416,8 @@ func (self *Program) LDSMAXAL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -40407,6 +42431,8 @@ func (self *Program) LDSMAXAL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -40447,6 +42473,8 @@ func (self *Program) LDSMAXALB(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -40486,6 +42514,8 @@ func (self *Program) LDSMAXALH(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -40525,6 +42555,8 @@ func (self *Program) LDSMAXB(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -40564,6 +42596,8 @@ func (self *Program) LDSMAXH(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -40606,6 +42640,8 @@ func (self *Program) LDSMAXL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -40619,6 +42655,8 @@ func (self *Program) LDSMAXL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -40659,6 +42697,8 @@ func (self *Program) LDSMAXLB(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -40698,6 +42738,8 @@ func (self *Program) LDSMAXLH(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -40740,6 +42782,8 @@ func (self *Program) LDSMIN(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -40753,6 +42797,8 @@ func (self *Program) LDSMIN(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -40796,6 +42842,8 @@ func (self *Program) LDSMINA(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -40809,6 +42857,8 @@ func (self *Program) LDSMINA(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -40849,6 +42899,8 @@ func (self *Program) LDSMINAB(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -40888,6 +42940,8 @@ func (self *Program) LDSMINAH(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -40930,6 +42984,8 @@ func (self *Program) LDSMINAL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -40943,6 +42999,8 @@ func (self *Program) LDSMINAL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -40983,6 +43041,8 @@ func (self *Program) LDSMINALB(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -41022,6 +43082,8 @@ func (self *Program) LDSMINALH(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -41061,6 +43123,8 @@ func (self *Program) LDSMINB(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -41100,6 +43164,8 @@ func (self *Program) LDSMINH(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -41142,6 +43208,8 @@ func (self *Program) LDSMINL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -41155,6 +43223,8 @@ func (self *Program) LDSMINL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -41195,6 +43265,8 @@ func (self *Program) LDSMINLB(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -41234,6 +43306,8 @@ func (self *Program) LDSMINLH(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -41269,6 +43343,7 @@ func (self *Program) LDTR(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDTR", 2, Operands { v0, v1 })
     // LDTR  <Wt>, [<Xn|SP>{, #<simm>}]
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -41276,6 +43351,7 @@ func (self *Program) LDTR(v0, v1 interface{}) *Instruction {
     }
     // LDTR  <Xt>, [<Xn|SP>{, #<simm>}]
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -41310,6 +43386,7 @@ func (self *Program) LDTR(v0, v1 interface{}) *Instruction {
 func (self *Program) LDTRB(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDTRB", 2, Operands { v0, v1 })
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -41343,6 +43420,7 @@ func (self *Program) LDTRB(v0, v1 interface{}) *Instruction {
 func (self *Program) LDTRH(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDTRH", 2, Operands { v0, v1 })
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -41378,6 +43456,7 @@ func (self *Program) LDTRSB(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDTRSB", 2, Operands { v0, v1 })
     // LDTRSB  <Wt>, [<Xn|SP>{, #<simm>}]
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -41385,6 +43464,7 @@ func (self *Program) LDTRSB(v0, v1 interface{}) *Instruction {
     }
     // LDTRSB  <Xt>, [<Xn|SP>{, #<simm>}]
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -41422,6 +43502,7 @@ func (self *Program) LDTRSH(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDTRSH", 2, Operands { v0, v1 })
     // LDTRSH  <Wt>, [<Xn|SP>{, #<simm>}]
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -41429,6 +43510,7 @@ func (self *Program) LDTRSH(v0, v1 interface{}) *Instruction {
     }
     // LDTRSH  <Xt>, [<Xn|SP>{, #<simm>}]
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -41463,6 +43545,7 @@ func (self *Program) LDTRSH(v0, v1 interface{}) *Instruction {
 func (self *Program) LDTRSW(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDTRSW", 2, Operands { v0, v1 })
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -41505,6 +43588,8 @@ func (self *Program) LDUMAX(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -41518,6 +43603,8 @@ func (self *Program) LDUMAX(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -41561,6 +43648,8 @@ func (self *Program) LDUMAXA(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -41574,6 +43663,8 @@ func (self *Program) LDUMAXA(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -41614,6 +43705,8 @@ func (self *Program) LDUMAXAB(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -41653,6 +43746,8 @@ func (self *Program) LDUMAXAH(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -41695,6 +43790,8 @@ func (self *Program) LDUMAXAL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -41708,6 +43805,8 @@ func (self *Program) LDUMAXAL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -41748,6 +43847,8 @@ func (self *Program) LDUMAXALB(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -41787,6 +43888,8 @@ func (self *Program) LDUMAXALH(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -41826,6 +43929,8 @@ func (self *Program) LDUMAXB(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -41865,6 +43970,8 @@ func (self *Program) LDUMAXH(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -41907,6 +44014,8 @@ func (self *Program) LDUMAXL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -41920,6 +44029,8 @@ func (self *Program) LDUMAXL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -41960,6 +44071,8 @@ func (self *Program) LDUMAXLB(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -41999,6 +44112,8 @@ func (self *Program) LDUMAXLH(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -42041,6 +44156,8 @@ func (self *Program) LDUMIN(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -42054,6 +44171,8 @@ func (self *Program) LDUMIN(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -42097,6 +44216,8 @@ func (self *Program) LDUMINA(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -42110,6 +44231,8 @@ func (self *Program) LDUMINA(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -42150,6 +44273,8 @@ func (self *Program) LDUMINAB(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -42189,6 +44314,8 @@ func (self *Program) LDUMINAH(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -42231,6 +44358,8 @@ func (self *Program) LDUMINAL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -42244,6 +44373,8 @@ func (self *Program) LDUMINAL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -42284,6 +44415,8 @@ func (self *Program) LDUMINALB(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -42323,6 +44456,8 @@ func (self *Program) LDUMINALH(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -42362,6 +44497,8 @@ func (self *Program) LDUMINB(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -42401,6 +44538,8 @@ func (self *Program) LDUMINH(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -42443,6 +44582,8 @@ func (self *Program) LDUMINL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -42456,6 +44597,8 @@ func (self *Program) LDUMINL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -42496,6 +44639,8 @@ func (self *Program) LDUMINLB(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -42535,6 +44680,8 @@ func (self *Program) LDUMINLH(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -42576,6 +44723,7 @@ func (self *Program) LDUR(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDUR", 2, Operands { v0, v1 })
     // LDUR  <Bt>, [<Xn|SP>{, #<simm>}]
     if isBr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassFpSimd
         sa_bt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -42583,6 +44731,7 @@ func (self *Program) LDUR(v0, v1 interface{}) *Instruction {
     }
     // LDUR  <Dt>, [<Xn|SP>{, #<simm>}]
     if isDr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassFpSimd
         sa_dt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -42590,6 +44739,7 @@ func (self *Program) LDUR(v0, v1 interface{}) *Instruction {
     }
     // LDUR  <Ht>, [<Xn|SP>{, #<simm>}]
     if isHr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassFpSimd
         sa_ht := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -42597,6 +44747,7 @@ func (self *Program) LDUR(v0, v1 interface{}) *Instruction {
     }
     // LDUR  <Qt>, [<Xn|SP>{, #<simm>}]
     if isQr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassFpSimd
         sa_qt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -42604,6 +44755,7 @@ func (self *Program) LDUR(v0, v1 interface{}) *Instruction {
     }
     // LDUR  <St>, [<Xn|SP>{, #<simm>}]
     if isSr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassFpSimd
         sa_st := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -42611,6 +44763,7 @@ func (self *Program) LDUR(v0, v1 interface{}) *Instruction {
     }
     // LDUR  <Wt>, [<Xn|SP>{, #<simm>}]
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -42618,6 +44771,7 @@ func (self *Program) LDUR(v0, v1 interface{}) *Instruction {
     }
     // LDUR  <Xt>, [<Xn|SP>{, #<simm>}]
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -42642,6 +44796,7 @@ func (self *Program) LDUR(v0, v1 interface{}) *Instruction {
 func (self *Program) LDURB(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDURB", 2, Operands { v0, v1 })
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -42665,6 +44820,7 @@ func (self *Program) LDURB(v0, v1 interface{}) *Instruction {
 func (self *Program) LDURH(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDURH", 2, Operands { v0, v1 })
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -42690,6 +44846,7 @@ func (self *Program) LDURSB(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDURSB", 2, Operands { v0, v1 })
     // LDURSB  <Wt>, [<Xn|SP>{, #<simm>}]
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -42697,6 +44854,7 @@ func (self *Program) LDURSB(v0, v1 interface{}) *Instruction {
     }
     // LDURSB  <Xt>, [<Xn|SP>{, #<simm>}]
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -42723,6 +44881,7 @@ func (self *Program) LDURSH(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDURSH", 2, Operands { v0, v1 })
     // LDURSH  <Wt>, [<Xn|SP>{, #<simm>}]
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -42730,6 +44889,7 @@ func (self *Program) LDURSH(v0, v1 interface{}) *Instruction {
     }
     // LDURSH  <Xt>, [<Xn|SP>{, #<simm>}]
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -42754,6 +44914,7 @@ func (self *Program) LDURSH(v0, v1 interface{}) *Instruction {
 func (self *Program) LDURSW(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDURSW", 2, Operands { v0, v1 })
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -42793,6 +44954,7 @@ func (self *Program) LDXP(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
        mext(v2) == nil {
+        p.class = ClassGeneral
         sa_wt1 := uint32(v0.(asm.Register).ID())
         sa_wt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -42806,6 +44968,7 @@ func (self *Program) LDXP(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
        mext(v2) == nil {
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -42839,6 +45002,7 @@ func (self *Program) LDXR(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
        mext(v1) == nil {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(ldstexclr(2, 1, 31, 0, 31, sa_xn_sp, sa_wt))
@@ -42850,6 +45014,7 @@ func (self *Program) LDXR(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
        mext(v1) == nil {
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(ldstexclr(3, 1, 31, 0, 31, sa_xn_sp, sa_xt))
@@ -42880,6 +45045,7 @@ func (self *Program) LDXRB(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
        mext(v1) == nil {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(ldstexclr(0, 1, 31, 0, 31, sa_xn_sp, sa_wt))
@@ -42909,6 +45075,7 @@ func (self *Program) LDXRH(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
        mext(v1) == nil {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(ldstexclr(1, 1, 31, 0, 31, sa_xn_sp, sa_wt))
@@ -42942,6 +45109,7 @@ func (self *Program) LSL(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LSL", 3, Operands { v0, v1, v2 })
     // LSL  <Wd>, <Wn>, <Wm>
     if isWr(v0) && isWr(v1) && isWr(v2) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
@@ -42949,6 +45117,7 @@ func (self *Program) LSL(v0, v1, v2 interface{}) *Instruction {
     }
     // LSL  <Xd>, <Xn>, <Xm>
     if isXr(v0) && isXr(v1) && isXr(v2) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
@@ -42956,6 +45125,7 @@ func (self *Program) LSL(v0, v1, v2 interface{}) *Instruction {
     }
     // LSL  <Wd>, <Wn>, #<shift>
     if isWr(v0) && isWr(v1) && isUimm5(v2) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_shift_1 := asLSLShift(v2, 32)
@@ -42963,6 +45133,7 @@ func (self *Program) LSL(v0, v1, v2 interface{}) *Instruction {
     }
     // LSL  <Xd>, <Xn>, #<shift>
     if isXr(v0) && isXr(v1) && isUimm6(v2) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_shift_3 := asLSLShift(v2, 64)
@@ -42989,6 +45160,7 @@ func (self *Program) LSLV(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LSLV", 3, Operands { v0, v1, v2 })
     // LSLV  <Wd>, <Wn>, <Wm>
     if isWr(v0) && isWr(v1) && isWr(v2) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
@@ -42996,6 +45168,7 @@ func (self *Program) LSLV(v0, v1, v2 interface{}) *Instruction {
     }
     // LSLV  <Xd>, <Xn>, <Xm>
     if isXr(v0) && isXr(v1) && isXr(v2) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
@@ -43032,6 +45205,7 @@ func (self *Program) LSR(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LSR", 3, Operands { v0, v1, v2 })
     // LSR  <Wd>, <Wn>, <Wm>
     if isWr(v0) && isWr(v1) && isWr(v2) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
@@ -43039,6 +45213,7 @@ func (self *Program) LSR(v0, v1, v2 interface{}) *Instruction {
     }
     // LSR  <Xd>, <Xn>, <Xm>
     if isXr(v0) && isXr(v1) && isXr(v2) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
@@ -43046,6 +45221,7 @@ func (self *Program) LSR(v0, v1, v2 interface{}) *Instruction {
     }
     // LSR  <Wd>, <Wn>, #<shift>
     if isWr(v0) && isWr(v1) && isUimm6(v2) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_shift := asUimm6(v2)
@@ -43053,6 +45229,7 @@ func (self *Program) LSR(v0, v1, v2 interface{}) *Instruction {
     }
     // LSR  <Xd>, <Xn>, #<shift>
     if isXr(v0) && isXr(v1) && isUimm6(v2) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_shift_2 := asUimm6(v2)
@@ -43079,6 +45256,7 @@ func (self *Program) LSRV(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LSRV", 3, Operands { v0, v1, v2 })
     // LSRV  <Wd>, <Wn>, <Wm>
     if isWr(v0) && isWr(v1) && isWr(v2) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
@@ -43086,6 +45264,7 @@ func (self *Program) LSRV(v0, v1, v2 interface{}) *Instruction {
     }
     // LSRV  <Xd>, <Xn>, <Xm>
     if isXr(v0) && isXr(v1) && isXr(v2) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
@@ -43110,6 +45289,7 @@ func (self *Program) MADD(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("MADD", 4, Operands { v0, v1, v2, v3 })
     // MADD  <Wd>, <Wn>, <Wm>, <Wa>
     if isWr(v0) && isWr(v1) && isWr(v2) && isWr(v3) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
@@ -43118,6 +45298,7 @@ func (self *Program) MADD(v0, v1, v2, v3 interface{}) *Instruction {
     }
     // MADD  <Xd>, <Xn>, <Xm>, <Xa>
     if isXr(v0) && isXr(v1) && isXr(v2) && isXr(v3) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
@@ -43166,6 +45347,7 @@ func (self *Program) MLA(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec4H, Vec8H, Vec2S, Vec4S) &&
        isVri(v2) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         var sa_ts uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -43212,6 +45394,7 @@ func (self *Program) MLA(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -43270,6 +45453,7 @@ func (self *Program) MLS(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec4H, Vec8H, Vec2S, Vec4S) &&
        isVri(v2) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         var sa_ts uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -43316,6 +45500,7 @@ func (self *Program) MLS(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -43350,6 +45535,7 @@ func (self *Program) MNEG(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("MNEG", 3, Operands { v0, v1, v2 })
     // MNEG  <Wd>, <Wn>, <Wm>
     if isWr(v0) && isWr(v1) && isWr(v2) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
@@ -43357,6 +45543,7 @@ func (self *Program) MNEG(v0, v1, v2 interface{}) *Instruction {
     }
     // MNEG  <Xd>, <Xn>, <Xm>
     if isXr(v0) && isXr(v1) && isXr(v2) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
@@ -43475,18 +45662,21 @@ func (self *Program) MOV(v0, v1 interface{}) *Instruction {
     p := self.alloc("MOV", 2, Operands { v0, v1 })
     // MOV  <Wd|WSP>, <Wn|WSP>
     if isWrOrWSP(v0) && isWrOrWSP(v1) {
+        p.class = ClassGeneral
         sa_wd_wsp := uint32(v0.(asm.Register).ID())
         sa_wn_wsp := uint32(v1.(asm.Register).ID())
         return p.setins(addsub_imm(0, 0, 0, 0, 0, sa_wn_wsp, sa_wd_wsp))
     }
     // MOV  <Xd|SP>, <Xn|SP>
     if isXrOrSP(v0) && isXrOrSP(v1) {
+        p.class = ClassGeneral
         sa_xd_sp := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(v1.(asm.Register).ID())
         return p.setins(addsub_imm(1, 0, 0, 0, 0, sa_xn_sp, sa_xd_sp))
     }
     // MOV  <V><d>, <Vn>.<T>[<index>]
     if isAdvSIMD(v0) && isVri(v1) {
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         var sa_t_1__bit_mask uint32
         var sa_v uint32
@@ -43529,6 +45719,7 @@ func (self *Program) MOV(v0, v1 interface{}) *Instruction {
     }
     // MOV  <Vd>.<Ts>[<index1>], <Vn>.<Ts>[<index2>]
     if isVri(v0) && isVri(v1) {
+        p.class = ClassAdvSimd
         var sa_ts uint32
         var sa_ts__bit_mask uint32
         sa_vd := uint32(v0.(VidxRegister).ID())
@@ -43556,6 +45747,7 @@ func (self *Program) MOV(v0, v1 interface{}) *Instruction {
     }
     // MOV  <Vd>.<Ts>[<index>], <R><n>
     if isVri(v0) && isWrOrXr(v1) {
+        p.class = ClassAdvSimd
         var sa_r [3]uint32
         var sa_r__bit_mask [3]uint32
         var sa_ts uint32
@@ -43594,30 +45786,35 @@ func (self *Program) MOV(v0, v1 interface{}) *Instruction {
     }
     // MOV  <Wd>, #<imm>
     if isWr(v0) && isMOVxImm(v1, 32, true) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_imm_1 := asMOVxImm(v1, 32, true)
         return p.setins(movewide(0, 0, ubfx(sa_imm_1, 16, 2), mask(sa_imm_1, 16), sa_wd))
     }
     // MOV  <Xd>, #<imm>
     if isXr(v0) && isMOVxImm(v1, 64, true) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_imm_2 := asMOVxImm(v1, 64, true)
         return p.setins(movewide(1, 0, ubfx(sa_imm_2, 16, 2), mask(sa_imm_2, 16), sa_xd))
     }
     // MOV  <Wd>, #<imm>
     if isWr(v0) && isMOVxImm(v1, 32, false) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_imm_1 := asMOVxImm(v1, 32, false)
         return p.setins(movewide(0, 2, ubfx(sa_imm_1, 16, 2), mask(sa_imm_1, 16), sa_wd))
     }
     // MOV  <Xd>, #<imm>
     if isXr(v0) && isMOVxImm(v1, 64, false) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_imm_2 := asMOVxImm(v1, 64, false)
         return p.setins(movewide(1, 2, ubfx(sa_imm_2, 16, 2), mask(sa_imm_2, 16), sa_xd))
     }
     // MOV  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec8B, Vec16B) && isVr(v1) && isVfmt(v1, Vec8B, Vec16B) && vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -43630,30 +45827,35 @@ func (self *Program) MOV(v0, v1 interface{}) *Instruction {
     }
     // MOV  <Wd|WSP>, #<imm>
     if isWrOrWSP(v0) && isMask32(v1) {
+        p.class = ClassGeneral
         sa_wd_wsp := uint32(v0.(asm.Register).ID())
         sa_imm_2 := asMaskOp(v1)
         return p.setins(log_imm(0, 1, 0, ubfx(sa_imm_2, 6, 6), mask(sa_imm_2, 6), 31, sa_wd_wsp))
     }
     // MOV  <Xd|SP>, #<imm>
     if isXrOrSP(v0) && isMask64(v1) {
+        p.class = ClassGeneral
         sa_xd_sp := uint32(v0.(asm.Register).ID())
         sa_imm_3 := asMaskOp(v1)
         return p.setins(log_imm(1, 1, ubfx(sa_imm_3, 12, 1), ubfx(sa_imm_3, 6, 6), mask(sa_imm_3, 6), 31, sa_xd_sp))
     }
     // MOV  <Wd>, <Wm>
     if isWr(v0) && isWr(v1) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wm_1 := uint32(v1.(asm.Register).ID())
         return p.setins(log_shift(0, 1, 0, 0, sa_wm_1, 0, 31, sa_wd))
     }
     // MOV  <Xd>, <Xm>
     if isXr(v0) && isXr(v1) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xm_1 := uint32(v1.(asm.Register).ID())
         return p.setins(log_shift(1, 1, 0, 0, sa_xm_1, 0, 31, sa_xd))
     }
     // MOV  <Wd>, <Vn>.S[<index>]
     if isWr(v0) && isVri(v1) && vmoder(v1) == ModeS {
+        p.class = ClassAdvSimd
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_vn := uint32(v1.(VidxRegister).ID())
         sa_index_2 := uint32(vidxr(v1))
@@ -43661,6 +45863,7 @@ func (self *Program) MOV(v0, v1 interface{}) *Instruction {
     }
     // MOV  <Xd>, <Vn>.D[<index>]
     if isXr(v0) && isVri(v1) && vmoder(v1) == ModeD {
+        p.class = ClassAdvSimd
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_vn := uint32(v1.(VidxRegister).ID())
         sa_index_1 := uint32(vidxr(v1))
@@ -43698,6 +45901,7 @@ func (self *Program) MOVI(v0, v1 interface{}, vv ...interface{}) *Instruction {
     }
     // MOVI  <Vd>.2D, #<imm>
     if isVr(v0) && vfmt(v0) == Vec2D && isUimm8(v1) {
+        p.class = ClassAdvSimd
         sa_vd := uint32(v0.(asm.Register).ID())
         sa_imm := asUimm8(v1)
         return p.setins(asimdimm(
@@ -43718,6 +45922,7 @@ func (self *Program) MOVI(v0, v1 interface{}, vv ...interface{}) *Instruction {
     }
     // MOVI  <Dd>, #<imm>
     if isDr(v0) && isUimm8(v1) {
+        p.class = ClassAdvSimd
         sa_dd := uint32(v0.(asm.Register).ID())
         sa_imm := asUimm8(v1)
         return p.setins(asimdimm(
@@ -43741,8 +45946,9 @@ func (self *Program) MOVI(v0, v1 interface{}, vv ...interface{}) *Instruction {
        isVr(v0) &&
        isVfmt(v0, Vec4H, Vec8H) &&
        isUimm8(v1) &&
-       (len(vv) == 0 || isSameMod(vv[0], LSL(0))) {
-        var sa_amount uint32
+       (len(vv) == 0 || modt(vv[0]) == ModLSL) {
+        p.class = ClassAdvSimd
+        sa_amount := uint32(0b0)
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -43751,8 +45957,10 @@ func (self *Program) MOVI(v0, v1 interface{}, vv ...interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_imm8 := asUimm8(v1)
-        if len(vv) == 1 {
-            sa_amount = uint32(vv[0].(Modifier).Amount())
+        switch uint32(vv[0].(Modifier).Amount()) {
+            case 0: sa_amount = 0b0
+            case 8: sa_amount = 0b1
+            default: panic("aarch64: invalid modifier amount")
         }
         cmode := uint32(0b1000)
         switch sa_amount {
@@ -43781,8 +45989,9 @@ func (self *Program) MOVI(v0, v1 interface{}, vv ...interface{}) *Instruction {
        isVr(v0) &&
        isVfmt(v0, Vec2S, Vec4S) &&
        isUimm8(v1) &&
-       (len(vv) == 0 || isSameMod(vv[0], LSL(0))) {
-        var sa_amount_1 uint32
+       (len(vv) == 0 || modt(vv[0]) == ModLSL) {
+        p.class = ClassAdvSimd
+        sa_amount_1 := uint32(0b00)
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -43791,8 +46000,12 @@ func (self *Program) MOVI(v0, v1 interface{}, vv ...interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_imm8 := asUimm8(v1)
-        if len(vv) == 1 {
-            sa_amount_1 = uint32(vv[0].(Modifier).Amount())
+        switch uint32(vv[0].(Modifier).Amount()) {
+            case 0: sa_amount_1 = 0b00
+            case 8: sa_amount_1 = 0b01
+            case 16: sa_amount_1 = 0b10
+            case 24: sa_amount_1 = 0b11
+            default: panic("aarch64: invalid modifier amount")
         }
         cmode := uint32(0b0000)
         switch sa_amount_1 {
@@ -43819,7 +46032,9 @@ func (self *Program) MOVI(v0, v1 interface{}, vv ...interface{}) *Instruction {
         ))
     }
     // MOVI  <Vd>.<T>, #<imm8>, MSL #<amount>
-    if len(vv) == 1 && isVr(v0) && isVfmt(v0, Vec2S, Vec4S) && isUimm8(v1) && isSameMod(vv[0], MSL(0)) {
+    if len(vv) == 1 && isVr(v0) && isVfmt(v0, Vec2S, Vec4S) && isUimm8(v1) && modt(vv[0]) == ModMSL {
+        p.class = ClassAdvSimd
+        var sa_amount_2 uint32
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -43828,7 +46043,11 @@ func (self *Program) MOVI(v0, v1 interface{}, vv ...interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_imm8 := asUimm8(v1)
-        sa_amount_2 := uint32(vv[0].(Modifier).Amount())
+        switch uint32(vv[0].(Modifier).Amount()) {
+            case 8: sa_amount_2 = 0b0
+            case 16: sa_amount_2 = 0b1
+            default: panic("aarch64: invalid modifier amount")
+        }
         cmode := uint32(0b1100)
         switch sa_amount_2 {
             case 8: cmode |= 0b0 << 0
@@ -43856,7 +46075,8 @@ func (self *Program) MOVI(v0, v1 interface{}, vv ...interface{}) *Instruction {
        isVr(v0) &&
        isVfmt(v0, Vec8B, Vec16B) &&
        isUimm8(v1) &&
-       (len(vv) == 0 || isSameMod(vv[0], LSL(0)) && modn(vv[0]) == 0) {
+       (len(vv) == 0 || modt(vv[0]) == ModLSL && modn(vv[0]) == 0) {
+        p.class = ClassAdvSimd
         var sa_t_2 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -43904,7 +46124,8 @@ func (self *Program) MOVK(v0, v1 interface{}, vv ...interface{}) *Instruction {
         default : panic("instruction MOVK takes 2 or 3 operands")
     }
     // MOVK  <Wd>, #<imm>{, LSL #<shift>}
-    if (len(vv) == 0 || len(vv) == 1) && isWr(v0) && isUimm16(v1) && (len(vv) == 0 || isSameMod(vv[0], LSL(0))) {
+    if (len(vv) == 0 || len(vv) == 1) && isWr(v0) && isUimm16(v1) && (len(vv) == 0 || modt(vv[0]) == ModLSL) {
+        p.class = ClassGeneral
         var sa_shift uint32
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_imm := asUimm16(v1)
@@ -43914,7 +46135,8 @@ func (self *Program) MOVK(v0, v1 interface{}, vv ...interface{}) *Instruction {
         return p.setins(movewide(0, 3, sa_shift, sa_imm, sa_wd))
     }
     // MOVK  <Xd>, #<imm>{, LSL #<shift>}
-    if (len(vv) == 0 || len(vv) == 1) && isXr(v0) && isUimm16(v1) && (len(vv) == 0 || isSameMod(vv[0], LSL(0))) {
+    if (len(vv) == 0 || len(vv) == 1) && isXr(v0) && isUimm16(v1) && (len(vv) == 0 || modt(vv[0]) == ModLSL) {
+        p.class = ClassGeneral
         var sa_shift_1 uint32
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_imm := asUimm16(v1)
@@ -43946,7 +46168,8 @@ func (self *Program) MOVN(v0, v1 interface{}, vv ...interface{}) *Instruction {
         default : panic("instruction MOVN takes 2 or 3 operands")
     }
     // MOVN  <Wd>, #<imm>{, LSL #<shift>}
-    if (len(vv) == 0 || len(vv) == 1) && isWr(v0) && isUimm16(v1) && (len(vv) == 0 || isSameMod(vv[0], LSL(0))) {
+    if (len(vv) == 0 || len(vv) == 1) && isWr(v0) && isUimm16(v1) && (len(vv) == 0 || modt(vv[0]) == ModLSL) {
+        p.class = ClassGeneral
         var sa_shift uint32
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_imm := asUimm16(v1)
@@ -43956,7 +46179,8 @@ func (self *Program) MOVN(v0, v1 interface{}, vv ...interface{}) *Instruction {
         return p.setins(movewide(0, 0, sa_shift, sa_imm, sa_wd))
     }
     // MOVN  <Xd>, #<imm>{, LSL #<shift>}
-    if (len(vv) == 0 || len(vv) == 1) && isXr(v0) && isUimm16(v1) && (len(vv) == 0 || isSameMod(vv[0], LSL(0))) {
+    if (len(vv) == 0 || len(vv) == 1) && isXr(v0) && isUimm16(v1) && (len(vv) == 0 || modt(vv[0]) == ModLSL) {
+        p.class = ClassGeneral
         var sa_shift_1 uint32
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_imm := asUimm16(v1)
@@ -43988,7 +46212,8 @@ func (self *Program) MOVZ(v0, v1 interface{}, vv ...interface{}) *Instruction {
         default : panic("instruction MOVZ takes 2 or 3 operands")
     }
     // MOVZ  <Wd>, #<imm>{, LSL #<shift>}
-    if (len(vv) == 0 || len(vv) == 1) && isWr(v0) && isUimm16(v1) && (len(vv) == 0 || isSameMod(vv[0], LSL(0))) {
+    if (len(vv) == 0 || len(vv) == 1) && isWr(v0) && isUimm16(v1) && (len(vv) == 0 || modt(vv[0]) == ModLSL) {
+        p.class = ClassGeneral
         var sa_shift uint32
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_imm := asUimm16(v1)
@@ -43998,7 +46223,8 @@ func (self *Program) MOVZ(v0, v1 interface{}, vv ...interface{}) *Instruction {
         return p.setins(movewide(0, 2, sa_shift, sa_imm, sa_wd))
     }
     // MOVZ  <Xd>, #<imm>{, LSL #<shift>}
-    if (len(vv) == 0 || len(vv) == 1) && isXr(v0) && isUimm16(v1) && (len(vv) == 0 || isSameMod(vv[0], LSL(0))) {
+    if (len(vv) == 0 || len(vv) == 1) && isXr(v0) && isUimm16(v1) && (len(vv) == 0 || modt(vv[0]) == ModLSL) {
+        p.class = ClassGeneral
         var sa_shift_1 uint32
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_imm := asUimm16(v1)
@@ -44025,6 +46251,8 @@ func (self *Program) MOVZ(v0, v1 interface{}, vv ...interface{}) *Instruction {
 func (self *Program) MRRS(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("MRRS", 3, Operands { v0, v1, v2 })
     if isXr(v0) && isXr(v1) && isNextReg(v1, v0, 1) && isSysReg(v2) {
+        self.require(FEAT_SYSREG128)
+        p.class = ClassSystem
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_systemreg := uint32(v2.(SystemRegister))
         return p.setins(systemmovepr(
@@ -44053,6 +46281,7 @@ func (self *Program) MRRS(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) MRS(v0, v1 interface{}) *Instruction {
     p := self.alloc("MRS", 2, Operands { v0, v1 })
     if isXr(v0) && isSysReg(v1) {
+        p.class = ClassSystem
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_systemreg := uint32(v1.(SystemRegister))
         return p.setins(systemmove(
@@ -44101,12 +46330,14 @@ func (self *Program) MSR(v0, v1 interface{}) *Instruction {
     p := self.alloc("MSR", 2, Operands { v0, v1 })
     // MSR  <pstatefield>, #<imm>
     if isPState(v0) && isUimm4(v1) {
+        p.class = ClassSystem
         sa_pstatefield := uint32(v0.(PStateField)) << 4
         sa_imm := asUimm4(v1)
         return p.setins(pstate(sa_pstatefield, sa_imm, sa_pstatefield, 31))
     }
     // MSR  (<systemreg>|S<op0>_<op1>_<Cn>_<Cm>_<op2>), <Xt>
     if isSysReg(v0) && isXr(v1) {
+        p.class = ClassSystem
         sa_systemreg := uint32(v0.(SystemRegister))
         sa_xt := uint32(v1.(asm.Register).ID())
         return p.setins(systemmove(
@@ -44137,6 +46368,8 @@ func (self *Program) MSR(v0, v1 interface{}) *Instruction {
 func (self *Program) MSRR(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("MSRR", 3, Operands { v0, v1, v2 })
     if isSysReg(v0) && isXr(v1) && isXr(v2) && isNextReg(v2, v1, 1) {
+        self.require(FEAT_SYSREG128)
+        p.class = ClassSystem
         sa_systemreg := uint32(v0.(SystemRegister))
         sa_xt := uint32(v1.(asm.Register).ID())
         return p.setins(systemmovepr(
@@ -44167,6 +46400,7 @@ func (self *Program) MSUB(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("MSUB", 4, Operands { v0, v1, v2, v3 })
     // MSUB  <Wd>, <Wn>, <Wm>, <Wa>
     if isWr(v0) && isWr(v1) && isWr(v2) && isWr(v3) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
@@ -44175,6 +46409,7 @@ func (self *Program) MSUB(v0, v1, v2, v3 interface{}) *Instruction {
     }
     // MSUB  <Xd>, <Xn>, <Xm>, <Xa>
     if isXr(v0) && isXr(v1) && isXr(v2) && isXr(v3) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
@@ -44223,6 +46458,7 @@ func (self *Program) MUL(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("MUL", 3, Operands { v0, v1, v2 })
     // MUL  <Wd>, <Wn>, <Wm>
     if isWr(v0) && isWr(v1) && isWr(v2) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
@@ -44230,6 +46466,7 @@ func (self *Program) MUL(v0, v1, v2 interface{}) *Instruction {
     }
     // MUL  <Xd>, <Xn>, <Xm>
     if isXr(v0) && isXr(v1) && isXr(v2) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
@@ -44242,6 +46479,7 @@ func (self *Program) MUL(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec4H, Vec8H, Vec2S, Vec4S) &&
        isVri(v2) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         var sa_ts uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -44288,6 +46526,7 @@ func (self *Program) MUL(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -44339,6 +46578,7 @@ func (self *Program) MVN(v0, v1 interface{}, vv ...interface{}) *Instruction {
     }
     // MVN  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec8B, Vec16B) && isVr(v1) && isVfmt(v1, Vec8B, Vec16B) && vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -44350,25 +46590,45 @@ func (self *Program) MVN(v0, v1 interface{}, vv ...interface{}) *Instruction {
         return p.setins(asimdmisc(sa_t, 1, 0, 5, sa_vn, sa_vd))
     }
     // MVN  <Wd>, <Wm>{, <shift> #<amount>}
-    if (len(vv) == 0 || len(vv) == 1) && isWr(v0) && isWr(v1) && (len(vv) == 0 || isShift(vv[0])) {
-        var sa_amount uint32
-        var sa_shift uint32
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isWr(v0) &&
+       isWr(v1) &&
+       (len(vv) == 0 || isMods(vv[0], ModASR, ModLSL, ModLSR, ModROR)) {
+        p.class = ClassGeneral
+        sa_amount := uint32(0)
+        sa_shift := uint32(0b00)
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wm_1 := uint32(v1.(asm.Register).ID())
         if len(vv) == 1 {
-            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            switch vv[0].(Modifier).Type() {
+                case ModLSL: sa_shift = 0b00
+                case ModLSR: sa_shift = 0b01
+                case ModASR: sa_shift = 0b10
+                case ModROR: sa_shift = 0b11
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount = uint32(vv[0].(Modifier).Amount())
         }
         return p.setins(log_shift(0, 1, sa_shift, 1, sa_wm_1, sa_amount, 31, sa_wd))
     }
     // MVN  <Xd>, <Xm>{, <shift> #<amount>}
-    if (len(vv) == 0 || len(vv) == 1) && isXr(v0) && isXr(v1) && (len(vv) == 0 || isShift(vv[0])) {
-        var sa_amount_1 uint32
-        var sa_shift uint32
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isXr(v0) &&
+       isXr(v1) &&
+       (len(vv) == 0 || isMods(vv[0], ModASR, ModLSL, ModLSR, ModROR)) {
+        p.class = ClassGeneral
+        sa_amount_1 := uint32(0)
+        sa_shift := uint32(0b00)
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xm_1 := uint32(v1.(asm.Register).ID())
         if len(vv) == 1 {
-            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            switch vv[0].(Modifier).Type() {
+                case ModLSL: sa_shift = 0b00
+                case ModLSR: sa_shift = 0b01
+                case ModASR: sa_shift = 0b10
+                case ModROR: sa_shift = 0b11
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount_1 = uint32(vv[0].(Modifier).Amount())
         }
         return p.setins(log_shift(1, 1, sa_shift, 1, sa_xm_1, sa_amount_1, 31, sa_xd))
@@ -44406,8 +46666,9 @@ func (self *Program) MVNI(v0, v1 interface{}, vv ...interface{}) *Instruction {
        isVr(v0) &&
        isVfmt(v0, Vec4H, Vec8H) &&
        isUimm8(v1) &&
-       (len(vv) == 0 || isSameMod(vv[0], LSL(0))) {
-        var sa_amount uint32
+       (len(vv) == 0 || modt(vv[0]) == ModLSL) {
+        p.class = ClassAdvSimd
+        sa_amount := uint32(0b0)
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -44416,8 +46677,10 @@ func (self *Program) MVNI(v0, v1 interface{}, vv ...interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_imm8 := asUimm8(v1)
-        if len(vv) == 1 {
-            sa_amount = uint32(vv[0].(Modifier).Amount())
+        switch uint32(vv[0].(Modifier).Amount()) {
+            case 0: sa_amount = 0b0
+            case 8: sa_amount = 0b1
+            default: panic("aarch64: invalid modifier amount")
         }
         cmode := uint32(0b1000)
         switch sa_amount {
@@ -44446,8 +46709,9 @@ func (self *Program) MVNI(v0, v1 interface{}, vv ...interface{}) *Instruction {
        isVr(v0) &&
        isVfmt(v0, Vec2S, Vec4S) &&
        isUimm8(v1) &&
-       (len(vv) == 0 || isSameMod(vv[0], LSL(0))) {
-        var sa_amount_1 uint32
+       (len(vv) == 0 || modt(vv[0]) == ModLSL) {
+        p.class = ClassAdvSimd
+        sa_amount_1 := uint32(0b00)
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -44456,8 +46720,12 @@ func (self *Program) MVNI(v0, v1 interface{}, vv ...interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_imm8 := asUimm8(v1)
-        if len(vv) == 1 {
-            sa_amount_1 = uint32(vv[0].(Modifier).Amount())
+        switch uint32(vv[0].(Modifier).Amount()) {
+            case 0: sa_amount_1 = 0b00
+            case 8: sa_amount_1 = 0b01
+            case 16: sa_amount_1 = 0b10
+            case 24: sa_amount_1 = 0b11
+            default: panic("aarch64: invalid modifier amount")
         }
         cmode := uint32(0b0000)
         switch sa_amount_1 {
@@ -44484,7 +46752,9 @@ func (self *Program) MVNI(v0, v1 interface{}, vv ...interface{}) *Instruction {
         ))
     }
     // MVNI  <Vd>.<T>, #<imm8>, MSL #<amount>
-    if len(vv) == 1 && isVr(v0) && isVfmt(v0, Vec2S, Vec4S) && isUimm8(v1) && isSameMod(vv[0], MSL(0)) {
+    if len(vv) == 1 && isVr(v0) && isVfmt(v0, Vec2S, Vec4S) && isUimm8(v1) && modt(vv[0]) == ModMSL {
+        p.class = ClassAdvSimd
+        var sa_amount_2 uint32
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -44493,7 +46763,11 @@ func (self *Program) MVNI(v0, v1 interface{}, vv ...interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_imm8 := asUimm8(v1)
-        sa_amount_2 := uint32(vv[0].(Modifier).Amount())
+        switch uint32(vv[0].(Modifier).Amount()) {
+            case 8: sa_amount_2 = 0b0
+            case 16: sa_amount_2 = 0b1
+            default: panic("aarch64: invalid modifier amount")
+        }
         cmode := uint32(0b1100)
         switch sa_amount_2 {
             case 8: cmode |= 0b0 << 0
@@ -44552,25 +46826,43 @@ func (self *Program) NEG(v0, v1 interface{}, vv ...interface{}) *Instruction {
         default : panic("instruction NEG takes 2 or 3 operands")
     }
     // NEG  <Wd>, <Wm>{, <shift> #<amount>}
-    if (len(vv) == 0 || len(vv) == 1) && isWr(v0) && isWr(v1) && (len(vv) == 0 || isShift(vv[0])) {
-        var sa_amount uint32
-        var sa_shift uint32
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isWr(v0) &&
+       isWr(v1) &&
+       (len(vv) == 0 || isMods(vv[0], ModASR, ModLSL, ModLSR)) {
+        p.class = ClassGeneral
+        sa_amount := uint32(0)
+        sa_shift := uint32(0b00)
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wm_1 := uint32(v1.(asm.Register).ID())
         if len(vv) == 1 {
-            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            switch vv[0].(Modifier).Type() {
+                case ModLSL: sa_shift = 0b00
+                case ModLSR: sa_shift = 0b01
+                case ModASR: sa_shift = 0b10
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount = uint32(vv[0].(Modifier).Amount())
         }
         return p.setins(addsub_shift(0, 1, 0, sa_shift, sa_wm_1, sa_amount, 31, sa_wd))
     }
     // NEG  <Xd>, <Xm>{, <shift> #<amount>}
-    if (len(vv) == 0 || len(vv) == 1) && isXr(v0) && isXr(v1) && (len(vv) == 0 || isShift(vv[0])) {
-        var sa_amount_1 uint32
-        var sa_shift uint32
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isXr(v0) &&
+       isXr(v1) &&
+       (len(vv) == 0 || isMods(vv[0], ModASR, ModLSL, ModLSR)) {
+        p.class = ClassGeneral
+        sa_amount_1 := uint32(0)
+        sa_shift := uint32(0b00)
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xm_1 := uint32(v1.(asm.Register).ID())
         if len(vv) == 1 {
-            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            switch vv[0].(Modifier).Type() {
+                case ModLSL: sa_shift = 0b00
+                case ModLSR: sa_shift = 0b01
+                case ModASR: sa_shift = 0b10
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount_1 = uint32(vv[0].(Modifier).Amount())
         }
         return p.setins(addsub_shift(1, 1, 0, sa_shift, sa_xm_1, sa_amount_1, 31, sa_xd))
@@ -44581,6 +46873,7 @@ func (self *Program) NEG(v0, v1 interface{}, vv ...interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -44598,6 +46891,7 @@ func (self *Program) NEG(v0, v1 interface{}, vv ...interface{}) *Instruction {
     }
     // NEG  <V><d>, <V><n>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -44631,25 +46925,43 @@ func (self *Program) NEGS(v0, v1 interface{}, vv ...interface{}) *Instruction {
         default : panic("instruction NEGS takes 2 or 3 operands")
     }
     // NEGS  <Wd>, <Wm>{, <shift> #<amount>}
-    if (len(vv) == 0 || len(vv) == 1) && isWr(v0) && isWr(v1) && (len(vv) == 0 || isShift(vv[0])) {
-        var sa_amount uint32
-        var sa_shift uint32
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isWr(v0) &&
+       isWr(v1) &&
+       (len(vv) == 0 || isMods(vv[0], ModASR, ModLSL, ModLSR)) {
+        p.class = ClassGeneral
+        sa_amount := uint32(0)
+        sa_shift := uint32(0b00)
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wm_1 := uint32(v1.(asm.Register).ID())
         if len(vv) == 1 {
-            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            switch vv[0].(Modifier).Type() {
+                case ModLSL: sa_shift = 0b00
+                case ModLSR: sa_shift = 0b01
+                case ModASR: sa_shift = 0b10
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount = uint32(vv[0].(Modifier).Amount())
         }
         return p.setins(addsub_shift(0, 1, 1, sa_shift, sa_wm_1, sa_amount, 31, sa_wd))
     }
     // NEGS  <Xd>, <Xm>{, <shift> #<amount>}
-    if (len(vv) == 0 || len(vv) == 1) && isXr(v0) && isXr(v1) && (len(vv) == 0 || isShift(vv[0])) {
-        var sa_amount_1 uint32
-        var sa_shift uint32
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isXr(v0) &&
+       isXr(v1) &&
+       (len(vv) == 0 || isMods(vv[0], ModASR, ModLSL, ModLSR)) {
+        p.class = ClassGeneral
+        sa_amount_1 := uint32(0)
+        sa_shift := uint32(0b00)
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xm_1 := uint32(v1.(asm.Register).ID())
         if len(vv) == 1 {
-            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            switch vv[0].(Modifier).Type() {
+                case ModLSL: sa_shift = 0b00
+                case ModLSR: sa_shift = 0b01
+                case ModASR: sa_shift = 0b10
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount_1 = uint32(vv[0].(Modifier).Amount())
         }
         return p.setins(addsub_shift(1, 1, 1, sa_shift, sa_xm_1, sa_amount_1, 31, sa_xd))
@@ -44673,12 +46985,14 @@ func (self *Program) NGC(v0, v1 interface{}) *Instruction {
     p := self.alloc("NGC", 2, Operands { v0, v1 })
     // NGC  <Wd>, <Wm>
     if isWr(v0) && isWr(v1) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wm_1 := uint32(v1.(asm.Register).ID())
         return p.setins(addsub_carry(0, 1, 0, sa_wm_1, 31, sa_wd))
     }
     // NGC  <Xd>, <Xm>
     if isXr(v0) && isXr(v1) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xm_1 := uint32(v1.(asm.Register).ID())
         return p.setins(addsub_carry(1, 1, 0, sa_xm_1, 31, sa_xd))
@@ -44703,12 +47017,14 @@ func (self *Program) NGCS(v0, v1 interface{}) *Instruction {
     p := self.alloc("NGCS", 2, Operands { v0, v1 })
     // NGCS  <Wd>, <Wm>
     if isWr(v0) && isWr(v1) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wm_1 := uint32(v1.(asm.Register).ID())
         return p.setins(addsub_carry(0, 1, 1, sa_wm_1, 31, sa_wd))
     }
     // NGCS  <Xd>, <Xm>
     if isXr(v0) && isXr(v1) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xm_1 := uint32(v1.(asm.Register).ID())
         return p.setins(addsub_carry(1, 1, 1, sa_xm_1, 31, sa_xd))
@@ -44735,6 +47051,7 @@ func (self *Program) NGCS(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) NOP() *Instruction {
     p := self.alloc("NOP", 0, Operands {})
+    p.class = ClassSystem
     return p.setins(hints(0, 0))
 }
 
@@ -44755,6 +47072,7 @@ func (self *Program) NOP() *Instruction {
 func (self *Program) NOT(v0, v1 interface{}) *Instruction {
     p := self.alloc("NOT", 2, Operands { v0, v1 })
     if isVr(v0) && isVfmt(v0, Vec8B, Vec16B) && isVr(v1) && isVfmt(v1, Vec8B, Vec16B) && vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -44808,6 +47126,7 @@ func (self *Program) ORN(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
        isVfmt(v2, Vec8B, Vec16B) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -44820,27 +47139,49 @@ func (self *Program) ORN(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
         return p.setins(asimdsame(sa_t, 0, 3, sa_vm, 3, sa_vn, sa_vd))
     }
     // ORN  <Wd>, <Wn>, <Wm>{, <shift> #<amount>}
-    if (len(vv) == 0 || len(vv) == 1) && isWr(v0) && isWr(v1) && isWr(v2) && (len(vv) == 0 || isShift(vv[0])) {
-        var sa_amount uint32
-        var sa_shift uint32
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isWr(v0) &&
+       isWr(v1) &&
+       isWr(v2) &&
+       (len(vv) == 0 || isMods(vv[0], ModASR, ModLSL, ModLSR, ModROR)) {
+        p.class = ClassGeneral
+        sa_amount := uint32(0)
+        sa_shift := uint32(0b00)
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
         if len(vv) == 1 {
-            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            switch vv[0].(Modifier).Type() {
+                case ModLSL: sa_shift = 0b00
+                case ModLSR: sa_shift = 0b01
+                case ModASR: sa_shift = 0b10
+                case ModROR: sa_shift = 0b11
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount = uint32(vv[0].(Modifier).Amount())
         }
         return p.setins(log_shift(0, 1, sa_shift, 1, sa_wm, sa_amount, sa_wn, sa_wd))
     }
     // ORN  <Xd>, <Xn>, <Xm>{, <shift> #<amount>}
-    if (len(vv) == 0 || len(vv) == 1) && isXr(v0) && isXr(v1) && isXr(v2) && (len(vv) == 0 || isShift(vv[0])) {
-        var sa_amount_1 uint32
-        var sa_shift uint32
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isXr(v0) &&
+       isXr(v1) &&
+       isXr(v2) &&
+       (len(vv) == 0 || isMods(vv[0], ModASR, ModLSL, ModLSR, ModROR)) {
+        p.class = ClassGeneral
+        sa_amount_1 := uint32(0)
+        sa_shift := uint32(0b00)
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
         if len(vv) == 1 {
-            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            switch vv[0].(Modifier).Type() {
+                case ModLSL: sa_shift = 0b00
+                case ModLSR: sa_shift = 0b01
+                case ModASR: sa_shift = 0b10
+                case ModROR: sa_shift = 0b11
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount_1 = uint32(vv[0].(Modifier).Amount())
         }
         return p.setins(log_shift(1, 1, sa_shift, 1, sa_xm, sa_amount_1, sa_xn, sa_xd))
@@ -44908,8 +47249,9 @@ func (self *Program) ORR(v0, v1 interface{}, vv ...interface{}) *Instruction {
        isVr(v0) &&
        isVfmt(v0, Vec4H, Vec8H) &&
        isUimm8(v1) &&
-       (len(vv) == 0 || isSameMod(vv[0], LSL(0))) {
-        var sa_amount uint32
+       (len(vv) == 0 || modt(vv[0]) == ModLSL) {
+        p.class = ClassAdvSimd
+        sa_amount := uint32(0b0)
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -44918,8 +47260,10 @@ func (self *Program) ORR(v0, v1 interface{}, vv ...interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_imm8 := asUimm8(v1)
-        if len(vv) == 1 {
-            sa_amount = uint32(vv[0].(Modifier).Amount())
+        switch uint32(vv[0].(Modifier).Amount()) {
+            case 0: sa_amount = 0b0
+            case 8: sa_amount = 0b1
+            default: panic("aarch64: invalid modifier amount")
         }
         cmode := uint32(0b1001)
         switch sa_amount {
@@ -44948,8 +47292,9 @@ func (self *Program) ORR(v0, v1 interface{}, vv ...interface{}) *Instruction {
        isVr(v0) &&
        isVfmt(v0, Vec2S, Vec4S) &&
        isUimm8(v1) &&
-       (len(vv) == 0 || isSameMod(vv[0], LSL(0))) {
-        var sa_amount_1 uint32
+       (len(vv) == 0 || modt(vv[0]) == ModLSL) {
+        p.class = ClassAdvSimd
+        sa_amount_1 := uint32(0b00)
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -44958,8 +47303,12 @@ func (self *Program) ORR(v0, v1 interface{}, vv ...interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_imm8 := asUimm8(v1)
-        if len(vv) == 1 {
-            sa_amount_1 = uint32(vv[0].(Modifier).Amount())
+        switch uint32(vv[0].(Modifier).Amount()) {
+            case 0: sa_amount_1 = 0b00
+            case 8: sa_amount_1 = 0b01
+            case 16: sa_amount_1 = 0b10
+            case 24: sa_amount_1 = 0b11
+            default: panic("aarch64: invalid modifier amount")
         }
         cmode := uint32(0b0001)
         switch sa_amount_1 {
@@ -44995,6 +47344,7 @@ func (self *Program) ORR(v0, v1 interface{}, vv ...interface{}) *Instruction {
        isVfmt(vv[0], Vec8B, Vec16B) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(vv[0]) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -45008,6 +47358,7 @@ func (self *Program) ORR(v0, v1 interface{}, vv ...interface{}) *Instruction {
     }
     // ORR  <Wd|WSP>, <Wn>, #<imm>
     if len(vv) == 1 && isWrOrWSP(v0) && isWr(v1) && isMask32(vv[0]) {
+        p.class = ClassGeneral
         sa_wd_wsp := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_imm := asMaskOp(vv[0])
@@ -45015,33 +47366,56 @@ func (self *Program) ORR(v0, v1 interface{}, vv ...interface{}) *Instruction {
     }
     // ORR  <Xd|SP>, <Xn>, #<imm>
     if len(vv) == 1 && isXrOrSP(v0) && isXr(v1) && isMask64(vv[0]) {
+        p.class = ClassGeneral
         sa_xd_sp := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_imm_1 := asMaskOp(vv[0])
         return p.setins(log_imm(1, 1, ubfx(sa_imm_1, 12, 1), ubfx(sa_imm_1, 6, 6), mask(sa_imm_1, 6), sa_xn, sa_xd_sp))
     }
     // ORR  <Wd>, <Wn>, <Wm>{, <shift> #<amount>}
-    if (len(vv) == 1 || len(vv) == 2) && isWr(v0) && isWr(v1) && isWr(vv[0]) && (len(vv) == 0 || isShift(vv[1])) {
-        var sa_amount uint32
-        var sa_shift uint32
+    if (len(vv) == 1 || len(vv) == 2) &&
+       isWr(v0) &&
+       isWr(v1) &&
+       isWr(vv[0]) &&
+       (len(vv) == 0 || isMods(vv[1], ModASR, ModLSL, ModLSR, ModROR)) {
+        p.class = ClassGeneral
+        sa_amount := uint32(0)
+        sa_shift := uint32(0b00)
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(vv[0].(asm.Register).ID())
         if len(vv) == 1 {
-            sa_shift = uint32(vv[1].(ShiftType).ShiftType())
+            switch vv[1].(Modifier).Type() {
+                case ModLSL: sa_shift = 0b00
+                case ModLSR: sa_shift = 0b01
+                case ModASR: sa_shift = 0b10
+                case ModROR: sa_shift = 0b11
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount = uint32(vv[1].(Modifier).Amount())
         }
         return p.setins(log_shift(0, 1, sa_shift, 0, sa_wm, sa_amount, sa_wn, sa_wd))
     }
     // ORR  <Xd>, <Xn>, <Xm>{, <shift> #<amount>}
-    if (len(vv) == 1 || len(vv) == 2) && isXr(v0) && isXr(v1) && isXr(vv[0]) && (len(vv) == 0 || isShift(vv[1])) {
-        var sa_amount_1 uint32
-        var sa_shift uint32
+    if (len(vv) == 1 || len(vv) == 2) &&
+       isXr(v0) &&
+       isXr(v1) &&
+       isXr(vv[0]) &&
+       (len(vv) == 0 || isMods(vv[1], ModASR, ModLSL, ModLSR, ModROR)) {
+        p.class = ClassGeneral
+        sa_amount_1 := uint32(0)
+        sa_shift := uint32(0b00)
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(vv[0].(asm.Register).ID())
         if len(vv) == 1 {
-            sa_shift = uint32(vv[1].(ShiftType).ShiftType())
+            switch vv[1].(Modifier).Type() {
+                case ModLSL: sa_shift = 0b00
+                case ModLSR: sa_shift = 0b01
+                case ModASR: sa_shift = 0b10
+                case ModROR: sa_shift = 0b11
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount_1 = uint32(vv[1].(Modifier).Amount())
         }
         return p.setins(log_shift(1, 1, sa_shift, 0, sa_xm, sa_amount_1, sa_xn, sa_xd))
@@ -45072,6 +47446,8 @@ func (self *Program) ORR(v0, v1 interface{}, vv ...interface{}) *Instruction {
 func (self *Program) PACDA(v0, v1 interface{}) *Instruction {
     p := self.alloc("PACDA", 2, Operands { v0, v1 })
     if isXr(v0) && isXrOrSP(v1) {
+        self.require(FEAT_PAuth)
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(v1.(asm.Register).ID())
         return p.setins(dp_1src(1, 0, 1, 2, sa_xn_sp, sa_xd))
@@ -45101,6 +47477,8 @@ func (self *Program) PACDA(v0, v1 interface{}) *Instruction {
 func (self *Program) PACDB(v0, v1 interface{}) *Instruction {
     p := self.alloc("PACDB", 2, Operands { v0, v1 })
     if isXr(v0) && isXrOrSP(v1) {
+        self.require(FEAT_PAuth)
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(v1.(asm.Register).ID())
         return p.setins(dp_1src(1, 0, 1, 3, sa_xn_sp, sa_xd))
@@ -45130,6 +47508,8 @@ func (self *Program) PACDB(v0, v1 interface{}) *Instruction {
 func (self *Program) PACDZA(v0 interface{}) *Instruction {
     p := self.alloc("PACDZA", 1, Operands { v0 })
     if isXr(v0) {
+        self.require(FEAT_PAuth)
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         return p.setins(dp_1src(1, 0, 1, 10, 31, sa_xd))
     }
@@ -45158,6 +47538,8 @@ func (self *Program) PACDZA(v0 interface{}) *Instruction {
 func (self *Program) PACDZB(v0 interface{}) *Instruction {
     p := self.alloc("PACDZB", 1, Operands { v0 })
     if isXr(v0) {
+        self.require(FEAT_PAuth)
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         return p.setins(dp_1src(1, 0, 1, 11, 31, sa_xd))
     }
@@ -45180,6 +47562,8 @@ func (self *Program) PACDZB(v0 interface{}) *Instruction {
 func (self *Program) PACGA(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("PACGA", 3, Operands { v0, v1, v2 })
     if isXr(v0) && isXr(v1) && isXrOrSP(v2) {
+        self.require(FEAT_PAuth)
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm_sp := uint32(v2.(asm.Register).ID())
@@ -45217,6 +47601,8 @@ func (self *Program) PACGA(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) PACIA(v0, v1 interface{}) *Instruction {
     p := self.alloc("PACIA", 2, Operands { v0, v1 })
     if isXr(v0) && isXrOrSP(v1) {
+        self.require(FEAT_PAuth)
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(v1.(asm.Register).ID())
         return p.setins(dp_1src(1, 0, 1, 0, sa_xn_sp, sa_xd))
@@ -45252,6 +47638,8 @@ func (self *Program) PACIA(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) PACIA1716() *Instruction {
     p := self.alloc("PACIA1716", 0, Operands {})
+    self.require(FEAT_PAuth)
+    p.class = ClassSystem
     return p.setins(hints(1, 0))
 }
 
@@ -45282,6 +47670,8 @@ func (self *Program) PACIA1716() *Instruction {
 //
 func (self *Program) PACIASP() *Instruction {
     p := self.alloc("PACIASP", 0, Operands {})
+    self.require(FEAT_PAuth)
+    p.class = ClassSystem
     return p.setins(hints(3, 1))
 }
 
@@ -45312,6 +47702,8 @@ func (self *Program) PACIASP() *Instruction {
 //
 func (self *Program) PACIAZ() *Instruction {
     p := self.alloc("PACIAZ", 0, Operands {})
+    self.require(FEAT_PAuth)
+    p.class = ClassSystem
     return p.setins(hints(3, 0))
 }
 
@@ -45343,6 +47735,8 @@ func (self *Program) PACIAZ() *Instruction {
 func (self *Program) PACIB(v0, v1 interface{}) *Instruction {
     p := self.alloc("PACIB", 2, Operands { v0, v1 })
     if isXr(v0) && isXrOrSP(v1) {
+        self.require(FEAT_PAuth)
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(v1.(asm.Register).ID())
         return p.setins(dp_1src(1, 0, 1, 1, sa_xn_sp, sa_xd))
@@ -45378,6 +47772,8 @@ func (self *Program) PACIB(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) PACIB1716() *Instruction {
     p := self.alloc("PACIB1716", 0, Operands {})
+    self.require(FEAT_PAuth)
+    p.class = ClassSystem
     return p.setins(hints(1, 2))
 }
 
@@ -45408,6 +47804,8 @@ func (self *Program) PACIB1716() *Instruction {
 //
 func (self *Program) PACIBSP() *Instruction {
     p := self.alloc("PACIBSP", 0, Operands {})
+    self.require(FEAT_PAuth)
+    p.class = ClassSystem
     return p.setins(hints(3, 3))
 }
 
@@ -45438,6 +47836,8 @@ func (self *Program) PACIBSP() *Instruction {
 //
 func (self *Program) PACIBZ() *Instruction {
     p := self.alloc("PACIBZ", 0, Operands {})
+    self.require(FEAT_PAuth)
+    p.class = ClassSystem
     return p.setins(hints(3, 2))
 }
 
@@ -45469,6 +47869,8 @@ func (self *Program) PACIBZ() *Instruction {
 func (self *Program) PACIZA(v0 interface{}) *Instruction {
     p := self.alloc("PACIZA", 1, Operands { v0 })
     if isXr(v0) {
+        self.require(FEAT_PAuth)
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         return p.setins(dp_1src(1, 0, 1, 8, 31, sa_xd))
     }
@@ -45504,6 +47906,8 @@ func (self *Program) PACIZA(v0 interface{}) *Instruction {
 func (self *Program) PACIZB(v0 interface{}) *Instruction {
     p := self.alloc("PACIZB", 1, Operands { v0 })
     if isXr(v0) {
+        self.require(FEAT_PAuth)
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         return p.setins(dp_1src(1, 0, 1, 9, 31, sa_xd))
     }
@@ -45538,6 +47942,7 @@ func (self *Program) PMUL(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -45588,6 +47993,7 @@ func (self *Program) PMULL(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B, Vec1D, Vec2D) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -45652,6 +48058,7 @@ func (self *Program) PMULL2(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B, Vec1D, Vec2D) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -45732,6 +48139,7 @@ func (self *Program) PRFM(v0, v1 interface{}) *Instruction {
     p := self.alloc("PRFM", 2, Operands { v0, v1 })
     // PRFM  (<prfop>|#<imm5>), [<Xn|SP>{, #<pimm>}]
     if isBasicPrf(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassGeneral
         sa_prfop := uint32(v0.(PrefetchOp))
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_pimm := uint32(moffs(v1))
@@ -45739,6 +48147,7 @@ func (self *Program) PRFM(v0, v1 interface{}) *Instruction {
     }
     // PRFM  (<prfop>|#<imm5>), <label>
     if isBasicPrf(v0) && isLabel(v1) {
+        p.class = ClassGeneral
         sa_prfop := uint32(v0.(PrefetchOp))
         sa_label := v1.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return loadlit(3, 0, uint32(sa_label.RelativeTo(pc)), sa_prfop) })
@@ -45749,15 +48158,26 @@ func (self *Program) PRFM(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isWrOrXr(midx(v1)) &&
-       (mext(v1) == nil || isExtend(mext(v1))) {
+       (mext(v1) == nil || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
+        p.class = ClassGeneral
         var sa_amount uint32
-        var sa_extend uint32
+        sa_extend := uint32(0b011)
         sa_prfop := uint32(v0.(PrefetchOp))
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
         if isMod(mext(v1)) {
-            sa_extend = uint32(mext(v1).(Extension).Extension())
-            sa_amount = uint32(mext(v1).(Modifier).Amount())
+            switch mext(v1).(Modifier).Type() {
+                case ModUXTW: sa_extend = 0b010
+                case ModLSL: sa_extend = 0b011
+                case ModSXTW: sa_extend = 0b110
+                case ModSXTX: sa_extend = 0b111
+                default: panic("aarch64: invalid modifier flags")
+            }
+        }
+        switch uint32(mext(v1).(Modifier).Amount()) {
+            case 0: sa_amount = 0b0
+            case 3: sa_amount = 0b1
+            default: panic("aarch64: invalid modifier amount")
         }
         return p.setins(ldst_regoff(3, 0, 2, sa_xm, sa_extend, sa_amount, sa_xn_sp, sa_prfop))
     }
@@ -45786,6 +48206,7 @@ func (self *Program) PRFM(v0, v1 interface{}) *Instruction {
 func (self *Program) PRFUM(v0, v1 interface{}) *Instruction {
     p := self.alloc("PRFUM", 2, Operands { v0, v1 })
     if isBasicPrf(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassGeneral
         sa_prfop := uint32(v0.(PrefetchOp))
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -45813,6 +48234,8 @@ func (self *Program) PRFUM(v0, v1 interface{}) *Instruction {
 func (self *Program) PSB(v0 interface{}) *Instruction {
     p := self.alloc("PSB", 1, Operands { v0 })
     if v0 == CSYNC {
+        self.require(FEAT_SPE)
+        p.class = ClassSystem
         return p.setins(hints(2, 1))
     }
     p.Free()
@@ -45847,6 +48270,7 @@ func (self *Program) PSB(v0 interface{}) *Instruction {
 //
 func (self *Program) PSSBB() *Instruction {
     p := self.alloc("PSSBB", 0, Operands {})
+    p.class = ClassSystem
     return p.setins(barriers(4, 4, 31))
 }
 
@@ -45882,6 +48306,7 @@ func (self *Program) RADDHN(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8H, Vec4S, Vec2D) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -45946,6 +48371,7 @@ func (self *Program) RADDHN2(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8H, Vec4S, Vec2D) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -45994,6 +48420,8 @@ func (self *Program) RADDHN2(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) RAX1(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("RAX1", 3, Operands { v0, v1, v2 })
     if isVr(v0) && vfmt(v0) == Vec2D && isVr(v1) && vfmt(v1) == Vec2D && isVr(v2) && vfmt(v2) == Vec2D {
+        self.require(FEAT_SHA3)
+        p.class = ClassAdvSimd
         sa_vd := uint32(v0.(asm.Register).ID())
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
@@ -46028,6 +48456,7 @@ func (self *Program) RBIT(v0, v1 interface{}) *Instruction {
     p := self.alloc("RBIT", 2, Operands { v0, v1 })
     // RBIT  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec8B, Vec16B) && isVr(v1) && isVfmt(v1, Vec8B, Vec16B) && vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -46040,12 +48469,14 @@ func (self *Program) RBIT(v0, v1 interface{}) *Instruction {
     }
     // RBIT  <Wd>, <Wn>
     if isWr(v0) && isWr(v1) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         return p.setins(dp_1src(0, 0, 0, 0, sa_wn, sa_wd))
     }
     // RBIT  <Xd>, <Xn>
     if isXr(v0) && isXr(v1) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         return p.setins(dp_1src(1, 0, 0, 0, sa_xn, sa_xd))
@@ -46083,6 +48514,8 @@ func (self *Program) RCWCAS(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -46120,6 +48553,8 @@ func (self *Program) RCWCASA(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -46157,6 +48592,8 @@ func (self *Program) RCWCASAL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -46194,6 +48631,8 @@ func (self *Program) RCWCASL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -46235,6 +48674,9 @@ func (self *Program) RCWCASP(v0, v1, v2, v3, v4 interface{}) *Instruction {
        midx(v4) == nil &&
        moffs(v4) == 0 &&
        mext(v4) == nil {
+        self.require(FEAT_D128)
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v2.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v4).ID())
@@ -46276,6 +48718,9 @@ func (self *Program) RCWCASPA(v0, v1, v2, v3, v4 interface{}) *Instruction {
        midx(v4) == nil &&
        moffs(v4) == 0 &&
        mext(v4) == nil {
+        self.require(FEAT_D128)
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v2.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v4).ID())
@@ -46317,6 +48762,9 @@ func (self *Program) RCWCASPAL(v0, v1, v2, v3, v4 interface{}) *Instruction {
        midx(v4) == nil &&
        moffs(v4) == 0 &&
        mext(v4) == nil {
+        self.require(FEAT_D128)
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v2.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v4).ID())
@@ -46358,6 +48806,9 @@ func (self *Program) RCWCASPL(v0, v1, v2, v3, v4 interface{}) *Instruction {
        midx(v4) == nil &&
        moffs(v4) == 0 &&
        mext(v4) == nil {
+        self.require(FEAT_D128)
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v2.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v4).ID())
@@ -46394,6 +48845,8 @@ func (self *Program) RCWCLR(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -46430,6 +48883,8 @@ func (self *Program) RCWCLRA(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -46466,6 +48921,8 @@ func (self *Program) RCWCLRAL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -46502,6 +48959,8 @@ func (self *Program) RCWCLRL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -46538,6 +48997,9 @@ func (self *Program) RCWCLRP(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_D128)
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -46574,6 +49036,9 @@ func (self *Program) RCWCLRPA(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_D128)
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -46610,6 +49075,9 @@ func (self *Program) RCWCLRPAL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_D128)
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -46646,6 +49114,9 @@ func (self *Program) RCWCLRPL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_D128)
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -46683,6 +49154,8 @@ func (self *Program) RCWSCAS(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -46720,6 +49193,8 @@ func (self *Program) RCWSCASA(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -46757,6 +49232,8 @@ func (self *Program) RCWSCASAL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -46794,6 +49271,8 @@ func (self *Program) RCWSCASL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -46835,6 +49314,9 @@ func (self *Program) RCWSCASP(v0, v1, v2, v3, v4 interface{}) *Instruction {
        midx(v4) == nil &&
        moffs(v4) == 0 &&
        mext(v4) == nil {
+        self.require(FEAT_D128)
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v2.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v4).ID())
@@ -46876,6 +49358,9 @@ func (self *Program) RCWSCASPA(v0, v1, v2, v3, v4 interface{}) *Instruction {
        midx(v4) == nil &&
        moffs(v4) == 0 &&
        mext(v4) == nil {
+        self.require(FEAT_D128)
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v2.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v4).ID())
@@ -46917,6 +49402,9 @@ func (self *Program) RCWSCASPAL(v0, v1, v2, v3, v4 interface{}) *Instruction {
        midx(v4) == nil &&
        moffs(v4) == 0 &&
        mext(v4) == nil {
+        self.require(FEAT_D128)
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v2.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v4).ID())
@@ -46958,6 +49446,9 @@ func (self *Program) RCWSCASPL(v0, v1, v2, v3, v4 interface{}) *Instruction {
        midx(v4) == nil &&
        moffs(v4) == 0 &&
        mext(v4) == nil {
+        self.require(FEAT_D128)
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v2.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v4).ID())
@@ -46994,6 +49485,8 @@ func (self *Program) RCWSCLR(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -47030,6 +49523,8 @@ func (self *Program) RCWSCLRA(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -47066,6 +49561,8 @@ func (self *Program) RCWSCLRAL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -47102,6 +49599,8 @@ func (self *Program) RCWSCLRL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -47138,6 +49637,9 @@ func (self *Program) RCWSCLRP(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_D128)
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -47174,6 +49676,9 @@ func (self *Program) RCWSCLRPA(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_D128)
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -47210,6 +49715,9 @@ func (self *Program) RCWSCLRPAL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_D128)
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -47246,6 +49754,9 @@ func (self *Program) RCWSCLRPL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_D128)
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -47282,6 +49793,8 @@ func (self *Program) RCWSET(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -47318,6 +49831,8 @@ func (self *Program) RCWSETA(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -47354,6 +49869,8 @@ func (self *Program) RCWSETAL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -47390,6 +49907,8 @@ func (self *Program) RCWSETL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -47425,6 +49944,9 @@ func (self *Program) RCWSETP(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_D128)
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -47460,6 +49982,9 @@ func (self *Program) RCWSETPA(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_D128)
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -47495,6 +50020,9 @@ func (self *Program) RCWSETPAL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_D128)
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -47530,6 +50058,9 @@ func (self *Program) RCWSETPL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_D128)
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -47566,6 +50097,8 @@ func (self *Program) RCWSSET(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -47602,6 +50135,8 @@ func (self *Program) RCWSSETA(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -47638,6 +50173,8 @@ func (self *Program) RCWSSETAL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -47674,6 +50211,8 @@ func (self *Program) RCWSSETL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -47710,6 +50249,9 @@ func (self *Program) RCWSSETP(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_D128)
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -47746,6 +50288,9 @@ func (self *Program) RCWSSETPA(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_D128)
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -47782,6 +50327,9 @@ func (self *Program) RCWSSETPAL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_D128)
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -47818,6 +50366,9 @@ func (self *Program) RCWSSETPL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_D128)
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -47853,6 +50404,8 @@ func (self *Program) RCWSSWP(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -47888,6 +50441,8 @@ func (self *Program) RCWSSWPA(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -47923,6 +50478,8 @@ func (self *Program) RCWSSWPAL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -47958,6 +50515,8 @@ func (self *Program) RCWSSWPL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -47993,6 +50552,9 @@ func (self *Program) RCWSSWPP(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_D128)
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -48028,6 +50590,9 @@ func (self *Program) RCWSSWPPA(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_D128)
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -48063,6 +50628,9 @@ func (self *Program) RCWSSWPPAL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_D128)
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -48098,6 +50666,9 @@ func (self *Program) RCWSSWPPL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_D128)
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -48133,6 +50704,8 @@ func (self *Program) RCWSWP(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -48168,6 +50741,8 @@ func (self *Program) RCWSWPA(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -48203,6 +50778,8 @@ func (self *Program) RCWSWPAL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -48238,6 +50815,8 @@ func (self *Program) RCWSWPL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -48273,6 +50852,9 @@ func (self *Program) RCWSWPP(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_D128)
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -48308,6 +50890,9 @@ func (self *Program) RCWSWPPA(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_D128)
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -48343,6 +50928,9 @@ func (self *Program) RCWSWPPAL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_D128)
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -48378,6 +50966,9 @@ func (self *Program) RCWSWPPL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_D128)
+        self.require(FEAT_THE)
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -48404,7 +50995,8 @@ func (self *Program) RET(vv ...interface{}) *Instruction {
         default : panic("instruction RET takes 0 or 1 operands")
     }
     if (len(vv) == 0 || len(vv) == 1) && (len(vv) == 0 || isXr(vv[0])) {
-        var sa_xn uint32
+        p.class = ClassGeneral
+        sa_xn := uint32(X30.ID())
         if len(vv) == 1 {
             sa_xn = uint32(vv[0].(asm.Register).ID())
         }
@@ -48435,6 +51027,8 @@ func (self *Program) RET(vv ...interface{}) *Instruction {
 //
 func (self *Program) RETAA() *Instruction {
     p := self.alloc("RETAA", 0, Operands {})
+    self.require(FEAT_PAuth)
+    p.class = ClassGeneral
     return p.setins(branch_reg(2, 31, 2, 31, 31))
 }
 
@@ -48459,6 +51053,8 @@ func (self *Program) RETAA() *Instruction {
 //
 func (self *Program) RETAB() *Instruction {
     p := self.alloc("RETAB", 0, Operands {})
+    self.require(FEAT_PAuth)
+    p.class = ClassGeneral
     return p.setins(branch_reg(2, 31, 3, 31, 31))
 }
 
@@ -48475,12 +51071,14 @@ func (self *Program) REV(v0, v1 interface{}) *Instruction {
     p := self.alloc("REV", 2, Operands { v0, v1 })
     // REV  <Wd>, <Wn>
     if isWr(v0) && isWr(v1) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         return p.setins(dp_1src(0, 0, 0, 2, sa_wn, sa_wd))
     }
     // REV  <Xd>, <Xn>
     if isXr(v0) && isXr(v1) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         return p.setins(dp_1src(1, 0, 0, 3, sa_xn, sa_xd))
@@ -48517,6 +51115,7 @@ func (self *Program) REV16(v0, v1 interface{}) *Instruction {
     p := self.alloc("REV16", 2, Operands { v0, v1 })
     // REV16  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec8B, Vec16B) && isVr(v1) && isVfmt(v1, Vec8B, Vec16B) && vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -48529,12 +51128,14 @@ func (self *Program) REV16(v0, v1 interface{}) *Instruction {
     }
     // REV16  <Wd>, <Wn>
     if isWr(v0) && isWr(v1) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         return p.setins(dp_1src(0, 0, 0, 1, sa_wn, sa_wd))
     }
     // REV16  <Xd>, <Xn>
     if isXr(v0) && isXr(v1) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         return p.setins(dp_1src(1, 0, 0, 1, sa_xn, sa_xd))
@@ -48574,6 +51175,7 @@ func (self *Program) REV32(v0, v1 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -48588,6 +51190,7 @@ func (self *Program) REV32(v0, v1 interface{}) *Instruction {
     }
     // REV32  <Xd>, <Xn>
     if isXr(v0) && isXr(v1) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         return p.setins(dp_1src(1, 0, 0, 2, sa_xn, sa_xd))
@@ -48626,6 +51229,7 @@ func (self *Program) REV64(v0, v1 interface{}) *Instruction {
     p := self.alloc("REV64", 2, Operands { v0, v1 })
     // REV64  <Xd>, <Xn>
     if isXr(v0) && isXr(v1) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         return p.setins(dp_1src(1, 0, 0, 3, sa_xn, sa_xd))
@@ -48636,6 +51240,7 @@ func (self *Program) REV64(v0, v1 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -48669,6 +51274,8 @@ func (self *Program) REV64(v0, v1 interface{}) *Instruction {
 func (self *Program) RMIF(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("RMIF", 3, Operands { v0, v1, v2 })
     if isXr(v0) && isUimm6(v1) && isUimm4(v2) {
+        self.require(FEAT_FlagM)
+        p.class = ClassGeneral
         sa_xn := uint32(v0.(asm.Register).ID())
         sa_shift := asUimm6(v1)
         sa_mask := asUimm4(v2)
@@ -48704,6 +51311,7 @@ func (self *Program) ROR(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("ROR", 3, Operands { v0, v1, v2 })
     // ROR  <Wd>, <Ws>, #<shift>
     if isWr(v0) && isWr(v1) && isUimm6(v2) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_ws := uint32(v1.(asm.Register).ID())
         sa_shift := asUimm6(v2)
@@ -48711,6 +51319,7 @@ func (self *Program) ROR(v0, v1, v2 interface{}) *Instruction {
     }
     // ROR  <Xd>, <Xs>, #<shift>
     if isXr(v0) && isXr(v1) && isUimm6(v2) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xs := uint32(v1.(asm.Register).ID())
         sa_shift_1 := asUimm6(v2)
@@ -48718,6 +51327,7 @@ func (self *Program) ROR(v0, v1, v2 interface{}) *Instruction {
     }
     // ROR  <Wd>, <Wn>, <Wm>
     if isWr(v0) && isWr(v1) && isWr(v2) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
@@ -48725,6 +51335,7 @@ func (self *Program) ROR(v0, v1, v2 interface{}) *Instruction {
     }
     // ROR  <Xd>, <Xn>, <Xm>
     if isXr(v0) && isXr(v1) && isXr(v2) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
@@ -48752,6 +51363,7 @@ func (self *Program) RORV(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("RORV", 3, Operands { v0, v1, v2 })
     // RORV  <Wd>, <Wn>, <Wm>
     if isWr(v0) && isWr(v1) && isWr(v2) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
@@ -48759,6 +51371,7 @@ func (self *Program) RORV(v0, v1, v2 interface{}) *Instruction {
     }
     // RORV  <Xd>, <Xn>, <Xm>
     if isXr(v0) && isXr(v1) && isXr(v2) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
@@ -48853,6 +51466,8 @@ func (self *Program) RPRFM(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_RPRFM)
+        p.class = ClassGeneral
         sa_rprfop := v0.(RangePrefetchOp).encode()
         sa_xm := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -48900,6 +51515,7 @@ func (self *Program) RSHRN(v0, v1, v2 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec8H, Vec4S, Vec2D) &&
        isFpBits(v2) {
+        p.class = ClassAdvSimd
         var sa_shift uint32
         var sa_ta uint32
         var sa_ta__bit_mask uint32
@@ -48985,6 +51601,7 @@ func (self *Program) RSHRN2(v0, v1, v2 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec8H, Vec4S, Vec2D) &&
        isFpBits(v2) {
+        p.class = ClassAdvSimd
         var sa_shift uint32
         var sa_ta uint32
         var sa_ta__bit_mask uint32
@@ -49073,6 +51690,7 @@ func (self *Program) RSUBHN(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8H, Vec4S, Vec2D) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -49137,6 +51755,7 @@ func (self *Program) RSUBHN2(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8H, Vec4S, Vec2D) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -49195,6 +51814,7 @@ func (self *Program) SABA(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -49244,6 +51864,7 @@ func (self *Program) SABAL(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -49306,6 +51927,7 @@ func (self *Program) SABAL2(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -49363,6 +51985,7 @@ func (self *Program) SABD(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -49412,6 +52035,7 @@ func (self *Program) SABDL(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -49474,6 +52098,7 @@ func (self *Program) SABDL2(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -49528,6 +52153,7 @@ func (self *Program) SADALP(v0, v1 interface{}) *Instruction {
        isVfmt(v0, Vec4H, Vec8H, Vec2S, Vec4S, Vec1D, Vec2D) &&
        isVr(v1) &&
        isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -49592,6 +52218,7 @@ func (self *Program) SADDL(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -49654,6 +52281,7 @@ func (self *Program) SADDL2(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -49707,6 +52335,7 @@ func (self *Program) SADDLP(v0, v1 interface{}) *Instruction {
        isVfmt(v0, Vec4H, Vec8H, Vec2S, Vec4S, Vec1D, Vec2D) &&
        isVr(v1) &&
        isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -49760,6 +52389,7 @@ func (self *Program) SADDLP(v0, v1 interface{}) *Instruction {
 func (self *Program) SADDLV(v0, v1 interface{}) *Instruction {
     p := self.alloc("SADDLV", 2, Operands { v0, v1 })
     if isAdvSIMD(v0) && isVr(v1) && isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec4S) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
@@ -49815,6 +52445,7 @@ func (self *Program) SADDW(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -49875,6 +52506,7 @@ func (self *Program) SADDW2(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -49950,6 +52582,8 @@ func (self *Program) SADDW2(v0, v1, v2 interface{}) *Instruction {
 //
 func (self *Program) SB() *Instruction {
     p := self.alloc("SB", 0, Operands {})
+    self.require(FEAT_SB)
+    p.class = ClassSystem
     return p.setins(barriers(0, 7, 31))
 }
 
@@ -49967,6 +52601,7 @@ func (self *Program) SBC(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SBC", 3, Operands { v0, v1, v2 })
     // SBC  <Wd>, <Wn>, <Wm>
     if isWr(v0) && isWr(v1) && isWr(v2) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
@@ -49974,6 +52609,7 @@ func (self *Program) SBC(v0, v1, v2 interface{}) *Instruction {
     }
     // SBC  <Xd>, <Xn>, <Xm>
     if isXr(v0) && isXr(v1) && isXr(v2) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
@@ -49999,6 +52635,7 @@ func (self *Program) SBCS(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SBCS", 3, Operands { v0, v1, v2 })
     // SBCS  <Wd>, <Wn>, <Wm>
     if isWr(v0) && isWr(v1) && isWr(v2) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
@@ -50006,6 +52643,7 @@ func (self *Program) SBCS(v0, v1, v2 interface{}) *Instruction {
     }
     // SBCS  <Xd>, <Xn>, <Xm>
     if isXr(v0) && isXr(v1) && isXr(v2) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
@@ -50032,6 +52670,7 @@ func (self *Program) SBFIZ(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("SBFIZ", 4, Operands { v0, v1, v2, v3 })
     // SBFIZ  <Wd>, <Wn>, #<lsb>, #<width>
     if isWr(v0) && isWr(v1) && isUimm5(v2) && isBFxWidth(v2, v3, 32) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_lsb := -asUimm5(v2) % 32
@@ -50040,6 +52679,7 @@ func (self *Program) SBFIZ(v0, v1, v2, v3 interface{}) *Instruction {
     }
     // SBFIZ  <Xd>, <Xn>, #<lsb>, #<width>
     if isXr(v0) && isXr(v1) && isUimm6(v2) && isBFxWidth(v2, v3, 64) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_lsb_2 := -asUimm6(v2) % 64
@@ -50078,6 +52718,7 @@ func (self *Program) SBFM(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("SBFM", 4, Operands { v0, v1, v2, v3 })
     // SBFM  <Wd>, <Wn>, #<immr>, #<imms>
     if isWr(v0) && isWr(v1) && isUimm6(v2) && isUimm6(v3) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_immr := asUimm6(v2)
@@ -50086,6 +52727,7 @@ func (self *Program) SBFM(v0, v1, v2, v3 interface{}) *Instruction {
     }
     // SBFM  <Xd>, <Xn>, #<immr>, #<imms>
     if isXr(v0) && isXr(v1) && isUimm6(v2) && isUimm6(v3) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_immr_1 := asUimm6(v2)
@@ -50113,6 +52755,7 @@ func (self *Program) SBFX(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("SBFX", 4, Operands { v0, v1, v2, v3 })
     // SBFX  <Wd>, <Wn>, #<lsb>, #<width>
     if isWr(v0) && isWr(v1) && isUimm5(v2) && isBFxWidth(v2, v3, 32) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_lsb_1 := asUimm5(v2)
@@ -50121,6 +52764,7 @@ func (self *Program) SBFX(v0, v1, v2, v3 interface{}) *Instruction {
     }
     // SBFX  <Xd>, <Xn>, #<lsb>, #<width>
     if isXr(v0) && isXr(v1) && isUimm6(v2) && isBFxWidth(v2, v3, 64) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_lsb_3 := asUimm6(v2)
@@ -50235,6 +52879,7 @@ func (self *Program) SCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
        isVfmt(v1, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        isFpBits(vv[0]) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_fbits uint32
         var sa_t uint32
         var sa_t__bit_mask uint32
@@ -50269,6 +52914,7 @@ func (self *Program) SCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
     }
     // SCVTF  <V><d>, <V><n>, #<fbits>
     if len(vv) == 1 && isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(vv[0]) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_fbits_1 uint32
         var sa_v uint32
         var sa_v__bit_mask uint32
@@ -50303,6 +52949,7 @@ func (self *Program) SCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -50318,6 +52965,8 @@ func (self *Program) SCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
     }
     // SCVTF  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -50330,6 +52979,7 @@ func (self *Program) SCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
     }
     // SCVTF  <V><d>, <V><n>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -50344,12 +52994,15 @@ func (self *Program) SCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
     }
     // SCVTF  <Hd>, <Hn>
     if isHr(v0) && isHr(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(asisdmiscfp16(0, 0, 29, sa_hn, sa_hd))
     }
     // SCVTF  <Dd>, <Wn>, #<fbits>
     if len(vv) == 1 && isDr(v0) && isWr(v1) && isFpBits(vv[0]) {
+        p.class = ClassFloat
         sa_dd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_fbits := asFpScale(vv[0])
@@ -50357,6 +53010,7 @@ func (self *Program) SCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
     }
     // SCVTF  <Dd>, <Xn>, #<fbits>
     if len(vv) == 1 && isDr(v0) && isXr(v1) && isFpBits(vv[0]) {
+        p.class = ClassFloat
         sa_dd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_fbits_1 := asFpScale(vv[0])
@@ -50364,6 +53018,7 @@ func (self *Program) SCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
     }
     // SCVTF  <Hd>, <Wn>, #<fbits>
     if len(vv) == 1 && isHr(v0) && isWr(v1) && isFpBits(vv[0]) {
+        p.class = ClassFloat
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_fbits := asFpScale(vv[0])
@@ -50371,6 +53026,7 @@ func (self *Program) SCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
     }
     // SCVTF  <Hd>, <Xn>, #<fbits>
     if len(vv) == 1 && isHr(v0) && isXr(v1) && isFpBits(vv[0]) {
+        p.class = ClassFloat
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_fbits_1 := asFpScale(vv[0])
@@ -50378,6 +53034,7 @@ func (self *Program) SCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
     }
     // SCVTF  <Sd>, <Wn>, #<fbits>
     if len(vv) == 1 && isSr(v0) && isWr(v1) && isFpBits(vv[0]) {
+        p.class = ClassFloat
         sa_sd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_fbits := asFpScale(vv[0])
@@ -50385,6 +53042,7 @@ func (self *Program) SCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
     }
     // SCVTF  <Sd>, <Xn>, #<fbits>
     if len(vv) == 1 && isSr(v0) && isXr(v1) && isFpBits(vv[0]) {
+        p.class = ClassFloat
         sa_sd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_fbits_1 := asFpScale(vv[0])
@@ -50392,36 +53050,42 @@ func (self *Program) SCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
     }
     // SCVTF  <Dd>, <Wn>
     if isDr(v0) && isWr(v1) {
+        p.class = ClassFloat
         sa_dd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(0, 0, 1, 0, 2, sa_wn, sa_dd))
     }
     // SCVTF  <Dd>, <Xn>
     if isDr(v0) && isXr(v1) {
+        p.class = ClassFloat
         sa_dd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(1, 0, 1, 0, 2, sa_xn, sa_dd))
     }
     // SCVTF  <Hd>, <Wn>
     if isHr(v0) && isWr(v1) {
+        p.class = ClassFloat
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(0, 0, 3, 0, 2, sa_wn, sa_hd))
     }
     // SCVTF  <Hd>, <Xn>
     if isHr(v0) && isXr(v1) {
+        p.class = ClassFloat
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(1, 0, 3, 0, 2, sa_xn, sa_hd))
     }
     // SCVTF  <Sd>, <Wn>
     if isSr(v0) && isWr(v1) {
+        p.class = ClassFloat
         sa_sd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(0, 0, 0, 0, 2, sa_wn, sa_sd))
     }
     // SCVTF  <Sd>, <Xn>
     if isSr(v0) && isXr(v1) {
+        p.class = ClassFloat
         sa_sd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(1, 0, 0, 0, 2, sa_xn, sa_sd))
@@ -50446,6 +53110,7 @@ func (self *Program) SDIV(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SDIV", 3, Operands { v0, v1, v2 })
     // SDIV  <Wd>, <Wn>, <Wm>
     if isWr(v0) && isWr(v1) && isWr(v2) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
@@ -50453,6 +53118,7 @@ func (self *Program) SDIV(v0, v1, v2 interface{}) *Instruction {
     }
     // SDIV  <Xd>, <Xn>, <Xm>
     if isXr(v0) && isXr(v1) && isXr(v2) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
@@ -50514,6 +53180,8 @@ func (self *Program) SDOT(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec8B, Vec16B) &&
        isVri(v2) &&
        vmoder(v2) == Mode4B {
+        self.require(FEAT_DotProd)
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -50543,6 +53211,8 @@ func (self *Program) SDOT(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B) &&
        vfmt(v1) == vfmt(v2) {
+        self.require(FEAT_DotProd)
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -50666,6 +53336,8 @@ func (self *Program) SETE(v0, v1, v2 interface{}) *Instruction {
        mext(v0) == PreIndex &&
        isXr(v1) &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xn_2 := uint32(v1.(asm.Register).ID())
         sa_xs := uint32(v2.(asm.Register).ID())
@@ -50773,6 +53445,8 @@ func (self *Program) SETEN(v0, v1, v2 interface{}) *Instruction {
        mext(v0) == PreIndex &&
        isXr(v1) &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xn_2 := uint32(v1.(asm.Register).ID())
         sa_xs := uint32(v2.(asm.Register).ID())
@@ -50880,6 +53554,8 @@ func (self *Program) SETET(v0, v1, v2 interface{}) *Instruction {
        mext(v0) == PreIndex &&
        isXr(v1) &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xn_2 := uint32(v1.(asm.Register).ID())
         sa_xs := uint32(v2.(asm.Register).ID())
@@ -50987,6 +53663,8 @@ func (self *Program) SETETN(v0, v1, v2 interface{}) *Instruction {
        mext(v0) == PreIndex &&
        isXr(v1) &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xn_2 := uint32(v1.(asm.Register).ID())
         sa_xs := uint32(v2.(asm.Register).ID())
@@ -51011,6 +53689,8 @@ func (self *Program) SETETN(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) SETF16(v0 interface{}) *Instruction {
     p := self.alloc("SETF16", 1, Operands { v0 })
     if isWr(v0) {
+        self.require(FEAT_FlagM)
+        p.class = ClassGeneral
         sa_wn := uint32(v0.(asm.Register).ID())
         return p.setins(setf(0, 0, 1, 0, 1, sa_wn, 0, 13))
     }
@@ -51033,6 +53713,8 @@ func (self *Program) SETF16(v0 interface{}) *Instruction {
 func (self *Program) SETF8(v0 interface{}) *Instruction {
     p := self.alloc("SETF8", 1, Operands { v0 })
     if isWr(v0) {
+        self.require(FEAT_FlagM)
+        p.class = ClassGeneral
         sa_wn := uint32(v0.(asm.Register).ID())
         return p.setins(setf(0, 0, 1, 0, 0, sa_wn, 0, 13))
     }
@@ -51140,6 +53822,8 @@ func (self *Program) SETGE(v0, v1, v2 interface{}) *Instruction {
        mext(v0) == PreIndex &&
        isXr(v1) &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xn_2 := uint32(v1.(asm.Register).ID())
         sa_xs_1 := uint32(v2.(asm.Register).ID())
@@ -51249,6 +53933,8 @@ func (self *Program) SETGEN(v0, v1, v2 interface{}) *Instruction {
        mext(v0) == PreIndex &&
        isXr(v1) &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xn_2 := uint32(v1.(asm.Register).ID())
         sa_xs_1 := uint32(v2.(asm.Register).ID())
@@ -51358,6 +54044,8 @@ func (self *Program) SETGET(v0, v1, v2 interface{}) *Instruction {
        mext(v0) == PreIndex &&
        isXr(v1) &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xn_2 := uint32(v1.(asm.Register).ID())
         sa_xs_1 := uint32(v2.(asm.Register).ID())
@@ -51467,6 +54155,8 @@ func (self *Program) SETGETN(v0, v1, v2 interface{}) *Instruction {
        mext(v0) == PreIndex &&
        isXr(v1) &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xn_2 := uint32(v1.(asm.Register).ID())
         sa_xs_1 := uint32(v2.(asm.Register).ID())
@@ -51576,6 +54266,8 @@ func (self *Program) SETGM(v0, v1, v2 interface{}) *Instruction {
        mext(v0) == PreIndex &&
        isXr(v1) &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xn_1 := uint32(v1.(asm.Register).ID())
         sa_xs := uint32(v2.(asm.Register).ID())
@@ -51685,6 +54377,8 @@ func (self *Program) SETGMN(v0, v1, v2 interface{}) *Instruction {
        mext(v0) == PreIndex &&
        isXr(v1) &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xn_1 := uint32(v1.(asm.Register).ID())
         sa_xs := uint32(v2.(asm.Register).ID())
@@ -51794,6 +54488,8 @@ func (self *Program) SETGMT(v0, v1, v2 interface{}) *Instruction {
        mext(v0) == PreIndex &&
        isXr(v1) &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xn_1 := uint32(v1.(asm.Register).ID())
         sa_xs := uint32(v2.(asm.Register).ID())
@@ -51903,6 +54599,8 @@ func (self *Program) SETGMTN(v0, v1, v2 interface{}) *Instruction {
        mext(v0) == PreIndex &&
        isXr(v1) &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xn_1 := uint32(v1.(asm.Register).ID())
         sa_xs := uint32(v2.(asm.Register).ID())
@@ -52012,6 +54710,8 @@ func (self *Program) SETGP(v0, v1, v2 interface{}) *Instruction {
        mext(v0) == PreIndex &&
        isXr(v1) &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd := uint32(mbase(v0).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xs := uint32(v2.(asm.Register).ID())
@@ -52121,6 +54821,8 @@ func (self *Program) SETGPN(v0, v1, v2 interface{}) *Instruction {
        mext(v0) == PreIndex &&
        isXr(v1) &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd := uint32(mbase(v0).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xs := uint32(v2.(asm.Register).ID())
@@ -52230,6 +54932,8 @@ func (self *Program) SETGPT(v0, v1, v2 interface{}) *Instruction {
        mext(v0) == PreIndex &&
        isXr(v1) &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd := uint32(mbase(v0).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xs := uint32(v2.(asm.Register).ID())
@@ -52339,6 +55043,8 @@ func (self *Program) SETGPTN(v0, v1, v2 interface{}) *Instruction {
        mext(v0) == PreIndex &&
        isXr(v1) &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd := uint32(mbase(v0).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xs := uint32(v2.(asm.Register).ID())
@@ -52446,6 +55152,8 @@ func (self *Program) SETM(v0, v1, v2 interface{}) *Instruction {
        mext(v0) == PreIndex &&
        isXr(v1) &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xn_1 := uint32(v1.(asm.Register).ID())
         sa_xs := uint32(v2.(asm.Register).ID())
@@ -52553,6 +55261,8 @@ func (self *Program) SETMN(v0, v1, v2 interface{}) *Instruction {
        mext(v0) == PreIndex &&
        isXr(v1) &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xn_1 := uint32(v1.(asm.Register).ID())
         sa_xs := uint32(v2.(asm.Register).ID())
@@ -52660,6 +55370,8 @@ func (self *Program) SETMT(v0, v1, v2 interface{}) *Instruction {
        mext(v0) == PreIndex &&
        isXr(v1) &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xn_1 := uint32(v1.(asm.Register).ID())
         sa_xs := uint32(v2.(asm.Register).ID())
@@ -52767,6 +55479,8 @@ func (self *Program) SETMTN(v0, v1, v2 interface{}) *Instruction {
        mext(v0) == PreIndex &&
        isXr(v1) &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd_1 := uint32(mbase(v0).ID())
         sa_xn_1 := uint32(v1.(asm.Register).ID())
         sa_xs := uint32(v2.(asm.Register).ID())
@@ -52874,6 +55588,8 @@ func (self *Program) SETP(v0, v1, v2 interface{}) *Instruction {
        mext(v0) == PreIndex &&
        isXr(v1) &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd := uint32(mbase(v0).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xs := uint32(v2.(asm.Register).ID())
@@ -52981,6 +55697,8 @@ func (self *Program) SETPN(v0, v1, v2 interface{}) *Instruction {
        mext(v0) == PreIndex &&
        isXr(v1) &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd := uint32(mbase(v0).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xs := uint32(v2.(asm.Register).ID())
@@ -53088,6 +55806,8 @@ func (self *Program) SETPT(v0, v1, v2 interface{}) *Instruction {
        mext(v0) == PreIndex &&
        isXr(v1) &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd := uint32(mbase(v0).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xs := uint32(v2.(asm.Register).ID())
@@ -53195,6 +55915,8 @@ func (self *Program) SETPTN(v0, v1, v2 interface{}) *Instruction {
        mext(v0) == PreIndex &&
        isXr(v1) &&
        isXr(v2) {
+        self.require(FEAT_MOPS)
+        p.class = ClassGeneral
         sa_xd := uint32(mbase(v0).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xs := uint32(v2.(asm.Register).ID())
@@ -53216,6 +55938,7 @@ func (self *Program) SETPTN(v0, v1, v2 interface{}) *Instruction {
 //
 func (self *Program) SEV() *Instruction {
     p := self.alloc("SEV", 0, Operands {})
+    p.class = ClassSystem
     return p.setins(hints(0, 4))
 }
 
@@ -53232,6 +55955,7 @@ func (self *Program) SEV() *Instruction {
 //
 func (self *Program) SEVL() *Instruction {
     p := self.alloc("SEVL", 0, Operands {})
+    p.class = ClassSystem
     return p.setins(hints(0, 5))
 }
 
@@ -53246,6 +55970,8 @@ func (self *Program) SEVL() *Instruction {
 func (self *Program) SHA1C(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SHA1C", 3, Operands { v0, v1, v2 })
     if isQr(v0) && isSr(v1) && isVr(v2) && vfmt(v2) == Vec4S {
+        self.require(FEAT_SHA1)
+        p.class = ClassAdvSimd
         sa_qd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
@@ -53266,6 +55992,8 @@ func (self *Program) SHA1C(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) SHA1H(v0, v1 interface{}) *Instruction {
     p := self.alloc("SHA1H", 2, Operands { v0, v1 })
     if isSr(v0) && isSr(v1) {
+        self.require(FEAT_SHA1)
+        p.class = ClassAdvSimd
         sa_sd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         return p.setins(cryptosha2(0, 0, sa_sn, sa_sd))
@@ -53285,6 +56013,8 @@ func (self *Program) SHA1H(v0, v1 interface{}) *Instruction {
 func (self *Program) SHA1M(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SHA1M", 3, Operands { v0, v1, v2 })
     if isQr(v0) && isSr(v1) && isVr(v2) && vfmt(v2) == Vec4S {
+        self.require(FEAT_SHA1)
+        p.class = ClassAdvSimd
         sa_qd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
@@ -53305,6 +56035,8 @@ func (self *Program) SHA1M(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) SHA1P(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SHA1P", 3, Operands { v0, v1, v2 })
     if isQr(v0) && isSr(v1) && isVr(v2) && vfmt(v2) == Vec4S {
+        self.require(FEAT_SHA1)
+        p.class = ClassAdvSimd
         sa_qd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
@@ -53325,6 +56057,8 @@ func (self *Program) SHA1P(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) SHA1SU0(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SHA1SU0", 3, Operands { v0, v1, v2 })
     if isVr(v0) && vfmt(v0) == Vec4S && isVr(v1) && vfmt(v1) == Vec4S && isVr(v2) && vfmt(v2) == Vec4S {
+        self.require(FEAT_SHA1)
+        p.class = ClassAdvSimd
         sa_vd := uint32(v0.(asm.Register).ID())
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
@@ -53345,6 +56079,8 @@ func (self *Program) SHA1SU0(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) SHA1SU1(v0, v1 interface{}) *Instruction {
     p := self.alloc("SHA1SU1", 2, Operands { v0, v1 })
     if isVr(v0) && vfmt(v0) == Vec4S && isVr(v1) && vfmt(v1) == Vec4S {
+        self.require(FEAT_SHA1)
+        p.class = ClassAdvSimd
         sa_vd := uint32(v0.(asm.Register).ID())
         sa_vn := uint32(v1.(asm.Register).ID())
         return p.setins(cryptosha2(0, 1, sa_vn, sa_vd))
@@ -53364,6 +56100,8 @@ func (self *Program) SHA1SU1(v0, v1 interface{}) *Instruction {
 func (self *Program) SHA256H(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SHA256H", 3, Operands { v0, v1, v2 })
     if isQr(v0) && isQr(v1) && isVr(v2) && vfmt(v2) == Vec4S {
+        self.require(FEAT_SHA256)
+        p.class = ClassAdvSimd
         sa_qd := uint32(v0.(asm.Register).ID())
         sa_qn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
@@ -53384,6 +56122,8 @@ func (self *Program) SHA256H(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) SHA256H2(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SHA256H2", 3, Operands { v0, v1, v2 })
     if isQr(v0) && isQr(v1) && isVr(v2) && vfmt(v2) == Vec4S {
+        self.require(FEAT_SHA256)
+        p.class = ClassAdvSimd
         sa_qd := uint32(v0.(asm.Register).ID())
         sa_qn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
@@ -53404,6 +56144,8 @@ func (self *Program) SHA256H2(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) SHA256SU0(v0, v1 interface{}) *Instruction {
     p := self.alloc("SHA256SU0", 2, Operands { v0, v1 })
     if isVr(v0) && vfmt(v0) == Vec4S && isVr(v1) && vfmt(v1) == Vec4S {
+        self.require(FEAT_SHA256)
+        p.class = ClassAdvSimd
         sa_vd := uint32(v0.(asm.Register).ID())
         sa_vn := uint32(v1.(asm.Register).ID())
         return p.setins(cryptosha2(0, 2, sa_vn, sa_vd))
@@ -53423,6 +56165,8 @@ func (self *Program) SHA256SU0(v0, v1 interface{}) *Instruction {
 func (self *Program) SHA256SU1(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SHA256SU1", 3, Operands { v0, v1, v2 })
     if isVr(v0) && vfmt(v0) == Vec4S && isVr(v1) && vfmt(v1) == Vec4S && isVr(v2) && vfmt(v2) == Vec4S {
+        self.require(FEAT_SHA256)
+        p.class = ClassAdvSimd
         sa_vd := uint32(v0.(asm.Register).ID())
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
@@ -53448,6 +56192,8 @@ func (self *Program) SHA256SU1(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) SHA512H(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SHA512H", 3, Operands { v0, v1, v2 })
     if isQr(v0) && isQr(v1) && isVr(v2) && vfmt(v2) == Vec2D {
+        self.require(FEAT_SHA512)
+        p.class = ClassAdvSimd
         sa_qd := uint32(v0.(asm.Register).ID())
         sa_qn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
@@ -53473,6 +56219,8 @@ func (self *Program) SHA512H(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) SHA512H2(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SHA512H2", 3, Operands { v0, v1, v2 })
     if isQr(v0) && isQr(v1) && isVr(v2) && vfmt(v2) == Vec2D {
+        self.require(FEAT_SHA512)
+        p.class = ClassAdvSimd
         sa_qd := uint32(v0.(asm.Register).ID())
         sa_qn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
@@ -53499,6 +56247,8 @@ func (self *Program) SHA512H2(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) SHA512SU0(v0, v1 interface{}) *Instruction {
     p := self.alloc("SHA512SU0", 2, Operands { v0, v1 })
     if isVr(v0) && vfmt(v0) == Vec2D && isVr(v1) && vfmt(v1) == Vec2D {
+        self.require(FEAT_SHA512)
+        p.class = ClassAdvSimd
         sa_vd := uint32(v0.(asm.Register).ID())
         sa_vn := uint32(v1.(asm.Register).ID())
         return p.setins(cryptosha512_2(0, sa_vn, sa_vd))
@@ -53524,6 +56274,8 @@ func (self *Program) SHA512SU0(v0, v1 interface{}) *Instruction {
 func (self *Program) SHA512SU1(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SHA512SU1", 3, Operands { v0, v1, v2 })
     if isVr(v0) && vfmt(v0) == Vec2D && isVr(v1) && vfmt(v1) == Vec2D && isVr(v2) && vfmt(v2) == Vec2D {
+        self.require(FEAT_SHA512)
+        p.class = ClassAdvSimd
         sa_vd := uint32(v0.(asm.Register).ID())
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
@@ -53560,6 +56312,7 @@ func (self *Program) SHADD(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -53603,6 +56356,7 @@ func (self *Program) SHL(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        isFpBits(v2) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_shift uint32
         var sa_t uint32
         var sa_t__bit_mask uint32
@@ -53642,6 +56396,7 @@ func (self *Program) SHL(v0, v1, v2 interface{}) *Instruction {
     }
     // SHL  <V><d>, <V><n>, #<shift>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(v2) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_shift_1 uint32
         var sa_v uint32
         var sa_v__bit_mask uint32
@@ -53696,6 +56451,7 @@ func (self *Program) SHLL(v0, v1, v2 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        isIntLit(v2, 8, 16, 32) {
+        p.class = ClassAdvSimd
         var sa_shift uint32
         var sa_ta uint32
         var sa_tb uint32
@@ -53761,6 +56517,7 @@ func (self *Program) SHLL2(v0, v1, v2 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        isIntLit(v2, 8, 16, 32) {
+        p.class = ClassAdvSimd
         var sa_shift uint32
         var sa_ta uint32
         var sa_tb uint32
@@ -53828,6 +56585,7 @@ func (self *Program) SHRN(v0, v1, v2 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec8H, Vec4S, Vec2D) &&
        isFpBits(v2) {
+        p.class = ClassAdvSimd
         var sa_shift uint32
         var sa_ta uint32
         var sa_ta__bit_mask uint32
@@ -53913,6 +56671,7 @@ func (self *Program) SHRN2(v0, v1, v2 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec8H, Vec4S, Vec2D) &&
        isFpBits(v2) {
+        p.class = ClassAdvSimd
         var sa_shift uint32
         var sa_ta uint32
         var sa_ta__bit_mask uint32
@@ -53995,6 +56754,7 @@ func (self *Program) SHSUB(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -54028,7 +56788,7 @@ func (self *Program) SHSUB(v0, v1, v2 interface{}) *Instruction {
 // are not inserted but retain their existing value. Bits shifted out of the left
 // of each vector element in the source register are lost.
 //
-// [image:A64.sli_operation_shift_by_3.svg]
+// [image:isa_docs/ISA_A64_xml_A_profile-2022-12_OPT/A64.sli_operation_shift_by_3.svg]
 // shift left by 3 for an 8-bit vector element
 //
 // Depending on the settings in the CPACR_EL1 , CPTR_EL2 , and CPTR_EL3 registers,
@@ -54044,6 +56804,7 @@ func (self *Program) SLI(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        isFpBits(v2) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_shift uint32
         var sa_t uint32
         var sa_t__bit_mask uint32
@@ -54083,6 +56844,7 @@ func (self *Program) SLI(v0, v1, v2 interface{}) *Instruction {
     }
     // SLI  <V><d>, <V><n>, #<shift>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(v2) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_shift_1 uint32
         var sa_v uint32
         var sa_v__bit_mask uint32
@@ -54126,6 +56888,8 @@ func (self *Program) SLI(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) SM3PARTW1(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SM3PARTW1", 3, Operands { v0, v1, v2 })
     if isVr(v0) && vfmt(v0) == Vec4S && isVr(v1) && vfmt(v1) == Vec4S && isVr(v2) && vfmt(v2) == Vec4S {
+        self.require(FEAT_SM3)
+        p.class = ClassAdvSimd
         sa_vd := uint32(v0.(asm.Register).ID())
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
@@ -54151,6 +56915,8 @@ func (self *Program) SM3PARTW1(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) SM3PARTW2(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SM3PARTW2", 3, Operands { v0, v1, v2 })
     if isVr(v0) && vfmt(v0) == Vec4S && isVr(v1) && vfmt(v1) == Vec4S && isVr(v2) && vfmt(v2) == Vec4S {
+        self.require(FEAT_SM3)
+        p.class = ClassAdvSimd
         sa_vd := uint32(v0.(asm.Register).ID())
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
@@ -54185,6 +56951,8 @@ func (self *Program) SM3SS1(v0, v1, v2, v3 interface{}) *Instruction {
        vfmt(v2) == Vec4S &&
        isVr(v3) &&
        vfmt(v3) == Vec4S {
+        self.require(FEAT_SM3)
+        p.class = ClassAdvSimd
         sa_vd := uint32(v0.(asm.Register).ID())
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
@@ -54223,6 +56991,8 @@ func (self *Program) SM3SS1(v0, v1, v2, v3 interface{}) *Instruction {
 func (self *Program) SM3TT1A(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SM3TT1A", 3, Operands { v0, v1, v2 })
     if isVr(v0) && vfmt(v0) == Vec4S && isVr(v1) && vfmt(v1) == Vec4S && isVri(v2) && vmoder(v2) == ModeS {
+        self.require(FEAT_SM3)
+        p.class = ClassAdvSimd
         sa_vd := uint32(v0.(asm.Register).ID())
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(VidxRegister).ID())
@@ -54261,6 +57031,8 @@ func (self *Program) SM3TT1A(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) SM3TT1B(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SM3TT1B", 3, Operands { v0, v1, v2 })
     if isVr(v0) && vfmt(v0) == Vec4S && isVr(v1) && vfmt(v1) == Vec4S && isVri(v2) && vmoder(v2) == ModeS {
+        self.require(FEAT_SM3)
+        p.class = ClassAdvSimd
         sa_vd := uint32(v0.(asm.Register).ID())
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(VidxRegister).ID())
@@ -54301,6 +57073,8 @@ func (self *Program) SM3TT1B(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) SM3TT2A(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SM3TT2A", 3, Operands { v0, v1, v2 })
     if isVr(v0) && vfmt(v0) == Vec4S && isVr(v1) && vfmt(v1) == Vec4S && isVri(v2) && vmoder(v2) == ModeS {
+        self.require(FEAT_SM3)
+        p.class = ClassAdvSimd
         sa_vd := uint32(v0.(asm.Register).ID())
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(VidxRegister).ID())
@@ -54341,6 +57115,8 @@ func (self *Program) SM3TT2A(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) SM3TT2B(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SM3TT2B", 3, Operands { v0, v1, v2 })
     if isVr(v0) && vfmt(v0) == Vec4S && isVr(v1) && vfmt(v1) == Vec4S && isVri(v2) && vmoder(v2) == ModeS {
+        self.require(FEAT_SM3)
+        p.class = ClassAdvSimd
         sa_vd := uint32(v0.(asm.Register).ID())
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(VidxRegister).ID())
@@ -54368,6 +57144,8 @@ func (self *Program) SM3TT2B(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) SM4E(v0, v1 interface{}) *Instruction {
     p := self.alloc("SM4E", 2, Operands { v0, v1 })
     if isVr(v0) && vfmt(v0) == Vec4S && isVr(v1) && vfmt(v1) == Vec4S {
+        self.require(FEAT_SM4)
+        p.class = ClassAdvSimd
         sa_vd := uint32(v0.(asm.Register).ID())
         sa_vn := uint32(v1.(asm.Register).ID())
         return p.setins(cryptosha512_2(1, sa_vn, sa_vd))
@@ -54392,6 +57170,8 @@ func (self *Program) SM4E(v0, v1 interface{}) *Instruction {
 func (self *Program) SM4EKEY(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SM4EKEY", 3, Operands { v0, v1, v2 })
     if isVr(v0) && vfmt(v0) == Vec4S && isVr(v1) && vfmt(v1) == Vec4S && isVr(v2) && vfmt(v2) == Vec4S {
+        self.require(FEAT_SM4)
+        p.class = ClassAdvSimd
         sa_vd := uint32(v0.(asm.Register).ID())
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
@@ -54413,6 +57193,7 @@ func (self *Program) SM4EKEY(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) SMADDL(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("SMADDL", 4, Operands { v0, v1, v2, v3 })
     if isXr(v0) && isWr(v1) && isWr(v2) && isXr(v3) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
@@ -54465,6 +57246,7 @@ func (self *Program) SMAX(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -54482,6 +57264,8 @@ func (self *Program) SMAX(v0, v1, v2 interface{}) *Instruction {
     }
     // SMAX  <Wd>, <Wn>, #<simm>
     if isWr(v0) && isWr(v1) && isFpImm8(v2) {
+        self.require(FEAT_CSSC)
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_simm := asFpImm8(v2)
@@ -54489,6 +57273,8 @@ func (self *Program) SMAX(v0, v1, v2 interface{}) *Instruction {
     }
     // SMAX  <Xd>, <Xn>, #<simm>
     if isXr(v0) && isXr(v1) && isFpImm8(v2) {
+        self.require(FEAT_CSSC)
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_simm := asFpImm8(v2)
@@ -54496,6 +57282,8 @@ func (self *Program) SMAX(v0, v1, v2 interface{}) *Instruction {
     }
     // SMAX  <Wd>, <Wn>, <Wm>
     if isWr(v0) && isWr(v1) && isWr(v2) {
+        self.require(FEAT_CSSC)
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
@@ -54503,6 +57291,8 @@ func (self *Program) SMAX(v0, v1, v2 interface{}) *Instruction {
     }
     // SMAX  <Xd>, <Xn>, <Xm>
     if isXr(v0) && isXr(v1) && isXr(v2) {
+        self.require(FEAT_CSSC)
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
@@ -54540,6 +57330,7 @@ func (self *Program) SMAXP(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -54577,6 +57368,7 @@ func (self *Program) SMAXP(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) SMAXV(v0, v1 interface{}) *Instruction {
     p := self.alloc("SMAXV", 2, Operands { v0, v1 })
     if isAdvSIMD(v0) && isVr(v1) && isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec4S) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
@@ -54629,6 +57421,7 @@ func (self *Program) SMAXV(v0, v1 interface{}) *Instruction {
 func (self *Program) SMC(v0 interface{}) *Instruction {
     p := self.alloc("SMC", 1, Operands { v0 })
     if isUimm16(v0) {
+        p.class = ClassSystem
         sa_imm := asUimm16(v0)
         return p.setins(exception(0, sa_imm, 0, 3))
     }
@@ -54678,6 +57471,7 @@ func (self *Program) SMIN(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -54695,6 +57489,8 @@ func (self *Program) SMIN(v0, v1, v2 interface{}) *Instruction {
     }
     // SMIN  <Wd>, <Wn>, #<simm>
     if isWr(v0) && isWr(v1) && isFpImm8(v2) {
+        self.require(FEAT_CSSC)
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_simm := asFpImm8(v2)
@@ -54702,6 +57498,8 @@ func (self *Program) SMIN(v0, v1, v2 interface{}) *Instruction {
     }
     // SMIN  <Xd>, <Xn>, #<simm>
     if isXr(v0) && isXr(v1) && isFpImm8(v2) {
+        self.require(FEAT_CSSC)
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_simm := asFpImm8(v2)
@@ -54709,6 +57507,8 @@ func (self *Program) SMIN(v0, v1, v2 interface{}) *Instruction {
     }
     // SMIN  <Wd>, <Wn>, <Wm>
     if isWr(v0) && isWr(v1) && isWr(v2) {
+        self.require(FEAT_CSSC)
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
@@ -54716,6 +57516,8 @@ func (self *Program) SMIN(v0, v1, v2 interface{}) *Instruction {
     }
     // SMIN  <Xd>, <Xn>, <Xm>
     if isXr(v0) && isXr(v1) && isXr(v2) {
+        self.require(FEAT_CSSC)
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
@@ -54753,6 +57555,7 @@ func (self *Program) SMINP(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -54790,6 +57593,7 @@ func (self *Program) SMINP(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) SMINV(v0, v1 interface{}) *Instruction {
     p := self.alloc("SMINV", 2, Operands { v0, v1 })
     if isAdvSIMD(v0) && isVr(v1) && isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec4S) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
@@ -54860,6 +57664,7 @@ func (self *Program) SMLAL(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SMLAL", 3, Operands { v0, v1, v2 })
     // SMLAL  <Vd>.<Ta>, <Vn>.<Tb>, <Vm>.<Ts>[<index>]
     if isVr(v0) && isVfmt(v0, Vec4S, Vec2D) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H, Vec2S, Vec4S) && isVri(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         var sa_ts uint32
@@ -54914,6 +57719,7 @@ func (self *Program) SMLAL(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -54990,6 +57796,7 @@ func (self *Program) SMLAL2(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SMLAL2", 3, Operands { v0, v1, v2 })
     // SMLAL2  <Vd>.<Ta>, <Vn>.<Tb>, <Vm>.<Ts>[<index>]
     if isVr(v0) && isVfmt(v0, Vec4S, Vec2D) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H, Vec2S, Vec4S) && isVri(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         var sa_ts uint32
@@ -55044,6 +57851,7 @@ func (self *Program) SMLAL2(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -55120,6 +57928,7 @@ func (self *Program) SMLSL(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SMLSL", 3, Operands { v0, v1, v2 })
     // SMLSL  <Vd>.<Ta>, <Vn>.<Tb>, <Vm>.<Ts>[<index>]
     if isVr(v0) && isVfmt(v0, Vec4S, Vec2D) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H, Vec2S, Vec4S) && isVri(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         var sa_ts uint32
@@ -55174,6 +57983,7 @@ func (self *Program) SMLSL(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -55250,6 +58060,7 @@ func (self *Program) SMLSL2(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SMLSL2", 3, Operands { v0, v1, v2 })
     // SMLSL2  <Vd>.<Ta>, <Vn>.<Tb>, <Vm>.<Ts>[<index>]
     if isVr(v0) && isVfmt(v0, Vec4S, Vec2D) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H, Vec2S, Vec4S) && isVri(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         var sa_ts uint32
@@ -55304,6 +58115,7 @@ func (self *Program) SMLSL2(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -55357,6 +58169,8 @@ func (self *Program) SMLSL2(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) SMMLA(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SMMLA", 3, Operands { v0, v1, v2 })
     if isVr(v0) && vfmt(v0) == Vec4S && isVr(v1) && vfmt(v1) == Vec16B && isVr(v2) && vfmt(v2) == Vec16B {
+        self.require(FEAT_I8MM)
+        p.class = ClassAdvSimd
         sa_vd := uint32(v0.(asm.Register).ID())
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
@@ -55378,6 +58192,7 @@ func (self *Program) SMMLA(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) SMNEGL(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SMNEGL", 3, Operands { v0, v1, v2 })
     if isXr(v0) && isWr(v1) && isWr(v2) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
@@ -55407,6 +58222,7 @@ func (self *Program) SMOV(v0, v1 interface{}) *Instruction {
     p := self.alloc("SMOV", 2, Operands { v0, v1 })
     // SMOV  <Wd>, <Vn>.<Ts>[<index>]
     if isWr(v0) && isVri(v1) {
+        p.class = ClassAdvSimd
         var sa_ts uint32
         var sa_ts__bit_mask uint32
         sa_wd := uint32(v0.(asm.Register).ID())
@@ -55429,6 +58245,7 @@ func (self *Program) SMOV(v0, v1 interface{}) *Instruction {
     }
     // SMOV  <Xd>, <Vn>.<Ts>[<index>]
     if isXr(v0) && isVri(v1) {
+        p.class = ClassAdvSimd
         var sa_ts_1 uint32
         var sa_ts_1__bit_mask uint32
         sa_xd := uint32(v0.(asm.Register).ID())
@@ -55479,6 +58296,8 @@ func (self *Program) SMSTART(vv ...interface{}) *Instruction {
         default : panic("instruction SMSTART takes 0 or 1 operands")
     }
     if (len(vv) == 0 || len(vv) == 1) && (len(vv) == 0 || isSMEOption(vv[0])) {
+        self.require(FEAT_SME)
+        p.class = ClassSystem
         sa_pstatefield := uint32(0b0111)
         if len(vv) == 1 {
             sa_pstatefield = uint32(vv[0].(SMEOption))
@@ -55512,6 +58331,8 @@ func (self *Program) SMSTOP(vv ...interface{}) *Instruction {
         default : panic("instruction SMSTOP takes 0 or 1 operands")
     }
     if (len(vv) == 0 || len(vv) == 1) && (len(vv) == 0 || isSMEOption(vv[0])) {
+        self.require(FEAT_SME)
+        p.class = ClassSystem
         sa_pstatefield := uint32(0b0111)
         if len(vv) == 1 {
             sa_pstatefield = uint32(vv[0].(SMEOption))
@@ -55535,6 +58356,7 @@ func (self *Program) SMSTOP(vv ...interface{}) *Instruction {
 func (self *Program) SMSUBL(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("SMSUBL", 4, Operands { v0, v1, v2, v3 })
     if isXr(v0) && isWr(v1) && isWr(v2) && isXr(v3) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
@@ -55557,6 +58379,7 @@ func (self *Program) SMSUBL(v0, v1, v2, v3 interface{}) *Instruction {
 func (self *Program) SMULH(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SMULH", 3, Operands { v0, v1, v2 })
     if isXr(v0) && isXr(v1) && isXr(v2) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
@@ -55618,6 +58441,7 @@ func (self *Program) SMULL(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SMULL", 3, Operands { v0, v1, v2 })
     // SMULL  <Xd>, <Wn>, <Wm>
     if isXr(v0) && isWr(v1) && isWr(v2) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
@@ -55625,6 +58449,7 @@ func (self *Program) SMULL(v0, v1, v2 interface{}) *Instruction {
     }
     // SMULL  <Vd>.<Ta>, <Vn>.<Tb>, <Vm>.<Ts>[<index>]
     if isVr(v0) && isVfmt(v0, Vec4S, Vec2D) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H, Vec2S, Vec4S) && isVri(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         var sa_ts uint32
@@ -55679,6 +58504,7 @@ func (self *Program) SMULL(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -55757,6 +58583,7 @@ func (self *Program) SMULL2(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SMULL2", 3, Operands { v0, v1, v2 })
     // SMULL2  <Vd>.<Ta>, <Vn>.<Tb>, <Vm>.<Ts>[<index>]
     if isVr(v0) && isVfmt(v0, Vec4S, Vec2D) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H, Vec2S, Vec4S) && isVri(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         var sa_ts uint32
@@ -55811,6 +58638,7 @@ func (self *Program) SMULL2(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -55871,6 +58699,7 @@ func (self *Program) SQABS(v0, v1 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -55888,6 +58717,7 @@ func (self *Program) SQABS(v0, v1 interface{}) *Instruction {
     }
     // SQABS  <V><d>, <V><n>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -55934,6 +58764,7 @@ func (self *Program) SQADD(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -55952,6 +58783,7 @@ func (self *Program) SQADD(v0, v1, v2 interface{}) *Instruction {
     }
     // SQADD  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -56022,6 +58854,7 @@ func (self *Program) SQDMLAL(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SQDMLAL", 3, Operands { v0, v1, v2 })
     // SQDMLAL  <Va><d>, <Vb><n>, <Vm>.<Ts>[<index>]
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isVri(v2) {
+        p.class = ClassAdvSimd
         var sa_ts uint32
         var sa_va uint32
         var sa_vb uint32
@@ -56064,6 +58897,7 @@ func (self *Program) SQDMLAL(v0, v1, v2 interface{}) *Instruction {
     }
     // SQDMLAL  <Vd>.<Ta>, <Vn>.<Tb>, <Vm>.<Ts>[<index>]
     if isVr(v0) && isVfmt(v0, Vec4S, Vec2D) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H, Vec2S, Vec4S) && isVri(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         var sa_ts uint32
@@ -56112,6 +58946,7 @@ func (self *Program) SQDMLAL(v0, v1, v2 interface{}) *Instruction {
     }
     // SQDMLAL  <Va><d>, <Vb><n>, <Vb><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v1, v2) {
+        p.class = ClassAdvSimd
         var sa_va uint32
         var sa_vb uint32
         sa_d := uint32(v0.(asm.Register).ID())
@@ -56140,6 +58975,7 @@ func (self *Program) SQDMLAL(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -56220,6 +59056,7 @@ func (self *Program) SQDMLAL2(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SQDMLAL2", 3, Operands { v0, v1, v2 })
     // SQDMLAL2  <Vd>.<Ta>, <Vn>.<Tb>, <Vm>.<Ts>[<index>]
     if isVr(v0) && isVfmt(v0, Vec4S, Vec2D) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H, Vec2S, Vec4S) && isVri(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         var sa_ts uint32
@@ -56274,6 +59111,7 @@ func (self *Program) SQDMLAL2(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -56357,6 +59195,7 @@ func (self *Program) SQDMLSL(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SQDMLSL", 3, Operands { v0, v1, v2 })
     // SQDMLSL  <Va><d>, <Vb><n>, <Vm>.<Ts>[<index>]
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isVri(v2) {
+        p.class = ClassAdvSimd
         var sa_ts uint32
         var sa_va uint32
         var sa_vb uint32
@@ -56399,6 +59238,7 @@ func (self *Program) SQDMLSL(v0, v1, v2 interface{}) *Instruction {
     }
     // SQDMLSL  <Vd>.<Ta>, <Vn>.<Tb>, <Vm>.<Ts>[<index>]
     if isVr(v0) && isVfmt(v0, Vec4S, Vec2D) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H, Vec2S, Vec4S) && isVri(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         var sa_ts uint32
@@ -56447,6 +59287,7 @@ func (self *Program) SQDMLSL(v0, v1, v2 interface{}) *Instruction {
     }
     // SQDMLSL  <Va><d>, <Vb><n>, <Vb><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v1, v2) {
+        p.class = ClassAdvSimd
         var sa_va uint32
         var sa_vb uint32
         sa_d := uint32(v0.(asm.Register).ID())
@@ -56475,6 +59316,7 @@ func (self *Program) SQDMLSL(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -56556,6 +59398,7 @@ func (self *Program) SQDMLSL2(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SQDMLSL2", 3, Operands { v0, v1, v2 })
     // SQDMLSL2  <Vd>.<Ta>, <Vn>.<Tb>, <Vm>.<Ts>[<index>]
     if isVr(v0) && isVfmt(v0, Vec4S, Vec2D) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H, Vec2S, Vec4S) && isVri(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         var sa_ts uint32
@@ -56610,6 +59453,7 @@ func (self *Program) SQDMLSL2(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -56688,6 +59532,7 @@ func (self *Program) SQDMULH(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec4H, Vec8H, Vec2S, Vec4S) &&
        isVri(v2) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         var sa_ts uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -56727,6 +59572,7 @@ func (self *Program) SQDMULH(v0, v1, v2 interface{}) *Instruction {
     }
     // SQDMULH  <V><d>, <V><n>, <Vm>.<Ts>[<index>]
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isVri(v2) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_ts uint32
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
@@ -56770,6 +59616,7 @@ func (self *Program) SQDMULH(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -56785,6 +59632,7 @@ func (self *Program) SQDMULH(v0, v1, v2 interface{}) *Instruction {
     }
     // SQDMULH  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -56851,6 +59699,7 @@ func (self *Program) SQDMULL(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SQDMULL", 3, Operands { v0, v1, v2 })
     // SQDMULL  <Va><d>, <Vb><n>, <Vm>.<Ts>[<index>]
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isVri(v2) {
+        p.class = ClassAdvSimd
         var sa_ts uint32
         var sa_va uint32
         var sa_vb uint32
@@ -56893,6 +59742,7 @@ func (self *Program) SQDMULL(v0, v1, v2 interface{}) *Instruction {
     }
     // SQDMULL  <Vd>.<Ta>, <Vn>.<Tb>, <Vm>.<Ts>[<index>]
     if isVr(v0) && isVfmt(v0, Vec4S, Vec2D) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H, Vec2S, Vec4S) && isVri(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         var sa_ts uint32
@@ -56941,6 +59791,7 @@ func (self *Program) SQDMULL(v0, v1, v2 interface{}) *Instruction {
     }
     // SQDMULL  <Va><d>, <Vb><n>, <Vb><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v1, v2) {
+        p.class = ClassAdvSimd
         var sa_va uint32
         var sa_vb uint32
         sa_d := uint32(v0.(asm.Register).ID())
@@ -56969,6 +59820,7 @@ func (self *Program) SQDMULL(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -57047,6 +59899,7 @@ func (self *Program) SQDMULL2(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SQDMULL2", 3, Operands { v0, v1, v2 })
     // SQDMULL2  <Vd>.<Ta>, <Vn>.<Tb>, <Vm>.<Ts>[<index>]
     if isVr(v0) && isVfmt(v0, Vec4S, Vec2D) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H, Vec2S, Vec4S) && isVri(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         var sa_ts uint32
@@ -57101,6 +59954,7 @@ func (self *Program) SQDMULL2(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -57158,6 +60012,7 @@ func (self *Program) SQNEG(v0, v1 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -57175,6 +60030,7 @@ func (self *Program) SQNEG(v0, v1 interface{}) *Instruction {
     }
     // SQNEG  <V><d>, <V><n>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -57243,6 +60099,8 @@ func (self *Program) SQRDMLAH(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec4H, Vec8H, Vec2S, Vec4S) &&
        isVri(v2) &&
        vfmt(v0) == vfmt(v1) {
+        self.require(FEAT_RDM)
+        p.class = ClassAdvSimd
         var sa_t uint32
         var sa_ts uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -57282,6 +60140,8 @@ func (self *Program) SQRDMLAH(v0, v1, v2 interface{}) *Instruction {
     }
     // SQRDMLAH  <V><d>, <V><n>, <Vm>.<Ts>[<index>]
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isVri(v2) && isSameType(v0, v1) {
+        self.require(FEAT_RDM)
+        p.class = ClassAdvSimd
         var sa_ts uint32
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
@@ -57325,6 +60185,8 @@ func (self *Program) SQRDMLAH(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        self.require(FEAT_RDM)
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -57340,6 +60202,8 @@ func (self *Program) SQRDMLAH(v0, v1, v2 interface{}) *Instruction {
     }
     // SQRDMLAH  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
+        self.require(FEAT_RDM)
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -57407,6 +60271,8 @@ func (self *Program) SQRDMLSH(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec4H, Vec8H, Vec2S, Vec4S) &&
        isVri(v2) &&
        vfmt(v0) == vfmt(v1) {
+        self.require(FEAT_RDM)
+        p.class = ClassAdvSimd
         var sa_t uint32
         var sa_ts uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -57446,6 +60312,8 @@ func (self *Program) SQRDMLSH(v0, v1, v2 interface{}) *Instruction {
     }
     // SQRDMLSH  <V><d>, <V><n>, <Vm>.<Ts>[<index>]
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isVri(v2) && isSameType(v0, v1) {
+        self.require(FEAT_RDM)
+        p.class = ClassAdvSimd
         var sa_ts uint32
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
@@ -57489,6 +60357,8 @@ func (self *Program) SQRDMLSH(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        self.require(FEAT_RDM)
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -57504,6 +60374,8 @@ func (self *Program) SQRDMLSH(v0, v1, v2 interface{}) *Instruction {
     }
     // SQRDMLSH  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
+        self.require(FEAT_RDM)
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -57571,6 +60443,7 @@ func (self *Program) SQRDMULH(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec4H, Vec8H, Vec2S, Vec4S) &&
        isVri(v2) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         var sa_ts uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -57610,6 +60483,7 @@ func (self *Program) SQRDMULH(v0, v1, v2 interface{}) *Instruction {
     }
     // SQRDMULH  <V><d>, <V><n>, <Vm>.<Ts>[<index>]
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isVri(v2) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_ts uint32
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
@@ -57653,6 +60527,7 @@ func (self *Program) SQRDMULH(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -57668,6 +60543,7 @@ func (self *Program) SQRDMULH(v0, v1, v2 interface{}) *Instruction {
     }
     // SQRDMULH  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -57718,6 +60594,7 @@ func (self *Program) SQRSHL(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -57736,6 +60613,7 @@ func (self *Program) SQRSHL(v0, v1, v2 interface{}) *Instruction {
     }
     // SQRSHL  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -57785,6 +60663,7 @@ func (self *Program) SQRSHRN(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SQRSHRN", 3, Operands { v0, v1, v2 })
     // SQRSHRN  <Vb><d>, <Va><n>, #<shift>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(v2) {
+        p.class = ClassAdvSimd
         var sa_shift_1 uint32
         var sa_va uint32
         var sa_va__bit_mask uint32
@@ -57833,6 +60712,7 @@ func (self *Program) SQRSHRN(v0, v1, v2 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec8H, Vec4S, Vec2D) &&
        isFpBits(v2) {
+        p.class = ClassAdvSimd
         var sa_shift uint32
         var sa_ta uint32
         var sa_ta__bit_mask uint32
@@ -57923,6 +60803,7 @@ func (self *Program) SQRSHRN2(v0, v1, v2 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec8H, Vec4S, Vec2D) &&
        isFpBits(v2) {
+        p.class = ClassAdvSimd
         var sa_shift uint32
         var sa_ta uint32
         var sa_ta__bit_mask uint32
@@ -58008,6 +60889,7 @@ func (self *Program) SQRSHRUN(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SQRSHRUN", 3, Operands { v0, v1, v2 })
     // SQRSHRUN  <Vb><d>, <Va><n>, #<shift>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(v2) {
+        p.class = ClassAdvSimd
         var sa_shift_1 uint32
         var sa_va uint32
         var sa_va__bit_mask uint32
@@ -58056,6 +60938,7 @@ func (self *Program) SQRSHRUN(v0, v1, v2 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec8H, Vec4S, Vec2D) &&
        isFpBits(v2) {
+        p.class = ClassAdvSimd
         var sa_shift uint32
         var sa_ta uint32
         var sa_ta__bit_mask uint32
@@ -58144,6 +61027,7 @@ func (self *Program) SQRSHRUN2(v0, v1, v2 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec8H, Vec4S, Vec2D) &&
        isFpBits(v2) {
+        p.class = ClassAdvSimd
         var sa_shift uint32
         var sa_ta uint32
         var sa_ta__bit_mask uint32
@@ -58250,6 +61134,7 @@ func (self *Program) SQSHL(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        isFpBits(v2) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_shift uint32
         var sa_t uint32
         var sa_t__bit_mask uint32
@@ -58289,6 +61174,7 @@ func (self *Program) SQSHL(v0, v1, v2 interface{}) *Instruction {
     }
     // SQSHL  <V><d>, <V><n>, #<shift>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(v2) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_shift_1 uint32
         var sa_v uint32
         var sa_v__bit_mask uint32
@@ -58329,6 +61215,7 @@ func (self *Program) SQSHL(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -58347,6 +61234,7 @@ func (self *Program) SQSHL(v0, v1, v2 interface{}) *Instruction {
     }
     // SQSHL  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -58393,6 +61281,7 @@ func (self *Program) SQSHLU(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        isFpBits(v2) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_shift uint32
         var sa_t uint32
         var sa_t__bit_mask uint32
@@ -58432,6 +61321,7 @@ func (self *Program) SQSHLU(v0, v1, v2 interface{}) *Instruction {
     }
     // SQSHLU  <V><d>, <V><n>, #<shift>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(v2) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_shift_1 uint32
         var sa_v uint32
         var sa_v__bit_mask uint32
@@ -58499,6 +61389,7 @@ func (self *Program) SQSHRN(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SQSHRN", 3, Operands { v0, v1, v2 })
     // SQSHRN  <Vb><d>, <Va><n>, #<shift>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(v2) {
+        p.class = ClassAdvSimd
         var sa_shift_1 uint32
         var sa_va uint32
         var sa_va__bit_mask uint32
@@ -58547,6 +61438,7 @@ func (self *Program) SQSHRN(v0, v1, v2 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec8H, Vec4S, Vec2D) &&
        isFpBits(v2) {
+        p.class = ClassAdvSimd
         var sa_shift uint32
         var sa_ta uint32
         var sa_ta__bit_mask uint32
@@ -58637,6 +61529,7 @@ func (self *Program) SQSHRN2(v0, v1, v2 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec8H, Vec4S, Vec2D) &&
        isFpBits(v2) {
+        p.class = ClassAdvSimd
         var sa_shift uint32
         var sa_ta uint32
         var sa_ta__bit_mask uint32
@@ -58722,6 +61615,7 @@ func (self *Program) SQSHRUN(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SQSHRUN", 3, Operands { v0, v1, v2 })
     // SQSHRUN  <Vb><d>, <Va><n>, #<shift>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(v2) {
+        p.class = ClassAdvSimd
         var sa_shift_1 uint32
         var sa_va uint32
         var sa_va__bit_mask uint32
@@ -58770,6 +61664,7 @@ func (self *Program) SQSHRUN(v0, v1, v2 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec8H, Vec4S, Vec2D) &&
        isFpBits(v2) {
+        p.class = ClassAdvSimd
         var sa_shift uint32
         var sa_ta uint32
         var sa_ta__bit_mask uint32
@@ -58858,6 +61753,7 @@ func (self *Program) SQSHRUN2(v0, v1, v2 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec8H, Vec4S, Vec2D) &&
        isFpBits(v2) {
+        p.class = ClassAdvSimd
         var sa_shift uint32
         var sa_ta uint32
         var sa_ta__bit_mask uint32
@@ -58944,6 +61840,7 @@ func (self *Program) SQSUB(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -58962,6 +61859,7 @@ func (self *Program) SQSUB(v0, v1, v2 interface{}) *Instruction {
     }
     // SQSUB  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -59010,6 +61908,7 @@ func (self *Program) SQXTN(v0, v1 interface{}) *Instruction {
     p := self.alloc("SQXTN", 2, Operands { v0, v1 })
     // SQXTN  <Vb><d>, <Va><n>
     if isAdvSIMD(v0) && isAdvSIMD(v1) {
+        p.class = ClassAdvSimd
         var sa_va uint32
         var sa_vb uint32
         sa_d := uint32(v0.(asm.Register).ID())
@@ -59036,6 +61935,7 @@ func (self *Program) SQXTN(v0, v1 interface{}) *Instruction {
        isVfmt(v0, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        isVr(v1) &&
        isVfmt(v1, Vec8H, Vec4S, Vec2D) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -59099,6 +61999,7 @@ func (self *Program) SQXTN2(v0, v1 interface{}) *Instruction {
        isVfmt(v0, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        isVr(v1) &&
        isVfmt(v1, Vec8H, Vec4S, Vec2D) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -59159,6 +62060,7 @@ func (self *Program) SQXTUN(v0, v1 interface{}) *Instruction {
     p := self.alloc("SQXTUN", 2, Operands { v0, v1 })
     // SQXTUN  <Vb><d>, <Va><n>
     if isAdvSIMD(v0) && isAdvSIMD(v1) {
+        p.class = ClassAdvSimd
         var sa_va uint32
         var sa_vb uint32
         sa_d := uint32(v0.(asm.Register).ID())
@@ -59185,6 +62087,7 @@ func (self *Program) SQXTUN(v0, v1 interface{}) *Instruction {
        isVfmt(v0, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        isVr(v1) &&
        isVfmt(v1, Vec8H, Vec4S, Vec2D) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -59247,6 +62150,7 @@ func (self *Program) SQXTUN2(v0, v1 interface{}) *Instruction {
        isVfmt(v0, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        isVr(v1) &&
        isVfmt(v1, Vec8H, Vec4S, Vec2D) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -59305,6 +62209,7 @@ func (self *Program) SRHADD(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -59338,7 +62243,7 @@ func (self *Program) SRHADD(v0, v1, v2 interface{}) *Instruction {
 // are not inserted but retain their existing value. Bits shifted out of the right
 // of each vector element of the source register are lost.
 //
-// [image:A64.sri_operation_shift_by_3.svg]
+// [image:isa_docs/ISA_A64_xml_A_profile-2022-12_OPT/A64.sri_operation_shift_by_3.svg]
 // shift right by 3 for an 8-bit vector element
 //
 // Depending on the settings in the CPACR_EL1 , CPTR_EL2 , and CPTR_EL3 registers,
@@ -59354,6 +62259,7 @@ func (self *Program) SRI(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        isFpBits(v2) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_shift uint32
         var sa_t uint32
         var sa_t__bit_mask uint32
@@ -59393,6 +62299,7 @@ func (self *Program) SRI(v0, v1, v2 interface{}) *Instruction {
     }
     // SRI  <V><d>, <V><n>, #<shift>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(v2) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_shift_1 uint32
         var sa_v uint32
         var sa_v__bit_mask uint32
@@ -59452,6 +62359,7 @@ func (self *Program) SRSHL(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -59470,6 +62378,7 @@ func (self *Program) SRSHL(v0, v1, v2 interface{}) *Instruction {
     }
     // SRSHL  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -59511,6 +62420,7 @@ func (self *Program) SRSHR(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        isFpBits(v2) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_shift uint32
         var sa_t uint32
         var sa_t__bit_mask uint32
@@ -59550,6 +62460,7 @@ func (self *Program) SRSHR(v0, v1, v2 interface{}) *Instruction {
     }
     // SRSHR  <V><d>, <V><n>, #<shift>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(v2) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_shift_1 uint32
         var sa_v uint32
         var sa_v__bit_mask uint32
@@ -59604,6 +62515,7 @@ func (self *Program) SRSRA(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        isFpBits(v2) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_shift uint32
         var sa_t uint32
         var sa_t__bit_mask uint32
@@ -59643,6 +62555,7 @@ func (self *Program) SRSRA(v0, v1, v2 interface{}) *Instruction {
     }
     // SRSRA  <V><d>, <V><n>, #<shift>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(v2) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_shift_1 uint32
         var sa_v uint32
         var sa_v__bit_mask uint32
@@ -59701,6 +62614,7 @@ func (self *Program) SRSRA(v0, v1, v2 interface{}) *Instruction {
 //
 func (self *Program) SSBB() *Instruction {
     p := self.alloc("SSBB", 0, Operands {})
+    p.class = ClassSystem
     return p.setins(barriers(0, 4, 31))
 }
 
@@ -59736,6 +62650,7 @@ func (self *Program) SSHL(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -59754,6 +62669,7 @@ func (self *Program) SSHL(v0, v1, v2 interface{}) *Instruction {
     }
     // SSHL  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -59797,6 +62713,7 @@ func (self *Program) SSHLL(v0, v1, v2 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        isFpBits(v2) {
+        p.class = ClassAdvSimd
         var sa_shift uint32
         var sa_ta uint32
         var sa_ta__bit_mask uint32
@@ -59881,6 +62798,7 @@ func (self *Program) SSHLL2(v0, v1, v2 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        isFpBits(v2) {
+        p.class = ClassAdvSimd
         var sa_shift uint32
         var sa_ta uint32
         var sa_ta__bit_mask uint32
@@ -59963,6 +62881,7 @@ func (self *Program) SSHR(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        isFpBits(v2) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_shift uint32
         var sa_t uint32
         var sa_t__bit_mask uint32
@@ -60002,6 +62921,7 @@ func (self *Program) SSHR(v0, v1, v2 interface{}) *Instruction {
     }
     // SSHR  <V><d>, <V><n>, #<shift>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(v2) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_shift_1 uint32
         var sa_v uint32
         var sa_v__bit_mask uint32
@@ -60055,6 +62975,7 @@ func (self *Program) SSRA(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        isFpBits(v2) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_shift uint32
         var sa_t uint32
         var sa_t__bit_mask uint32
@@ -60094,6 +63015,7 @@ func (self *Program) SSRA(v0, v1, v2 interface{}) *Instruction {
     }
     // SSRA  <V><d>, <V><n>, #<shift>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(v2) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_shift_1 uint32
         var sa_v uint32
         var sa_v__bit_mask uint32
@@ -60151,6 +63073,7 @@ func (self *Program) SSUBL(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -60213,6 +63136,7 @@ func (self *Program) SSUBL2(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -60274,6 +63198,7 @@ func (self *Program) SSUBW(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -60335,6 +63260,7 @@ func (self *Program) SSUBW2(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -60420,6 +63346,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
     p := self.alloc("ST1", 2, Operands { v0, v1 })
     // ST1  { <Vt>.<T> }, [<Xn|SP>]
     if isVec1(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -60438,6 +63365,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
     }
     // ST1  { <Vt>.<T>, <Vt2>.<T> }, [<Xn|SP>]
     if isVec2(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -60456,6 +63384,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
     }
     // ST1  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T> }, [<Xn|SP>]
     if isVec3(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -60474,6 +63403,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
     }
     // ST1  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T>, <Vt4>.<T> }, [<Xn|SP>]
     if isVec4(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -60492,6 +63422,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
     }
     // ST1  { <Vt>.<T> }, [<Xn|SP>], <imm>
     if isVec1(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -60514,6 +63445,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
     }
     // ST1  { <Vt>.<T>, <Vt2>.<T> }, [<Xn|SP>], <imm>
     if isVec2(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -60536,6 +63468,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
     }
     // ST1  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T> }, [<Xn|SP>], <imm>
     if isVec3(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -60558,6 +63491,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
     }
     // ST1  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T>, <Vt4>.<T> }, [<Xn|SP>], <imm>
     if isVec4(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -60580,6 +63514,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
     }
     // ST1  { <Vt>.<T> }, [<Xn|SP>], <Xm>
     if isVec1(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -60599,6 +63534,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
     }
     // ST1  { <Vt>.<T>, <Vt2>.<T> }, [<Xn|SP>], <Xm>
     if isVec2(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -60618,6 +63554,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
     }
     // ST1  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T> }, [<Xn|SP>], <Xm>
     if isVec3(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -60637,6 +63574,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
     }
     // ST1  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T>, <Vt4>.<T> }, [<Xn|SP>], <Xm>
     if isVec4(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -60662,6 +63600,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 0 &&
        mext(v1) == nil {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -60675,6 +63614,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 0 &&
        mext(v1) == nil {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_1 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -60688,6 +63628,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 0 &&
        mext(v1) == nil {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_2 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -60711,6 +63652,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 0 &&
        mext(v1) == nil {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -60724,6 +63666,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 1 &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -60737,6 +63680,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -60761,6 +63705,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 8 &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_1 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -60774,6 +63719,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_1 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -60788,6 +63734,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 2 &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_2 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -60811,6 +63758,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_2 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -60835,6 +63783,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 4 &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -60848,6 +63797,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -60902,6 +63852,7 @@ func (self *Program) ST2(v0, v1 interface{}) *Instruction {
     p := self.alloc("ST2", 2, Operands { v0, v1 })
     // ST2  { <Vt>.<T>, <Vt2>.<T> }, [<Xn|SP>]
     if isVec2(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -60919,6 +63870,7 @@ func (self *Program) ST2(v0, v1 interface{}) *Instruction {
     }
     // ST2  { <Vt>.<T>, <Vt2>.<T> }, [<Xn|SP>], <imm>
     if isVec2(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -60940,6 +63892,7 @@ func (self *Program) ST2(v0, v1 interface{}) *Instruction {
     }
     // ST2  { <Vt>.<T>, <Vt2>.<T> }, [<Xn|SP>], <Xm>
     if isVec2(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -60964,6 +63917,7 @@ func (self *Program) ST2(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 0 &&
        mext(v1) == nil {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -60977,6 +63931,7 @@ func (self *Program) ST2(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 0 &&
        mext(v1) == nil {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_1 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -60990,6 +63945,7 @@ func (self *Program) ST2(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 0 &&
        mext(v1) == nil {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_2 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -61013,6 +63969,7 @@ func (self *Program) ST2(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 0 &&
        mext(v1) == nil {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -61026,6 +63983,7 @@ func (self *Program) ST2(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 2 &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -61039,6 +63997,7 @@ func (self *Program) ST2(v0, v1 interface{}) *Instruction {
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -61063,6 +64022,7 @@ func (self *Program) ST2(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 16 &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_1 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -61076,6 +64036,7 @@ func (self *Program) ST2(v0, v1 interface{}) *Instruction {
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_1 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -61090,6 +64051,7 @@ func (self *Program) ST2(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 4 &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_2 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -61113,6 +64075,7 @@ func (self *Program) ST2(v0, v1 interface{}) *Instruction {
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_2 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -61137,6 +64100,7 @@ func (self *Program) ST2(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 8 &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -61150,6 +64114,7 @@ func (self *Program) ST2(v0, v1 interface{}) *Instruction {
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -61180,6 +64145,8 @@ func (self *Program) ST2G(v0, v1 interface{}) *Instruction {
     p := self.alloc("ST2G", 2, Operands { v0, v1 })
     // ST2G  <Xt|SP>, [<Xn|SP>{, #<simm>}]
     if isXrOrSP(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        self.require(FEAT_MTE)
+        p.class = ClassGeneral
         sa_xt_sp := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -61191,6 +64158,8 @@ func (self *Program) ST2G(v0, v1 interface{}) *Instruction {
     }
     // ST2G  <Xt|SP>, [<Xn|SP>], #<simm>
     if isXrOrSP(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        self.require(FEAT_MTE)
+        p.class = ClassGeneral
         sa_xt_sp := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -61202,6 +64171,8 @@ func (self *Program) ST2G(v0, v1 interface{}) *Instruction {
     }
     // ST2G  <Xt|SP>, [<Xn|SP>, #<simm>]!
     if isXrOrSP(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+        self.require(FEAT_MTE)
+        p.class = ClassGeneral
         sa_xt_sp := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -61259,6 +64230,7 @@ func (self *Program) ST3(v0, v1 interface{}) *Instruction {
     p := self.alloc("ST3", 2, Operands { v0, v1 })
     // ST3  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T> }, [<Xn|SP>]
     if isVec3(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -61276,6 +64248,7 @@ func (self *Program) ST3(v0, v1 interface{}) *Instruction {
     }
     // ST3  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T> }, [<Xn|SP>], <imm>
     if isVec3(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -61297,6 +64270,7 @@ func (self *Program) ST3(v0, v1 interface{}) *Instruction {
     }
     // ST3  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T> }, [<Xn|SP>], <Xm>
     if isVec3(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -61321,6 +64295,7 @@ func (self *Program) ST3(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 0 &&
        mext(v1) == nil {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -61334,6 +64309,7 @@ func (self *Program) ST3(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 0 &&
        mext(v1) == nil {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_1 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -61347,6 +64323,7 @@ func (self *Program) ST3(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 0 &&
        mext(v1) == nil {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_2 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -61370,6 +64347,7 @@ func (self *Program) ST3(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 0 &&
        mext(v1) == nil {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -61383,6 +64361,7 @@ func (self *Program) ST3(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 3 &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -61396,6 +64375,7 @@ func (self *Program) ST3(v0, v1 interface{}) *Instruction {
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -61420,6 +64400,7 @@ func (self *Program) ST3(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 24 &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_1 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -61433,6 +64414,7 @@ func (self *Program) ST3(v0, v1 interface{}) *Instruction {
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_1 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -61447,6 +64429,7 @@ func (self *Program) ST3(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 6 &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_2 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -61470,6 +64453,7 @@ func (self *Program) ST3(v0, v1 interface{}) *Instruction {
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_2 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -61494,6 +64478,7 @@ func (self *Program) ST3(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 12 &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -61507,6 +64492,7 @@ func (self *Program) ST3(v0, v1 interface{}) *Instruction {
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -61561,6 +64547,7 @@ func (self *Program) ST4(v0, v1 interface{}) *Instruction {
     p := self.alloc("ST4", 2, Operands { v0, v1 })
     // ST4  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T>, <Vt4>.<T> }, [<Xn|SP>]
     if isVec4(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -61578,6 +64565,7 @@ func (self *Program) ST4(v0, v1 interface{}) *Instruction {
     }
     // ST4  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T>, <Vt4>.<T> }, [<Xn|SP>], <imm>
     if isVec4(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -61599,6 +64587,7 @@ func (self *Program) ST4(v0, v1 interface{}) *Instruction {
     }
     // ST4  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T>, <Vt4>.<T> }, [<Xn|SP>], <Xm>
     if isVec4(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
         switch velm(v0) {
@@ -61623,6 +64612,7 @@ func (self *Program) ST4(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 0 &&
        mext(v1) == nil {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -61636,6 +64626,7 @@ func (self *Program) ST4(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 0 &&
        mext(v1) == nil {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_1 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -61649,6 +64640,7 @@ func (self *Program) ST4(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 0 &&
        mext(v1) == nil {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_2 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -61672,6 +64664,7 @@ func (self *Program) ST4(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 0 &&
        mext(v1) == nil {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -61685,6 +64678,7 @@ func (self *Program) ST4(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 4 &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -61698,6 +64692,7 @@ func (self *Program) ST4(v0, v1 interface{}) *Instruction {
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -61722,6 +64717,7 @@ func (self *Program) ST4(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 32 &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_1 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -61735,6 +64731,7 @@ func (self *Program) ST4(v0, v1 interface{}) *Instruction {
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_1 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -61749,6 +64746,7 @@ func (self *Program) ST4(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 8 &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_2 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -61772,6 +64770,7 @@ func (self *Program) ST4(v0, v1 interface{}) *Instruction {
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_2 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -61796,6 +64795,7 @@ func (self *Program) ST4(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 16 &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -61809,6 +64809,7 @@ func (self *Program) ST4(v0, v1 interface{}) *Instruction {
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
        mext(v1) == PostIndex {
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -61838,6 +64839,8 @@ func (self *Program) ST64B(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
        mext(v1) == nil {
+        self.require(FEAT_LS64)
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(3, 0, 0, 0, 31, 1, 1, sa_xn_sp, sa_xt))
@@ -61866,6 +64869,8 @@ func (self *Program) ST64BV(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LS64_V)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -61896,6 +64901,8 @@ func (self *Program) ST64BV0(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LS64_ACCDATA)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -61926,12 +64933,16 @@ func (self *Program) STADD(v0, v1 interface{}) *Instruction {
     p := self.alloc("STADD", 2, Operands { v0, v1 })
     // STADD  <Ws>, [<Xn|SP>]
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(2, 0, 0, 0, sa_ws, 0, 0, sa_xn_sp, 31))
     }
     // STADD  <Xs>, [<Xn|SP>]
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(3, 0, 0, 0, sa_xs, 0, 0, sa_xn_sp, 31))
@@ -61960,6 +64971,8 @@ func (self *Program) STADD(v0, v1 interface{}) *Instruction {
 func (self *Program) STADDB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STADDB", 2, Operands { v0, v1 })
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(0, 0, 0, 0, sa_ws, 0, 0, sa_xn_sp, 31))
@@ -61987,6 +65000,8 @@ func (self *Program) STADDB(v0, v1 interface{}) *Instruction {
 func (self *Program) STADDH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STADDH", 2, Operands { v0, v1 })
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(1, 0, 0, 0, sa_ws, 0, 0, sa_xn_sp, 31))
@@ -62016,12 +65031,16 @@ func (self *Program) STADDL(v0, v1 interface{}) *Instruction {
     p := self.alloc("STADDL", 2, Operands { v0, v1 })
     // STADDL  <Ws>, [<Xn|SP>]
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(2, 0, 0, 1, sa_ws, 0, 0, sa_xn_sp, 31))
     }
     // STADDL  <Xs>, [<Xn|SP>]
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(3, 0, 0, 1, sa_xs, 0, 0, sa_xn_sp, 31))
@@ -62050,6 +65069,8 @@ func (self *Program) STADDL(v0, v1 interface{}) *Instruction {
 func (self *Program) STADDLB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STADDLB", 2, Operands { v0, v1 })
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(0, 0, 0, 1, sa_ws, 0, 0, sa_xn_sp, 31))
@@ -62077,6 +65098,8 @@ func (self *Program) STADDLB(v0, v1 interface{}) *Instruction {
 func (self *Program) STADDLH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STADDLH", 2, Operands { v0, v1 })
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(1, 0, 0, 1, sa_ws, 0, 0, sa_xn_sp, 31))
@@ -62107,12 +65130,16 @@ func (self *Program) STCLR(v0, v1 interface{}) *Instruction {
     p := self.alloc("STCLR", 2, Operands { v0, v1 })
     // STCLR  <Ws>, [<Xn|SP>]
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(2, 0, 0, 0, sa_ws, 0, 1, sa_xn_sp, 31))
     }
     // STCLR  <Xs>, [<Xn|SP>]
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(3, 0, 0, 0, sa_xs, 0, 1, sa_xn_sp, 31))
@@ -62141,6 +65168,8 @@ func (self *Program) STCLR(v0, v1 interface{}) *Instruction {
 func (self *Program) STCLRB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STCLRB", 2, Operands { v0, v1 })
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(0, 0, 0, 0, sa_ws, 0, 1, sa_xn_sp, 31))
@@ -62168,6 +65197,8 @@ func (self *Program) STCLRB(v0, v1 interface{}) *Instruction {
 func (self *Program) STCLRH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STCLRH", 2, Operands { v0, v1 })
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(1, 0, 0, 0, sa_ws, 0, 1, sa_xn_sp, 31))
@@ -62198,12 +65229,16 @@ func (self *Program) STCLRL(v0, v1 interface{}) *Instruction {
     p := self.alloc("STCLRL", 2, Operands { v0, v1 })
     // STCLRL  <Ws>, [<Xn|SP>]
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(2, 0, 0, 1, sa_ws, 0, 1, sa_xn_sp, 31))
     }
     // STCLRL  <Xs>, [<Xn|SP>]
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(3, 0, 0, 1, sa_xs, 0, 1, sa_xn_sp, 31))
@@ -62232,6 +65267,8 @@ func (self *Program) STCLRL(v0, v1 interface{}) *Instruction {
 func (self *Program) STCLRLB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STCLRLB", 2, Operands { v0, v1 })
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(0, 0, 0, 1, sa_ws, 0, 1, sa_xn_sp, 31))
@@ -62259,6 +65296,8 @@ func (self *Program) STCLRLB(v0, v1 interface{}) *Instruction {
 func (self *Program) STCLRLH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STCLRLH", 2, Operands { v0, v1 })
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(1, 0, 0, 1, sa_ws, 0, 1, sa_xn_sp, 31))
@@ -62288,12 +65327,16 @@ func (self *Program) STEOR(v0, v1 interface{}) *Instruction {
     p := self.alloc("STEOR", 2, Operands { v0, v1 })
     // STEOR  <Ws>, [<Xn|SP>]
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(2, 0, 0, 0, sa_ws, 0, 2, sa_xn_sp, 31))
     }
     // STEOR  <Xs>, [<Xn|SP>]
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(3, 0, 0, 0, sa_xs, 0, 2, sa_xn_sp, 31))
@@ -62322,6 +65365,8 @@ func (self *Program) STEOR(v0, v1 interface{}) *Instruction {
 func (self *Program) STEORB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STEORB", 2, Operands { v0, v1 })
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(0, 0, 0, 0, sa_ws, 0, 2, sa_xn_sp, 31))
@@ -62349,6 +65394,8 @@ func (self *Program) STEORB(v0, v1 interface{}) *Instruction {
 func (self *Program) STEORH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STEORH", 2, Operands { v0, v1 })
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(1, 0, 0, 0, sa_ws, 0, 2, sa_xn_sp, 31))
@@ -62378,12 +65425,16 @@ func (self *Program) STEORL(v0, v1 interface{}) *Instruction {
     p := self.alloc("STEORL", 2, Operands { v0, v1 })
     // STEORL  <Ws>, [<Xn|SP>]
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(2, 0, 0, 1, sa_ws, 0, 2, sa_xn_sp, 31))
     }
     // STEORL  <Xs>, [<Xn|SP>]
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(3, 0, 0, 1, sa_xs, 0, 2, sa_xn_sp, 31))
@@ -62412,6 +65463,8 @@ func (self *Program) STEORL(v0, v1 interface{}) *Instruction {
 func (self *Program) STEORLB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STEORLB", 2, Operands { v0, v1 })
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(0, 0, 0, 1, sa_ws, 0, 2, sa_xn_sp, 31))
@@ -62439,6 +65492,8 @@ func (self *Program) STEORLB(v0, v1 interface{}) *Instruction {
 func (self *Program) STEORLH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STEORLH", 2, Operands { v0, v1 })
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(1, 0, 0, 1, sa_ws, 0, 2, sa_xn_sp, 31))
@@ -62466,6 +65521,8 @@ func (self *Program) STG(v0, v1 interface{}) *Instruction {
     p := self.alloc("STG", 2, Operands { v0, v1 })
     // STG  <Xt|SP>, [<Xn|SP>{, #<simm>}]
     if isXrOrSP(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        self.require(FEAT_MTE)
+        p.class = ClassGeneral
         sa_xt_sp := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -62477,6 +65534,8 @@ func (self *Program) STG(v0, v1 interface{}) *Instruction {
     }
     // STG  <Xt|SP>, [<Xn|SP>], #<simm>
     if isXrOrSP(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        self.require(FEAT_MTE)
+        p.class = ClassGeneral
         sa_xt_sp := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -62488,6 +65547,8 @@ func (self *Program) STG(v0, v1 interface{}) *Instruction {
     }
     // STG  <Xt|SP>, [<Xn|SP>, #<simm>]!
     if isXrOrSP(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+        self.require(FEAT_MTE)
+        p.class = ClassGeneral
         sa_xt_sp := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -62519,6 +65580,8 @@ func (self *Program) STG(v0, v1 interface{}) *Instruction {
 func (self *Program) STGM(v0, v1 interface{}) *Instruction {
     p := self.alloc("STGM", 2, Operands { v0, v1 })
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_MTE2)
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         Rn := uint32(0b00000)
@@ -62551,6 +65614,8 @@ func (self *Program) STGP(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("STGP", 3, Operands { v0, v1, v2 })
     // STGP  <Xt1>, <Xt2>, [<Xn|SP>{, #<imm>}]
     if isXr(v0) && isXr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == nil {
+        self.require(FEAT_MTE)
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -62567,6 +65632,8 @@ func (self *Program) STGP(v0, v1, v2 interface{}) *Instruction {
     }
     // STGP  <Xt1>, <Xt2>, [<Xn|SP>], #<imm>
     if isXr(v0) && isXr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PostIndex {
+        self.require(FEAT_MTE)
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -62583,6 +65650,8 @@ func (self *Program) STGP(v0, v1, v2 interface{}) *Instruction {
     }
     // STGP  <Xt1>, <Xt2>, [<Xn|SP>, #<imm>]!
     if isXr(v0) && isXr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PreIndex {
+        self.require(FEAT_MTE)
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -62641,6 +65710,8 @@ func (self *Program) STILP(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == -8 &&
        mext(v2) == PreIndex {
+        self.require(FEAT_LRCPC3)
+        p.class = ClassGeneral
         sa_wt1 := uint32(v0.(asm.Register).ID())
         sa_wt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -62654,6 +65725,8 @@ func (self *Program) STILP(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LRCPC3)
+        p.class = ClassGeneral
         sa_wt1 := uint32(v0.(asm.Register).ID())
         sa_wt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -62667,6 +65740,8 @@ func (self *Program) STILP(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == -16 &&
        mext(v2) == PreIndex {
+        self.require(FEAT_LRCPC3)
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -62680,6 +65755,8 @@ func (self *Program) STILP(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LRCPC3)
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -62716,6 +65793,8 @@ func (self *Program) STL1(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        moffs(v1) == 0 &&
        mext(v1) == nil {
+        self.require(FEAT_LRCPC3)
+        p.class = ClassAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -62746,6 +65825,8 @@ func (self *Program) STLLR(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
        mext(v1) == nil {
+        self.require(FEAT_LOR)
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(ldstord(2, 0, 31, 0, 31, sa_xn_sp, sa_wt))
@@ -62757,6 +65838,8 @@ func (self *Program) STLLR(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
        mext(v1) == nil {
+        self.require(FEAT_LOR)
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(ldstord(3, 0, 31, 0, 31, sa_xn_sp, sa_xt))
@@ -62785,6 +65868,8 @@ func (self *Program) STLLRB(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
        mext(v1) == nil {
+        self.require(FEAT_LOR)
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(ldstord(0, 0, 31, 0, 31, sa_xn_sp, sa_wt))
@@ -62812,6 +65897,8 @@ func (self *Program) STLLRH(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
        mext(v1) == nil {
+        self.require(FEAT_LOR)
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(ldstord(1, 0, 31, 0, 31, sa_xn_sp, sa_wt))
@@ -62838,12 +65925,16 @@ func (self *Program) STLR(v0, v1 interface{}) *Instruction {
     p := self.alloc("STLR", 2, Operands { v0, v1 })
     // STLR  <Wt>, [<Xn|SP>, #-4]!
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == -4 && mext(v1) == PreIndex {
+        self.require(FEAT_LRCPC3)
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(ldapstl_writeback(2, 0, sa_xn_sp, sa_wt))
     }
     // STLR  <Xt>, [<Xn|SP>, #-8]!
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == -8 && mext(v1) == PreIndex {
+        self.require(FEAT_LRCPC3)
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(ldapstl_writeback(3, 0, sa_xn_sp, sa_xt))
@@ -62855,6 +65946,7 @@ func (self *Program) STLR(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
        mext(v1) == nil {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(ldstord(2, 0, 31, 1, 31, sa_xn_sp, sa_wt))
@@ -62866,6 +65958,7 @@ func (self *Program) STLR(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
        mext(v1) == nil {
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(ldstord(3, 0, 31, 1, 31, sa_xn_sp, sa_xt))
@@ -62894,6 +65987,7 @@ func (self *Program) STLRB(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
        mext(v1) == nil {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(ldstord(0, 0, 31, 1, 31, sa_xn_sp, sa_wt))
@@ -62921,6 +66015,7 @@ func (self *Program) STLRH(v0, v1 interface{}) *Instruction {
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
        mext(v1) == nil {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(ldstord(1, 0, 31, 1, 31, sa_xn_sp, sa_wt))
@@ -62968,6 +66063,8 @@ func (self *Program) STLUR(v0, v1 interface{}) *Instruction {
     p := self.alloc("STLUR", 2, Operands { v0, v1 })
     // STLUR  <Bt>, [<Xn|SP>{, #<simm>}]
     if isBr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        self.require(FEAT_LRCPC3)
+        p.class = ClassFpSimd
         sa_bt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -62975,6 +66072,8 @@ func (self *Program) STLUR(v0, v1 interface{}) *Instruction {
     }
     // STLUR  <Dt>, [<Xn|SP>{, #<simm>}]
     if isDr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        self.require(FEAT_LRCPC3)
+        p.class = ClassFpSimd
         sa_dt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -62982,6 +66081,8 @@ func (self *Program) STLUR(v0, v1 interface{}) *Instruction {
     }
     // STLUR  <Ht>, [<Xn|SP>{, #<simm>}]
     if isHr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        self.require(FEAT_LRCPC3)
+        p.class = ClassFpSimd
         sa_ht := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -62989,6 +66090,8 @@ func (self *Program) STLUR(v0, v1 interface{}) *Instruction {
     }
     // STLUR  <Qt>, [<Xn|SP>{, #<simm>}]
     if isQr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        self.require(FEAT_LRCPC3)
+        p.class = ClassFpSimd
         sa_qt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -62996,6 +66099,8 @@ func (self *Program) STLUR(v0, v1 interface{}) *Instruction {
     }
     // STLUR  <St>, [<Xn|SP>{, #<simm>}]
     if isSr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        self.require(FEAT_LRCPC3)
+        p.class = ClassFpSimd
         sa_st := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -63003,6 +66108,8 @@ func (self *Program) STLUR(v0, v1 interface{}) *Instruction {
     }
     // STLUR  <Wt>, [<Xn|SP>{, #<simm>}]
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        self.require(FEAT_LRCPC2)
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -63010,6 +66117,8 @@ func (self *Program) STLUR(v0, v1 interface{}) *Instruction {
     }
     // STLUR  <Xt>, [<Xn|SP>{, #<simm>}]
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        self.require(FEAT_LRCPC2)
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -63038,6 +66147,8 @@ func (self *Program) STLUR(v0, v1 interface{}) *Instruction {
 func (self *Program) STLURB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STLURB", 2, Operands { v0, v1 })
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        self.require(FEAT_LRCPC2)
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -63065,6 +66176,8 @@ func (self *Program) STLURB(v0, v1 interface{}) *Instruction {
 func (self *Program) STLURH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STLURH", 2, Operands { v0, v1 })
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        self.require(FEAT_LRCPC2)
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -63107,6 +66220,7 @@ func (self *Program) STLXP(v0, v1, v2, v3 interface{}) *Instruction {
        midx(v3) == nil &&
        (moffs(v3) == 0 || moffs(v3) == 0) &&
        mext(v3) == nil {
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt1 := uint32(v1.(asm.Register).ID())
         sa_wt2 := uint32(v2.(asm.Register).ID())
@@ -63122,6 +66236,7 @@ func (self *Program) STLXP(v0, v1, v2, v3 interface{}) *Instruction {
        midx(v3) == nil &&
        (moffs(v3) == 0 || moffs(v3) == 0) &&
        mext(v3) == nil {
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xt1 := uint32(v1.(asm.Register).ID())
         sa_xt2 := uint32(v2.(asm.Register).ID())
@@ -63162,6 +66277,7 @@ func (self *Program) STLXR(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
        mext(v2) == nil {
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -63175,6 +66291,7 @@ func (self *Program) STLXR(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
        mext(v2) == nil {
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -63212,6 +66329,7 @@ func (self *Program) STLXRB(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
        mext(v2) == nil {
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -63248,6 +66366,7 @@ func (self *Program) STLXRH(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
        mext(v2) == nil {
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -63292,6 +66411,7 @@ func (self *Program) STNP(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("STNP", 3, Operands { v0, v1, v2 })
     // STNP  <Dt1>, <Dt2>, [<Xn|SP>{, #<imm>}]
     if isDr(v0) && isDr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == nil {
+        p.class = ClassFpSimd
         sa_dt1 := uint32(v0.(asm.Register).ID())
         sa_dt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -63300,6 +66420,7 @@ func (self *Program) STNP(v0, v1, v2 interface{}) *Instruction {
     }
     // STNP  <Qt1>, <Qt2>, [<Xn|SP>{, #<imm>}]
     if isQr(v0) && isQr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == nil {
+        p.class = ClassFpSimd
         sa_qt1 := uint32(v0.(asm.Register).ID())
         sa_qt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -63308,6 +66429,7 @@ func (self *Program) STNP(v0, v1, v2 interface{}) *Instruction {
     }
     // STNP  <St1>, <St2>, [<Xn|SP>{, #<imm>}]
     if isSr(v0) && isSr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == nil {
+        p.class = ClassFpSimd
         sa_st1 := uint32(v0.(asm.Register).ID())
         sa_st2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -63316,6 +66438,7 @@ func (self *Program) STNP(v0, v1, v2 interface{}) *Instruction {
     }
     // STNP  <Wt1>, <Wt2>, [<Xn|SP>{, #<imm>}]
     if isWr(v0) && isWr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == nil {
+        p.class = ClassGeneral
         sa_wt1 := uint32(v0.(asm.Register).ID())
         sa_wt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -63324,6 +66447,7 @@ func (self *Program) STNP(v0, v1, v2 interface{}) *Instruction {
     }
     // STNP  <Xt1>, <Xt2>, [<Xn|SP>{, #<imm>}]
     if isXr(v0) && isXr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == nil {
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -63379,6 +66503,7 @@ func (self *Program) STP(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("STP", 3, Operands { v0, v1, v2 })
     // STP  <Dt1>, <Dt2>, [<Xn|SP>{, #<imm>}]
     if isDr(v0) && isDr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == nil {
+        p.class = ClassFpSimd
         sa_dt1 := uint32(v0.(asm.Register).ID())
         sa_dt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -63387,6 +66512,7 @@ func (self *Program) STP(v0, v1, v2 interface{}) *Instruction {
     }
     // STP  <Dt1>, <Dt2>, [<Xn|SP>], #<imm>
     if isDr(v0) && isDr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PostIndex {
+        p.class = ClassFpSimd
         sa_dt1 := uint32(v0.(asm.Register).ID())
         sa_dt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -63395,6 +66521,7 @@ func (self *Program) STP(v0, v1, v2 interface{}) *Instruction {
     }
     // STP  <Dt1>, <Dt2>, [<Xn|SP>, #<imm>]!
     if isDr(v0) && isDr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PreIndex {
+        p.class = ClassFpSimd
         sa_dt1 := uint32(v0.(asm.Register).ID())
         sa_dt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -63403,6 +66530,7 @@ func (self *Program) STP(v0, v1, v2 interface{}) *Instruction {
     }
     // STP  <Qt1>, <Qt2>, [<Xn|SP>{, #<imm>}]
     if isQr(v0) && isQr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == nil {
+        p.class = ClassFpSimd
         sa_qt1 := uint32(v0.(asm.Register).ID())
         sa_qt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -63411,6 +66539,7 @@ func (self *Program) STP(v0, v1, v2 interface{}) *Instruction {
     }
     // STP  <Qt1>, <Qt2>, [<Xn|SP>], #<imm>
     if isQr(v0) && isQr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PostIndex {
+        p.class = ClassFpSimd
         sa_qt1 := uint32(v0.(asm.Register).ID())
         sa_qt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -63419,6 +66548,7 @@ func (self *Program) STP(v0, v1, v2 interface{}) *Instruction {
     }
     // STP  <Qt1>, <Qt2>, [<Xn|SP>, #<imm>]!
     if isQr(v0) && isQr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PreIndex {
+        p.class = ClassFpSimd
         sa_qt1 := uint32(v0.(asm.Register).ID())
         sa_qt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -63427,6 +66557,7 @@ func (self *Program) STP(v0, v1, v2 interface{}) *Instruction {
     }
     // STP  <St1>, <St2>, [<Xn|SP>{, #<imm>}]
     if isSr(v0) && isSr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == nil {
+        p.class = ClassFpSimd
         sa_st1 := uint32(v0.(asm.Register).ID())
         sa_st2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -63435,6 +66566,7 @@ func (self *Program) STP(v0, v1, v2 interface{}) *Instruction {
     }
     // STP  <St1>, <St2>, [<Xn|SP>], #<imm>
     if isSr(v0) && isSr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PostIndex {
+        p.class = ClassFpSimd
         sa_st1 := uint32(v0.(asm.Register).ID())
         sa_st2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -63443,6 +66575,7 @@ func (self *Program) STP(v0, v1, v2 interface{}) *Instruction {
     }
     // STP  <St1>, <St2>, [<Xn|SP>, #<imm>]!
     if isSr(v0) && isSr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PreIndex {
+        p.class = ClassFpSimd
         sa_st1 := uint32(v0.(asm.Register).ID())
         sa_st2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -63451,6 +66584,7 @@ func (self *Program) STP(v0, v1, v2 interface{}) *Instruction {
     }
     // STP  <Wt1>, <Wt2>, [<Xn|SP>{, #<imm>}]
     if isWr(v0) && isWr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == nil {
+        p.class = ClassGeneral
         sa_wt1 := uint32(v0.(asm.Register).ID())
         sa_wt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -63459,6 +66593,7 @@ func (self *Program) STP(v0, v1, v2 interface{}) *Instruction {
     }
     // STP  <Wt1>, <Wt2>, [<Xn|SP>], #<imm>
     if isWr(v0) && isWr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PostIndex {
+        p.class = ClassGeneral
         sa_wt1 := uint32(v0.(asm.Register).ID())
         sa_wt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -63467,6 +66602,7 @@ func (self *Program) STP(v0, v1, v2 interface{}) *Instruction {
     }
     // STP  <Wt1>, <Wt2>, [<Xn|SP>, #<imm>]!
     if isWr(v0) && isWr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PreIndex {
+        p.class = ClassGeneral
         sa_wt1 := uint32(v0.(asm.Register).ID())
         sa_wt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -63475,6 +66611,7 @@ func (self *Program) STP(v0, v1, v2 interface{}) *Instruction {
     }
     // STP  <Xt1>, <Xt2>, [<Xn|SP>{, #<imm>}]
     if isXr(v0) && isXr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == nil {
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -63483,6 +66620,7 @@ func (self *Program) STP(v0, v1, v2 interface{}) *Instruction {
     }
     // STP  <Xt1>, <Xt2>, [<Xn|SP>], #<imm>
     if isXr(v0) && isXr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PostIndex {
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -63491,6 +66629,7 @@ func (self *Program) STP(v0, v1, v2 interface{}) *Instruction {
     }
     // STP  <Xt1>, <Xt2>, [<Xn|SP>, #<imm>]!
     if isXr(v0) && isXr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PreIndex {
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -63580,6 +66719,7 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
     p := self.alloc("STR", 2, Operands { v0, v1 })
     // STR  <Bt>, [<Xn|SP>], #<simm>
     if isBr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        p.class = ClassFpSimd
         sa_bt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -63587,6 +66727,7 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
     }
     // STR  <Bt>, [<Xn|SP>, #<simm>]!
     if isBr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+        p.class = ClassFpSimd
         sa_bt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -63594,6 +66735,7 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
     }
     // STR  <Bt>, [<Xn|SP>{, #<pimm>}]
     if isBr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassFpSimd
         sa_bt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_pimm := uint32(moffs(v1))
@@ -63601,6 +66743,7 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
     }
     // STR  <Dt>, [<Xn|SP>], #<simm>
     if isDr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        p.class = ClassFpSimd
         sa_dt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -63608,6 +66751,7 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
     }
     // STR  <Dt>, [<Xn|SP>, #<simm>]!
     if isDr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+        p.class = ClassFpSimd
         sa_dt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -63615,6 +66759,7 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
     }
     // STR  <Dt>, [<Xn|SP>{, #<pimm>}]
     if isDr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassFpSimd
         sa_dt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_pimm_1 := uint32(moffs(v1))
@@ -63622,6 +66767,7 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
     }
     // STR  <Ht>, [<Xn|SP>], #<simm>
     if isHr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        p.class = ClassFpSimd
         sa_ht := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -63629,6 +66775,7 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
     }
     // STR  <Ht>, [<Xn|SP>, #<simm>]!
     if isHr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+        p.class = ClassFpSimd
         sa_ht := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -63636,6 +66783,7 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
     }
     // STR  <Ht>, [<Xn|SP>{, #<pimm>}]
     if isHr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassFpSimd
         sa_ht := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_pimm_2 := uint32(moffs(v1))
@@ -63643,6 +66791,7 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
     }
     // STR  <Qt>, [<Xn|SP>], #<simm>
     if isQr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        p.class = ClassFpSimd
         sa_qt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -63650,6 +66799,7 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
     }
     // STR  <Qt>, [<Xn|SP>, #<simm>]!
     if isQr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+        p.class = ClassFpSimd
         sa_qt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -63657,6 +66807,7 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
     }
     // STR  <Qt>, [<Xn|SP>{, #<pimm>}]
     if isQr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassFpSimd
         sa_qt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_pimm_3 := uint32(moffs(v1))
@@ -63664,6 +66815,7 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
     }
     // STR  <St>, [<Xn|SP>], #<simm>
     if isSr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        p.class = ClassFpSimd
         sa_st := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -63671,6 +66823,7 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
     }
     // STR  <St>, [<Xn|SP>, #<simm>]!
     if isSr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+        p.class = ClassFpSimd
         sa_st := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -63678,6 +66831,7 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
     }
     // STR  <St>, [<Xn|SP>{, #<pimm>}]
     if isSr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassFpSimd
         sa_st := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_pimm_4 := uint32(moffs(v1))
@@ -63685,6 +66839,7 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
     }
     // STR  <Wt>, [<Xn|SP>], #<simm>
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -63692,6 +66847,7 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
     }
     // STR  <Wt>, [<Xn|SP>, #<simm>]!
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -63699,6 +66855,7 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
     }
     // STR  <Wt>, [<Xn|SP>{, #<pimm>}]
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_pimm := uint32(moffs(v1))
@@ -63706,6 +66863,7 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
     }
     // STR  <Xt>, [<Xn|SP>], #<simm>
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -63713,6 +66871,7 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
     }
     // STR  <Xt>, [<Xn|SP>, #<simm>]!
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -63720,6 +66879,7 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
     }
     // STR  <Xt>, [<Xn|SP>{, #<pimm>}]
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_pimm_1 := uint32(moffs(v1))
@@ -63731,7 +66891,8 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
-       (mext(v1) == nil || isSameMod(mext(v1), LSL(0))) {
+       (mext(v1) == nil || modt(mext(v1)) == ModLSL) {
+        p.class = ClassFpSimd
         var sa_amount uint32
         sa_bt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -63743,10 +66904,17 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
     }
     // STR  <Bt>, [<Xn|SP>, (<Wm>|<Xm>), <extend> {<amount>}]
     if isBr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isWrOrXr(midx(v1)) && isMod(mext(v1)) {
+        p.class = ClassFpSimd
+        var sa_extend uint32
         sa_bt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
-        sa_extend := uint32(mext(v1).(Extension).Extension())
+        switch mext(v1).(Modifier).Type() {
+            case ModUXTW: sa_extend = 0b010
+            case ModSXTW: sa_extend = 0b110
+            case ModSXTX: sa_extend = 0b111
+            default: panic("aarch64: invalid modifier flags")
+        }
         sa_amount := uint32(mext(v1).(Modifier).Amount())
         return p.setins(ldst_regoff(0, 1, 0, sa_xm, sa_extend, sa_amount, sa_xn_sp, sa_bt))
     }
@@ -63756,15 +66924,26 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isWrOrXr(midx(v1)) &&
-       (mext(v1) == nil || isExtend(mext(v1))) {
+       (mext(v1) == nil || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
+        p.class = ClassFpSimd
         var sa_amount_1 uint32
-        var sa_extend_1 uint32
+        sa_extend_1 := uint32(0b011)
         sa_dt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
         if isMod(mext(v1)) {
-            sa_extend_1 = uint32(mext(v1).(Extension).Extension())
-            sa_amount_1 = uint32(mext(v1).(Modifier).Amount())
+            switch mext(v1).(Modifier).Type() {
+                case ModUXTW: sa_extend_1 = 0b010
+                case ModLSL: sa_extend_1 = 0b011
+                case ModSXTW: sa_extend_1 = 0b110
+                case ModSXTX: sa_extend_1 = 0b111
+                default: panic("aarch64: invalid modifier flags")
+            }
+        }
+        switch uint32(mext(v1).(Modifier).Amount()) {
+            case 0: sa_amount_1 = 0b0
+            case 3: sa_amount_1 = 0b1
+            default: panic("aarch64: invalid modifier amount")
         }
         return p.setins(ldst_regoff(3, 1, 0, sa_xm, sa_extend_1, sa_amount_1, sa_xn_sp, sa_dt))
     }
@@ -63774,15 +66953,26 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isWrOrXr(midx(v1)) &&
-       (mext(v1) == nil || isExtend(mext(v1))) {
+       (mext(v1) == nil || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
+        p.class = ClassFpSimd
         var sa_amount_2 uint32
-        var sa_extend_1 uint32
+        sa_extend_1 := uint32(0b011)
         sa_ht := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
         if isMod(mext(v1)) {
-            sa_extend_1 = uint32(mext(v1).(Extension).Extension())
-            sa_amount_2 = uint32(mext(v1).(Modifier).Amount())
+            switch mext(v1).(Modifier).Type() {
+                case ModUXTW: sa_extend_1 = 0b010
+                case ModLSL: sa_extend_1 = 0b011
+                case ModSXTW: sa_extend_1 = 0b110
+                case ModSXTX: sa_extend_1 = 0b111
+                default: panic("aarch64: invalid modifier flags")
+            }
+        }
+        switch uint32(mext(v1).(Modifier).Amount()) {
+            case 0: sa_amount_2 = 0b0
+            case 1: sa_amount_2 = 0b1
+            default: panic("aarch64: invalid modifier amount")
         }
         return p.setins(ldst_regoff(1, 1, 0, sa_xm, sa_extend_1, sa_amount_2, sa_xn_sp, sa_ht))
     }
@@ -63792,15 +66982,26 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isWrOrXr(midx(v1)) &&
-       (mext(v1) == nil || isExtend(mext(v1))) {
+       (mext(v1) == nil || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
+        p.class = ClassFpSimd
         var sa_amount_3 uint32
-        var sa_extend_1 uint32
+        sa_extend_1 := uint32(0b011)
         sa_qt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
         if isMod(mext(v1)) {
-            sa_extend_1 = uint32(mext(v1).(Extension).Extension())
-            sa_amount_3 = uint32(mext(v1).(Modifier).Amount())
+            switch mext(v1).(Modifier).Type() {
+                case ModUXTW: sa_extend_1 = 0b010
+                case ModLSL: sa_extend_1 = 0b011
+                case ModSXTW: sa_extend_1 = 0b110
+                case ModSXTX: sa_extend_1 = 0b111
+                default: panic("aarch64: invalid modifier flags")
+            }
+        }
+        switch uint32(mext(v1).(Modifier).Amount()) {
+            case 0: sa_amount_3 = 0b0
+            case 4: sa_amount_3 = 0b1
+            default: panic("aarch64: invalid modifier amount")
         }
         return p.setins(ldst_regoff(0, 1, 2, sa_xm, sa_extend_1, sa_amount_3, sa_xn_sp, sa_qt))
     }
@@ -63810,15 +67011,26 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isWrOrXr(midx(v1)) &&
-       (mext(v1) == nil || isExtend(mext(v1))) {
+       (mext(v1) == nil || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
+        p.class = ClassFpSimd
         var sa_amount_4 uint32
-        var sa_extend_1 uint32
+        sa_extend_1 := uint32(0b011)
         sa_st := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
         if isMod(mext(v1)) {
-            sa_extend_1 = uint32(mext(v1).(Extension).Extension())
-            sa_amount_4 = uint32(mext(v1).(Modifier).Amount())
+            switch mext(v1).(Modifier).Type() {
+                case ModUXTW: sa_extend_1 = 0b010
+                case ModLSL: sa_extend_1 = 0b011
+                case ModSXTW: sa_extend_1 = 0b110
+                case ModSXTX: sa_extend_1 = 0b111
+                default: panic("aarch64: invalid modifier flags")
+            }
+        }
+        switch uint32(mext(v1).(Modifier).Amount()) {
+            case 0: sa_amount_4 = 0b0
+            case 2: sa_amount_4 = 0b1
+            default: panic("aarch64: invalid modifier amount")
         }
         return p.setins(ldst_regoff(2, 1, 0, sa_xm, sa_extend_1, sa_amount_4, sa_xn_sp, sa_st))
     }
@@ -63828,15 +67040,26 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isWrOrXr(midx(v1)) &&
-       (mext(v1) == nil || isExtend(mext(v1))) {
+       (mext(v1) == nil || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
+        p.class = ClassGeneral
         var sa_amount uint32
-        var sa_extend uint32
+        sa_extend := uint32(0b011)
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
         if isMod(mext(v1)) {
-            sa_extend = uint32(mext(v1).(Extension).Extension())
-            sa_amount = uint32(mext(v1).(Modifier).Amount())
+            switch mext(v1).(Modifier).Type() {
+                case ModUXTW: sa_extend = 0b010
+                case ModLSL: sa_extend = 0b011
+                case ModSXTW: sa_extend = 0b110
+                case ModSXTX: sa_extend = 0b111
+                default: panic("aarch64: invalid modifier flags")
+            }
+        }
+        switch uint32(mext(v1).(Modifier).Amount()) {
+            case 0: sa_amount = 0b0
+            case 2: sa_amount = 0b1
+            default: panic("aarch64: invalid modifier amount")
         }
         return p.setins(ldst_regoff(2, 0, 0, sa_xm, sa_extend, sa_amount, sa_xn_sp, sa_wt))
     }
@@ -63846,15 +67069,26 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isWrOrXr(midx(v1)) &&
-       (mext(v1) == nil || isExtend(mext(v1))) {
+       (mext(v1) == nil || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
+        p.class = ClassGeneral
         var sa_amount_1 uint32
-        var sa_extend uint32
+        sa_extend := uint32(0b011)
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
         if isMod(mext(v1)) {
-            sa_extend = uint32(mext(v1).(Extension).Extension())
-            sa_amount_1 = uint32(mext(v1).(Modifier).Amount())
+            switch mext(v1).(Modifier).Type() {
+                case ModUXTW: sa_extend = 0b010
+                case ModLSL: sa_extend = 0b011
+                case ModSXTW: sa_extend = 0b110
+                case ModSXTX: sa_extend = 0b111
+                default: panic("aarch64: invalid modifier flags")
+            }
+        }
+        switch uint32(mext(v1).(Modifier).Amount()) {
+            case 0: sa_amount_1 = 0b0
+            case 3: sa_amount_1 = 0b1
+            default: panic("aarch64: invalid modifier amount")
         }
         return p.setins(ldst_regoff(3, 0, 0, sa_xm, sa_extend, sa_amount_1, sa_xn_sp, sa_xt))
     }
@@ -63898,6 +67132,7 @@ func (self *Program) STRB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STRB", 2, Operands { v0, v1 })
     // STRB  <Wt>, [<Xn|SP>], #<simm>
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -63905,6 +67140,7 @@ func (self *Program) STRB(v0, v1 interface{}) *Instruction {
     }
     // STRB  <Wt>, [<Xn|SP>, #<simm>]!
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -63912,6 +67148,7 @@ func (self *Program) STRB(v0, v1 interface{}) *Instruction {
     }
     // STRB  <Wt>, [<Xn|SP>{, #<pimm>}]
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_pimm := uint32(moffs(v1))
@@ -63923,7 +67160,8 @@ func (self *Program) STRB(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
-       (mext(v1) == nil || isSameMod(mext(v1), LSL(0))) {
+       (mext(v1) == nil || modt(mext(v1)) == ModLSL) {
+        p.class = ClassGeneral
         var sa_amount uint32
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -63935,10 +67173,17 @@ func (self *Program) STRB(v0, v1 interface{}) *Instruction {
     }
     // STRB  <Wt>, [<Xn|SP>, (<Wm>|<Xm>), <extend> {<amount>}]
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isWrOrXr(midx(v1)) && isMod(mext(v1)) {
+        p.class = ClassGeneral
+        var sa_extend uint32
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
-        sa_extend := uint32(mext(v1).(Extension).Extension())
+        switch mext(v1).(Modifier).Type() {
+            case ModUXTW: sa_extend = 0b010
+            case ModSXTW: sa_extend = 0b110
+            case ModSXTX: sa_extend = 0b111
+            default: panic("aarch64: invalid modifier flags")
+        }
         sa_amount := uint32(mext(v1).(Modifier).Amount())
         return p.setins(ldst_regoff(0, 0, 0, sa_xm, sa_extend, sa_amount, sa_xn_sp, sa_wt))
     }
@@ -63981,6 +67226,7 @@ func (self *Program) STRH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STRH", 2, Operands { v0, v1 })
     // STRH  <Wt>, [<Xn|SP>], #<simm>
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -63988,6 +67234,7 @@ func (self *Program) STRH(v0, v1 interface{}) *Instruction {
     }
     // STRH  <Wt>, [<Xn|SP>, #<simm>]!
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -63995,6 +67242,7 @@ func (self *Program) STRH(v0, v1 interface{}) *Instruction {
     }
     // STRH  <Wt>, [<Xn|SP>{, #<pimm>}]
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_pimm := uint32(moffs(v1))
@@ -64006,15 +67254,26 @@ func (self *Program) STRH(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isWrOrXr(midx(v1)) &&
-       (mext(v1) == nil || isExtend(mext(v1))) {
+       (mext(v1) == nil || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
+        p.class = ClassGeneral
         var sa_amount uint32
-        var sa_extend uint32
+        sa_extend := uint32(0b011)
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
         if isMod(mext(v1)) {
-            sa_extend = uint32(mext(v1).(Extension).Extension())
-            sa_amount = uint32(mext(v1).(Modifier).Amount())
+            switch mext(v1).(Modifier).Type() {
+                case ModUXTW: sa_extend = 0b010
+                case ModLSL: sa_extend = 0b011
+                case ModSXTW: sa_extend = 0b110
+                case ModSXTX: sa_extend = 0b111
+                default: panic("aarch64: invalid modifier flags")
+            }
+        }
+        switch uint32(mext(v1).(Modifier).Amount()) {
+            case 0: sa_amount = 0b0
+            case 1: sa_amount = 0b1
+            default: panic("aarch64: invalid modifier amount")
         }
         return p.setins(ldst_regoff(1, 0, 0, sa_xm, sa_extend, sa_amount, sa_xn_sp, sa_wt))
     }
@@ -64044,12 +67303,16 @@ func (self *Program) STSET(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSET", 2, Operands { v0, v1 })
     // STSET  <Ws>, [<Xn|SP>]
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(2, 0, 0, 0, sa_ws, 0, 3, sa_xn_sp, 31))
     }
     // STSET  <Xs>, [<Xn|SP>]
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(3, 0, 0, 0, sa_xs, 0, 3, sa_xn_sp, 31))
@@ -64078,6 +67341,8 @@ func (self *Program) STSET(v0, v1 interface{}) *Instruction {
 func (self *Program) STSETB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSETB", 2, Operands { v0, v1 })
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(0, 0, 0, 0, sa_ws, 0, 3, sa_xn_sp, 31))
@@ -64105,6 +67370,8 @@ func (self *Program) STSETB(v0, v1 interface{}) *Instruction {
 func (self *Program) STSETH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSETH", 2, Operands { v0, v1 })
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(1, 0, 0, 0, sa_ws, 0, 3, sa_xn_sp, 31))
@@ -64134,12 +67401,16 @@ func (self *Program) STSETL(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSETL", 2, Operands { v0, v1 })
     // STSETL  <Ws>, [<Xn|SP>]
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(2, 0, 0, 1, sa_ws, 0, 3, sa_xn_sp, 31))
     }
     // STSETL  <Xs>, [<Xn|SP>]
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(3, 0, 0, 1, sa_xs, 0, 3, sa_xn_sp, 31))
@@ -64168,6 +67439,8 @@ func (self *Program) STSETL(v0, v1 interface{}) *Instruction {
 func (self *Program) STSETLB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSETLB", 2, Operands { v0, v1 })
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(0, 0, 0, 1, sa_ws, 0, 3, sa_xn_sp, 31))
@@ -64195,6 +67468,8 @@ func (self *Program) STSETLB(v0, v1 interface{}) *Instruction {
 func (self *Program) STSETLH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSETLH", 2, Operands { v0, v1 })
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(1, 0, 0, 1, sa_ws, 0, 3, sa_xn_sp, 31))
@@ -64225,12 +67500,16 @@ func (self *Program) STSMAX(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSMAX", 2, Operands { v0, v1 })
     // STSMAX  <Ws>, [<Xn|SP>]
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(2, 0, 0, 0, sa_ws, 0, 4, sa_xn_sp, 31))
     }
     // STSMAX  <Xs>, [<Xn|SP>]
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(3, 0, 0, 0, sa_xs, 0, 4, sa_xn_sp, 31))
@@ -64259,6 +67538,8 @@ func (self *Program) STSMAX(v0, v1 interface{}) *Instruction {
 func (self *Program) STSMAXB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSMAXB", 2, Operands { v0, v1 })
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(0, 0, 0, 0, sa_ws, 0, 4, sa_xn_sp, 31))
@@ -64287,6 +67568,8 @@ func (self *Program) STSMAXB(v0, v1 interface{}) *Instruction {
 func (self *Program) STSMAXH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSMAXH", 2, Operands { v0, v1 })
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(1, 0, 0, 0, sa_ws, 0, 4, sa_xn_sp, 31))
@@ -64317,12 +67600,16 @@ func (self *Program) STSMAXL(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSMAXL", 2, Operands { v0, v1 })
     // STSMAXL  <Ws>, [<Xn|SP>]
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(2, 0, 0, 1, sa_ws, 0, 4, sa_xn_sp, 31))
     }
     // STSMAXL  <Xs>, [<Xn|SP>]
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(3, 0, 0, 1, sa_xs, 0, 4, sa_xn_sp, 31))
@@ -64351,6 +67638,8 @@ func (self *Program) STSMAXL(v0, v1 interface{}) *Instruction {
 func (self *Program) STSMAXLB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSMAXLB", 2, Operands { v0, v1 })
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(0, 0, 0, 1, sa_ws, 0, 4, sa_xn_sp, 31))
@@ -64379,6 +67668,8 @@ func (self *Program) STSMAXLB(v0, v1 interface{}) *Instruction {
 func (self *Program) STSMAXLH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSMAXLH", 2, Operands { v0, v1 })
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(1, 0, 0, 1, sa_ws, 0, 4, sa_xn_sp, 31))
@@ -64409,12 +67700,16 @@ func (self *Program) STSMIN(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSMIN", 2, Operands { v0, v1 })
     // STSMIN  <Ws>, [<Xn|SP>]
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(2, 0, 0, 0, sa_ws, 0, 5, sa_xn_sp, 31))
     }
     // STSMIN  <Xs>, [<Xn|SP>]
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(3, 0, 0, 0, sa_xs, 0, 5, sa_xn_sp, 31))
@@ -64443,6 +67738,8 @@ func (self *Program) STSMIN(v0, v1 interface{}) *Instruction {
 func (self *Program) STSMINB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSMINB", 2, Operands { v0, v1 })
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(0, 0, 0, 0, sa_ws, 0, 5, sa_xn_sp, 31))
@@ -64471,6 +67768,8 @@ func (self *Program) STSMINB(v0, v1 interface{}) *Instruction {
 func (self *Program) STSMINH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSMINH", 2, Operands { v0, v1 })
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(1, 0, 0, 0, sa_ws, 0, 5, sa_xn_sp, 31))
@@ -64501,12 +67800,16 @@ func (self *Program) STSMINL(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSMINL", 2, Operands { v0, v1 })
     // STSMINL  <Ws>, [<Xn|SP>]
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(2, 0, 0, 1, sa_ws, 0, 5, sa_xn_sp, 31))
     }
     // STSMINL  <Xs>, [<Xn|SP>]
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(3, 0, 0, 1, sa_xs, 0, 5, sa_xn_sp, 31))
@@ -64535,6 +67838,8 @@ func (self *Program) STSMINL(v0, v1 interface{}) *Instruction {
 func (self *Program) STSMINLB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSMINLB", 2, Operands { v0, v1 })
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(0, 0, 0, 1, sa_ws, 0, 5, sa_xn_sp, 31))
@@ -64563,6 +67868,8 @@ func (self *Program) STSMINLB(v0, v1 interface{}) *Instruction {
 func (self *Program) STSMINLH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSMINLH", 2, Operands { v0, v1 })
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(1, 0, 0, 1, sa_ws, 0, 5, sa_xn_sp, 31))
@@ -64597,6 +67904,7 @@ func (self *Program) STTR(v0, v1 interface{}) *Instruction {
     p := self.alloc("STTR", 2, Operands { v0, v1 })
     // STTR  <Wt>, [<Xn|SP>{, #<simm>}]
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -64604,6 +67912,7 @@ func (self *Program) STTR(v0, v1 interface{}) *Instruction {
     }
     // STTR  <Xt>, [<Xn|SP>{, #<simm>}]
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -64638,6 +67947,7 @@ func (self *Program) STTR(v0, v1 interface{}) *Instruction {
 func (self *Program) STTRB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STTRB", 2, Operands { v0, v1 })
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -64671,6 +67981,7 @@ func (self *Program) STTRB(v0, v1 interface{}) *Instruction {
 func (self *Program) STTRH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STTRH", 2, Operands { v0, v1 })
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -64702,12 +68013,16 @@ func (self *Program) STUMAX(v0, v1 interface{}) *Instruction {
     p := self.alloc("STUMAX", 2, Operands { v0, v1 })
     // STUMAX  <Ws>, [<Xn|SP>]
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(2, 0, 0, 0, sa_ws, 0, 6, sa_xn_sp, 31))
     }
     // STUMAX  <Xs>, [<Xn|SP>]
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(3, 0, 0, 0, sa_xs, 0, 6, sa_xn_sp, 31))
@@ -64736,6 +68051,8 @@ func (self *Program) STUMAX(v0, v1 interface{}) *Instruction {
 func (self *Program) STUMAXB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STUMAXB", 2, Operands { v0, v1 })
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(0, 0, 0, 0, sa_ws, 0, 6, sa_xn_sp, 31))
@@ -64764,6 +68081,8 @@ func (self *Program) STUMAXB(v0, v1 interface{}) *Instruction {
 func (self *Program) STUMAXH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STUMAXH", 2, Operands { v0, v1 })
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(1, 0, 0, 0, sa_ws, 0, 6, sa_xn_sp, 31))
@@ -64794,12 +68113,16 @@ func (self *Program) STUMAXL(v0, v1 interface{}) *Instruction {
     p := self.alloc("STUMAXL", 2, Operands { v0, v1 })
     // STUMAXL  <Ws>, [<Xn|SP>]
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(2, 0, 0, 1, sa_ws, 0, 6, sa_xn_sp, 31))
     }
     // STUMAXL  <Xs>, [<Xn|SP>]
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(3, 0, 0, 1, sa_xs, 0, 6, sa_xn_sp, 31))
@@ -64828,6 +68151,8 @@ func (self *Program) STUMAXL(v0, v1 interface{}) *Instruction {
 func (self *Program) STUMAXLB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STUMAXLB", 2, Operands { v0, v1 })
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(0, 0, 0, 1, sa_ws, 0, 6, sa_xn_sp, 31))
@@ -64856,6 +68181,8 @@ func (self *Program) STUMAXLB(v0, v1 interface{}) *Instruction {
 func (self *Program) STUMAXLH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STUMAXLH", 2, Operands { v0, v1 })
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(1, 0, 0, 1, sa_ws, 0, 6, sa_xn_sp, 31))
@@ -64886,12 +68213,16 @@ func (self *Program) STUMIN(v0, v1 interface{}) *Instruction {
     p := self.alloc("STUMIN", 2, Operands { v0, v1 })
     // STUMIN  <Ws>, [<Xn|SP>]
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(2, 0, 0, 0, sa_ws, 0, 7, sa_xn_sp, 31))
     }
     // STUMIN  <Xs>, [<Xn|SP>]
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(3, 0, 0, 0, sa_xs, 0, 7, sa_xn_sp, 31))
@@ -64921,6 +68252,8 @@ func (self *Program) STUMIN(v0, v1 interface{}) *Instruction {
 func (self *Program) STUMINB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STUMINB", 2, Operands { v0, v1 })
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(0, 0, 0, 0, sa_ws, 0, 7, sa_xn_sp, 31))
@@ -64949,6 +68282,8 @@ func (self *Program) STUMINB(v0, v1 interface{}) *Instruction {
 func (self *Program) STUMINH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STUMINH", 2, Operands { v0, v1 })
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(1, 0, 0, 0, sa_ws, 0, 7, sa_xn_sp, 31))
@@ -64979,12 +68314,16 @@ func (self *Program) STUMINL(v0, v1 interface{}) *Instruction {
     p := self.alloc("STUMINL", 2, Operands { v0, v1 })
     // STUMINL  <Ws>, [<Xn|SP>]
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(2, 0, 0, 1, sa_ws, 0, 7, sa_xn_sp, 31))
     }
     // STUMINL  <Xs>, [<Xn|SP>]
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(3, 0, 0, 1, sa_xs, 0, 7, sa_xn_sp, 31))
@@ -65014,6 +68353,8 @@ func (self *Program) STUMINL(v0, v1 interface{}) *Instruction {
 func (self *Program) STUMINLB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STUMINLB", 2, Operands { v0, v1 })
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(0, 0, 0, 1, sa_ws, 0, 7, sa_xn_sp, 31))
@@ -65042,6 +68383,8 @@ func (self *Program) STUMINLB(v0, v1 interface{}) *Instruction {
 func (self *Program) STUMINLH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STUMINLH", 2, Operands { v0, v1 })
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         return p.setins(memop(1, 0, 0, 1, sa_ws, 0, 7, sa_xn_sp, 31))
@@ -65082,6 +68425,7 @@ func (self *Program) STUR(v0, v1 interface{}) *Instruction {
     p := self.alloc("STUR", 2, Operands { v0, v1 })
     // STUR  <Bt>, [<Xn|SP>{, #<simm>}]
     if isBr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassFpSimd
         sa_bt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -65089,6 +68433,7 @@ func (self *Program) STUR(v0, v1 interface{}) *Instruction {
     }
     // STUR  <Dt>, [<Xn|SP>{, #<simm>}]
     if isDr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassFpSimd
         sa_dt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -65096,6 +68441,7 @@ func (self *Program) STUR(v0, v1 interface{}) *Instruction {
     }
     // STUR  <Ht>, [<Xn|SP>{, #<simm>}]
     if isHr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassFpSimd
         sa_ht := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -65103,6 +68449,7 @@ func (self *Program) STUR(v0, v1 interface{}) *Instruction {
     }
     // STUR  <Qt>, [<Xn|SP>{, #<simm>}]
     if isQr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassFpSimd
         sa_qt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -65110,6 +68457,7 @@ func (self *Program) STUR(v0, v1 interface{}) *Instruction {
     }
     // STUR  <St>, [<Xn|SP>{, #<simm>}]
     if isSr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassFpSimd
         sa_st := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -65117,6 +68465,7 @@ func (self *Program) STUR(v0, v1 interface{}) *Instruction {
     }
     // STUR  <Wt>, [<Xn|SP>{, #<simm>}]
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -65124,6 +68473,7 @@ func (self *Program) STUR(v0, v1 interface{}) *Instruction {
     }
     // STUR  <Xt>, [<Xn|SP>{, #<simm>}]
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -65148,6 +68498,7 @@ func (self *Program) STUR(v0, v1 interface{}) *Instruction {
 func (self *Program) STURB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STURB", 2, Operands { v0, v1 })
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -65171,6 +68522,7 @@ func (self *Program) STURB(v0, v1 interface{}) *Instruction {
 func (self *Program) STURH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STURH", 2, Operands { v0, v1 })
     if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        p.class = ClassGeneral
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -65212,6 +68564,7 @@ func (self *Program) STXP(v0, v1, v2, v3 interface{}) *Instruction {
        midx(v3) == nil &&
        (moffs(v3) == 0 || moffs(v3) == 0) &&
        mext(v3) == nil {
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt1 := uint32(v1.(asm.Register).ID())
         sa_wt2 := uint32(v2.(asm.Register).ID())
@@ -65227,6 +68580,7 @@ func (self *Program) STXP(v0, v1, v2, v3 interface{}) *Instruction {
        midx(v3) == nil &&
        (moffs(v3) == 0 || moffs(v3) == 0) &&
        mext(v3) == nil {
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xt1 := uint32(v1.(asm.Register).ID())
         sa_xt2 := uint32(v2.(asm.Register).ID())
@@ -65265,6 +68619,7 @@ func (self *Program) STXR(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
        mext(v2) == nil {
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -65278,6 +68633,7 @@ func (self *Program) STXR(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
        mext(v2) == nil {
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -65314,6 +68670,7 @@ func (self *Program) STXRB(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
        mext(v2) == nil {
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -65345,6 +68702,7 @@ func (self *Program) STXRH(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
        mext(v2) == nil {
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -65374,6 +68732,8 @@ func (self *Program) STZ2G(v0, v1 interface{}) *Instruction {
     p := self.alloc("STZ2G", 2, Operands { v0, v1 })
     // STZ2G  <Xt|SP>, [<Xn|SP>{, #<simm>}]
     if isXrOrSP(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        self.require(FEAT_MTE)
+        p.class = ClassGeneral
         sa_xt_sp := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -65385,6 +68745,8 @@ func (self *Program) STZ2G(v0, v1 interface{}) *Instruction {
     }
     // STZ2G  <Xt|SP>, [<Xn|SP>], #<simm>
     if isXrOrSP(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        self.require(FEAT_MTE)
+        p.class = ClassGeneral
         sa_xt_sp := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -65396,6 +68758,8 @@ func (self *Program) STZ2G(v0, v1 interface{}) *Instruction {
     }
     // STZ2G  <Xt|SP>, [<Xn|SP>, #<simm>]!
     if isXrOrSP(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+        self.require(FEAT_MTE)
+        p.class = ClassGeneral
         sa_xt_sp := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -65430,6 +68794,8 @@ func (self *Program) STZG(v0, v1 interface{}) *Instruction {
     p := self.alloc("STZG", 2, Operands { v0, v1 })
     // STZG  <Xt|SP>, [<Xn|SP>{, #<simm>}]
     if isXrOrSP(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+        self.require(FEAT_MTE)
+        p.class = ClassGeneral
         sa_xt_sp := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -65441,6 +68807,8 @@ func (self *Program) STZG(v0, v1 interface{}) *Instruction {
     }
     // STZG  <Xt|SP>, [<Xn|SP>], #<simm>
     if isXrOrSP(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+        self.require(FEAT_MTE)
+        p.class = ClassGeneral
         sa_xt_sp := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -65452,6 +68820,8 @@ func (self *Program) STZG(v0, v1 interface{}) *Instruction {
     }
     // STZG  <Xt|SP>, [<Xn|SP>, #<simm>]!
     if isXrOrSP(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+        self.require(FEAT_MTE)
+        p.class = ClassGeneral
         sa_xt_sp := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
@@ -65484,6 +68854,8 @@ func (self *Program) STZG(v0, v1 interface{}) *Instruction {
 func (self *Program) STZGM(v0, v1 interface{}) *Instruction {
     p := self.alloc("STZGM", 2, Operands { v0, v1 })
     if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+        self.require(FEAT_MTE2)
+        p.class = ClassGeneral
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
         Rn := uint32(0b00000)
@@ -65550,14 +68922,26 @@ func (self *Program) SUB(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
        isWrOrWSP(v0) &&
        isWrOrWSP(v1) &&
        isWr(v2) &&
-       (len(vv) == 0 || isExtend(vv[0])) {
-        var sa_amount uint32
-        var sa_extend uint32
+       (len(vv) == 0 || isMods(vv[0], ModLSL, ModSXTB, ModSXTH, ModSXTW, ModSXTX, ModUXTB, ModUXTH, ModUXTW, ModUXTX)) {
+        p.class = ClassGeneral
+        sa_amount := uint32(0)
+        sa_extend := uint32(0b010)
         sa_wd_wsp := uint32(v0.(asm.Register).ID())
         sa_wn_wsp := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
         if len(vv) == 1 {
-            sa_extend = uint32(vv[0].(Extension).Extension())
+            switch vv[0].(Modifier).Type() {
+                case ModUXTB: sa_extend = 0b000
+                case ModUXTH: sa_extend = 0b001
+                case ModLSL: sa_extend = 0b010
+                case ModUXTW: sa_extend = 0b010
+                case ModUXTX: sa_extend = 0b011
+                case ModSXTB: sa_extend = 0b100
+                case ModSXTH: sa_extend = 0b101
+                case ModSXTW: sa_extend = 0b110
+                case ModSXTX: sa_extend = 0b111
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount = uint32(vv[0].(Modifier).Amount())
         }
         return p.setins(addsub_ext(0, 1, 0, 0, sa_wm, sa_extend, sa_amount, sa_wn_wsp, sa_wd_wsp))
@@ -65567,9 +68951,10 @@ func (self *Program) SUB(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
        isXrOrSP(v0) &&
        isXrOrSP(v1) &&
        isWrOrXr(v2) &&
-       (len(vv) == 0 || isExtend(vv[0])) {
-        var sa_amount uint32
-        var sa_extend_1 uint32
+       (len(vv) == 0 || isMods(vv[0], ModLSL, ModSXTB, ModSXTH, ModSXTW, ModSXTX, ModUXTB, ModUXTH, ModUXTW, ModUXTX)) {
+        p.class = ClassGeneral
+        sa_amount := uint32(0)
+        sa_extend_1 := uint32(0b011)
         var sa_r [4]uint32
         var sa_r__bit_mask [4]uint32
         sa_xd_sp := uint32(v0.(asm.Register).ID())
@@ -65586,7 +68971,18 @@ func (self *Program) SUB(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
             default: panic("aarch64: unreachable")
         }
         if len(vv) == 1 {
-            sa_extend_1 = uint32(vv[0].(Extension).Extension())
+            switch vv[0].(Modifier).Type() {
+                case ModUXTB: sa_extend_1 = 0b000
+                case ModUXTH: sa_extend_1 = 0b001
+                case ModUXTW: sa_extend_1 = 0b010
+                case ModLSL: sa_extend_1 = 0b011
+                case ModUXTX: sa_extend_1 = 0b011
+                case ModSXTB: sa_extend_1 = 0b100
+                case ModSXTH: sa_extend_1 = 0b101
+                case ModSXTW: sa_extend_1 = 0b110
+                case ModSXTX: sa_extend_1 = 0b111
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount = uint32(vv[0].(Modifier).Amount())
         }
         if !matchany(sa_extend_1, &sa_r[0], &sa_r__bit_mask[0], 4) {
@@ -65599,13 +68995,18 @@ func (self *Program) SUB(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
        isWrOrWSP(v0) &&
        isWrOrWSP(v1) &&
        isImm12(v2) &&
-       (len(vv) == 0 || isShift(vv[0]) && modn(vv[0]) == 0) {
+       (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) {
+        p.class = ClassGeneral
         var sa_shift uint32
         sa_wd_wsp := uint32(v0.(asm.Register).ID())
         sa_wn_wsp := uint32(v1.(asm.Register).ID())
         sa_imm := asImm12(v2)
         if len(vv) == 1 {
-            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            switch {
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
+                default: panic("aarch64: invalid modifier flags")
+            }
         }
         return p.setins(addsub_imm(0, 1, 0, sa_shift, sa_imm, sa_wn_wsp, sa_wd_wsp))
     }
@@ -65614,38 +69015,63 @@ func (self *Program) SUB(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
        isXrOrSP(v0) &&
        isXrOrSP(v1) &&
        isImm12(v2) &&
-       (len(vv) == 0 || isShift(vv[0]) && modn(vv[0]) == 0) {
+       (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) {
+        p.class = ClassGeneral
         var sa_shift uint32
         sa_xd_sp := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(v1.(asm.Register).ID())
         sa_imm := asImm12(v2)
         if len(vv) == 1 {
-            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            switch {
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
+                default: panic("aarch64: invalid modifier flags")
+            }
         }
         return p.setins(addsub_imm(1, 1, 0, sa_shift, sa_imm, sa_xn_sp, sa_xd_sp))
     }
     // SUB  <Wd>, <Wn>, <Wm>{, <shift> #<amount>}
-    if (len(vv) == 0 || len(vv) == 1) && isWr(v0) && isWr(v1) && isWr(v2) && (len(vv) == 0 || isShift(vv[0])) {
-        var sa_amount uint32
-        var sa_shift uint32
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isWr(v0) &&
+       isWr(v1) &&
+       isWr(v2) &&
+       (len(vv) == 0 || isMods(vv[0], ModASR, ModLSL, ModLSR)) {
+        p.class = ClassGeneral
+        sa_amount := uint32(0)
+        sa_shift := uint32(0b00)
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
         if len(vv) == 1 {
-            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            switch vv[0].(Modifier).Type() {
+                case ModLSL: sa_shift = 0b00
+                case ModLSR: sa_shift = 0b01
+                case ModASR: sa_shift = 0b10
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount = uint32(vv[0].(Modifier).Amount())
         }
         return p.setins(addsub_shift(0, 1, 0, sa_shift, sa_wm, sa_amount, sa_wn, sa_wd))
     }
     // SUB  <Xd>, <Xn>, <Xm>{, <shift> #<amount>}
-    if (len(vv) == 0 || len(vv) == 1) && isXr(v0) && isXr(v1) && isXr(v2) && (len(vv) == 0 || isShift(vv[0])) {
-        var sa_amount_1 uint32
-        var sa_shift uint32
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isXr(v0) &&
+       isXr(v1) &&
+       isXr(v2) &&
+       (len(vv) == 0 || isMods(vv[0], ModASR, ModLSL, ModLSR)) {
+        p.class = ClassGeneral
+        sa_amount_1 := uint32(0)
+        sa_shift := uint32(0b00)
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
         if len(vv) == 1 {
-            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            switch vv[0].(Modifier).Type() {
+                case ModLSL: sa_shift = 0b00
+                case ModLSR: sa_shift = 0b01
+                case ModASR: sa_shift = 0b10
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount_1 = uint32(vv[0].(Modifier).Amount())
         }
         return p.setins(addsub_shift(1, 1, 0, sa_shift, sa_xm, sa_amount_1, sa_xn, sa_xd))
@@ -65659,6 +69085,7 @@ func (self *Program) SUB(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -65677,6 +69104,7 @@ func (self *Program) SUB(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
     }
     // SUB  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -65707,6 +69135,8 @@ func (self *Program) SUB(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
 func (self *Program) SUBG(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("SUBG", 4, Operands { v0, v1, v2, v3 })
     if isXrOrSP(v0) && isXrOrSP(v1) && isUimm6(v2) && isUimm4(v3) {
+        self.require(FEAT_MTE)
+        p.class = ClassGeneral
         sa_xd_sp := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(v1.(asm.Register).ID())
         sa_uimm6 := asUimm6(v2)
@@ -65754,6 +69184,7 @@ func (self *Program) SUBHN(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8H, Vec4S, Vec2D) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -65819,6 +69250,7 @@ func (self *Program) SUBHN2(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8H, Vec4S, Vec2D) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -65864,6 +69296,8 @@ func (self *Program) SUBHN2(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) SUBP(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SUBP", 3, Operands { v0, v1, v2 })
     if isXr(v0) && isXrOrSP(v1) && isXrOrSP(v2) {
+        self.require(FEAT_MTE)
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(v1.(asm.Register).ID())
         sa_xm_sp := uint32(v2.(asm.Register).ID())
@@ -65893,6 +69327,8 @@ func (self *Program) SUBP(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) SUBPS(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SUBPS", 3, Operands { v0, v1, v2 })
     if isXr(v0) && isXrOrSP(v1) && isXrOrSP(v2) {
+        self.require(FEAT_MTE)
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(v1.(asm.Register).ID())
         sa_xm_sp := uint32(v2.(asm.Register).ID())
@@ -65947,22 +69383,43 @@ func (self *Program) SUBS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
         default : panic("instruction SUBS takes 3 or 4 operands")
     }
     // SUBS  <Wd>, <Wn|WSP>, <Wm>{, <extend> {#<amount>}}
-    if (len(vv) == 0 || len(vv) == 1) && isWr(v0) && isWrOrWSP(v1) && isWr(v2) && (len(vv) == 0 || isExtend(vv[0])) {
-        var sa_amount uint32
-        var sa_extend uint32
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isWr(v0) &&
+       isWrOrWSP(v1) &&
+       isWr(v2) &&
+       (len(vv) == 0 || isMods(vv[0], ModLSL, ModSXTB, ModSXTH, ModSXTW, ModSXTX, ModUXTB, ModUXTH, ModUXTW, ModUXTX)) {
+        p.class = ClassGeneral
+        sa_amount := uint32(0)
+        sa_extend := uint32(0b010)
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn_wsp := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
         if len(vv) == 1 {
-            sa_extend = uint32(vv[0].(Extension).Extension())
+            switch vv[0].(Modifier).Type() {
+                case ModUXTB: sa_extend = 0b000
+                case ModUXTH: sa_extend = 0b001
+                case ModLSL: sa_extend = 0b010
+                case ModUXTW: sa_extend = 0b010
+                case ModUXTX: sa_extend = 0b011
+                case ModSXTB: sa_extend = 0b100
+                case ModSXTH: sa_extend = 0b101
+                case ModSXTW: sa_extend = 0b110
+                case ModSXTX: sa_extend = 0b111
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount = uint32(vv[0].(Modifier).Amount())
         }
         return p.setins(addsub_ext(0, 1, 1, 0, sa_wm, sa_extend, sa_amount, sa_wn_wsp, sa_wd))
     }
     // SUBS  <Xd>, <Xn|SP>, <R><m>{, <extend> {#<amount>}}
-    if (len(vv) == 0 || len(vv) == 1) && isXr(v0) && isXrOrSP(v1) && isWrOrXr(v2) && (len(vv) == 0 || isExtend(vv[0])) {
-        var sa_amount uint32
-        var sa_extend_1 uint32
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isXr(v0) &&
+       isXrOrSP(v1) &&
+       isWrOrXr(v2) &&
+       (len(vv) == 0 || isMods(vv[0], ModLSL, ModSXTB, ModSXTH, ModSXTW, ModSXTX, ModUXTB, ModUXTH, ModUXTW, ModUXTX)) {
+        p.class = ClassGeneral
+        sa_amount := uint32(0)
+        sa_extend_1 := uint32(0b011)
         var sa_r [4]uint32
         var sa_r__bit_mask [4]uint32
         sa_xd := uint32(v0.(asm.Register).ID())
@@ -65979,7 +69436,18 @@ func (self *Program) SUBS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
             default: panic("aarch64: unreachable")
         }
         if len(vv) == 1 {
-            sa_extend_1 = uint32(vv[0].(Extension).Extension())
+            switch vv[0].(Modifier).Type() {
+                case ModUXTB: sa_extend_1 = 0b000
+                case ModUXTH: sa_extend_1 = 0b001
+                case ModUXTW: sa_extend_1 = 0b010
+                case ModLSL: sa_extend_1 = 0b011
+                case ModUXTX: sa_extend_1 = 0b011
+                case ModSXTB: sa_extend_1 = 0b100
+                case ModSXTH: sa_extend_1 = 0b101
+                case ModSXTW: sa_extend_1 = 0b110
+                case ModSXTX: sa_extend_1 = 0b111
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount = uint32(vv[0].(Modifier).Amount())
         }
         if !matchany(sa_extend_1, &sa_r[0], &sa_r__bit_mask[0], 4) {
@@ -65992,13 +69460,18 @@ func (self *Program) SUBS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
        isWr(v0) &&
        isWrOrWSP(v1) &&
        isImm12(v2) &&
-       (len(vv) == 0 || isShift(vv[0]) && modn(vv[0]) == 0) {
+       (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) {
+        p.class = ClassGeneral
         var sa_shift uint32
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn_wsp := uint32(v1.(asm.Register).ID())
         sa_imm := asImm12(v2)
         if len(vv) == 1 {
-            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            switch {
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
+                default: panic("aarch64: invalid modifier flags")
+            }
         }
         return p.setins(addsub_imm(0, 1, 1, sa_shift, sa_imm, sa_wn_wsp, sa_wd))
     }
@@ -66007,38 +69480,63 @@ func (self *Program) SUBS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
        isXr(v0) &&
        isXrOrSP(v1) &&
        isImm12(v2) &&
-       (len(vv) == 0 || isShift(vv[0]) && modn(vv[0]) == 0) {
+       (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) {
+        p.class = ClassGeneral
         var sa_shift uint32
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(v1.(asm.Register).ID())
         sa_imm := asImm12(v2)
         if len(vv) == 1 {
-            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            switch {
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
+                default: panic("aarch64: invalid modifier flags")
+            }
         }
         return p.setins(addsub_imm(1, 1, 1, sa_shift, sa_imm, sa_xn_sp, sa_xd))
     }
     // SUBS  <Wd>, <Wn>, <Wm>{, <shift> #<amount>}
-    if (len(vv) == 0 || len(vv) == 1) && isWr(v0) && isWr(v1) && isWr(v2) && (len(vv) == 0 || isShift(vv[0])) {
-        var sa_amount uint32
-        var sa_shift uint32
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isWr(v0) &&
+       isWr(v1) &&
+       isWr(v2) &&
+       (len(vv) == 0 || isMods(vv[0], ModASR, ModLSL, ModLSR)) {
+        p.class = ClassGeneral
+        sa_amount := uint32(0)
+        sa_shift := uint32(0b00)
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
         if len(vv) == 1 {
-            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            switch vv[0].(Modifier).Type() {
+                case ModLSL: sa_shift = 0b00
+                case ModLSR: sa_shift = 0b01
+                case ModASR: sa_shift = 0b10
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount = uint32(vv[0].(Modifier).Amount())
         }
         return p.setins(addsub_shift(0, 1, 1, sa_shift, sa_wm, sa_amount, sa_wn, sa_wd))
     }
     // SUBS  <Xd>, <Xn>, <Xm>{, <shift> #<amount>}
-    if (len(vv) == 0 || len(vv) == 1) && isXr(v0) && isXr(v1) && isXr(v2) && (len(vv) == 0 || isShift(vv[0])) {
-        var sa_amount_1 uint32
-        var sa_shift uint32
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isXr(v0) &&
+       isXr(v1) &&
+       isXr(v2) &&
+       (len(vv) == 0 || isMods(vv[0], ModASR, ModLSL, ModLSR)) {
+        p.class = ClassGeneral
+        sa_amount_1 := uint32(0)
+        sa_shift := uint32(0b00)
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
         if len(vv) == 1 {
-            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            switch vv[0].(Modifier).Type() {
+                case ModLSL: sa_shift = 0b00
+                case ModLSR: sa_shift = 0b01
+                case ModASR: sa_shift = 0b10
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount_1 = uint32(vv[0].(Modifier).Amount())
         }
         return p.setins(addsub_shift(1, 1, 1, sa_shift, sa_xm, sa_amount_1, sa_xn, sa_xd))
@@ -66072,6 +69570,8 @@ func (self *Program) SUDOT(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec8B, Vec16B) &&
        isVri(v2) &&
        vmoder(v2) == Mode4B {
+        self.require(FEAT_I8MM)
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -66125,6 +69625,7 @@ func (self *Program) SUQADD(v0, v1 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -66142,6 +69643,7 @@ func (self *Program) SUQADD(v0, v1 interface{}) *Instruction {
     }
     // SUQADD  <V><d>, <V><n>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -66174,6 +69676,7 @@ func (self *Program) SUQADD(v0, v1 interface{}) *Instruction {
 func (self *Program) SVC(v0 interface{}) *Instruction {
     p := self.alloc("SVC", 1, Operands { v0 })
     if isUimm16(v0) {
+        p.class = ClassSystem
         sa_imm := asUimm16(v0)
         return p.setins(exception(0, sa_imm, 0, 1))
     }
@@ -66213,6 +69716,8 @@ func (self *Program) SWP(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -66226,6 +69731,8 @@ func (self *Program) SWP(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -66268,6 +69775,8 @@ func (self *Program) SWPA(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -66281,6 +69790,8 @@ func (self *Program) SWPA(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -66320,6 +69831,8 @@ func (self *Program) SWPAB(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -66359,6 +69872,8 @@ func (self *Program) SWPAH(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -66400,6 +69915,8 @@ func (self *Program) SWPAL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -66413,6 +69930,8 @@ func (self *Program) SWPAL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -66452,6 +69971,8 @@ func (self *Program) SWPALB(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -66491,6 +70012,8 @@ func (self *Program) SWPALH(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -66529,6 +70052,8 @@ func (self *Program) SWPB(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -66568,6 +70093,8 @@ func (self *Program) SWPH(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -66609,6 +70136,8 @@ func (self *Program) SWPL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -66622,6 +70151,8 @@ func (self *Program) SWPL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_xs := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -66661,6 +70192,8 @@ func (self *Program) SWPLB(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -66700,6 +70233,8 @@ func (self *Program) SWPLH(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE)
+        p.class = ClassGeneral
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -66733,6 +70268,8 @@ func (self *Program) SWPP(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE128)
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -66766,6 +70303,8 @@ func (self *Program) SWPPA(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE128)
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -66799,6 +70338,8 @@ func (self *Program) SWPPAL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE128)
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -66832,6 +70373,8 @@ func (self *Program) SWPPL(v0, v1, v2 interface{}) *Instruction {
        midx(v2) == nil &&
        moffs(v2) == 0 &&
        mext(v2) == nil {
+        self.require(FEAT_LSE128)
+        p.class = ClassGeneral
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
@@ -66855,12 +70398,14 @@ func (self *Program) SXTB(v0, v1 interface{}) *Instruction {
     p := self.alloc("SXTB", 2, Operands { v0, v1 })
     // SXTB  <Wd>, <Wn>
     if isWr(v0) && isWr(v1) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         return p.setins(bitfield(0, 0, 0, 0, 7, sa_wn, sa_wd))
     }
     // SXTB  <Xd>, <Wn>
     if isXr(v0) && isWr(v1) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         return p.setins(bitfield(1, 0, 1, 0, 7, sa_wn, sa_xd))
@@ -66884,12 +70429,14 @@ func (self *Program) SXTH(v0, v1 interface{}) *Instruction {
     p := self.alloc("SXTH", 2, Operands { v0, v1 })
     // SXTH  <Wd>, <Wn>
     if isWr(v0) && isWr(v1) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         return p.setins(bitfield(0, 0, 0, 0, 15, sa_wn, sa_wd))
     }
     // SXTH  <Xd>, <Wn>
     if isXr(v0) && isWr(v1) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         return p.setins(bitfield(1, 0, 1, 0, 15, sa_wn, sa_xd))
@@ -66925,6 +70472,7 @@ func (self *Program) SXTL(v0, v1 interface{}) *Instruction {
        isVfmt(v0, Vec8H, Vec4S, Vec2D) &&
        isVr(v1) &&
        isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_ta__bit_mask uint32
         var sa_tb uint32
@@ -66999,6 +70547,7 @@ func (self *Program) SXTL2(v0, v1 interface{}) *Instruction {
        isVfmt(v0, Vec8H, Vec4S, Vec2D) &&
        isVr(v1) &&
        isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_ta__bit_mask uint32
         var sa_tb uint32
@@ -67059,6 +70608,7 @@ func (self *Program) SXTL2(v0, v1 interface{}) *Instruction {
 func (self *Program) SXTW(v0, v1 interface{}) *Instruction {
     p := self.alloc("SXTW", 2, Operands { v0, v1 })
     if isXr(v0) && isWr(v1) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         return p.setins(bitfield(1, 0, 1, 0, 31, sa_wn, sa_xd))
@@ -67090,7 +70640,8 @@ func (self *Program) SYS(v0, v1, v2, v3 interface{}, vv ...interface{}) *Instruc
        isUimm4(v2) &&
        isUimm3(v3) &&
        (len(vv) == 0 || isXr(vv[0])) {
-        var sa_xt uint32
+        p.class = ClassSystem
+        sa_xt := uint32(0b11111)
         sa_op1 := asUimm3(v0)
         sa_cn := asUimm4(v1)
         sa_cm := asUimm4(v2)
@@ -67117,6 +70668,7 @@ func (self *Program) SYS(v0, v1, v2, v3 interface{}, vv ...interface{}) *Instruc
 func (self *Program) SYSL(v0, v1, v2, v3, v4 interface{}) *Instruction {
     p := self.alloc("SYSL", 5, Operands { v0, v1, v2, v3, v4 })
     if isXr(v0) && isUimm3(v1) && isUimm4(v2) && isUimm4(v3) && isUimm3(v4) {
+        p.class = ClassSystem
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_op1 := asUimm3(v1)
         sa_cn := asUimm4(v2)
@@ -67150,8 +70702,10 @@ func (self *Program) SYSP(v0, v1, v2, v3 interface{}, vv ...interface{}) *Instru
        isUimm3(v3) &&
        (len(vv) == 0 || isXr(vv[0])) &&
        (len(vv) == 0 || isXr(vv[1])) {
-        var sa_xt1 uint32
-        var sa_xt2 uint32
+        self.require(FEAT_SYSINSTR128)
+        p.class = ClassSystem
+        sa_xt1 := uint32(0b11111)
+        sa_xt2 := uint32(0b11111)
         sa_op1 := asUimm3(v0)
         sa_cn := asUimm4(v1)
         sa_cm := asUimm4(v2)
@@ -67201,6 +70755,7 @@ func (self *Program) TBL(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B) &&
        vfmt(v0) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -67220,6 +70775,7 @@ func (self *Program) TBL(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B) &&
        vfmt(v0) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -67239,6 +70795,7 @@ func (self *Program) TBL(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B) &&
        vfmt(v0) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -67258,6 +70815,7 @@ func (self *Program) TBL(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B) &&
        vfmt(v0) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -67288,6 +70846,7 @@ func (self *Program) TBL(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) TBNZ(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("TBNZ", 3, Operands { v0, v1, v2 })
     if isWrOrXr(v0) && isUimm6(v1) && isLabel(v2) {
+        p.class = ClassGeneral
         var sa_r uint32
         sa_t := uint32(v0.(asm.Register).ID())
         switch true {
@@ -67346,6 +70905,7 @@ func (self *Program) TBX(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B) &&
        vfmt(v0) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -67365,6 +70925,7 @@ func (self *Program) TBX(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B) &&
        vfmt(v0) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -67384,6 +70945,7 @@ func (self *Program) TBX(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B) &&
        vfmt(v0) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -67403,6 +70965,7 @@ func (self *Program) TBX(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B) &&
        vfmt(v0) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -67433,6 +70996,7 @@ func (self *Program) TBX(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) TBZ(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("TBZ", 3, Operands { v0, v1, v2 })
     if isWrOrXr(v0) && isUimm6(v1) && isLabel(v2) {
+        p.class = ClassGeneral
         var sa_r uint32
         sa_t := uint32(v0.(asm.Register).ID())
         switch true {
@@ -67474,6 +71038,8 @@ func (self *Program) TBZ(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) TCANCEL(v0 interface{}) *Instruction {
     p := self.alloc("TCANCEL", 1, Operands { v0 })
     if isUimm16(v0) {
+        self.require(FEAT_TME)
+        p.class = ClassSystem
         sa_imm := asUimm16(v0)
         return p.setins(exception(3, sa_imm, 0, 0))
     }
@@ -67496,6 +71062,8 @@ func (self *Program) TCANCEL(v0 interface{}) *Instruction {
 //
 func (self *Program) TCOMMIT() *Instruction {
     p := self.alloc("TCOMMIT", 0, Operands {})
+    self.require(FEAT_TME)
+    p.class = ClassSystem
     return p.setins(barriers(0, 3, 31))
 }
 
@@ -67516,7 +71084,8 @@ func (self *Program) TLBI(v0 interface{}, vv ...interface{}) *Instruction {
         default : panic("instruction TLBI takes 1 or 2 operands")
     }
     if (len(vv) == 0 || len(vv) == 1) && isTLBIOption(v0) && (len(vv) == 0 || isXr(vv[0])) {
-        var sa_xt uint32
+        p.class = ClassSystem
+        sa_xt := uint32(0b11111)
         sa_tlbi_op := uint32(v0.(TLBIOption))
         if len(vv) == 1 {
             sa_xt = uint32(vv[0].(asm.Register).ID())
@@ -67553,8 +71122,10 @@ func (self *Program) TLBIP(v0 interface{}, vv ...interface{}) *Instruction {
        isTLBIPOption(v0) &&
        (len(vv) == 0 || isXr(vv[0])) &&
        (len(vv) == 0 || isXr(vv[1])) {
-        var sa_xt1 uint32
-        var sa_xt2 uint32
+        self.require(FEAT_D128)
+        p.class = ClassSystem
+        sa_xt1 := uint32(0b11111)
+        sa_xt2 := uint32(0b11111)
         sa_tlbip_op := uint32(v0.(TLBIOption))
         if len(vv) == 2 {
             sa_xt1 = uint32(vv[0].(asm.Register).ID())
@@ -67588,6 +71159,8 @@ func (self *Program) TLBIP(v0 interface{}, vv ...interface{}) *Instruction {
 func (self *Program) TRCIT(v0 interface{}) *Instruction {
     p := self.alloc("TRCIT", 1, Operands { v0 })
     if isXr(v0) {
+        self.require(FEAT_ITE)
+        p.class = ClassSystem
         sa_xt_1 := uint32(v0.(asm.Register).ID())
         return p.setins(systeminstrs(0, 3, 7, 2, 7, sa_xt_1))
     }
@@ -67612,7 +71185,7 @@ func (self *Program) TRCIT(v0 interface{}) *Instruction {
 // NOTE: 
 //     By using this instruction with TRN2 , a 2 x 2 matrix can be transposed.
 //
-// [image:A64.trn1_trn2_doubleword_operation.svg]
+// [image:isa_docs/ISA_A64_xml_A_profile-2022-12_OPT/A64.trn1_trn2_doubleword_operation.svg]
 // TRN1 and TRN2 halfword operations where Q = 0
 //
 // Depending on the settings in the CPACR_EL1 , CPTR_EL2 , and CPTR_EL3 registers,
@@ -67629,6 +71202,7 @@ func (self *Program) TRN1(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -67666,7 +71240,7 @@ func (self *Program) TRN1(v0, v1, v2 interface{}) *Instruction {
 // NOTE: 
 //     By using this instruction with TRN1 , a 2 x 2 matrix can be transposed.
 //
-// [image:A64.trn1_trn2_doubleword_operation.svg]
+// [image:isa_docs/ISA_A64_xml_A_profile-2022-12_OPT/A64.trn1_trn2_doubleword_operation.svg]
 // TRN1 and TRN2 halfword operations where Q = 0
 //
 // Depending on the settings in the CPACR_EL1 , CPTR_EL2 , and CPTR_EL3 registers,
@@ -67683,6 +71257,7 @@ func (self *Program) TRN2(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -67717,6 +71292,8 @@ func (self *Program) TRN2(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) TSB(v0 interface{}) *Instruction {
     p := self.alloc("TSB", 1, Operands { v0 })
     if v0 == CSYNC {
+        self.require(FEAT_TRF)
+        p.class = ClassSystem
         return p.setins(hints(2, 2))
     }
     p.Free()
@@ -67748,36 +71325,58 @@ func (self *Program) TST(v0, v1 interface{}, vv ...interface{}) *Instruction {
     }
     // TST  <Wn>, #<imm>
     if isWr(v0) && isMask32(v1) {
+        p.class = ClassGeneral
         sa_wn := uint32(v0.(asm.Register).ID())
         sa_imm := asMaskOp(v1)
         return p.setins(log_imm(0, 3, 0, ubfx(sa_imm, 6, 6), mask(sa_imm, 6), sa_wn, 31))
     }
     // TST  <Xn>, #<imm>
     if isXr(v0) && isMask64(v1) {
+        p.class = ClassGeneral
         sa_xn := uint32(v0.(asm.Register).ID())
         sa_imm_1 := asMaskOp(v1)
         return p.setins(log_imm(1, 3, ubfx(sa_imm_1, 12, 1), ubfx(sa_imm_1, 6, 6), mask(sa_imm_1, 6), sa_xn, 31))
     }
     // TST  <Wn>, <Wm>{, <shift> #<amount>}
-    if (len(vv) == 0 || len(vv) == 1) && isWr(v0) && isWr(v1) && (len(vv) == 0 || isShift(vv[0])) {
-        var sa_amount uint32
-        var sa_shift uint32
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isWr(v0) &&
+       isWr(v1) &&
+       (len(vv) == 0 || isMods(vv[0], ModASR, ModLSL, ModLSR, ModROR)) {
+        p.class = ClassGeneral
+        sa_amount := uint32(0)
+        sa_shift := uint32(0b00)
         sa_wn := uint32(v0.(asm.Register).ID())
         sa_wm := uint32(v1.(asm.Register).ID())
         if len(vv) == 1 {
-            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            switch vv[0].(Modifier).Type() {
+                case ModLSL: sa_shift = 0b00
+                case ModLSR: sa_shift = 0b01
+                case ModASR: sa_shift = 0b10
+                case ModROR: sa_shift = 0b11
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount = uint32(vv[0].(Modifier).Amount())
         }
         return p.setins(log_shift(0, 3, sa_shift, 0, sa_wm, sa_amount, sa_wn, 31))
     }
     // TST  <Xn>, <Xm>{, <shift> #<amount>}
-    if (len(vv) == 0 || len(vv) == 1) && isXr(v0) && isXr(v1) && (len(vv) == 0 || isShift(vv[0])) {
-        var sa_amount_1 uint32
-        var sa_shift uint32
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isXr(v0) &&
+       isXr(v1) &&
+       (len(vv) == 0 || isMods(vv[0], ModASR, ModLSL, ModLSR, ModROR)) {
+        p.class = ClassGeneral
+        sa_amount_1 := uint32(0)
+        sa_shift := uint32(0b00)
         sa_xn := uint32(v0.(asm.Register).ID())
         sa_xm := uint32(v1.(asm.Register).ID())
         if len(vv) == 1 {
-            sa_shift = uint32(vv[0].(ShiftType).ShiftType())
+            switch vv[0].(Modifier).Type() {
+                case ModLSL: sa_shift = 0b00
+                case ModLSR: sa_shift = 0b01
+                case ModASR: sa_shift = 0b10
+                case ModROR: sa_shift = 0b11
+                default: panic("aarch64: invalid modifier flags")
+            }
             sa_amount_1 = uint32(vv[0].(Modifier).Amount())
         }
         return p.setins(log_shift(1, 3, sa_shift, 0, sa_xm, sa_amount_1, sa_xn, 31))
@@ -67802,6 +71401,8 @@ func (self *Program) TST(v0, v1 interface{}, vv ...interface{}) *Instruction {
 func (self *Program) TSTART(v0 interface{}) *Instruction {
     p := self.alloc("TSTART", 1, Operands { v0 })
     if isXr(v0) {
+        self.require(FEAT_TME)
+        p.class = ClassSystem
         sa_xt := uint32(v0.(asm.Register).ID())
         return p.setins(systemresult(3, 3, 0, 3, sa_xt))
     }
@@ -67821,6 +71422,8 @@ func (self *Program) TSTART(v0 interface{}) *Instruction {
 func (self *Program) TTEST(v0 interface{}) *Instruction {
     p := self.alloc("TTEST", 1, Operands { v0 })
     if isXr(v0) {
+        self.require(FEAT_TME)
+        p.class = ClassSystem
         sa_xt := uint32(v0.(asm.Register).ID())
         return p.setins(systemresult(3, 3, 1, 3, sa_xt))
     }
@@ -67854,6 +71457,7 @@ func (self *Program) UABA(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -67904,6 +71508,7 @@ func (self *Program) UABAL(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -67967,6 +71572,7 @@ func (self *Program) UABAL2(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -68025,6 +71631,7 @@ func (self *Program) UABD(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -68075,6 +71682,7 @@ func (self *Program) UABDL(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -68138,6 +71746,7 @@ func (self *Program) UABDL2(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -68192,6 +71801,7 @@ func (self *Program) UADALP(v0, v1 interface{}) *Instruction {
        isVfmt(v0, Vec4H, Vec8H, Vec2S, Vec4S, Vec1D, Vec2D) &&
        isVr(v1) &&
        isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -68256,6 +71866,7 @@ func (self *Program) UADDL(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -68318,6 +71929,7 @@ func (self *Program) UADDL2(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -68371,6 +71983,7 @@ func (self *Program) UADDLP(v0, v1 interface{}) *Instruction {
        isVfmt(v0, Vec4H, Vec8H, Vec2S, Vec4S, Vec1D, Vec2D) &&
        isVr(v1) &&
        isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -68424,6 +72037,7 @@ func (self *Program) UADDLP(v0, v1 interface{}) *Instruction {
 func (self *Program) UADDLV(v0, v1 interface{}) *Instruction {
     p := self.alloc("UADDLV", 2, Operands { v0, v1 })
     if isAdvSIMD(v0) && isVr(v1) && isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec4S) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
@@ -68482,6 +72096,7 @@ func (self *Program) UADDW(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -68545,6 +72160,7 @@ func (self *Program) UADDW2(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -68593,6 +72209,7 @@ func (self *Program) UBFIZ(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("UBFIZ", 4, Operands { v0, v1, v2, v3 })
     // UBFIZ  <Wd>, <Wn>, #<lsb>, #<width>
     if isWr(v0) && isWr(v1) && isUimm5(v2) && isBFxWidth(v2, v3, 32) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_lsb := -asUimm5(v2) % 32
@@ -68601,6 +72218,7 @@ func (self *Program) UBFIZ(v0, v1, v2, v3 interface{}) *Instruction {
     }
     // UBFIZ  <Xd>, <Xn>, #<lsb>, #<width>
     if isXr(v0) && isXr(v1) && isUimm6(v2) && isBFxWidth(v2, v3, 64) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_lsb_2 := -asUimm6(v2) % 64
@@ -68637,6 +72255,7 @@ func (self *Program) UBFM(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("UBFM", 4, Operands { v0, v1, v2, v3 })
     // UBFM  <Wd>, <Wn>, #<immr>, #<imms>
     if isWr(v0) && isWr(v1) && isUimm6(v2) && isUimm6(v3) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_immr := asUimm6(v2)
@@ -68645,6 +72264,7 @@ func (self *Program) UBFM(v0, v1, v2, v3 interface{}) *Instruction {
     }
     // UBFM  <Xd>, <Xn>, #<immr>, #<imms>
     if isXr(v0) && isXr(v1) && isUimm6(v2) && isUimm6(v3) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_immr_1 := asUimm6(v2)
@@ -68671,6 +72291,7 @@ func (self *Program) UBFX(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("UBFX", 4, Operands { v0, v1, v2, v3 })
     // UBFX  <Wd>, <Wn>, #<lsb>, #<width>
     if isWr(v0) && isWr(v1) && isUimm5(v2) && isBFxWidth(v2, v3, 32) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_lsb_1 := asUimm5(v2)
@@ -68679,6 +72300,7 @@ func (self *Program) UBFX(v0, v1, v2, v3 interface{}) *Instruction {
     }
     // UBFX  <Xd>, <Xn>, #<lsb>, #<width>
     if isXr(v0) && isXr(v1) && isUimm6(v2) && isBFxWidth(v2, v3, 64) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_lsb_3 := asUimm6(v2)
@@ -68793,6 +72415,7 @@ func (self *Program) UCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
        isVfmt(v1, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        isFpBits(vv[0]) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_fbits uint32
         var sa_t uint32
         var sa_t__bit_mask uint32
@@ -68827,6 +72450,7 @@ func (self *Program) UCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
     }
     // UCVTF  <V><d>, <V><n>, #<fbits>
     if len(vv) == 1 && isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(vv[0]) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_fbits_1 uint32
         var sa_v uint32
         var sa_v__bit_mask uint32
@@ -68861,6 +72485,7 @@ func (self *Program) UCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -68876,6 +72501,8 @@ func (self *Program) UCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
     }
     // UCVTF  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H) && vfmt(v0) == vfmt(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         var sa_t_1 uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -68888,6 +72515,7 @@ func (self *Program) UCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
     }
     // UCVTF  <V><d>, <V><n>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -68902,12 +72530,15 @@ func (self *Program) UCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
     }
     // UCVTF  <Hd>, <Hn>
     if isHr(v0) && isHr(v1) {
+        self.require(FEAT_FP16)
+        p.class = ClassAdvSimd
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
         return p.setins(asisdmiscfp16(1, 0, 29, sa_hn, sa_hd))
     }
     // UCVTF  <Dd>, <Wn>, #<fbits>
     if len(vv) == 1 && isDr(v0) && isWr(v1) && isFpBits(vv[0]) {
+        p.class = ClassFloat
         sa_dd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_fbits := asFpScale(vv[0])
@@ -68915,6 +72546,7 @@ func (self *Program) UCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
     }
     // UCVTF  <Dd>, <Xn>, #<fbits>
     if len(vv) == 1 && isDr(v0) && isXr(v1) && isFpBits(vv[0]) {
+        p.class = ClassFloat
         sa_dd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_fbits_1 := asFpScale(vv[0])
@@ -68922,6 +72554,7 @@ func (self *Program) UCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
     }
     // UCVTF  <Hd>, <Wn>, #<fbits>
     if len(vv) == 1 && isHr(v0) && isWr(v1) && isFpBits(vv[0]) {
+        p.class = ClassFloat
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_fbits := asFpScale(vv[0])
@@ -68929,6 +72562,7 @@ func (self *Program) UCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
     }
     // UCVTF  <Hd>, <Xn>, #<fbits>
     if len(vv) == 1 && isHr(v0) && isXr(v1) && isFpBits(vv[0]) {
+        p.class = ClassFloat
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_fbits_1 := asFpScale(vv[0])
@@ -68936,6 +72570,7 @@ func (self *Program) UCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
     }
     // UCVTF  <Sd>, <Wn>, #<fbits>
     if len(vv) == 1 && isSr(v0) && isWr(v1) && isFpBits(vv[0]) {
+        p.class = ClassFloat
         sa_sd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_fbits := asFpScale(vv[0])
@@ -68943,6 +72578,7 @@ func (self *Program) UCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
     }
     // UCVTF  <Sd>, <Xn>, #<fbits>
     if len(vv) == 1 && isSr(v0) && isXr(v1) && isFpBits(vv[0]) {
+        p.class = ClassFloat
         sa_sd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_fbits_1 := asFpScale(vv[0])
@@ -68950,36 +72586,42 @@ func (self *Program) UCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
     }
     // UCVTF  <Dd>, <Wn>
     if isDr(v0) && isWr(v1) {
+        p.class = ClassFloat
         sa_dd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(0, 0, 1, 0, 3, sa_wn, sa_dd))
     }
     // UCVTF  <Dd>, <Xn>
     if isDr(v0) && isXr(v1) {
+        p.class = ClassFloat
         sa_dd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(1, 0, 1, 0, 3, sa_xn, sa_dd))
     }
     // UCVTF  <Hd>, <Wn>
     if isHr(v0) && isWr(v1) {
+        p.class = ClassFloat
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(0, 0, 3, 0, 3, sa_wn, sa_hd))
     }
     // UCVTF  <Hd>, <Xn>
     if isHr(v0) && isXr(v1) {
+        p.class = ClassFloat
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(1, 0, 3, 0, 3, sa_xn, sa_hd))
     }
     // UCVTF  <Sd>, <Wn>
     if isSr(v0) && isWr(v1) {
+        p.class = ClassFloat
         sa_sd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(0, 0, 0, 0, 3, sa_wn, sa_sd))
     }
     // UCVTF  <Sd>, <Xn>
     if isSr(v0) && isXr(v1) {
+        p.class = ClassFloat
         sa_sd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         return p.setins(float2int(1, 0, 0, 0, 3, sa_xn, sa_sd))
@@ -69002,6 +72644,7 @@ func (self *Program) UCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
 func (self *Program) UDF(v0 interface{}) *Instruction {
     p := self.alloc("UDF", 1, Operands { v0 })
     if isUimm16(v0) {
+        p.class = ClassGeneral
         sa_imm := asUimm16(v0)
         return p.setins(perm_undef(sa_imm))
     }
@@ -69024,6 +72667,7 @@ func (self *Program) UDIV(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("UDIV", 3, Operands { v0, v1, v2 })
     // UDIV  <Wd>, <Wn>, <Wm>
     if isWr(v0) && isWr(v1) && isWr(v2) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
@@ -69031,6 +72675,7 @@ func (self *Program) UDIV(v0, v1, v2 interface{}) *Instruction {
     }
     // UDIV  <Xd>, <Xn>, <Xm>
     if isXr(v0) && isXr(v1) && isXr(v2) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
@@ -69092,6 +72737,8 @@ func (self *Program) UDOT(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec8B, Vec16B) &&
        isVri(v2) &&
        vmoder(v2) == Mode4B {
+        self.require(FEAT_DotProd)
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -69121,6 +72768,8 @@ func (self *Program) UDOT(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B) &&
        vfmt(v1) == vfmt(v2) {
+        self.require(FEAT_DotProd)
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -69173,6 +72822,7 @@ func (self *Program) UHADD(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -69217,6 +72867,7 @@ func (self *Program) UHSUB(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -69248,6 +72899,7 @@ func (self *Program) UHSUB(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) UMADDL(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("UMADDL", 4, Operands { v0, v1, v2, v3 })
     if isXr(v0) && isWr(v1) && isWr(v2) && isXr(v3) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
@@ -69300,6 +72952,7 @@ func (self *Program) UMAX(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -69317,6 +72970,8 @@ func (self *Program) UMAX(v0, v1, v2 interface{}) *Instruction {
     }
     // UMAX  <Wd>, <Wn>, #<uimm>
     if isWr(v0) && isWr(v1) && isFpImm8(v2) {
+        self.require(FEAT_CSSC)
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_uimm := asFpImm8(v2)
@@ -69324,6 +72979,8 @@ func (self *Program) UMAX(v0, v1, v2 interface{}) *Instruction {
     }
     // UMAX  <Xd>, <Xn>, #<uimm>
     if isXr(v0) && isXr(v1) && isFpImm8(v2) {
+        self.require(FEAT_CSSC)
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_uimm := asFpImm8(v2)
@@ -69331,6 +72988,8 @@ func (self *Program) UMAX(v0, v1, v2 interface{}) *Instruction {
     }
     // UMAX  <Wd>, <Wn>, <Wm>
     if isWr(v0) && isWr(v1) && isWr(v2) {
+        self.require(FEAT_CSSC)
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
@@ -69338,6 +72997,8 @@ func (self *Program) UMAX(v0, v1, v2 interface{}) *Instruction {
     }
     // UMAX  <Xd>, <Xn>, <Xm>
     if isXr(v0) && isXr(v1) && isXr(v2) {
+        self.require(FEAT_CSSC)
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
@@ -69375,6 +73036,7 @@ func (self *Program) UMAXP(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -69412,6 +73074,7 @@ func (self *Program) UMAXP(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) UMAXV(v0, v1 interface{}) *Instruction {
     p := self.alloc("UMAXV", 2, Operands { v0, v1 })
     if isAdvSIMD(v0) && isVr(v1) && isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec4S) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
@@ -69481,6 +73144,7 @@ func (self *Program) UMIN(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -69498,6 +73162,8 @@ func (self *Program) UMIN(v0, v1, v2 interface{}) *Instruction {
     }
     // UMIN  <Wd>, <Wn>, #<uimm>
     if isWr(v0) && isWr(v1) && isFpImm8(v2) {
+        self.require(FEAT_CSSC)
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_uimm := asFpImm8(v2)
@@ -69505,6 +73171,8 @@ func (self *Program) UMIN(v0, v1, v2 interface{}) *Instruction {
     }
     // UMIN  <Xd>, <Xn>, #<uimm>
     if isXr(v0) && isXr(v1) && isFpImm8(v2) {
+        self.require(FEAT_CSSC)
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_uimm := asFpImm8(v2)
@@ -69512,6 +73180,8 @@ func (self *Program) UMIN(v0, v1, v2 interface{}) *Instruction {
     }
     // UMIN  <Wd>, <Wn>, <Wm>
     if isWr(v0) && isWr(v1) && isWr(v2) {
+        self.require(FEAT_CSSC)
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
@@ -69519,6 +73189,8 @@ func (self *Program) UMIN(v0, v1, v2 interface{}) *Instruction {
     }
     // UMIN  <Xd>, <Xn>, <Xm>
     if isXr(v0) && isXr(v1) && isXr(v2) {
+        self.require(FEAT_CSSC)
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
@@ -69556,6 +73228,7 @@ func (self *Program) UMINP(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -69593,6 +73266,7 @@ func (self *Program) UMINP(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) UMINV(v0, v1 interface{}) *Instruction {
     p := self.alloc("UMINV", 2, Operands { v0, v1 })
     if isAdvSIMD(v0) && isVr(v1) && isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec4S) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
@@ -69664,6 +73338,7 @@ func (self *Program) UMLAL(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("UMLAL", 3, Operands { v0, v1, v2 })
     // UMLAL  <Vd>.<Ta>, <Vn>.<Tb>, <Vm>.<Ts>[<index>]
     if isVr(v0) && isVfmt(v0, Vec4S, Vec2D) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H, Vec2S, Vec4S) && isVri(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         var sa_ts uint32
@@ -69718,6 +73393,7 @@ func (self *Program) UMLAL(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -69795,6 +73471,7 @@ func (self *Program) UMLAL2(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("UMLAL2", 3, Operands { v0, v1, v2 })
     // UMLAL2  <Vd>.<Ta>, <Vn>.<Tb>, <Vm>.<Ts>[<index>]
     if isVr(v0) && isVfmt(v0, Vec4S, Vec2D) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H, Vec2S, Vec4S) && isVri(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         var sa_ts uint32
@@ -69849,6 +73526,7 @@ func (self *Program) UMLAL2(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -69926,6 +73604,7 @@ func (self *Program) UMLSL(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("UMLSL", 3, Operands { v0, v1, v2 })
     // UMLSL  <Vd>.<Ta>, <Vn>.<Tb>, <Vm>.<Ts>[<index>]
     if isVr(v0) && isVfmt(v0, Vec4S, Vec2D) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H, Vec2S, Vec4S) && isVri(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         var sa_ts uint32
@@ -69980,6 +73659,7 @@ func (self *Program) UMLSL(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -70057,6 +73737,7 @@ func (self *Program) UMLSL2(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("UMLSL2", 3, Operands { v0, v1, v2 })
     // UMLSL2  <Vd>.<Ta>, <Vn>.<Tb>, <Vm>.<Ts>[<index>]
     if isVr(v0) && isVfmt(v0, Vec4S, Vec2D) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H, Vec2S, Vec4S) && isVri(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         var sa_ts uint32
@@ -70111,6 +73792,7 @@ func (self *Program) UMLSL2(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -70164,6 +73846,8 @@ func (self *Program) UMLSL2(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) UMMLA(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("UMMLA", 3, Operands { v0, v1, v2 })
     if isVr(v0) && vfmt(v0) == Vec4S && isVr(v1) && vfmt(v1) == Vec16B && isVr(v2) && vfmt(v2) == Vec16B {
+        self.require(FEAT_I8MM)
+        p.class = ClassAdvSimd
         sa_vd := uint32(v0.(asm.Register).ID())
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
@@ -70185,6 +73869,7 @@ func (self *Program) UMMLA(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) UMNEGL(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("UMNEGL", 3, Operands { v0, v1, v2 })
     if isXr(v0) && isWr(v1) && isWr(v2) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
@@ -70214,6 +73899,7 @@ func (self *Program) UMOV(v0, v1 interface{}) *Instruction {
     p := self.alloc("UMOV", 2, Operands { v0, v1 })
     // UMOV  <Wd>, <Vn>.<Ts>[<index>]
     if isWr(v0) && isVri(v1) {
+        p.class = ClassAdvSimd
         var sa_ts uint32
         var sa_ts__bit_mask uint32
         sa_wd := uint32(v0.(asm.Register).ID())
@@ -70238,6 +73924,7 @@ func (self *Program) UMOV(v0, v1 interface{}) *Instruction {
     }
     // UMOV  <Xd>, <Vn>.<Ts>[<index>]
     if isXr(v0) && isVri(v1) {
+        p.class = ClassAdvSimd
         var sa_ts_1 uint32
         var sa_ts_1__bit_mask uint32
         sa_xd := uint32(v0.(asm.Register).ID())
@@ -70274,6 +73961,7 @@ func (self *Program) UMOV(v0, v1 interface{}) *Instruction {
 func (self *Program) UMSUBL(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("UMSUBL", 4, Operands { v0, v1, v2, v3 })
     if isXr(v0) && isWr(v1) && isWr(v2) && isXr(v3) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
@@ -70296,6 +73984,7 @@ func (self *Program) UMSUBL(v0, v1, v2, v3 interface{}) *Instruction {
 func (self *Program) UMULH(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("UMULH", 3, Operands { v0, v1, v2 })
     if isXr(v0) && isXr(v1) && isXr(v2) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
@@ -70355,6 +74044,7 @@ func (self *Program) UMULL(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("UMULL", 3, Operands { v0, v1, v2 })
     // UMULL  <Xd>, <Wn>, <Wm>
     if isXr(v0) && isWr(v1) && isWr(v2) {
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
@@ -70362,6 +74052,7 @@ func (self *Program) UMULL(v0, v1, v2 interface{}) *Instruction {
     }
     // UMULL  <Vd>.<Ta>, <Vn>.<Tb>, <Vm>.<Ts>[<index>]
     if isVr(v0) && isVfmt(v0, Vec4S, Vec2D) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H, Vec2S, Vec4S) && isVri(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         var sa_ts uint32
@@ -70416,6 +74107,7 @@ func (self *Program) UMULL(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -70492,6 +74184,7 @@ func (self *Program) UMULL2(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("UMULL2", 3, Operands { v0, v1, v2 })
     // UMULL2  <Vd>.<Ta>, <Vn>.<Tb>, <Vm>.<Ts>[<index>]
     if isVr(v0) && isVfmt(v0, Vec4S, Vec2D) && isVr(v1) && isVfmt(v1, Vec4H, Vec8H, Vec2S, Vec4S) && isVri(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         var sa_ts uint32
@@ -70546,6 +74239,7 @@ func (self *Program) UMULL2(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -70608,6 +74302,7 @@ func (self *Program) UQADD(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -70626,6 +74321,7 @@ func (self *Program) UQADD(v0, v1, v2 interface{}) *Instruction {
     }
     // UQADD  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -70678,6 +74374,7 @@ func (self *Program) UQRSHL(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -70696,6 +74393,7 @@ func (self *Program) UQRSHL(v0, v1, v2 interface{}) *Instruction {
     }
     // UQRSHL  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -70744,6 +74442,7 @@ func (self *Program) UQRSHRN(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("UQRSHRN", 3, Operands { v0, v1, v2 })
     // UQRSHRN  <Vb><d>, <Va><n>, #<shift>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(v2) {
+        p.class = ClassAdvSimd
         var sa_shift_1 uint32
         var sa_va uint32
         var sa_va__bit_mask uint32
@@ -70792,6 +74491,7 @@ func (self *Program) UQRSHRN(v0, v1, v2 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec8H, Vec4S, Vec2D) &&
        isFpBits(v2) {
+        p.class = ClassAdvSimd
         var sa_shift uint32
         var sa_ta uint32
         var sa_ta__bit_mask uint32
@@ -70881,6 +74581,7 @@ func (self *Program) UQRSHRN2(v0, v1, v2 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec8H, Vec4S, Vec2D) &&
        isFpBits(v2) {
+        p.class = ClassAdvSimd
         var sa_shift uint32
         var sa_ta uint32
         var sa_ta__bit_mask uint32
@@ -70986,6 +74687,7 @@ func (self *Program) UQSHL(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        isFpBits(v2) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_shift uint32
         var sa_t uint32
         var sa_t__bit_mask uint32
@@ -71025,6 +74727,7 @@ func (self *Program) UQSHL(v0, v1, v2 interface{}) *Instruction {
     }
     // UQSHL  <V><d>, <V><n>, #<shift>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(v2) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_shift_1 uint32
         var sa_v uint32
         var sa_v__bit_mask uint32
@@ -71065,6 +74768,7 @@ func (self *Program) UQSHL(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -71083,6 +74787,7 @@ func (self *Program) UQSHL(v0, v1, v2 interface{}) *Instruction {
     }
     // UQSHL  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -71132,6 +74837,7 @@ func (self *Program) UQSHRN(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("UQSHRN", 3, Operands { v0, v1, v2 })
     // UQSHRN  <Vb><d>, <Va><n>, #<shift>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(v2) {
+        p.class = ClassAdvSimd
         var sa_shift_1 uint32
         var sa_va uint32
         var sa_va__bit_mask uint32
@@ -71180,6 +74886,7 @@ func (self *Program) UQSHRN(v0, v1, v2 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec8H, Vec4S, Vec2D) &&
        isFpBits(v2) {
+        p.class = ClassAdvSimd
         var sa_shift uint32
         var sa_ta uint32
         var sa_ta__bit_mask uint32
@@ -71270,6 +74977,7 @@ func (self *Program) UQSHRN2(v0, v1, v2 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec8H, Vec4S, Vec2D) &&
        isFpBits(v2) {
+        p.class = ClassAdvSimd
         var sa_shift uint32
         var sa_ta uint32
         var sa_ta__bit_mask uint32
@@ -71356,6 +75064,7 @@ func (self *Program) UQSUB(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -71374,6 +75083,7 @@ func (self *Program) UQSUB(v0, v1, v2 interface{}) *Instruction {
     }
     // UQSUB  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -71420,6 +75130,7 @@ func (self *Program) UQXTN(v0, v1 interface{}) *Instruction {
     p := self.alloc("UQXTN", 2, Operands { v0, v1 })
     // UQXTN  <Vb><d>, <Va><n>
     if isAdvSIMD(v0) && isAdvSIMD(v1) {
+        p.class = ClassAdvSimd
         var sa_va uint32
         var sa_vb uint32
         sa_d := uint32(v0.(asm.Register).ID())
@@ -71446,6 +75157,7 @@ func (self *Program) UQXTN(v0, v1 interface{}) *Instruction {
        isVfmt(v0, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        isVr(v1) &&
        isVfmt(v1, Vec8H, Vec4S, Vec2D) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -71507,6 +75219,7 @@ func (self *Program) UQXTN2(v0, v1 interface{}) *Instruction {
        isVfmt(v0, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        isVr(v1) &&
        isVfmt(v1, Vec8H, Vec4S, Vec2D) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -71556,6 +75269,7 @@ func (self *Program) UQXTN2(v0, v1 interface{}) *Instruction {
 func (self *Program) URECPE(v0, v1 interface{}) *Instruction {
     p := self.alloc("URECPE", 2, Operands { v0, v1 })
     if isVr(v0) && isVfmt(v0, Vec2S, Vec4S) && isVr(v1) && isVfmt(v1, Vec2S, Vec4S) && vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -71599,6 +75313,7 @@ func (self *Program) URHADD(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -71649,6 +75364,7 @@ func (self *Program) URSHL(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -71667,6 +75383,7 @@ func (self *Program) URSHL(v0, v1, v2 interface{}) *Instruction {
     }
     // URSHL  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -71708,6 +75425,7 @@ func (self *Program) URSHR(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        isFpBits(v2) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_shift uint32
         var sa_t uint32
         var sa_t__bit_mask uint32
@@ -71747,6 +75465,7 @@ func (self *Program) URSHR(v0, v1, v2 interface{}) *Instruction {
     }
     // URSHR  <V><d>, <V><n>, #<shift>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(v2) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_shift_1 uint32
         var sa_v uint32
         var sa_v__bit_mask uint32
@@ -71793,6 +75512,7 @@ func (self *Program) URSHR(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) URSQRTE(v0, v1 interface{}) *Instruction {
     p := self.alloc("URSQRTE", 2, Operands { v0, v1 })
     if isVr(v0) && isVfmt(v0, Vec2S, Vec4S) && isVr(v1) && isVfmt(v1, Vec2S, Vec4S) && vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -71836,6 +75556,7 @@ func (self *Program) URSRA(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        isFpBits(v2) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_shift uint32
         var sa_t uint32
         var sa_t__bit_mask uint32
@@ -71875,6 +75596,7 @@ func (self *Program) URSRA(v0, v1, v2 interface{}) *Instruction {
     }
     // URSRA  <V><d>, <V><n>, #<shift>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(v2) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_shift_1 uint32
         var sa_v uint32
         var sa_v__bit_mask uint32
@@ -71942,6 +75664,8 @@ func (self *Program) USDOT(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec8B, Vec16B) &&
        isVri(v2) &&
        vmoder(v2) == Mode4B {
+        self.require(FEAT_I8MM)
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -71971,6 +75695,8 @@ func (self *Program) USDOT(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B) &&
        vfmt(v1) == vfmt(v2) {
+        self.require(FEAT_I8MM)
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -72028,6 +75754,7 @@ func (self *Program) USHL(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -72046,6 +75773,7 @@ func (self *Program) USHL(v0, v1, v2 interface{}) *Instruction {
     }
     // USHL  <V><d>, <V><n>, <V><m>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isAdvSIMD(v2) && isSameType(v0, v1) && isSameType(v1, v2) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -72088,6 +75816,7 @@ func (self *Program) USHLL(v0, v1, v2 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        isFpBits(v2) {
+        p.class = ClassAdvSimd
         var sa_shift uint32
         var sa_ta uint32
         var sa_ta__bit_mask uint32
@@ -72171,6 +75900,7 @@ func (self *Program) USHLL2(v0, v1, v2 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        isFpBits(v2) {
+        p.class = ClassAdvSimd
         var sa_shift uint32
         var sa_ta uint32
         var sa_ta__bit_mask uint32
@@ -72253,6 +75983,7 @@ func (self *Program) USHR(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        isFpBits(v2) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_shift uint32
         var sa_t uint32
         var sa_t__bit_mask uint32
@@ -72292,6 +76023,7 @@ func (self *Program) USHR(v0, v1, v2 interface{}) *Instruction {
     }
     // USHR  <V><d>, <V><n>, #<shift>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(v2) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_shift_1 uint32
         var sa_v uint32
         var sa_v__bit_mask uint32
@@ -72339,6 +76071,8 @@ func (self *Program) USHR(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) USMMLA(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("USMMLA", 3, Operands { v0, v1, v2 })
     if isVr(v0) && vfmt(v0) == Vec4S && isVr(v1) && vfmt(v1) == Vec16B && isVr(v2) && vfmt(v2) == Vec16B {
+        self.require(FEAT_I8MM)
+        p.class = ClassAdvSimd
         sa_vd := uint32(v0.(asm.Register).ID())
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
@@ -72376,6 +76110,7 @@ func (self *Program) USQADD(v0, v1 interface{}) *Instruction {
        isVr(v1) &&
        isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -72393,6 +76128,7 @@ func (self *Program) USQADD(v0, v1 interface{}) *Instruction {
     }
     // USQADD  <V><d>, <V><n>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_v uint32
         sa_d := uint32(v0.(asm.Register).ID())
         switch v0.(type) {
@@ -72437,6 +76173,7 @@ func (self *Program) USRA(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        isFpBits(v2) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_shift uint32
         var sa_t uint32
         var sa_t__bit_mask uint32
@@ -72476,6 +76213,7 @@ func (self *Program) USRA(v0, v1, v2 interface{}) *Instruction {
     }
     // USRA  <V><d>, <V><n>, #<shift>
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(v2) && isSameType(v0, v1) {
+        p.class = ClassAdvSimd
         var sa_shift_1 uint32
         var sa_v uint32
         var sa_v__bit_mask uint32
@@ -72533,6 +76271,7 @@ func (self *Program) USUBL(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -72595,6 +76334,7 @@ func (self *Program) USUBL2(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -72659,6 +76399,7 @@ func (self *Program) USUBW(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -72723,6 +76464,7 @@ func (self *Program) USUBW2(v0, v1, v2 interface{}) *Instruction {
        isVr(v2) &&
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        vfmt(v0) == vfmt(v1) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -72767,6 +76509,7 @@ func (self *Program) USUBW2(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) UXTB(v0, v1 interface{}) *Instruction {
     p := self.alloc("UXTB", 2, Operands { v0, v1 })
     if isWr(v0) && isWr(v1) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         return p.setins(bitfield(0, 2, 0, 0, 7, sa_wn, sa_wd))
@@ -72788,6 +76531,7 @@ func (self *Program) UXTB(v0, v1 interface{}) *Instruction {
 func (self *Program) UXTH(v0, v1 interface{}) *Instruction {
     p := self.alloc("UXTH", 2, Operands { v0, v1 })
     if isWr(v0) && isWr(v1) {
+        p.class = ClassGeneral
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         return p.setins(bitfield(0, 2, 0, 0, 15, sa_wn, sa_wd))
@@ -72821,6 +76565,7 @@ func (self *Program) UXTL(v0, v1 interface{}) *Instruction {
        isVfmt(v0, Vec8H, Vec4S, Vec2D) &&
        isVr(v1) &&
        isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_ta__bit_mask uint32
         var sa_tb uint32
@@ -72894,6 +76639,7 @@ func (self *Program) UXTL2(v0, v1 interface{}) *Instruction {
        isVfmt(v0, Vec8H, Vec4S, Vec2D) &&
        isVr(v1) &&
        isVfmt(v1, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_ta__bit_mask uint32
         var sa_tb uint32
@@ -72958,7 +76704,7 @@ func (self *Program) UXTL2(v0, v1 interface{}) *Instruction {
 // NOTE: 
 //     This instruction can be used with UZP2 to de-interleave two vectors.
 //
-// [image:A64.uzp1_uzp2_8_operation_doubleword.svg]
+// [image:isa_docs/ISA_A64_xml_A_profile-2022-12_OPT/A64.uzp1_uzp2_8_operation_doubleword.svg]
 // UZP1 and UZP2 with the arrangement specifier 8B
 //
 // Depending on the settings in the CPACR_EL1 , CPTR_EL2 , and CPTR_EL3 registers,
@@ -72975,6 +76721,7 @@ func (self *Program) UZP1(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -73011,7 +76758,7 @@ func (self *Program) UZP1(v0, v1, v2 interface{}) *Instruction {
 // NOTE: 
 //     This instruction can be used with UZP1 to de-interleave two vectors.
 //
-// [image:A64.uzp1_uzp2_8_operation_doubleword.svg]
+// [image:isa_docs/ISA_A64_xml_A_profile-2022-12_OPT/A64.uzp1_uzp2_8_operation_doubleword.svg]
 // UZP1 and UZP2 with the arrangement specifier 8B
 //
 // Depending on the settings in the CPACR_EL1 , CPTR_EL2 , and CPTR_EL3 registers,
@@ -73028,6 +76775,7 @@ func (self *Program) UZP2(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -73066,6 +76814,7 @@ func (self *Program) UZP2(v0, v1, v2 interface{}) *Instruction {
 //
 func (self *Program) WFE() *Instruction {
     p := self.alloc("WFE", 0, Operands {})
+    p.class = ClassSystem
     return p.setins(hints(0, 2))
 }
 
@@ -73088,6 +76837,8 @@ func (self *Program) WFE() *Instruction {
 func (self *Program) WFET(v0 interface{}) *Instruction {
     p := self.alloc("WFET", 1, Operands { v0 })
     if isXr(v0) {
+        self.require(FEAT_WFxT)
+        p.class = ClassSystem
         sa_xt := uint32(v0.(asm.Register).ID())
         Rt := uint32(0b00000)
         Rt |= sa_xt
@@ -73113,6 +76864,7 @@ func (self *Program) WFET(v0 interface{}) *Instruction {
 //
 func (self *Program) WFI() *Instruction {
     p := self.alloc("WFI", 0, Operands {})
+    p.class = ClassSystem
     return p.setins(hints(0, 3))
 }
 
@@ -73133,6 +76885,8 @@ func (self *Program) WFI() *Instruction {
 func (self *Program) WFIT(v0 interface{}) *Instruction {
     p := self.alloc("WFIT", 1, Operands { v0 })
     if isXr(v0) {
+        self.require(FEAT_WFxT)
+        p.class = ClassSystem
         sa_xt := uint32(v0.(asm.Register).ID())
         Rt := uint32(0b00000)
         Rt |= sa_xt
@@ -73155,6 +76909,8 @@ func (self *Program) WFIT(v0 interface{}) *Instruction {
 //
 func (self *Program) XAFLAG() *Instruction {
     p := self.alloc("XAFLAG", 0, Operands {})
+    self.require(FEAT_FlagM2)
+    p.class = ClassSystem
     return p.setins(pstate(0, 0, 1, 31))
 }
 
@@ -73174,6 +76930,8 @@ func (self *Program) XAFLAG() *Instruction {
 func (self *Program) XAR(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("XAR", 4, Operands { v0, v1, v2, v3 })
     if isVr(v0) && vfmt(v0) == Vec2D && isVr(v1) && vfmt(v1) == Vec2D && isVr(v2) && vfmt(v2) == Vec2D && isUimm6(v3) {
+        self.require(FEAT_SHA3)
+        p.class = ClassAdvSimd
         sa_vd := uint32(v0.(asm.Register).ID())
         sa_vn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(asm.Register).ID())
@@ -73200,6 +76958,8 @@ func (self *Program) XAR(v0, v1, v2, v3 interface{}) *Instruction {
 func (self *Program) XPACD(v0 interface{}) *Instruction {
     p := self.alloc("XPACD", 1, Operands { v0 })
     if isXr(v0) {
+        self.require(FEAT_PAuth)
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         return p.setins(dp_1src(1, 0, 1, 17, 31, sa_xd))
     }
@@ -73223,6 +76983,8 @@ func (self *Program) XPACD(v0 interface{}) *Instruction {
 func (self *Program) XPACI(v0 interface{}) *Instruction {
     p := self.alloc("XPACI", 1, Operands { v0 })
     if isXr(v0) {
+        self.require(FEAT_PAuth)
+        p.class = ClassGeneral
         sa_xd := uint32(v0.(asm.Register).ID())
         return p.setins(dp_1src(1, 0, 1, 16, 31, sa_xd))
     }
@@ -73245,6 +77007,8 @@ func (self *Program) XPACI(v0 interface{}) *Instruction {
 //
 func (self *Program) XPACLRI() *Instruction {
     p := self.alloc("XPACLRI", 0, Operands {})
+    self.require(FEAT_PAuth)
+    p.class = ClassSystem
     return p.setins(hints(0, 7))
 }
 
@@ -73275,6 +77039,7 @@ func (self *Program) XTN(v0, v1 interface{}) *Instruction {
        isVfmt(v0, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        isVr(v1) &&
        isVfmt(v1, Vec8H, Vec4S, Vec2D) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -73333,6 +77098,7 @@ func (self *Program) XTN2(v0, v1 interface{}) *Instruction {
        isVfmt(v0, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S) &&
        isVr(v1) &&
        isVfmt(v1, Vec8H, Vec4S, Vec2D) {
+        p.class = ClassAdvSimd
         var sa_ta uint32
         var sa_tb uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -73381,6 +77147,7 @@ func (self *Program) XTN2(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) YIELD() *Instruction {
     p := self.alloc("YIELD", 0, Operands {})
+    p.class = ClassSystem
     return p.setins(hints(0, 1))
 }
 
@@ -73400,7 +77167,7 @@ func (self *Program) YIELD() *Instruction {
 // NOTE: 
 //     This instruction can be used with ZIP2 to interleave two vectors.
 //
-// [image:A64.zip1_zip2_8_operation_doubleword.svg]
+// [image:isa_docs/ISA_A64_xml_A_profile-2022-12_OPT/A64.zip1_zip2_8_operation_doubleword.svg]
 // ZIP1 and ZIP2 with the arrangement specifier 8B
 //
 // Depending on the settings in the CPACR_EL1 , CPTR_EL2 , and CPTR_EL3 registers,
@@ -73417,6 +77184,7 @@ func (self *Program) ZIP1(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {
@@ -73453,7 +77221,7 @@ func (self *Program) ZIP1(v0, v1, v2 interface{}) *Instruction {
 // NOTE: 
 //     This instruction can be used with ZIP1 to interleave two vectors.
 //
-// [image:A64.zip1_zip2_8_operation_doubleword.svg]
+// [image:isa_docs/ISA_A64_xml_A_profile-2022-12_OPT/A64.zip1_zip2_8_operation_doubleword.svg]
 // ZIP1 and ZIP2 with the arrangement specifier 8B
 //
 // Depending on the settings in the CPACR_EL1 , CPTR_EL2 , and CPTR_EL3 registers,
@@ -73470,6 +77238,7 @@ func (self *Program) ZIP2(v0, v1, v2 interface{}) *Instruction {
        isVfmt(v2, Vec8B, Vec16B, Vec4H, Vec8H, Vec2S, Vec4S, Vec2D) &&
        vfmt(v0) == vfmt(v1) &&
        vfmt(v1) == vfmt(v2) {
+        p.class = ClassAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
         switch vfmt(v0) {

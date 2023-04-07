@@ -18,6 +18,7 @@ from collections import OrderedDict
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 
+DOC_FILE       = 'isa_docs/ISA_A64_xml_A_profile-2022-12_OPT/onebigfile.xml'
 MAX_TEXT_WIDTH = 80
 MAX_LINE_WIDTH = 120
 
@@ -51,32 +52,40 @@ status('* Preparing ...')
 class Account:
     name: str
     desc: str
+    defv: str
 
-    def __init__(self, name: str, desc: str):
+    def __init__(self, name: str, desc: str, defv: str):
         self.name = name
         self.desc = desc
+        self.defv = defv
 
     def __repr__(self) -> str:
-        return '%s %s' % (self.name, self.desc)
+        if not self.defv:
+            return '%s %s' % (self.name, self.desc)
+        else:
+            return '%s %s (default = %s)' % (self.name, self.desc, self.defv)
 
 class Definition:
     name: str
     desc: str
+    defv: str
     refs: list[str]
     bits: dict[str, set[str]]
 
-    def __init__(self, name: str, desc: str, refs: list[str], bits: dict[str, set[str]]):
+    def __init__(self, name: str, desc: str, defv: str, refs: list[str], bits: dict[str, set[str]]):
         self.name = name
         self.desc = desc
+        self.defv = defv
         self.refs = refs
         self.bits = bits
 
     def __repr__(self) -> str:
-        return '%s %s (=%s) [%s]' % (
+        return '%s %s (=%s) [%s]%s' % (
             self.name,
             self.desc,
             ':'.join(self.refs[::-1]),
-            ' '.join('%s={%s}' % (k, ':'.join(sorted(v))) for k, v in self.bits.items())
+            ' '.join('%s={%s}' % (k, ':'.join(sorted(v))) for k, v in self.bits.items()),
+            '' if not self.defv else ' (default = %s)' % self.defv
         )
 
 class Instruction:
@@ -270,7 +279,7 @@ def layout_line(node: Element, indent: int, prefix: str = '') -> Iterator[str]:
 
         elif elem.tag == 'image':
             yield from break_line(' '.join(text), indent, prefix)
-            yield ' ' * indent + '[image:%s]' % elem.attrib['file']
+            yield ' ' * indent + '[image:%s]' % os.path.join(os.path.dirname(DOC_FILE), elem.attrib['file'])
             yield ' ' * indent + elem.attrib['label']
             text.clear()
 
@@ -378,7 +387,7 @@ enctab = dict[str, EncodingTabEntry]()
 destab = dict[str, DescriptionTabEntry]()
 instab = dict[str, InstructionTabEntry]()
 
-isadocs = ElementTree.parse(os.path.join(sys.argv[1], 'onebigfile.xml')).getroot()
+isadocs = ElementTree.parse(os.path.join(os.path.dirname(__file__), DOC_FILE)).getroot()
 parent_tab = { c: p for p in isadocs.iter() for c in p }
 
 for isect in isadocs.findall('.//instructionsection'):
@@ -574,14 +583,12 @@ for node in sorted(isadocs.findall('.//instructionsection[@type="alias"]'), key 
 
 ### ---------- Instruction Assembly Template ---------- ###
 
-class Sop(StrEnum):
+class Mop(StrEnum):
     LSL  = 'lsl'
     LSR  = 'lsr'
     ASR  = 'asr'
     ROR  = 'ror'
     MSL  = 'msl'
-
-class Xop(StrEnum):
     UXTB = 'uxtb'
     UXTH = 'uxth'
     UXTW = 'uxtw'
@@ -693,7 +700,7 @@ class Vec(NamedTuple):
         )
 
 class Mod(NamedTuple):
-    mod: str | Sop | Xop
+    mod: str | Mop
     imm: tuple[Imm | Lit, bool] | None = None
 
     def name(self) -> str:
@@ -800,8 +807,10 @@ class AsmTemplate:
     pos: int
     buf: list[str | Token]
 
-    sops = { v.name for v in Sop }
-    xops = { v.name for v in Xop }
+    modops = {
+        v.name
+        for v in Mop
+    }
 
     symtab = {
         Sym.CSYNC: (
@@ -877,9 +886,6 @@ class AsmTemplate:
     for v in Sym:
         assert v in symtab, 'undefined symbol: ' + str(v)
 
-    shifts  = { 'sa_shift' }
-    extends = { 'sa_extend', 'sa_extend_1' }
-
     amounts = {
         'sa_amount',
         'sa_amount_1',
@@ -890,6 +896,12 @@ class AsmTemplate:
         'sa_shift_1',
         'sa_shift_2',
         'sa_shift_3',
+    }
+
+    modifiers = {
+        'sa_shift',
+        'sa_extend',
+        'sa_extend_1',
     }
 
     registers = {
@@ -1098,7 +1110,7 @@ class AsmTemplate:
             case v if isinstance(v, Token) and v.name in self.predefined:
                 return self.dsym(v.name)
 
-            case v if isinstance(v, Token) and v.name not in self.shifts and v.name not in self.extends:
+            case v if isinstance(v, Token) and v.name not in self.modifiers:
                 mode = None
                 size = None
                 vidx = None
@@ -1136,10 +1148,10 @@ class AsmTemplate:
                 mod = v.name if isinstance(v, Token) else v
 
                 if isinstance(v, str):
-                    if mod not in self.sops and mod not in self.xops:
+                    if mod not in self.modops:
                         raise SyntaxError('unexpected token: ' + repr(v))
                 else:
-                    if mod not in self.shifts and mod not in self.extends:
+                    if mod not in self.modifiers:
                         raise SyntaxError('unexpected token: ' + repr(v))
 
                 if self.tok == '{':
@@ -1160,10 +1172,8 @@ class AsmTemplate:
                     if not isinstance(imm, Imm) or not imm in self.amounts:
                         raise SyntaxError('invalid extension immediate')
 
-                if mod in self.sops:
-                    mod = Sop(mod.lower())
-                elif mod in self.xops:
-                    mod = Xop(mod.lower())
+                if mod in self.modops:
+                    mod = Mop(mod.lower())
 
                 if imm is None:
                     return Mod(mod)
@@ -1310,6 +1320,7 @@ class AsmTemplate:
 class InstrForm(NamedTuple):
     text   : str
     inst   : Instr
+    feat   : list[str]
     bits   : Instruction
     opts   : dict[str, str]
     args   : dict[str, int]
@@ -1372,16 +1383,22 @@ for expl in isadocs.findall('.//explanation'):
     if symbol is None or (symacc is None) is (symdef is None):
         raise AssertionError('invalid explanation')
 
+    defv = ''
     desc = symbol.text or ''
     name = symbol.attrib['link']
     status('* Field Explanation:', name)
 
     if symacc is not None:
         assert symdef is None
-        dest, refs, bits = symacc.attrib['encodedin'], None, None
+        dest, refs, bits, text = symacc.attrib['encodedin'], None, None, ' '.join(symacc.itertext())
     else:
         assert isinstance(symdef, Element)
-        dest, (refs, bits) = symdef.attrib['encodedin'], parse_symdef(symdef)
+        dest, (refs, bits), text = symdef.attrib['encodedin'], parse_symdef(symdef), ' '.join(symdef.itertext())
+
+    if mt := re.search('[Dd]efaults to #?([^., ]+)', text):
+        defv = mt.group(1)
+    elif mt := re.search('[Dd]efaulting to ([^, ]+)', text):
+        defv = mt.group(1)
 
     for enc in map(str.strip, expl.attrib['enclist'].split(',')):
         tab = MISSING_ENCODING_IN.get(enc, {})
@@ -1392,9 +1409,9 @@ for expl in isadocs.findall('.//explanation'):
             dest = sym
 
         if refs is None or bits is None:
-            defs = Account(dest, desc)
+            defs = Account(dest, desc, defv)
         else:
-            defs = Definition(dest, desc, refs, bits)
+            defs = Definition(dest, desc, defv, refs, bits)
 
         tab = fieldtab.setdefault(enc, {})
         tab[name] = defs
@@ -1411,8 +1428,13 @@ for encdata in sorted(enctab.values(), key = lambda x: x.name):
 
     args = {}
     opts = {}
+    feat = set()
     bits = Instruction(encdata.bits)
     inst = AsmTemplate.parse(tokens)
+
+    for var in parent_tab[node].findall('arch_variants/arch_variant'):
+        for ft in var.attrib['feature'].split('&&'):
+            feat.add(ft.strip())
 
     parse_props(opts, node)
     bits.update(node.findall('box'))
@@ -1447,6 +1469,7 @@ for encdata in sorted(enctab.values(), key = lambda x: x.name):
     formtab.setdefault(inst.mnemonic, []).append(InstrForm(
         text   = text,
         inst   = inst,
+        feat   = sorted(feat),
         bits   = bits,
         opts   = opts,
         args   = args,
@@ -1777,13 +1800,27 @@ VECTOR_SIZE_CHECKS = {
     },
 }
 
-def match_modifier(name: str, mod: Mod, optional: bool, *extra_cond: str) -> Iterator[Or | str]:
+MODIFIER_TYPES = {
+    'MSL'  : 'ModMSL',
+    'LSL'  : 'ModLSL',
+    'LSR'  : 'ModLSR',
+    'ASR'  : 'ModASR',
+    'ROR'  : 'ModROR',
+    'UXTB' : 'ModUXTB',
+    'UXTH' : 'ModUXTH',
+    'UXTW' : 'ModUXTW',
+    'UXTX' : 'ModUXTX',
+    'SXTB' : 'ModSXTB',
+    'SXTH' : 'ModSXTH',
+    'SXTW' : 'ModSXTW',
+    'SXTX' : 'ModSXTX',
+}
+
+def match_modifier(form: InstrForm, name: str, mod: Mod, optional: bool, *extra_cond: str) -> Iterator[Or | str]:
     if not optional:
-        if isinstance(mod.mod, Sop):
-            yield 'isSameMod(%s, %s(0))' % (name, mod.mod.name)
-        elif isinstance(mod.mod, Xop):
-            yield 'isSameMod(%s, %s(0))' % (name, mod.mod.name)
-        elif mod.mod in AsmTemplate.shifts or mod.mod in AsmTemplate.extends:
+        if isinstance(mod.mod, Mop):
+            yield 'modt(%s) == %s' % (name, MODIFIER_TYPES[mod.mod.name])
+        elif mod.mod in AsmTemplate.modifiers:
             yield 'isMod(%s)' % name
         else:
             raise RuntimeError('invalid extension')
@@ -1804,23 +1841,49 @@ def match_modifier(name: str, mod: Mod, optional: bool, *extra_cond: str) -> Ite
                     yield Or('modn(%s) == 0' % name, 'modn(%s) == %d' % (name, imm.val))
 
     else:
-        if isinstance(mod.mod, Sop | Xop):
-            base = 'isSameMod(%s, %s(0))' % (name, mod.mod.name)
-        elif mod.mod in AsmTemplate.shifts:
-            base = 'isShift(%s)' % name
-        elif mod.mod in AsmTemplate.extends:
-            base = 'isExtend(%s)' % name
+        mods = set()
+        fixed = set()
+
+        if isinstance(mod.mod, Mop):
+            base = 'modt(%s) == %s' % (name, MODIFIER_TYPES[mod.mod.name])
+
+        elif mod.mod in AsmTemplate.modifiers:
+            field = form.fields[mod.mod]
+            assert isinstance(field, Definition), 'invalid modifier field matching'
+
+            for v in field.bits:
+                if v != 'RESERVED' and not v.startswith('SEE'):
+                    if v in MODIFIER_TYPES:
+                        mods.add(MODIFIER_TYPES[v])
+                        continue
+
+                    vals = v.split()
+                    kind, amount = vals
+
+                    mods.add(MODIFIER_TYPES[kind])
+                    fixed.add(int(amount[1:]))
+
+            if not mods:
+                raise RuntimeError('empty modifier flags')
+            else:
+                base = 'isMods(%s, %s)' % (name, ', '.join(sorted(mods)))
+
         else:
             raise RuntimeError('invalid extension')
 
         if mod.imm is None:
-            yield Or(*extra_cond, And(base, 'modn(%s) == 0' % name))
+            if not fixed:
+                yield Or(*extra_cond, And(base, 'modn(%s) == 0' % name))
+            else:
+                yield Or(*extra_cond, And(base, 'isIntLit(modn(%s), %s)' % (name, ', '.join(map(str, sorted(fixed))))))
 
         else:
             imm = mod.imm[0]
             opm = mod.imm[1]
 
-            if not isinstance(imm, Lit):
+            if fixed:
+                raise RuntimeError('fixed modifier with imm is not allowed')
+            elif not isinstance(imm, Lit):
                 yield Or(*extra_cond, base)
             elif imm.ty is not int:
                 raise RuntimeError('invalid literal type for amounts')
@@ -2043,10 +2106,10 @@ def match_operands(form: InstrForm, argc: int) -> Iterator['And | Or | str']:
                 if val.index is not None:
                     raise RuntimeError('extension conflits with indexing')
                 else:
-                    yield from match_modifier('mext(%s)' % name, val.extend[0], val.extend[1], 'mext(%s) == nil' % name)
+                    yield from match_modifier(form, 'mext(%s)' % name, val.extend[0], val.extend[1], 'mext(%s) == nil' % name)
 
         elif isinstance(val, Mod):
-            yield from match_modifier(name, val, bool(optcond), *optcond)
+            yield from match_modifier(form, name, val, bool(optcond), *optcond)
 
         elif isinstance(val, Imm):
             fv = form.fields[val.name]
@@ -2199,18 +2262,6 @@ XBFM_ENCODER = {
         'sa_lsb_3'   : ('immr', 'asUimm6(%s)'),
         'sa_width_1' : ('imms', 'sa_lsb_3 + asUimm6(%s) - 1'),
     },
-}
-
-REG_DEFAULTS = {
-    'IRG_64I_dp_2src': {
-        'xm': 'uint32(XZR.ID())',
-    }
-}
-
-IMM_DEFAULTS = {
-    'CLREX_BN_barriers': {
-        'imm': 'uint32(0b1111)',
-    }
 }
 
 SPECIAL_REGS = {
@@ -2372,11 +2423,11 @@ NOCHECK_FIELDS = {
 
 class SwitchLit(dict):
     def __getitem__(self, key: str) -> str:
-        return str(int(key))
+        return str(key[key.startswith('#'):])
 
     def __contains__(self, key: str) -> bool:
         try:
-            int(key)
+            int(key[key.startswith('#'):])
         except ValueError:
             return False
         else:
@@ -2389,11 +2440,12 @@ def encode_defs(
     form     : InstrForm,
     sw_cond  : str,
     var_name : str,
-    name_tab : dict[str, str],
+    name_tab : dict[str, str] | SwitchLit,
     vals     : dict[str, str | tuple[str, str, dict[str, str]]],
-    opts     : dict[str, str | list],
+    opts     : dict[str, str | list[str] | tuple[str, list[str]]],
     err_msg  : str,
 ):
+    initv = None
     basic = True
     multi = False
     field = form.fields[var_name]
@@ -2409,6 +2461,19 @@ def encode_defs(
             if k not in name_tab:
                 basic = False
                 break
+
+    if field.defv:
+        if field.defv not in name_tab:
+            raise RuntimeError('undefined default value')
+
+        if field.defv in field.bits:
+            defv = field.bits[field.defv]
+            defv = ['uint32(0b%s)' % v.replace('x', '0') for v in sorted(defv)]
+
+            if len(defv) != 1:
+                raise RuntimeError('multiple default value')
+            else:
+                initv = defv[0]
 
     if not basic:
         refs = ''
@@ -2434,6 +2499,9 @@ def encode_defs(
                     refs = 'mask(%s, %d)' % (refs, nshr, nbit)
                 else:
                     refs = 'ubfx(%s, %d, %d)' % (refs, nshr, nbit)
+
+        if initv is not None:
+            refs = (refs, initv, {})
 
         cond = []
         opts[var_name] = cond
@@ -2465,8 +2533,12 @@ def encode_defs(
                     bitp = len(vv)
                     break
 
+        if bitp != 1:
+            assert initv is None, 'default value conflicts with bitmap'
+            initv = 'bm:%d' % bitp
+
         opts[var_name] = cond
-        vals[var_name] = (sw_cond, 'bm:%d' % bitp, {}) if bitp != 1 else sw_cond
+        vals[var_name] = sw_cond if initv is None else (sw_cond, initv, {})
 
         for k, vv in field.bits.items():
             if vv and k != 'RESERVED' and not k.startswith('SEE'):
@@ -2507,24 +2579,69 @@ def encode_defs(
             cond.append('default: panic("aarch64: %s")' % err_msg)
 
 def encode_modifier(
+    form        : InstrForm,
     name        : str,
     mod         : Mod,
     vals        : dict[str, str | tuple[str, str, dict[str, str]]],
-    opts        : dict[str, str | list],
+    opts        : dict[str, str | list[str] | tuple[str, list[str]]],
     optional    : bool,
     *extra_cond : str,
 ):
-    if optional and not isinstance(mod.mod, (Sop, Xop)):
-        opts[mod.mod] = str(And(*extra_cond))
+    if mod.mod in AsmTemplate.modifiers:
+        field = form.fields[mod.mod]
+        sw_cond = '%s.(Modifier).Type()' % name
+        assert isinstance(field, Definition), 'invalid modifier field encoding'
 
-    if mod.mod in AsmTemplate.shifts:
-        vals[mod.mod] = 'uint32(%s.(ShiftType).ShiftType())' % name
-    elif mod.mod in AsmTemplate.extends:
-        vals[mod.mod] = 'uint32(%s.(Extension).Extension())' % name
+        if all(k in MODIFIER_TYPES for k in field.bits if k != 'RESERVED' and not k.startswith('SEE')):
+            encode_defs(form, sw_cond, mod.mod, MODIFIER_TYPES, vals, opts, "invalid modifier flags")
+
+        else:
+            cond = []
+            opts[mod.mod] = cond
+            vals[mod.mod] = ('', 'ty:uint32', {})
+
+            for refs, defs in field.bits.items():
+                if refs != 'RESERVED' and not refs.startswith('SEE'):
+                    item = refs.split()
+                    kind, amount = item
+
+                    if len(defs) != 1:
+                        raise RuntimeError('invalid modifier bits')
+
+                    cond.append('case modt(%s) == %s && modn(%s) == %d: %s = 0b%s' % (
+                        name,
+                        MODIFIER_TYPES[kind],
+                        name,
+                        int(amount[1:]),
+                        mod.mod,
+                        next(iter(defs)),
+                    ))
+
+            if not cond:
+                raise RuntimeError('invalid modifier flags')
+            else:
+                cond.append('default: panic("aarch64: invalid modifier flags")')
+
+        if optional:
+            conds = opts.pop(mod.mod)
+            assert isinstance(conds, list), 'invalid opts'
+            opts[mod.mod] = (str(And(*extra_cond)), conds)
 
     if mod.imm is not None and isinstance(mod.imm[0], Imm):
         args = mod.imm[0].name
-        vals[args] = 'uint32(%s.(Modifier).Amount())' % name
+        field = form.fields[args]
+        value = 'uint32(%s.(Modifier).Amount())' % name
+
+        if isinstance(field, Definition):
+            encode_defs(form, value, args, SwitchLit(), vals, opts, 'invalid modifier amount')
+
+        else:
+            if not field.defv:
+                vals[args] = value
+            elif field.defv.isdigit():
+                vals[args] = (value, 'uint32(%s)' % field.defv, {})
+            else:
+                raise RuntimeError('invalid modifier amount')
 
         if optional:
             opts[args] = str(And(*extra_cond))
@@ -2534,7 +2651,7 @@ def encode_operand(
     name     : str,
     val      : Reg | Vec | Mem | Mod | Imm | Lit | Sym,
     vals     : dict[str, str | tuple[str, str, dict[str, str]]],
-    opts     : dict[str, str | list[str]],
+    opts     : dict[str, str | list[str] | tuple[str, list[str]]],
     *optcond : str,
 ):
     if isinstance(val, Reg):
@@ -2546,14 +2663,18 @@ def encode_operand(
                 raise RuntimeError('optional complex reg operand is not supported')
 
             else:
+                defr = form.fields[val.name].defv
                 expr = 'uint32(%s.(asm.Register).ID())' % name
-                defr = REG_DEFAULTS.get(form.enctab.name, {}).get(val.name)
                 opts[val.name] = str(And(*optcond))
 
-                if defr is None:
+                if not defr:
                     vals[val.name] = expr
+                elif defr.isidentifier():
+                    vals[val.name] = (expr, 'uint32(%s.ID())' % defr, {})
+                elif defr[0] == defr[-1] == "'":
+                    vals[val.name] = (expr, 'uint32(0b%s)' % defr[1:-1], {})
                 else:
-                    vals[val.name] = (expr, defr, {})
+                    raise RuntimeError('invalid register default value: ' + defr)
 
         elif val.mode is not None and val.vidx is not None:
             if not val.name.startswith('sa_v'):
@@ -2652,10 +2773,12 @@ def encode_operand(
             if val.index is not None:
                 raise RuntimeError('extension conflits with indexing')
             else:
-                encode_modifier('mext(%s)' % name, ext, vals, opts, opx, 'isMod(mext(%s))' % name)
+                # TODO: default value for extend options ?
+                encode_modifier(form, 'mext(%s)' % name, ext, vals, opts, opx, 'isMod(mext(%s))' % name)
 
     elif isinstance(val, Mod):
-        encode_modifier(name, val, vals, opts, bool(optcond), *optcond)
+        # TODO: default value for extend options ?
+        encode_modifier(form, name, val, vals, opts, bool(optcond), *optcond)
 
     elif isinstance(val, Imm):
         ref = form.fields[val.name]
@@ -2666,20 +2789,19 @@ def encode_operand(
             ime = IMM_ENCODER.get(ref.name)
 
         if ime is not None:
-            enc = ime % name
-            tab = form.enctab.name
-
             if not optcond:
-                vals[val.name] = enc
+                vals[val.name] = ime % name
 
             else:
-                defv = IMM_DEFAULTS.get(tab, {}).get(val.name)
+                defv = ref.defv
                 opts[val.name] = str(And(*optcond))
 
-                if defv is None:
-                    vals[val.name] = enc
+                if not defv:
+                    vals[val.name] = ime % name
+                elif defv.isdigit():
+                    vals[val.name] = (ime % name, 'uint32(%s)' % defv, {})
                 else:
-                    vals[val.name] = (enc, defv, {})
+                    raise RuntimeError('invalid immediate default value: ' + defv)
 
         elif isinstance(ref, Definition):
             err = "invalid operand '%s' for %s" % (val.name, form.inst.mnemonic)
@@ -2806,6 +2928,17 @@ def encode_operand(
     else:
         raise RuntimeError('invalid operand type')
 
+INSTR_CLASSES = {
+    'advsimd'   : 'ClassAdvSimd',
+    'float'     : 'ClassFloat',
+    'fpsimd'    : 'ClassFpSimd',
+    'general'   : 'ClassGeneral',
+    'mortlach'  : 'ClassSME',
+    'mortlach2' : 'ClassSME2',
+    'sve'       : 'ClassSVE',
+    'sve2'      : 'ClassSVE2',
+    'system'    : 'ClassSystem',
+}
 
 BRANCH_CONDITIONS = [
     ('EQ', 0b0000),
@@ -2836,6 +2969,7 @@ def rebuild_bcc(cond: str, bits: int, forms: list[InstrForm]) -> list[InstrForm]
                 operands = f.inst.operands,
                 modifier = None,
             ),
+            feat   = f.feat[:],
             bits   = f.bits,
             opts   = f.opts,
             args   = { **f.args, 'cond': bits },
@@ -2854,6 +2988,7 @@ def rebuild_upper_half(pat: str, sfx: str, forms: list[InstrForm], **args: int) 
                 operands = f.inst.operands,
                 modifier = None,
             ),
+            feat   = f.feat[:],
             bits   = f.bits,
             opts   = f.opts,
             args   = { **f.args, **args },
@@ -3069,8 +3204,12 @@ for mnemonic, forms in preprocess_instr_forms(formtab):
             else:
                 cc.indent()
 
+        for ft in form.feat:
+            cc.line('self.require(%s)' % ft)
+
         fmap = {}
         args = []
+        cc.line('p.class = %s' % INSTR_CLASSES[form.opts.get('instr-class', 'general')])
 
         if form.inst.modifier is not None:
             raise RuntimeError('instruction modifiers should have been expanded')
@@ -3113,34 +3252,48 @@ for mnemonic, forms in preprocess_instr_forms(formtab):
 
                 cc.line('%s := %s' % (k, v))
                 lastcond = None
+                continue
 
-            elif opts[k] == lastcond:
-                cc.line('%s = %s' % (k, v))
+            term = opts[k]
+            swconds = None
+            optcond = None
 
+            if isinstance(term, str):
+                optcond = term
+            elif isinstance(term, list):
+                swconds = term
+            elif isinstance(term, tuple):
+                optcond, swconds = term
             else:
+                raise RuntimeError('invalid optional cond')
+
+            if optcond != lastcond:
                 if lastcond is not None:
                     cc.dedent()
                     cc.line('}')
                     lastcond = None
 
-                if isinstance(opts[k], str):
-                    lastcond = opts[k]
-                    cc.line('if %s {' % opts[k])
+                if optcond is not None:
+                    cc.line('if %s {' % optcond)
                     cc.indent()
-                    cc.line('%s = %s' % (k, v))
+                    lastcond = optcond
 
-                elif isinstance(opts[k], list):
-                    cc.line('switch %s {' % v)
-                    cc.indent()
+            if swconds is None:
+                cc.line('%s = %s' % (k, v))
+                continue
 
-                    for line in opts[k]:
-                        cc.line(line)
+            if not v:
+                cc.line('switch {')
+                cc.indent()
+            else:
+                cc.line('switch %s {' % v)
+                cc.indent()
 
-                    cc.dedent()
-                    cc.line('}')
+            for line in swconds:
+                cc.line(line)
 
-                else:
-                    raise RuntimeError('invalid optional cond')
+            cc.dedent()
+            cc.line('}')
 
         if lastcond is not None:
             cc.dedent()
@@ -3251,7 +3404,7 @@ for mnemonic, forms in preprocess_instr_forms(formtab):
                                     raise RuntimeError('ambiguous compositie field ' + repr(bn))
                                 elif len(bits) != be - bs + 1:
                                     raise RuntimeError('bit count mismatch for composite field ' + repr(bn))
-                                elif not isinstance(vals[fn], tuple):
+                                elif not isinstance(vals[fn], tuple) or not vals[fn][2]:
                                     cc.line('case %s: %s |= 0b%s << %d' % (sel, arg, bits, bs))
                                 else:
                                     cc.line('case %s: %s |= 0b%s << %d' % (vals[fn][2][sel], arg, bits, bs))

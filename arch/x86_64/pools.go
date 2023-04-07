@@ -2,6 +2,8 @@ package x86_64
 
 import (
     `sync`
+
+    `github.com/chenzhuoyu/iasm/asm`
 )
 
 var (
@@ -10,7 +12,7 @@ var (
     memoryOperandExtensionPool sync.Pool
 )
 
-func newProgram(arch *Arch) *Program {
+func newProgram(arch *asm.Arch) *Program {
     var p *Program
     var v interface{}
 

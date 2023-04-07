@@ -21,3 +21,11 @@ func modn(v interface{}) uint8 {
         return m.Amount()
     }
 }
+
+func modt(v interface{}) ModType {
+    if m, ok := v.(Modifier); !ok {
+        return ModInvalid
+    } else {
+        return m.Type()
+    }
+}

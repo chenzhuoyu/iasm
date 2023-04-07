@@ -254,11 +254,9 @@ func isFpBits       (v interface{}) bool { x, f := asUint64(v) ; return f && x >
 
 func isMod          (v interface{}) bool { _, f := v.(Modifier)        ; return f }
 func isIndex        (v interface{}) bool { _, f := v.(IndexMode)       ; return f }
-func isShift        (v interface{}) bool { _, f := v.(ShiftType)       ; return f }
 func isPState       (v interface{}) bool { _, f := v.(PStateField)     ; return f }
 func isBrCond       (v interface{}) bool { _, f := v.(ConditionCode)   ; return f }
 func isSysReg       (v interface{}) bool { _, f := v.(SystemRegister)  ; return f }
-func isExtend       (v interface{}) bool { _, f := v.(Extension)       ; return f }
 func isOption       (v interface{}) bool { _, f := v.(BarrierOption)   ; return f }
 func isOptionNXS    (v interface{}) bool { x, f := v.(BarrierOption)   ; return f && x.isNXS() }
 func isTargets      (v interface{}) bool { _, f := v.(BranchTarget)    ; return f }
@@ -279,6 +277,12 @@ func isMem(v interface{}) bool {
         _, ok = x.Addr.(asm.MemoryAddress)
         return ok
     }
+}
+
+func isMods(v interface{}, mod ...ModType) bool {
+    t := modt(v)
+    for _, f := range mod { if t == f { return true } }
+    return false
 }
 
 func isVfmt(v interface{}, fmt ...VecFormat) bool {
@@ -321,18 +325,10 @@ func isFloatLit(v interface{}, imm float64) bool {
     }
 }
 
-func isSameMod(v interface{}, mod Modifier) bool {
-    if _, ok := mod.(LSL); ok && v == LSL12 {
-        return true
-    } else {
-        return rt.TypeOf(v) == rt.TypeOf(mod)
-    }
-}
-
 func isWrOrXr(v interface{}) bool {
-    switch v.(type) {
-        case WRegister : return true
-        case XRegister : return true
+    switch x := v.(type) {
+        case XRegister : return x != SP
+        case WRegister : return x != WSP
         default        : return false
     }
 }

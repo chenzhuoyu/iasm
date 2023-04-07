@@ -1,131 +1,13 @@
 package x86_64
 
 import (
-    `fmt`
     `math`
-    `math/bits`
     `sync/atomic`
 
     `github.com/chenzhuoyu/iasm/asm`
     `github.com/chenzhuoyu/iasm/expr`
     `github.com/chenzhuoyu/iasm/internal/tag`
 )
-
-type (
-    _PseudoType         int
-    _InstructionEncoder func(*Program, ...interface{}) *Instruction
-)
-
-const (
-    _PseudoNop _PseudoType = iota + 1
-    _PseudoByte
-    _PseudoWord
-    _PseudoLong
-    _PseudoQuad
-    _PseudoData
-    _PseudoAlign
-)
-
-func (self _PseudoType) String() string {
-    switch self {
-        case _PseudoNop   : return ".nop"
-        case _PseudoByte  : return ".byte"
-        case _PseudoWord  : return ".word"
-        case _PseudoLong  : return ".long"
-        case _PseudoQuad  : return ".quad"
-        case _PseudoData  : return ".data"
-        case _PseudoAlign : return ".align"
-        default           : panic("unreachable")
-    }
-}
-
-type _Pseudo struct {
-    kind _PseudoType
-    data []byte
-    uint uint64
-    expr *expr.Expr
-}
-
-func (self *_Pseudo) free() {
-    if self.expr != nil {
-        self.expr.Free()
-    }
-}
-
-func (self *_Pseudo) encode(m *[]byte, pc uintptr) int {
-    switch self.kind {
-        case _PseudoNop   : return 0
-        case _PseudoByte  : self.encodeByte(m)      ; return 1
-        case _PseudoWord  : self.encodeWord(m)      ; return 2
-        case _PseudoLong  : self.encodeLong(m)      ; return 4
-        case _PseudoQuad  : self.encodeQuad(m)      ; return 8
-        case _PseudoData  : self.encodeData(m)      ; return len(self.data)
-        case _PseudoAlign : self.encodeAlign(m, pc) ; return self.alignSize(pc)
-        default           : panic("invalid pseudo instruction")
-    }
-}
-
-func (self *_Pseudo) evalExpr(low int64, high int64) int64 {
-    if v, err := self.expr.Evaluate(); err != nil {
-        panic(err)
-    } else if v < low || v > high {
-        panic(fmt.Sprintf("expression out of range [%d, %d]: %d", low, high, v))
-    } else {
-        return v
-    }
-}
-
-func (self *_Pseudo) alignSize(pc uintptr) int {
-    if !ispow2(self.uint) {
-        panic(fmt.Sprintf("aligment should be a power of 2, not %d", self.uint))
-    } else {
-        return align(int(pc), bits.TrailingZeros64(self.uint)) - int(pc)
-    }
-}
-
-func (self *_Pseudo) encodeData(m *[]byte) {
-    if m != nil {
-        *m = append(*m, self.data...)
-    }
-}
-
-func (self *_Pseudo) encodeByte(m *[]byte) {
-    if m != nil {
-        append8(m, byte(self.evalExpr(math.MinInt8, math.MaxUint8)))
-    }
-}
-
-func (self *_Pseudo) encodeWord(m *[]byte) {
-    if m != nil {
-        append16(m, uint16(self.evalExpr(math.MinInt16, math.MaxUint16)))
-    }
-}
-
-func (self *_Pseudo) encodeLong(m *[]byte) {
-    if m != nil {
-        append32(m, uint32(self.evalExpr(math.MinInt32, math.MaxUint32)))
-    }
-}
-
-func (self *_Pseudo) encodeQuad(m *[]byte) {
-    if m != nil {
-        if v, err := self.expr.Evaluate(); err != nil {
-            panic(err)
-        } else {
-            append64(m, uint64(v))
-        }
-    }
-}
-
-func (self *_Pseudo) encodeAlign(m *[]byte, pc uintptr) {
-    if m != nil {
-        if self.expr == nil {
-            expandmm(m, self.alignSize(pc), 0)
-        } else {
-            expandmm(m, self.alignSize(pc), byte(self.evalExpr(math.MinInt8, math.MaxUint8)))
-        }
-    }
-}
 
 // Operands represents a sequence of operand required by an instruction.
 type Operands [_N_args]interface{}
@@ -166,7 +48,7 @@ type Instruction struct {
     argv   Operands
     forms  [_N_forms]_Encoding
     nforms int
-    pseudo _Pseudo
+    pseudo asm.Pseudo
     branch _BranchType
     domain InstructionDomain
     prefix []byte
@@ -206,8 +88,8 @@ func (self *Instruction) encode(m *[]byte) int {
     }
 
     /* check for pseudo-instructions */
-    if self.pseudo.kind != 0 {
-        self.nb += self.pseudo.encode(m, self.pc)
+    if self.pseudo.Kind != 0 {
+        self.nb += self.pseudo.Encode(m, self.pc)
         return self.nb
     }
 
@@ -238,13 +120,9 @@ func (self *Instruction) PC() uintptr {
 func (self *Instruction) Free() {
     if atomic.AddInt64(&self.refs, -1) == 0 {
         self.clear()
-        self.pseudo.free()
+        self.pseudo.Free()
         freeInstruction(self)
     }
-}
-
-func (self *Instruction) Name() string {
-    return self.name
 }
 
 func (self *Instruction) Retain() asm.Instruction {
@@ -254,6 +132,10 @@ func (self *Instruction) Retain() asm.Instruction {
 
 func (self *Instruction) Domain() InstructionDomain {
     return self.domain
+}
+
+func (self *Instruction) Mnemonic() string {
+    return self.name
 }
 
 func (self *Instruction) Operands() []interface{} {
@@ -318,9 +200,9 @@ func (self *Instruction) LOCK() *Instruction {
     return self
 }
 
-// Program represents a sequence of instructions.
+// Program represents a sequence of x86_64 instructions.
 type Program struct {
-    arch *Arch
+    arch *asm.Arch
     head *Instruction
     tail *Instruction
 }
@@ -354,15 +236,15 @@ func (self *Program) alloc(name string, argc int, argv Operands) *Instruction {
     return q
 }
 
-func (self *Program) pseudo(kind _PseudoType) (p *Instruction) {
+func (self *Program) pseudo(kind asm.PseudoType) (p *Instruction) {
     p = self.alloc(kind.String(), 0, Operands{})
     p.domain = DomainPseudo
-    p.pseudo.kind = kind
+    p.pseudo.Kind = kind
     return
 }
 
 func (self *Program) require(isa ISA) {
-    if !self.arch.HasISA(isa) {
+    if !self.arch.HasFeature(isa) {
         panic("ISA '" + isa.String() + "' was not enabled")
     }
 }
@@ -376,74 +258,56 @@ func (self *Program) branchSize(p *Instruction) int {
     }
 }
 
-/** Pseudo-Instructions **/
-
-// Byte is a pseudo-instruction to add raw byte to the assembled code.
-func (self *Program) Byte(v *expr.Expr) (p *Instruction) {
-    p = self.pseudo(_PseudoByte)
-    p.pseudo.expr = v
-    return
-}
-
-// Word is a pseudo-instruction to add raw uint16 as little-endian to the assembled code.
-func (self *Program) Word(v *expr.Expr) (p *Instruction) {
-    p = self.pseudo(_PseudoWord)
-    p.pseudo.expr = v
-    return
-}
-
-// Long is a pseudo-instruction to add raw uint32 as little-endian to the assembled code.
-func (self *Program) Long(v *expr.Expr) (p *Instruction) {
-    p = self.pseudo(_PseudoLong)
-    p.pseudo.expr = v
-    return
-}
-
-// Quad is a pseudo-instruction to add raw uint64 as little-endian to the assembled code.
-func (self *Program) Quad(v *expr.Expr) (p *Instruction) {
-    p = self.pseudo(_PseudoQuad)
-    p.pseudo.expr = v
-    return
-}
-
-// Data is a pseudo-instruction to add raw bytes to the assembled code.
-func (self *Program) Data(v []byte) (p *Instruction) {
-    p = self.pseudo(_PseudoData)
-    p.pseudo.data = v
-    return
-}
-
-// Align is a pseudo-instruction to ensure the PC is aligned to a certain value.
-func (self *Program) Align(align uint64, padding *expr.Expr) (p *Instruction) {
-    p = self.pseudo(_PseudoAlign)
-    p.pseudo.uint = align
-    p.pseudo.expr = padding
-    return
-}
-
-/** Program Assembler **/
-
-// Free returns the Program object into pool.
-// Any operation performed after Free is undefined behavior.
-//
-// NOTE: This also frees all the instructions, labels, memory
-//       operands and expressions associated with this program.
-//
 func (self *Program) Free() {
     self.clear()
     freeProgram(self)
 }
 
-// Link pins a label at the current position.
 func (self *Program) Link(p *asm.Label) {
     if p.Dest != nil {
         panic("lable was alreay linked")
     } else {
-        p.Dest = self.pseudo(_PseudoNop).Retain()
+        p.Dest = self.pseudo(asm.Nop).Retain()
     }
 }
 
-// Assemble assembles and links the entire program into machine code.
+func (self *Program) Data(v []byte) asm.Instruction {
+    p := self.pseudo(asm.Data)
+    p.pseudo.Data = v
+    return p
+}
+
+func (self *Program) Byte(v *expr.Expr) asm.Instruction {
+    p := self.pseudo(asm.Byte)
+    p.pseudo.Expr = v
+    return p
+}
+
+func (self *Program) Word(v *expr.Expr) asm.Instruction {
+    p := self.pseudo(asm.Word)
+    p.pseudo.Expr = v
+    return p
+}
+
+func (self *Program) Long(v *expr.Expr) asm.Instruction {
+    p := self.pseudo(asm.Long)
+    p.pseudo.Expr = v
+    return p
+}
+
+func (self *Program) Quad(v *expr.Expr) asm.Instruction {
+    p := self.pseudo(asm.Quad)
+    p.pseudo.Expr = v
+    return p
+}
+
+func (self *Program) Align(align uint64, padding *expr.Expr) asm.Instruction {
+    p := self.pseudo(asm.Align)
+    p.pseudo.Uint = align
+    p.pseudo.Expr = padding
+    return p
+}
+
 func (self *Program) Assemble(pc uintptr) (ret []byte) {
     orig := pc
     next := true
@@ -473,7 +337,7 @@ func (self *Program) Assemble(pc uintptr) (ret []byte) {
             var lb *asm.Label
 
             /* re-calculate the alignment here */
-            if nb = p.nb; p.pseudo.kind == _PseudoAlign {
+            if nb = p.nb; p.pseudo.Kind == asm.Align {
                 p.pc -= offs
                 offs += uintptr(nb - p.encode(nil))
                 continue

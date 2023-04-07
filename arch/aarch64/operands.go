@@ -115,10 +115,49 @@ func (self IndexMode) EnsureValid(addr asm.MemoryAddress) {
     }
 }
 
+// ModType represents one of the modifier types.
+type ModType uint8
+
+const (
+    ModInvalid ModType = iota
+    ModMSL
+    ModLSL
+    ModLSR
+    ModASR
+    ModROR
+    ModUXTB
+    ModUXTH
+    ModUXTW
+    ModUXTX
+    ModSXTB
+    ModSXTH
+    ModSXTW
+    ModSXTX
+)
+
+func (self ModType) String() string {
+    switch self {
+        case ModMSL  : return "MSL"
+        case ModLSL  : return "LSL"
+        case ModLSR  : return "LSR"
+        case ModASR  : return "ASR"
+        case ModROR  : return "ROR"
+        case ModUXTB : return "UXTB"
+        case ModUXTH : return "UXTH"
+        case ModUXTW : return "UXTW"
+        case ModUXTX : return "UXTX"
+        case ModSXTB : return "SXTB"
+        case ModSXTH : return "SXTH"
+        case ModSXTW : return "SXTW"
+        case ModSXTX : return "SXTX"
+        default      : return "???"
+    }
+}
+
 // Modifier represents one of the memory address modifiers, such as shifts and extends.
 type Modifier interface {
     asm.MemoryAddressExtension
-    Name() string
+    Type() ModType
     Amount() uint8
 }
 
@@ -140,7 +179,7 @@ func _Modifier_String(mod Modifier, addr asm.MemoryAddress) string {
     }
 
     /* construct the memory address */
-    sb.WriteString(mod.Name())
+    sb.WriteString(mod.Type().String())
     sb.WriteString(fmt.Sprintf(" %d]", mod.Amount()))
     return sb.String()
 }
@@ -149,12 +188,6 @@ func _Modifier_EnsureValid(addr asm.MemoryAddress) {
     if addr.Index != nil && addr.Offset != 0 {
         panic("aarch64: cannot index base by register and immediate at the same time")
     }
-}
-
-// ShiftType represents one of the register shifts.
-type ShiftType interface {
-    Modifier
-    ShiftType() uint8
 }
 
 type (
@@ -171,41 +204,17 @@ func (LSR) Free() {}
 func (ASR) Free() {}
 func (ROR) Free() {}
 
+func (MSL) Type() ModType { return ModMSL }
+func (LSL) Type() ModType { return ModLSL }
+func (LSR) Type() ModType { return ModLSR }
+func (ASR) Type() ModType { return ModASR }
+func (ROR) Type() ModType { return ModROR }
+
 func (MSL) Sealed(_ tag.Tag) {}
 func (LSL) Sealed(_ tag.Tag) {}
 func (LSR) Sealed(_ tag.Tag) {}
 func (ASR) Sealed(_ tag.Tag) {}
 func (ROR) Sealed(_ tag.Tag) {}
-
-func (MSL) MemoryAddressExtension() {}
-func (LSL) MemoryAddressExtension() {}
-func (LSR) MemoryAddressExtension() {}
-func (ASR) MemoryAddressExtension() {}
-func (ROR) MemoryAddressExtension() {}
-
-func (MSL) Name() string { return "MSL" }
-func (LSL) Name() string { return "LSL" }
-func (LSR) Name() string { return "LSR" }
-func (ASR) Name() string { return "ASR" }
-func (ROR) Name() string { return "ROR" }
-
-func (self MSL) Amount() uint8 { return uint8(self) }
-func (self LSL) Amount() uint8 { return uint8(self) }
-func (self LSR) Amount() uint8 { return uint8(self) }
-func (self ASR) Amount() uint8 { return uint8(self) }
-func (self ROR) Amount() uint8 { return uint8(self) }
-
-func (MSL) ShiftType() uint8 { return 0b00 }
-func (LSL) ShiftType() uint8 { return 0b00 }
-func (LSR) ShiftType() uint8 { return 0b01 }
-func (ASR) ShiftType() uint8 { return 0b10 }
-func (ROR) ShiftType() uint8 { return 0b11 }
-
-func (self MSL) String(addr asm.MemoryAddress) string { return _Modifier_String(self, addr) }
-func (self LSL) String(addr asm.MemoryAddress) string { return _Modifier_String(self, addr) }
-func (self LSR) String(addr asm.MemoryAddress) string { return _Modifier_String(self, addr) }
-func (self ASR) String(addr asm.MemoryAddress) string { return _Modifier_String(self, addr) }
-func (self ROR) String(addr asm.MemoryAddress) string { return _Modifier_String(self, addr) }
 
 func (MSL) EnsureValid(addr asm.MemoryAddress) { _Modifier_EnsureValid(addr) }
 func (LSL) EnsureValid(addr asm.MemoryAddress) { _Modifier_EnsureValid(addr) }
@@ -213,27 +222,23 @@ func (LSR) EnsureValid(addr asm.MemoryAddress) { _Modifier_EnsureValid(addr) }
 func (ASR) EnsureValid(addr asm.MemoryAddress) { _Modifier_EnsureValid(addr) }
 func (ROR) EnsureValid(addr asm.MemoryAddress) { _Modifier_EnsureValid(addr) }
 
-type (
-    _LSL12 struct{}
-)
+func (MSL) MemoryAddressExtension() {}
+func (LSL) MemoryAddressExtension() {}
+func (LSR) MemoryAddressExtension() {}
+func (ASR) MemoryAddressExtension() {}
+func (ROR) MemoryAddressExtension() {}
 
-// LSL12 shifts the immediate value by 12, this value can only be used with {ADD,SUB}[S] instructions.
-var LSL12 _LSL12
+func (self MSL) Amount() uint8 { return uint8(self) }
+func (self LSL) Amount() uint8 { return uint8(self) }
+func (self LSR) Amount() uint8 { return uint8(self) }
+func (self ASR) Amount() uint8 { return uint8(self) }
+func (self ROR) Amount() uint8 { return uint8(self) }
 
-func (_LSL12) Free() {}
-func (_LSL12) Sealed(_ tag.Tag) {}
-func (_LSL12) MemoryAddressExtension()              {}
-func (_LSL12) Name() string                         { return "LSL #12" }
-func (_LSL12) Amount() uint8                        { return 0 }
-func (_LSL12) String(addr asm.MemoryAddress) string { return _Modifier_String(LSL12, addr) }
-func (_LSL12) ShiftType() uint8                     { return 0b1 }
-func (_LSL12) EnsureValid(addr asm.MemoryAddress)   { _Modifier_EnsureValid(addr) }
-
-// Extension represents one of the register extensions.
-type Extension interface {
-    Modifier
-    Extension() uint8
-}
+func (self MSL) String(addr asm.MemoryAddress) string { return _Modifier_String(self, addr) }
+func (self LSL) String(addr asm.MemoryAddress) string { return _Modifier_String(self, addr) }
+func (self LSR) String(addr asm.MemoryAddress) string { return _Modifier_String(self, addr) }
+func (self ASR) String(addr asm.MemoryAddress) string { return _Modifier_String(self, addr) }
+func (self ROR) String(addr asm.MemoryAddress) string { return _Modifier_String(self, addr) }
 
 type (
     UXTB uint8  // Unsigned extension from byte to 64-bit
@@ -255,6 +260,15 @@ func (SXTH) Free() {}
 func (SXTW) Free() {}
 func (SXTX) Free() {}
 
+func (UXTB) Type() ModType { return ModUXTB }
+func (UXTH) Type() ModType { return ModUXTH }
+func (UXTW) Type() ModType { return ModUXTW }
+func (UXTX) Type() ModType { return ModUXTX }
+func (SXTB) Type() ModType { return ModSXTB }
+func (SXTH) Type() ModType { return ModSXTH }
+func (SXTW) Type() ModType { return ModSXTW }
+func (SXTX) Type() ModType { return ModSXTX }
+
 func (UXTB) Sealed(_ tag.Tag) {}
 func (UXTH) Sealed(_ tag.Tag) {}
 func (UXTW) Sealed(_ tag.Tag) {}
@@ -263,6 +277,15 @@ func (SXTB) Sealed(_ tag.Tag) {}
 func (SXTH) Sealed(_ tag.Tag) {}
 func (SXTW) Sealed(_ tag.Tag) {}
 func (SXTX) Sealed(_ tag.Tag) {}
+
+func (UXTB) EnsureValid(addr asm.MemoryAddress) { _Modifier_EnsureValid(addr) }
+func (UXTH) EnsureValid(addr asm.MemoryAddress) { _Modifier_EnsureValid(addr) }
+func (UXTW) EnsureValid(addr asm.MemoryAddress) { _Modifier_EnsureValid(addr) }
+func (UXTX) EnsureValid(addr asm.MemoryAddress) { _Modifier_EnsureValid(addr) }
+func (SXTB) EnsureValid(addr asm.MemoryAddress) { _Modifier_EnsureValid(addr) }
+func (SXTH) EnsureValid(addr asm.MemoryAddress) { _Modifier_EnsureValid(addr) }
+func (SXTW) EnsureValid(addr asm.MemoryAddress) { _Modifier_EnsureValid(addr) }
+func (SXTX) EnsureValid(addr asm.MemoryAddress) { _Modifier_EnsureValid(addr) }
 
 func (UXTB) MemoryAddressExtension() {}
 func (UXTH) MemoryAddressExtension() {}
@@ -273,15 +296,6 @@ func (SXTH) MemoryAddressExtension() {}
 func (SXTW) MemoryAddressExtension() {}
 func (SXTX) MemoryAddressExtension() {}
 
-func (UXTB) Name() string { return "UXTB" }
-func (UXTH) Name() string { return "UXTH" }
-func (UXTW) Name() string { return "UXTW" }
-func (UXTX) Name() string { return "UXTX" }
-func (SXTB) Name() string { return "SXTB" }
-func (SXTH) Name() string { return "SXTH" }
-func (SXTW) Name() string { return "SXTW" }
-func (SXTX) Name() string { return "SXTX" }
-
 func (self UXTB) Amount() uint8 { return uint8(self) }
 func (self UXTH) Amount() uint8 { return uint8(self) }
 func (self UXTW) Amount() uint8 { return uint8(self) }
@@ -291,16 +305,6 @@ func (self SXTH) Amount() uint8 { return uint8(self) }
 func (self SXTW) Amount() uint8 { return uint8(self) }
 func (self SXTX) Amount() uint8 { return uint8(self) }
 
-func (LSL)  Extension() uint8 { return 0xff }
-func (UXTB) Extension() uint8 { return 0b000 }
-func (UXTH) Extension() uint8 { return 0b001 }
-func (UXTW) Extension() uint8 { return 0b010 }
-func (UXTX) Extension() uint8 { return 0b011 }
-func (SXTB) Extension() uint8 { return 0b100 }
-func (SXTH) Extension() uint8 { return 0b101 }
-func (SXTW) Extension() uint8 { return 0b110 }
-func (SXTX) Extension() uint8 { return 0b111 }
-
 func (self UXTB) String(addr asm.MemoryAddress) string { return _Modifier_String(self, addr) }
 func (self UXTH) String(addr asm.MemoryAddress) string { return _Modifier_String(self, addr) }
 func (self UXTW) String(addr asm.MemoryAddress) string { return _Modifier_String(self, addr) }
@@ -309,15 +313,6 @@ func (self SXTB) String(addr asm.MemoryAddress) string { return _Modifier_String
 func (self SXTH) String(addr asm.MemoryAddress) string { return _Modifier_String(self, addr) }
 func (self SXTW) String(addr asm.MemoryAddress) string { return _Modifier_String(self, addr) }
 func (self SXTX) String(addr asm.MemoryAddress) string { return _Modifier_String(self, addr) }
-
-func (UXTB) EnsureValid(addr asm.MemoryAddress) { _Modifier_EnsureValid(addr) }
-func (UXTH) EnsureValid(addr asm.MemoryAddress) { _Modifier_EnsureValid(addr) }
-func (UXTW) EnsureValid(addr asm.MemoryAddress) { _Modifier_EnsureValid(addr) }
-func (UXTX) EnsureValid(addr asm.MemoryAddress) { _Modifier_EnsureValid(addr) }
-func (SXTB) EnsureValid(addr asm.MemoryAddress) { _Modifier_EnsureValid(addr) }
-func (SXTH) EnsureValid(addr asm.MemoryAddress) { _Modifier_EnsureValid(addr) }
-func (SXTW) EnsureValid(addr asm.MemoryAddress) { _Modifier_EnsureValid(addr) }
-func (SXTX) EnsureValid(addr asm.MemoryAddress) { _Modifier_EnsureValid(addr) }
 
 // Mem constructs a memory operand.
 func Mem(base asm.Register, args ...interface{}) (v *asm.MemoryOperand) {

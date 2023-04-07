@@ -33654,7 +33654,8 @@ func (self *Program) VADDPD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VADDPD m128/m64bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -33664,7 +33665,8 @@ func (self *Program) VADDPD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VADDPD xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -33677,7 +33679,8 @@ func (self *Program) VADDPD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VADDPD m256/m64bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -33687,7 +33690,8 @@ func (self *Program) VADDPD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VADDPD ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -33806,7 +33810,8 @@ func (self *Program) VADDPS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VADDPS m128/m32bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x04, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -33816,7 +33821,8 @@ func (self *Program) VADDPS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VADDPS xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -33829,7 +33835,8 @@ func (self *Program) VADDPS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VADDPS m256/m32bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x04, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -33839,7 +33846,8 @@ func (self *Program) VADDPS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VADDPS ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -34144,7 +34152,8 @@ func (self *Program) VAESDEC(v0 interface{}, v1 interface{}, v2 interface{}) *In
     p := self.alloc("VAESDEC", 3, Operands { v0, v1, v2 })
     // VAESDEC xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) {
-        self.require(ISA_AVX | ISA_AES)
+        self.require(ISA_AES)
+        self.require(ISA_AVX)
         p.domain = DomainCrypto
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0xc4)
@@ -34156,7 +34165,8 @@ func (self *Program) VAESDEC(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VAESDEC m128, xmm, xmm
     if isM128(v0) && isXMM(v1) && isXMM(v2) {
-        self.require(ISA_AVX | ISA_AES)
+        self.require(ISA_AES)
+        self.require(ISA_AVX)
         p.domain = DomainCrypto
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.vex3(0xc4, 0b10, 0x01, hcode(v[2]), addr(v[0]), hlcode(v[1]))
@@ -34182,7 +34192,8 @@ func (self *Program) VAESDECLAST(v0 interface{}, v1 interface{}, v2 interface{})
     p := self.alloc("VAESDECLAST", 3, Operands { v0, v1, v2 })
     // VAESDECLAST xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) {
-        self.require(ISA_AVX | ISA_AES)
+        self.require(ISA_AES)
+        self.require(ISA_AVX)
         p.domain = DomainCrypto
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0xc4)
@@ -34194,7 +34205,8 @@ func (self *Program) VAESDECLAST(v0 interface{}, v1 interface{}, v2 interface{})
     }
     // VAESDECLAST m128, xmm, xmm
     if isM128(v0) && isXMM(v1) && isXMM(v2) {
-        self.require(ISA_AVX | ISA_AES)
+        self.require(ISA_AES)
+        self.require(ISA_AVX)
         p.domain = DomainCrypto
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.vex3(0xc4, 0b10, 0x01, hcode(v[2]), addr(v[0]), hlcode(v[1]))
@@ -34220,7 +34232,8 @@ func (self *Program) VAESENC(v0 interface{}, v1 interface{}, v2 interface{}) *In
     p := self.alloc("VAESENC", 3, Operands { v0, v1, v2 })
     // VAESENC xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) {
-        self.require(ISA_AVX | ISA_AES)
+        self.require(ISA_AES)
+        self.require(ISA_AVX)
         p.domain = DomainCrypto
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0xc4)
@@ -34232,7 +34245,8 @@ func (self *Program) VAESENC(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VAESENC m128, xmm, xmm
     if isM128(v0) && isXMM(v1) && isXMM(v2) {
-        self.require(ISA_AVX | ISA_AES)
+        self.require(ISA_AES)
+        self.require(ISA_AVX)
         p.domain = DomainCrypto
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.vex3(0xc4, 0b10, 0x01, hcode(v[2]), addr(v[0]), hlcode(v[1]))
@@ -34258,7 +34272,8 @@ func (self *Program) VAESENCLAST(v0 interface{}, v1 interface{}, v2 interface{})
     p := self.alloc("VAESENCLAST", 3, Operands { v0, v1, v2 })
     // VAESENCLAST xmm, xmm, xmm
     if isXMM(v0) && isXMM(v1) && isXMM(v2) {
-        self.require(ISA_AVX | ISA_AES)
+        self.require(ISA_AES)
+        self.require(ISA_AVX)
         p.domain = DomainCrypto
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0xc4)
@@ -34270,7 +34285,8 @@ func (self *Program) VAESENCLAST(v0 interface{}, v1 interface{}, v2 interface{})
     }
     // VAESENCLAST m128, xmm, xmm
     if isM128(v0) && isXMM(v1) && isXMM(v2) {
-        self.require(ISA_AVX | ISA_AES)
+        self.require(ISA_AES)
+        self.require(ISA_AVX)
         p.domain = DomainCrypto
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.vex3(0xc4, 0b10, 0x01, hcode(v[2]), addr(v[0]), hlcode(v[1]))
@@ -34296,7 +34312,8 @@ func (self *Program) VAESIMC(v0 interface{}, v1 interface{}) *Instruction {
     p := self.alloc("VAESIMC", 2, Operands { v0, v1 })
     // VAESIMC xmm, xmm
     if isXMM(v0) && isXMM(v1) {
-        self.require(ISA_AVX | ISA_AES)
+        self.require(ISA_AES)
+        self.require(ISA_AVX)
         p.domain = DomainCrypto
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0xc4)
@@ -34308,7 +34325,8 @@ func (self *Program) VAESIMC(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VAESIMC m128, xmm
     if isM128(v0) && isXMM(v1) {
-        self.require(ISA_AVX | ISA_AES)
+        self.require(ISA_AES)
+        self.require(ISA_AVX)
         p.domain = DomainCrypto
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.vex3(0xc4, 0b10, 0x01, hcode(v[1]), addr(v[0]), 0)
@@ -34334,7 +34352,8 @@ func (self *Program) VAESKEYGENASSIST(v0 interface{}, v1 interface{}, v2 interfa
     p := self.alloc("VAESKEYGENASSIST", 3, Operands { v0, v1, v2 })
     // VAESKEYGENASSIST imm8, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) {
-        self.require(ISA_AVX | ISA_AES)
+        self.require(ISA_AES)
+        self.require(ISA_AVX)
         p.domain = DomainCrypto
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0xc4)
@@ -34347,7 +34366,8 @@ func (self *Program) VAESKEYGENASSIST(v0 interface{}, v1 interface{}, v2 interfa
     }
     // VAESKEYGENASSIST imm8, m128, xmm
     if isImm8(v0) && isM128(v1) && isXMM(v2) {
-        self.require(ISA_AVX | ISA_AES)
+        self.require(ISA_AES)
+        self.require(ISA_AVX)
         p.domain = DomainCrypto
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.vex3(0xc4, 0b11, 0x01, hcode(v[2]), addr(v[1]), 0)
@@ -34403,7 +34423,8 @@ func (self *Program) VALIGND(v0 interface{}, v1 interface{}, v2 interface{}, v3 
     }
     // VALIGND imm8, m128/m32bcst, xmm, xmm{k}{z}
     if isImm8(v0) && isM128M32bcst(v1) && isEVEXXMM(v2) && isXMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x05, 0b00, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), zcode(v[3]), bcode(v[1]))
@@ -34414,7 +34435,8 @@ func (self *Program) VALIGND(v0 interface{}, v1 interface{}, v2 interface{}, v3 
     }
     // VALIGND imm8, xmm, xmm, xmm{k}{z}
     if isImm8(v0) && isEVEXXMM(v1) && isEVEXXMM(v2) && isXMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -34428,7 +34450,8 @@ func (self *Program) VALIGND(v0 interface{}, v1 interface{}, v2 interface{}, v3 
     }
     // VALIGND imm8, m256/m32bcst, ymm, ymm{k}{z}
     if isImm8(v0) && isM256M32bcst(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x05, 0b01, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), zcode(v[3]), bcode(v[1]))
@@ -34439,7 +34462,8 @@ func (self *Program) VALIGND(v0 interface{}, v1 interface{}, v2 interface{}, v3 
     }
     // VALIGND imm8, ymm, ymm, ymm{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -34498,7 +34522,8 @@ func (self *Program) VALIGNQ(v0 interface{}, v1 interface{}, v2 interface{}, v3 
     }
     // VALIGNQ imm8, m128/m64bcst, xmm, xmm{k}{z}
     if isImm8(v0) && isM128M64bcst(v1) && isEVEXXMM(v2) && isXMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x85, 0b00, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), zcode(v[3]), bcode(v[1]))
@@ -34509,7 +34534,8 @@ func (self *Program) VALIGNQ(v0 interface{}, v1 interface{}, v2 interface{}, v3 
     }
     // VALIGNQ imm8, xmm, xmm, xmm{k}{z}
     if isImm8(v0) && isEVEXXMM(v1) && isEVEXXMM(v2) && isXMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -34523,7 +34549,8 @@ func (self *Program) VALIGNQ(v0 interface{}, v1 interface{}, v2 interface{}, v3 
     }
     // VALIGNQ imm8, m256/m64bcst, ymm, ymm{k}{z}
     if isImm8(v0) && isM256M64bcst(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x85, 0b01, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), zcode(v[3]), bcode(v[1]))
@@ -34534,7 +34561,8 @@ func (self *Program) VALIGNQ(v0 interface{}, v1 interface{}, v2 interface{}, v3 
     }
     // VALIGNQ imm8, ymm, ymm, ymm{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -34635,7 +34663,8 @@ func (self *Program) VANDNPD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VANDNPD m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -34645,7 +34674,8 @@ func (self *Program) VANDNPD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VANDNPD xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -34658,7 +34688,8 @@ func (self *Program) VANDNPD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VANDNPD m256/m64bcst, ymm, ymm{k}{z}
     if isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -34668,7 +34699,8 @@ func (self *Program) VANDNPD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VANDNPD ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -34768,7 +34800,8 @@ func (self *Program) VANDNPS(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VANDNPS m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x04, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -34778,7 +34811,8 @@ func (self *Program) VANDNPS(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VANDNPS xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -34791,7 +34825,8 @@ func (self *Program) VANDNPS(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VANDNPS m256/m32bcst, ymm, ymm{k}{z}
     if isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x04, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -34801,7 +34836,8 @@ func (self *Program) VANDNPS(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VANDNPS ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -34901,7 +34937,8 @@ func (self *Program) VANDPD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VANDPD m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -34911,7 +34948,8 @@ func (self *Program) VANDPD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VANDPD xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -34924,7 +34962,8 @@ func (self *Program) VANDPD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VANDPD m256/m64bcst, ymm, ymm{k}{z}
     if isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -34934,7 +34973,8 @@ func (self *Program) VANDPD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VANDPD ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -35034,7 +35074,8 @@ func (self *Program) VANDPS(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VANDPS m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x04, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -35044,7 +35085,8 @@ func (self *Program) VANDPS(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VANDPS xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -35057,7 +35099,8 @@ func (self *Program) VANDPS(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VANDPS m256/m32bcst, ymm, ymm{k}{z}
     if isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x04, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -35067,7 +35110,8 @@ func (self *Program) VANDPS(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VANDPS ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -35123,7 +35167,8 @@ func (self *Program) VBLENDMPD(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VBLENDMPD m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -35133,7 +35178,8 @@ func (self *Program) VBLENDMPD(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VBLENDMPD xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -35146,7 +35192,8 @@ func (self *Program) VBLENDMPD(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VBLENDMPD m256/m64bcst, ymm, ymm{k}{z}
     if isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -35156,7 +35203,8 @@ func (self *Program) VBLENDMPD(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VBLENDMPD ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -35212,7 +35260,8 @@ func (self *Program) VBLENDMPS(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VBLENDMPS m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -35222,7 +35271,8 @@ func (self *Program) VBLENDMPS(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VBLENDMPS xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -35235,7 +35285,8 @@ func (self *Program) VBLENDMPS(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VBLENDMPS m256/m32bcst, ymm, ymm{k}{z}
     if isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -35245,7 +35296,8 @@ func (self *Program) VBLENDMPS(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VBLENDMPS ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -35588,7 +35640,8 @@ func (self *Program) VBROADCASTF32X2(v0 interface{}, v1 interface{}) *Instructio
     }
     // VBROADCASTF32X2 xmm, ymm{k}{z}
     if isEVEXXMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -35601,7 +35654,8 @@ func (self *Program) VBROADCASTF32X2(v0 interface{}, v1 interface{}) *Instructio
     }
     // VBROADCASTF32X2 m64, ymm{k}{z}
     if isM64(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -35637,7 +35691,8 @@ func (self *Program) VBROADCASTF32X4(v0 interface{}, v1 interface{}) *Instructio
     }
     // VBROADCASTF32X4 m128, ymm{k}{z}
     if isM128(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -35698,7 +35753,8 @@ func (self *Program) VBROADCASTF64X2(v0 interface{}, v1 interface{}) *Instructio
     }
     // VBROADCASTF64X2 m128, ymm{k}{z}
     if isM128(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -35801,7 +35857,8 @@ func (self *Program) VBROADCASTI32X2(v0 interface{}, v1 interface{}) *Instructio
     }
     // VBROADCASTI32X2 xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -35814,7 +35871,8 @@ func (self *Program) VBROADCASTI32X2(v0 interface{}, v1 interface{}) *Instructio
     }
     // VBROADCASTI32X2 xmm, ymm{k}{z}
     if isEVEXXMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -35827,7 +35885,8 @@ func (self *Program) VBROADCASTI32X2(v0 interface{}, v1 interface{}) *Instructio
     }
     // VBROADCASTI32X2 m64, xmm{k}{z}
     if isM64(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -35837,7 +35896,8 @@ func (self *Program) VBROADCASTI32X2(v0 interface{}, v1 interface{}) *Instructio
     }
     // VBROADCASTI32X2 m64, ymm{k}{z}
     if isM64(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -35873,7 +35933,8 @@ func (self *Program) VBROADCASTI32X4(v0 interface{}, v1 interface{}) *Instructio
     }
     // VBROADCASTI32X4 m128, ymm{k}{z}
     if isM128(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -35934,7 +35995,8 @@ func (self *Program) VBROADCASTI64X2(v0 interface{}, v1 interface{}) *Instructio
     }
     // VBROADCASTI64X2 m128, ymm{k}{z}
     if isM128(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -36034,7 +36096,8 @@ func (self *Program) VBROADCASTSD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VBROADCASTSD xmm, ymm{k}{z}
     if isEVEXXMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -36047,7 +36110,8 @@ func (self *Program) VBROADCASTSD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VBROADCASTSD m64, ymm{k}{z}
     if isM64(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -36146,7 +36210,8 @@ func (self *Program) VBROADCASTSS(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VBROADCASTSS xmm, ymm{k}{z}
     if isEVEXXMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -36159,7 +36224,8 @@ func (self *Program) VBROADCASTSS(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VBROADCASTSS m32, ymm{k}{z}
     if isM32(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -36282,7 +36348,8 @@ func (self *Program) VCMPPD(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
     }
     // VCMPPD imm8, m128/m64bcst, xmm, k{k}
     if len(vv) == 0 && isImm8(v0) && isM128M64bcst(v1) && isEVEXXMM(v2) && isKk(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b00, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), 0, bcode(v[1]))
@@ -36293,7 +36360,8 @@ func (self *Program) VCMPPD(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
     }
     // VCMPPD imm8, xmm, xmm, k{k}
     if len(vv) == 0 && isImm8(v0) && isEVEXXMM(v1) && isEVEXXMM(v2) && isKk(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -36307,7 +36375,8 @@ func (self *Program) VCMPPD(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
     }
     // VCMPPD imm8, m256/m64bcst, ymm, k{k}
     if len(vv) == 0 && isImm8(v0) && isM256M64bcst(v1) && isEVEXYMM(v2) && isKk(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b01, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), 0, bcode(v[1]))
@@ -36318,7 +36387,8 @@ func (self *Program) VCMPPD(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
     }
     // VCMPPD imm8, ymm, ymm, k{k}
     if len(vv) == 0 && isImm8(v0) && isEVEXYMM(v1) && isEVEXYMM(v2) && isKk(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -36445,7 +36515,8 @@ func (self *Program) VCMPPS(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
     }
     // VCMPPS imm8, m128/m32bcst, xmm, k{k}
     if len(vv) == 0 && isImm8(v0) && isM128M32bcst(v1) && isEVEXXMM(v2) && isKk(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x04, 0b00, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), 0, bcode(v[1]))
@@ -36456,7 +36527,8 @@ func (self *Program) VCMPPS(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
     }
     // VCMPPS imm8, xmm, xmm, k{k}
     if len(vv) == 0 && isImm8(v0) && isEVEXXMM(v1) && isEVEXXMM(v2) && isKk(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -36470,7 +36542,8 @@ func (self *Program) VCMPPS(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
     }
     // VCMPPS imm8, m256/m32bcst, ymm, k{k}
     if len(vv) == 0 && isImm8(v0) && isM256M32bcst(v1) && isEVEXYMM(v2) && isKk(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x04, 0b01, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), 0, bcode(v[1]))
@@ -36481,7 +36554,8 @@ func (self *Program) VCMPPS(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
     }
     // VCMPPS imm8, ymm, ymm, k{k}
     if len(vv) == 0 && isImm8(v0) && isEVEXYMM(v1) && isEVEXYMM(v2) && isKk(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -36868,7 +36942,8 @@ func (self *Program) VCOMPRESSPD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VCOMPRESSPD xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -36881,7 +36956,8 @@ func (self *Program) VCOMPRESSPD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VCOMPRESSPD xmm, m128{k}{z}
     if isEVEXXMM(v0) && isM128kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -36891,7 +36967,8 @@ func (self *Program) VCOMPRESSPD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VCOMPRESSPD ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -36904,7 +36981,8 @@ func (self *Program) VCOMPRESSPD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VCOMPRESSPD ymm, m256{k}{z}
     if isEVEXYMM(v0) && isM256kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -36957,7 +37035,8 @@ func (self *Program) VCOMPRESSPS(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VCOMPRESSPS xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -36970,7 +37049,8 @@ func (self *Program) VCOMPRESSPS(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VCOMPRESSPS xmm, m128{k}{z}
     if isEVEXXMM(v0) && isM128kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -36980,7 +37060,8 @@ func (self *Program) VCOMPRESSPS(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VCOMPRESSPS ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -36993,7 +37074,8 @@ func (self *Program) VCOMPRESSPS(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VCOMPRESSPS ymm, m256{k}{z}
     if isEVEXYMM(v0) && isM256kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -37090,7 +37172,8 @@ func (self *Program) VCVTDQ2PD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VCVTDQ2PD m64/m32bcst, xmm{k}{z}
     if isM64M32bcst(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x06, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -37100,7 +37183,8 @@ func (self *Program) VCVTDQ2PD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VCVTDQ2PD m128/m32bcst, ymm{k}{z}
     if isM128M32bcst(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x06, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -37110,7 +37194,8 @@ func (self *Program) VCVTDQ2PD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VCVTDQ2PD xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -37123,7 +37208,8 @@ func (self *Program) VCVTDQ2PD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VCVTDQ2PD xmm, ymm{k}{z}
     if isEVEXXMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -37242,7 +37328,8 @@ func (self *Program) VCVTDQ2PS(v0 interface{}, v1 interface{}, vv ...interface{}
     }
     // VCVTDQ2PS m128/m32bcst, xmm{k}{z}
     if len(vv) == 0 && isM128M32bcst(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x04, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -37252,7 +37339,8 @@ func (self *Program) VCVTDQ2PS(v0 interface{}, v1 interface{}, vv ...interface{}
     }
     // VCVTDQ2PS m256/m32bcst, ymm{k}{z}
     if len(vv) == 0 && isM256M32bcst(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x04, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -37262,7 +37350,8 @@ func (self *Program) VCVTDQ2PS(v0 interface{}, v1 interface{}, vv ...interface{}
     }
     // VCVTDQ2PS xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -37275,7 +37364,8 @@ func (self *Program) VCVTDQ2PS(v0 interface{}, v1 interface{}, vv ...interface{}
     }
     // VCVTDQ2PS ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -37394,7 +37484,8 @@ func (self *Program) VCVTPD2DQ(v0 interface{}, v1 interface{}, vv ...interface{}
     }
     // VCVTPD2DQ m128/m64bcst, xmm{k}{z}
     if len(vv) == 0 && isM128M64bcst(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x87, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -37404,7 +37495,8 @@ func (self *Program) VCVTPD2DQ(v0 interface{}, v1 interface{}, vv ...interface{}
     }
     // VCVTPD2DQ m256/m64bcst, xmm{k}{z}
     if len(vv) == 0 && isM256M64bcst(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x87, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -37414,7 +37506,8 @@ func (self *Program) VCVTPD2DQ(v0 interface{}, v1 interface{}, vv ...interface{}
     }
     // VCVTPD2DQ xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -37427,7 +37520,8 @@ func (self *Program) VCVTPD2DQ(v0 interface{}, v1 interface{}, vv ...interface{}
     }
     // VCVTPD2DQ ymm, xmm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -37546,7 +37640,8 @@ func (self *Program) VCVTPD2PS(v0 interface{}, v1 interface{}, vv ...interface{}
     }
     // VCVTPD2PS m128/m64bcst, xmm{k}{z}
     if len(vv) == 0 && isM128M64bcst(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -37556,7 +37651,8 @@ func (self *Program) VCVTPD2PS(v0 interface{}, v1 interface{}, vv ...interface{}
     }
     // VCVTPD2PS m256/m64bcst, xmm{k}{z}
     if len(vv) == 0 && isM256M64bcst(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -37566,7 +37662,8 @@ func (self *Program) VCVTPD2PS(v0 interface{}, v1 interface{}, vv ...interface{}
     }
     // VCVTPD2PS xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -37579,7 +37676,8 @@ func (self *Program) VCVTPD2PS(v0 interface{}, v1 interface{}, vv ...interface{}
     }
     // VCVTPD2PS ymm, xmm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -37654,7 +37752,8 @@ func (self *Program) VCVTPD2QQ(v0 interface{}, v1 interface{}, vv ...interface{}
     }
     // VCVTPD2QQ m128/m64bcst, xmm{k}{z}
     if len(vv) == 0 && isM128M64bcst(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -37664,7 +37763,8 @@ func (self *Program) VCVTPD2QQ(v0 interface{}, v1 interface{}, vv ...interface{}
     }
     // VCVTPD2QQ m256/m64bcst, ymm{k}{z}
     if len(vv) == 0 && isM256M64bcst(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -37674,7 +37774,8 @@ func (self *Program) VCVTPD2QQ(v0 interface{}, v1 interface{}, vv ...interface{}
     }
     // VCVTPD2QQ xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -37687,7 +37788,8 @@ func (self *Program) VCVTPD2QQ(v0 interface{}, v1 interface{}, vv ...interface{}
     }
     // VCVTPD2QQ ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -37762,7 +37864,8 @@ func (self *Program) VCVTPD2UDQ(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VCVTPD2UDQ m128/m64bcst, xmm{k}{z}
     if len(vv) == 0 && isM128M64bcst(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x84, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -37772,7 +37875,8 @@ func (self *Program) VCVTPD2UDQ(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VCVTPD2UDQ m256/m64bcst, xmm{k}{z}
     if len(vv) == 0 && isM256M64bcst(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x84, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -37782,7 +37886,8 @@ func (self *Program) VCVTPD2UDQ(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VCVTPD2UDQ xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -37795,7 +37900,8 @@ func (self *Program) VCVTPD2UDQ(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VCVTPD2UDQ ymm, xmm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -37870,7 +37976,8 @@ func (self *Program) VCVTPD2UQQ(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VCVTPD2UQQ m128/m64bcst, xmm{k}{z}
     if len(vv) == 0 && isM128M64bcst(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -37880,7 +37987,8 @@ func (self *Program) VCVTPD2UQQ(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VCVTPD2UQQ m256/m64bcst, ymm{k}{z}
     if len(vv) == 0 && isM256M64bcst(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -37890,7 +37998,8 @@ func (self *Program) VCVTPD2UQQ(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VCVTPD2UQQ xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -37903,7 +38012,8 @@ func (self *Program) VCVTPD2UQQ(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VCVTPD2UQQ ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -38026,7 +38136,8 @@ func (self *Program) VCVTPH2PS(v0 interface{}, v1 interface{}, vv ...interface{}
     }
     // VCVTPH2PS xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -38039,7 +38150,8 @@ func (self *Program) VCVTPH2PS(v0 interface{}, v1 interface{}, vv ...interface{}
     }
     // VCVTPH2PS xmm, ymm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -38052,7 +38164,8 @@ func (self *Program) VCVTPH2PS(v0 interface{}, v1 interface{}, vv ...interface{}
     }
     // VCVTPH2PS m64, xmm{k}{z}
     if len(vv) == 0 && isM64(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -38062,7 +38175,8 @@ func (self *Program) VCVTPH2PS(v0 interface{}, v1 interface{}, vv ...interface{}
     }
     // VCVTPH2PS m128, ymm{k}{z}
     if len(vv) == 0 && isM128(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -38178,7 +38292,8 @@ func (self *Program) VCVTPS2DQ(v0 interface{}, v1 interface{}, vv ...interface{}
     }
     // VCVTPS2DQ m128/m32bcst, xmm{k}{z}
     if len(vv) == 0 && isM128M32bcst(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -38188,7 +38303,8 @@ func (self *Program) VCVTPS2DQ(v0 interface{}, v1 interface{}, vv ...interface{}
     }
     // VCVTPS2DQ m256/m32bcst, ymm{k}{z}
     if len(vv) == 0 && isM256M32bcst(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -38198,7 +38314,8 @@ func (self *Program) VCVTPS2DQ(v0 interface{}, v1 interface{}, vv ...interface{}
     }
     // VCVTPS2DQ xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -38211,7 +38328,8 @@ func (self *Program) VCVTPS2DQ(v0 interface{}, v1 interface{}, vv ...interface{}
     }
     // VCVTPS2DQ ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -38330,7 +38448,8 @@ func (self *Program) VCVTPS2PD(v0 interface{}, v1 interface{}, vv ...interface{}
     }
     // VCVTPS2PD m64/m32bcst, xmm{k}{z}
     if len(vv) == 0 && isM64M32bcst(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x04, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -38350,7 +38469,8 @@ func (self *Program) VCVTPS2PD(v0 interface{}, v1 interface{}, vv ...interface{}
     }
     // VCVTPS2PD xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -38493,7 +38613,8 @@ func (self *Program) VCVTPS2PH(v0 interface{}, v1 interface{}, v2 interface{}, v
     }
     // VCVTPS2PH imm8, xmm, xmm{k}{z}
     if len(vv) == 0 && isImm8(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -38507,7 +38628,8 @@ func (self *Program) VCVTPS2PH(v0 interface{}, v1 interface{}, v2 interface{}, v
     }
     // VCVTPS2PH imm8, xmm, m64{k}{z}
     if len(vv) == 0 && isImm8(v0) && isEVEXXMM(v1) && isM64kz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x05, 0b00, ehcode(v[1]), addr(v[2]), 0, kcode(v[2]), zcode(v[2]), 0)
@@ -38518,7 +38640,8 @@ func (self *Program) VCVTPS2PH(v0 interface{}, v1 interface{}, v2 interface{}, v
     }
     // VCVTPS2PH imm8, ymm, xmm{k}{z}
     if len(vv) == 0 && isImm8(v0) && isEVEXYMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -38532,7 +38655,8 @@ func (self *Program) VCVTPS2PH(v0 interface{}, v1 interface{}, v2 interface{}, v
     }
     // VCVTPS2PH imm8, ymm, m128{k}{z}
     if len(vv) == 0 && isImm8(v0) && isEVEXYMM(v1) && isM128kz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x05, 0b01, ehcode(v[1]), addr(v[2]), 0, kcode(v[2]), zcode(v[2]), 0)
@@ -38605,7 +38729,8 @@ func (self *Program) VCVTPS2QQ(v0 interface{}, v1 interface{}, vv ...interface{}
     }
     // VCVTPS2QQ m64/m32bcst, xmm{k}{z}
     if len(vv) == 0 && isM64M32bcst(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -38615,7 +38740,8 @@ func (self *Program) VCVTPS2QQ(v0 interface{}, v1 interface{}, vv ...interface{}
     }
     // VCVTPS2QQ m128/m32bcst, ymm{k}{z}
     if len(vv) == 0 && isM128M32bcst(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -38625,7 +38751,8 @@ func (self *Program) VCVTPS2QQ(v0 interface{}, v1 interface{}, vv ...interface{}
     }
     // VCVTPS2QQ xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -38638,7 +38765,8 @@ func (self *Program) VCVTPS2QQ(v0 interface{}, v1 interface{}, vv ...interface{}
     }
     // VCVTPS2QQ xmm, ymm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -38713,7 +38841,8 @@ func (self *Program) VCVTPS2UDQ(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VCVTPS2UDQ m128/m32bcst, xmm{k}{z}
     if len(vv) == 0 && isM128M32bcst(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x04, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -38723,7 +38852,8 @@ func (self *Program) VCVTPS2UDQ(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VCVTPS2UDQ m256/m32bcst, ymm{k}{z}
     if len(vv) == 0 && isM256M32bcst(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x04, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -38733,7 +38863,8 @@ func (self *Program) VCVTPS2UDQ(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VCVTPS2UDQ xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -38746,7 +38877,8 @@ func (self *Program) VCVTPS2UDQ(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VCVTPS2UDQ ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -38821,7 +38953,8 @@ func (self *Program) VCVTPS2UQQ(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VCVTPS2UQQ m64/m32bcst, xmm{k}{z}
     if len(vv) == 0 && isM64M32bcst(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -38831,7 +38964,8 @@ func (self *Program) VCVTPS2UQQ(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VCVTPS2UQQ m128/m32bcst, ymm{k}{z}
     if len(vv) == 0 && isM128M32bcst(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -38841,7 +38975,8 @@ func (self *Program) VCVTPS2UQQ(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VCVTPS2UQQ xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -38854,7 +38989,8 @@ func (self *Program) VCVTPS2UQQ(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VCVTPS2UQQ xmm, ymm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -38929,7 +39065,8 @@ func (self *Program) VCVTQQ2PD(v0 interface{}, v1 interface{}, vv ...interface{}
     }
     // VCVTQQ2PD m128/m64bcst, xmm{k}{z}
     if len(vv) == 0 && isM128M64bcst(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x86, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -38939,7 +39076,8 @@ func (self *Program) VCVTQQ2PD(v0 interface{}, v1 interface{}, vv ...interface{}
     }
     // VCVTQQ2PD m256/m64bcst, ymm{k}{z}
     if len(vv) == 0 && isM256M64bcst(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x86, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -38949,7 +39087,8 @@ func (self *Program) VCVTQQ2PD(v0 interface{}, v1 interface{}, vv ...interface{}
     }
     // VCVTQQ2PD xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -38962,7 +39101,8 @@ func (self *Program) VCVTQQ2PD(v0 interface{}, v1 interface{}, vv ...interface{}
     }
     // VCVTQQ2PD ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -39037,7 +39177,8 @@ func (self *Program) VCVTQQ2PS(v0 interface{}, v1 interface{}, vv ...interface{}
     }
     // VCVTQQ2PS m128/m64bcst, xmm{k}{z}
     if len(vv) == 0 && isM128M64bcst(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x84, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -39047,7 +39188,8 @@ func (self *Program) VCVTQQ2PS(v0 interface{}, v1 interface{}, vv ...interface{}
     }
     // VCVTQQ2PS m256/m64bcst, xmm{k}{z}
     if len(vv) == 0 && isM256M64bcst(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x84, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -39057,7 +39199,8 @@ func (self *Program) VCVTQQ2PS(v0 interface{}, v1 interface{}, vv ...interface{}
     }
     // VCVTQQ2PS xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -39070,7 +39213,8 @@ func (self *Program) VCVTQQ2PS(v0 interface{}, v1 interface{}, vv ...interface{}
     }
     // VCVTQQ2PS ymm, xmm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -40101,7 +40245,8 @@ func (self *Program) VCVTTPD2DQ(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VCVTTPD2DQ m128/m64bcst, xmm{k}{z}
     if len(vv) == 0 && isM128M64bcst(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -40111,7 +40256,8 @@ func (self *Program) VCVTTPD2DQ(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VCVTTPD2DQ m256/m64bcst, xmm{k}{z}
     if len(vv) == 0 && isM256M64bcst(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -40121,7 +40267,8 @@ func (self *Program) VCVTTPD2DQ(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VCVTTPD2DQ xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -40134,7 +40281,8 @@ func (self *Program) VCVTTPD2DQ(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VCVTTPD2DQ ymm, xmm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -40209,7 +40357,8 @@ func (self *Program) VCVTTPD2QQ(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VCVTTPD2QQ m128/m64bcst, xmm{k}{z}
     if len(vv) == 0 && isM128M64bcst(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -40219,7 +40368,8 @@ func (self *Program) VCVTTPD2QQ(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VCVTTPD2QQ m256/m64bcst, ymm{k}{z}
     if len(vv) == 0 && isM256M64bcst(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -40229,7 +40379,8 @@ func (self *Program) VCVTTPD2QQ(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VCVTTPD2QQ xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -40242,7 +40393,8 @@ func (self *Program) VCVTTPD2QQ(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VCVTTPD2QQ ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -40317,7 +40469,8 @@ func (self *Program) VCVTTPD2UDQ(v0 interface{}, v1 interface{}, vv ...interface
     }
     // VCVTTPD2UDQ m128/m64bcst, xmm{k}{z}
     if len(vv) == 0 && isM128M64bcst(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x84, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -40327,7 +40480,8 @@ func (self *Program) VCVTTPD2UDQ(v0 interface{}, v1 interface{}, vv ...interface
     }
     // VCVTTPD2UDQ m256/m64bcst, xmm{k}{z}
     if len(vv) == 0 && isM256M64bcst(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x84, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -40337,7 +40491,8 @@ func (self *Program) VCVTTPD2UDQ(v0 interface{}, v1 interface{}, vv ...interface
     }
     // VCVTTPD2UDQ xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -40350,7 +40505,8 @@ func (self *Program) VCVTTPD2UDQ(v0 interface{}, v1 interface{}, vv ...interface
     }
     // VCVTTPD2UDQ ymm, xmm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -40425,7 +40581,8 @@ func (self *Program) VCVTTPD2UQQ(v0 interface{}, v1 interface{}, vv ...interface
     }
     // VCVTTPD2UQQ m128/m64bcst, xmm{k}{z}
     if len(vv) == 0 && isM128M64bcst(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -40435,7 +40592,8 @@ func (self *Program) VCVTTPD2UQQ(v0 interface{}, v1 interface{}, vv ...interface
     }
     // VCVTTPD2UQQ m256/m64bcst, ymm{k}{z}
     if len(vv) == 0 && isM256M64bcst(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -40445,7 +40603,8 @@ func (self *Program) VCVTTPD2UQQ(v0 interface{}, v1 interface{}, vv ...interface
     }
     // VCVTTPD2UQQ xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -40458,7 +40617,8 @@ func (self *Program) VCVTTPD2UQQ(v0 interface{}, v1 interface{}, vv ...interface
     }
     // VCVTTPD2UQQ ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -40577,7 +40737,8 @@ func (self *Program) VCVTTPS2DQ(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VCVTTPS2DQ m128/m32bcst, xmm{k}{z}
     if len(vv) == 0 && isM128M32bcst(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x06, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -40587,7 +40748,8 @@ func (self *Program) VCVTTPS2DQ(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VCVTTPS2DQ m256/m32bcst, ymm{k}{z}
     if len(vv) == 0 && isM256M32bcst(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x06, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -40597,7 +40759,8 @@ func (self *Program) VCVTTPS2DQ(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VCVTTPS2DQ xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -40610,7 +40773,8 @@ func (self *Program) VCVTTPS2DQ(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VCVTTPS2DQ ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -40685,7 +40849,8 @@ func (self *Program) VCVTTPS2QQ(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VCVTTPS2QQ m64/m32bcst, xmm{k}{z}
     if len(vv) == 0 && isM64M32bcst(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -40695,7 +40860,8 @@ func (self *Program) VCVTTPS2QQ(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VCVTTPS2QQ m128/m32bcst, ymm{k}{z}
     if len(vv) == 0 && isM128M32bcst(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -40705,7 +40871,8 @@ func (self *Program) VCVTTPS2QQ(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VCVTTPS2QQ xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -40718,7 +40885,8 @@ func (self *Program) VCVTTPS2QQ(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VCVTTPS2QQ xmm, ymm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -40793,7 +40961,8 @@ func (self *Program) VCVTTPS2UDQ(v0 interface{}, v1 interface{}, vv ...interface
     }
     // VCVTTPS2UDQ m128/m32bcst, xmm{k}{z}
     if len(vv) == 0 && isM128M32bcst(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x04, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -40803,7 +40972,8 @@ func (self *Program) VCVTTPS2UDQ(v0 interface{}, v1 interface{}, vv ...interface
     }
     // VCVTTPS2UDQ m256/m32bcst, ymm{k}{z}
     if len(vv) == 0 && isM256M32bcst(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x04, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -40813,7 +40983,8 @@ func (self *Program) VCVTTPS2UDQ(v0 interface{}, v1 interface{}, vv ...interface
     }
     // VCVTTPS2UDQ xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -40826,7 +40997,8 @@ func (self *Program) VCVTTPS2UDQ(v0 interface{}, v1 interface{}, vv ...interface
     }
     // VCVTTPS2UDQ ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -40901,7 +41073,8 @@ func (self *Program) VCVTTPS2UQQ(v0 interface{}, v1 interface{}, vv ...interface
     }
     // VCVTTPS2UQQ m64/m32bcst, xmm{k}{z}
     if len(vv) == 0 && isM64M32bcst(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -40911,7 +41084,8 @@ func (self *Program) VCVTTPS2UQQ(v0 interface{}, v1 interface{}, vv ...interface
     }
     // VCVTTPS2UQQ m128/m32bcst, ymm{k}{z}
     if len(vv) == 0 && isM128M32bcst(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -40921,7 +41095,8 @@ func (self *Program) VCVTTPS2UQQ(v0 interface{}, v1 interface{}, vv ...interface
     }
     // VCVTTPS2UQQ xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -40934,7 +41109,8 @@ func (self *Program) VCVTTPS2UQQ(v0 interface{}, v1 interface{}, vv ...interface
     }
     // VCVTTPS2UQQ xmm, ymm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -41470,7 +41646,8 @@ func (self *Program) VCVTUDQ2PD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VCVTUDQ2PD m64/m32bcst, xmm{k}{z}
     if isM64M32bcst(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x06, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -41480,7 +41657,8 @@ func (self *Program) VCVTUDQ2PD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VCVTUDQ2PD m128/m32bcst, ymm{k}{z}
     if isM128M32bcst(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x06, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -41490,7 +41668,8 @@ func (self *Program) VCVTUDQ2PD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VCVTUDQ2PD xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -41503,7 +41682,8 @@ func (self *Program) VCVTUDQ2PD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VCVTUDQ2PD xmm, ymm{k}{z}
     if isEVEXXMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -41578,7 +41758,8 @@ func (self *Program) VCVTUDQ2PS(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VCVTUDQ2PS m128/m32bcst, xmm{k}{z}
     if len(vv) == 0 && isM128M32bcst(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x07, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -41588,7 +41769,8 @@ func (self *Program) VCVTUDQ2PS(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VCVTUDQ2PS m256/m32bcst, ymm{k}{z}
     if len(vv) == 0 && isM256M32bcst(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x07, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -41598,7 +41780,8 @@ func (self *Program) VCVTUDQ2PS(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VCVTUDQ2PS xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -41611,7 +41794,8 @@ func (self *Program) VCVTUDQ2PS(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VCVTUDQ2PS ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -41686,7 +41870,8 @@ func (self *Program) VCVTUQQ2PD(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VCVTUQQ2PD m128/m64bcst, xmm{k}{z}
     if len(vv) == 0 && isM128M64bcst(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x86, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -41696,7 +41881,8 @@ func (self *Program) VCVTUQQ2PD(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VCVTUQQ2PD m256/m64bcst, ymm{k}{z}
     if len(vv) == 0 && isM256M64bcst(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x86, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -41706,7 +41892,8 @@ func (self *Program) VCVTUQQ2PD(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VCVTUQQ2PD xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -41719,7 +41906,8 @@ func (self *Program) VCVTUQQ2PD(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VCVTUQQ2PD ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -41794,7 +41982,8 @@ func (self *Program) VCVTUQQ2PS(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VCVTUQQ2PS m128/m64bcst, xmm{k}{z}
     if len(vv) == 0 && isM128M64bcst(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x87, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -41804,7 +41993,8 @@ func (self *Program) VCVTUQQ2PS(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VCVTUQQ2PS m256/m64bcst, xmm{k}{z}
     if len(vv) == 0 && isM256M64bcst(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x87, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -41814,7 +42004,8 @@ func (self *Program) VCVTUQQ2PS(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VCVTUQQ2PS xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -41827,7 +42018,8 @@ func (self *Program) VCVTUQQ2PS(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VCVTUQQ2PS ymm, xmm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -42065,7 +42257,8 @@ func (self *Program) VDBPSADBW(v0 interface{}, v1 interface{}, v2 interface{}, v
     }
     // VDBPSADBW imm8, xmm, xmm, xmm{k}{z}
     if isImm8(v0) && isEVEXXMM(v1) && isEVEXXMM(v2) && isXMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -42079,7 +42272,8 @@ func (self *Program) VDBPSADBW(v0 interface{}, v1 interface{}, v2 interface{}, v
     }
     // VDBPSADBW imm8, m128, xmm, xmm{k}{z}
     if isImm8(v0) && isM128(v1) && isEVEXXMM(v2) && isXMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x05, 0b00, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), zcode(v[3]), 0)
@@ -42090,7 +42284,8 @@ func (self *Program) VDBPSADBW(v0 interface{}, v1 interface{}, v2 interface{}, v
     }
     // VDBPSADBW imm8, ymm, ymm, ymm{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -42104,7 +42299,8 @@ func (self *Program) VDBPSADBW(v0 interface{}, v1 interface{}, v2 interface{}, v
     }
     // VDBPSADBW imm8, m256, ymm, ymm{k}{z}
     if isImm8(v0) && isM256(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x05, 0b01, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), zcode(v[3]), 0)
@@ -42221,7 +42417,8 @@ func (self *Program) VDIVPD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VDIVPD m128/m64bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -42231,7 +42428,8 @@ func (self *Program) VDIVPD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VDIVPD xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -42244,7 +42442,8 @@ func (self *Program) VDIVPD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VDIVPD m256/m64bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -42254,7 +42453,8 @@ func (self *Program) VDIVPD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VDIVPD ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -42373,7 +42573,8 @@ func (self *Program) VDIVPS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VDIVPS m128/m32bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x04, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -42383,7 +42584,8 @@ func (self *Program) VDIVPS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VDIVPS xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -42396,7 +42598,8 @@ func (self *Program) VDIVPS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VDIVPS m256/m32bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x04, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -42406,7 +42609,8 @@ func (self *Program) VDIVPS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VDIVPS ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -42857,7 +43061,8 @@ func (self *Program) VEXPANDPD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VEXPANDPD ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -42880,7 +43085,8 @@ func (self *Program) VEXPANDPD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VEXPANDPD m256, ymm{k}{z}
     if isM256(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -42933,7 +43139,8 @@ func (self *Program) VEXPANDPS(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VEXPANDPS xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -42946,7 +43153,8 @@ func (self *Program) VEXPANDPS(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VEXPANDPS ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -42959,7 +43167,8 @@ func (self *Program) VEXPANDPS(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VEXPANDPS m128, xmm{k}{z}
     if isM128(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -42969,7 +43178,8 @@ func (self *Program) VEXPANDPS(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VEXPANDPS m256, ymm{k}{z}
     if isM256(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -43062,7 +43272,8 @@ func (self *Program) VEXTRACTF32X4(v0 interface{}, v1 interface{}, v2 interface{
     }
     // VEXTRACTF32X4 imm8, ymm, xmm{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -43076,7 +43287,8 @@ func (self *Program) VEXTRACTF32X4(v0 interface{}, v1 interface{}, v2 interface{
     }
     // VEXTRACTF32X4 imm8, ymm, m128{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isM128kz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x05, 0b01, ehcode(v[1]), addr(v[2]), 0, kcode(v[2]), zcode(v[2]), 0)
@@ -43171,7 +43383,8 @@ func (self *Program) VEXTRACTF64X2(v0 interface{}, v1 interface{}, v2 interface{
     }
     // VEXTRACTF64X2 imm8, ymm, xmm{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -43185,7 +43398,8 @@ func (self *Program) VEXTRACTF64X2(v0 interface{}, v1 interface{}, v2 interface{
     }
     // VEXTRACTF64X2 imm8, ymm, m128{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isM128kz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x85, 0b01, ehcode(v[1]), addr(v[2]), 0, kcode(v[2]), zcode(v[2]), 0)
@@ -43320,7 +43534,8 @@ func (self *Program) VEXTRACTI32X4(v0 interface{}, v1 interface{}, v2 interface{
     }
     // VEXTRACTI32X4 imm8, ymm, xmm{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -43334,7 +43549,8 @@ func (self *Program) VEXTRACTI32X4(v0 interface{}, v1 interface{}, v2 interface{
     }
     // VEXTRACTI32X4 imm8, ymm, m128{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isM128kz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x05, 0b01, ehcode(v[1]), addr(v[2]), 0, kcode(v[2]), zcode(v[2]), 0)
@@ -43429,7 +43645,8 @@ func (self *Program) VEXTRACTI64X2(v0 interface{}, v1 interface{}, v2 interface{
     }
     // VEXTRACTI64X2 imm8, ymm, xmm{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -43443,7 +43660,8 @@ func (self *Program) VEXTRACTI64X2(v0 interface{}, v1 interface{}, v2 interface{
     }
     // VEXTRACTI64X2 imm8, ymm, m128{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isM128kz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x85, 0b01, ehcode(v[1]), addr(v[2]), 0, kcode(v[2]), zcode(v[2]), 0)
@@ -43627,7 +43845,8 @@ func (self *Program) VFIXUPIMMPD(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFIXUPIMMPD imm8, m128/m64bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isImm8(v0) && isM128M64bcst(v1) && isEVEXXMM(v2) && isXMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x85, 0b00, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), zcode(v[3]), bcode(v[1]))
@@ -43638,7 +43857,8 @@ func (self *Program) VFIXUPIMMPD(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFIXUPIMMPD imm8, xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isImm8(v0) && isEVEXXMM(v1) && isEVEXXMM(v2) && isXMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -43652,7 +43872,8 @@ func (self *Program) VFIXUPIMMPD(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFIXUPIMMPD imm8, m256/m64bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isImm8(v0) && isM256M64bcst(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x85, 0b01, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), zcode(v[3]), bcode(v[1]))
@@ -43663,7 +43884,8 @@ func (self *Program) VFIXUPIMMPD(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFIXUPIMMPD imm8, ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isImm8(v0) && isEVEXYMM(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -43767,7 +43989,8 @@ func (self *Program) VFIXUPIMMPS(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFIXUPIMMPS imm8, m256/m32bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isImm8(v0) && isM256M32bcst(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x05, 0b01, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), zcode(v[3]), bcode(v[1]))
@@ -43778,7 +44001,8 @@ func (self *Program) VFIXUPIMMPS(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFIXUPIMMPS imm8, ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isImm8(v0) && isEVEXYMM(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -44024,7 +44248,8 @@ func (self *Program) VFMADD132PD(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMADD132PD m128/m64bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -44034,7 +44259,8 @@ func (self *Program) VFMADD132PD(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMADD132PD xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -44047,7 +44273,8 @@ func (self *Program) VFMADD132PD(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMADD132PD m256/m64bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -44057,7 +44284,8 @@ func (self *Program) VFMADD132PD(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMADD132PD ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -44180,7 +44408,8 @@ func (self *Program) VFMADD132PS(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMADD132PS m128/m32bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -44190,7 +44419,8 @@ func (self *Program) VFMADD132PS(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMADD132PS xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -44203,7 +44433,8 @@ func (self *Program) VFMADD132PS(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMADD132PS m256/m32bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -44213,7 +44444,8 @@ func (self *Program) VFMADD132PS(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMADD132PS ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -44500,7 +44732,8 @@ func (self *Program) VFMADD213PD(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMADD213PD m128/m64bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -44510,7 +44743,8 @@ func (self *Program) VFMADD213PD(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMADD213PD xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -44523,7 +44757,8 @@ func (self *Program) VFMADD213PD(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMADD213PD m256/m64bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -44533,7 +44768,8 @@ func (self *Program) VFMADD213PD(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMADD213PD ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -44656,7 +44892,8 @@ func (self *Program) VFMADD213PS(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMADD213PS m128/m32bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -44666,7 +44903,8 @@ func (self *Program) VFMADD213PS(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMADD213PS xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -44679,7 +44917,8 @@ func (self *Program) VFMADD213PS(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMADD213PS m256/m32bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -44689,7 +44928,8 @@ func (self *Program) VFMADD213PS(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMADD213PS ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -44976,7 +45216,8 @@ func (self *Program) VFMADD231PD(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMADD231PD m128/m64bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -44986,7 +45227,8 @@ func (self *Program) VFMADD231PD(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMADD231PD xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -44999,7 +45241,8 @@ func (self *Program) VFMADD231PD(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMADD231PD m256/m64bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -45009,7 +45252,8 @@ func (self *Program) VFMADD231PD(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMADD231PD ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -45132,7 +45376,8 @@ func (self *Program) VFMADD231PS(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMADD231PS m128/m32bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -45142,7 +45387,8 @@ func (self *Program) VFMADD231PS(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMADD231PS xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -45155,7 +45401,8 @@ func (self *Program) VFMADD231PS(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMADD231PS m256/m32bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -45165,7 +45412,8 @@ func (self *Program) VFMADD231PS(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMADD231PS ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -45784,7 +46032,8 @@ func (self *Program) VFMADDSUB132PD(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMADDSUB132PD m128/m64bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -45794,7 +46043,8 @@ func (self *Program) VFMADDSUB132PD(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMADDSUB132PD xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -45807,7 +46057,8 @@ func (self *Program) VFMADDSUB132PD(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMADDSUB132PD m256/m64bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -45817,7 +46068,8 @@ func (self *Program) VFMADDSUB132PD(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMADDSUB132PD ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -45940,7 +46192,8 @@ func (self *Program) VFMADDSUB132PS(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMADDSUB132PS m128/m32bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -45950,7 +46203,8 @@ func (self *Program) VFMADDSUB132PS(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMADDSUB132PS xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -45963,7 +46217,8 @@ func (self *Program) VFMADDSUB132PS(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMADDSUB132PS m256/m32bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -45973,7 +46228,8 @@ func (self *Program) VFMADDSUB132PS(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMADDSUB132PS ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -46096,7 +46352,8 @@ func (self *Program) VFMADDSUB213PD(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMADDSUB213PD m128/m64bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -46106,7 +46363,8 @@ func (self *Program) VFMADDSUB213PD(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMADDSUB213PD xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -46119,7 +46377,8 @@ func (self *Program) VFMADDSUB213PD(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMADDSUB213PD m256/m64bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -46129,7 +46388,8 @@ func (self *Program) VFMADDSUB213PD(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMADDSUB213PD ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -46252,7 +46512,8 @@ func (self *Program) VFMADDSUB213PS(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMADDSUB213PS m128/m32bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -46262,7 +46523,8 @@ func (self *Program) VFMADDSUB213PS(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMADDSUB213PS xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -46275,7 +46537,8 @@ func (self *Program) VFMADDSUB213PS(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMADDSUB213PS m256/m32bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -46285,7 +46548,8 @@ func (self *Program) VFMADDSUB213PS(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMADDSUB213PS ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -46408,7 +46672,8 @@ func (self *Program) VFMADDSUB231PD(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMADDSUB231PD m128/m64bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -46418,7 +46683,8 @@ func (self *Program) VFMADDSUB231PD(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMADDSUB231PD xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -46431,7 +46697,8 @@ func (self *Program) VFMADDSUB231PD(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMADDSUB231PD m256/m64bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -46441,7 +46708,8 @@ func (self *Program) VFMADDSUB231PD(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMADDSUB231PD ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -46564,7 +46832,8 @@ func (self *Program) VFMADDSUB231PS(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMADDSUB231PS m128/m32bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -46574,7 +46843,8 @@ func (self *Program) VFMADDSUB231PS(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMADDSUB231PS xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -46587,7 +46857,8 @@ func (self *Program) VFMADDSUB231PS(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMADDSUB231PS m256/m32bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -46597,7 +46868,8 @@ func (self *Program) VFMADDSUB231PS(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMADDSUB231PS ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -46932,7 +47204,8 @@ func (self *Program) VFMSUB132PD(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMSUB132PD m128/m64bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -46942,7 +47215,8 @@ func (self *Program) VFMSUB132PD(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMSUB132PD xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -46955,7 +47229,8 @@ func (self *Program) VFMSUB132PD(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMSUB132PD m256/m64bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -46965,7 +47240,8 @@ func (self *Program) VFMSUB132PD(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMSUB132PD ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -47088,7 +47364,8 @@ func (self *Program) VFMSUB132PS(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMSUB132PS m128/m32bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -47098,7 +47375,8 @@ func (self *Program) VFMSUB132PS(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMSUB132PS xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -47111,7 +47389,8 @@ func (self *Program) VFMSUB132PS(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMSUB132PS m256/m32bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -47121,7 +47400,8 @@ func (self *Program) VFMSUB132PS(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMSUB132PS ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -47408,7 +47688,8 @@ func (self *Program) VFMSUB213PD(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMSUB213PD m128/m64bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -47418,7 +47699,8 @@ func (self *Program) VFMSUB213PD(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMSUB213PD xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -47431,7 +47713,8 @@ func (self *Program) VFMSUB213PD(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMSUB213PD m256/m64bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -47441,7 +47724,8 @@ func (self *Program) VFMSUB213PD(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMSUB213PD ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -47564,7 +47848,8 @@ func (self *Program) VFMSUB213PS(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMSUB213PS m128/m32bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -47574,7 +47859,8 @@ func (self *Program) VFMSUB213PS(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMSUB213PS xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -47587,7 +47873,8 @@ func (self *Program) VFMSUB213PS(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMSUB213PS m256/m32bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -47597,7 +47884,8 @@ func (self *Program) VFMSUB213PS(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMSUB213PS ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -47884,7 +48172,8 @@ func (self *Program) VFMSUB231PD(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMSUB231PD m128/m64bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -47894,7 +48183,8 @@ func (self *Program) VFMSUB231PD(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMSUB231PD xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -47907,7 +48197,8 @@ func (self *Program) VFMSUB231PD(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMSUB231PD m256/m64bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -47917,7 +48208,8 @@ func (self *Program) VFMSUB231PD(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMSUB231PD ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -48040,7 +48332,8 @@ func (self *Program) VFMSUB231PS(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMSUB231PS m128/m32bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -48050,7 +48343,8 @@ func (self *Program) VFMSUB231PS(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMSUB231PS xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -48063,7 +48357,8 @@ func (self *Program) VFMSUB231PS(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMSUB231PS m256/m32bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -48073,7 +48368,8 @@ func (self *Program) VFMSUB231PS(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VFMSUB231PS ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -48360,7 +48656,8 @@ func (self *Program) VFMSUBADD132PD(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMSUBADD132PD m128/m64bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -48370,7 +48667,8 @@ func (self *Program) VFMSUBADD132PD(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMSUBADD132PD xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -48383,7 +48681,8 @@ func (self *Program) VFMSUBADD132PD(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMSUBADD132PD m256/m64bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -48393,7 +48692,8 @@ func (self *Program) VFMSUBADD132PD(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMSUBADD132PD ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -48516,7 +48816,8 @@ func (self *Program) VFMSUBADD132PS(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMSUBADD132PS m128/m32bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -48526,7 +48827,8 @@ func (self *Program) VFMSUBADD132PS(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMSUBADD132PS xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -48539,7 +48841,8 @@ func (self *Program) VFMSUBADD132PS(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMSUBADD132PS m256/m32bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -48549,7 +48852,8 @@ func (self *Program) VFMSUBADD132PS(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMSUBADD132PS ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -48672,7 +48976,8 @@ func (self *Program) VFMSUBADD213PD(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMSUBADD213PD m128/m64bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -48682,7 +48987,8 @@ func (self *Program) VFMSUBADD213PD(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMSUBADD213PD xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -48695,7 +49001,8 @@ func (self *Program) VFMSUBADD213PD(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMSUBADD213PD m256/m64bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -48705,7 +49012,8 @@ func (self *Program) VFMSUBADD213PD(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMSUBADD213PD ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -48828,7 +49136,8 @@ func (self *Program) VFMSUBADD213PS(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMSUBADD213PS m128/m32bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -48838,7 +49147,8 @@ func (self *Program) VFMSUBADD213PS(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMSUBADD213PS xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -48851,7 +49161,8 @@ func (self *Program) VFMSUBADD213PS(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMSUBADD213PS m256/m32bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -48861,7 +49172,8 @@ func (self *Program) VFMSUBADD213PS(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMSUBADD213PS ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -48984,7 +49296,8 @@ func (self *Program) VFMSUBADD231PD(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMSUBADD231PD m128/m64bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -48994,7 +49307,8 @@ func (self *Program) VFMSUBADD231PD(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMSUBADD231PD xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -49007,7 +49321,8 @@ func (self *Program) VFMSUBADD231PD(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMSUBADD231PD m256/m64bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -49017,7 +49332,8 @@ func (self *Program) VFMSUBADD231PD(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMSUBADD231PD ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -49140,7 +49456,8 @@ func (self *Program) VFMSUBADD231PS(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMSUBADD231PS m128/m32bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -49150,7 +49467,8 @@ func (self *Program) VFMSUBADD231PS(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMSUBADD231PS xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -49163,7 +49481,8 @@ func (self *Program) VFMSUBADD231PS(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMSUBADD231PS m256/m32bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -49173,7 +49492,8 @@ func (self *Program) VFMSUBADD231PS(v0 interface{}, v1 interface{}, v2 interface
     }
     // VFMSUBADD231PS ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -49840,7 +50160,8 @@ func (self *Program) VFNMADD132PD(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMADD132PD m128/m64bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -49850,7 +50171,8 @@ func (self *Program) VFNMADD132PD(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMADD132PD xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -49863,7 +50185,8 @@ func (self *Program) VFNMADD132PD(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMADD132PD m256/m64bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -49873,7 +50196,8 @@ func (self *Program) VFNMADD132PD(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMADD132PD ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -49996,7 +50320,8 @@ func (self *Program) VFNMADD132PS(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMADD132PS m128/m32bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -50006,7 +50331,8 @@ func (self *Program) VFNMADD132PS(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMADD132PS xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -50019,7 +50345,8 @@ func (self *Program) VFNMADD132PS(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMADD132PS m256/m32bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -50029,7 +50356,8 @@ func (self *Program) VFNMADD132PS(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMADD132PS ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -50316,7 +50644,8 @@ func (self *Program) VFNMADD213PD(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMADD213PD m128/m64bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -50326,7 +50655,8 @@ func (self *Program) VFNMADD213PD(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMADD213PD xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -50339,7 +50669,8 @@ func (self *Program) VFNMADD213PD(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMADD213PD m256/m64bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -50349,7 +50680,8 @@ func (self *Program) VFNMADD213PD(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMADD213PD ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -50472,7 +50804,8 @@ func (self *Program) VFNMADD213PS(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMADD213PS m128/m32bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -50482,7 +50815,8 @@ func (self *Program) VFNMADD213PS(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMADD213PS xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -50495,7 +50829,8 @@ func (self *Program) VFNMADD213PS(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMADD213PS m256/m32bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -50505,7 +50840,8 @@ func (self *Program) VFNMADD213PS(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMADD213PS ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -50792,7 +51128,8 @@ func (self *Program) VFNMADD231PD(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMADD231PD m128/m64bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -50802,7 +51139,8 @@ func (self *Program) VFNMADD231PD(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMADD231PD xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -50815,7 +51153,8 @@ func (self *Program) VFNMADD231PD(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMADD231PD m256/m64bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -50825,7 +51164,8 @@ func (self *Program) VFNMADD231PD(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMADD231PD ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -50948,7 +51288,8 @@ func (self *Program) VFNMADD231PS(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMADD231PS m128/m32bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -50958,7 +51299,8 @@ func (self *Program) VFNMADD231PS(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMADD231PS xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -50971,7 +51313,8 @@ func (self *Program) VFNMADD231PS(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMADD231PS m256/m32bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -50981,7 +51324,8 @@ func (self *Program) VFNMADD231PS(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMADD231PS ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -51600,7 +51944,8 @@ func (self *Program) VFNMSUB132PD(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMSUB132PD m128/m64bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -51610,7 +51955,8 @@ func (self *Program) VFNMSUB132PD(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMSUB132PD xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -51623,7 +51969,8 @@ func (self *Program) VFNMSUB132PD(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMSUB132PD m256/m64bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -51633,7 +51980,8 @@ func (self *Program) VFNMSUB132PD(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMSUB132PD ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -51756,7 +52104,8 @@ func (self *Program) VFNMSUB132PS(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMSUB132PS m128/m32bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -51766,7 +52115,8 @@ func (self *Program) VFNMSUB132PS(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMSUB132PS xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -51779,7 +52129,8 @@ func (self *Program) VFNMSUB132PS(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMSUB132PS m256/m32bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -51789,7 +52140,8 @@ func (self *Program) VFNMSUB132PS(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMSUB132PS ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -52076,7 +52428,8 @@ func (self *Program) VFNMSUB213PD(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMSUB213PD m128/m64bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -52086,7 +52439,8 @@ func (self *Program) VFNMSUB213PD(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMSUB213PD xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -52099,7 +52453,8 @@ func (self *Program) VFNMSUB213PD(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMSUB213PD m256/m64bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -52109,7 +52464,8 @@ func (self *Program) VFNMSUB213PD(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMSUB213PD ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -52232,7 +52588,8 @@ func (self *Program) VFNMSUB213PS(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMSUB213PS m128/m32bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -52242,7 +52599,8 @@ func (self *Program) VFNMSUB213PS(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMSUB213PS xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -52255,7 +52613,8 @@ func (self *Program) VFNMSUB213PS(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMSUB213PS m256/m32bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -52265,7 +52624,8 @@ func (self *Program) VFNMSUB213PS(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMSUB213PS ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -52552,7 +52912,8 @@ func (self *Program) VFNMSUB231PD(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMSUB231PD m128/m64bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -52562,7 +52923,8 @@ func (self *Program) VFNMSUB231PD(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMSUB231PD xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -52575,7 +52937,8 @@ func (self *Program) VFNMSUB231PD(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMSUB231PD m256/m64bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -52585,7 +52948,8 @@ func (self *Program) VFNMSUB231PD(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMSUB231PD ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -52708,7 +53072,8 @@ func (self *Program) VFNMSUB231PS(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMSUB231PS m128/m32bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -52718,7 +53083,8 @@ func (self *Program) VFNMSUB231PS(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMSUB231PS xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -52731,7 +53097,8 @@ func (self *Program) VFNMSUB231PS(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMSUB231PS m256/m32bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -52741,7 +53108,8 @@ func (self *Program) VFNMSUB231PS(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VFNMSUB231PS ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainFMA
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -53295,7 +53663,8 @@ func (self *Program) VFPCLASSPD(v0 interface{}, v1 interface{}, v2 interface{}) 
     }
     // VFPCLASSPD imm8, m128/m64bcst, k{k}
     if isImm8(v0) && isM128M64bcst(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x85, 0b00, ehcode(v[2]), addr(v[1]), 0, kcode(v[2]), 0, bcode(v[1]))
@@ -53306,7 +53675,8 @@ func (self *Program) VFPCLASSPD(v0 interface{}, v1 interface{}, v2 interface{}) 
     }
     // VFPCLASSPD imm8, m256/m64bcst, k{k}
     if isImm8(v0) && isM256M64bcst(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x85, 0b01, ehcode(v[2]), addr(v[1]), 0, kcode(v[2]), 0, bcode(v[1]))
@@ -53317,7 +53687,8 @@ func (self *Program) VFPCLASSPD(v0 interface{}, v1 interface{}, v2 interface{}) 
     }
     // VFPCLASSPD imm8, xmm, k{k}
     if isImm8(v0) && isEVEXXMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -53331,7 +53702,8 @@ func (self *Program) VFPCLASSPD(v0 interface{}, v1 interface{}, v2 interface{}) 
     }
     // VFPCLASSPD imm8, ymm, k{k}
     if isImm8(v0) && isEVEXYMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -53390,7 +53762,8 @@ func (self *Program) VFPCLASSPS(v0 interface{}, v1 interface{}, v2 interface{}) 
     }
     // VFPCLASSPS imm8, m128/m32bcst, k{k}
     if isImm8(v0) && isM128M32bcst(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x05, 0b00, ehcode(v[2]), addr(v[1]), 0, kcode(v[2]), 0, bcode(v[1]))
@@ -53401,7 +53774,8 @@ func (self *Program) VFPCLASSPS(v0 interface{}, v1 interface{}, v2 interface{}) 
     }
     // VFPCLASSPS imm8, m256/m32bcst, k{k}
     if isImm8(v0) && isM256M32bcst(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x05, 0b01, ehcode(v[2]), addr(v[1]), 0, kcode(v[2]), 0, bcode(v[1]))
@@ -53412,7 +53786,8 @@ func (self *Program) VFPCLASSPS(v0 interface{}, v1 interface{}, v2 interface{}) 
     }
     // VFPCLASSPS imm8, xmm, k{k}
     if isImm8(v0) && isEVEXXMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -53426,7 +53801,8 @@ func (self *Program) VFPCLASSPS(v0 interface{}, v1 interface{}, v2 interface{}) 
     }
     // VFPCLASSPS imm8, ymm, k{k}
     if isImm8(v0) && isEVEXYMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -53776,7 +54152,8 @@ func (self *Program) VGATHERDPD(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VGATHERDPD vm32x, xmm{k}
     if len(vv) == 0 && isEVEXVMX(v0) && isXMMk(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), 0, 0)
@@ -53786,7 +54163,8 @@ func (self *Program) VGATHERDPD(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VGATHERDPD vm32x, ymm{k}
     if len(vv) == 0 && isEVEXVMX(v0) && isYMMk(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), 0, 0)
@@ -53850,7 +54228,8 @@ func (self *Program) VGATHERDPS(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VGATHERDPS vm32x, xmm{k}
     if len(vv) == 0 && isEVEXVMX(v0) && isXMMk(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), 0, 0)
@@ -53860,7 +54239,8 @@ func (self *Program) VGATHERDPS(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VGATHERDPS vm32y, ymm{k}
     if len(vv) == 0 && isEVEXVMY(v0) && isYMMk(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), 0, 0)
@@ -54124,7 +54504,8 @@ func (self *Program) VGATHERQPD(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VGATHERQPD vm64x, xmm{k}
     if len(vv) == 0 && isEVEXVMX(v0) && isXMMk(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), 0, 0)
@@ -54134,7 +54515,8 @@ func (self *Program) VGATHERQPD(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VGATHERQPD vm64y, ymm{k}
     if len(vv) == 0 && isEVEXVMY(v0) && isYMMk(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), 0, 0)
@@ -54198,7 +54580,8 @@ func (self *Program) VGATHERQPS(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VGATHERQPS vm64x, xmm{k}
     if len(vv) == 0 && isEVEXVMX(v0) && isXMMk(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), 0, 0)
@@ -54208,7 +54591,8 @@ func (self *Program) VGATHERQPS(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VGATHERQPS vm64y, xmm{k}
     if len(vv) == 0 && isEVEXVMY(v0) && isXMMk(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), 0, 0)
@@ -54280,7 +54664,8 @@ func (self *Program) VGETEXPPD(v0 interface{}, v1 interface{}, vv ...interface{}
     }
     // VGETEXPPD m128/m64bcst, xmm{k}{z}
     if len(vv) == 0 && isM128M64bcst(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -54290,7 +54675,8 @@ func (self *Program) VGETEXPPD(v0 interface{}, v1 interface{}, vv ...interface{}
     }
     // VGETEXPPD m256/m64bcst, ymm{k}{z}
     if len(vv) == 0 && isM256M64bcst(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -54300,7 +54686,8 @@ func (self *Program) VGETEXPPD(v0 interface{}, v1 interface{}, vv ...interface{}
     }
     // VGETEXPPD xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -54313,7 +54700,8 @@ func (self *Program) VGETEXPPD(v0 interface{}, v1 interface{}, vv ...interface{}
     }
     // VGETEXPPD ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -54388,7 +54776,8 @@ func (self *Program) VGETEXPPS(v0 interface{}, v1 interface{}, vv ...interface{}
     }
     // VGETEXPPS m128/m32bcst, xmm{k}{z}
     if len(vv) == 0 && isM128M32bcst(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -54398,7 +54787,8 @@ func (self *Program) VGETEXPPS(v0 interface{}, v1 interface{}, vv ...interface{}
     }
     // VGETEXPPS m256/m32bcst, ymm{k}{z}
     if len(vv) == 0 && isM256M32bcst(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -54408,7 +54798,8 @@ func (self *Program) VGETEXPPS(v0 interface{}, v1 interface{}, vv ...interface{}
     }
     // VGETEXPPS xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -54421,7 +54812,8 @@ func (self *Program) VGETEXPPS(v0 interface{}, v1 interface{}, vv ...interface{}
     }
     // VGETEXPPS ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -54615,7 +55007,8 @@ func (self *Program) VGETMANTPD(v0 interface{}, v1 interface{}, v2 interface{}, 
     }
     // VGETMANTPD imm8, m128/m64bcst, xmm{k}{z}
     if len(vv) == 0 && isImm8(v0) && isM128M64bcst(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x85, 0b00, ehcode(v[2]), addr(v[1]), 0, kcode(v[2]), zcode(v[2]), bcode(v[1]))
@@ -54626,7 +55019,8 @@ func (self *Program) VGETMANTPD(v0 interface{}, v1 interface{}, v2 interface{}, 
     }
     // VGETMANTPD imm8, m256/m64bcst, ymm{k}{z}
     if len(vv) == 0 && isImm8(v0) && isM256M64bcst(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x85, 0b01, ehcode(v[2]), addr(v[1]), 0, kcode(v[2]), zcode(v[2]), bcode(v[1]))
@@ -54637,7 +55031,8 @@ func (self *Program) VGETMANTPD(v0 interface{}, v1 interface{}, v2 interface{}, 
     }
     // VGETMANTPD imm8, xmm, xmm{k}{z}
     if len(vv) == 0 && isImm8(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -54651,7 +55046,8 @@ func (self *Program) VGETMANTPD(v0 interface{}, v1 interface{}, v2 interface{}, 
     }
     // VGETMANTPD imm8, ymm, ymm{k}{z}
     if len(vv) == 0 && isImm8(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -54730,7 +55126,8 @@ func (self *Program) VGETMANTPS(v0 interface{}, v1 interface{}, v2 interface{}, 
     }
     // VGETMANTPS imm8, m128/m32bcst, xmm{k}{z}
     if len(vv) == 0 && isImm8(v0) && isM128M32bcst(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x05, 0b00, ehcode(v[2]), addr(v[1]), 0, kcode(v[2]), zcode(v[2]), bcode(v[1]))
@@ -54741,7 +55138,8 @@ func (self *Program) VGETMANTPS(v0 interface{}, v1 interface{}, v2 interface{}, 
     }
     // VGETMANTPS imm8, m256/m32bcst, ymm{k}{z}
     if len(vv) == 0 && isImm8(v0) && isM256M32bcst(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x05, 0b01, ehcode(v[2]), addr(v[1]), 0, kcode(v[2]), zcode(v[2]), bcode(v[1]))
@@ -54752,7 +55150,8 @@ func (self *Program) VGETMANTPS(v0 interface{}, v1 interface{}, v2 interface{}, 
     }
     // VGETMANTPS imm8, xmm, xmm{k}{z}
     if len(vv) == 0 && isImm8(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -54766,7 +55165,8 @@ func (self *Program) VGETMANTPS(v0 interface{}, v1 interface{}, v2 interface{}, 
     }
     // VGETMANTPS imm8, ymm, ymm{k}{z}
     if len(vv) == 0 && isImm8(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -55217,7 +55617,8 @@ func (self *Program) VINSERTF32X4(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VINSERTF32X4 imm8, xmm, ymm, ymm{k}{z}
     if isImm8(v0) && isEVEXXMM(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -55231,7 +55632,8 @@ func (self *Program) VINSERTF32X4(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VINSERTF32X4 imm8, m128, ymm, ymm{k}{z}
     if isImm8(v0) && isM128(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x05, 0b01, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), zcode(v[3]), 0)
@@ -55326,7 +55728,8 @@ func (self *Program) VINSERTF64X2(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VINSERTF64X2 imm8, xmm, ymm, ymm{k}{z}
     if isImm8(v0) && isEVEXXMM(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -55340,7 +55743,8 @@ func (self *Program) VINSERTF64X2(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VINSERTF64X2 imm8, m128, ymm, ymm{k}{z}
     if isImm8(v0) && isM128(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x85, 0b01, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), zcode(v[3]), 0)
@@ -55475,7 +55879,8 @@ func (self *Program) VINSERTI32X4(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VINSERTI32X4 imm8, xmm, ymm, ymm{k}{z}
     if isImm8(v0) && isEVEXXMM(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -55489,7 +55894,8 @@ func (self *Program) VINSERTI32X4(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VINSERTI32X4 imm8, m128, ymm, ymm{k}{z}
     if isImm8(v0) && isM128(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x05, 0b01, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), zcode(v[3]), 0)
@@ -55584,7 +55990,8 @@ func (self *Program) VINSERTI64X2(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VINSERTI64X2 imm8, xmm, ymm, ymm{k}{z}
     if isImm8(v0) && isEVEXXMM(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -55598,7 +56005,8 @@ func (self *Program) VINSERTI64X2(v0 interface{}, v1 interface{}, v2 interface{}
     }
     // VINSERTI64X2 imm8, m128, ymm, ymm{k}{z}
     if isImm8(v0) && isM128(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x85, 0b01, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), zcode(v[3]), 0)
@@ -56025,7 +56433,8 @@ func (self *Program) VMAXPD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VMAXPD m128/m64bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -56035,7 +56444,8 @@ func (self *Program) VMAXPD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VMAXPD xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -56048,7 +56458,8 @@ func (self *Program) VMAXPD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VMAXPD m256/m64bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -56058,7 +56469,8 @@ func (self *Program) VMAXPD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VMAXPD ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -56177,7 +56589,8 @@ func (self *Program) VMAXPS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VMAXPS m128/m32bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x04, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -56187,7 +56600,8 @@ func (self *Program) VMAXPS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VMAXPS xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -56200,7 +56614,8 @@ func (self *Program) VMAXPS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VMAXPS m256/m32bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x04, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -56210,7 +56625,8 @@ func (self *Program) VMAXPS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VMAXPS ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -56489,7 +56905,8 @@ func (self *Program) VMINPD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VMINPD m128/m64bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -56499,7 +56916,8 @@ func (self *Program) VMINPD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VMINPD xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -56512,7 +56930,8 @@ func (self *Program) VMINPD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VMINPD m256/m64bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -56522,7 +56941,8 @@ func (self *Program) VMINPD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VMINPD ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -56641,7 +57061,8 @@ func (self *Program) VMINPS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VMINPS m128/m32bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x04, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -56651,7 +57072,8 @@ func (self *Program) VMINPS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VMINPS xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -56664,7 +57086,8 @@ func (self *Program) VMINPS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VMINPS m256/m32bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x04, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -56674,7 +57097,8 @@ func (self *Program) VMINPS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VMINPS ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -56987,7 +57411,8 @@ func (self *Program) VMOVAPD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVAPD xmm, m128{k}{z}
     if isEVEXXMM(v0) && isM128kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b00, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -56997,7 +57422,8 @@ func (self *Program) VMOVAPD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVAPD xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -57018,7 +57444,8 @@ func (self *Program) VMOVAPD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVAPD ymm, m256{k}{z}
     if isEVEXYMM(v0) && isM256kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b01, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -57028,7 +57455,8 @@ func (self *Program) VMOVAPD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVAPD ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -57049,7 +57477,8 @@ func (self *Program) VMOVAPD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVAPD m128, xmm{k}{z}
     if isM128(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -57059,7 +57488,8 @@ func (self *Program) VMOVAPD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVAPD m256, ymm{k}{z}
     if isM256(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -57209,7 +57639,8 @@ func (self *Program) VMOVAPS(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVAPS xmm, m128{k}{z}
     if isEVEXXMM(v0) && isM128kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x04, 0b00, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -57219,7 +57650,8 @@ func (self *Program) VMOVAPS(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVAPS xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -57240,7 +57672,8 @@ func (self *Program) VMOVAPS(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVAPS ymm, m256{k}{z}
     if isEVEXYMM(v0) && isM256kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x04, 0b01, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -57250,7 +57683,8 @@ func (self *Program) VMOVAPS(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVAPS ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -57271,7 +57705,8 @@ func (self *Program) VMOVAPS(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVAPS m128, xmm{k}{z}
     if isM128(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x04, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -57281,7 +57716,8 @@ func (self *Program) VMOVAPS(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVAPS m256, ymm{k}{z}
     if isM256(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x04, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -57486,7 +57922,8 @@ func (self *Program) VMOVDDUP(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVDDUP xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -57499,7 +57936,8 @@ func (self *Program) VMOVDDUP(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVDDUP ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -57512,7 +57950,8 @@ func (self *Program) VMOVDDUP(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVDDUP m64, xmm{k}{z}
     if isM64(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x87, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -57522,7 +57961,8 @@ func (self *Program) VMOVDDUP(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVDDUP m256, ymm{k}{z}
     if isM256(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x87, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -57686,7 +58126,8 @@ func (self *Program) VMOVDQA32(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVDQA32 xmm, m128{k}{z}
     if isEVEXXMM(v0) && isM128kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -57696,7 +58137,8 @@ func (self *Program) VMOVDQA32(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVDQA32 xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -57717,7 +58159,8 @@ func (self *Program) VMOVDQA32(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVDQA32 ymm, m256{k}{z}
     if isEVEXYMM(v0) && isM256kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -57727,7 +58170,8 @@ func (self *Program) VMOVDQA32(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVDQA32 ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -57748,7 +58192,8 @@ func (self *Program) VMOVDQA32(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVDQA32 m128, xmm{k}{z}
     if isM128(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -57758,7 +58203,8 @@ func (self *Program) VMOVDQA32(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVDQA32 m256, ymm{k}{z}
     if isM256(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -57832,7 +58278,8 @@ func (self *Program) VMOVDQA64(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVDQA64 xmm, m128{k}{z}
     if isEVEXXMM(v0) && isM128kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b00, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -57842,7 +58289,8 @@ func (self *Program) VMOVDQA64(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVDQA64 xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -57863,7 +58311,8 @@ func (self *Program) VMOVDQA64(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVDQA64 ymm, m256{k}{z}
     if isEVEXYMM(v0) && isM256kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b01, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -57873,7 +58322,8 @@ func (self *Program) VMOVDQA64(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVDQA64 ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -57894,7 +58344,8 @@ func (self *Program) VMOVDQA64(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVDQA64 m128, xmm{k}{z}
     if isM128(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -57904,7 +58355,8 @@ func (self *Program) VMOVDQA64(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVDQA64 m256, ymm{k}{z}
     if isM256(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -58068,7 +58520,8 @@ func (self *Program) VMOVDQU16(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVDQU16 xmm, m128{k}{z}
     if isEVEXXMM(v0) && isM128kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x87, 0b00, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -58078,7 +58531,8 @@ func (self *Program) VMOVDQU16(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVDQU16 xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -58099,7 +58553,8 @@ func (self *Program) VMOVDQU16(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVDQU16 ymm, m256{k}{z}
     if isEVEXYMM(v0) && isM256kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x87, 0b01, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -58109,7 +58564,8 @@ func (self *Program) VMOVDQU16(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVDQU16 ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -58130,7 +58586,8 @@ func (self *Program) VMOVDQU16(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVDQU16 m128, xmm{k}{z}
     if isM128(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x87, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -58140,7 +58597,8 @@ func (self *Program) VMOVDQU16(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVDQU16 m256, ymm{k}{z}
     if isM256(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x87, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -58214,7 +58672,8 @@ func (self *Program) VMOVDQU32(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVDQU32 xmm, m128{k}{z}
     if isEVEXXMM(v0) && isM128kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x06, 0b00, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -58224,7 +58683,8 @@ func (self *Program) VMOVDQU32(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVDQU32 xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -58245,7 +58705,8 @@ func (self *Program) VMOVDQU32(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVDQU32 ymm, m256{k}{z}
     if isEVEXYMM(v0) && isM256kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x06, 0b01, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -58255,7 +58716,8 @@ func (self *Program) VMOVDQU32(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVDQU32 ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -58276,7 +58738,8 @@ func (self *Program) VMOVDQU32(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVDQU32 m128, xmm{k}{z}
     if isM128(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x06, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -58286,7 +58749,8 @@ func (self *Program) VMOVDQU32(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVDQU32 m256, ymm{k}{z}
     if isM256(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x06, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -58360,7 +58824,8 @@ func (self *Program) VMOVDQU64(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVDQU64 xmm, m128{k}{z}
     if isEVEXXMM(v0) && isM128kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x86, 0b00, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -58370,7 +58835,8 @@ func (self *Program) VMOVDQU64(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVDQU64 xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -58391,7 +58857,8 @@ func (self *Program) VMOVDQU64(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVDQU64 ymm, m256{k}{z}
     if isEVEXYMM(v0) && isM256kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x86, 0b01, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -58401,7 +58868,8 @@ func (self *Program) VMOVDQU64(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVDQU64 ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -58422,7 +58890,8 @@ func (self *Program) VMOVDQU64(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVDQU64 m128, xmm{k}{z}
     if isM128(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x86, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -58432,7 +58901,8 @@ func (self *Program) VMOVDQU64(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVDQU64 m256, ymm{k}{z}
     if isM256(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x86, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -58506,7 +58976,8 @@ func (self *Program) VMOVDQU8(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVDQU8 xmm, m128{k}{z}
     if isEVEXXMM(v0) && isM128kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x07, 0b00, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -58516,7 +58987,8 @@ func (self *Program) VMOVDQU8(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVDQU8 xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -58537,7 +59009,8 @@ func (self *Program) VMOVDQU8(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVDQU8 ymm, m256{k}{z}
     if isEVEXYMM(v0) && isM256kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x07, 0b01, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -58547,7 +59020,8 @@ func (self *Program) VMOVDQU8(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVDQU8 ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -58568,7 +59042,8 @@ func (self *Program) VMOVDQU8(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVDQU8 m128, xmm{k}{z}
     if isM128(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x07, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -58578,7 +59053,8 @@ func (self *Program) VMOVDQU8(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVDQU8 m256, ymm{k}{z}
     if isM256(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x07, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -59039,7 +59515,8 @@ func (self *Program) VMOVNTDQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVNTDQ xmm, m128
     if isEVEXXMM(v0) && isM128(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[0]), addr(v[1]), 0, 0, 0, 0)
@@ -59049,7 +59526,8 @@ func (self *Program) VMOVNTDQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVNTDQ ymm, m256
     if isEVEXYMM(v0) && isM256(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[0]), addr(v[1]), 0, 0, 0, 0)
@@ -59108,7 +59586,8 @@ func (self *Program) VMOVNTDQA(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVNTDQA m128, xmm
     if isM128(v0) && isEVEXXMM(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[1]), addr(v[0]), 0, 0, 0, 0)
@@ -59118,7 +59597,8 @@ func (self *Program) VMOVNTDQA(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVNTDQA m256, ymm
     if isM256(v0) && isEVEXYMM(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[1]), addr(v[0]), 0, 0, 0, 0)
@@ -59177,7 +59657,8 @@ func (self *Program) VMOVNTPD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVNTPD xmm, m128
     if isEVEXXMM(v0) && isM128(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b00, ehcode(v[0]), addr(v[1]), 0, 0, 0, 0)
@@ -59187,7 +59668,8 @@ func (self *Program) VMOVNTPD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVNTPD ymm, m256
     if isEVEXYMM(v0) && isM256(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b01, ehcode(v[0]), addr(v[1]), 0, 0, 0, 0)
@@ -59246,7 +59728,8 @@ func (self *Program) VMOVNTPS(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVNTPS xmm, m128
     if isEVEXXMM(v0) && isM128(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[0]), addr(v[1]), 0, 0, 0, 0)
@@ -59256,7 +59739,8 @@ func (self *Program) VMOVNTPS(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVNTPS ymm, m256
     if isEVEXYMM(v0) && isM256(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[0]), addr(v[1]), 0, 0, 0, 0)
@@ -59624,7 +60108,8 @@ func (self *Program) VMOVSHDUP(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVSHDUP xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -59637,7 +60122,8 @@ func (self *Program) VMOVSHDUP(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVSHDUP ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -59650,7 +60136,8 @@ func (self *Program) VMOVSHDUP(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVSHDUP m128, xmm{k}{z}
     if isM128(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x06, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -59660,7 +60147,8 @@ func (self *Program) VMOVSHDUP(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVSHDUP m256, ymm{k}{z}
     if isM256(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x06, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -59757,7 +60245,8 @@ func (self *Program) VMOVSLDUP(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVSLDUP xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -59770,7 +60259,8 @@ func (self *Program) VMOVSLDUP(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVSLDUP ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -59783,7 +60273,8 @@ func (self *Program) VMOVSLDUP(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVSLDUP m128, xmm{k}{z}
     if isM128(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x06, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -59793,7 +60284,8 @@ func (self *Program) VMOVSLDUP(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVSLDUP m256, ymm{k}{z}
     if isM256(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x06, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -60044,7 +60536,8 @@ func (self *Program) VMOVUPD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVUPD xmm, m128{k}{z}
     if isEVEXXMM(v0) && isM128kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b00, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -60054,7 +60547,8 @@ func (self *Program) VMOVUPD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVUPD xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -60075,7 +60569,8 @@ func (self *Program) VMOVUPD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVUPD ymm, m256{k}{z}
     if isEVEXYMM(v0) && isM256kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b01, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -60085,7 +60580,8 @@ func (self *Program) VMOVUPD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVUPD ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -60106,7 +60602,8 @@ func (self *Program) VMOVUPD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVUPD m128, xmm{k}{z}
     if isM128(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -60116,7 +60613,8 @@ func (self *Program) VMOVUPD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVUPD m256, ymm{k}{z}
     if isM256(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -60266,7 +60764,8 @@ func (self *Program) VMOVUPS(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVUPS xmm, m128{k}{z}
     if isEVEXXMM(v0) && isM128kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x04, 0b00, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -60276,7 +60775,8 @@ func (self *Program) VMOVUPS(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVUPS xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -60297,7 +60797,8 @@ func (self *Program) VMOVUPS(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVUPS ymm, m256{k}{z}
     if isEVEXYMM(v0) && isM256kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x04, 0b01, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -60307,7 +60808,8 @@ func (self *Program) VMOVUPS(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVUPS ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -60328,7 +60830,8 @@ func (self *Program) VMOVUPS(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVUPS m128, xmm{k}{z}
     if isM128(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x04, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -60338,7 +60841,8 @@ func (self *Program) VMOVUPS(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VMOVUPS m256, ymm{k}{z}
     if isM256(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x04, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -60520,7 +61024,8 @@ func (self *Program) VMULPD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VMULPD m128/m64bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -60530,7 +61035,8 @@ func (self *Program) VMULPD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VMULPD xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -60543,7 +61049,8 @@ func (self *Program) VMULPD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VMULPD m256/m64bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -60553,7 +61060,8 @@ func (self *Program) VMULPD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VMULPD ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -60672,7 +61180,8 @@ func (self *Program) VMULPS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VMULPS m128/m32bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x04, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -60682,7 +61191,8 @@ func (self *Program) VMULPS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VMULPS xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -60695,7 +61205,8 @@ func (self *Program) VMULPS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VMULPS m256/m32bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x04, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -60705,7 +61216,8 @@ func (self *Program) VMULPS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VMULPS ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -60965,7 +61477,8 @@ func (self *Program) VORPD(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
     }
     // VORPD m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -60975,7 +61488,8 @@ func (self *Program) VORPD(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
     }
     // VORPD xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -60988,7 +61502,8 @@ func (self *Program) VORPD(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
     }
     // VORPD m256/m64bcst, ymm, ymm{k}{z}
     if isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -60998,7 +61513,8 @@ func (self *Program) VORPD(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
     }
     // VORPD ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -61098,7 +61614,8 @@ func (self *Program) VORPS(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
     }
     // VORPS m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x04, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -61108,7 +61625,8 @@ func (self *Program) VORPS(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
     }
     // VORPS xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -61121,7 +61639,8 @@ func (self *Program) VORPS(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
     }
     // VORPS m256/m32bcst, ymm, ymm{k}{z}
     if isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x04, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -61131,7 +61650,8 @@ func (self *Program) VORPS(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
     }
     // VORPS ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -61235,7 +61755,8 @@ func (self *Program) VPABSB(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPABSB xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -61248,7 +61769,8 @@ func (self *Program) VPABSB(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPABSB ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -61261,7 +61783,8 @@ func (self *Program) VPABSB(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPABSB m128, xmm{k}{z}
     if isM128(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -61271,7 +61794,8 @@ func (self *Program) VPABSB(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPABSB m256, ymm{k}{z}
     if isM256(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -61372,7 +61896,8 @@ func (self *Program) VPABSD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPABSD m128/m32bcst, xmm{k}{z}
     if isM128M32bcst(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -61382,7 +61907,8 @@ func (self *Program) VPABSD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPABSD m256/m32bcst, ymm{k}{z}
     if isM256M32bcst(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -61392,7 +61918,8 @@ func (self *Program) VPABSD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPABSD xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -61405,7 +61932,8 @@ func (self *Program) VPABSD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPABSD ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -61461,7 +61989,8 @@ func (self *Program) VPABSQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPABSQ m128/m64bcst, xmm{k}{z}
     if isM128M64bcst(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -61471,7 +62000,8 @@ func (self *Program) VPABSQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPABSQ m256/m64bcst, ymm{k}{z}
     if isM256M64bcst(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -61481,7 +62011,8 @@ func (self *Program) VPABSQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPABSQ xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -61494,7 +62025,8 @@ func (self *Program) VPABSQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPABSQ ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -61598,7 +62130,8 @@ func (self *Program) VPABSW(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPABSW xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -61611,7 +62144,8 @@ func (self *Program) VPABSW(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPABSW ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -61624,7 +62158,8 @@ func (self *Program) VPABSW(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPABSW m128, xmm{k}{z}
     if isM128(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -61634,7 +62169,8 @@ func (self *Program) VPABSW(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPABSW m256, ymm{k}{z}
     if isM256(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -61731,7 +62267,8 @@ func (self *Program) VPACKSSDW(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPACKSSDW m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -61741,7 +62278,8 @@ func (self *Program) VPACKSSDW(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPACKSSDW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -61754,7 +62292,8 @@ func (self *Program) VPACKSSDW(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPACKSSDW m256/m32bcst, ymm, ymm{k}{z}
     if isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -61764,7 +62303,8 @@ func (self *Program) VPACKSSDW(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPACKSSDW ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -61864,7 +62404,8 @@ func (self *Program) VPACKSSWB(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPACKSSWB xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -61877,7 +62418,8 @@ func (self *Program) VPACKSSWB(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPACKSSWB m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -61887,7 +62429,8 @@ func (self *Program) VPACKSSWB(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPACKSSWB ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -61900,7 +62443,8 @@ func (self *Program) VPACKSSWB(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPACKSSWB m256, ymm, ymm{k}{z}
     if isM256(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -62001,7 +62545,8 @@ func (self *Program) VPACKUSDW(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPACKUSDW m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -62011,7 +62556,8 @@ func (self *Program) VPACKUSDW(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPACKUSDW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -62024,7 +62570,8 @@ func (self *Program) VPACKUSDW(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPACKUSDW m256/m32bcst, ymm, ymm{k}{z}
     if isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -62034,7 +62581,8 @@ func (self *Program) VPACKUSDW(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPACKUSDW ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -62134,7 +62682,8 @@ func (self *Program) VPACKUSWB(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPACKUSWB xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -62147,7 +62696,8 @@ func (self *Program) VPACKUSWB(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPACKUSWB m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -62157,7 +62707,8 @@ func (self *Program) VPACKUSWB(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPACKUSWB ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -62170,7 +62721,8 @@ func (self *Program) VPACKUSWB(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPACKUSWB m256, ymm, ymm{k}{z}
     if isM256(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -62267,7 +62819,8 @@ func (self *Program) VPADDB(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPADDB xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -62280,7 +62833,8 @@ func (self *Program) VPADDB(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPADDB m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -62290,7 +62844,8 @@ func (self *Program) VPADDB(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPADDB ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -62303,7 +62858,8 @@ func (self *Program) VPADDB(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPADDB m256, ymm, ymm{k}{z}
     if isM256(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -62400,7 +62956,8 @@ func (self *Program) VPADDD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPADDD m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -62410,7 +62967,8 @@ func (self *Program) VPADDD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPADDD xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -62423,7 +62981,8 @@ func (self *Program) VPADDD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPADDD m256/m32bcst, ymm, ymm{k}{z}
     if isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -62433,7 +62992,8 @@ func (self *Program) VPADDD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPADDD ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -62533,7 +63093,8 @@ func (self *Program) VPADDQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPADDQ m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -62543,7 +63104,8 @@ func (self *Program) VPADDQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPADDQ xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -62556,7 +63118,8 @@ func (self *Program) VPADDQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPADDQ m256/m64bcst, ymm, ymm{k}{z}
     if isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -62566,7 +63129,8 @@ func (self *Program) VPADDQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPADDQ ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -62666,7 +63230,8 @@ func (self *Program) VPADDSB(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPADDSB xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -62679,7 +63244,8 @@ func (self *Program) VPADDSB(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPADDSB m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -62689,7 +63255,8 @@ func (self *Program) VPADDSB(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPADDSB ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -62702,7 +63269,8 @@ func (self *Program) VPADDSB(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPADDSB m256, ymm, ymm{k}{z}
     if isM256(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -62799,7 +63367,8 @@ func (self *Program) VPADDSW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPADDSW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -62812,7 +63381,8 @@ func (self *Program) VPADDSW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPADDSW m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -62822,7 +63392,8 @@ func (self *Program) VPADDSW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPADDSW ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -62835,7 +63406,8 @@ func (self *Program) VPADDSW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPADDSW m256, ymm, ymm{k}{z}
     if isM256(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -62932,7 +63504,8 @@ func (self *Program) VPADDUSB(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPADDUSB xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -62945,7 +63518,8 @@ func (self *Program) VPADDUSB(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPADDUSB m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -62955,7 +63529,8 @@ func (self *Program) VPADDUSB(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPADDUSB ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -62968,7 +63543,8 @@ func (self *Program) VPADDUSB(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPADDUSB m256, ymm, ymm{k}{z}
     if isM256(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -63065,7 +63641,8 @@ func (self *Program) VPADDUSW(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPADDUSW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -63078,7 +63655,8 @@ func (self *Program) VPADDUSW(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPADDUSW m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -63088,7 +63666,8 @@ func (self *Program) VPADDUSW(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPADDUSW ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -63101,7 +63680,8 @@ func (self *Program) VPADDUSW(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPADDUSW m256, ymm, ymm{k}{z}
     if isM256(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -63198,7 +63778,8 @@ func (self *Program) VPADDW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPADDW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -63211,7 +63792,8 @@ func (self *Program) VPADDW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPADDW m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -63221,7 +63803,8 @@ func (self *Program) VPADDW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPADDW ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -63234,7 +63817,8 @@ func (self *Program) VPADDW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPADDW m256, ymm, ymm{k}{z}
     if isM256(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -63341,7 +63925,8 @@ func (self *Program) VPALIGNR(v0 interface{}, v1 interface{}, v2 interface{}, v3
     }
     // VPALIGNR imm8, xmm, xmm, xmm{k}{z}
     if isImm8(v0) && isEVEXXMM(v1) && isEVEXXMM(v2) && isXMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -63355,7 +63940,8 @@ func (self *Program) VPALIGNR(v0 interface{}, v1 interface{}, v2 interface{}, v3
     }
     // VPALIGNR imm8, m128, xmm, xmm{k}{z}
     if isImm8(v0) && isM128(v1) && isEVEXXMM(v2) && isXMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x05, 0b00, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), zcode(v[3]), 0)
@@ -63366,7 +63952,8 @@ func (self *Program) VPALIGNR(v0 interface{}, v1 interface{}, v2 interface{}, v3
     }
     // VPALIGNR imm8, ymm, ymm, ymm{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -63380,7 +63967,8 @@ func (self *Program) VPALIGNR(v0 interface{}, v1 interface{}, v2 interface{}, v3
     }
     // VPALIGNR imm8, m256, ymm, ymm{k}{z}
     if isImm8(v0) && isM256(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x05, 0b01, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), zcode(v[3]), 0)
@@ -63492,7 +64080,8 @@ func (self *Program) VPANDD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPANDD m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -63502,7 +64091,8 @@ func (self *Program) VPANDD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPANDD xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -63515,7 +64105,8 @@ func (self *Program) VPANDD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPANDD m256/m32bcst, ymm, ymm{k}{z}
     if isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -63525,7 +64116,8 @@ func (self *Program) VPANDD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPANDD ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -63639,7 +64231,8 @@ func (self *Program) VPANDND(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPANDND m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -63649,7 +64242,8 @@ func (self *Program) VPANDND(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPANDND xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -63662,7 +64256,8 @@ func (self *Program) VPANDND(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPANDND m256/m32bcst, ymm, ymm{k}{z}
     if isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -63672,7 +64267,8 @@ func (self *Program) VPANDND(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPANDND ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -63728,7 +64324,8 @@ func (self *Program) VPANDNQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPANDNQ m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -63738,7 +64335,8 @@ func (self *Program) VPANDNQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPANDNQ xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -63751,7 +64349,8 @@ func (self *Program) VPANDNQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPANDNQ m256/m64bcst, ymm, ymm{k}{z}
     if isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -63761,7 +64360,8 @@ func (self *Program) VPANDNQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPANDNQ ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -63817,7 +64417,8 @@ func (self *Program) VPANDQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPANDQ m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -63827,7 +64428,8 @@ func (self *Program) VPANDQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPANDQ xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -63840,7 +64442,8 @@ func (self *Program) VPANDQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPANDQ m256/m64bcst, ymm, ymm{k}{z}
     if isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -63850,7 +64453,8 @@ func (self *Program) VPANDQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPANDQ ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -63950,7 +64554,8 @@ func (self *Program) VPAVGB(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPAVGB xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -63963,7 +64568,8 @@ func (self *Program) VPAVGB(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPAVGB m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -63973,7 +64579,8 @@ func (self *Program) VPAVGB(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPAVGB ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -63986,7 +64593,8 @@ func (self *Program) VPAVGB(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPAVGB m256, ymm, ymm{k}{z}
     if isM256(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -64083,7 +64691,8 @@ func (self *Program) VPAVGW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPAVGW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -64096,7 +64705,8 @@ func (self *Program) VPAVGW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPAVGW m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -64106,7 +64716,8 @@ func (self *Program) VPAVGW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPAVGW ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -64119,7 +64730,8 @@ func (self *Program) VPAVGW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPAVGW m256, ymm, ymm{k}{z}
     if isM256(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -64238,7 +64850,8 @@ func (self *Program) VPBLENDMB(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPBLENDMB xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -64251,7 +64864,8 @@ func (self *Program) VPBLENDMB(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPBLENDMB m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -64261,7 +64875,8 @@ func (self *Program) VPBLENDMB(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPBLENDMB ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -64274,7 +64889,8 @@ func (self *Program) VPBLENDMB(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPBLENDMB m256, ymm, ymm{k}{z}
     if isM256(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -64327,7 +64943,8 @@ func (self *Program) VPBLENDMD(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPBLENDMD m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -64337,7 +64954,8 @@ func (self *Program) VPBLENDMD(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPBLENDMD xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -64350,7 +64968,8 @@ func (self *Program) VPBLENDMD(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPBLENDMD m256/m32bcst, ymm, ymm{k}{z}
     if isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -64360,7 +64979,8 @@ func (self *Program) VPBLENDMD(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPBLENDMD ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -64416,7 +65036,8 @@ func (self *Program) VPBLENDMQ(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPBLENDMQ m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -64426,7 +65047,8 @@ func (self *Program) VPBLENDMQ(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPBLENDMQ xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -64439,7 +65061,8 @@ func (self *Program) VPBLENDMQ(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPBLENDMQ m256/m64bcst, ymm, ymm{k}{z}
     if isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -64449,7 +65072,8 @@ func (self *Program) VPBLENDMQ(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPBLENDMQ ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -64505,7 +65129,8 @@ func (self *Program) VPBLENDMW(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPBLENDMW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -64518,7 +65143,8 @@ func (self *Program) VPBLENDMW(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPBLENDMW m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -64528,7 +65154,8 @@ func (self *Program) VPBLENDMW(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPBLENDMW ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -64541,7 +65168,8 @@ func (self *Program) VPBLENDMW(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPBLENDMW m256, ymm, ymm{k}{z}
     if isM256(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -64790,7 +65418,8 @@ func (self *Program) VPBROADCASTB(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPBROADCASTB r32, xmm{k}{z}
     if isReg32(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -64803,7 +65432,8 @@ func (self *Program) VPBROADCASTB(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPBROADCASTB r32, ymm{k}{z}
     if isReg32(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -64816,7 +65446,8 @@ func (self *Program) VPBROADCASTB(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPBROADCASTB xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -64829,7 +65460,8 @@ func (self *Program) VPBROADCASTB(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPBROADCASTB xmm, ymm{k}{z}
     if isEVEXXMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -64842,7 +65474,8 @@ func (self *Program) VPBROADCASTB(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPBROADCASTB m8, xmm{k}{z}
     if isM8(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -64852,7 +65485,8 @@ func (self *Program) VPBROADCASTB(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPBROADCASTB m8, ymm{k}{z}
     if isM8(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -64969,7 +65603,8 @@ func (self *Program) VPBROADCASTD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPBROADCASTD r32, xmm{k}{z}
     if isReg32(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -64982,7 +65617,8 @@ func (self *Program) VPBROADCASTD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPBROADCASTD r32, ymm{k}{z}
     if isReg32(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -64995,7 +65631,8 @@ func (self *Program) VPBROADCASTD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPBROADCASTD xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -65008,7 +65645,8 @@ func (self *Program) VPBROADCASTD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPBROADCASTD xmm, ymm{k}{z}
     if isEVEXXMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -65021,7 +65659,8 @@ func (self *Program) VPBROADCASTD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPBROADCASTD m32, xmm{k}{z}
     if isM32(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -65031,7 +65670,8 @@ func (self *Program) VPBROADCASTD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPBROADCASTD m32, ymm{k}{z}
     if isM32(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -65058,7 +65698,8 @@ func (self *Program) VPBROADCASTMB2Q(v0 interface{}, v1 interface{}) *Instructio
     p := self.alloc("VPBROADCASTMB2Q", 2, Operands { v0, v1 })
     // VPBROADCASTMB2Q k, xmm
     if isK(v0) && isEVEXXMM(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512CD)
+        self.require(ISA_AVX512CD)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -65071,7 +65712,8 @@ func (self *Program) VPBROADCASTMB2Q(v0 interface{}, v1 interface{}) *Instructio
     }
     // VPBROADCASTMB2Q k, ymm
     if isK(v0) && isEVEXYMM(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512CD)
+        self.require(ISA_AVX512CD)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -65114,7 +65756,8 @@ func (self *Program) VPBROADCASTMW2D(v0 interface{}, v1 interface{}) *Instructio
     p := self.alloc("VPBROADCASTMW2D", 2, Operands { v0, v1 })
     // VPBROADCASTMW2D k, xmm
     if isK(v0) && isEVEXXMM(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512CD)
+        self.require(ISA_AVX512CD)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -65127,7 +65770,8 @@ func (self *Program) VPBROADCASTMW2D(v0 interface{}, v1 interface{}) *Instructio
     }
     // VPBROADCASTMW2D k, ymm
     if isK(v0) && isEVEXYMM(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512CD)
+        self.require(ISA_AVX512CD)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -65260,7 +65904,8 @@ func (self *Program) VPBROADCASTQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPBROADCASTQ r64, xmm{k}{z}
     if isReg64(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -65273,7 +65918,8 @@ func (self *Program) VPBROADCASTQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPBROADCASTQ r64, ymm{k}{z}
     if isReg64(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -65286,7 +65932,8 @@ func (self *Program) VPBROADCASTQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPBROADCASTQ xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -65299,7 +65946,8 @@ func (self *Program) VPBROADCASTQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPBROADCASTQ xmm, ymm{k}{z}
     if isEVEXXMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -65312,7 +65960,8 @@ func (self *Program) VPBROADCASTQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPBROADCASTQ m64, xmm{k}{z}
     if isM64(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -65322,7 +65971,8 @@ func (self *Program) VPBROADCASTQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPBROADCASTQ m64, ymm{k}{z}
     if isM64(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -65439,7 +66089,8 @@ func (self *Program) VPBROADCASTW(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPBROADCASTW r32, xmm{k}{z}
     if isReg32(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -65452,7 +66103,8 @@ func (self *Program) VPBROADCASTW(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPBROADCASTW r32, ymm{k}{z}
     if isReg32(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -65465,7 +66117,8 @@ func (self *Program) VPBROADCASTW(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPBROADCASTW xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -65478,7 +66131,8 @@ func (self *Program) VPBROADCASTW(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPBROADCASTW xmm, ymm{k}{z}
     if isEVEXXMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -65491,7 +66145,8 @@ func (self *Program) VPBROADCASTW(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPBROADCASTW m16, xmm{k}{z}
     if isM16(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -65501,7 +66156,8 @@ func (self *Program) VPBROADCASTW(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPBROADCASTW m16, ymm{k}{z}
     if isM16(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -65527,7 +66183,8 @@ func (self *Program) VPCLMULQDQ(v0 interface{}, v1 interface{}, v2 interface{}, 
     p := self.alloc("VPCLMULQDQ", 4, Operands { v0, v1, v2, v3 })
     // VPCLMULQDQ imm8, xmm, xmm, xmm
     if isImm8(v0) && isXMM(v1) && isXMM(v2) && isXMM(v3) {
-        self.require(ISA_AVX | ISA_PCLMULQDQ)
+        self.require(ISA_AVX)
+        self.require(ISA_PCLMULQDQ)
         p.domain = DomainCrypto
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0xc4)
@@ -65540,7 +66197,8 @@ func (self *Program) VPCLMULQDQ(v0 interface{}, v1 interface{}, v2 interface{}, 
     }
     // VPCLMULQDQ imm8, m128, xmm, xmm
     if isImm8(v0) && isM128(v1) && isXMM(v2) && isXMM(v3) {
-        self.require(ISA_AVX | ISA_PCLMULQDQ)
+        self.require(ISA_AVX)
+        self.require(ISA_PCLMULQDQ)
         p.domain = DomainCrypto
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.vex3(0xc4, 0b11, 0x01, hcode(v[3]), addr(v[1]), hlcode(v[2]))
@@ -65702,7 +66360,8 @@ func (self *Program) VPCMPB(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
     }
     // VPCMPB imm8, xmm, xmm, k{k}
     if isImm8(v0) && isEVEXXMM(v1) && isEVEXXMM(v2) && isKk(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -65716,7 +66375,8 @@ func (self *Program) VPCMPB(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
     }
     // VPCMPB imm8, m128, xmm, k{k}
     if isImm8(v0) && isM128(v1) && isEVEXXMM(v2) && isKk(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x05, 0b00, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), 0, 0)
@@ -65727,7 +66387,8 @@ func (self *Program) VPCMPB(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
     }
     // VPCMPB imm8, ymm, ymm, k{k}
     if isImm8(v0) && isEVEXYMM(v1) && isEVEXYMM(v2) && isKk(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -65741,7 +66402,8 @@ func (self *Program) VPCMPB(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
     }
     // VPCMPB imm8, m256, ymm, k{k}
     if isImm8(v0) && isM256(v1) && isEVEXYMM(v2) && isKk(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x05, 0b01, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), 0, 0)
@@ -65797,7 +66459,8 @@ func (self *Program) VPCMPD(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
     }
     // VPCMPD imm8, m128/m32bcst, xmm, k{k}
     if isImm8(v0) && isM128M32bcst(v1) && isEVEXXMM(v2) && isKk(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x05, 0b00, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), 0, bcode(v[1]))
@@ -65808,7 +66471,8 @@ func (self *Program) VPCMPD(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
     }
     // VPCMPD imm8, xmm, xmm, k{k}
     if isImm8(v0) && isEVEXXMM(v1) && isEVEXXMM(v2) && isKk(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -65822,7 +66486,8 @@ func (self *Program) VPCMPD(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
     }
     // VPCMPD imm8, m256/m32bcst, ymm, k{k}
     if isImm8(v0) && isM256M32bcst(v1) && isEVEXYMM(v2) && isKk(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x05, 0b01, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), 0, bcode(v[1]))
@@ -65833,7 +66498,8 @@ func (self *Program) VPCMPD(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
     }
     // VPCMPD imm8, ymm, ymm, k{k}
     if isImm8(v0) && isEVEXYMM(v1) && isEVEXYMM(v2) && isKk(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -65934,7 +66600,8 @@ func (self *Program) VPCMPEQB(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPCMPEQB xmm, xmm, k{k}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -65947,7 +66614,8 @@ func (self *Program) VPCMPEQB(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPCMPEQB m128, xmm, k{k}
     if isM128(v0) && isEVEXXMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), 0, 0)
@@ -65957,7 +66625,8 @@ func (self *Program) VPCMPEQB(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPCMPEQB ymm, ymm, k{k}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -65970,7 +66639,8 @@ func (self *Program) VPCMPEQB(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPCMPEQB m256, ymm, k{k}
     if isM256(v0) && isEVEXYMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), 0, 0)
@@ -66067,7 +66737,8 @@ func (self *Program) VPCMPEQD(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPCMPEQD m128/m32bcst, xmm, k{k}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), 0, bcode(v[0]))
@@ -66077,7 +66748,8 @@ func (self *Program) VPCMPEQD(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPCMPEQD xmm, xmm, k{k}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -66090,7 +66762,8 @@ func (self *Program) VPCMPEQD(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPCMPEQD m256/m32bcst, ymm, k{k}
     if isM256M32bcst(v0) && isEVEXYMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), 0, bcode(v[0]))
@@ -66100,7 +66773,8 @@ func (self *Program) VPCMPEQD(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPCMPEQD ymm, ymm, k{k}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -66204,7 +66878,8 @@ func (self *Program) VPCMPEQQ(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPCMPEQQ m128/m64bcst, xmm, k{k}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), 0, bcode(v[0]))
@@ -66214,7 +66889,8 @@ func (self *Program) VPCMPEQQ(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPCMPEQQ xmm, xmm, k{k}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -66227,7 +66903,8 @@ func (self *Program) VPCMPEQQ(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPCMPEQQ m256/m64bcst, ymm, k{k}
     if isM256M64bcst(v0) && isEVEXYMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), 0, bcode(v[0]))
@@ -66237,7 +66914,8 @@ func (self *Program) VPCMPEQQ(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPCMPEQQ ymm, ymm, k{k}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -66337,7 +67015,8 @@ func (self *Program) VPCMPEQW(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPCMPEQW xmm, xmm, k{k}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -66350,7 +67029,8 @@ func (self *Program) VPCMPEQW(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPCMPEQW m128, xmm, k{k}
     if isM128(v0) && isEVEXXMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), 0, 0)
@@ -66360,7 +67040,8 @@ func (self *Program) VPCMPEQW(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPCMPEQW ymm, ymm, k{k}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -66373,7 +67054,8 @@ func (self *Program) VPCMPEQW(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPCMPEQW m256, ymm, k{k}
     if isM256(v0) && isEVEXYMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), 0, 0)
@@ -66550,7 +67232,8 @@ func (self *Program) VPCMPGTB(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPCMPGTB xmm, xmm, k{k}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -66563,7 +67246,8 @@ func (self *Program) VPCMPGTB(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPCMPGTB m128, xmm, k{k}
     if isM128(v0) && isEVEXXMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), 0, 0)
@@ -66573,7 +67257,8 @@ func (self *Program) VPCMPGTB(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPCMPGTB ymm, ymm, k{k}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -66586,7 +67271,8 @@ func (self *Program) VPCMPGTB(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPCMPGTB m256, ymm, k{k}
     if isM256(v0) && isEVEXYMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), 0, 0)
@@ -66683,7 +67369,8 @@ func (self *Program) VPCMPGTD(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPCMPGTD m128/m32bcst, xmm, k{k}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), 0, bcode(v[0]))
@@ -66693,7 +67380,8 @@ func (self *Program) VPCMPGTD(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPCMPGTD xmm, xmm, k{k}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -66706,7 +67394,8 @@ func (self *Program) VPCMPGTD(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPCMPGTD m256/m32bcst, ymm, k{k}
     if isM256M32bcst(v0) && isEVEXYMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), 0, bcode(v[0]))
@@ -66716,7 +67405,8 @@ func (self *Program) VPCMPGTD(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPCMPGTD ymm, ymm, k{k}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -66820,7 +67510,8 @@ func (self *Program) VPCMPGTQ(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPCMPGTQ m128/m64bcst, xmm, k{k}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), 0, bcode(v[0]))
@@ -66830,7 +67521,8 @@ func (self *Program) VPCMPGTQ(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPCMPGTQ xmm, xmm, k{k}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -66843,7 +67535,8 @@ func (self *Program) VPCMPGTQ(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPCMPGTQ m256/m64bcst, ymm, k{k}
     if isM256M64bcst(v0) && isEVEXYMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), 0, bcode(v[0]))
@@ -66853,7 +67546,8 @@ func (self *Program) VPCMPGTQ(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPCMPGTQ ymm, ymm, k{k}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -66953,7 +67647,8 @@ func (self *Program) VPCMPGTW(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPCMPGTW xmm, xmm, k{k}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -66966,7 +67661,8 @@ func (self *Program) VPCMPGTW(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPCMPGTW m128, xmm, k{k}
     if isM128(v0) && isEVEXXMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), 0, 0)
@@ -66976,7 +67672,8 @@ func (self *Program) VPCMPGTW(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPCMPGTW ymm, ymm, k{k}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -66989,7 +67686,8 @@ func (self *Program) VPCMPGTW(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPCMPGTW m256, ymm, k{k}
     if isM256(v0) && isEVEXYMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), 0, 0)
@@ -67124,7 +67822,8 @@ func (self *Program) VPCMPQ(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
     }
     // VPCMPQ imm8, m128/m64bcst, xmm, k{k}
     if isImm8(v0) && isM128M64bcst(v1) && isEVEXXMM(v2) && isKk(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x85, 0b00, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), 0, bcode(v[1]))
@@ -67135,7 +67834,8 @@ func (self *Program) VPCMPQ(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
     }
     // VPCMPQ imm8, xmm, xmm, k{k}
     if isImm8(v0) && isEVEXXMM(v1) && isEVEXXMM(v2) && isKk(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -67149,7 +67849,8 @@ func (self *Program) VPCMPQ(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
     }
     // VPCMPQ imm8, m256/m64bcst, ymm, k{k}
     if isImm8(v0) && isM256M64bcst(v1) && isEVEXYMM(v2) && isKk(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x85, 0b01, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), 0, bcode(v[1]))
@@ -67160,7 +67861,8 @@ func (self *Program) VPCMPQ(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
     }
     // VPCMPQ imm8, ymm, ymm, k{k}
     if isImm8(v0) && isEVEXYMM(v1) && isEVEXYMM(v2) && isKk(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -67219,7 +67921,8 @@ func (self *Program) VPCMPUB(v0 interface{}, v1 interface{}, v2 interface{}, v3 
     }
     // VPCMPUB imm8, xmm, xmm, k{k}
     if isImm8(v0) && isEVEXXMM(v1) && isEVEXXMM(v2) && isKk(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -67233,7 +67936,8 @@ func (self *Program) VPCMPUB(v0 interface{}, v1 interface{}, v2 interface{}, v3 
     }
     // VPCMPUB imm8, m128, xmm, k{k}
     if isImm8(v0) && isM128(v1) && isEVEXXMM(v2) && isKk(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x05, 0b00, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), 0, 0)
@@ -67244,7 +67948,8 @@ func (self *Program) VPCMPUB(v0 interface{}, v1 interface{}, v2 interface{}, v3 
     }
     // VPCMPUB imm8, ymm, ymm, k{k}
     if isImm8(v0) && isEVEXYMM(v1) && isEVEXYMM(v2) && isKk(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -67258,7 +67963,8 @@ func (self *Program) VPCMPUB(v0 interface{}, v1 interface{}, v2 interface{}, v3 
     }
     // VPCMPUB imm8, m256, ymm, k{k}
     if isImm8(v0) && isM256(v1) && isEVEXYMM(v2) && isKk(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x05, 0b01, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), 0, 0)
@@ -67314,7 +68020,8 @@ func (self *Program) VPCMPUD(v0 interface{}, v1 interface{}, v2 interface{}, v3 
     }
     // VPCMPUD imm8, m128/m32bcst, xmm, k{k}
     if isImm8(v0) && isM128M32bcst(v1) && isEVEXXMM(v2) && isKk(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x05, 0b00, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), 0, bcode(v[1]))
@@ -67325,7 +68032,8 @@ func (self *Program) VPCMPUD(v0 interface{}, v1 interface{}, v2 interface{}, v3 
     }
     // VPCMPUD imm8, xmm, xmm, k{k}
     if isImm8(v0) && isEVEXXMM(v1) && isEVEXXMM(v2) && isKk(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -67339,7 +68047,8 @@ func (self *Program) VPCMPUD(v0 interface{}, v1 interface{}, v2 interface{}, v3 
     }
     // VPCMPUD imm8, m256/m32bcst, ymm, k{k}
     if isImm8(v0) && isM256M32bcst(v1) && isEVEXYMM(v2) && isKk(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x05, 0b01, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), 0, bcode(v[1]))
@@ -67350,7 +68059,8 @@ func (self *Program) VPCMPUD(v0 interface{}, v1 interface{}, v2 interface{}, v3 
     }
     // VPCMPUD imm8, ymm, ymm, k{k}
     if isImm8(v0) && isEVEXYMM(v1) && isEVEXYMM(v2) && isKk(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -67409,7 +68119,8 @@ func (self *Program) VPCMPUQ(v0 interface{}, v1 interface{}, v2 interface{}, v3 
     }
     // VPCMPUQ imm8, m128/m64bcst, xmm, k{k}
     if isImm8(v0) && isM128M64bcst(v1) && isEVEXXMM(v2) && isKk(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x85, 0b00, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), 0, bcode(v[1]))
@@ -67420,7 +68131,8 @@ func (self *Program) VPCMPUQ(v0 interface{}, v1 interface{}, v2 interface{}, v3 
     }
     // VPCMPUQ imm8, xmm, xmm, k{k}
     if isImm8(v0) && isEVEXXMM(v1) && isEVEXXMM(v2) && isKk(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -67434,7 +68146,8 @@ func (self *Program) VPCMPUQ(v0 interface{}, v1 interface{}, v2 interface{}, v3 
     }
     // VPCMPUQ imm8, m256/m64bcst, ymm, k{k}
     if isImm8(v0) && isM256M64bcst(v1) && isEVEXYMM(v2) && isKk(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x85, 0b01, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), 0, bcode(v[1]))
@@ -67445,7 +68158,8 @@ func (self *Program) VPCMPUQ(v0 interface{}, v1 interface{}, v2 interface{}, v3 
     }
     // VPCMPUQ imm8, ymm, ymm, k{k}
     if isImm8(v0) && isEVEXYMM(v1) && isEVEXYMM(v2) && isKk(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -67504,7 +68218,8 @@ func (self *Program) VPCMPUW(v0 interface{}, v1 interface{}, v2 interface{}, v3 
     }
     // VPCMPUW imm8, xmm, xmm, k{k}
     if isImm8(v0) && isEVEXXMM(v1) && isEVEXXMM(v2) && isKk(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -67518,7 +68233,8 @@ func (self *Program) VPCMPUW(v0 interface{}, v1 interface{}, v2 interface{}, v3 
     }
     // VPCMPUW imm8, m128, xmm, k{k}
     if isImm8(v0) && isM128(v1) && isEVEXXMM(v2) && isKk(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x85, 0b00, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), 0, 0)
@@ -67529,7 +68245,8 @@ func (self *Program) VPCMPUW(v0 interface{}, v1 interface{}, v2 interface{}, v3 
     }
     // VPCMPUW imm8, ymm, ymm, k{k}
     if isImm8(v0) && isEVEXYMM(v1) && isEVEXYMM(v2) && isKk(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -67543,7 +68260,8 @@ func (self *Program) VPCMPUW(v0 interface{}, v1 interface{}, v2 interface{}, v3 
     }
     // VPCMPUW imm8, m256, ymm, k{k}
     if isImm8(v0) && isM256(v1) && isEVEXYMM(v2) && isKk(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x85, 0b01, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), 0, 0)
@@ -67599,7 +68317,8 @@ func (self *Program) VPCMPW(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
     }
     // VPCMPW imm8, xmm, xmm, k{k}
     if isImm8(v0) && isEVEXXMM(v1) && isEVEXXMM(v2) && isKk(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -67613,7 +68332,8 @@ func (self *Program) VPCMPW(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
     }
     // VPCMPW imm8, m128, xmm, k{k}
     if isImm8(v0) && isM128(v1) && isEVEXXMM(v2) && isKk(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x85, 0b00, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), 0, 0)
@@ -67624,7 +68344,8 @@ func (self *Program) VPCMPW(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
     }
     // VPCMPW imm8, ymm, ymm, k{k}
     if isImm8(v0) && isEVEXYMM(v1) && isEVEXYMM(v2) && isKk(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -67638,7 +68359,8 @@ func (self *Program) VPCMPW(v0 interface{}, v1 interface{}, v2 interface{}, v3 i
     }
     // VPCMPW imm8, m256, ymm, k{k}
     if isImm8(v0) && isM256(v1) && isEVEXYMM(v2) && isKk(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x85, 0b01, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), 0, 0)
@@ -67772,7 +68494,8 @@ func (self *Program) VPCOMPRESSD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPCOMPRESSD xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -67785,7 +68508,8 @@ func (self *Program) VPCOMPRESSD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPCOMPRESSD xmm, m128{k}{z}
     if isEVEXXMM(v0) && isM128kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -67795,7 +68519,8 @@ func (self *Program) VPCOMPRESSD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPCOMPRESSD ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -67808,7 +68533,8 @@ func (self *Program) VPCOMPRESSD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPCOMPRESSD ymm, m256{k}{z}
     if isEVEXYMM(v0) && isM256kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -67861,7 +68587,8 @@ func (self *Program) VPCOMPRESSQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPCOMPRESSQ xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -67874,7 +68601,8 @@ func (self *Program) VPCOMPRESSQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPCOMPRESSQ xmm, m128{k}{z}
     if isEVEXXMM(v0) && isM128kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -67884,7 +68612,8 @@ func (self *Program) VPCOMPRESSQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPCOMPRESSQ ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -67897,7 +68626,8 @@ func (self *Program) VPCOMPRESSQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPCOMPRESSQ ymm, m256{k}{z}
     if isEVEXYMM(v0) && isM256kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -68167,7 +68897,8 @@ func (self *Program) VPCONFLICTD(v0 interface{}, v1 interface{}) *Instruction {
     p := self.alloc("VPCONFLICTD", 2, Operands { v0, v1 })
     // VPCONFLICTD m128/m32bcst, xmm{k}{z}
     if isM128M32bcst(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512CD)
+        self.require(ISA_AVX512CD)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -68177,7 +68908,8 @@ func (self *Program) VPCONFLICTD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPCONFLICTD m256/m32bcst, ymm{k}{z}
     if isM256M32bcst(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512CD)
+        self.require(ISA_AVX512CD)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -68197,7 +68929,8 @@ func (self *Program) VPCONFLICTD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPCONFLICTD xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512CD)
+        self.require(ISA_AVX512CD)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -68210,7 +68943,8 @@ func (self *Program) VPCONFLICTD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPCONFLICTD ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512CD)
+        self.require(ISA_AVX512CD)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -68256,7 +68990,8 @@ func (self *Program) VPCONFLICTQ(v0 interface{}, v1 interface{}) *Instruction {
     p := self.alloc("VPCONFLICTQ", 2, Operands { v0, v1 })
     // VPCONFLICTQ m128/m64bcst, xmm{k}{z}
     if isM128M64bcst(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512CD)
+        self.require(ISA_AVX512CD)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -68266,7 +69001,8 @@ func (self *Program) VPCONFLICTQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPCONFLICTQ m256/m64bcst, ymm{k}{z}
     if isM256M64bcst(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512CD)
+        self.require(ISA_AVX512CD)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -68286,7 +69022,8 @@ func (self *Program) VPCONFLICTQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPCONFLICTQ xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512CD)
+        self.require(ISA_AVX512CD)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -68299,7 +69036,8 @@ func (self *Program) VPCONFLICTQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPCONFLICTQ ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512CD)
+        self.require(ISA_AVX512CD)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -68425,7 +69163,8 @@ func (self *Program) VPERMB(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     p := self.alloc("VPERMB", 3, Operands { v0, v1, v2 })
     // VPERMB xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512VBMI)
+        self.require(ISA_AVX512VBMI)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -68438,7 +69177,8 @@ func (self *Program) VPERMB(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPERMB m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512VBMI)
+        self.require(ISA_AVX512VBMI)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -68448,7 +69188,8 @@ func (self *Program) VPERMB(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPERMB ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512VBMI)
+        self.require(ISA_AVX512VBMI)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -68461,7 +69202,8 @@ func (self *Program) VPERMB(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPERMB m256, ymm, ymm{k}{z}
     if isM256(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512VBMI)
+        self.require(ISA_AVX512VBMI)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -68559,7 +69301,8 @@ func (self *Program) VPERMD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPERMD m256/m32bcst, ymm, ymm{k}{z}
     if isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -68569,7 +69312,8 @@ func (self *Program) VPERMD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPERMD ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -68602,7 +69346,8 @@ func (self *Program) VPERMI2B(v0 interface{}, v1 interface{}, v2 interface{}) *I
     p := self.alloc("VPERMI2B", 3, Operands { v0, v1, v2 })
     // VPERMI2B xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512VBMI)
+        self.require(ISA_AVX512VBMI)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -68615,7 +69360,8 @@ func (self *Program) VPERMI2B(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPERMI2B m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512VBMI)
+        self.require(ISA_AVX512VBMI)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -68625,7 +69371,8 @@ func (self *Program) VPERMI2B(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPERMI2B ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512VBMI)
+        self.require(ISA_AVX512VBMI)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -68638,7 +69385,8 @@ func (self *Program) VPERMI2B(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPERMI2B m256, ymm, ymm{k}{z}
     if isM256(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512VBMI)
+        self.require(ISA_AVX512VBMI)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -68714,7 +69462,8 @@ func (self *Program) VPERMI2D(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPERMI2D m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -68724,7 +69473,8 @@ func (self *Program) VPERMI2D(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPERMI2D xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -68737,7 +69487,8 @@ func (self *Program) VPERMI2D(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPERMI2D m256/m32bcst, ymm, ymm{k}{z}
     if isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -68747,7 +69498,8 @@ func (self *Program) VPERMI2D(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPERMI2D ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -68803,7 +69555,8 @@ func (self *Program) VPERMI2PD(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPERMI2PD m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -68813,7 +69566,8 @@ func (self *Program) VPERMI2PD(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPERMI2PD xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -68826,7 +69580,8 @@ func (self *Program) VPERMI2PD(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPERMI2PD m256/m64bcst, ymm, ymm{k}{z}
     if isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -68836,7 +69591,8 @@ func (self *Program) VPERMI2PD(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPERMI2PD ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -68892,7 +69648,8 @@ func (self *Program) VPERMI2PS(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPERMI2PS m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -68902,7 +69659,8 @@ func (self *Program) VPERMI2PS(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPERMI2PS xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -68915,7 +69673,8 @@ func (self *Program) VPERMI2PS(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPERMI2PS m256/m32bcst, ymm, ymm{k}{z}
     if isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -68925,7 +69684,8 @@ func (self *Program) VPERMI2PS(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPERMI2PS ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -68981,7 +69741,8 @@ func (self *Program) VPERMI2Q(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPERMI2Q m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -68991,7 +69752,8 @@ func (self *Program) VPERMI2Q(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPERMI2Q xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -69004,7 +69766,8 @@ func (self *Program) VPERMI2Q(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPERMI2Q m256/m64bcst, ymm, ymm{k}{z}
     if isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -69014,7 +69777,8 @@ func (self *Program) VPERMI2Q(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPERMI2Q ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -69070,7 +69834,8 @@ func (self *Program) VPERMI2W(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPERMI2W xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -69083,7 +69848,8 @@ func (self *Program) VPERMI2W(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPERMI2W m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -69093,7 +69859,8 @@ func (self *Program) VPERMI2W(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPERMI2W ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -69106,7 +69873,8 @@ func (self *Program) VPERMI2W(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPERMI2W m256, ymm, ymm{k}{z}
     if isM256(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -69502,7 +70270,8 @@ func (self *Program) VPERMILPD(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPERMILPD imm8, m128/m64bcst, xmm{k}{z}
     if isImm8(v0) && isM128M64bcst(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x85, 0b00, ehcode(v[2]), addr(v[1]), 0, kcode(v[2]), zcode(v[2]), bcode(v[1]))
@@ -69513,7 +70282,8 @@ func (self *Program) VPERMILPD(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPERMILPD imm8, m256/m64bcst, ymm{k}{z}
     if isImm8(v0) && isM256M64bcst(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x85, 0b01, ehcode(v[2]), addr(v[1]), 0, kcode(v[2]), zcode(v[2]), bcode(v[1]))
@@ -69524,7 +70294,8 @@ func (self *Program) VPERMILPD(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPERMILPD m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -69534,7 +70305,8 @@ func (self *Program) VPERMILPD(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPERMILPD imm8, xmm, xmm{k}{z}
     if isImm8(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -69548,7 +70320,8 @@ func (self *Program) VPERMILPD(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPERMILPD xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -69561,7 +70334,8 @@ func (self *Program) VPERMILPD(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPERMILPD m256/m64bcst, ymm, ymm{k}{z}
     if isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -69571,7 +70345,8 @@ func (self *Program) VPERMILPD(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPERMILPD imm8, ymm, ymm{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -69585,7 +70360,8 @@ func (self *Program) VPERMILPD(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPERMILPD ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -69772,7 +70548,8 @@ func (self *Program) VPERMILPS(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPERMILPS imm8, m128/m32bcst, xmm{k}{z}
     if isImm8(v0) && isM128M32bcst(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x05, 0b00, ehcode(v[2]), addr(v[1]), 0, kcode(v[2]), zcode(v[2]), bcode(v[1]))
@@ -69783,7 +70560,8 @@ func (self *Program) VPERMILPS(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPERMILPS imm8, m256/m32bcst, ymm{k}{z}
     if isImm8(v0) && isM256M32bcst(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x05, 0b01, ehcode(v[2]), addr(v[1]), 0, kcode(v[2]), zcode(v[2]), bcode(v[1]))
@@ -69794,7 +70572,8 @@ func (self *Program) VPERMILPS(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPERMILPS m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -69804,7 +70583,8 @@ func (self *Program) VPERMILPS(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPERMILPS imm8, xmm, xmm{k}{z}
     if isImm8(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -69818,7 +70598,8 @@ func (self *Program) VPERMILPS(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPERMILPS xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -69831,7 +70612,8 @@ func (self *Program) VPERMILPS(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPERMILPS m256/m32bcst, ymm, ymm{k}{z}
     if isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -69841,7 +70623,8 @@ func (self *Program) VPERMILPS(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPERMILPS imm8, ymm, ymm{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -69855,7 +70638,8 @@ func (self *Program) VPERMILPS(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPERMILPS ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -69964,7 +70748,8 @@ func (self *Program) VPERMPD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPERMPD imm8, m256/m64bcst, ymm{k}{z}
     if isImm8(v0) && isM256M64bcst(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x85, 0b01, ehcode(v[2]), addr(v[1]), 0, kcode(v[2]), zcode(v[2]), bcode(v[1]))
@@ -69975,7 +70760,8 @@ func (self *Program) VPERMPD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPERMPD m256/m64bcst, ymm, ymm{k}{z}
     if isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -69985,7 +70771,8 @@ func (self *Program) VPERMPD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPERMPD imm8, ymm, ymm{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -69999,7 +70786,8 @@ func (self *Program) VPERMPD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPERMPD ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -70077,7 +70865,8 @@ func (self *Program) VPERMPS(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPERMPS m256/m32bcst, ymm, ymm{k}{z}
     if isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -70087,7 +70876,8 @@ func (self *Program) VPERMPS(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPERMPS ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -70196,7 +70986,8 @@ func (self *Program) VPERMQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPERMQ imm8, m256/m64bcst, ymm{k}{z}
     if isImm8(v0) && isM256M64bcst(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x85, 0b01, ehcode(v[2]), addr(v[1]), 0, kcode(v[2]), zcode(v[2]), bcode(v[1]))
@@ -70207,7 +70998,8 @@ func (self *Program) VPERMQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPERMQ m256/m64bcst, ymm, ymm{k}{z}
     if isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -70217,7 +71009,8 @@ func (self *Program) VPERMQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPERMQ imm8, ymm, ymm{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -70231,7 +71024,8 @@ func (self *Program) VPERMQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPERMQ ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -70264,7 +71058,8 @@ func (self *Program) VPERMT2B(v0 interface{}, v1 interface{}, v2 interface{}) *I
     p := self.alloc("VPERMT2B", 3, Operands { v0, v1, v2 })
     // VPERMT2B xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512VBMI)
+        self.require(ISA_AVX512VBMI)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -70277,7 +71072,8 @@ func (self *Program) VPERMT2B(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPERMT2B m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512VBMI)
+        self.require(ISA_AVX512VBMI)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -70287,7 +71083,8 @@ func (self *Program) VPERMT2B(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPERMT2B ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512VBMI)
+        self.require(ISA_AVX512VBMI)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -70300,7 +71097,8 @@ func (self *Program) VPERMT2B(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPERMT2B m256, ymm, ymm{k}{z}
     if isM256(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512VBMI)
+        self.require(ISA_AVX512VBMI)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -70376,7 +71174,8 @@ func (self *Program) VPERMT2D(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPERMT2D m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -70386,7 +71185,8 @@ func (self *Program) VPERMT2D(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPERMT2D xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -70399,7 +71199,8 @@ func (self *Program) VPERMT2D(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPERMT2D m256/m32bcst, ymm, ymm{k}{z}
     if isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -70409,7 +71210,8 @@ func (self *Program) VPERMT2D(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPERMT2D ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -70465,7 +71267,8 @@ func (self *Program) VPERMT2PD(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPERMT2PD m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -70475,7 +71278,8 @@ func (self *Program) VPERMT2PD(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPERMT2PD xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -70488,7 +71292,8 @@ func (self *Program) VPERMT2PD(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPERMT2PD m256/m64bcst, ymm, ymm{k}{z}
     if isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -70498,7 +71303,8 @@ func (self *Program) VPERMT2PD(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPERMT2PD ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -70554,7 +71360,8 @@ func (self *Program) VPERMT2PS(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPERMT2PS m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -70564,7 +71371,8 @@ func (self *Program) VPERMT2PS(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPERMT2PS xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -70577,7 +71385,8 @@ func (self *Program) VPERMT2PS(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPERMT2PS m256/m32bcst, ymm, ymm{k}{z}
     if isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -70587,7 +71396,8 @@ func (self *Program) VPERMT2PS(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPERMT2PS ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -70643,7 +71453,8 @@ func (self *Program) VPERMT2Q(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPERMT2Q m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -70653,7 +71464,8 @@ func (self *Program) VPERMT2Q(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPERMT2Q xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -70666,7 +71478,8 @@ func (self *Program) VPERMT2Q(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPERMT2Q m256/m64bcst, ymm, ymm{k}{z}
     if isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -70676,7 +71489,8 @@ func (self *Program) VPERMT2Q(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPERMT2Q ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -70732,7 +71546,8 @@ func (self *Program) VPERMT2W(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPERMT2W xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -70745,7 +71560,8 @@ func (self *Program) VPERMT2W(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPERMT2W m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -70755,7 +71571,8 @@ func (self *Program) VPERMT2W(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPERMT2W ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -70768,7 +71585,8 @@ func (self *Program) VPERMT2W(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPERMT2W m256, ymm, ymm{k}{z}
     if isM256(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -70821,7 +71639,8 @@ func (self *Program) VPERMW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPERMW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -70834,7 +71653,8 @@ func (self *Program) VPERMW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPERMW m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -70844,7 +71664,8 @@ func (self *Program) VPERMW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPERMW ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -70857,7 +71678,8 @@ func (self *Program) VPERMW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPERMW m256, ymm, ymm{k}{z}
     if isM256(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -70910,7 +71732,8 @@ func (self *Program) VPEXPANDD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPEXPANDD xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -70923,7 +71746,8 @@ func (self *Program) VPEXPANDD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPEXPANDD ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -70936,7 +71760,8 @@ func (self *Program) VPEXPANDD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPEXPANDD m128, xmm{k}{z}
     if isM128(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -70946,7 +71771,8 @@ func (self *Program) VPEXPANDD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPEXPANDD m256, ymm{k}{z}
     if isM256(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -70999,7 +71825,8 @@ func (self *Program) VPEXPANDQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPEXPANDQ xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -71012,7 +71839,8 @@ func (self *Program) VPEXPANDQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPEXPANDQ ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -71025,7 +71853,8 @@ func (self *Program) VPEXPANDQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPEXPANDQ m128, xmm{k}{z}
     if isM128(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -71035,7 +71864,8 @@ func (self *Program) VPEXPANDQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPEXPANDQ m256, ymm{k}{z}
     if isM256(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -71382,7 +72212,8 @@ func (self *Program) VPGATHERDD(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VPGATHERDD vm32x, xmm{k}
     if len(vv) == 0 && isEVEXVMX(v0) && isXMMk(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), 0, 0)
@@ -71392,7 +72223,8 @@ func (self *Program) VPGATHERDD(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VPGATHERDD vm32y, ymm{k}
     if len(vv) == 0 && isEVEXVMY(v0) && isYMMk(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), 0, 0)
@@ -71456,7 +72288,8 @@ func (self *Program) VPGATHERDQ(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VPGATHERDQ vm32x, xmm{k}
     if len(vv) == 0 && isEVEXVMX(v0) && isXMMk(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), 0, 0)
@@ -71466,7 +72299,8 @@ func (self *Program) VPGATHERDQ(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VPGATHERDQ vm32x, ymm{k}
     if len(vv) == 0 && isEVEXVMX(v0) && isYMMk(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), 0, 0)
@@ -71530,7 +72364,8 @@ func (self *Program) VPGATHERQD(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VPGATHERQD vm64x, xmm{k}
     if len(vv) == 0 && isEVEXVMX(v0) && isXMMk(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), 0, 0)
@@ -71540,7 +72375,8 @@ func (self *Program) VPGATHERQD(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VPGATHERQD vm64y, xmm{k}
     if len(vv) == 0 && isEVEXVMY(v0) && isXMMk(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), 0, 0)
@@ -71604,7 +72440,8 @@ func (self *Program) VPGATHERQQ(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VPGATHERQQ vm64x, xmm{k}
     if len(vv) == 0 && isEVEXVMX(v0) && isXMMk(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), 0, 0)
@@ -71614,7 +72451,8 @@ func (self *Program) VPGATHERQQ(v0 interface{}, v1 interface{}, vv ...interface{
     }
     // VPGATHERQQ vm64y, ymm{k}
     if len(vv) == 0 && isEVEXVMY(v0) && isYMMk(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), 0, 0)
@@ -72890,7 +73728,8 @@ func (self *Program) VPLZCNTD(v0 interface{}, v1 interface{}) *Instruction {
     p := self.alloc("VPLZCNTD", 2, Operands { v0, v1 })
     // VPLZCNTD m128/m32bcst, xmm{k}{z}
     if isM128M32bcst(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512CD)
+        self.require(ISA_AVX512CD)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -72900,7 +73739,8 @@ func (self *Program) VPLZCNTD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPLZCNTD m256/m32bcst, ymm{k}{z}
     if isM256M32bcst(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512CD)
+        self.require(ISA_AVX512CD)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -72920,7 +73760,8 @@ func (self *Program) VPLZCNTD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPLZCNTD xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512CD)
+        self.require(ISA_AVX512CD)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -72933,7 +73774,8 @@ func (self *Program) VPLZCNTD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPLZCNTD ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512CD)
+        self.require(ISA_AVX512CD)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -72979,7 +73821,8 @@ func (self *Program) VPLZCNTQ(v0 interface{}, v1 interface{}) *Instruction {
     p := self.alloc("VPLZCNTQ", 2, Operands { v0, v1 })
     // VPLZCNTQ m128/m64bcst, xmm{k}{z}
     if isM128M64bcst(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512CD)
+        self.require(ISA_AVX512CD)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -72989,7 +73832,8 @@ func (self *Program) VPLZCNTQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPLZCNTQ m256/m64bcst, ymm{k}{z}
     if isM256M64bcst(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512CD)
+        self.require(ISA_AVX512CD)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -73009,7 +73853,8 @@ func (self *Program) VPLZCNTQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPLZCNTQ xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512CD)
+        self.require(ISA_AVX512CD)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -73022,7 +73867,8 @@ func (self *Program) VPLZCNTQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPLZCNTQ ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512CD)
+        self.require(ISA_AVX512CD)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -73548,7 +74394,8 @@ func (self *Program) VPMADD52HUQ(v0 interface{}, v1 interface{}, v2 interface{})
     p := self.alloc("VPMADD52HUQ", 3, Operands { v0, v1, v2 })
     // VPMADD52HUQ m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512IFMA | ISA_AVX512VL)
+        self.require(ISA_AVX512IFMA)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -73558,7 +74405,8 @@ func (self *Program) VPMADD52HUQ(v0 interface{}, v1 interface{}, v2 interface{})
     }
     // VPMADD52HUQ xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512IFMA | ISA_AVX512VL)
+        self.require(ISA_AVX512IFMA)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -73571,7 +74419,8 @@ func (self *Program) VPMADD52HUQ(v0 interface{}, v1 interface{}, v2 interface{})
     }
     // VPMADD52HUQ m256/m64bcst, ymm, ymm{k}{z}
     if isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512IFMA | ISA_AVX512VL)
+        self.require(ISA_AVX512IFMA)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -73581,7 +74430,8 @@ func (self *Program) VPMADD52HUQ(v0 interface{}, v1 interface{}, v2 interface{})
     }
     // VPMADD52HUQ ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512IFMA | ISA_AVX512VL)
+        self.require(ISA_AVX512IFMA)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -73637,7 +74487,8 @@ func (self *Program) VPMADD52LUQ(v0 interface{}, v1 interface{}, v2 interface{})
     p := self.alloc("VPMADD52LUQ", 3, Operands { v0, v1, v2 })
     // VPMADD52LUQ m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512IFMA | ISA_AVX512VL)
+        self.require(ISA_AVX512IFMA)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -73647,7 +74498,8 @@ func (self *Program) VPMADD52LUQ(v0 interface{}, v1 interface{}, v2 interface{})
     }
     // VPMADD52LUQ xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512IFMA | ISA_AVX512VL)
+        self.require(ISA_AVX512IFMA)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -73660,7 +74512,8 @@ func (self *Program) VPMADD52LUQ(v0 interface{}, v1 interface{}, v2 interface{})
     }
     // VPMADD52LUQ m256/m64bcst, ymm, ymm{k}{z}
     if isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512IFMA | ISA_AVX512VL)
+        self.require(ISA_AVX512IFMA)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -73670,7 +74523,8 @@ func (self *Program) VPMADD52LUQ(v0 interface{}, v1 interface{}, v2 interface{})
     }
     // VPMADD52LUQ ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512IFMA | ISA_AVX512VL)
+        self.require(ISA_AVX512IFMA)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -73797,7 +74651,8 @@ func (self *Program) VPMADDUBSW(v0 interface{}, v1 interface{}, v2 interface{}) 
     }
     // VPMADDUBSW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -73810,7 +74665,8 @@ func (self *Program) VPMADDUBSW(v0 interface{}, v1 interface{}, v2 interface{}) 
     }
     // VPMADDUBSW m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -73820,7 +74676,8 @@ func (self *Program) VPMADDUBSW(v0 interface{}, v1 interface{}, v2 interface{}) 
     }
     // VPMADDUBSW ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -73833,7 +74690,8 @@ func (self *Program) VPMADDUBSW(v0 interface{}, v1 interface{}, v2 interface{}) 
     }
     // VPMADDUBSW m256, ymm, ymm{k}{z}
     if isM256(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -73930,7 +74788,8 @@ func (self *Program) VPMADDWD(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPMADDWD xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -73943,7 +74802,8 @@ func (self *Program) VPMADDWD(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPMADDWD m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -73953,7 +74813,8 @@ func (self *Program) VPMADDWD(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPMADDWD ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -73966,7 +74827,8 @@ func (self *Program) VPMADDWD(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPMADDWD m256, ymm, ymm{k}{z}
     if isM256(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -74183,7 +75045,8 @@ func (self *Program) VPMAXSB(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMAXSB xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -74196,7 +75059,8 @@ func (self *Program) VPMAXSB(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMAXSB m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -74206,7 +75070,8 @@ func (self *Program) VPMAXSB(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMAXSB ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -74219,7 +75084,8 @@ func (self *Program) VPMAXSB(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMAXSB m256, ymm, ymm{k}{z}
     if isM256(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -74320,7 +75186,8 @@ func (self *Program) VPMAXSD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMAXSD m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -74330,7 +75197,8 @@ func (self *Program) VPMAXSD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMAXSD xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -74343,7 +75211,8 @@ func (self *Program) VPMAXSD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMAXSD m256/m32bcst, ymm, ymm{k}{z}
     if isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -74353,7 +75222,8 @@ func (self *Program) VPMAXSD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMAXSD ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -74409,7 +75279,8 @@ func (self *Program) VPMAXSQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMAXSQ m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -74419,7 +75290,8 @@ func (self *Program) VPMAXSQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMAXSQ xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -74432,7 +75304,8 @@ func (self *Program) VPMAXSQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMAXSQ m256/m64bcst, ymm, ymm{k}{z}
     if isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -74442,7 +75315,8 @@ func (self *Program) VPMAXSQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMAXSQ ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -74542,7 +75416,8 @@ func (self *Program) VPMAXSW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMAXSW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -74555,7 +75430,8 @@ func (self *Program) VPMAXSW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMAXSW m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -74565,7 +75441,8 @@ func (self *Program) VPMAXSW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMAXSW ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -74578,7 +75455,8 @@ func (self *Program) VPMAXSW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMAXSW m256, ymm, ymm{k}{z}
     if isM256(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -74675,7 +75553,8 @@ func (self *Program) VPMAXUB(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMAXUB xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -74688,7 +75567,8 @@ func (self *Program) VPMAXUB(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMAXUB m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -74698,7 +75578,8 @@ func (self *Program) VPMAXUB(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMAXUB ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -74711,7 +75592,8 @@ func (self *Program) VPMAXUB(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMAXUB m256, ymm, ymm{k}{z}
     if isM256(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -74812,7 +75694,8 @@ func (self *Program) VPMAXUD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMAXUD m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -74822,7 +75705,8 @@ func (self *Program) VPMAXUD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMAXUD xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -74835,7 +75719,8 @@ func (self *Program) VPMAXUD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMAXUD m256/m32bcst, ymm, ymm{k}{z}
     if isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -74845,7 +75730,8 @@ func (self *Program) VPMAXUD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMAXUD ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -74901,7 +75787,8 @@ func (self *Program) VPMAXUQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMAXUQ m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -74911,7 +75798,8 @@ func (self *Program) VPMAXUQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMAXUQ xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -74924,7 +75812,8 @@ func (self *Program) VPMAXUQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMAXUQ m256/m64bcst, ymm, ymm{k}{z}
     if isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -74934,7 +75823,8 @@ func (self *Program) VPMAXUQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMAXUQ ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -75038,7 +75928,8 @@ func (self *Program) VPMAXUW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMAXUW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -75051,7 +75942,8 @@ func (self *Program) VPMAXUW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMAXUW m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -75061,7 +75953,8 @@ func (self *Program) VPMAXUW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMAXUW ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -75074,7 +75967,8 @@ func (self *Program) VPMAXUW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMAXUW m256, ymm, ymm{k}{z}
     if isM256(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -75175,7 +76069,8 @@ func (self *Program) VPMINSB(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMINSB xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -75188,7 +76083,8 @@ func (self *Program) VPMINSB(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMINSB m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -75198,7 +76094,8 @@ func (self *Program) VPMINSB(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMINSB ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -75211,7 +76108,8 @@ func (self *Program) VPMINSB(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMINSB m256, ymm, ymm{k}{z}
     if isM256(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -75312,7 +76210,8 @@ func (self *Program) VPMINSD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMINSD m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -75322,7 +76221,8 @@ func (self *Program) VPMINSD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMINSD xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -75335,7 +76235,8 @@ func (self *Program) VPMINSD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMINSD m256/m32bcst, ymm, ymm{k}{z}
     if isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -75345,7 +76246,8 @@ func (self *Program) VPMINSD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMINSD ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -75401,7 +76303,8 @@ func (self *Program) VPMINSQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMINSQ m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -75411,7 +76314,8 @@ func (self *Program) VPMINSQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMINSQ xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -75424,7 +76328,8 @@ func (self *Program) VPMINSQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMINSQ m256/m64bcst, ymm, ymm{k}{z}
     if isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -75434,7 +76339,8 @@ func (self *Program) VPMINSQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMINSQ ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -75534,7 +76440,8 @@ func (self *Program) VPMINSW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMINSW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -75547,7 +76454,8 @@ func (self *Program) VPMINSW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMINSW m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -75557,7 +76465,8 @@ func (self *Program) VPMINSW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMINSW ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -75570,7 +76479,8 @@ func (self *Program) VPMINSW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMINSW m256, ymm, ymm{k}{z}
     if isM256(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -75667,7 +76577,8 @@ func (self *Program) VPMINUB(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMINUB xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -75680,7 +76591,8 @@ func (self *Program) VPMINUB(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMINUB m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -75690,7 +76602,8 @@ func (self *Program) VPMINUB(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMINUB ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -75703,7 +76616,8 @@ func (self *Program) VPMINUB(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMINUB m256, ymm, ymm{k}{z}
     if isM256(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -75804,7 +76718,8 @@ func (self *Program) VPMINUD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMINUD m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -75814,7 +76729,8 @@ func (self *Program) VPMINUD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMINUD xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -75827,7 +76743,8 @@ func (self *Program) VPMINUD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMINUD m256/m32bcst, ymm, ymm{k}{z}
     if isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -75837,7 +76754,8 @@ func (self *Program) VPMINUD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMINUD ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -75893,7 +76811,8 @@ func (self *Program) VPMINUQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMINUQ m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -75903,7 +76822,8 @@ func (self *Program) VPMINUQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMINUQ xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -75916,7 +76836,8 @@ func (self *Program) VPMINUQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMINUQ m256/m64bcst, ymm, ymm{k}{z}
     if isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -75926,7 +76847,8 @@ func (self *Program) VPMINUQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMINUQ ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -76030,7 +76952,8 @@ func (self *Program) VPMINUW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMINUW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -76043,7 +76966,8 @@ func (self *Program) VPMINUW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMINUW m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -76053,7 +76977,8 @@ func (self *Program) VPMINUW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMINUW ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -76066,7 +76991,8 @@ func (self *Program) VPMINUW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMINUW m256, ymm, ymm{k}{z}
     if isM256(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -76106,7 +77032,8 @@ func (self *Program) VPMOVB2M(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVB2M xmm, k
     if isEVEXXMM(v0) && isK(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -76119,7 +77046,8 @@ func (self *Program) VPMOVB2M(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVB2M ymm, k
     if isEVEXYMM(v0) && isK(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -76162,7 +77090,8 @@ func (self *Program) VPMOVD2M(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVD2M xmm, k
     if isEVEXXMM(v0) && isK(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -76175,7 +77104,8 @@ func (self *Program) VPMOVD2M(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVD2M ymm, k
     if isEVEXYMM(v0) && isK(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -76231,7 +77161,8 @@ func (self *Program) VPMOVDB(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVDB xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -76244,7 +77175,8 @@ func (self *Program) VPMOVDB(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVDB xmm, m32{k}{z}
     if isEVEXXMM(v0) && isM32kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x06, 0b00, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -76254,7 +77186,8 @@ func (self *Program) VPMOVDB(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVDB ymm, xmm{k}{z}
     if isEVEXYMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -76267,7 +77200,8 @@ func (self *Program) VPMOVDB(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVDB ymm, m64{k}{z}
     if isEVEXYMM(v0) && isM64kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x06, 0b01, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -76320,7 +77254,8 @@ func (self *Program) VPMOVDW(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVDW xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -76333,7 +77268,8 @@ func (self *Program) VPMOVDW(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVDW xmm, m64{k}{z}
     if isEVEXXMM(v0) && isM64kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x06, 0b00, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -76343,7 +77279,8 @@ func (self *Program) VPMOVDW(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVDW ymm, xmm{k}{z}
     if isEVEXYMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -76356,7 +77293,8 @@ func (self *Program) VPMOVDW(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVDW ymm, m128{k}{z}
     if isEVEXYMM(v0) && isM128kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x06, 0b01, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -76396,7 +77334,8 @@ func (self *Program) VPMOVM2B(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVM2B k, xmm
     if isK(v0) && isEVEXXMM(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -76409,7 +77348,8 @@ func (self *Program) VPMOVM2B(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVM2B k, ymm
     if isK(v0) && isEVEXYMM(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -76452,7 +77392,8 @@ func (self *Program) VPMOVM2D(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVM2D k, xmm
     if isK(v0) && isEVEXXMM(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -76465,7 +77406,8 @@ func (self *Program) VPMOVM2D(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVM2D k, ymm
     if isK(v0) && isEVEXYMM(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -76508,7 +77450,8 @@ func (self *Program) VPMOVM2Q(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVM2Q k, xmm
     if isK(v0) && isEVEXXMM(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -76521,7 +77464,8 @@ func (self *Program) VPMOVM2Q(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVM2Q k, ymm
     if isK(v0) && isEVEXYMM(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -76564,7 +77508,8 @@ func (self *Program) VPMOVM2W(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVM2W k, xmm
     if isK(v0) && isEVEXXMM(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -76577,7 +77522,8 @@ func (self *Program) VPMOVM2W(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVM2W k, ymm
     if isK(v0) && isEVEXYMM(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -76656,7 +77602,8 @@ func (self *Program) VPMOVQ2M(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVQ2M xmm, k
     if isEVEXXMM(v0) && isK(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -76669,7 +77616,8 @@ func (self *Program) VPMOVQ2M(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVQ2M ymm, k
     if isEVEXYMM(v0) && isK(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -76725,7 +77673,8 @@ func (self *Program) VPMOVQB(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVQB xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -76738,7 +77687,8 @@ func (self *Program) VPMOVQB(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVQB xmm, m16{k}{z}
     if isEVEXXMM(v0) && isM16kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x06, 0b00, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -76748,7 +77698,8 @@ func (self *Program) VPMOVQB(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVQB ymm, xmm{k}{z}
     if isEVEXYMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -76761,7 +77712,8 @@ func (self *Program) VPMOVQB(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVQB ymm, m32{k}{z}
     if isEVEXYMM(v0) && isM32kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x06, 0b01, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -76814,7 +77766,8 @@ func (self *Program) VPMOVQD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVQD xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -76827,7 +77780,8 @@ func (self *Program) VPMOVQD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVQD xmm, m64{k}{z}
     if isEVEXXMM(v0) && isM64kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x06, 0b00, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -76837,7 +77791,8 @@ func (self *Program) VPMOVQD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVQD ymm, xmm{k}{z}
     if isEVEXYMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -76850,7 +77805,8 @@ func (self *Program) VPMOVQD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVQD ymm, m128{k}{z}
     if isEVEXYMM(v0) && isM128kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x06, 0b01, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -76903,7 +77859,8 @@ func (self *Program) VPMOVQW(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVQW xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -76916,7 +77873,8 @@ func (self *Program) VPMOVQW(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVQW xmm, m32{k}{z}
     if isEVEXXMM(v0) && isM32kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x06, 0b00, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -76926,7 +77884,8 @@ func (self *Program) VPMOVQW(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVQW ymm, xmm{k}{z}
     if isEVEXYMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -76939,7 +77898,8 @@ func (self *Program) VPMOVQW(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVQW ymm, m64{k}{z}
     if isEVEXYMM(v0) && isM64kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x06, 0b01, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -76992,7 +77952,8 @@ func (self *Program) VPMOVSDB(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSDB xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -77005,7 +77966,8 @@ func (self *Program) VPMOVSDB(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSDB xmm, m32{k}{z}
     if isEVEXXMM(v0) && isM32kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x06, 0b00, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -77015,7 +77977,8 @@ func (self *Program) VPMOVSDB(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSDB ymm, xmm{k}{z}
     if isEVEXYMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -77028,7 +77991,8 @@ func (self *Program) VPMOVSDB(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSDB ymm, m64{k}{z}
     if isEVEXYMM(v0) && isM64kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x06, 0b01, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -77081,7 +78045,8 @@ func (self *Program) VPMOVSDW(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSDW xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -77094,7 +78059,8 @@ func (self *Program) VPMOVSDW(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSDW xmm, m64{k}{z}
     if isEVEXXMM(v0) && isM64kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x06, 0b00, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -77104,7 +78070,8 @@ func (self *Program) VPMOVSDW(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSDW ymm, xmm{k}{z}
     if isEVEXYMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -77117,7 +78084,8 @@ func (self *Program) VPMOVSDW(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSDW ymm, m128{k}{z}
     if isEVEXYMM(v0) && isM128kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x06, 0b01, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -77170,7 +78138,8 @@ func (self *Program) VPMOVSQB(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSQB xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -77183,7 +78152,8 @@ func (self *Program) VPMOVSQB(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSQB xmm, m16{k}{z}
     if isEVEXXMM(v0) && isM16kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x06, 0b00, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -77193,7 +78163,8 @@ func (self *Program) VPMOVSQB(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSQB ymm, xmm{k}{z}
     if isEVEXYMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -77206,7 +78177,8 @@ func (self *Program) VPMOVSQB(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSQB ymm, m32{k}{z}
     if isEVEXYMM(v0) && isM32kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x06, 0b01, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -77259,7 +78231,8 @@ func (self *Program) VPMOVSQD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSQD xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -77272,7 +78245,8 @@ func (self *Program) VPMOVSQD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSQD xmm, m64{k}{z}
     if isEVEXXMM(v0) && isM64kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x06, 0b00, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -77282,7 +78256,8 @@ func (self *Program) VPMOVSQD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSQD ymm, xmm{k}{z}
     if isEVEXYMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -77295,7 +78270,8 @@ func (self *Program) VPMOVSQD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSQD ymm, m128{k}{z}
     if isEVEXYMM(v0) && isM128kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x06, 0b01, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -77348,7 +78324,8 @@ func (self *Program) VPMOVSQW(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSQW xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -77361,7 +78338,8 @@ func (self *Program) VPMOVSQW(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSQW xmm, m32{k}{z}
     if isEVEXXMM(v0) && isM32kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x06, 0b00, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -77371,7 +78349,8 @@ func (self *Program) VPMOVSQW(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSQW ymm, xmm{k}{z}
     if isEVEXYMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -77384,7 +78363,8 @@ func (self *Program) VPMOVSQW(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSQW ymm, m64{k}{z}
     if isEVEXYMM(v0) && isM64kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x06, 0b01, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -77437,7 +78417,8 @@ func (self *Program) VPMOVSWB(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSWB xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -77450,7 +78431,8 @@ func (self *Program) VPMOVSWB(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSWB xmm, m64{k}{z}
     if isEVEXXMM(v0) && isM64kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x06, 0b00, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -77460,7 +78442,8 @@ func (self *Program) VPMOVSWB(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSWB ymm, xmm{k}{z}
     if isEVEXYMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -77473,7 +78456,8 @@ func (self *Program) VPMOVSWB(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSWB ymm, m128{k}{z}
     if isEVEXYMM(v0) && isM128kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x06, 0b01, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -77574,7 +78558,8 @@ func (self *Program) VPMOVSXBD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSXBD xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -77587,7 +78572,8 @@ func (self *Program) VPMOVSXBD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSXBD xmm, ymm{k}{z}
     if isEVEXXMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -77600,7 +78586,8 @@ func (self *Program) VPMOVSXBD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSXBD m32, xmm{k}{z}
     if isM32(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -77610,7 +78597,8 @@ func (self *Program) VPMOVSXBD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSXBD m64, ymm{k}{z}
     if isM64(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -77711,7 +78699,8 @@ func (self *Program) VPMOVSXBQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSXBQ xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -77724,7 +78713,8 @@ func (self *Program) VPMOVSXBQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSXBQ xmm, ymm{k}{z}
     if isEVEXXMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -77737,7 +78727,8 @@ func (self *Program) VPMOVSXBQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSXBQ m16, xmm{k}{z}
     if isM16(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -77747,7 +78738,8 @@ func (self *Program) VPMOVSXBQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSXBQ m32, ymm{k}{z}
     if isM32(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -77848,7 +78840,8 @@ func (self *Program) VPMOVSXBW(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSXBW xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -77861,7 +78854,8 @@ func (self *Program) VPMOVSXBW(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSXBW xmm, ymm{k}{z}
     if isEVEXXMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -77874,7 +78868,8 @@ func (self *Program) VPMOVSXBW(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSXBW m64, xmm{k}{z}
     if isM64(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -77884,7 +78879,8 @@ func (self *Program) VPMOVSXBW(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSXBW m128, ymm{k}{z}
     if isM128(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -77985,7 +78981,8 @@ func (self *Program) VPMOVSXDQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSXDQ xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -77998,7 +78995,8 @@ func (self *Program) VPMOVSXDQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSXDQ xmm, ymm{k}{z}
     if isEVEXXMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -78011,7 +79009,8 @@ func (self *Program) VPMOVSXDQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSXDQ m64, xmm{k}{z}
     if isM64(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -78021,7 +79020,8 @@ func (self *Program) VPMOVSXDQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSXDQ m128, ymm{k}{z}
     if isM128(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -78122,7 +79122,8 @@ func (self *Program) VPMOVSXWD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSXWD xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -78135,7 +79136,8 @@ func (self *Program) VPMOVSXWD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSXWD xmm, ymm{k}{z}
     if isEVEXXMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -78148,7 +79150,8 @@ func (self *Program) VPMOVSXWD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSXWD m64, xmm{k}{z}
     if isM64(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -78158,7 +79161,8 @@ func (self *Program) VPMOVSXWD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSXWD m128, ymm{k}{z}
     if isM128(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -78259,7 +79263,8 @@ func (self *Program) VPMOVSXWQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSXWQ xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -78272,7 +79277,8 @@ func (self *Program) VPMOVSXWQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSXWQ xmm, ymm{k}{z}
     if isEVEXXMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -78285,7 +79291,8 @@ func (self *Program) VPMOVSXWQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSXWQ m32, xmm{k}{z}
     if isM32(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -78295,7 +79302,8 @@ func (self *Program) VPMOVSXWQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVSXWQ m64, ymm{k}{z}
     if isM64(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -78348,7 +79356,8 @@ func (self *Program) VPMOVUSDB(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVUSDB xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -78361,7 +79370,8 @@ func (self *Program) VPMOVUSDB(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVUSDB xmm, m32{k}{z}
     if isEVEXXMM(v0) && isM32kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x06, 0b00, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -78371,7 +79381,8 @@ func (self *Program) VPMOVUSDB(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVUSDB ymm, xmm{k}{z}
     if isEVEXYMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -78384,7 +79395,8 @@ func (self *Program) VPMOVUSDB(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVUSDB ymm, m64{k}{z}
     if isEVEXYMM(v0) && isM64kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x06, 0b01, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -78437,7 +79449,8 @@ func (self *Program) VPMOVUSDW(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVUSDW xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -78450,7 +79463,8 @@ func (self *Program) VPMOVUSDW(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVUSDW xmm, m64{k}{z}
     if isEVEXXMM(v0) && isM64kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x06, 0b00, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -78460,7 +79474,8 @@ func (self *Program) VPMOVUSDW(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVUSDW ymm, xmm{k}{z}
     if isEVEXYMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -78473,7 +79488,8 @@ func (self *Program) VPMOVUSDW(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVUSDW ymm, m128{k}{z}
     if isEVEXYMM(v0) && isM128kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x06, 0b01, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -78526,7 +79542,8 @@ func (self *Program) VPMOVUSQB(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVUSQB xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -78539,7 +79556,8 @@ func (self *Program) VPMOVUSQB(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVUSQB xmm, m16{k}{z}
     if isEVEXXMM(v0) && isM16kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x06, 0b00, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -78549,7 +79567,8 @@ func (self *Program) VPMOVUSQB(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVUSQB ymm, xmm{k}{z}
     if isEVEXYMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -78562,7 +79581,8 @@ func (self *Program) VPMOVUSQB(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVUSQB ymm, m32{k}{z}
     if isEVEXYMM(v0) && isM32kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x06, 0b01, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -78615,7 +79635,8 @@ func (self *Program) VPMOVUSQD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVUSQD xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -78628,7 +79649,8 @@ func (self *Program) VPMOVUSQD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVUSQD xmm, m64{k}{z}
     if isEVEXXMM(v0) && isM64kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x06, 0b00, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -78638,7 +79660,8 @@ func (self *Program) VPMOVUSQD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVUSQD ymm, xmm{k}{z}
     if isEVEXYMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -78651,7 +79674,8 @@ func (self *Program) VPMOVUSQD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVUSQD ymm, m128{k}{z}
     if isEVEXYMM(v0) && isM128kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x06, 0b01, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -78704,7 +79728,8 @@ func (self *Program) VPMOVUSQW(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVUSQW xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -78717,7 +79742,8 @@ func (self *Program) VPMOVUSQW(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVUSQW xmm, m32{k}{z}
     if isEVEXXMM(v0) && isM32kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x06, 0b00, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -78727,7 +79753,8 @@ func (self *Program) VPMOVUSQW(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVUSQW ymm, xmm{k}{z}
     if isEVEXYMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -78740,7 +79767,8 @@ func (self *Program) VPMOVUSQW(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVUSQW ymm, m64{k}{z}
     if isEVEXYMM(v0) && isM64kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x06, 0b01, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -78793,7 +79821,8 @@ func (self *Program) VPMOVUSWB(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVUSWB xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -78806,7 +79835,8 @@ func (self *Program) VPMOVUSWB(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVUSWB xmm, m64{k}{z}
     if isEVEXXMM(v0) && isM64kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x06, 0b00, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -78816,7 +79846,8 @@ func (self *Program) VPMOVUSWB(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVUSWB ymm, xmm{k}{z}
     if isEVEXYMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -78829,7 +79860,8 @@ func (self *Program) VPMOVUSWB(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVUSWB ymm, m128{k}{z}
     if isEVEXYMM(v0) && isM128kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x06, 0b01, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -78869,7 +79901,8 @@ func (self *Program) VPMOVW2M(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVW2M xmm, k
     if isEVEXXMM(v0) && isK(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -78882,7 +79915,8 @@ func (self *Program) VPMOVW2M(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVW2M ymm, k
     if isEVEXYMM(v0) && isK(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -78938,7 +79972,8 @@ func (self *Program) VPMOVWB(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVWB xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -78951,7 +79986,8 @@ func (self *Program) VPMOVWB(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVWB xmm, m64{k}{z}
     if isEVEXXMM(v0) && isM64kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x06, 0b00, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -78961,7 +79997,8 @@ func (self *Program) VPMOVWB(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVWB ymm, xmm{k}{z}
     if isEVEXYMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -78974,7 +80011,8 @@ func (self *Program) VPMOVWB(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVWB ymm, m128{k}{z}
     if isEVEXYMM(v0) && isM128kz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x06, 0b01, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -79075,7 +80113,8 @@ func (self *Program) VPMOVZXBD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVZXBD xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -79088,7 +80127,8 @@ func (self *Program) VPMOVZXBD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVZXBD xmm, ymm{k}{z}
     if isEVEXXMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -79101,7 +80141,8 @@ func (self *Program) VPMOVZXBD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVZXBD m32, xmm{k}{z}
     if isM32(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -79111,7 +80152,8 @@ func (self *Program) VPMOVZXBD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVZXBD m64, ymm{k}{z}
     if isM64(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -79212,7 +80254,8 @@ func (self *Program) VPMOVZXBQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVZXBQ xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -79225,7 +80268,8 @@ func (self *Program) VPMOVZXBQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVZXBQ xmm, ymm{k}{z}
     if isEVEXXMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -79238,7 +80282,8 @@ func (self *Program) VPMOVZXBQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVZXBQ m16, xmm{k}{z}
     if isM16(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -79248,7 +80293,8 @@ func (self *Program) VPMOVZXBQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVZXBQ m32, ymm{k}{z}
     if isM32(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -79349,7 +80395,8 @@ func (self *Program) VPMOVZXBW(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVZXBW xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -79362,7 +80409,8 @@ func (self *Program) VPMOVZXBW(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVZXBW xmm, ymm{k}{z}
     if isEVEXXMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -79375,7 +80423,8 @@ func (self *Program) VPMOVZXBW(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVZXBW m64, xmm{k}{z}
     if isM64(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -79385,7 +80434,8 @@ func (self *Program) VPMOVZXBW(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVZXBW m128, ymm{k}{z}
     if isM128(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -79486,7 +80536,8 @@ func (self *Program) VPMOVZXDQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVZXDQ xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -79499,7 +80550,8 @@ func (self *Program) VPMOVZXDQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVZXDQ xmm, ymm{k}{z}
     if isEVEXXMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -79512,7 +80564,8 @@ func (self *Program) VPMOVZXDQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVZXDQ m64, xmm{k}{z}
     if isM64(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -79522,7 +80575,8 @@ func (self *Program) VPMOVZXDQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVZXDQ m128, ymm{k}{z}
     if isM128(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -79623,7 +80677,8 @@ func (self *Program) VPMOVZXWD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVZXWD xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -79636,7 +80691,8 @@ func (self *Program) VPMOVZXWD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVZXWD xmm, ymm{k}{z}
     if isEVEXXMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -79649,7 +80705,8 @@ func (self *Program) VPMOVZXWD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVZXWD m64, xmm{k}{z}
     if isM64(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -79659,7 +80716,8 @@ func (self *Program) VPMOVZXWD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVZXWD m128, ymm{k}{z}
     if isM128(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -79760,7 +80818,8 @@ func (self *Program) VPMOVZXWQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVZXWQ xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -79773,7 +80832,8 @@ func (self *Program) VPMOVZXWQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVZXWQ xmm, ymm{k}{z}
     if isEVEXXMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -79786,7 +80846,8 @@ func (self *Program) VPMOVZXWQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVZXWQ m32, xmm{k}{z}
     if isM32(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -79796,7 +80857,8 @@ func (self *Program) VPMOVZXWQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPMOVZXWQ m64, ymm{k}{z}
     if isM64(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), 0)
@@ -79897,7 +80959,8 @@ func (self *Program) VPMULDQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMULDQ m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -79907,7 +80970,8 @@ func (self *Program) VPMULDQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMULDQ xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -79920,7 +80984,8 @@ func (self *Program) VPMULDQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMULDQ m256/m64bcst, ymm, ymm{k}{z}
     if isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -79930,7 +80995,8 @@ func (self *Program) VPMULDQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMULDQ ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -80034,7 +81100,8 @@ func (self *Program) VPMULHRSW(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPMULHRSW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -80047,7 +81114,8 @@ func (self *Program) VPMULHRSW(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPMULHRSW m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -80057,7 +81125,8 @@ func (self *Program) VPMULHRSW(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPMULHRSW ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -80070,7 +81139,8 @@ func (self *Program) VPMULHRSW(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPMULHRSW m256, ymm, ymm{k}{z}
     if isM256(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -80167,7 +81237,8 @@ func (self *Program) VPMULHUW(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPMULHUW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -80180,7 +81251,8 @@ func (self *Program) VPMULHUW(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPMULHUW m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -80190,7 +81262,8 @@ func (self *Program) VPMULHUW(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPMULHUW ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -80203,7 +81276,8 @@ func (self *Program) VPMULHUW(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPMULHUW m256, ymm, ymm{k}{z}
     if isM256(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -80300,7 +81374,8 @@ func (self *Program) VPMULHW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMULHW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -80313,7 +81388,8 @@ func (self *Program) VPMULHW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMULHW m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -80323,7 +81399,8 @@ func (self *Program) VPMULHW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMULHW ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -80336,7 +81413,8 @@ func (self *Program) VPMULHW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMULHW m256, ymm, ymm{k}{z}
     if isM256(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -80437,7 +81515,8 @@ func (self *Program) VPMULLD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMULLD m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -80447,7 +81526,8 @@ func (self *Program) VPMULLD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMULLD xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -80460,7 +81540,8 @@ func (self *Program) VPMULLD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMULLD m256/m32bcst, ymm, ymm{k}{z}
     if isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -80470,7 +81551,8 @@ func (self *Program) VPMULLD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMULLD ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -80526,7 +81608,8 @@ func (self *Program) VPMULLQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMULLQ m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -80536,7 +81619,8 @@ func (self *Program) VPMULLQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMULLQ xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -80549,7 +81633,8 @@ func (self *Program) VPMULLQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMULLQ m256/m64bcst, ymm, ymm{k}{z}
     if isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -80559,7 +81644,8 @@ func (self *Program) VPMULLQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMULLQ ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -80659,7 +81745,8 @@ func (self *Program) VPMULLW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMULLW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -80672,7 +81759,8 @@ func (self *Program) VPMULLW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMULLW m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -80682,7 +81770,8 @@ func (self *Program) VPMULLW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMULLW ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -80695,7 +81784,8 @@ func (self *Program) VPMULLW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPMULLW m256, ymm, ymm{k}{z}
     if isM256(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -80725,7 +81815,8 @@ func (self *Program) VPMULTISHIFTQB(v0 interface{}, v1 interface{}, v2 interface
     p := self.alloc("VPMULTISHIFTQB", 3, Operands { v0, v1, v2 })
     // VPMULTISHIFTQB m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VBMI | ISA_AVX512VL)
+        self.require(ISA_AVX512VBMI)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -80735,7 +81826,8 @@ func (self *Program) VPMULTISHIFTQB(v0 interface{}, v1 interface{}, v2 interface
     }
     // VPMULTISHIFTQB xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VBMI | ISA_AVX512VL)
+        self.require(ISA_AVX512VBMI)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -80748,7 +81840,8 @@ func (self *Program) VPMULTISHIFTQB(v0 interface{}, v1 interface{}, v2 interface
     }
     // VPMULTISHIFTQB m256/m64bcst, ymm, ymm{k}{z}
     if isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VBMI | ISA_AVX512VL)
+        self.require(ISA_AVX512VBMI)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -80758,7 +81851,8 @@ func (self *Program) VPMULTISHIFTQB(v0 interface{}, v1 interface{}, v2 interface
     }
     // VPMULTISHIFTQB ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VBMI | ISA_AVX512VL)
+        self.require(ISA_AVX512VBMI)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -80881,7 +81975,8 @@ func (self *Program) VPMULUDQ(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPMULUDQ m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -80891,7 +81986,8 @@ func (self *Program) VPMULUDQ(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPMULUDQ xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -80904,7 +82000,8 @@ func (self *Program) VPMULUDQ(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPMULUDQ m256/m64bcst, ymm, ymm{k}{z}
     if isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -80914,7 +82011,8 @@ func (self *Program) VPMULUDQ(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPMULUDQ ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -81106,7 +82204,8 @@ func (self *Program) VPORD(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
     }
     // VPORD m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -81116,7 +82215,8 @@ func (self *Program) VPORD(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
     }
     // VPORD xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -81129,7 +82229,8 @@ func (self *Program) VPORD(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
     }
     // VPORD m256/m32bcst, ymm, ymm{k}{z}
     if isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -81139,7 +82240,8 @@ func (self *Program) VPORD(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
     }
     // VPORD ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -81195,7 +82297,8 @@ func (self *Program) VPORQ(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
     }
     // VPORQ m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -81205,7 +82308,8 @@ func (self *Program) VPORQ(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
     }
     // VPORQ xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -81218,7 +82322,8 @@ func (self *Program) VPORQ(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
     }
     // VPORQ m256/m64bcst, ymm, ymm{k}{z}
     if isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -81228,7 +82333,8 @@ func (self *Program) VPORQ(v0 interface{}, v1 interface{}, v2 interface{}) *Inst
     }
     // VPORQ ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -81346,7 +82452,8 @@ func (self *Program) VPROLD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPROLD imm8, m128/m32bcst, xmm{k}{z}
     if isImm8(v0) && isM128M32bcst(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, 0, addr(v[1]), vcode(v[2]), kcode(v[2]), zcode(v[2]), bcode(v[1]))
@@ -81357,7 +82464,8 @@ func (self *Program) VPROLD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPROLD imm8, m256/m32bcst, ymm{k}{z}
     if isImm8(v0) && isM256M32bcst(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, 0, addr(v[1]), vcode(v[2]), kcode(v[2]), zcode(v[2]), bcode(v[1]))
@@ -81368,7 +82476,8 @@ func (self *Program) VPROLD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPROLD imm8, xmm, xmm{k}{z}
     if isImm8(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -81382,7 +82491,8 @@ func (self *Program) VPROLD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPROLD imm8, ymm, ymm{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -81441,7 +82551,8 @@ func (self *Program) VPROLQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPROLQ imm8, m128/m64bcst, xmm{k}{z}
     if isImm8(v0) && isM128M64bcst(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b00, 0, addr(v[1]), vcode(v[2]), kcode(v[2]), zcode(v[2]), bcode(v[1]))
@@ -81452,7 +82563,8 @@ func (self *Program) VPROLQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPROLQ imm8, m256/m64bcst, ymm{k}{z}
     if isImm8(v0) && isM256M64bcst(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b01, 0, addr(v[1]), vcode(v[2]), kcode(v[2]), zcode(v[2]), bcode(v[1]))
@@ -81463,7 +82575,8 @@ func (self *Program) VPROLQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPROLQ imm8, xmm, xmm{k}{z}
     if isImm8(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -81477,7 +82590,8 @@ func (self *Program) VPROLQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPROLQ imm8, ymm, ymm{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -81534,7 +82648,8 @@ func (self *Program) VPROLVD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPROLVD m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -81544,7 +82659,8 @@ func (self *Program) VPROLVD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPROLVD xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -81557,7 +82673,8 @@ func (self *Program) VPROLVD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPROLVD m256/m32bcst, ymm, ymm{k}{z}
     if isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -81567,7 +82684,8 @@ func (self *Program) VPROLVD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPROLVD ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -81623,7 +82741,8 @@ func (self *Program) VPROLVQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPROLVQ m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -81633,7 +82752,8 @@ func (self *Program) VPROLVQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPROLVQ xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -81646,7 +82766,8 @@ func (self *Program) VPROLVQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPROLVQ m256/m64bcst, ymm, ymm{k}{z}
     if isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -81656,7 +82777,8 @@ func (self *Program) VPROLVQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPROLVQ ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -81714,7 +82836,8 @@ func (self *Program) VPRORD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPRORD imm8, m128/m32bcst, xmm{k}{z}
     if isImm8(v0) && isM128M32bcst(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, 0, addr(v[1]), vcode(v[2]), kcode(v[2]), zcode(v[2]), bcode(v[1]))
@@ -81725,7 +82848,8 @@ func (self *Program) VPRORD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPRORD imm8, m256/m32bcst, ymm{k}{z}
     if isImm8(v0) && isM256M32bcst(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, 0, addr(v[1]), vcode(v[2]), kcode(v[2]), zcode(v[2]), bcode(v[1]))
@@ -81736,7 +82860,8 @@ func (self *Program) VPRORD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPRORD imm8, xmm, xmm{k}{z}
     if isImm8(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -81750,7 +82875,8 @@ func (self *Program) VPRORD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPRORD imm8, ymm, ymm{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -81809,7 +82935,8 @@ func (self *Program) VPRORQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPRORQ imm8, m128/m64bcst, xmm{k}{z}
     if isImm8(v0) && isM128M64bcst(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b00, 0, addr(v[1]), vcode(v[2]), kcode(v[2]), zcode(v[2]), bcode(v[1]))
@@ -81820,7 +82947,8 @@ func (self *Program) VPRORQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPRORQ imm8, m256/m64bcst, ymm{k}{z}
     if isImm8(v0) && isM256M64bcst(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b01, 0, addr(v[1]), vcode(v[2]), kcode(v[2]), zcode(v[2]), bcode(v[1]))
@@ -81831,7 +82959,8 @@ func (self *Program) VPRORQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPRORQ imm8, xmm, xmm{k}{z}
     if isImm8(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -81845,7 +82974,8 @@ func (self *Program) VPRORQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPRORQ imm8, ymm, ymm{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -81902,7 +83032,8 @@ func (self *Program) VPRORVD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPRORVD m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -81912,7 +83043,8 @@ func (self *Program) VPRORVD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPRORVD xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -81925,7 +83057,8 @@ func (self *Program) VPRORVD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPRORVD m256/m32bcst, ymm, ymm{k}{z}
     if isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -81935,7 +83068,8 @@ func (self *Program) VPRORVD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPRORVD ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -81991,7 +83125,8 @@ func (self *Program) VPRORVQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPRORVQ m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -82001,7 +83136,8 @@ func (self *Program) VPRORVQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPRORVQ xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -82014,7 +83150,8 @@ func (self *Program) VPRORVQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPRORVQ m256/m64bcst, ymm, ymm{k}{z}
     if isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -82024,7 +83161,8 @@ func (self *Program) VPRORVQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPRORVQ ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -82452,7 +83590,8 @@ func (self *Program) VPSADBW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSADBW xmm, xmm, xmm
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isEVEXXMM(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -82465,7 +83604,8 @@ func (self *Program) VPSADBW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSADBW m128, xmm, xmm
     if isM128(v0) && isEVEXXMM(v1) && isEVEXXMM(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), 0, 0, 0)
@@ -82475,7 +83615,8 @@ func (self *Program) VPSADBW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSADBW ymm, ymm, ymm
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isEVEXYMM(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -82488,7 +83629,8 @@ func (self *Program) VPSADBW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSADBW m256, ymm, ymm
     if isM256(v0) && isEVEXYMM(v1) && isEVEXYMM(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), 0, 0, 0)
@@ -82525,7 +83667,8 @@ func (self *Program) VPSCATTERDD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPSCATTERDD xmm, vm32x{k}
     if isEVEXXMM(v0) && isVMXk(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), 0, 0)
@@ -82535,7 +83678,8 @@ func (self *Program) VPSCATTERDD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPSCATTERDD ymm, vm32y{k}
     if isEVEXYMM(v0) && isVMYk(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), 0, 0)
@@ -82572,7 +83716,8 @@ func (self *Program) VPSCATTERDQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPSCATTERDQ xmm, vm32x{k}
     if isEVEXXMM(v0) && isVMXk(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), 0, 0)
@@ -82582,7 +83727,8 @@ func (self *Program) VPSCATTERDQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPSCATTERDQ ymm, vm32x{k}
     if isEVEXYMM(v0) && isVMXk(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), 0, 0)
@@ -82619,7 +83765,8 @@ func (self *Program) VPSCATTERQD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPSCATTERQD xmm, vm64x{k}
     if isEVEXXMM(v0) && isVMXk(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), 0, 0)
@@ -82629,7 +83776,8 @@ func (self *Program) VPSCATTERQD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPSCATTERQD xmm, vm64y{k}
     if isEVEXXMM(v0) && isVMYk(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), 0, 0)
@@ -82666,7 +83814,8 @@ func (self *Program) VPSCATTERQQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPSCATTERQQ xmm, vm64x{k}
     if isEVEXXMM(v0) && isVMXk(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), 0, 0)
@@ -82676,7 +83825,8 @@ func (self *Program) VPSCATTERQQ(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VPSCATTERQQ ymm, vm64y{k}
     if isEVEXYMM(v0) && isVMYk(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), 0, 0)
@@ -83225,7 +84375,8 @@ func (self *Program) VPSHUFB(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSHUFB xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -83238,7 +84389,8 @@ func (self *Program) VPSHUFB(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSHUFB m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -83248,7 +84400,8 @@ func (self *Program) VPSHUFB(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSHUFB ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -83261,7 +84414,8 @@ func (self *Program) VPSHUFB(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSHUFB m256, ymm, ymm{k}{z}
     if isM256(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -83364,7 +84518,8 @@ func (self *Program) VPSHUFD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSHUFD imm8, m128/m32bcst, xmm{k}{z}
     if isImm8(v0) && isM128M32bcst(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[1]), 0, kcode(v[2]), zcode(v[2]), bcode(v[1]))
@@ -83375,7 +84530,8 @@ func (self *Program) VPSHUFD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSHUFD imm8, m256/m32bcst, ymm{k}{z}
     if isImm8(v0) && isM256M32bcst(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[1]), 0, kcode(v[2]), zcode(v[2]), bcode(v[1]))
@@ -83386,7 +84542,8 @@ func (self *Program) VPSHUFD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSHUFD imm8, xmm, xmm{k}{z}
     if isImm8(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -83400,7 +84557,8 @@ func (self *Program) VPSHUFD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSHUFD imm8, ymm, ymm{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -83507,7 +84665,8 @@ func (self *Program) VPSHUFHW(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPSHUFHW imm8, xmm, xmm{k}{z}
     if isImm8(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -83521,7 +84680,8 @@ func (self *Program) VPSHUFHW(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPSHUFHW imm8, ymm, ymm{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -83535,7 +84695,8 @@ func (self *Program) VPSHUFHW(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPSHUFHW imm8, m128, xmm{k}{z}
     if isImm8(v0) && isM128(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x06, 0b00, ehcode(v[2]), addr(v[1]), 0, kcode(v[2]), zcode(v[2]), 0)
@@ -83546,7 +84707,8 @@ func (self *Program) VPSHUFHW(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPSHUFHW imm8, m256, ymm{k}{z}
     if isImm8(v0) && isM256(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x06, 0b01, ehcode(v[2]), addr(v[1]), 0, kcode(v[2]), zcode(v[2]), 0)
@@ -83650,7 +84812,8 @@ func (self *Program) VPSHUFLW(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPSHUFLW imm8, xmm, xmm{k}{z}
     if isImm8(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -83664,7 +84827,8 @@ func (self *Program) VPSHUFLW(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPSHUFLW imm8, ymm, ymm{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -83678,7 +84842,8 @@ func (self *Program) VPSHUFLW(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPSHUFLW imm8, m128, xmm{k}{z}
     if isImm8(v0) && isM128(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x07, 0b00, ehcode(v[2]), addr(v[1]), 0, kcode(v[2]), zcode(v[2]), 0)
@@ -83689,7 +84854,8 @@ func (self *Program) VPSHUFLW(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPSHUFLW imm8, m256, ymm{k}{z}
     if isImm8(v0) && isM256(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x07, 0b01, ehcode(v[2]), addr(v[1]), 0, kcode(v[2]), zcode(v[2]), 0)
@@ -84028,7 +85194,8 @@ func (self *Program) VPSLLD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSLLD imm8, m128/m32bcst, xmm{k}{z}
     if isImm8(v0) && isM128M32bcst(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, 0, addr(v[1]), vcode(v[2]), kcode(v[2]), zcode(v[2]), bcode(v[1]))
@@ -84039,7 +85206,8 @@ func (self *Program) VPSLLD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSLLD imm8, m256/m32bcst, ymm{k}{z}
     if isImm8(v0) && isM256M32bcst(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, 0, addr(v[1]), vcode(v[2]), kcode(v[2]), zcode(v[2]), bcode(v[1]))
@@ -84050,7 +85218,8 @@ func (self *Program) VPSLLD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSLLD imm8, xmm, xmm{k}{z}
     if isImm8(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -84064,7 +85233,8 @@ func (self *Program) VPSLLD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSLLD xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -84077,7 +85247,8 @@ func (self *Program) VPSLLD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSLLD m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -84087,7 +85258,8 @@ func (self *Program) VPSLLD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSLLD imm8, ymm, ymm{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -84101,7 +85273,8 @@ func (self *Program) VPSLLD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSLLD xmm, ymm, ymm{k}{z}
     if isEVEXXMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -84114,7 +85287,8 @@ func (self *Program) VPSLLD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSLLD m128, ymm, ymm{k}{z}
     if isM128(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -84193,7 +85367,8 @@ func (self *Program) VPSLLDQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSLLDQ imm8, xmm, xmm
     if isImm8(v0) && isEVEXXMM(v1) && isEVEXXMM(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -84207,7 +85382,8 @@ func (self *Program) VPSLLDQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSLLDQ imm8, m128, xmm
     if isImm8(v0) && isM128(v1) && isEVEXXMM(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, 0, addr(v[1]), vcode(v[2]), 0, 0, 0)
@@ -84218,7 +85394,8 @@ func (self *Program) VPSLLDQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSLLDQ imm8, ymm, ymm
     if isImm8(v0) && isEVEXYMM(v1) && isEVEXYMM(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -84232,7 +85409,8 @@ func (self *Program) VPSLLDQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSLLDQ imm8, m256, ymm
     if isImm8(v0) && isM256(v1) && isEVEXYMM(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, 0, addr(v[1]), vcode(v[2]), 0, 0, 0)
@@ -84385,7 +85563,8 @@ func (self *Program) VPSLLQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSLLQ imm8, m128/m64bcst, xmm{k}{z}
     if isImm8(v0) && isM128M64bcst(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b00, 0, addr(v[1]), vcode(v[2]), kcode(v[2]), zcode(v[2]), bcode(v[1]))
@@ -84396,7 +85575,8 @@ func (self *Program) VPSLLQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSLLQ imm8, m256/m64bcst, ymm{k}{z}
     if isImm8(v0) && isM256M64bcst(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b01, 0, addr(v[1]), vcode(v[2]), kcode(v[2]), zcode(v[2]), bcode(v[1]))
@@ -84407,7 +85587,8 @@ func (self *Program) VPSLLQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSLLQ imm8, xmm, xmm{k}{z}
     if isImm8(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -84421,7 +85602,8 @@ func (self *Program) VPSLLQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSLLQ xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -84434,7 +85616,8 @@ func (self *Program) VPSLLQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSLLQ m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -84444,7 +85627,8 @@ func (self *Program) VPSLLQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSLLQ imm8, ymm, ymm{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -84458,7 +85642,8 @@ func (self *Program) VPSLLQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSLLQ xmm, ymm, ymm{k}{z}
     if isEVEXXMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -84471,7 +85656,8 @@ func (self *Program) VPSLLQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSLLQ m128, ymm, ymm{k}{z}
     if isM128(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -84572,7 +85758,8 @@ func (self *Program) VPSLLVD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSLLVD m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -84582,7 +85769,8 @@ func (self *Program) VPSLLVD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSLLVD xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -84595,7 +85783,8 @@ func (self *Program) VPSLLVD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSLLVD m256/m32bcst, ymm, ymm{k}{z}
     if isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -84605,7 +85794,8 @@ func (self *Program) VPSLLVD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSLLVD ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -84709,7 +85899,8 @@ func (self *Program) VPSLLVQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSLLVQ m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -84719,7 +85910,8 @@ func (self *Program) VPSLLVQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSLLVQ xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -84732,7 +85924,8 @@ func (self *Program) VPSLLVQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSLLVQ m256/m64bcst, ymm, ymm{k}{z}
     if isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -84742,7 +85935,8 @@ func (self *Program) VPSLLVQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSLLVQ ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -84798,7 +85992,8 @@ func (self *Program) VPSLLVW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSLLVW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -84811,7 +86006,8 @@ func (self *Program) VPSLLVW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSLLVW m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -84821,7 +86017,8 @@ func (self *Program) VPSLLVW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSLLVW ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -84834,7 +86031,8 @@ func (self *Program) VPSLLVW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSLLVW m256, ymm, ymm{k}{z}
     if isM256(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -84986,7 +86184,8 @@ func (self *Program) VPSLLW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSLLW imm8, xmm, xmm{k}{z}
     if isImm8(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -85000,7 +86199,8 @@ func (self *Program) VPSLLW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSLLW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -85013,7 +86213,8 @@ func (self *Program) VPSLLW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSLLW m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -85023,7 +86224,8 @@ func (self *Program) VPSLLW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSLLW imm8, ymm, ymm{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -85037,7 +86239,8 @@ func (self *Program) VPSLLW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSLLW xmm, ymm, ymm{k}{z}
     if isEVEXXMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -85050,7 +86253,8 @@ func (self *Program) VPSLLW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSLLW m128, ymm, ymm{k}{z}
     if isM128(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -85060,7 +86264,8 @@ func (self *Program) VPSLLW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSLLW imm8, m128, xmm{k}{z}
     if isImm8(v0) && isM128(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, 0, addr(v[1]), vcode(v[2]), kcode(v[2]), zcode(v[2]), 0)
@@ -85071,7 +86276,8 @@ func (self *Program) VPSLLW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSLLW imm8, m256, ymm{k}{z}
     if isImm8(v0) && isM256(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, 0, addr(v[1]), vcode(v[2]), kcode(v[2]), zcode(v[2]), 0)
@@ -85224,7 +86430,8 @@ func (self *Program) VPSRAD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRAD imm8, m128/m32bcst, xmm{k}{z}
     if isImm8(v0) && isM128M32bcst(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, 0, addr(v[1]), vcode(v[2]), kcode(v[2]), zcode(v[2]), bcode(v[1]))
@@ -85235,7 +86442,8 @@ func (self *Program) VPSRAD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRAD imm8, m256/m32bcst, ymm{k}{z}
     if isImm8(v0) && isM256M32bcst(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, 0, addr(v[1]), vcode(v[2]), kcode(v[2]), zcode(v[2]), bcode(v[1]))
@@ -85246,7 +86454,8 @@ func (self *Program) VPSRAD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRAD imm8, xmm, xmm{k}{z}
     if isImm8(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -85260,7 +86469,8 @@ func (self *Program) VPSRAD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRAD xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -85273,7 +86483,8 @@ func (self *Program) VPSRAD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRAD m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -85283,7 +86494,8 @@ func (self *Program) VPSRAD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRAD imm8, ymm, ymm{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -85297,7 +86509,8 @@ func (self *Program) VPSRAD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRAD xmm, ymm, ymm{k}{z}
     if isEVEXXMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -85310,7 +86523,8 @@ func (self *Program) VPSRAD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRAD m128, ymm, ymm{k}{z}
     if isM128(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -85394,7 +86608,8 @@ func (self *Program) VPSRAQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRAQ imm8, m128/m64bcst, xmm{k}{z}
     if isImm8(v0) && isM128M64bcst(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b00, 0, addr(v[1]), vcode(v[2]), kcode(v[2]), zcode(v[2]), bcode(v[1]))
@@ -85405,7 +86620,8 @@ func (self *Program) VPSRAQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRAQ imm8, m256/m64bcst, ymm{k}{z}
     if isImm8(v0) && isM256M64bcst(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b01, 0, addr(v[1]), vcode(v[2]), kcode(v[2]), zcode(v[2]), bcode(v[1]))
@@ -85416,7 +86632,8 @@ func (self *Program) VPSRAQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRAQ imm8, xmm, xmm{k}{z}
     if isImm8(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -85430,7 +86647,8 @@ func (self *Program) VPSRAQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRAQ xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -85443,7 +86661,8 @@ func (self *Program) VPSRAQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRAQ m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -85453,7 +86672,8 @@ func (self *Program) VPSRAQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRAQ imm8, ymm, ymm{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -85467,7 +86687,8 @@ func (self *Program) VPSRAQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRAQ xmm, ymm, ymm{k}{z}
     if isEVEXXMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -85480,7 +86701,8 @@ func (self *Program) VPSRAQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRAQ m128, ymm, ymm{k}{z}
     if isM128(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -85581,7 +86803,8 @@ func (self *Program) VPSRAVD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSRAVD m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -85591,7 +86814,8 @@ func (self *Program) VPSRAVD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSRAVD xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -85604,7 +86828,8 @@ func (self *Program) VPSRAVD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSRAVD m256/m32bcst, ymm, ymm{k}{z}
     if isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -85614,7 +86839,8 @@ func (self *Program) VPSRAVD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSRAVD ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -85670,7 +86896,8 @@ func (self *Program) VPSRAVQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSRAVQ m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -85680,7 +86907,8 @@ func (self *Program) VPSRAVQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSRAVQ xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -85693,7 +86921,8 @@ func (self *Program) VPSRAVQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSRAVQ m256/m64bcst, ymm, ymm{k}{z}
     if isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -85703,7 +86932,8 @@ func (self *Program) VPSRAVQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSRAVQ ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -85759,7 +86989,8 @@ func (self *Program) VPSRAVW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSRAVW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -85772,7 +87003,8 @@ func (self *Program) VPSRAVW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSRAVW m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -85782,7 +87014,8 @@ func (self *Program) VPSRAVW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSRAVW ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -85795,7 +87028,8 @@ func (self *Program) VPSRAVW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSRAVW m256, ymm, ymm{k}{z}
     if isM256(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -85947,7 +87181,8 @@ func (self *Program) VPSRAW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRAW imm8, xmm, xmm{k}{z}
     if isImm8(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -85961,7 +87196,8 @@ func (self *Program) VPSRAW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRAW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -85974,7 +87210,8 @@ func (self *Program) VPSRAW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRAW m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -85984,7 +87221,8 @@ func (self *Program) VPSRAW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRAW imm8, ymm, ymm{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -85998,7 +87236,8 @@ func (self *Program) VPSRAW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRAW xmm, ymm, ymm{k}{z}
     if isEVEXXMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -86011,7 +87250,8 @@ func (self *Program) VPSRAW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRAW m128, ymm, ymm{k}{z}
     if isM128(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -86021,7 +87261,8 @@ func (self *Program) VPSRAW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRAW imm8, m128, xmm{k}{z}
     if isImm8(v0) && isM128(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, 0, addr(v[1]), vcode(v[2]), kcode(v[2]), zcode(v[2]), 0)
@@ -86032,7 +87273,8 @@ func (self *Program) VPSRAW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRAW imm8, m256, ymm{k}{z}
     if isImm8(v0) && isM256(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, 0, addr(v[1]), vcode(v[2]), kcode(v[2]), zcode(v[2]), 0)
@@ -86185,7 +87427,8 @@ func (self *Program) VPSRLD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRLD imm8, m128/m32bcst, xmm{k}{z}
     if isImm8(v0) && isM128M32bcst(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, 0, addr(v[1]), vcode(v[2]), kcode(v[2]), zcode(v[2]), bcode(v[1]))
@@ -86196,7 +87439,8 @@ func (self *Program) VPSRLD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRLD imm8, m256/m32bcst, ymm{k}{z}
     if isImm8(v0) && isM256M32bcst(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, 0, addr(v[1]), vcode(v[2]), kcode(v[2]), zcode(v[2]), bcode(v[1]))
@@ -86207,7 +87451,8 @@ func (self *Program) VPSRLD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRLD imm8, xmm, xmm{k}{z}
     if isImm8(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -86221,7 +87466,8 @@ func (self *Program) VPSRLD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRLD xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -86234,7 +87480,8 @@ func (self *Program) VPSRLD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRLD m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -86244,7 +87491,8 @@ func (self *Program) VPSRLD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRLD imm8, ymm, ymm{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -86258,7 +87506,8 @@ func (self *Program) VPSRLD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRLD xmm, ymm, ymm{k}{z}
     if isEVEXXMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -86271,7 +87520,8 @@ func (self *Program) VPSRLD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRLD m128, ymm, ymm{k}{z}
     if isM128(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -86350,7 +87600,8 @@ func (self *Program) VPSRLDQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSRLDQ imm8, xmm, xmm
     if isImm8(v0) && isEVEXXMM(v1) && isEVEXXMM(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -86364,7 +87615,8 @@ func (self *Program) VPSRLDQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSRLDQ imm8, m128, xmm
     if isImm8(v0) && isM128(v1) && isEVEXXMM(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, 0, addr(v[1]), vcode(v[2]), 0, 0, 0)
@@ -86375,7 +87627,8 @@ func (self *Program) VPSRLDQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSRLDQ imm8, ymm, ymm
     if isImm8(v0) && isEVEXYMM(v1) && isEVEXYMM(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -86389,7 +87642,8 @@ func (self *Program) VPSRLDQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSRLDQ imm8, m256, ymm
     if isImm8(v0) && isM256(v1) && isEVEXYMM(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, 0, addr(v[1]), vcode(v[2]), 0, 0, 0)
@@ -86542,7 +87796,8 @@ func (self *Program) VPSRLQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRLQ imm8, m128/m64bcst, xmm{k}{z}
     if isImm8(v0) && isM128M64bcst(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b00, 0, addr(v[1]), vcode(v[2]), kcode(v[2]), zcode(v[2]), bcode(v[1]))
@@ -86553,7 +87808,8 @@ func (self *Program) VPSRLQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRLQ imm8, m256/m64bcst, ymm{k}{z}
     if isImm8(v0) && isM256M64bcst(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b01, 0, addr(v[1]), vcode(v[2]), kcode(v[2]), zcode(v[2]), bcode(v[1]))
@@ -86564,7 +87820,8 @@ func (self *Program) VPSRLQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRLQ imm8, xmm, xmm{k}{z}
     if isImm8(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -86578,7 +87835,8 @@ func (self *Program) VPSRLQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRLQ xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -86591,7 +87849,8 @@ func (self *Program) VPSRLQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRLQ m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -86601,7 +87860,8 @@ func (self *Program) VPSRLQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRLQ imm8, ymm, ymm{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -86615,7 +87875,8 @@ func (self *Program) VPSRLQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRLQ xmm, ymm, ymm{k}{z}
     if isEVEXXMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -86628,7 +87889,8 @@ func (self *Program) VPSRLQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRLQ m128, ymm, ymm{k}{z}
     if isM128(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -86729,7 +87991,8 @@ func (self *Program) VPSRLVD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSRLVD m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -86739,7 +88002,8 @@ func (self *Program) VPSRLVD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSRLVD xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -86752,7 +88016,8 @@ func (self *Program) VPSRLVD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSRLVD m256/m32bcst, ymm, ymm{k}{z}
     if isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -86762,7 +88027,8 @@ func (self *Program) VPSRLVD(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSRLVD ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -86866,7 +88132,8 @@ func (self *Program) VPSRLVQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSRLVQ m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -86876,7 +88143,8 @@ func (self *Program) VPSRLVQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSRLVQ xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -86889,7 +88157,8 @@ func (self *Program) VPSRLVQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSRLVQ m256/m64bcst, ymm, ymm{k}{z}
     if isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -86899,7 +88168,8 @@ func (self *Program) VPSRLVQ(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSRLVQ ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -86955,7 +88225,8 @@ func (self *Program) VPSRLVW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSRLVW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -86968,7 +88239,8 @@ func (self *Program) VPSRLVW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSRLVW m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -86978,7 +88250,8 @@ func (self *Program) VPSRLVW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSRLVW ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -86991,7 +88264,8 @@ func (self *Program) VPSRLVW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSRLVW m256, ymm, ymm{k}{z}
     if isM256(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -87143,7 +88417,8 @@ func (self *Program) VPSRLW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRLW imm8, xmm, xmm{k}{z}
     if isImm8(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -87157,7 +88432,8 @@ func (self *Program) VPSRLW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRLW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -87170,7 +88446,8 @@ func (self *Program) VPSRLW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRLW m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -87180,7 +88457,8 @@ func (self *Program) VPSRLW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRLW imm8, ymm, ymm{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -87194,7 +88472,8 @@ func (self *Program) VPSRLW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRLW xmm, ymm, ymm{k}{z}
     if isEVEXXMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -87207,7 +88486,8 @@ func (self *Program) VPSRLW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRLW m128, ymm, ymm{k}{z}
     if isM128(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -87217,7 +88497,8 @@ func (self *Program) VPSRLW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRLW imm8, m128, xmm{k}{z}
     if isImm8(v0) && isM128(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, 0, addr(v[1]), vcode(v[2]), kcode(v[2]), zcode(v[2]), 0)
@@ -87228,7 +88509,8 @@ func (self *Program) VPSRLW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSRLW imm8, m256, ymm{k}{z}
     if isImm8(v0) && isM256(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, 0, addr(v[1]), vcode(v[2]), kcode(v[2]), zcode(v[2]), 0)
@@ -87326,7 +88608,8 @@ func (self *Program) VPSUBB(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSUBB xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -87339,7 +88622,8 @@ func (self *Program) VPSUBB(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSUBB m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -87349,7 +88633,8 @@ func (self *Program) VPSUBB(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSUBB ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -87362,7 +88647,8 @@ func (self *Program) VPSUBB(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSUBB m256, ymm, ymm{k}{z}
     if isM256(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -87459,7 +88745,8 @@ func (self *Program) VPSUBD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSUBD m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -87469,7 +88756,8 @@ func (self *Program) VPSUBD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSUBD xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -87482,7 +88770,8 @@ func (self *Program) VPSUBD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSUBD m256/m32bcst, ymm, ymm{k}{z}
     if isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -87492,7 +88781,8 @@ func (self *Program) VPSUBD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSUBD ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -87592,7 +88882,8 @@ func (self *Program) VPSUBQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSUBQ m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -87602,7 +88893,8 @@ func (self *Program) VPSUBQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSUBQ xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -87615,7 +88907,8 @@ func (self *Program) VPSUBQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSUBQ m256/m64bcst, ymm, ymm{k}{z}
     if isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -87625,7 +88918,8 @@ func (self *Program) VPSUBQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSUBQ ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -87725,7 +89019,8 @@ func (self *Program) VPSUBSB(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSUBSB xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -87738,7 +89033,8 @@ func (self *Program) VPSUBSB(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSUBSB m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -87748,7 +89044,8 @@ func (self *Program) VPSUBSB(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSUBSB ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -87761,7 +89058,8 @@ func (self *Program) VPSUBSB(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSUBSB m256, ymm, ymm{k}{z}
     if isM256(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -87858,7 +89156,8 @@ func (self *Program) VPSUBSW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSUBSW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -87871,7 +89170,8 @@ func (self *Program) VPSUBSW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSUBSW m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -87881,7 +89181,8 @@ func (self *Program) VPSUBSW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSUBSW ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -87894,7 +89195,8 @@ func (self *Program) VPSUBSW(v0 interface{}, v1 interface{}, v2 interface{}) *In
     }
     // VPSUBSW m256, ymm, ymm{k}{z}
     if isM256(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -87991,7 +89293,8 @@ func (self *Program) VPSUBUSB(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPSUBUSB xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -88004,7 +89307,8 @@ func (self *Program) VPSUBUSB(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPSUBUSB m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -88014,7 +89318,8 @@ func (self *Program) VPSUBUSB(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPSUBUSB ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -88027,7 +89332,8 @@ func (self *Program) VPSUBUSB(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPSUBUSB m256, ymm, ymm{k}{z}
     if isM256(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -88124,7 +89430,8 @@ func (self *Program) VPSUBUSW(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPSUBUSW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -88137,7 +89444,8 @@ func (self *Program) VPSUBUSW(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPSUBUSW m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -88147,7 +89455,8 @@ func (self *Program) VPSUBUSW(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPSUBUSW ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -88160,7 +89469,8 @@ func (self *Program) VPSUBUSW(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPSUBUSW m256, ymm, ymm{k}{z}
     if isM256(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -88257,7 +89567,8 @@ func (self *Program) VPSUBW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSUBW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -88270,7 +89581,8 @@ func (self *Program) VPSUBW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSUBW m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -88280,7 +89592,8 @@ func (self *Program) VPSUBW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSUBW ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -88293,7 +89606,8 @@ func (self *Program) VPSUBW(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPSUBW m256, ymm, ymm{k}{z}
     if isM256(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -88348,7 +89662,8 @@ func (self *Program) VPTERNLOGD(v0 interface{}, v1 interface{}, v2 interface{}, 
     }
     // VPTERNLOGD imm8, m128/m32bcst, xmm, xmm{k}{z}
     if isImm8(v0) && isM128M32bcst(v1) && isEVEXXMM(v2) && isXMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x05, 0b00, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), zcode(v[3]), bcode(v[1]))
@@ -88359,7 +89674,8 @@ func (self *Program) VPTERNLOGD(v0 interface{}, v1 interface{}, v2 interface{}, 
     }
     // VPTERNLOGD imm8, xmm, xmm, xmm{k}{z}
     if isImm8(v0) && isEVEXXMM(v1) && isEVEXXMM(v2) && isXMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -88373,7 +89689,8 @@ func (self *Program) VPTERNLOGD(v0 interface{}, v1 interface{}, v2 interface{}, 
     }
     // VPTERNLOGD imm8, m256/m32bcst, ymm, ymm{k}{z}
     if isImm8(v0) && isM256M32bcst(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x05, 0b01, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), zcode(v[3]), bcode(v[1]))
@@ -88384,7 +89701,8 @@ func (self *Program) VPTERNLOGD(v0 interface{}, v1 interface{}, v2 interface{}, 
     }
     // VPTERNLOGD imm8, ymm, ymm, ymm{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -88443,7 +89761,8 @@ func (self *Program) VPTERNLOGQ(v0 interface{}, v1 interface{}, v2 interface{}, 
     }
     // VPTERNLOGQ imm8, m128/m64bcst, xmm, xmm{k}{z}
     if isImm8(v0) && isM128M64bcst(v1) && isEVEXXMM(v2) && isXMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x85, 0b00, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), zcode(v[3]), bcode(v[1]))
@@ -88454,7 +89773,8 @@ func (self *Program) VPTERNLOGQ(v0 interface{}, v1 interface{}, v2 interface{}, 
     }
     // VPTERNLOGQ imm8, xmm, xmm, xmm{k}{z}
     if isImm8(v0) && isEVEXXMM(v1) && isEVEXXMM(v2) && isXMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -88468,7 +89788,8 @@ func (self *Program) VPTERNLOGQ(v0 interface{}, v1 interface{}, v2 interface{}, 
     }
     // VPTERNLOGQ imm8, m256/m64bcst, ymm, ymm{k}{z}
     if isImm8(v0) && isM256M64bcst(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x85, 0b01, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), zcode(v[3]), bcode(v[1]))
@@ -88479,7 +89800,8 @@ func (self *Program) VPTERNLOGQ(v0 interface{}, v1 interface{}, v2 interface{}, 
     }
     // VPTERNLOGQ imm8, ymm, ymm, ymm{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -88598,7 +89920,8 @@ func (self *Program) VPTESTMB(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPTESTMB xmm, xmm, k{k}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -88611,7 +89934,8 @@ func (self *Program) VPTESTMB(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPTESTMB m128, xmm, k{k}
     if isM128(v0) && isEVEXXMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), 0, 0)
@@ -88621,7 +89945,8 @@ func (self *Program) VPTESTMB(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPTESTMB ymm, ymm, k{k}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -88634,7 +89959,8 @@ func (self *Program) VPTESTMB(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPTESTMB m256, ymm, k{k}
     if isM256(v0) && isEVEXYMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), 0, 0)
@@ -88687,7 +90013,8 @@ func (self *Program) VPTESTMD(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPTESTMD m128/m32bcst, xmm, k{k}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), 0, bcode(v[0]))
@@ -88697,7 +90024,8 @@ func (self *Program) VPTESTMD(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPTESTMD xmm, xmm, k{k}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -88710,7 +90038,8 @@ func (self *Program) VPTESTMD(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPTESTMD m256/m32bcst, ymm, k{k}
     if isM256M32bcst(v0) && isEVEXYMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), 0, bcode(v[0]))
@@ -88720,7 +90049,8 @@ func (self *Program) VPTESTMD(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPTESTMD ymm, ymm, k{k}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -88776,7 +90106,8 @@ func (self *Program) VPTESTMQ(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPTESTMQ m128/m64bcst, xmm, k{k}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), 0, bcode(v[0]))
@@ -88786,7 +90117,8 @@ func (self *Program) VPTESTMQ(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPTESTMQ xmm, xmm, k{k}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -88799,7 +90131,8 @@ func (self *Program) VPTESTMQ(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPTESTMQ m256/m64bcst, ymm, k{k}
     if isM256M64bcst(v0) && isEVEXYMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), 0, bcode(v[0]))
@@ -88809,7 +90142,8 @@ func (self *Program) VPTESTMQ(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPTESTMQ ymm, ymm, k{k}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -88865,7 +90199,8 @@ func (self *Program) VPTESTMW(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPTESTMW xmm, xmm, k{k}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -88878,7 +90213,8 @@ func (self *Program) VPTESTMW(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPTESTMW m128, xmm, k{k}
     if isM128(v0) && isEVEXXMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), 0, 0)
@@ -88888,7 +90224,8 @@ func (self *Program) VPTESTMW(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPTESTMW ymm, ymm, k{k}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -88901,7 +90238,8 @@ func (self *Program) VPTESTMW(v0 interface{}, v1 interface{}, v2 interface{}) *I
     }
     // VPTESTMW m256, ymm, k{k}
     if isM256(v0) && isEVEXYMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), 0, 0)
@@ -88931,7 +90269,8 @@ func (self *Program) VPTESTNMB(v0 interface{}, v1 interface{}, v2 interface{}) *
     p := self.alloc("VPTESTNMB", 3, Operands { v0, v1, v2 })
     // VPTESTNMB zmm, zmm, k{k}
     if isZMM(v0) && isZMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512F | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512F)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -88944,7 +90283,8 @@ func (self *Program) VPTESTNMB(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPTESTNMB m512, zmm, k{k}
     if isM512(v0) && isZMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512F | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512F)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x06, 0b10, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), 0, 0)
@@ -88954,7 +90294,8 @@ func (self *Program) VPTESTNMB(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPTESTNMB xmm, xmm, k{k}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -88967,7 +90308,8 @@ func (self *Program) VPTESTNMB(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPTESTNMB m128, xmm, k{k}
     if isM128(v0) && isEVEXXMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x06, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), 0, 0)
@@ -88977,7 +90319,8 @@ func (self *Program) VPTESTNMB(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPTESTNMB ymm, ymm, k{k}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -88990,7 +90333,8 @@ func (self *Program) VPTESTNMB(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPTESTNMB m256, ymm, k{k}
     if isM256(v0) && isEVEXYMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x06, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), 0, 0)
@@ -89043,7 +90387,8 @@ func (self *Program) VPTESTNMD(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPTESTNMD m128/m32bcst, xmm, k{k}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x06, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), 0, bcode(v[0]))
@@ -89053,7 +90398,8 @@ func (self *Program) VPTESTNMD(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPTESTNMD xmm, xmm, k{k}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -89066,7 +90412,8 @@ func (self *Program) VPTESTNMD(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPTESTNMD m256/m32bcst, ymm, k{k}
     if isM256M32bcst(v0) && isEVEXYMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x06, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), 0, bcode(v[0]))
@@ -89076,7 +90423,8 @@ func (self *Program) VPTESTNMD(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPTESTNMD ymm, ymm, k{k}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -89132,7 +90480,8 @@ func (self *Program) VPTESTNMQ(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPTESTNMQ m128/m64bcst, xmm, k{k}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x86, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), 0, bcode(v[0]))
@@ -89142,7 +90491,8 @@ func (self *Program) VPTESTNMQ(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPTESTNMQ xmm, xmm, k{k}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -89155,7 +90505,8 @@ func (self *Program) VPTESTNMQ(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPTESTNMQ m256/m64bcst, ymm, k{k}
     if isM256M64bcst(v0) && isEVEXYMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x86, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), 0, bcode(v[0]))
@@ -89165,7 +90516,8 @@ func (self *Program) VPTESTNMQ(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPTESTNMQ ymm, ymm, k{k}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -89198,7 +90550,8 @@ func (self *Program) VPTESTNMW(v0 interface{}, v1 interface{}, v2 interface{}) *
     p := self.alloc("VPTESTNMW", 3, Operands { v0, v1, v2 })
     // VPTESTNMW zmm, zmm, k{k}
     if isZMM(v0) && isZMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512F | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512F)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -89211,7 +90564,8 @@ func (self *Program) VPTESTNMW(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPTESTNMW m512, zmm, k{k}
     if isM512(v0) && isZMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512F | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512F)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x86, 0b10, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), 0, 0)
@@ -89221,7 +90575,8 @@ func (self *Program) VPTESTNMW(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPTESTNMW xmm, xmm, k{k}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -89234,7 +90589,8 @@ func (self *Program) VPTESTNMW(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPTESTNMW m128, xmm, k{k}
     if isM128(v0) && isEVEXXMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x86, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), 0, 0)
@@ -89244,7 +90600,8 @@ func (self *Program) VPTESTNMW(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPTESTNMW ymm, ymm, k{k}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -89257,7 +90614,8 @@ func (self *Program) VPTESTNMW(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VPTESTNMW m256, ymm, k{k}
     if isM256(v0) && isEVEXYMM(v1) && isKk(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x86, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), 0, 0)
@@ -89354,7 +90712,8 @@ func (self *Program) VPUNPCKHBW(v0 interface{}, v1 interface{}, v2 interface{}) 
     }
     // VPUNPCKHBW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -89367,7 +90726,8 @@ func (self *Program) VPUNPCKHBW(v0 interface{}, v1 interface{}, v2 interface{}) 
     }
     // VPUNPCKHBW m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -89377,7 +90737,8 @@ func (self *Program) VPUNPCKHBW(v0 interface{}, v1 interface{}, v2 interface{}) 
     }
     // VPUNPCKHBW ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -89390,7 +90751,8 @@ func (self *Program) VPUNPCKHBW(v0 interface{}, v1 interface{}, v2 interface{}) 
     }
     // VPUNPCKHBW m256, ymm, ymm{k}{z}
     if isM256(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -89487,7 +90849,8 @@ func (self *Program) VPUNPCKHDQ(v0 interface{}, v1 interface{}, v2 interface{}) 
     }
     // VPUNPCKHDQ m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -89497,7 +90860,8 @@ func (self *Program) VPUNPCKHDQ(v0 interface{}, v1 interface{}, v2 interface{}) 
     }
     // VPUNPCKHDQ xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -89510,7 +90874,8 @@ func (self *Program) VPUNPCKHDQ(v0 interface{}, v1 interface{}, v2 interface{}) 
     }
     // VPUNPCKHDQ m256/m32bcst, ymm, ymm{k}{z}
     if isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -89520,7 +90885,8 @@ func (self *Program) VPUNPCKHDQ(v0 interface{}, v1 interface{}, v2 interface{}) 
     }
     // VPUNPCKHDQ ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -89620,7 +90986,8 @@ func (self *Program) VPUNPCKHQDQ(v0 interface{}, v1 interface{}, v2 interface{})
     }
     // VPUNPCKHQDQ m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -89630,7 +90997,8 @@ func (self *Program) VPUNPCKHQDQ(v0 interface{}, v1 interface{}, v2 interface{})
     }
     // VPUNPCKHQDQ xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -89643,7 +91011,8 @@ func (self *Program) VPUNPCKHQDQ(v0 interface{}, v1 interface{}, v2 interface{})
     }
     // VPUNPCKHQDQ m256/m64bcst, ymm, ymm{k}{z}
     if isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -89653,7 +91022,8 @@ func (self *Program) VPUNPCKHQDQ(v0 interface{}, v1 interface{}, v2 interface{})
     }
     // VPUNPCKHQDQ ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -89753,7 +91123,8 @@ func (self *Program) VPUNPCKHWD(v0 interface{}, v1 interface{}, v2 interface{}) 
     }
     // VPUNPCKHWD xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -89766,7 +91137,8 @@ func (self *Program) VPUNPCKHWD(v0 interface{}, v1 interface{}, v2 interface{}) 
     }
     // VPUNPCKHWD m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -89776,7 +91148,8 @@ func (self *Program) VPUNPCKHWD(v0 interface{}, v1 interface{}, v2 interface{}) 
     }
     // VPUNPCKHWD ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -89789,7 +91162,8 @@ func (self *Program) VPUNPCKHWD(v0 interface{}, v1 interface{}, v2 interface{}) 
     }
     // VPUNPCKHWD m256, ymm, ymm{k}{z}
     if isM256(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -89886,7 +91260,8 @@ func (self *Program) VPUNPCKLBW(v0 interface{}, v1 interface{}, v2 interface{}) 
     }
     // VPUNPCKLBW xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -89899,7 +91274,8 @@ func (self *Program) VPUNPCKLBW(v0 interface{}, v1 interface{}, v2 interface{}) 
     }
     // VPUNPCKLBW m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -89909,7 +91285,8 @@ func (self *Program) VPUNPCKLBW(v0 interface{}, v1 interface{}, v2 interface{}) 
     }
     // VPUNPCKLBW ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -89922,7 +91299,8 @@ func (self *Program) VPUNPCKLBW(v0 interface{}, v1 interface{}, v2 interface{}) 
     }
     // VPUNPCKLBW m256, ymm, ymm{k}{z}
     if isM256(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -90019,7 +91397,8 @@ func (self *Program) VPUNPCKLDQ(v0 interface{}, v1 interface{}, v2 interface{}) 
     }
     // VPUNPCKLDQ m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -90029,7 +91408,8 @@ func (self *Program) VPUNPCKLDQ(v0 interface{}, v1 interface{}, v2 interface{}) 
     }
     // VPUNPCKLDQ xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -90042,7 +91422,8 @@ func (self *Program) VPUNPCKLDQ(v0 interface{}, v1 interface{}, v2 interface{}) 
     }
     // VPUNPCKLDQ m256/m32bcst, ymm, ymm{k}{z}
     if isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -90052,7 +91433,8 @@ func (self *Program) VPUNPCKLDQ(v0 interface{}, v1 interface{}, v2 interface{}) 
     }
     // VPUNPCKLDQ ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -90152,7 +91534,8 @@ func (self *Program) VPUNPCKLQDQ(v0 interface{}, v1 interface{}, v2 interface{})
     }
     // VPUNPCKLQDQ m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -90162,7 +91545,8 @@ func (self *Program) VPUNPCKLQDQ(v0 interface{}, v1 interface{}, v2 interface{})
     }
     // VPUNPCKLQDQ xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -90175,7 +91559,8 @@ func (self *Program) VPUNPCKLQDQ(v0 interface{}, v1 interface{}, v2 interface{})
     }
     // VPUNPCKLQDQ m256/m64bcst, ymm, ymm{k}{z}
     if isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -90185,7 +91570,8 @@ func (self *Program) VPUNPCKLQDQ(v0 interface{}, v1 interface{}, v2 interface{})
     }
     // VPUNPCKLQDQ ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -90285,7 +91671,8 @@ func (self *Program) VPUNPCKLWD(v0 interface{}, v1 interface{}, v2 interface{}) 
     }
     // VPUNPCKLWD xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -90298,7 +91685,8 @@ func (self *Program) VPUNPCKLWD(v0 interface{}, v1 interface{}, v2 interface{}) 
     }
     // VPUNPCKLWD m128, xmm, xmm{k}{z}
     if isM128(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -90308,7 +91696,8 @@ func (self *Program) VPUNPCKLWD(v0 interface{}, v1 interface{}, v2 interface{}) 
     }
     // VPUNPCKLWD ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -90321,7 +91710,8 @@ func (self *Program) VPUNPCKLWD(v0 interface{}, v1 interface{}, v2 interface{}) 
     }
     // VPUNPCKLWD m256, ymm, ymm{k}{z}
     if isM256(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512BW)
+        self.require(ISA_AVX512BW)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), 0)
@@ -90432,7 +91822,8 @@ func (self *Program) VPXORD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPXORD m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -90442,7 +91833,8 @@ func (self *Program) VPXORD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPXORD xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -90455,7 +91847,8 @@ func (self *Program) VPXORD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPXORD m256/m32bcst, ymm, ymm{k}{z}
     if isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -90465,7 +91858,8 @@ func (self *Program) VPXORD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPXORD ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -90521,7 +91915,8 @@ func (self *Program) VPXORQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPXORQ m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -90531,7 +91926,8 @@ func (self *Program) VPXORQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPXORQ xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -90544,7 +91940,8 @@ func (self *Program) VPXORQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPXORQ m256/m64bcst, ymm, ymm{k}{z}
     if isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -90554,7 +91951,8 @@ func (self *Program) VPXORQ(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VPXORQ ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -90632,7 +92030,8 @@ func (self *Program) VRANGEPD(v0 interface{}, v1 interface{}, v2 interface{}, v3
     }
     // VRANGEPD imm8, m128/m64bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isImm8(v0) && isM128M64bcst(v1) && isEVEXXMM(v2) && isXMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x85, 0b00, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), zcode(v[3]), bcode(v[1]))
@@ -90643,7 +92042,8 @@ func (self *Program) VRANGEPD(v0 interface{}, v1 interface{}, v2 interface{}, v3
     }
     // VRANGEPD imm8, xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isImm8(v0) && isEVEXXMM(v1) && isEVEXXMM(v2) && isXMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -90657,7 +92057,8 @@ func (self *Program) VRANGEPD(v0 interface{}, v1 interface{}, v2 interface{}, v3
     }
     // VRANGEPD imm8, m256/m64bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isImm8(v0) && isM256M64bcst(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x85, 0b01, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), zcode(v[3]), bcode(v[1]))
@@ -90668,7 +92069,8 @@ func (self *Program) VRANGEPD(v0 interface{}, v1 interface{}, v2 interface{}, v3
     }
     // VRANGEPD imm8, ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isImm8(v0) && isEVEXYMM(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -90747,7 +92149,8 @@ func (self *Program) VRANGEPS(v0 interface{}, v1 interface{}, v2 interface{}, v3
     }
     // VRANGEPS imm8, m128/m32bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isImm8(v0) && isM128M32bcst(v1) && isEVEXXMM(v2) && isXMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x05, 0b00, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), zcode(v[3]), bcode(v[1]))
@@ -90758,7 +92161,8 @@ func (self *Program) VRANGEPS(v0 interface{}, v1 interface{}, v2 interface{}, v3
     }
     // VRANGEPS imm8, xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isImm8(v0) && isEVEXXMM(v1) && isEVEXXMM(v2) && isXMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -90772,7 +92176,8 @@ func (self *Program) VRANGEPS(v0 interface{}, v1 interface{}, v2 interface{}, v3
     }
     // VRANGEPS imm8, m256/m32bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isImm8(v0) && isM256M32bcst(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x05, 0b01, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), zcode(v[3]), bcode(v[1]))
@@ -90783,7 +92188,8 @@ func (self *Program) VRANGEPS(v0 interface{}, v1 interface{}, v2 interface{}, v3
     }
     // VRANGEPS imm8, ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isImm8(v0) && isEVEXYMM(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -90962,7 +92368,8 @@ func (self *Program) VRCP14PD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VRCP14PD m128/m64bcst, xmm{k}{z}
     if isM128M64bcst(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -90972,7 +92379,8 @@ func (self *Program) VRCP14PD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VRCP14PD m256/m64bcst, ymm{k}{z}
     if isM256M64bcst(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -90982,7 +92390,8 @@ func (self *Program) VRCP14PD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VRCP14PD xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -90995,7 +92404,8 @@ func (self *Program) VRCP14PD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VRCP14PD ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -91051,7 +92461,8 @@ func (self *Program) VRCP14PS(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VRCP14PS m128/m32bcst, xmm{k}{z}
     if isM128M32bcst(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -91061,7 +92472,8 @@ func (self *Program) VRCP14PS(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VRCP14PS m256/m32bcst, ymm{k}{z}
     if isM256M32bcst(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -91071,7 +92483,8 @@ func (self *Program) VRCP14PS(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VRCP14PS xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -91084,7 +92497,8 @@ func (self *Program) VRCP14PS(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VRCP14PS ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -91546,7 +92960,8 @@ func (self *Program) VREDUCEPD(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VREDUCEPD imm8, m128/m64bcst, xmm{k}{z}
     if isImm8(v0) && isM128M64bcst(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x85, 0b00, ehcode(v[2]), addr(v[1]), 0, kcode(v[2]), zcode(v[2]), bcode(v[1]))
@@ -91557,7 +92972,8 @@ func (self *Program) VREDUCEPD(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VREDUCEPD imm8, m256/m64bcst, ymm{k}{z}
     if isImm8(v0) && isM256M64bcst(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x85, 0b01, ehcode(v[2]), addr(v[1]), 0, kcode(v[2]), zcode(v[2]), bcode(v[1]))
@@ -91568,7 +92984,8 @@ func (self *Program) VREDUCEPD(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VREDUCEPD imm8, xmm, xmm{k}{z}
     if isImm8(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -91582,7 +92999,8 @@ func (self *Program) VREDUCEPD(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VREDUCEPD imm8, ymm, ymm{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -91641,7 +93059,8 @@ func (self *Program) VREDUCEPS(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VREDUCEPS imm8, m128/m32bcst, xmm{k}{z}
     if isImm8(v0) && isM128M32bcst(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x05, 0b00, ehcode(v[2]), addr(v[1]), 0, kcode(v[2]), zcode(v[2]), bcode(v[1]))
@@ -91652,7 +93071,8 @@ func (self *Program) VREDUCEPS(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VREDUCEPS imm8, m256/m32bcst, ymm{k}{z}
     if isImm8(v0) && isM256M32bcst(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x05, 0b01, ehcode(v[2]), addr(v[1]), 0, kcode(v[2]), zcode(v[2]), bcode(v[1]))
@@ -91663,7 +93083,8 @@ func (self *Program) VREDUCEPS(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VREDUCEPS imm8, xmm, xmm{k}{z}
     if isImm8(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -91677,7 +93098,8 @@ func (self *Program) VREDUCEPS(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VREDUCEPS imm8, ymm, ymm{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -91838,7 +93260,8 @@ func (self *Program) VRNDSCALEPD(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VRNDSCALEPD imm8, m128/m64bcst, xmm{k}{z}
     if len(vv) == 0 && isImm8(v0) && isM128M64bcst(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x85, 0b00, ehcode(v[2]), addr(v[1]), 0, kcode(v[2]), zcode(v[2]), bcode(v[1]))
@@ -91849,7 +93272,8 @@ func (self *Program) VRNDSCALEPD(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VRNDSCALEPD imm8, m256/m64bcst, ymm{k}{z}
     if len(vv) == 0 && isImm8(v0) && isM256M64bcst(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x85, 0b01, ehcode(v[2]), addr(v[1]), 0, kcode(v[2]), zcode(v[2]), bcode(v[1]))
@@ -91860,7 +93284,8 @@ func (self *Program) VRNDSCALEPD(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VRNDSCALEPD imm8, xmm, xmm{k}{z}
     if len(vv) == 0 && isImm8(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -91874,7 +93299,8 @@ func (self *Program) VRNDSCALEPD(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VRNDSCALEPD imm8, ymm, ymm{k}{z}
     if len(vv) == 0 && isImm8(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -91953,7 +93379,8 @@ func (self *Program) VRNDSCALEPS(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VRNDSCALEPS imm8, m128/m32bcst, xmm{k}{z}
     if len(vv) == 0 && isImm8(v0) && isM128M32bcst(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x05, 0b00, ehcode(v[2]), addr(v[1]), 0, kcode(v[2]), zcode(v[2]), bcode(v[1]))
@@ -91964,7 +93391,8 @@ func (self *Program) VRNDSCALEPS(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VRNDSCALEPS imm8, m256/m32bcst, ymm{k}{z}
     if len(vv) == 0 && isImm8(v0) && isM256M32bcst(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x05, 0b01, ehcode(v[2]), addr(v[1]), 0, kcode(v[2]), zcode(v[2]), bcode(v[1]))
@@ -91975,7 +93403,8 @@ func (self *Program) VRNDSCALEPS(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VRNDSCALEPS imm8, xmm, xmm{k}{z}
     if len(vv) == 0 && isImm8(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -91989,7 +93418,8 @@ func (self *Program) VRNDSCALEPS(v0 interface{}, v1 interface{}, v2 interface{},
     }
     // VRNDSCALEPS imm8, ymm, ymm{k}{z}
     if len(vv) == 0 && isImm8(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -92380,7 +93810,8 @@ func (self *Program) VRSQRT14PD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VRSQRT14PD m128/m64bcst, xmm{k}{z}
     if isM128M64bcst(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -92390,7 +93821,8 @@ func (self *Program) VRSQRT14PD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VRSQRT14PD m256/m64bcst, ymm{k}{z}
     if isM256M64bcst(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -92400,7 +93832,8 @@ func (self *Program) VRSQRT14PD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VRSQRT14PD xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -92413,7 +93846,8 @@ func (self *Program) VRSQRT14PD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VRSQRT14PD ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -92469,7 +93903,8 @@ func (self *Program) VRSQRT14PS(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VRSQRT14PS m128/m32bcst, xmm{k}{z}
     if isM128M32bcst(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -92479,7 +93914,8 @@ func (self *Program) VRSQRT14PS(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VRSQRT14PS m256/m32bcst, ymm{k}{z}
     if isM256M32bcst(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -92489,7 +93925,8 @@ func (self *Program) VRSQRT14PS(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VRSQRT14PS xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -92502,7 +93939,8 @@ func (self *Program) VRSQRT14PS(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VRSQRT14PS ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -92981,7 +94419,8 @@ func (self *Program) VSCALEFPD(v0 interface{}, v1 interface{}, v2 interface{}, v
     }
     // VSCALEFPD m128/m64bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -92991,7 +94430,8 @@ func (self *Program) VSCALEFPD(v0 interface{}, v1 interface{}, v2 interface{}, v
     }
     // VSCALEFPD xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -93004,7 +94444,8 @@ func (self *Program) VSCALEFPD(v0 interface{}, v1 interface{}, v2 interface{}, v
     }
     // VSCALEFPD m256/m64bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -93014,7 +94455,8 @@ func (self *Program) VSCALEFPD(v0 interface{}, v1 interface{}, v2 interface{}, v
     }
     // VSCALEFPD ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -93089,7 +94531,8 @@ func (self *Program) VSCALEFPS(v0 interface{}, v1 interface{}, v2 interface{}, v
     }
     // VSCALEFPS m128/m32bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -93099,7 +94542,8 @@ func (self *Program) VSCALEFPS(v0 interface{}, v1 interface{}, v2 interface{}, v
     }
     // VSCALEFPS xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -93112,7 +94556,8 @@ func (self *Program) VSCALEFPS(v0 interface{}, v1 interface{}, v2 interface{}, v
     }
     // VSCALEFPS m256/m32bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -93122,7 +94567,8 @@ func (self *Program) VSCALEFPS(v0 interface{}, v1 interface{}, v2 interface{}, v
     }
     // VSCALEFPS ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -93278,7 +94724,8 @@ func (self *Program) VSCATTERDPD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VSCATTERDPD xmm, vm32x{k}
     if isEVEXXMM(v0) && isVMXk(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), 0, 0)
@@ -93288,7 +94735,8 @@ func (self *Program) VSCATTERDPD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VSCATTERDPD ymm, vm32x{k}
     if isEVEXYMM(v0) && isVMXk(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), 0, 0)
@@ -93325,7 +94773,8 @@ func (self *Program) VSCATTERDPS(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VSCATTERDPS xmm, vm32x{k}
     if isEVEXXMM(v0) && isVMXk(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), 0, 0)
@@ -93335,7 +94784,8 @@ func (self *Program) VSCATTERDPS(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VSCATTERDPS ymm, vm32y{k}
     if isEVEXYMM(v0) && isVMYk(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), 0, 0)
@@ -93572,7 +95022,8 @@ func (self *Program) VSCATTERQPD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VSCATTERQPD xmm, vm64x{k}
     if isEVEXXMM(v0) && isVMXk(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b00, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), 0, 0)
@@ -93582,7 +95033,8 @@ func (self *Program) VSCATTERQPD(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VSCATTERQPD ymm, vm64y{k}
     if isEVEXYMM(v0) && isVMYk(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x85, 0b01, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), 0, 0)
@@ -93619,7 +95071,8 @@ func (self *Program) VSCATTERQPS(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VSCATTERQPS xmm, vm64x{k}
     if isEVEXXMM(v0) && isVMXk(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b00, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), 0, 0)
@@ -93629,7 +95082,8 @@ func (self *Program) VSCATTERQPS(v0 interface{}, v1 interface{}) *Instruction {
     }
     // VSCATTERQPS xmm, vm64y{k}
     if isEVEXXMM(v0) && isVMYk(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b10, 0x05, 0b01, ehcode(v[0]), addr(v[1]), 0, kcode(v[1]), 0, 0)
@@ -93682,7 +95136,8 @@ func (self *Program) VSHUFF32X4(v0 interface{}, v1 interface{}, v2 interface{}, 
     }
     // VSHUFF32X4 imm8, m256/m32bcst, ymm, ymm{k}{z}
     if isImm8(v0) && isM256M32bcst(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x05, 0b01, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), zcode(v[3]), bcode(v[1]))
@@ -93693,7 +95148,8 @@ func (self *Program) VSHUFF32X4(v0 interface{}, v1 interface{}, v2 interface{}, 
     }
     // VSHUFF32X4 imm8, ymm, ymm, ymm{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -93750,7 +95206,8 @@ func (self *Program) VSHUFF64X2(v0 interface{}, v1 interface{}, v2 interface{}, 
     }
     // VSHUFF64X2 imm8, m256/m64bcst, ymm, ymm{k}{z}
     if isImm8(v0) && isM256M64bcst(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x85, 0b01, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), zcode(v[3]), bcode(v[1]))
@@ -93761,7 +95218,8 @@ func (self *Program) VSHUFF64X2(v0 interface{}, v1 interface{}, v2 interface{}, 
     }
     // VSHUFF64X2 imm8, ymm, ymm, ymm{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -93818,7 +95276,8 @@ func (self *Program) VSHUFI32X4(v0 interface{}, v1 interface{}, v2 interface{}, 
     }
     // VSHUFI32X4 imm8, m256/m32bcst, ymm, ymm{k}{z}
     if isImm8(v0) && isM256M32bcst(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x05, 0b01, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), zcode(v[3]), bcode(v[1]))
@@ -93829,7 +95288,8 @@ func (self *Program) VSHUFI32X4(v0 interface{}, v1 interface{}, v2 interface{}, 
     }
     // VSHUFI32X4 imm8, ymm, ymm, ymm{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -93886,7 +95346,8 @@ func (self *Program) VSHUFI64X2(v0 interface{}, v1 interface{}, v2 interface{}, 
     }
     // VSHUFI64X2 imm8, m256/m64bcst, ymm, ymm{k}{z}
     if isImm8(v0) && isM256M64bcst(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b11, 0x85, 0b01, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), zcode(v[3]), bcode(v[1]))
@@ -93897,7 +95358,8 @@ func (self *Program) VSHUFI64X2(v0 interface{}, v1 interface{}, v2 interface{}, 
     }
     // VSHUFI64X2 imm8, ymm, ymm, ymm{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -94004,7 +95466,8 @@ func (self *Program) VSHUFPD(v0 interface{}, v1 interface{}, v2 interface{}, v3 
     }
     // VSHUFPD imm8, m128/m64bcst, xmm, xmm{k}{z}
     if isImm8(v0) && isM128M64bcst(v1) && isEVEXXMM(v2) && isXMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b00, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), zcode(v[3]), bcode(v[1]))
@@ -94015,7 +95478,8 @@ func (self *Program) VSHUFPD(v0 interface{}, v1 interface{}, v2 interface{}, v3 
     }
     // VSHUFPD imm8, xmm, xmm, xmm{k}{z}
     if isImm8(v0) && isEVEXXMM(v1) && isEVEXXMM(v2) && isXMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -94029,7 +95493,8 @@ func (self *Program) VSHUFPD(v0 interface{}, v1 interface{}, v2 interface{}, v3 
     }
     // VSHUFPD imm8, m256/m64bcst, ymm, ymm{k}{z}
     if isImm8(v0) && isM256M64bcst(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b01, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), zcode(v[3]), bcode(v[1]))
@@ -94040,7 +95505,8 @@ func (self *Program) VSHUFPD(v0 interface{}, v1 interface{}, v2 interface{}, v3 
     }
     // VSHUFPD imm8, ymm, ymm, ymm{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -94147,7 +95613,8 @@ func (self *Program) VSHUFPS(v0 interface{}, v1 interface{}, v2 interface{}, v3 
     }
     // VSHUFPS imm8, m128/m32bcst, xmm, xmm{k}{z}
     if isImm8(v0) && isM128M32bcst(v1) && isEVEXXMM(v2) && isXMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x04, 0b00, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), zcode(v[3]), bcode(v[1]))
@@ -94158,7 +95625,8 @@ func (self *Program) VSHUFPS(v0 interface{}, v1 interface{}, v2 interface{}, v3 
     }
     // VSHUFPS imm8, xmm, xmm, xmm{k}{z}
     if isImm8(v0) && isEVEXXMM(v1) && isEVEXXMM(v2) && isXMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -94172,7 +95640,8 @@ func (self *Program) VSHUFPS(v0 interface{}, v1 interface{}, v2 interface{}, v3 
     }
     // VSHUFPS imm8, m256/m32bcst, ymm, ymm{k}{z}
     if isImm8(v0) && isM256M32bcst(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x04, 0b01, ehcode(v[3]), addr(v[1]), vcode(v[2]), kcode(v[3]), zcode(v[3]), bcode(v[1]))
@@ -94183,7 +95652,8 @@ func (self *Program) VSHUFPS(v0 interface{}, v1 interface{}, v2 interface{}, v3 
     }
     // VSHUFPS imm8, ymm, ymm, ymm{k}{z}
     if isImm8(v0) && isEVEXYMM(v1) && isEVEXYMM(v2) && isYMMkz(v3) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -94303,7 +95773,8 @@ func (self *Program) VSQRTPD(v0 interface{}, v1 interface{}, vv ...interface{}) 
     }
     // VSQRTPD m128/m32bcst, xmm{k}{z}
     if len(vv) == 0 && isM128M32bcst(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -94313,7 +95784,8 @@ func (self *Program) VSQRTPD(v0 interface{}, v1 interface{}, vv ...interface{}) 
     }
     // VSQRTPD m256/m32bcst, ymm{k}{z}
     if len(vv) == 0 && isM256M32bcst(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -94323,7 +95795,8 @@ func (self *Program) VSQRTPD(v0 interface{}, v1 interface{}, vv ...interface{}) 
     }
     // VSQRTPD xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -94336,7 +95809,8 @@ func (self *Program) VSQRTPD(v0 interface{}, v1 interface{}, vv ...interface{}) 
     }
     // VSQRTPD ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -94455,7 +95929,8 @@ func (self *Program) VSQRTPS(v0 interface{}, v1 interface{}, vv ...interface{}) 
     }
     // VSQRTPS m128/m32bcst, xmm{k}{z}
     if len(vv) == 0 && isM128M32bcst(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x04, 0b00, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -94465,7 +95940,8 @@ func (self *Program) VSQRTPS(v0 interface{}, v1 interface{}, vv ...interface{}) 
     }
     // VSQRTPS m256/m32bcst, ymm{k}{z}
     if len(vv) == 0 && isM256M32bcst(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x04, 0b01, ehcode(v[1]), addr(v[0]), 0, kcode(v[1]), zcode(v[1]), bcode(v[0]))
@@ -94475,7 +95951,8 @@ func (self *Program) VSQRTPS(v0 interface{}, v1 interface{}, vv ...interface{}) 
     }
     // VSQRTPS xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isXMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -94488,7 +95965,8 @@ func (self *Program) VSQRTPS(v0 interface{}, v1 interface{}, vv ...interface{}) 
     }
     // VSQRTPS ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isYMMkz(v1) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -94792,7 +96270,8 @@ func (self *Program) VSUBPD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VSUBPD m128/m64bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -94802,7 +96281,8 @@ func (self *Program) VSUBPD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VSUBPD xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -94815,7 +96295,8 @@ func (self *Program) VSUBPD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VSUBPD m256/m64bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -94825,7 +96306,8 @@ func (self *Program) VSUBPD(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VSUBPD ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -94944,7 +96426,8 @@ func (self *Program) VSUBPS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VSUBPS m128/m32bcst, xmm, xmm{k}{z}
     if len(vv) == 0 && isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x04, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -94954,7 +96437,8 @@ func (self *Program) VSUBPS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VSUBPS xmm, xmm, xmm{k}{z}
     if len(vv) == 0 && isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -94967,7 +96451,8 @@ func (self *Program) VSUBPS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VSUBPS m256/m32bcst, ymm, ymm{k}{z}
     if len(vv) == 0 && isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x04, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -94977,7 +96462,8 @@ func (self *Program) VSUBPS(v0 interface{}, v1 interface{}, v2 interface{}, vv .
     }
     // VSUBPS ymm, ymm, ymm{k}{z}
     if len(vv) == 0 && isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -95521,7 +97007,8 @@ func (self *Program) VUNPCKHPD(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VUNPCKHPD m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -95531,7 +97018,8 @@ func (self *Program) VUNPCKHPD(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VUNPCKHPD xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -95544,7 +97032,8 @@ func (self *Program) VUNPCKHPD(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VUNPCKHPD m256/m64bcst, ymm, ymm{k}{z}
     if isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -95554,7 +97043,8 @@ func (self *Program) VUNPCKHPD(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VUNPCKHPD ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -95654,7 +97144,8 @@ func (self *Program) VUNPCKHPS(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VUNPCKHPS m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x04, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -95664,7 +97155,8 @@ func (self *Program) VUNPCKHPS(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VUNPCKHPS xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -95677,7 +97169,8 @@ func (self *Program) VUNPCKHPS(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VUNPCKHPS m256/m32bcst, ymm, ymm{k}{z}
     if isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x04, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -95687,7 +97180,8 @@ func (self *Program) VUNPCKHPS(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VUNPCKHPS ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -95787,7 +97281,8 @@ func (self *Program) VUNPCKLPD(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VUNPCKLPD m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -95797,7 +97292,8 @@ func (self *Program) VUNPCKLPD(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VUNPCKLPD xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -95810,7 +97306,8 @@ func (self *Program) VUNPCKLPD(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VUNPCKLPD m256/m64bcst, ymm, ymm{k}{z}
     if isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -95820,7 +97317,8 @@ func (self *Program) VUNPCKLPD(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VUNPCKLPD ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -95920,7 +97418,8 @@ func (self *Program) VUNPCKLPS(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VUNPCKLPS m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x04, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -95930,7 +97429,8 @@ func (self *Program) VUNPCKLPS(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VUNPCKLPS xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -95943,7 +97443,8 @@ func (self *Program) VUNPCKLPS(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VUNPCKLPS m256/m32bcst, ymm, ymm{k}{z}
     if isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x04, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -95953,7 +97454,8 @@ func (self *Program) VUNPCKLPS(v0 interface{}, v1 interface{}, v2 interface{}) *
     }
     // VUNPCKLPS ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512F)
+        self.require(ISA_AVX512F)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -96053,7 +97555,8 @@ func (self *Program) VXORPD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VXORPD m128/m64bcst, xmm, xmm{k}{z}
     if isM128M64bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -96063,7 +97566,8 @@ func (self *Program) VXORPD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VXORPD xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -96076,7 +97580,8 @@ func (self *Program) VXORPD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VXORPD m256/m64bcst, ymm, ymm{k}{z}
     if isM256M64bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x85, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -96086,7 +97591,8 @@ func (self *Program) VXORPD(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VXORPD ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -96186,7 +97692,8 @@ func (self *Program) VXORPS(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VXORPS m128/m32bcst, xmm, xmm{k}{z}
     if isM128M32bcst(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x04, 0b00, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -96196,7 +97703,8 @@ func (self *Program) VXORPS(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VXORPS xmm, xmm, xmm{k}{z}
     if isEVEXXMM(v0) && isEVEXXMM(v1) && isXMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)
@@ -96209,7 +97717,8 @@ func (self *Program) VXORPS(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VXORPS m256/m32bcst, ymm, ymm{k}{z}
     if isM256M32bcst(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.evex(0b01, 0x04, 0b01, ehcode(v[2]), addr(v[0]), vcode(v[1]), kcode(v[2]), zcode(v[2]), bcode(v[0]))
@@ -96219,7 +97728,8 @@ func (self *Program) VXORPS(v0 interface{}, v1 interface{}, v2 interface{}) *Ins
     }
     // VXORPS ymm, ymm, ymm{k}{z}
     if isEVEXYMM(v0) && isEVEXYMM(v1) && isYMMkz(v2) {
-        self.require(ISA_AVX512VL | ISA_AVX512DQ)
+        self.require(ISA_AVX512DQ)
+        self.require(ISA_AVX512VL)
         p.domain = DomainAVX
         p.add(0, func(m *_Encoding, v []interface{}) {
             m.emit(0x62)

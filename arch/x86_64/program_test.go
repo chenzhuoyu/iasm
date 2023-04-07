@@ -10,11 +10,11 @@ import (
 )
 
 func TestProgram_Assemble(t *testing.T) {
-    a := CreateArch()
+    a := asm.GetArch("x86_64")
     b := asm.CreateLabel("bak")
     s := asm.CreateLabel("tab")
     j := asm.CreateLabel("jmp")
-    p := a.CreateProgram()
+    p := a.CreateProgram().(*Program)
     p.JMP    (j)
     p.JMP    (j)
     p.Link   (b)
