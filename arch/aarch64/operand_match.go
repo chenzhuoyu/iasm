@@ -169,48 +169,53 @@ func isInt32(v interface{}) bool {
 
 func isSpecial(v interface{}) bool {
     switch v.(type) {
-        case WRegister          : return true
-        case XRegister          : return true
-        case BRegister          : return true
-        case HRegister          : return true
-        case SRegister          : return true
-        case DRegister          : return true
-        case QRegister          : return true
-        case VRegister          : return true
-        case VidxRegister       : return true
-        case SystemRegister     : return true
-        case VecFormat          : return true
-        case Vector             : return true
-        case IndexedVector      : return true
-        case IndexMode          : return true
-        case MSL                : return true
-        case LSL                : return true
-        case LSR                : return true
-        case ASR                : return true
-        case ROR                : return true
-        case UXTB               : return true
-        case UXTH               : return true
-        case UXTW               : return true
-        case UXTX               : return true
-        case SXTB               : return true
-        case SXTH               : return true
-        case SXTW               : return true
-        case SXTX               : return true
-        case BranchTarget       : return true
-        case ConditionCode      : return true
-        case BarrierOption      : return true
-        case PStateField        : return true
-        case ATOption           : return true
-        case BRBOption          : return true
-        case DCOption           : return true
-        case ICOption           : return true
-        case TLBIOption         : return true
-        case SMEOption          : return true
-        case Symbol             : return true
-        case PrefetchOp         : return true
-        case RangePrefetchOp    : return true
-        case asm.RelativeOffset : return true
-        default                 : return false
+        case WRegister             : return true
+        case XRegister             : return true
+        case BRegister             : return true
+        case HRegister             : return true
+        case SRegister             : return true
+        case DRegister             : return true
+        case QRegister             : return true
+        case VRegister             : return true
+        case VidxRegister          : return true
+        case SystemRegister        : return true
+        case VecFormat             : return true
+        case Vector                : return true
+        case IndexedVector         : return true
+        case IndexMode             : return true
+        case MSL                   : return true
+        case LSL                   : return true
+        case LSR                   : return true
+        case ASR                   : return true
+        case ROR                   : return true
+        case UXTB                  : return true
+        case UXTH                  : return true
+        case UXTW                  : return true
+        case UXTX                  : return true
+        case SXTB                  : return true
+        case SXTH                  : return true
+        case SXTW                  : return true
+        case SXTX                  : return true
+        case ModType               : return true
+        case BranchTarget          : return true
+        case ConditionCode         : return true
+        case BarrierOption         : return true
+        case PStateField           : return true
+        case ATOption              : return true
+        case BRBOption             : return true
+        case DCOption              : return true
+        case ICOption              : return true
+        case TLBIOption            : return true
+        case SMEOption             : return true
+        case Symbol                : return true
+        case PrefetchOp            : return true
+        case RangePrefetchOp       : return true
+        case asm.Feature           : return true
+        case asm.BranchType        : return true
+        case asm.PseudoType        : return true
+        case asm.RelativeOffset    : return true
+        case asm.InstructionDomain : return true
+        default                    : return false
     }
 }
 
