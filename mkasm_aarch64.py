@@ -49,12 +49,21 @@ status('* Preparing ...')
 
 ### ---------- Instruction Encoding Classes ---------- ###
 
+class HardcodedExtend(NamedTuple):
+    ext: str
+    rsp: str
+    sym: str
+    reg: list[str]
+
+    def __str__(self) -> str:
+        return '%s == %s ? %s : %s' % (' | '.join(self.reg), self.rsp, self.sym, self.ext)
+
 class Account:
     name: str
     desc: str
-    defv: str
+    defv: str | HardcodedExtend
 
-    def __init__(self, name: str, desc: str, defv: str):
+    def __init__(self, name: str, desc: str, defv: str | HardcodedExtend):
         self.name = name
         self.desc = desc
         self.defv = defv
@@ -68,11 +77,11 @@ class Account:
 class Definition:
     name: str
     desc: str
-    defv: str
+    defv: str | HardcodedExtend
     refs: list[str]
     bits: dict[str, set[str]]
 
-    def __init__(self, name: str, desc: str, defv: str, refs: list[str], bits: dict[str, set[str]]):
+    def __init__(self, name: str, desc: str, defv: str | HardcodedExtend, refs: list[str], bits: dict[str, set[str]]):
         self.name = name
         self.desc = desc
         self.defv = defv
@@ -85,7 +94,7 @@ class Definition:
             self.desc,
             ':'.join(self.refs[::-1]),
             ' '.join('%s={%s}' % (k, ':'.join(sorted(v))) for k, v in self.bits.items()),
-            '' if not self.defv else ' (default = %s)' % self.defv
+            '' if not self.defv else ' (default = %s)' % str(self.defv)
         )
 
 class Instruction:
@@ -1399,7 +1408,61 @@ for expl in isadocs.findall('.//explanation'):
     elif mt := re.search('[Dd]efaulting to ([^, ]+)', text):
         defv = mt.group(1)
 
-    for enc in map(str.strip, expl.attrib['enclist'].split(',')):
+    enclist = [
+        v.strip()
+        for v in expl.attrib['enclist'].split(',')
+    ]
+
+    # FIXME: this is a hardcoded case for matching the nature language description
+    # for encodings within "*_addsub_ext.xml", find a better way to do it.
+    if not defv:
+        rvx = None
+        ts1 = None
+        ts2 = None
+        bex = None
+        bvs = None
+        prf = None
+        rsp = None
+        extend = None
+
+        hardcoded_pattern_1 = ' '.join([
+            r"""If "(\w+)" is '(\d+)' \((\w+)\) and "option" is '(\d+)' then (\w+) is preferred, but may be omitted""",
+            r"""when "imm3" is '000'. In all other cases <(\w+)> is required and must be (\w+) when "option" is '(\d+)'""",
+        ])
+
+        hardcoded_pattern_2 = ' '.join([
+            r"""If "(\w+)" or "(\w+)" is '(\d+)' \((\w+)\) and "option" is '(\d+)' then (\w+) is preferred, but may be omitted""",
+            r"""when "imm3" is '000'. In all other cases <(\w+)> is required and must be (\w+) when "option" is '(\d+)'""",
+        ])
+
+        if mt := re.search(hardcoded_pattern_1, text):
+            r0, bvs, rsp, ts1, prf, extend, bex, ts2 = mt.groups()
+            rvx = [r0]
+
+        elif mt := re.search(hardcoded_pattern_2, text):
+            r0, r1, bvs, rsp, ts1, prf, extend, bex, ts2 = mt.groups()
+            rvx = [r0, r1]
+
+        if rvx and rsp and bex and prf:
+            if len(enclist) != 1 or not enclist[0].endswith('_addsub_ext'):
+                raise RuntimeError('hardcoded pattern matched some unexpected encodings: %s' + repr(enclist))
+
+            assert ts1 == ts2, 'invalid hardcoded pattern'
+            assert bvs == '11111', 'invalid hardcoded pattern'
+            assert extend == 'extend', 'invalid hardcoded pattern'
+            assert rsp in {'SP', 'WSP'}, 'invalid hardcoded pattern'
+            assert ts1 in {'010', '011'}, 'invalid hardcoded pattern'
+            assert bex in {'UXTX', 'UXTW'}, 'invalid hardcoded pattern'
+            assert (ts1 == '010') == (bex == 'UXTW'), 'invalid hardcoded pattern'
+
+            defv = HardcodedExtend(
+                ext = bex,
+                rsp = rsp,
+                sym = prf,
+                reg = rvx,
+            )
+
+    for enc in enclist:
         tab = MISSING_ENCODING_IN.get(enc, {})
         sym = tab.get(name)
 
@@ -1843,6 +1906,19 @@ def match_modifier(form: InstrForm, name: str, mod: Mod, optional: bool, *extra_
         elif mod.mod in AsmTemplate.modifiers:
             field = form.fields[mod.mod]
             assert isinstance(field, Definition), 'invalid modifier field matching'
+
+            # FIXME: this is very hacky, please find a better way in the future.
+            if isinstance(field.defv, HardcodedExtend):
+                fldmap  = { f.name: n for n, f in form.fields.items() }
+                regmap  = { v.name: i for i, v in enumerate(form.inst.operands.req) if isinstance(v, Reg) }
+                argcond = Or(*('v%d == %s' % (regmap[fldmap[v]], field.defv.rsp) for v in field.defv.reg))
+
+                if name != 'vv[0]' or len(extra_cond) != 1 or extra_cond[0] != 'len(vv) == 0':
+                    raise RuntimeError('hack: undefined case occured in hardcoding')
+
+                modt = 'modt(vv[0]) == %s' % MODIFIER_TYPES[field.defv.ext]
+                yield Or(And('len(vv) == 0', argcond), And('len(vv) == 1', modt))
+                return
 
             for v in field.bits:
                 if v != 'RESERVED' and not v.startswith('SEE'):
@@ -2456,11 +2532,16 @@ def encode_defs(
                 break
 
     if field.defv:
-        if field.defv not in name_tab:
+        if isinstance(field.defv, str):
+            defn = field.defv
+        else:
+            defn = field.defv.sym
+
+        if defn not in name_tab:
             raise RuntimeError('undefined default value')
 
-        if field.defv in field.bits:
-            defv = field.bits[field.defv]
+        if defn in field.bits:
+            defv = field.bits[defn]
             defv = ['uint32(0b%s)' % v.replace('x', '0') for v in sorted(defv)]
 
             if len(defv) != 1:
@@ -2631,6 +2712,8 @@ def encode_modifier(
         else:
             if not field.defv:
                 vals[args] = value
+            elif not isinstance(field.defv, str):
+                raise RuntimeError('invalid modifier amount: ' + str(field.defv))
             elif field.defv.isdigit():
                 vals[args] = (value, 'uint32(%s)' % field.defv, {})
             else:
@@ -2662,6 +2745,8 @@ def encode_operand(
 
                 if not defr:
                     vals[val.name] = expr
+                elif not isinstance(defr, str):
+                    raise RuntimeError('invalid register default value: ' + str(defr))
                 elif defr.isidentifier():
                     vals[val.name] = (expr, 'uint32(%s.ID())' % defr, {})
                 elif defr[0] == defr[-1] == "'":
@@ -2766,11 +2851,9 @@ def encode_operand(
             if val.index is not None:
                 raise RuntimeError('extension conflits with indexing')
             else:
-                # TODO: default value for extend options ?
                 encode_modifier(form, 'mext(%s)' % name, ext, vals, opts, opx, 'isMod(mext(%s))' % name)
 
     elif isinstance(val, Mod):
-        # TODO: default value for extend options ?
         encode_modifier(form, name, val, vals, opts, bool(optcond), *optcond)
 
     elif isinstance(val, Imm):
@@ -2791,6 +2874,8 @@ def encode_operand(
 
                 if not defv:
                     vals[val.name] = ime % name
+                elif not isinstance(defv, str):
+                    raise RuntimeError('invalid immediate default value: ' + str(defv))
                 elif defv.isdigit():
                     vals[val.name] = (ime % name, 'uint32(%s)' % defv, {})
                 else:

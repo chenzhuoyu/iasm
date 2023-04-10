@@ -206,10 +206,10 @@ func (self *Program) ADD(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
        isWrOrWSP(v0) &&
        isWrOrWSP(v1) &&
        isWr(v2) &&
-       (len(vv) == 0 || isMods(vv[0], ModLSL, ModSXTB, ModSXTH, ModSXTW, ModSXTX, ModUXTB, ModUXTH, ModUXTW, ModUXTX)) {
+       (len(vv) == 0 && (v0 == WSP || v1 == WSP) || len(vv) == 1 && modt(vv[0]) == ModUXTW) {
         p.Domain = asm.DomainGeneric
         sa_amount := uint32(0)
-        var sa_extend uint32
+        sa_extend := uint32(0b010)
         sa_wd_wsp := uint32(v0.(asm.Register).ID())
         sa_wn_wsp := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
@@ -235,10 +235,10 @@ func (self *Program) ADD(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
        isXrOrSP(v0) &&
        isXrOrSP(v1) &&
        isWrOrXr(v2) &&
-       (len(vv) == 0 || isMods(vv[0], ModLSL, ModSXTB, ModSXTH, ModSXTW, ModSXTX, ModUXTB, ModUXTH, ModUXTW, ModUXTX)) {
+       (len(vv) == 0 && (v0 == SP || v1 == SP) || len(vv) == 1 && modt(vv[0]) == ModUXTX) {
         p.Domain = asm.DomainGeneric
         sa_amount := uint32(0)
-        var sa_extend_1 uint32
+        sa_extend_1 := uint32(0b011)
         var sa_r [4]uint32
         var sa_r__bit_mask [4]uint32
         sa_xd_sp := uint32(v0.(asm.Register).ID())
@@ -696,10 +696,10 @@ func (self *Program) ADDS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
        isWr(v0) &&
        isWrOrWSP(v1) &&
        isWr(v2) &&
-       (len(vv) == 0 || isMods(vv[0], ModLSL, ModSXTB, ModSXTH, ModSXTW, ModSXTX, ModUXTB, ModUXTH, ModUXTW, ModUXTX)) {
+       (len(vv) == 0 && v1 == WSP || len(vv) == 1 && modt(vv[0]) == ModUXTW) {
         p.Domain = asm.DomainGeneric
         sa_amount := uint32(0)
-        var sa_extend uint32
+        sa_extend := uint32(0b010)
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn_wsp := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
@@ -725,10 +725,10 @@ func (self *Program) ADDS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
        isXr(v0) &&
        isXrOrSP(v1) &&
        isWrOrXr(v2) &&
-       (len(vv) == 0 || isMods(vv[0], ModLSL, ModSXTB, ModSXTH, ModSXTW, ModSXTX, ModUXTB, ModUXTH, ModUXTW, ModUXTX)) {
+       (len(vv) == 0 && v1 == SP || len(vv) == 1 && modt(vv[0]) == ModUXTX) {
         p.Domain = asm.DomainGeneric
         sa_amount := uint32(0)
-        var sa_extend_1 uint32
+        sa_extend_1 := uint32(0b011)
         var sa_r [4]uint32
         var sa_r__bit_mask [4]uint32
         sa_xd := uint32(v0.(asm.Register).ID())
@@ -6253,10 +6253,10 @@ func (self *Program) CMN(v0, v1 interface{}, vv ...interface{}) *Instruction {
     if (len(vv) == 0 || len(vv) == 1) &&
        isWrOrWSP(v0) &&
        isWr(v1) &&
-       (len(vv) == 0 || isMods(vv[0], ModLSL, ModSXTB, ModSXTH, ModSXTW, ModSXTX, ModUXTB, ModUXTH, ModUXTW, ModUXTX)) {
+       (len(vv) == 0 && v0 == WSP || len(vv) == 1 && modt(vv[0]) == ModUXTW) {
         p.Domain = asm.DomainGeneric
         sa_amount := uint32(0)
-        var sa_extend uint32
+        sa_extend := uint32(0b010)
         sa_wn_wsp := uint32(v0.(asm.Register).ID())
         sa_wm := uint32(v1.(asm.Register).ID())
         if len(vv) == 1 {
@@ -6280,10 +6280,10 @@ func (self *Program) CMN(v0, v1 interface{}, vv ...interface{}) *Instruction {
     if (len(vv) == 0 || len(vv) == 1) &&
        isXrOrSP(v0) &&
        isWrOrXr(v1) &&
-       (len(vv) == 0 || isMods(vv[0], ModLSL, ModSXTB, ModSXTH, ModSXTW, ModSXTX, ModUXTB, ModUXTH, ModUXTW, ModUXTX)) {
+       (len(vv) == 0 && v0 == SP || len(vv) == 1 && modt(vv[0]) == ModUXTX) {
         p.Domain = asm.DomainGeneric
         sa_amount := uint32(0)
-        var sa_extend_1 uint32
+        sa_extend_1 := uint32(0b011)
         var sa_r [4]uint32
         var sa_r__bit_mask [4]uint32
         sa_xn_sp := uint32(v0.(asm.Register).ID())
@@ -6443,10 +6443,10 @@ func (self *Program) CMP(v0, v1 interface{}, vv ...interface{}) *Instruction {
     if (len(vv) == 0 || len(vv) == 1) &&
        isWrOrWSP(v0) &&
        isWr(v1) &&
-       (len(vv) == 0 || isMods(vv[0], ModLSL, ModSXTB, ModSXTH, ModSXTW, ModSXTX, ModUXTB, ModUXTH, ModUXTW, ModUXTX)) {
+       (len(vv) == 0 && v0 == WSP || len(vv) == 1 && modt(vv[0]) == ModUXTW) {
         p.Domain = asm.DomainGeneric
         sa_amount := uint32(0)
-        var sa_extend uint32
+        sa_extend := uint32(0b010)
         sa_wn_wsp := uint32(v0.(asm.Register).ID())
         sa_wm := uint32(v1.(asm.Register).ID())
         if len(vv) == 1 {
@@ -6470,10 +6470,10 @@ func (self *Program) CMP(v0, v1 interface{}, vv ...interface{}) *Instruction {
     if (len(vv) == 0 || len(vv) == 1) &&
        isXrOrSP(v0) &&
        isWrOrXr(v1) &&
-       (len(vv) == 0 || isMods(vv[0], ModLSL, ModSXTB, ModSXTH, ModSXTW, ModSXTX, ModUXTB, ModUXTH, ModUXTW, ModUXTX)) {
+       (len(vv) == 0 && v0 == SP || len(vv) == 1 && modt(vv[0]) == ModUXTX) {
         p.Domain = asm.DomainGeneric
         sa_amount := uint32(0)
-        var sa_extend_1 uint32
+        sa_extend_1 := uint32(0b011)
         var sa_r [4]uint32
         var sa_r__bit_mask [4]uint32
         sa_xn_sp := uint32(v0.(asm.Register).ID())
@@ -68918,10 +68918,10 @@ func (self *Program) SUB(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
        isWrOrWSP(v0) &&
        isWrOrWSP(v1) &&
        isWr(v2) &&
-       (len(vv) == 0 || isMods(vv[0], ModLSL, ModSXTB, ModSXTH, ModSXTW, ModSXTX, ModUXTB, ModUXTH, ModUXTW, ModUXTX)) {
+       (len(vv) == 0 && (v0 == WSP || v1 == WSP) || len(vv) == 1 && modt(vv[0]) == ModUXTW) {
         p.Domain = asm.DomainGeneric
         sa_amount := uint32(0)
-        var sa_extend uint32
+        sa_extend := uint32(0b010)
         sa_wd_wsp := uint32(v0.(asm.Register).ID())
         sa_wn_wsp := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
@@ -68947,10 +68947,10 @@ func (self *Program) SUB(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
        isXrOrSP(v0) &&
        isXrOrSP(v1) &&
        isWrOrXr(v2) &&
-       (len(vv) == 0 || isMods(vv[0], ModLSL, ModSXTB, ModSXTH, ModSXTW, ModSXTX, ModUXTB, ModUXTH, ModUXTW, ModUXTX)) {
+       (len(vv) == 0 && (v0 == SP || v1 == SP) || len(vv) == 1 && modt(vv[0]) == ModUXTX) {
         p.Domain = asm.DomainGeneric
         sa_amount := uint32(0)
-        var sa_extend_1 uint32
+        sa_extend_1 := uint32(0b011)
         var sa_r [4]uint32
         var sa_r__bit_mask [4]uint32
         sa_xd_sp := uint32(v0.(asm.Register).ID())
@@ -69383,10 +69383,10 @@ func (self *Program) SUBS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
        isWr(v0) &&
        isWrOrWSP(v1) &&
        isWr(v2) &&
-       (len(vv) == 0 || isMods(vv[0], ModLSL, ModSXTB, ModSXTH, ModSXTW, ModSXTX, ModUXTB, ModUXTH, ModUXTW, ModUXTX)) {
+       (len(vv) == 0 && v1 == WSP || len(vv) == 1 && modt(vv[0]) == ModUXTW) {
         p.Domain = asm.DomainGeneric
         sa_amount := uint32(0)
-        var sa_extend uint32
+        sa_extend := uint32(0b010)
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn_wsp := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
@@ -69412,10 +69412,10 @@ func (self *Program) SUBS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
        isXr(v0) &&
        isXrOrSP(v1) &&
        isWrOrXr(v2) &&
-       (len(vv) == 0 || isMods(vv[0], ModLSL, ModSXTB, ModSXTH, ModSXTW, ModSXTX, ModUXTB, ModUXTH, ModUXTW, ModUXTX)) {
+       (len(vv) == 0 && v1 == SP || len(vv) == 1 && modt(vv[0]) == ModUXTX) {
         p.Domain = asm.DomainGeneric
         sa_amount := uint32(0)
-        var sa_extend_1 uint32
+        sa_extend_1 := uint32(0b011)
         var sa_r [4]uint32
         var sa_r__bit_mask [4]uint32
         sa_xd := uint32(v0.(asm.Register).ID())
