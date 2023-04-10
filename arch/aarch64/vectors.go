@@ -5,7 +5,6 @@ import (
     `strings`
 
     `github.com/chenzhuoyu/iasm/asm`
-    `github.com/chenzhuoyu/iasm/internal/tag`
 )
 
 // Vector represents a SIMD vector with a certain number of elements.
@@ -86,11 +85,6 @@ func (_Vec1) Vector() {}
 func (_Vec2) Vector() {}
 func (_Vec3) Vector() {}
 func (_Vec4) Vector() {}
-
-func (_Vec1) Sealed(tag.Tag) {}
-func (_Vec2) Sealed(tag.Tag) {}
-func (_Vec3) Sealed(tag.Tag) {}
-func (_Vec4) Sealed(tag.Tag) {}
 
 func (self _Vec1) ID() uint8 { return uint8(self & 0x1f) }
 func (self _Vec2) ID() uint8 { return uint8(self & 0x1f) }
@@ -182,11 +176,6 @@ func (_IndexedVec1) Size() uint8 { return 1 }
 func (_IndexedVec2) Size() uint8 { return 2 }
 func (_IndexedVec3) Size() uint8 { return 3 }
 func (_IndexedVec4) Size() uint8 { return 4 }
-
-func (_IndexedVec1) Sealed(tag.Tag) {}
-func (_IndexedVec2) Sealed(tag.Tag) {}
-func (_IndexedVec3) Sealed(tag.Tag) {}
-func (_IndexedVec4) Sealed(tag.Tag) {}
 
 func (_IndexedVec1) IndexedVector() {}
 func (_IndexedVec2) IndexedVector() {}

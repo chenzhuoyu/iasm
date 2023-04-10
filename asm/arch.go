@@ -3,21 +3,18 @@ package asm
 import (
     `fmt`
     `math`
+    `sort`
     `sync`
-
-    `github.com/chenzhuoyu/iasm/internal/tag`
 )
 
 // Feature represents one of the optional CPU features.
 type Feature interface {
-    tag.Sealed
     fmt.Stringer
     FeatureID() uint8
 }
 
 // Implementation is the arch-specific implementations.
 type Implementation interface {
-    tag.Sealed
     New() *Instruction
     Free(p *Instruction)
     Encode(p *Instruction, m *[]byte) int
@@ -61,6 +58,25 @@ func RegisterArch(name string, maxft Feature, impl Implementation) (p *Arch) {
     archtab[name] = p
     archmut.Unlock()
     return
+}
+
+// SupportedArch returns all the available arch names.
+func SupportedArch() []string {
+    archmut.RLock()
+    defer archmut.RUnlock()
+
+    /* allocate the result buffer */
+    nb := len(archtab)
+    ret := make([]string, 0, nb)
+
+    /* dump all the arch names */
+    for name := range archtab {
+        ret = append(ret, name)
+    }
+
+    /* sort alphabetically */
+    sort.Strings(ret)
+    return ret
 }
 
 // Enable marks the feature as enabled.

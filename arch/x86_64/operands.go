@@ -9,7 +9,6 @@ import (
 
     `github.com/chenzhuoyu/iasm/asm`
     `github.com/chenzhuoyu/iasm/internal/rt`
-    `github.com/chenzhuoyu/iasm/internal/tag`
 )
 
 // RoundingControl represents a floating-point rounding option.
@@ -65,7 +64,6 @@ const (
 type Scale uint8
 
 func (Scale) Free()                   {}
-func (Scale) Sealed(tag.Tag)          {}
 func (Scale) MemoryAddressExtension() {}
 
 func (self Scale) isVMX(addr asm.MemoryAddress, evex bool) bool {
@@ -146,9 +144,6 @@ type MemoryOperandExtension struct {
     Broadcast uint8
 }
 
-func (*MemoryOperandExtension) Sealed(tag.Tag)          {}
-func (*MemoryOperandExtension) MemoryOperandExtension() {}
-
 func (self *MemoryOperandExtension) isVMX(mem *asm.MemoryOperand, evex bool) bool {
     if v, ok := mem.Addr.(asm.MemoryAddress); !ok {
         return false
@@ -228,16 +223,13 @@ func (self *MemoryOperandExtension) ensureBroadcastValid() {
     }
 }
 
-func (self *MemoryOperandExtension) Free() {
-    freeMemoryOperandExtension(self)
-}
+func (self *MemoryOperandExtension) Free()                   { freeMemoryOperandExtension(self) }
+func (self *MemoryOperandExtension) MemoryOperandExtension() {}
 
-// String implements the fmt.Stringer interface.
 func (self *MemoryOperandExtension) String(mem *asm.MemoryOperand) string {
     return mem.Addr.String() + self.formatMask() + self.formatBroadcast()
 }
 
-// EnsureValid checks if the memory operand is valid, if not, it panics.
 func (self *MemoryOperandExtension) EnsureValid(mem *asm.MemoryOperand) {
     self.ensureSizeValid()
     self.ensureAddrValid(mem)

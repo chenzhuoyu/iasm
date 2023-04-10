@@ -5,7 +5,6 @@ import (
     `strings`
 
     `github.com/chenzhuoyu/iasm/asm`
-    `github.com/chenzhuoyu/iasm/internal/tag`
 )
 
 type (
@@ -17,7 +16,6 @@ type (
 var Basic _Basic
 
 func (_Basic) Free()                   {}
-func (_Basic) Sealed(_ tag.Tag)        {}
 func (_Basic) MemoryAddressExtension() {}
 
 func (_Basic) String(addr asm.MemoryAddress) string {
@@ -52,7 +50,6 @@ func (_Basic) EnsureValid(addr asm.MemoryAddress) {
 var MemOpExt _MemOpExt
 
 func (_MemOpExt) Free()                   {}
-func (_MemOpExt) Sealed(tag.Tag)          {}
 func (_MemOpExt) MemoryOperandExtension() {}
 
 func (_MemOpExt) String(mem *asm.MemoryOperand) string {
@@ -72,7 +69,6 @@ const (
 )
 
 func (IndexMode) Free()                   {}
-func (IndexMode) Sealed(_ tag.Tag)        {}
 func (IndexMode) MemoryAddressExtension() {}
 
 func (self IndexMode) String(addr asm.MemoryAddress) string {
@@ -210,12 +206,6 @@ func (LSR) Type() ModType { return ModLSR }
 func (ASR) Type() ModType { return ModASR }
 func (ROR) Type() ModType { return ModROR }
 
-func (MSL) Sealed(_ tag.Tag) {}
-func (LSL) Sealed(_ tag.Tag) {}
-func (LSR) Sealed(_ tag.Tag) {}
-func (ASR) Sealed(_ tag.Tag) {}
-func (ROR) Sealed(_ tag.Tag) {}
-
 func (MSL) EnsureValid(addr asm.MemoryAddress) { _Modifier_EnsureValid(addr) }
 func (LSL) EnsureValid(addr asm.MemoryAddress) { _Modifier_EnsureValid(addr) }
 func (LSR) EnsureValid(addr asm.MemoryAddress) { _Modifier_EnsureValid(addr) }
@@ -268,15 +258,6 @@ func (SXTB) Type() ModType { return ModSXTB }
 func (SXTH) Type() ModType { return ModSXTH }
 func (SXTW) Type() ModType { return ModSXTW }
 func (SXTX) Type() ModType { return ModSXTX }
-
-func (UXTB) Sealed(_ tag.Tag) {}
-func (UXTH) Sealed(_ tag.Tag) {}
-func (UXTW) Sealed(_ tag.Tag) {}
-func (UXTX) Sealed(_ tag.Tag) {}
-func (SXTB) Sealed(_ tag.Tag) {}
-func (SXTH) Sealed(_ tag.Tag) {}
-func (SXTW) Sealed(_ tag.Tag) {}
-func (SXTX) Sealed(_ tag.Tag) {}
 
 func (UXTB) EnsureValid(addr asm.MemoryAddress) { _Modifier_EnsureValid(addr) }
 func (UXTH) EnsureValid(addr asm.MemoryAddress) { _Modifier_EnsureValid(addr) }

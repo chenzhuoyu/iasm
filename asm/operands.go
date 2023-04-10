@@ -11,14 +11,12 @@ import (
 
 // Register represents a hardware register.
 type Register interface {
-    tag.Sealed
     fmt.Stringer
     ID() uint8
 }
 
 // Addressable is a union to represent an addressable operand.
 type Addressable interface {
-    tag.Sealed
     fmt.Stringer
     tag.Disposable
     tag.Verifiable
@@ -32,9 +30,8 @@ type Label struct {
     Dest *Instruction
 }
 
-func (*Label) Sealed(tag.Tag) {}
-func (*Label) EnsureValid()   {}
-func (*Label) Addressable()   {}
+func (*Label) EnsureValid() {}
+func (*Label) Addressable() {}
 
 func (self *Label) drop() {
     if self.Dest != nil {
@@ -80,7 +77,6 @@ func (self *Label) RelativeTo(pc uintptr) uintptr {
 
 // MemoryAddressExtension represents an arch-specific memory address extension.
 type MemoryAddressExtension interface {
-    tag.Sealed
     tag.Disposable
     String(MemoryAddress) string
     EnsureValid(MemoryAddress)
@@ -95,12 +91,9 @@ type MemoryAddress struct {
     Ext    MemoryAddressExtension
 }
 
-func (MemoryAddress) Sealed(tag.Tag) {}
-func (MemoryAddress) Addressable()   {}
-
-func (self MemoryAddress) Free() {
-    self.Ext.Free()
-}
+func (self MemoryAddress) Free()        { self.Ext.Free() }
+func (self MemoryAddress) EnsureValid() { self.Ext.EnsureValid(self) }
+func (self MemoryAddress) Addressable() {}
 
 func (self MemoryAddress) String() string {
     if self.Ext == nil {
@@ -108,10 +101,6 @@ func (self MemoryAddress) String() string {
     } else {
         return self.Ext.String(self)
     }
-}
-
-func (self MemoryAddress) EnsureValid() {
-    self.Ext.EnsureValid(self)
 }
 
 // RelativeOffset represents an PC-relative offset.
@@ -125,10 +114,9 @@ func ComputeOffset(term expr.Term, pc uintptr, n int) RelativeOffset {
     }
 }
 
-func (RelativeOffset) Sealed(tag.Tag) {}
-func (RelativeOffset) Free()          {}
-func (RelativeOffset) EnsureValid()   {}
-func (RelativeOffset) Addressable()   {}
+func (RelativeOffset) Free()        {}
+func (RelativeOffset) EnsureValid() {}
+func (RelativeOffset) Addressable() {}
 
 func (self RelativeOffset) String() string {
     if self == 0 {
@@ -142,7 +130,6 @@ func (self RelativeOffset) String() string {
 
 // MemoryOperandExtension represents an arch-specific memory operand extension.
 type MemoryOperandExtension interface {
-    tag.Sealed
     tag.Disposable
     String(*MemoryOperand) string
     EnsureValid(*MemoryOperand)

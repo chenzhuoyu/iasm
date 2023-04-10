@@ -2,8 +2,6 @@ package aarch64
 
 import (
     `fmt`
-
-    `github.com/chenzhuoyu/iasm/internal/tag`
 )
 
 // Feature represents one of the arch-specific features.
@@ -235,15 +233,16 @@ var _FEAT_MAPPINGS = map[string]Feature {
     "FEAT_XS"           : FEAT_XS,
 }
 
-func (self Feature) Sealed(tag.Tag)   {}
-func (self Feature) FeatureID() uint8 { return uint8(self) }
-
 func (self Feature) String() string {
     if self <= _FEAT_MAX {
         return _FEAT_NAMES[self]
     } else {
         return fmt.Sprintf("(invalid: %#x)", uint64(self))
     }
+}
+
+func (self Feature) FeatureID() uint8 {
+    return uint8(self)
 }
 
 // ParseFeature parses name into Feature, it will panic if the name is invalid.

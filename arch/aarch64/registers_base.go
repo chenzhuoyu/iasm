@@ -2,17 +2,12 @@ package aarch64
 
 import (
     `fmt`
-
-    `github.com/chenzhuoyu/iasm/internal/tag`
 )
 
 type (
     WRegister uint8 // 32-bit generic purpose registers (W0 ~ W30) and WZR / WSP.
     XRegister uint8 // 64-bit generic purpose registers (X0 ~ X30) and XZR / SP.
 )
-
-func (WRegister) Sealed(tag.Tag) {}
-func (XRegister) Sealed(tag.Tag) {}
 
 func (self WRegister) ID() uint8 {
     if self == WSP {

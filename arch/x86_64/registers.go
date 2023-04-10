@@ -4,7 +4,6 @@ import (
     `fmt`
 
     `github.com/chenzhuoyu/iasm/asm`
-    `github.com/chenzhuoyu/iasm/internal/tag`
 )
 
 type (
@@ -257,17 +256,6 @@ const (
     ZMM30
     ZMM31
 )
-
-func (Register8)  Sealed(tag.Tag) {}
-func (Register16) Sealed(tag.Tag) {}
-func (Register32) Sealed(tag.Tag) {}
-func (Register64) Sealed(tag.Tag) {}
-
-func (KRegister)   Sealed(tag.Tag) {}
-func (MMRegister)  Sealed(tag.Tag) {}
-func (XMMRegister) Sealed(tag.Tag) {}
-func (YMMRegister) Sealed(tag.Tag) {}
-func (ZMMRegister) Sealed(tag.Tag) {}
 
 func (self Register8)  ID() uint8 { return uint8(self) }
 func (self Register16) ID() uint8 { return uint8(self) }

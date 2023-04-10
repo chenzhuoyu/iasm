@@ -4,7 +4,6 @@ import (
     `fmt`
 
     `github.com/chenzhuoyu/iasm/asm`
-    `github.com/chenzhuoyu/iasm/internal/tag`
 )
 
 type (
@@ -14,12 +13,6 @@ type (
     DRegister uint8         // SIMD register with two 64-bit elements (D0 ~ D31).
     QRegister uint8         // SIMD register with a single 128-bit value (Q0 ~ Q31).
 )
-
-func (BRegister) Sealed(tag.Tag) {}
-func (HRegister) Sealed(tag.Tag) {}
-func (SRegister) Sealed(tag.Tag) {}
-func (DRegister) Sealed(tag.Tag) {}
-func (QRegister) Sealed(tag.Tag) {}
 
 func (self BRegister) ID() uint8 { return uint8(self) }
 func (self HRegister) ID() uint8 { return uint8(self) }
@@ -89,17 +82,6 @@ type (
     VRegister2D  uint8      // SIMD register with arrangement 2D (V2d0 ~ V2d31).
     VRegister1Q  uint8      // SIMD register with arrangement 1Q (V1q0 ~ V1q31).
 )
-
-func (VRegister8B)  Sealed(tag.Tag) {}
-func (VRegister16B) Sealed(tag.Tag) {}
-func (VRegister2H)  Sealed(tag.Tag) {}
-func (VRegister4H)  Sealed(tag.Tag) {}
-func (VRegister8H)  Sealed(tag.Tag) {}
-func (VRegister2S)  Sealed(tag.Tag) {}
-func (VRegister4S)  Sealed(tag.Tag) {}
-func (VRegister1D)  Sealed(tag.Tag) {}
-func (VRegister2D)  Sealed(tag.Tag) {}
-func (VRegister1Q)  Sealed(tag.Tag) {}
 
 func (VRegister8B)  Format() VecFormat { return Vec8B }
 func (VRegister16B) Format() VecFormat { return Vec16B }
@@ -190,13 +172,6 @@ type (
 	VidxRegisterS  uint16   // Indexed SIMD register with unit size S (Vis0 ~ Vis31).
 	VidxRegisterD  uint16   // Indexed SIMD register with unit size H (Vid0 ~ Vid31).
 )
-
-func (VidxRegisterB)  Sealed(tag.Tag) {}
-func (VidxRegister4B) Sealed(tag.Tag) {}
-func (VidxRegisterH)  Sealed(tag.Tag) {}
-func (VidxRegister2H) Sealed(tag.Tag) {}
-func (VidxRegisterS)  Sealed(tag.Tag) {}
-func (VidxRegisterD)  Sealed(tag.Tag) {}
 
 func (VidxRegisterB)  IndexMode() VecIndexMode { return ModeB  }
 func (VidxRegister4B) IndexMode() VecIndexMode { return Mode4B }
