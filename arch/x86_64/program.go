@@ -2,55 +2,16 @@ package x86_64
 
 import (
     `math`
-    `sync/atomic`
 
     `github.com/chenzhuoyu/iasm/asm`
-    `github.com/chenzhuoyu/iasm/expr`
-    `github.com/chenzhuoyu/iasm/internal/tag`
-)
-
-// Operands represents a sequence of operand required by an instruction.
-type Operands [_N_args]interface{}
-
-// InstructionDomain represents the domain of an instruction.
-type InstructionDomain uint8
-
-const (
-    DomainGeneric InstructionDomain = iota
-    DomainMMXSSE
-    DomainAVX
-    DomainFMA
-    DomainCrypto
-    DomainMask
-    DomainAMDSpecific
-    DomainMisc
-    DomainPseudo
-)
-
-type (
-    _BranchType uint8
-)
-
-const (
-    _B_none _BranchType = iota
-    _B_conditional
-    _B_unconditional
 )
 
 // Instruction represents an unencoded instruction.
 type Instruction struct {
-    next   *Instruction
-    refs   int64
-    name   string
-    pc     uintptr
+    asm.Instruction
     nb     int
-    argc   int
-    argv   Operands
     forms  [_N_forms]_Encoding
     nforms int
-    pseudo asm.Pseudo
-    branch _BranchType
-    domain InstructionDomain
     prefix []byte
 }
 
@@ -60,19 +21,11 @@ func (self *Instruction) add(flags int, encoder func(m *_Encoding, v []interface
     self.nforms++
 }
 
-func (self *Instruction) clear() {
-    for i := 0; i < self.argc; i++ {
-        if v, ok := self.argv[i].(tag.Disposable); ok {
-            v.Free()
-        }
-    }
-}
-
 func (self *Instruction) check(e *_Encoding) bool {
     if (e.flags & _F_rel1) != 0 {
-        return isRel8(self.argv[0])
+        return isRel8(self.Argv[0])
     } else if (e.flags & _F_rel4) != 0 {
-        return isRel32(self.argv[0]) || isLabel(self.argv[0])
+        return isRel32(self.Argv[0]) || isLabel(self.Argv[0])
     } else {
         return true
     }
@@ -88,15 +41,15 @@ func (self *Instruction) encode(m *[]byte) int {
     }
 
     /* check for pseudo-instructions */
-    if self.pseudo.Kind != 0 {
-        self.nb += self.pseudo.Encode(m, self.pc)
+    if self.Pseudo.Kind != 0 {
+        self.nb += self.Pseudo.Encode(m, self.PC)
         return self.nb
     }
 
     /* find the shortest encoding */
     for i := 0; i < self.nforms; i++ {
         if e := &self.forms[i]; self.check(e) {
-            if v := e.encode(self.argv[:self.argc]); v < n {
+            if v := e.encode(self.Argv[:self.Argc]); v < n {
                 n = v
                 p = e
             }
@@ -111,35 +64,6 @@ func (self *Instruction) encode(m *[]byte) int {
     /* update the instruction length */
     self.nb += n
     return self.nb
-}
-
-func (self *Instruction) PC() uintptr {
-    return self.pc
-}
-
-func (self *Instruction) Free() {
-    if atomic.AddInt64(&self.refs, -1) == 0 {
-        self.clear()
-        self.pseudo.Free()
-        freeInstruction(self)
-    }
-}
-
-func (self *Instruction) Retain() asm.Instruction {
-    atomic.AddInt64(&self.refs, 1)
-    return self
-}
-
-func (self *Instruction) Domain() InstructionDomain {
-    return self.domain
-}
-
-func (self *Instruction) Mnemonic() string {
-    return self.name
-}
-
-func (self *Instruction) Operands() []interface{} {
-    return self.argv[:self.argc]
 }
 
 /** Instruction Prefixes **/
@@ -202,9 +126,7 @@ func (self *Instruction) LOCK() *Instruction {
 
 // Program represents a sequence of x86_64 instructions.
 type Program struct {
-    arch *asm.Arch
-    head *Instruction
-    tail *Instruction
+    asm.Program
 }
 
 const (
@@ -213,112 +135,21 @@ const (
     _N_far_uncond = 5 // unconditional far-branch takes 5 bytes to encode
 )
 
-func (self *Program) clear() {
-    for p, q := self.head, self.head; p != nil; p = q {
-        q = p.next
-        p.Free()
-    }
+func (self *Program) alloc(name string, argc int, argv asm.Operands) *Instruction {
+    return this(self.Append(name, argc, argv))
 }
 
-func (self *Program) alloc(name string, argc int, argv Operands) *Instruction {
-    p := self.tail
-    q := newInstruction(name, argc, argv)
-
-    /* attach to tail if any */
-    if p != nil {
-        p.next = q
-    } else {
-        self.head = q
-    }
-
-    /* set the new tail */
-    self.tail = q
-    return q
-}
-
-func (self *Program) pseudo(kind asm.PseudoType) (p *Instruction) {
-    p = self.alloc(kind.String(), 0, Operands{})
-    p.domain = DomainPseudo
-    p.pseudo.Kind = kind
-    return
-}
-
-func (self *Program) require(isa ISA) {
-    if !self.arch.HasFeature(isa) {
-        panic("ISA '" + isa.String() + "' was not enabled")
-    }
-}
-
-func (self *Program) branchSize(p *Instruction) int {
-    switch p.branch {
-        case _B_none          : panic("p is not a branch")
-        case _B_conditional   : return _N_far_cond
-        case _B_unconditional : return _N_far_uncond
-        default               : panic("invalid instruction")
-    }
-}
-
-func (self *Program) Free() {
-    self.clear()
-    freeProgram(self)
-}
-
-func (self *Program) Link(p *asm.Label) {
-    if p.Dest != nil {
-        panic("lable was alreay linked")
-    } else {
-        p.Dest = self.pseudo(asm.Nop).Retain()
-    }
-}
-
-func (self *Program) Data(v []byte) asm.Instruction {
-    p := self.pseudo(asm.Data)
-    p.pseudo.Data = v
-    return p
-}
-
-func (self *Program) Byte(v *expr.Expr) asm.Instruction {
-    p := self.pseudo(asm.Byte)
-    p.pseudo.Expr = v
-    return p
-}
-
-func (self *Program) Word(v *expr.Expr) asm.Instruction {
-    p := self.pseudo(asm.Word)
-    p.pseudo.Expr = v
-    return p
-}
-
-func (self *Program) Long(v *expr.Expr) asm.Instruction {
-    p := self.pseudo(asm.Long)
-    p.pseudo.Expr = v
-    return p
-}
-
-func (self *Program) Quad(v *expr.Expr) asm.Instruction {
-    p := self.pseudo(asm.Quad)
-    p.pseudo.Expr = v
-    return p
-}
-
-func (self *Program) Align(align uint64, padding *expr.Expr) asm.Instruction {
-    p := self.pseudo(asm.Align)
-    p.pseudo.Uint = align
-    p.pseudo.Expr = padding
-    return p
-}
-
-func (self *Program) Assemble(pc uintptr) (ret []byte) {
+func (self *Program) assemble(pc uintptr) (ret []byte) {
     orig := pc
     next := true
     offs := uintptr(0)
 
     /* Pass 0: PC-precompute, assume all labeled branches are far-branches. */
-    for p := self.head; p != nil; p = p.next {
-        if p.pc = pc; !isLabel(p.argv[0]) || p.branch == _B_none {
-            pc += uintptr(p.encode(nil))
+    for _, p := range self.Instr {
+        if p.PC = pc; isLabel(p.Argv[0]) && p.Branch != asm.BranchNone {
+            pc += uintptr(brsize(p))
         } else {
-            pc += uintptr(self.branchSize(p))
+            pc += uintptr(this(p).encode(nil))
         }
     }
 
@@ -332,29 +163,29 @@ func (self *Program) Assemble(pc uintptr) (ret []byte) {
         offs = uintptr(0)
 
         /* scan all the branches */
-        for p := self.head; p != nil; p = p.next {
-            var ok bool
-            var lb *asm.Label
+        for _, m := range self.Instr {
+            p := this(m)
+            k := p.Pseudo.Kind
 
             /* re-calculate the alignment here */
-            if nb = p.nb; p.pseudo.Kind == asm.Align {
-                p.pc -= offs
-                offs += uintptr(nb - p.encode(nil))
+            if k == asm.Align {
+                p.PC -= offs
+                offs += uintptr(p.nb - p.encode(nil))
                 continue
             }
 
             /* adjust the program counter */
-            p.pc -= offs
-            lb, ok = p.argv[0].(*asm.Label)
+            p.PC -= offs
+            lb, ok := p.Argv[0].(*asm.Label)
 
             /* only care about labeled far-branches */
-            if !ok || p.nb == _N_near || p.branch == _B_none {
+            if !ok || p.nb == _N_near || p.Branch == asm.BranchNone {
                 continue
             }
 
             /* calculate the jump offset */
-            size := self.branchSize(p)
-            diff := asm.ComputeOffset(lb, p.pc, size)
+            size := brsize(m)
+            diff := asm.ComputeOffset(lb, p.PC, size)
 
             /* too far to be a near jump */
             if diff > 127 || diff < -128 {
@@ -371,30 +202,30 @@ func (self *Program) Assemble(pc uintptr) (ret []byte) {
     }
 
     /* Pass 3: link all the cross-references */
-    for p := self.head; p != nil; p = p.next {
-        for i := 0; i < p.argc; i++ {
+    for _, p := range self.Instr {
+        for i := 0; i < p.Argc; i++ {
             var ok bool
             var lb *asm.Label
             var op *asm.MemoryOperand
 
             /* resolve labels */
-            if lb, ok = p.argv[i].(*asm.Label); ok {
-                p.argv[i] = asm.ComputeOffset(lb, p.pc, p.nb)
+            if lb, ok = p.Argv[i].(*asm.Label); ok {
+                p.Argv[i] = asm.ComputeOffset(lb, p.PC, this(p).nb)
                 continue
             }
 
             /* resolve references in memory operands */
-            if op, ok = p.argv[i].(*asm.MemoryOperand); ok {
+            if op, ok = p.Argv[i].(*asm.MemoryOperand); ok {
                 if lb, ok = op.Addr.(*asm.Label); ok {
-                    op.Addr = asm.ComputeOffset(lb, p.pc, p.nb)
+                    op.Addr = asm.ComputeOffset(lb, p.PC, this(p).nb)
                 }
             }
         }
     }
 
     /* Pass 4: actually encode all the instructions */
-    for p := self.head; p != nil; p = p.next {
-        p.encode(&ret)
+    for _, p := range self.Instr {
+        this(p).encode(&ret)
     }
 
     /* all done */

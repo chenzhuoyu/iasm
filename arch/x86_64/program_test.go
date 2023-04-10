@@ -14,7 +14,7 @@ func TestProgram_Assemble(t *testing.T) {
     b := asm.CreateLabel("bak")
     s := asm.CreateLabel("tab")
     j := asm.CreateLabel("jmp")
-    p := a.CreateProgram().(*Program)
+    p := Builder(a.CreateProgram())
     p.JMP    (j)
     p.JMP    (j)
     p.Link   (b)
@@ -30,5 +30,5 @@ func TestProgram_Assemble(t *testing.T) {
     p.Link   (s)
     p.Long   (expr.Ref(s.Retain()).Sub(expr.Ref(j.Retain())))
     p.Long   (expr.Ref(s.Retain()).Sub(expr.Ref(b.Retain())))
-    spew.Dump(asm.AssembleAndFree(p, 0))
+    spew.Dump(p.AssembleAndFree(0))
 }

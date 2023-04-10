@@ -9,7 +9,7 @@ import (
 
 func TestProgram_Assemble(t *testing.T) {
     a := asm.GetArch("aarch64")
-    p := a.CreateProgram().(*Program)
+    p := Builder(a.CreateProgram())
     p.ADD(X0, SP, X2)
-    spew.Dump(asm.AssembleAndFree(p, 0))
+    spew.Dump(p.AssembleAndFree(0))
 }

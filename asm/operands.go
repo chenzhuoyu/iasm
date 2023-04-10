@@ -29,7 +29,7 @@ type Addressable interface {
 type Label struct {
     refs int64
     Name string
-    Dest Instruction
+    Dest *Instruction
 }
 
 func (*Label) Sealed(tag.Tag) {}
@@ -53,7 +53,7 @@ func (self *Label) String() string {
     if self.Dest == nil {
         return self.Name
     } else {
-        return fmt.Sprintf("%s@%#x", self.Name, self.Dest.PC())
+        return fmt.Sprintf("%s@%#x", self.Name, self.Dest.PC)
     }
 }
 
@@ -64,7 +64,7 @@ func (self *Label) Retain() *Label {
 
 func (self *Label) Evaluate() (int64, error) {
     if self.Dest != nil {
-        return int64(self.Dest.PC()), nil
+        return int64(self.Dest.PC), nil
     } else {
         return 0, errors.New("unresolved label: " + self.Name)
     }
@@ -74,7 +74,7 @@ func (self *Label) RelativeTo(pc uintptr) uintptr {
     if self.Dest == nil {
         panic("aarch64: unresolved label: " + self.Name)
     } else {
-        return self.Dest.PC() - pc
+        return self.Dest.PC - pc
     }
 }
 
@@ -103,7 +103,11 @@ func (self MemoryAddress) Free() {
 }
 
 func (self MemoryAddress) String() string {
-    return self.Ext.String(self)
+    if self.Ext == nil {
+        return "(invalid)"
+    } else {
+        return self.Ext.String(self)
+    }
 }
 
 func (self MemoryAddress) EnsureValid() {
@@ -161,7 +165,11 @@ func (self *MemoryOperand) Free() {
 }
 
 func (self *MemoryOperand) String() string {
-    return self.Ext.String(self)
+    if self.Ext == nil {
+        return "(invalid)"
+    } else {
+        return self.Ext.String(self)
+    }
 }
 
 func (self *MemoryOperand) Retain() *MemoryOperand {

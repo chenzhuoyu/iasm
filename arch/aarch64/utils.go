@@ -2,7 +2,13 @@ package aarch64
 
 import (
     `unsafe`
+
+    `github.com/chenzhuoyu/iasm/asm`
 )
+
+func this(p *asm.Instruction) *Instruction {
+    return (*Instruction)(unsafe.Pointer(p))
+}
 
 func mask(v uint32, n int) uint32 {
     return v & ((1 << n) - 1)

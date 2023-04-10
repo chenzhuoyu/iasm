@@ -1532,7 +1532,11 @@ func (self *Assembler) assembleCommand(p *Program, line *ParsedCommand) error {
     }
 }
 
-func (self *Assembler) assembleCommandInt(p *Program, argv []ParsedCommandArg, addfn func(*Program, *expr.Expr) asm.Instruction) error {
+func (self *Assembler) assembleCommandInt(
+    p     *Program,
+    argv  []ParsedCommandArg,
+    addfn func(*asm.Program, *expr.Expr) *asm.Instruction,
+) error {
     var err error
     var val *expr.Expr
 
@@ -1542,7 +1546,7 @@ func (self *Assembler) assembleCommandInt(p *Program, argv []ParsedCommandArg, a
     }
 
     /* add to the program */
-    addfn(p, val)
+    addfn(&p.Program, val)
     return nil
 }
 
@@ -1585,19 +1589,19 @@ func (self *Assembler) assembleCommandSet(_ *Program, argv []ParsedCommandArg) e
 }
 
 func (self *Assembler) assembleCommandByte(p *Program, argv []ParsedCommandArg) error {
-    return self.assembleCommandInt(p, argv, (*Program).Byte)
+    return self.assembleCommandInt(p, argv, (*asm.Program).Byte)
 }
 
 func (self *Assembler) assembleCommandWord(p *Program, argv []ParsedCommandArg) error {
-    return self.assembleCommandInt(p, argv, (*Program).Word)
+    return self.assembleCommandInt(p, argv, (*asm.Program).Word)
 }
 
 func (self *Assembler) assembleCommandLong(p *Program, argv []ParsedCommandArg) error {
-    return self.assembleCommandInt(p, argv, (*Program).Long)
+    return self.assembleCommandInt(p, argv, (*asm.Program).Long)
 }
 
 func (self *Assembler) assembleCommandQuad(p *Program, argv []ParsedCommandArg) error {
-    return self.assembleCommandInt(p, argv, (*Program).Quad)
+    return self.assembleCommandInt(p, argv, (*asm.Program).Quad)
 }
 
 func (self *Assembler) assembleCommandFill(p *Program, argv []ParsedCommandArg) error {
@@ -1765,7 +1769,7 @@ func (self *Assembler) Assemble(src string) error {
     }
 
     /* create a new program */
-    p := asm.GetArch("x86_64").CreateProgram().(*Program)
+    p := Builder(asm.GetArch("x86_64").CreateProgram())
     defer p.Free()
 
     /* process every line */

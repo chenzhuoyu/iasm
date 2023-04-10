@@ -6,6 +6,7 @@ import (
 
 var (
     labelPool         sync.Pool
+    programPool       sync.Pool
     memoryOperandPool sync.Pool
 )
 
@@ -30,6 +31,27 @@ func CreateLabel(name string) *Label {
     p.refs = 1
     p.Name = name
     return p
+}
+
+func newProgram(arch *Arch) *Program {
+    var p *Program
+    var v interface{}
+
+    /* attempt to grab from the pool */
+    if v = programPool.Get(); v != nil {
+        p = v.(*Program)
+    } else {
+        p = new(Program)
+    }
+
+    /* initialize the program */
+    p.Arch = arch
+    return p
+}
+
+func freeProgram(p *Program) {
+    *p = Program{}
+    programPool.Put(p)
 }
 
 func freeMemoryOperand(m *MemoryOperand) {

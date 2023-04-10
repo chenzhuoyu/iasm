@@ -15,17 +15,20 @@ type Feature interface {
     FeatureID() uint8
 }
 
-// ProgramFactory is the factory of an arch-specific Program.
-type ProgramFactory interface {
+// Implementation is the arch-specific implementations.
+type Implementation interface {
     tag.Sealed
-    CreateProgram() Program
+    New() *Instruction
+    Free(p *Instruction)
+    Encode(p *Instruction, m *[]byte) int
+    Assemble(p *Program, pc uintptr) []byte
 }
 
 // Arch represents an CPU architecture.
 type Arch struct {
     fmax uint8
     fset [4]uint64
-    pfac ProgramFactory
+    impl Implementation
 }
 
 var (
@@ -49,9 +52,9 @@ func GetArch(name string) (p *Arch) {
 }
 
 // RegisterArch adds a new Arch into the registry with all features enabled.
-func RegisterArch(name string, maxft Feature, pfac ProgramFactory) (p *Arch) {
+func RegisterArch(name string, maxft Feature, impl Implementation) (p *Arch) {
     p = new(Arch)
-    p.pfac = pfac
+    p.impl = impl
     p.fset = featmax
     p.fmax = maxft.FeatureID()
     archmut.Lock()
@@ -80,6 +83,13 @@ func (self *Arch) Disable(ft Feature) *Arch {
     }
 }
 
+// Require ensures that the specified feature is enabled, panic if not.
+func (self *Arch) Require(ft Feature) {
+    if !self.HasFeature(ft) {
+        panic("Feature '" + ft.String() + "' was not enabled")
+    }
+}
+
 // HasFeature checks if certain feature is valid and enabled.
 func (self *Arch) HasFeature(ft Feature) bool {
     id := ft.FeatureID()
@@ -87,6 +97,6 @@ func (self *Arch) HasFeature(ft Feature) bool {
 }
 
 // CreateProgram creates a new arch-specific Program.
-func (self *Arch) CreateProgram() Program {
-    return self.pfac.CreateProgram()
+func (self *Arch) CreateProgram() *Program {
+    return newProgram(self)
 }

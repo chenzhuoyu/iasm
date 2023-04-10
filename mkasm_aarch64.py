@@ -1371,7 +1371,6 @@ MISSING_ENCODING_IN = {
     }
 }
 
-maxargs = 0
 formtab = dict[str, list[InstrForm]]()
 fieldtab = dict[str, dict[str, Account | Definition]]()
 
@@ -1449,12 +1448,6 @@ for encdata in sorted(enctab.values(), key = lambda x: x.name):
 
     if mnemonic != inst.mnemonic:
         raise RuntimeError('mnemonic mismatch: %s != %s' % (mnemonic, inst.mnemonic))
-
-    nreq = len(inst.operands.req)
-    nopt = len(inst.operands.opt)
-
-    if maxargs < nreq + nopt:
-        maxargs = nreq + nopt
 
     req = list(bits.refs.items())
     req.sort(key = lambda x: x[1], reverse = True)
@@ -2929,15 +2922,15 @@ def encode_operand(
         raise RuntimeError('invalid operand type')
 
 INSTR_CLASSES = {
-    'advsimd'   : 'ClassAdvSimd',
-    'float'     : 'ClassFloat',
-    'fpsimd'    : 'ClassFpSimd',
-    'general'   : 'ClassGeneral',
-    'mortlach'  : 'ClassSME',
-    'mortlach2' : 'ClassSME2',
-    'sve'       : 'ClassSVE',
-    'sve2'      : 'ClassSVE2',
-    'system'    : 'ClassSystem',
+    'advsimd'   : 'DomainAdvSimd',
+    'float'     : 'DomainFloat',
+    'fpsimd'    : 'DomainFpSimd',
+    'general'   : 'asm.DomainGeneric',
+    'mortlach'  : 'DomainSME',
+    'mortlach2' : 'DomainSME2',
+    'sve'       : 'DomainSVE',
+    'sve2'      : 'DomainSVE2',
+    'system'    : 'DomainSystem',
 }
 
 BRANCH_CONDITIONS = [
@@ -3052,12 +3045,6 @@ cc.line('`github.com/chenzhuoyu/iasm/asm`')
 cc.dedent()
 cc.line(')')
 cc.line()
-cc.line('const (')
-cc.indent()
-cc.line('_N_args = %d' % maxargs)
-cc.dedent()
-cc.line(')')
-cc.line()
 
 for mnemonic, forms in preprocess_instr_forms(formtab):
     nops = set()
@@ -3144,11 +3131,11 @@ for mnemonic, forms in preprocess_instr_forms(formtab):
         if not nfix:
             cc.line('func (self *Program) %s() *Instruction {' % mnemonic)
             cc.indent()
-            cc.line('p := self.alloc("%s", 0, Operands {})' % mnemonic)
+            cc.line('p := self.alloc("%s", 0, asm.Operands {})' % mnemonic)
         else:
             cc.line('func (self *Program) %s(%s interface{}) *Instruction {' % (mnemonic, ', '.join(base)))
             cc.indent()
-            cc.line('p := self.alloc("%s", %d, Operands { %s })' % (mnemonic, nfix, ', '.join(base)))
+            cc.line('p := self.alloc("%s", %d, asm.Operands { %s })' % (mnemonic, nfix, ', '.join(base)))
 
     else:
         if not nfix:
@@ -3164,10 +3151,10 @@ for mnemonic, forms in preprocess_instr_forms(formtab):
         for argc in sorted(nops):
             if not argc:
                 assert nfix == 0
-                cc.line('case 0  : p = self.alloc("%s", 0, Operands {})' % mnemonic)
+                cc.line('case 0  : p = self.alloc("%s", 0, asm.Operands {})' % mnemonic)
             else:
                 args = base[:] + ['vv[%d]' % i for i in range(argc - nfix)]
-                cc.line('case %d  : p = self.alloc("%s", %d, Operands { %s })' % (argc - nfix, mnemonic, argc, ', '.join(args)))
+                cc.line('case %d  : p = self.alloc("%s", %d, asm.Operands { %s })' % (argc - nfix, mnemonic, argc, ', '.join(args)))
 
         cc.line('default : panic("instruction %s takes %s operands")' % (mnemonic, ' or '.join(map(str, sorted(nops)))))
         cc.dedent()
@@ -3205,11 +3192,11 @@ for mnemonic, forms in preprocess_instr_forms(formtab):
                 cc.indent()
 
         for ft in form.feat:
-            cc.line('self.require(%s)' % ft)
+            cc.line('self.Arch.Require(%s)' % ft)
 
         fmap = {}
         args = []
-        cc.line('p.class = %s' % INSTR_CLASSES[form.opts.get('instr-class', 'general')])
+        cc.line('p.Domain = %s' % INSTR_CLASSES[form.opts.get('instr-class', 'general')])
 
         if form.inst.modifier is not None:
             raise RuntimeError('instruction modifiers should have been expanded')

@@ -5,6 +5,8 @@ import (
     `strconv`
     `unicode/utf8`
     `unsafe`
+
+    `github.com/chenzhuoyu/iasm/asm`
 )
 
 const (
@@ -13,6 +15,19 @@ const (
     _CC_ident0
     _CC_number
 )
+
+func this(p *asm.Instruction) *Instruction {
+    return (*Instruction)(unsafe.Pointer(p))
+}
+
+func brsize(p *asm.Instruction) int {
+    switch p.Branch {
+        case asm.BranchNone        : panic("p is not a branch")
+        case asm.BranchAlways      : return _N_far_uncond
+        case asm.BranchConditional : return _N_far_cond
+        default                    : panic("invalid instruction")
+    }
+}
 
 func isdigit(cc rune) bool {
     return '0' <= cc && cc <= '9'

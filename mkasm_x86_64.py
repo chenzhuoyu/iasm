@@ -139,65 +139,65 @@ VEXBYTES = {
 }
 
 ISAMAPPING = {
-    'CPUID'           : 'ISA_CPUID',
-    'RDTSC'           : 'ISA_RDTSC',
-    'RDTSCP'          : 'ISA_RDTSCP',
-    'CMOV'            : 'ISA_CMOV',
-    'MOVBE'           : 'ISA_MOVBE',
-    'POPCNT'          : 'ISA_POPCNT',
-    'LZCNT'           : 'ISA_LZCNT',
-    'TBM'             : 'ISA_TBM',
-    'BMI'             : 'ISA_BMI',
-    'BMI2'            : 'ISA_BMI2',
-    'ADX'             : 'ISA_ADX',
-    'MMX'             : 'ISA_MMX',
-    'MMX+'            : 'ISA_MMX_PLUS',
-    'FEMMS'           : 'ISA_FEMMS',
-    '3dnow!'          : 'ISA_3DNOW',
-    '3dnow!+'         : 'ISA_3DNOW_PLUS',
-    'SSE'             : 'ISA_SSE',
-    'SSE2'            : 'ISA_SSE2',
-    'SSE3'            : 'ISA_SSE3',
-    'SSSE3'           : 'ISA_SSSE3',
-    'SSE4A'           : 'ISA_SSE4A',
-    'SSE4.1'          : 'ISA_SSE4_1',
-    'SSE4.2'          : 'ISA_SSE4_2',
-    'FMA3'            : 'ISA_FMA3',
-    'FMA4'            : 'ISA_FMA4',
-    'XOP'             : 'ISA_XOP',
-    'F16C'            : 'ISA_F16C',
-    'AVX'             : 'ISA_AVX',
-    'AVX2'            : 'ISA_AVX2',
-    'AVX512F'         : 'ISA_AVX512F',
-    'AVX512BW'        : 'ISA_AVX512BW',
-    'AVX512DQ'        : 'ISA_AVX512DQ',
-    'AVX512VL'        : 'ISA_AVX512VL',
-    'AVX512PF'        : 'ISA_AVX512PF',
-    'AVX512ER'        : 'ISA_AVX512ER',
-    'AVX512CD'        : 'ISA_AVX512CD',
-    'AVX512VBMI'      : 'ISA_AVX512VBMI',
-    'AVX512IFMA'      : 'ISA_AVX512IFMA',
-    'AVX512VPOPCNTDQ' : 'ISA_AVX512VPOPCNTDQ',
-    'AVX512_4VNNIW'   : 'ISA_AVX512_4VNNIW',
-    'AVX512_4FMAPS'   : 'ISA_AVX512_4FMAPS',
-    'PREFETCH'        : 'ISA_PREFETCH',
-    'PREFETCHW'       : 'ISA_PREFETCHW',
-    'PREFETCHWT1'     : 'ISA_PREFETCHWT1',
-    'CLFLUSH'         : 'ISA_CLFLUSH',
-    'CLFLUSHOPT'      : 'ISA_CLFLUSHOPT',
-    'CLWB'            : 'ISA_CLWB',
-    'CLZERO'          : 'ISA_CLZERO',
-    'RDRAND'          : 'ISA_RDRAND',
-    'RDSEED'          : 'ISA_RDSEED',
-    'PCLMULQDQ'       : 'ISA_PCLMULQDQ',
-    'AES'             : 'ISA_AES',
-    'SHA'             : 'ISA_SHA',
-    'MONITOR'         : 'ISA_MONITOR',
-    'MONITORX'        : 'ISA_MONITORX',
+    'CPUID'           : 'FEAT_CPUID',
+    'RDTSC'           : 'FEAT_RDTSC',
+    'RDTSCP'          : 'FEAT_RDTSCP',
+    'CMOV'            : 'FEAT_CMOV',
+    'MOVBE'           : 'FEAT_MOVBE',
+    'POPCNT'          : 'FEAT_POPCNT',
+    'LZCNT'           : 'FEAT_LZCNT',
+    'TBM'             : 'FEAT_TBM',
+    'BMI'             : 'FEAT_BMI',
+    'BMI2'            : 'FEAT_BMI2',
+    'ADX'             : 'FEAT_ADX',
+    'MMX'             : 'FEAT_MMX',
+    'MMX+'            : 'FEAT_MMX_PLUS',
+    'FEMMS'           : 'FEAT_FEMMS',
+    '3dnow!'          : 'FEAT_3DNOW',
+    '3dnow!+'         : 'FEAT_3DNOW_PLUS',
+    'SSE'             : 'FEAT_SSE',
+    'SSE2'            : 'FEAT_SSE2',
+    'SSE3'            : 'FEAT_SSE3',
+    'SSSE3'           : 'FEAT_SSSE3',
+    'SSE4A'           : 'FEAT_SSE4A',
+    'SSE4.1'          : 'FEAT_SSE4_1',
+    'SSE4.2'          : 'FEAT_SSE4_2',
+    'FMA3'            : 'FEAT_FMA3',
+    'FMA4'            : 'FEAT_FMA4',
+    'XOP'             : 'FEAT_XOP',
+    'F16C'            : 'FEAT_F16C',
+    'AVX'             : 'FEAT_AVX',
+    'AVX2'            : 'FEAT_AVX2',
+    'AVX512F'         : 'FEAT_AVX512F',
+    'AVX512BW'        : 'FEAT_AVX512BW',
+    'AVX512DQ'        : 'FEAT_AVX512DQ',
+    'AVX512VL'        : 'FEAT_AVX512VL',
+    'AVX512PF'        : 'FEAT_AVX512PF',
+    'AVX512ER'        : 'FEAT_AVX512ER',
+    'AVX512CD'        : 'FEAT_AVX512CD',
+    'AVX512VBMI'      : 'FEAT_AVX512VBMI',
+    'AVX512IFMA'      : 'FEAT_AVX512IFMA',
+    'AVX512VPOPCNTDQ' : 'FEAT_AVX512VPOPCNTDQ',
+    'AVX512_4VNNIW'   : 'FEAT_AVX512_4VNNIW',
+    'AVX512_4FMAPS'   : 'FEAT_AVX512_4FMAPS',
+    'PREFETCH'        : 'FEAT_PREFETCH',
+    'PREFETCHW'       : 'FEAT_PREFETCHW',
+    'PREFETCHWT1'     : 'FEAT_PREFETCHWT1',
+    'CLFLUSH'         : 'FEAT_CLFLUSH',
+    'CLFLUSHOPT'      : 'FEAT_CLFLUSHOPT',
+    'CLWB'            : 'FEAT_CLWB',
+    'CLZERO'          : 'FEAT_CLZERO',
+    'RDRAND'          : 'FEAT_RDRAND',
+    'RDSEED'          : 'FEAT_RDSEED',
+    'PCLMULQDQ'       : 'FEAT_PCLMULQDQ',
+    'AES'             : 'FEAT_AES',
+    'SHA'             : 'FEAT_SHA',
+    'MONITOR'         : 'FEAT_MONITOR',
+    'MONITORX'        : 'FEAT_MONITORX',
 }
 
 DOMAIN_MAP = {
-    'generic' : 'DomainGeneric',
+    'generic' : 'asm.DomainGeneric',
     'mmxsse'  : 'DomainMMXSSE',
     'avx'     : 'DomainAVX',
     'fma'     : 'DomainFMA',
@@ -548,9 +548,9 @@ for name, (_, _, forms) in instrs.items():
         nforms = fcnt
 
 cc.line('const (')
-with CodeBlock(cc):
-    cc.line('_N_args  = %d' % nargs)
-    cc.line('_N_forms = %d' % nforms)
+cc.indent()
+cc.line('_N_forms = %d' % nforms)
+cc.dedent()
 cc.line(')')
 cc.line()
 cc.line('// Instructions maps all the instruction name to it\'s encoder function.')
@@ -607,6 +607,13 @@ cc.line('// Code generated by "mkasm_x86_64.py", DO NOT EDIT.')
 cc.line()
 cc.line('package x86_64')
 cc.line()
+cc.line('import (')
+
+with CodeBlock(cc):
+    cc.line('`github.com/chenzhuoyu/iasm/asm`')
+
+cc.line(')')
+cc.line()
 
 for name, (ins, desc, forms) in sorted(instrs.items()):
     cc.line('// %s performs "%s".' % (name, desc))
@@ -631,20 +638,20 @@ for name, (ins, desc, forms) in sorted(instrs.items()):
     with CodeBlock(cc):
         base = ['v%d' % i for i in range(nfix)]
         if len(nops) == 1:
-            cc.line('p := self.alloc("%s", %d, Operands { %s })' % (name, nfix, ', '.join(base)))
+            cc.line('p := self.alloc("%s", %d, asm.Operands { %s })' % (name, nfix, ', '.join(base)))
         else:
             cc.line('var p *Instruction')
             cc.line('switch len(vv) {')
             with CodeBlock(cc):
                 for argc in sorted(nops):
                     args = base[:] + ['vv[%d]' % i for i in range(argc - nfix)]
-                    cc.line('case %d  : p = self.alloc("%s", %d, Operands { %s })' % (argc - nfix, name, argc, ', '.join(args)))
+                    cc.line('case %d  : p = self.alloc("%s", %d, asm.Operands { %s })' % (argc - nfix, name, argc, ', '.join(args)))
                 cc.line('default : panic("instruction %s takes %s operands")' % (name, ' or '.join(map(str, sorted(nops)))))
             cc.line('}')
         if name == 'JMP':
-            cc.line('p.branch = _B_unconditional')
+            cc.line('p.Branch = asm.BranchAlways')
         elif name in BRANCH_INSTRUCTIONS:
-            cc.line('p.branch = _B_conditional')
+            cc.line('p.Branch = asm.BranchConditional')
         is_labeled = False
         must_success = False
         for form in forms:
@@ -663,8 +670,8 @@ for name, (ins, desc, forms) in sorted(instrs.items()):
                 must_success = True
             if form.isa_extensions:
                 for isa in sorted(require_isa(form.isa_extensions)):
-                    cc.line('self.require(%s)' % isa)
-            cc.line('p.domain = ' + DOMAIN_MAP[domains.get(form.name, 'misc')])
+                    cc.line('self.Arch.Require(%s)' % isa)
+            cc.line('p.Domain = ' + DOMAIN_MAP[domains.get(form.name, 'misc')])
             for enc in form.encodings:
                 flags, instr = generate_encoding(enc, ops, gen_branch = False)
                 cc.line('p.add(%s, func(m *_Encoding, v []interface{}) {' % flags)
