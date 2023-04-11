@@ -29,3 +29,55 @@ func modt(v interface{}) ModType {
         return m.Type()
     }
 }
+
+func abs12(lb *asm.Label) uint32 {
+    return uint32(lb.Address() & 0xfff)
+}
+
+func rel14(lb *asm.Label, pc uintptr) uint32 {
+    if d := lb.Address() - pc; d & 0b11 != 0 {
+        panic("aarch64: target address is not aligned")
+    } else if r := uint32(int64(d) >> 2); r &^ 0x3fff != 0 {
+        panic("aarch64: target is too far to fit into 14 bit relative address")
+    } else {
+        return r
+    }
+}
+
+func rel19(lb *asm.Label, pc uintptr) uint32 {
+    if d := lb.Address() - pc; d & 0b11 != 0 {
+        panic("aarch64: target address is not aligned")
+    } else if r := uint32(int64(d) >> 2); r &^ 0x7ffff != 0 {
+        panic("aarch64: target is too far to fit into 19 bit relative address")
+    } else {
+        return r
+    }
+}
+
+func rel26(lb *asm.Label, pc uintptr) uint32 {
+    if d := lb.Address() - pc; d & 0b11 != 0 {
+        panic("aarch64: target address is not aligned")
+    } else if r := uint32(int64(d) >> 2); r &^ 0x3ffffff != 0 {
+        panic("aarch64: target is too far to fit into 26 bit relative address")
+    } else {
+        return r
+    }
+}
+
+func reladr(lb *asm.Label, pc uintptr, adrp bool) uint32 {
+    base := pc
+    dest := lb.Address()
+
+    /* align to page for ADRP */
+    if adrp {
+        base >>= 12
+        dest >>= 12
+    }
+
+    /* calculate the relative address */
+    if rel := dest - base; rel &^ 0x1fffff != 0 {
+        panic("aarch64: target is too far to fit into 21 bit relative address")
+    } else {
+        return uint32(rel)
+    }
+}

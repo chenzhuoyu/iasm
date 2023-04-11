@@ -16,18 +16,31 @@ type Instruction struct {
     encoder func(uintptr) uint32
 }
 
-func (self *Instruction) encode(pc uintptr) uint32 {
+func (self *Instruction) encode(m *[]byte) int {
+    inst := uint32(0)
+    kind := self.Pseudo.Kind
+
+    /* check for pseudo-instructions */
+    if kind != 0 {
+        return self.Pseudo.Encode(m, self.PC)
+    }
+
+    /* check for dry run */
+    if m == nil {
+        return _INS_LEN
+    }
+
+    /* encode the instruction */
     if self.instr != 0 {
-        return self.instr
+        inst = self.instr
     } else if self.encoder != nil {
-        return self.encoder(pc)
+        inst = self.encoder(self.PC)
     } else{
         panic("aarch64: uninitialized instruction")
     }
-}
 
-func (self *Instruction) append(m *[]byte) int {
-    *m = binary.LittleEndian.AppendUint32(*m, self.encode(self.PC))
+    /* add to buffer */
+    *m = binary.LittleEndian.AppendUint32(*m, inst)
     return _INS_LEN
 }
 
@@ -51,7 +64,27 @@ func (self *Program) alloc(name string, argc int, argv asm.Operands) *Instructio
     return this(self.Append(name, argc, argv))
 }
 
+func (self *Program) encode(m *[]byte) {
+    for _, p := range self.Instr {
+        this(p).encode(m)
+    }
+}
+
 func (self *Program) assemble(pc uintptr) []byte {
-    // TODO implement me
-    panic("implement me")
+    orig := pc
+    inst := self.Instr
+
+    /* pre-compute PC for every instruction */
+    for _, p := range inst {
+        p.PC = pc
+        pc += uintptr(this(p).encode(nil))
+    }
+
+    /* allocate space for machine code */
+    nb := pc - orig
+    ret := make([]byte, 0, nb)
+
+    /* encode every instruction */
+    self.encode(&ret)
+    return ret
 }

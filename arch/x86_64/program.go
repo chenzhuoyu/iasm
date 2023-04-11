@@ -35,15 +35,15 @@ func (self *Instruction) encode(m *[]byte) int {
     n := math.MaxInt64
     p := (*_Encoding)(nil)
 
+    /* check for pseudo-instructions */
+    if self.Pseudo.Kind != 0 {
+        self.nb = self.Pseudo.Encode(m, self.PC)
+        return self.nb
+    }
+
     /* encode prefixes if any */
     if self.nb = len(self.prefix); m != nil {
         *m = append(*m, self.prefix...)
-    }
-
-    /* check for pseudo-instructions */
-    if self.Pseudo.Kind != 0 {
-        self.nb += self.Pseudo.Encode(m, self.PC)
-        return self.nb
     }
 
     /* find the shortest encoding */
@@ -139,6 +139,12 @@ func (self *Program) alloc(name string, argc int, argv asm.Operands) *Instructio
     return this(self.Append(name, argc, argv))
 }
 
+func (self *Program) encode(m *[]byte) {
+    for _, p := range self.Instr {
+        this(p).encode(m)
+    }
+}
+
 func (self *Program) assemble(pc uintptr) (ret []byte) {
     orig := pc
     next := true
@@ -224,10 +230,6 @@ func (self *Program) assemble(pc uintptr) (ret []byte) {
     }
 
     /* Pass 4: actually encode all the instructions */
-    for _, p := range self.Instr {
-        this(p).encode(&ret)
-    }
-
-    /* all done */
+    self.encode(&ret)
     return ret
 }

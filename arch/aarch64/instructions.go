@@ -153,7 +153,7 @@ func (self *Program) ADCS(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for ADCS")
 }
 
-// ADD instruction have 8 forms from 4 categories:
+// ADD instruction have 10 forms from 4 categories:
 //
 // 1. Add (extended register)
 //
@@ -168,7 +168,9 @@ func (self *Program) ADCS(v0, v1, v2 interface{}) *Instruction {
 // 2. Add (immediate)
 //
 //    ADD  <Wd|WSP>, <Wn|WSP>, #<imm>{, <shift>}
+//    ADD  <Wd|WSP>, <Wn|WSP>, <label>{, <shift>}
 //    ADD  <Xd|SP>, <Xn|SP>, #<imm>{, <shift>}
+//    ADD  <Xd|SP>, <Xn|SP>, <label>{, <shift>}
 //
 // Add (immediate) adds a register value and an optionally-shifted immediate value,
 // and writes the result to the destination register.
@@ -294,6 +296,36 @@ func (self *Program) ADD(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
         }
         return p.setins(addsub_imm(0, 0, 0, sa_shift, sa_imm, sa_wn_wsp, sa_wd_wsp))
     }
+    // ADD  <Wd|WSP>, <Wn|WSP>, <label>{, <shift>}
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isWrOrWSP(v0) &&
+       isWrOrWSP(v1) &&
+       isLabel(v2) &&
+       (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) {
+        p.Domain = asm.DomainGeneric
+        var sa_shift uint32
+        sa_wd_wsp := uint32(v0.(asm.Register).ID())
+        sa_wn_wsp := uint32(v1.(asm.Register).ID())
+        sa_label := v2.(*asm.Label)
+        if len(vv) == 1 {
+            switch {
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
+                default: panic("aarch64: invalid modifier flags")
+            }
+        }
+        return p.setenc(func(pc uintptr) uint32 {
+            return addsub_imm(
+                0,
+                0,
+                0,
+                sa_shift,
+                abs12(sa_label),
+                sa_wn_wsp,
+                sa_wd_wsp,
+            )
+        })
+    }
     // ADD  <Xd|SP>, <Xn|SP>, #<imm>{, <shift>}
     if (len(vv) == 0 || len(vv) == 1) &&
        isXrOrSP(v0) &&
@@ -313,6 +345,36 @@ func (self *Program) ADD(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
             }
         }
         return p.setins(addsub_imm(1, 0, 0, sa_shift, sa_imm, sa_xn_sp, sa_xd_sp))
+    }
+    // ADD  <Xd|SP>, <Xn|SP>, <label>{, <shift>}
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isXrOrSP(v0) &&
+       isXrOrSP(v1) &&
+       isLabel(v2) &&
+       (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) {
+        p.Domain = asm.DomainGeneric
+        var sa_shift uint32
+        sa_xd_sp := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(v1.(asm.Register).ID())
+        sa_label := v2.(*asm.Label)
+        if len(vv) == 1 {
+            switch {
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
+                default: panic("aarch64: invalid modifier flags")
+            }
+        }
+        return p.setenc(func(pc uintptr) uint32 {
+            return addsub_imm(
+                1,
+                0,
+                0,
+                sa_shift,
+                abs12(sa_label),
+                sa_xn_sp,
+                sa_xd_sp,
+            )
+        })
     }
     // ADD  <Wd>, <Wn>, <Wm>{, <shift> #<amount>}
     if (len(vv) == 0 || len(vv) == 1) &&
@@ -653,7 +715,7 @@ func (self *Program) ADDP(v0, v1 interface{}, vv ...interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for ADDP")
 }
 
-// ADDS instruction have 6 forms from 3 categories:
+// ADDS instruction have 8 forms from 3 categories:
 //
 // 1. Add (extended register), setting flags
 //
@@ -669,7 +731,9 @@ func (self *Program) ADDP(v0, v1 interface{}, vv ...interface{}) *Instruction {
 // 2. Add (immediate), setting flags
 //
 //    ADDS  <Wd>, <Wn|WSP>, #<imm>{, <shift>}
+//    ADDS  <Wd>, <Wn|WSP>, <label>{, <shift>}
 //    ADDS  <Xd>, <Xn|SP>, #<imm>{, <shift>}
+//    ADDS  <Xd>, <Xn|SP>, <label>{, <shift>}
 //
 // Add (immediate), setting flags, adds a register value and an optionally-shifted
 // immediate value, and writes the result to the destination register. It updates
@@ -784,6 +848,36 @@ func (self *Program) ADDS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
         }
         return p.setins(addsub_imm(0, 0, 1, sa_shift, sa_imm, sa_wn_wsp, sa_wd))
     }
+    // ADDS  <Wd>, <Wn|WSP>, <label>{, <shift>}
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isWr(v0) &&
+       isWrOrWSP(v1) &&
+       isLabel(v2) &&
+       (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) {
+        p.Domain = asm.DomainGeneric
+        var sa_shift uint32
+        sa_wd := uint32(v0.(asm.Register).ID())
+        sa_wn_wsp := uint32(v1.(asm.Register).ID())
+        sa_label := v2.(*asm.Label)
+        if len(vv) == 1 {
+            switch {
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
+                default: panic("aarch64: invalid modifier flags")
+            }
+        }
+        return p.setenc(func(pc uintptr) uint32 {
+            return addsub_imm(
+                0,
+                0,
+                1,
+                sa_shift,
+                abs12(sa_label),
+                sa_wn_wsp,
+                sa_wd,
+            )
+        })
+    }
     // ADDS  <Xd>, <Xn|SP>, #<imm>{, <shift>}
     if (len(vv) == 0 || len(vv) == 1) &&
        isXr(v0) &&
@@ -803,6 +897,36 @@ func (self *Program) ADDS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
             }
         }
         return p.setins(addsub_imm(1, 0, 1, sa_shift, sa_imm, sa_xn_sp, sa_xd))
+    }
+    // ADDS  <Xd>, <Xn|SP>, <label>{, <shift>}
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isXr(v0) &&
+       isXrOrSP(v1) &&
+       isLabel(v2) &&
+       (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) {
+        p.Domain = asm.DomainGeneric
+        var sa_shift uint32
+        sa_xd := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(v1.(asm.Register).ID())
+        sa_label := v2.(*asm.Label)
+        if len(vv) == 1 {
+            switch {
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
+                default: panic("aarch64: invalid modifier flags")
+            }
+        }
+        return p.setenc(func(pc uintptr) uint32 {
+            return addsub_imm(
+                1,
+                0,
+                1,
+                sa_shift,
+                abs12(sa_label),
+                sa_xn_sp,
+                sa_xd,
+            )
+        })
     }
     // ADDS  <Wd>, <Wn>, <Wm>{, <shift> #<amount>}
     if (len(vv) == 0 || len(vv) == 1) &&
@@ -916,8 +1040,8 @@ func (self *Program) ADR(v0, v1 interface{}) *Instruction {
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_label := v1.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 {
-            delta := uint32(sa_label.RelativeTo(pc))
-            return pcreladdr(0, delta, delta, sa_xd)
+            refs := reladr(sa_label, pc, false)
+            return pcreladdr(0, mask(refs, 2), ubfx(refs, 2, 19), sa_xd)
         })
     }
     p.Free()
@@ -941,8 +1065,8 @@ func (self *Program) ADRP(v0, v1 interface{}) *Instruction {
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_label := v1.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 {
-            delta := uint32(sa_label.RelativeTo(pc))
-            return pcreladdr(1, delta, delta, sa_xd)
+            refs := reladr(sa_label, pc, true)
+            return pcreladdr(1, mask(refs, 2), ubfx(refs, 2, 19), sa_xd)
         })
     }
     p.Free()
@@ -1913,7 +2037,7 @@ func (self *Program) B(v0 interface{}) *Instruction {
     if isLabel(v0) {
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return branch_imm(0, uint32(sa_label.RelativeTo(pc))) })
+        return p.setenc(func(pc uintptr) uint32 { return branch_imm(0, rel26(sa_label, pc)) })
     }
     p.Free()
     panic("aarch64: invalid combination of operands for B")
@@ -1933,7 +2057,7 @@ func (self *Program) BEQ(v0 interface{}) *Instruction {
     if isLabel(v0) {
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 0, 0) })
+        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 0, 0) })
     }
     p.Free()
     panic("aarch64: invalid combination of operands for BEQ")
@@ -1953,7 +2077,7 @@ func (self *Program) BNE(v0 interface{}) *Instruction {
     if isLabel(v0) {
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 0, 1) })
+        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 0, 1) })
     }
     p.Free()
     panic("aarch64: invalid combination of operands for BNE")
@@ -1973,7 +2097,7 @@ func (self *Program) BCS(v0 interface{}) *Instruction {
     if isLabel(v0) {
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 0, 2) })
+        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 0, 2) })
     }
     p.Free()
     panic("aarch64: invalid combination of operands for BCS")
@@ -1993,7 +2117,7 @@ func (self *Program) BHS(v0 interface{}) *Instruction {
     if isLabel(v0) {
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 0, 2) })
+        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 0, 2) })
     }
     p.Free()
     panic("aarch64: invalid combination of operands for BHS")
@@ -2013,7 +2137,7 @@ func (self *Program) BCC(v0 interface{}) *Instruction {
     if isLabel(v0) {
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 0, 3) })
+        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 0, 3) })
     }
     p.Free()
     panic("aarch64: invalid combination of operands for BCC")
@@ -2033,7 +2157,7 @@ func (self *Program) BLO(v0 interface{}) *Instruction {
     if isLabel(v0) {
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 0, 3) })
+        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 0, 3) })
     }
     p.Free()
     panic("aarch64: invalid combination of operands for BLO")
@@ -2053,7 +2177,7 @@ func (self *Program) BMI(v0 interface{}) *Instruction {
     if isLabel(v0) {
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 0, 4) })
+        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 0, 4) })
     }
     p.Free()
     panic("aarch64: invalid combination of operands for BMI")
@@ -2073,7 +2197,7 @@ func (self *Program) BPL(v0 interface{}) *Instruction {
     if isLabel(v0) {
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 0, 5) })
+        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 0, 5) })
     }
     p.Free()
     panic("aarch64: invalid combination of operands for BPL")
@@ -2093,7 +2217,7 @@ func (self *Program) BVS(v0 interface{}) *Instruction {
     if isLabel(v0) {
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 0, 6) })
+        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 0, 6) })
     }
     p.Free()
     panic("aarch64: invalid combination of operands for BVS")
@@ -2113,7 +2237,7 @@ func (self *Program) BVC(v0 interface{}) *Instruction {
     if isLabel(v0) {
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 0, 7) })
+        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 0, 7) })
     }
     p.Free()
     panic("aarch64: invalid combination of operands for BVC")
@@ -2133,7 +2257,7 @@ func (self *Program) BHI(v0 interface{}) *Instruction {
     if isLabel(v0) {
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 0, 8) })
+        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 0, 8) })
     }
     p.Free()
     panic("aarch64: invalid combination of operands for BHI")
@@ -2153,7 +2277,7 @@ func (self *Program) BLS(v0 interface{}) *Instruction {
     if isLabel(v0) {
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 0, 9) })
+        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 0, 9) })
     }
     p.Free()
     panic("aarch64: invalid combination of operands for BLS")
@@ -2173,7 +2297,7 @@ func (self *Program) BGE(v0 interface{}) *Instruction {
     if isLabel(v0) {
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 0, 10) })
+        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 0, 10) })
     }
     p.Free()
     panic("aarch64: invalid combination of operands for BGE")
@@ -2193,7 +2317,7 @@ func (self *Program) BLT(v0 interface{}) *Instruction {
     if isLabel(v0) {
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 0, 11) })
+        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 0, 11) })
     }
     p.Free()
     panic("aarch64: invalid combination of operands for BLT")
@@ -2213,7 +2337,7 @@ func (self *Program) BGT(v0 interface{}) *Instruction {
     if isLabel(v0) {
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 0, 12) })
+        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 0, 12) })
     }
     p.Free()
     panic("aarch64: invalid combination of operands for BGT")
@@ -2233,7 +2357,7 @@ func (self *Program) BLE(v0 interface{}) *Instruction {
     if isLabel(v0) {
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 0, 13) })
+        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 0, 13) })
     }
     p.Free()
     panic("aarch64: invalid combination of operands for BLE")
@@ -2253,7 +2377,7 @@ func (self *Program) BAL(v0 interface{}) *Instruction {
     if isLabel(v0) {
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 0, 14) })
+        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 0, 14) })
     }
     p.Free()
     panic("aarch64: invalid combination of operands for BAL")
@@ -2275,7 +2399,7 @@ func (self *Program) BCEQ(v0 interface{}) *Instruction {
         self.Arch.Require(FEAT_HBC)
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 1, 0) })
+        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 1, 0) })
     }
     p.Free()
     panic("aarch64: invalid combination of operands for BCEQ")
@@ -2297,7 +2421,7 @@ func (self *Program) BCNE(v0 interface{}) *Instruction {
         self.Arch.Require(FEAT_HBC)
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 1, 1) })
+        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 1, 1) })
     }
     p.Free()
     panic("aarch64: invalid combination of operands for BCNE")
@@ -2319,7 +2443,7 @@ func (self *Program) BCCS(v0 interface{}) *Instruction {
         self.Arch.Require(FEAT_HBC)
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 1, 2) })
+        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 1, 2) })
     }
     p.Free()
     panic("aarch64: invalid combination of operands for BCCS")
@@ -2341,7 +2465,7 @@ func (self *Program) BCHS(v0 interface{}) *Instruction {
         self.Arch.Require(FEAT_HBC)
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 1, 2) })
+        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 1, 2) })
     }
     p.Free()
     panic("aarch64: invalid combination of operands for BCHS")
@@ -2363,7 +2487,7 @@ func (self *Program) BCCC(v0 interface{}) *Instruction {
         self.Arch.Require(FEAT_HBC)
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 1, 3) })
+        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 1, 3) })
     }
     p.Free()
     panic("aarch64: invalid combination of operands for BCCC")
@@ -2385,7 +2509,7 @@ func (self *Program) BCLO(v0 interface{}) *Instruction {
         self.Arch.Require(FEAT_HBC)
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 1, 3) })
+        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 1, 3) })
     }
     p.Free()
     panic("aarch64: invalid combination of operands for BCLO")
@@ -2407,7 +2531,7 @@ func (self *Program) BCMI(v0 interface{}) *Instruction {
         self.Arch.Require(FEAT_HBC)
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 1, 4) })
+        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 1, 4) })
     }
     p.Free()
     panic("aarch64: invalid combination of operands for BCMI")
@@ -2429,7 +2553,7 @@ func (self *Program) BCPL(v0 interface{}) *Instruction {
         self.Arch.Require(FEAT_HBC)
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 1, 5) })
+        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 1, 5) })
     }
     p.Free()
     panic("aarch64: invalid combination of operands for BCPL")
@@ -2451,7 +2575,7 @@ func (self *Program) BCVS(v0 interface{}) *Instruction {
         self.Arch.Require(FEAT_HBC)
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 1, 6) })
+        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 1, 6) })
     }
     p.Free()
     panic("aarch64: invalid combination of operands for BCVS")
@@ -2473,7 +2597,7 @@ func (self *Program) BCVC(v0 interface{}) *Instruction {
         self.Arch.Require(FEAT_HBC)
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 1, 7) })
+        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 1, 7) })
     }
     p.Free()
     panic("aarch64: invalid combination of operands for BCVC")
@@ -2495,7 +2619,7 @@ func (self *Program) BCHI(v0 interface{}) *Instruction {
         self.Arch.Require(FEAT_HBC)
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 1, 8) })
+        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 1, 8) })
     }
     p.Free()
     panic("aarch64: invalid combination of operands for BCHI")
@@ -2517,7 +2641,7 @@ func (self *Program) BCLS(v0 interface{}) *Instruction {
         self.Arch.Require(FEAT_HBC)
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 1, 9) })
+        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 1, 9) })
     }
     p.Free()
     panic("aarch64: invalid combination of operands for BCLS")
@@ -2539,7 +2663,7 @@ func (self *Program) BCGE(v0 interface{}) *Instruction {
         self.Arch.Require(FEAT_HBC)
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 1, 10) })
+        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 1, 10) })
     }
     p.Free()
     panic("aarch64: invalid combination of operands for BCGE")
@@ -2561,7 +2685,7 @@ func (self *Program) BCLT(v0 interface{}) *Instruction {
         self.Arch.Require(FEAT_HBC)
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 1, 11) })
+        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 1, 11) })
     }
     p.Free()
     panic("aarch64: invalid combination of operands for BCLT")
@@ -2583,7 +2707,7 @@ func (self *Program) BCGT(v0 interface{}) *Instruction {
         self.Arch.Require(FEAT_HBC)
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 1, 12) })
+        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 1, 12) })
     }
     p.Free()
     panic("aarch64: invalid combination of operands for BCGT")
@@ -2605,7 +2729,7 @@ func (self *Program) BCLE(v0 interface{}) *Instruction {
         self.Arch.Require(FEAT_HBC)
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 1, 13) })
+        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 1, 13) })
     }
     p.Free()
     panic("aarch64: invalid combination of operands for BCLE")
@@ -2627,7 +2751,7 @@ func (self *Program) BCAL(v0 interface{}) *Instruction {
         self.Arch.Require(FEAT_HBC)
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, uint32(sa_label.RelativeTo(pc)), 1, 14) })
+        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 1, 14) })
     }
     p.Free()
     panic("aarch64: invalid combination of operands for BCAL")
@@ -2932,7 +3056,18 @@ func (self *Program) BFDOT(v0, v1, v2 interface{}) *Instruction {
         if sa_ta != sa_tb {
             panic("aarch64: invalid combination of operands for BFDOT")
         }
-        return p.setins(asimdelem(sa_ta, 0, 1, mask(sa_index, 1), sa_vm, sa_vm, 15, ubfx(sa_index, 1, 1), sa_vn, sa_vd))
+        return p.setins(asimdelem(
+            sa_ta,
+            0,
+            1,
+            mask(sa_index, 1),
+            ubfx(sa_vm, 4, 1),
+            mask(sa_vm, 4),
+            15,
+            ubfx(sa_index, 1, 1),
+            sa_vn,
+            sa_vd,
+        ))
     }
     // BFDOT  <Vd>.<Ta>, <Vn>.<Tb>, <Vm>.<Tb>
     if isVr(v0) &&
@@ -3667,7 +3802,7 @@ func (self *Program) BL(v0 interface{}) *Instruction {
     if isLabel(v0) {
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return branch_imm(1, uint32(sa_label.RelativeTo(pc))) })
+        return p.setenc(func(pc uintptr) uint32 { return branch_imm(1, rel26(sa_label, pc)) })
     }
     p.Free()
     panic("aarch64: invalid combination of operands for BL")
@@ -4200,7 +4335,7 @@ func (self *Program) CAS(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -4215,7 +4350,7 @@ func (self *Program) CAS(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -4267,7 +4402,7 @@ func (self *Program) CASA(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -4282,7 +4417,7 @@ func (self *Program) CASA(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -4331,7 +4466,7 @@ func (self *Program) CASAB(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -4379,7 +4514,7 @@ func (self *Program) CASAH(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -4430,7 +4565,7 @@ func (self *Program) CASAL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -4445,7 +4580,7 @@ func (self *Program) CASAL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -4494,7 +4629,7 @@ func (self *Program) CASALB(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -4542,7 +4677,7 @@ func (self *Program) CASALH(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -4590,7 +4725,7 @@ func (self *Program) CASB(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -4638,7 +4773,7 @@ func (self *Program) CASH(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -4689,7 +4824,7 @@ func (self *Program) CASL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -4704,7 +4839,7 @@ func (self *Program) CASL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -4753,7 +4888,7 @@ func (self *Program) CASLB(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -4801,7 +4936,7 @@ func (self *Program) CASLH(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -4857,7 +4992,7 @@ func (self *Program) CASP(v0, v1, v2, v3, v4 interface{}) *Instruction {
        isXrOrSP(mbase(v4)) &&
        midx(v4) == nil &&
        (moffs(v4) == 0 || moffs(v4) == 0) &&
-       mext(v4) == nil {
+       mext(v4) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -4876,7 +5011,7 @@ func (self *Program) CASP(v0, v1, v2, v3, v4 interface{}) *Instruction {
        isXrOrSP(mbase(v4)) &&
        midx(v4) == nil &&
        (moffs(v4) == 0 || moffs(v4) == 0) &&
-       mext(v4) == nil {
+       mext(v4) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -4933,7 +5068,7 @@ func (self *Program) CASPA(v0, v1, v2, v3, v4 interface{}) *Instruction {
        isXrOrSP(mbase(v4)) &&
        midx(v4) == nil &&
        (moffs(v4) == 0 || moffs(v4) == 0) &&
-       mext(v4) == nil {
+       mext(v4) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -4952,7 +5087,7 @@ func (self *Program) CASPA(v0, v1, v2, v3, v4 interface{}) *Instruction {
        isXrOrSP(mbase(v4)) &&
        midx(v4) == nil &&
        (moffs(v4) == 0 || moffs(v4) == 0) &&
-       mext(v4) == nil {
+       mext(v4) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -5009,7 +5144,7 @@ func (self *Program) CASPAL(v0, v1, v2, v3, v4 interface{}) *Instruction {
        isXrOrSP(mbase(v4)) &&
        midx(v4) == nil &&
        (moffs(v4) == 0 || moffs(v4) == 0) &&
-       mext(v4) == nil {
+       mext(v4) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -5028,7 +5163,7 @@ func (self *Program) CASPAL(v0, v1, v2, v3, v4 interface{}) *Instruction {
        isXrOrSP(mbase(v4)) &&
        midx(v4) == nil &&
        (moffs(v4) == 0 || moffs(v4) == 0) &&
-       mext(v4) == nil {
+       mext(v4) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -5085,7 +5220,7 @@ func (self *Program) CASPL(v0, v1, v2, v3, v4 interface{}) *Instruction {
        isXrOrSP(mbase(v4)) &&
        midx(v4) == nil &&
        (moffs(v4) == 0 || moffs(v4) == 0) &&
-       mext(v4) == nil {
+       mext(v4) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -5104,7 +5239,7 @@ func (self *Program) CASPL(v0, v1, v2, v3, v4 interface{}) *Instruction {
        isXrOrSP(mbase(v4)) &&
        midx(v4) == nil &&
        (moffs(v4) == 0 || moffs(v4) == 0) &&
-       mext(v4) == nil {
+       mext(v4) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -5136,14 +5271,14 @@ func (self *Program) CBNZ(v0, v1 interface{}) *Instruction {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_label := v1.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return compbranch(0, 1, uint32(sa_label.RelativeTo(pc)), sa_wt) })
+        return p.setenc(func(pc uintptr) uint32 { return compbranch(0, 1, rel19(sa_label, pc), sa_wt) })
     }
     // CBNZ  <Xt>, <label>
     if isXr(v0) && isLabel(v1) {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_label := v1.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return compbranch(1, 1, uint32(sa_label.RelativeTo(pc)), sa_xt) })
+        return p.setenc(func(pc uintptr) uint32 { return compbranch(1, 1, rel19(sa_label, pc), sa_xt) })
     }
     // none of above
     p.Free()
@@ -5169,14 +5304,14 @@ func (self *Program) CBZ(v0, v1 interface{}) *Instruction {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_label := v1.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return compbranch(0, 0, uint32(sa_label.RelativeTo(pc)), sa_wt) })
+        return p.setenc(func(pc uintptr) uint32 { return compbranch(0, 0, rel19(sa_label, pc), sa_wt) })
     }
     // CBZ  <Xt>, <label>
     if isXr(v0) && isLabel(v1) {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_label := v1.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return compbranch(1, 0, uint32(sa_label.RelativeTo(pc)), sa_xt) })
+        return p.setenc(func(pc uintptr) uint32 { return compbranch(1, 0, rel19(sa_label, pc), sa_xt) })
     }
     // none of above
     p.Free()
@@ -5389,7 +5524,7 @@ func (self *Program) CINC(v0, v1, v2 interface{}) *Instruction {
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn_1 := uint32(v1.(asm.Register).ID())
         sa_cond_1 := uint32(v2.(ConditionCode) ^ 1)
-        return p.setins(condsel(0, 0, 0, sa_wn_1, sa_cond_1, 1, sa_wn_1, sa_wd))
+        return p.setins(condsel(0, 0, 0, ubfx(sa_wn_1, 5, 5), sa_cond_1, 1, mask(sa_wn_1, 5), sa_wd))
     }
     // CINC  <Xd>, <Xn>, <cond>
     if isXr(v0) && isXr(v1) && isBrCond(v2) {
@@ -5397,7 +5532,7 @@ func (self *Program) CINC(v0, v1, v2 interface{}) *Instruction {
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn_1 := uint32(v1.(asm.Register).ID())
         sa_cond_1 := uint32(v2.(ConditionCode) ^ 1)
-        return p.setins(condsel(1, 0, 0, sa_xn_1, sa_cond_1, 1, sa_xn_1, sa_xd))
+        return p.setins(condsel(1, 0, 0, ubfx(sa_xn_1, 5, 5), sa_cond_1, 1, mask(sa_xn_1, 5), sa_xd))
     }
     // none of above
     p.Free()
@@ -5423,7 +5558,7 @@ func (self *Program) CINV(v0, v1, v2 interface{}) *Instruction {
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn_1 := uint32(v1.(asm.Register).ID())
         sa_cond_1 := uint32(v2.(ConditionCode) ^ 1)
-        return p.setins(condsel(0, 1, 0, sa_wn_1, sa_cond_1, 0, sa_wn_1, sa_wd))
+        return p.setins(condsel(0, 1, 0, ubfx(sa_wn_1, 5, 5), sa_cond_1, 0, mask(sa_wn_1, 5), sa_wd))
     }
     // CINV  <Xd>, <Xn>, <cond>
     if isXr(v0) && isXr(v1) && isBrCond(v2) {
@@ -5431,7 +5566,7 @@ func (self *Program) CINV(v0, v1, v2 interface{}) *Instruction {
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn_1 := uint32(v1.(asm.Register).ID())
         sa_cond_1 := uint32(v2.(ConditionCode) ^ 1)
-        return p.setins(condsel(1, 1, 0, sa_xn_1, sa_cond_1, 0, sa_xn_1, sa_xd))
+        return p.setins(condsel(1, 1, 0, ubfx(sa_xn_1, 5, 5), sa_cond_1, 0, mask(sa_xn_1, 5), sa_xd))
     }
     // none of above
     p.Free()
@@ -6211,7 +6346,7 @@ func (self *Program) CMLT(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CMLT")
 }
 
-// CMN instruction have 6 forms from 3 categories:
+// CMN instruction have 8 forms from 3 categories:
 //
 // 1. Compare Negative (extended register)
 //
@@ -6227,7 +6362,9 @@ func (self *Program) CMLT(v0, v1, v2 interface{}) *Instruction {
 // 2. Compare Negative (immediate)
 //
 //    CMN  <Wn|WSP>, #<imm>{, <shift>}
+//    CMN  <Wn|WSP>, <label>{, <shift>}
 //    CMN  <Xn|SP>, #<imm>{, <shift>}
+//    CMN  <Xn|SP>, <label>{, <shift>}
 //
 // Compare Negative (immediate) adds a register value and an optionally-shifted
 // immediate value. It updates the condition flags based on the result, and
@@ -6336,6 +6473,34 @@ func (self *Program) CMN(v0, v1 interface{}, vv ...interface{}) *Instruction {
         }
         return p.setins(addsub_imm(0, 0, 1, sa_shift, sa_imm, sa_wn_wsp, 31))
     }
+    // CMN  <Wn|WSP>, <label>{, <shift>}
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isWrOrWSP(v0) &&
+       isLabel(v1) &&
+       (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) {
+        p.Domain = asm.DomainGeneric
+        var sa_shift uint32
+        sa_wn_wsp := uint32(v0.(asm.Register).ID())
+        sa_label := v1.(*asm.Label)
+        if len(vv) == 1 {
+            switch {
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
+                default: panic("aarch64: invalid modifier flags")
+            }
+        }
+        return p.setenc(func(pc uintptr) uint32 {
+            return addsub_imm(
+                0,
+                0,
+                1,
+                sa_shift,
+                abs12(sa_label),
+                sa_wn_wsp,
+                31,
+            )
+        })
+    }
     // CMN  <Xn|SP>, #<imm>{, <shift>}
     if (len(vv) == 0 || len(vv) == 1) &&
        isXrOrSP(v0) &&
@@ -6353,6 +6518,24 @@ func (self *Program) CMN(v0, v1 interface{}, vv ...interface{}) *Instruction {
             }
         }
         return p.setins(addsub_imm(1, 0, 1, sa_shift, sa_imm, sa_xn_sp, 31))
+    }
+    // CMN  <Xn|SP>, <label>{, <shift>}
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isXrOrSP(v0) &&
+       isLabel(v1) &&
+       (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) {
+        p.Domain = asm.DomainGeneric
+        var sa_shift uint32
+        sa_xn_sp := uint32(v0.(asm.Register).ID())
+        sa_label := v1.(*asm.Label)
+        if len(vv) == 1 {
+            switch {
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
+                default: panic("aarch64: invalid modifier flags")
+            }
+        }
+        return p.setenc(func(pc uintptr) uint32 { return addsub_imm(1, 0, 1, sa_shift, abs12(sa_label), sa_xn_sp, 31) })
     }
     // CMN  <Wn>, <Wm>{, <shift> #<amount>}
     if (len(vv) == 0 || len(vv) == 1) &&
@@ -6401,7 +6584,7 @@ func (self *Program) CMN(v0, v1 interface{}, vv ...interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CMN")
 }
 
-// CMP instruction have 6 forms from 3 categories:
+// CMP instruction have 8 forms from 3 categories:
 //
 // 1. Compare (extended register)
 //
@@ -6417,7 +6600,9 @@ func (self *Program) CMN(v0, v1 interface{}, vv ...interface{}) *Instruction {
 // 2. Compare (immediate)
 //
 //    CMP  <Wn|WSP>, #<imm>{, <shift>}
+//    CMP  <Wn|WSP>, <label>{, <shift>}
 //    CMP  <Xn|SP>, #<imm>{, <shift>}
+//    CMP  <Xn|SP>, <label>{, <shift>}
 //
 // Compare (immediate) subtracts an optionally-shifted immediate value from a
 // register value. It updates the condition flags based on the result, and discards
@@ -6526,6 +6711,34 @@ func (self *Program) CMP(v0, v1 interface{}, vv ...interface{}) *Instruction {
         }
         return p.setins(addsub_imm(0, 1, 1, sa_shift, sa_imm, sa_wn_wsp, 31))
     }
+    // CMP  <Wn|WSP>, <label>{, <shift>}
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isWrOrWSP(v0) &&
+       isLabel(v1) &&
+       (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) {
+        p.Domain = asm.DomainGeneric
+        var sa_shift uint32
+        sa_wn_wsp := uint32(v0.(asm.Register).ID())
+        sa_label := v1.(*asm.Label)
+        if len(vv) == 1 {
+            switch {
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
+                default: panic("aarch64: invalid modifier flags")
+            }
+        }
+        return p.setenc(func(pc uintptr) uint32 {
+            return addsub_imm(
+                0,
+                1,
+                1,
+                sa_shift,
+                abs12(sa_label),
+                sa_wn_wsp,
+                31,
+            )
+        })
+    }
     // CMP  <Xn|SP>, #<imm>{, <shift>}
     if (len(vv) == 0 || len(vv) == 1) &&
        isXrOrSP(v0) &&
@@ -6543,6 +6756,24 @@ func (self *Program) CMP(v0, v1 interface{}, vv ...interface{}) *Instruction {
             }
         }
         return p.setins(addsub_imm(1, 1, 1, sa_shift, sa_imm, sa_xn_sp, 31))
+    }
+    // CMP  <Xn|SP>, <label>{, <shift>}
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isXrOrSP(v0) &&
+       isLabel(v1) &&
+       (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) {
+        p.Domain = asm.DomainGeneric
+        var sa_shift uint32
+        sa_xn_sp := uint32(v0.(asm.Register).ID())
+        sa_label := v1.(*asm.Label)
+        if len(vv) == 1 {
+            switch {
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
+                default: panic("aarch64: invalid modifier flags")
+            }
+        }
+        return p.setenc(func(pc uintptr) uint32 { return addsub_imm(1, 1, 1, sa_shift, abs12(sa_label), sa_xn_sp, 31) })
     }
     // CMP  <Wn>, <Wm>{, <shift> #<amount>}
     if (len(vv) == 0 || len(vv) == 1) &&
@@ -6701,7 +6932,7 @@ func (self *Program) CNEG(v0, v1, v2 interface{}) *Instruction {
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn_1 := uint32(v1.(asm.Register).ID())
         sa_cond_1 := uint32(v2.(ConditionCode) ^ 1)
-        return p.setins(condsel(0, 1, 0, sa_wn_1, sa_cond_1, 1, sa_wn_1, sa_wd))
+        return p.setins(condsel(0, 1, 0, ubfx(sa_wn_1, 5, 5), sa_cond_1, 1, mask(sa_wn_1, 5), sa_wd))
     }
     // CNEG  <Xd>, <Xn>, <cond>
     if isXr(v0) && isXr(v1) && isBrCond(v2) {
@@ -6709,7 +6940,7 @@ func (self *Program) CNEG(v0, v1, v2 interface{}) *Instruction {
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn_1 := uint32(v1.(asm.Register).ID())
         sa_cond_1 := uint32(v2.(ConditionCode) ^ 1)
-        return p.setins(condsel(1, 1, 0, sa_xn_1, sa_cond_1, 1, sa_xn_1, sa_xd))
+        return p.setins(condsel(1, 1, 0, ubfx(sa_xn_1, 5, 5), sa_cond_1, 1, mask(sa_xn_1, 5), sa_xd))
     }
     // none of above
     p.Free()
@@ -26314,8 +26545,8 @@ func (self *Program) FCMLA(v0, v1, v2, v3 interface{}) *Instruction {
             1,
             1,
             mask(sa_index, 1),
-            sa_vm,
-            sa_vm,
+            ubfx(sa_vm, 4, 1),
+            mask(sa_vm, 4),
             opcode,
             ubfx(sa_index, 1, 1),
             sa_vn,
@@ -26367,8 +26598,8 @@ func (self *Program) FCMLA(v0, v1, v2, v3 interface{}) *Instruction {
             1,
             2,
             mask(sa_index, 1),
-            sa_vm,
-            sa_vm,
+            ubfx(sa_vm, 4, 1),
+            mask(sa_vm, 4),
             opcode,
             ubfx(sa_index, 1, 1),
             sa_vn,
@@ -30853,7 +31084,17 @@ func (self *Program) FMLA(v0, v1, v2 interface{}) *Instruction {
         sa_hn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(VidxRegister).ID())
         sa_index := uint32(vidxr(v2))
-        return p.setins(asisdelem(0, 0, ubfx(sa_index, 1, 1), mask(sa_index, 1), sa_vm, 1, ubfx(sa_index, 2, 1), sa_hn, sa_hd))
+        return p.setins(asisdelem(
+            0,
+            0,
+            ubfx(sa_index, 1, 1),
+            mask(sa_index, 1),
+            sa_vm,
+            1,
+            ubfx(sa_index, 2, 1),
+            sa_hn,
+            sa_hd,
+        ))
     }
     // FMLA  <V><d>, <V><n>, <Vm>.<Ts>[<index>]
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isVri(v2) && isSameType(v0, v1) {
@@ -31334,7 +31575,17 @@ func (self *Program) FMLS(v0, v1, v2 interface{}) *Instruction {
         sa_hn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(VidxRegister).ID())
         sa_index := uint32(vidxr(v2))
-        return p.setins(asisdelem(0, 0, ubfx(sa_index, 1, 1), mask(sa_index, 1), sa_vm, 5, ubfx(sa_index, 2, 1), sa_hn, sa_hd))
+        return p.setins(asisdelem(
+            0,
+            0,
+            ubfx(sa_index, 1, 1),
+            mask(sa_index, 1),
+            sa_vm,
+            5,
+            ubfx(sa_index, 2, 1),
+            sa_hn,
+            sa_hd,
+        ))
     }
     // FMLS  <V><d>, <V><n>, <Vm>.<Ts>[<index>]
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isVri(v2) && isSameType(v0, v1) {
@@ -32149,7 +32400,17 @@ func (self *Program) FMUL(v0, v1, v2 interface{}) *Instruction {
         sa_hn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(VidxRegister).ID())
         sa_index := uint32(vidxr(v2))
-        return p.setins(asisdelem(0, 0, ubfx(sa_index, 1, 1), mask(sa_index, 1), sa_vm, 9, ubfx(sa_index, 2, 1), sa_hn, sa_hd))
+        return p.setins(asisdelem(
+            0,
+            0,
+            ubfx(sa_index, 1, 1),
+            mask(sa_index, 1),
+            sa_vm,
+            9,
+            ubfx(sa_index, 2, 1),
+            sa_hn,
+            sa_hd,
+        ))
     }
     // FMUL  <V><d>, <V><n>, <Vm>.<Ts>[<index>]
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isVri(v2) && isSameType(v0, v1) {
@@ -32401,7 +32662,17 @@ func (self *Program) FMULX(v0, v1, v2 interface{}) *Instruction {
         sa_hn := uint32(v1.(asm.Register).ID())
         sa_vm := uint32(v2.(VidxRegister).ID())
         sa_index := uint32(vidxr(v2))
-        return p.setins(asisdelem(1, 0, ubfx(sa_index, 1, 1), mask(sa_index, 1), sa_vm, 9, ubfx(sa_index, 2, 1), sa_hn, sa_hd))
+        return p.setins(asisdelem(
+            1,
+            0,
+            ubfx(sa_index, 1, 1),
+            mask(sa_index, 1),
+            sa_vm,
+            9,
+            ubfx(sa_index, 2, 1),
+            sa_hn,
+            sa_hd,
+        ))
     }
     // FMULX  <V><d>, <V><n>, <Vm>.<Ts>[<index>]
     if isAdvSIMD(v0) && isAdvSIMD(v1) && isVri(v2) && isSameType(v0, v1) {
@@ -34819,7 +35090,7 @@ func (self *Program) GCSSS2(v0 interface{}) *Instruction {
 //
 func (self *Program) GCSSTR(v0, v1 interface{}) *Instruction {
     p := self.alloc("GCSSTR", 2, asm.Operands { v0, v1 })
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_GCS)
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
@@ -34853,7 +35124,7 @@ func (self *Program) GCSSTR(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) GCSSTTR(v0, v1 interface{}) *Instruction {
     p := self.alloc("GCSSTTR", 2, asm.Operands { v0, v1 })
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_GCS)
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
@@ -35227,7 +35498,7 @@ func (self *Program) ISB(vv ...interface{}) *Instruction {
 func (self *Program) LD1(v0, v1 interface{}) *Instruction {
     p := self.alloc("LD1", 2, asm.Operands { v0, v1 })
     // LD1  { <Vt>.<T> }, [<Xn|SP>]
-    if isVec1(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isVec1(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
@@ -35246,7 +35517,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
         return p.setins(asisdlse(mask(sa_t, 1), 1, 7, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // LD1  { <Vt>.<T>, <Vt2>.<T> }, [<Xn|SP>]
-    if isVec2(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isVec2(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
@@ -35265,7 +35536,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
         return p.setins(asisdlse(mask(sa_t, 1), 1, 10, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // LD1  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T> }, [<Xn|SP>]
-    if isVec3(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isVec3(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
@@ -35284,7 +35555,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
         return p.setins(asisdlse(mask(sa_t, 1), 1, 6, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // LD1  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T>, <Vt4>.<T> }, [<Xn|SP>]
-    if isVec4(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isVec4(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
@@ -35481,12 +35752,22 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        moffs(v1) == 0 &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlso(ubfx(sa_index, 3, 1), 1, 0, 0, 0, ubfx(sa_index, 2, 1), mask(sa_index, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlso(
+            ubfx(sa_index, 3, 1),
+            1,
+            0,
+            0,
+            0,
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 2),
+            sa_xn_sp,
+            sa_vt,
+        ))
     }
     // LD1  { <Vt>.D }[<index>], [<Xn|SP>]
     if isIdxVec1(v0) &&
@@ -35495,7 +35776,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        moffs(v1) == 0 &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_1 := uint32(v0.(IndexedVector).Index())
@@ -35509,7 +35790,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        moffs(v1) == 0 &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_2 := uint32(v0.(IndexedVector).Index())
@@ -35533,7 +35814,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        moffs(v1) == 0 &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
@@ -35552,7 +35833,17 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlsop(ubfx(sa_index, 3, 1), 1, 0, 31, 0, ubfx(sa_index, 2, 1), mask(sa_index, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(
+            ubfx(sa_index, 3, 1),
+            1,
+            0,
+            31,
+            0,
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 2),
+            sa_xn_sp,
+            sa_vt,
+        ))
     }
     // LD1  { <Vt>.B }[<index>], [<Xn|SP>], <Xm>
     if isIdxVec1(v0) &&
@@ -35711,7 +36002,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
 func (self *Program) LD1R(v0, v1 interface{}) *Instruction {
     p := self.alloc("LD1R", 2, asm.Operands { v0, v1 })
     // LD1R  { <Vt>.<T> }, [<Xn|SP>]
-    if isVec1(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isVec1(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
@@ -35822,7 +36113,7 @@ func (self *Program) LD1R(v0, v1 interface{}) *Instruction {
 func (self *Program) LD2(v0, v1 interface{}) *Instruction {
     p := self.alloc("LD2", 2, asm.Operands { v0, v1 })
     // LD2  { <Vt>.<T>, <Vt2>.<T> }, [<Xn|SP>]
-    if isVec2(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isVec2(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
@@ -35887,12 +36178,22 @@ func (self *Program) LD2(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        moffs(v1) == 0 &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlso(ubfx(sa_index, 3, 1), 1, 1, 0, 0, ubfx(sa_index, 2, 1), mask(sa_index, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlso(
+            ubfx(sa_index, 3, 1),
+            1,
+            1,
+            0,
+            0,
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 2),
+            sa_xn_sp,
+            sa_vt,
+        ))
     }
     // LD2  { <Vt>.D, <Vt2>.D }[<index>], [<Xn|SP>]
     if isIdxVec2(v0) &&
@@ -35901,7 +36202,7 @@ func (self *Program) LD2(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        moffs(v1) == 0 &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_1 := uint32(v0.(IndexedVector).Index())
@@ -35915,7 +36216,7 @@ func (self *Program) LD2(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        moffs(v1) == 0 &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_2 := uint32(v0.(IndexedVector).Index())
@@ -35939,7 +36240,7 @@ func (self *Program) LD2(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        moffs(v1) == 0 &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
@@ -35958,7 +36259,17 @@ func (self *Program) LD2(v0, v1 interface{}) *Instruction {
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlsop(ubfx(sa_index, 3, 1), 1, 1, 31, 0, ubfx(sa_index, 2, 1), mask(sa_index, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(
+            ubfx(sa_index, 3, 1),
+            1,
+            1,
+            31,
+            0,
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 2),
+            sa_xn_sp,
+            sa_vt,
+        ))
     }
     // LD2  { <Vt>.B, <Vt2>.B }[<index>], [<Xn|SP>], <Xm>
     if isIdxVec2(v0) &&
@@ -36116,7 +36427,7 @@ func (self *Program) LD2(v0, v1 interface{}) *Instruction {
 func (self *Program) LD2R(v0, v1 interface{}) *Instruction {
     p := self.alloc("LD2R", 2, asm.Operands { v0, v1 })
     // LD2R  { <Vt>.<T>, <Vt2>.<T> }, [<Xn|SP>]
-    if isVec2(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isVec2(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
@@ -36228,7 +36539,7 @@ func (self *Program) LD2R(v0, v1 interface{}) *Instruction {
 func (self *Program) LD3(v0, v1 interface{}) *Instruction {
     p := self.alloc("LD3", 2, asm.Operands { v0, v1 })
     // LD3  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T> }, [<Xn|SP>]
-    if isVec3(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isVec3(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
@@ -36293,12 +36604,22 @@ func (self *Program) LD3(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        moffs(v1) == 0 &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlso(ubfx(sa_index, 3, 1), 1, 0, 0, 1, ubfx(sa_index, 2, 1), mask(sa_index, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlso(
+            ubfx(sa_index, 3, 1),
+            1,
+            0,
+            0,
+            1,
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 2),
+            sa_xn_sp,
+            sa_vt,
+        ))
     }
     // LD3  { <Vt>.D, <Vt2>.D, <Vt3>.D }[<index>], [<Xn|SP>]
     if isIdxVec3(v0) &&
@@ -36307,7 +36628,7 @@ func (self *Program) LD3(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        moffs(v1) == 0 &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_1 := uint32(v0.(IndexedVector).Index())
@@ -36321,7 +36642,7 @@ func (self *Program) LD3(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        moffs(v1) == 0 &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_2 := uint32(v0.(IndexedVector).Index())
@@ -36345,7 +36666,7 @@ func (self *Program) LD3(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        moffs(v1) == 0 &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
@@ -36364,7 +36685,17 @@ func (self *Program) LD3(v0, v1 interface{}) *Instruction {
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlsop(ubfx(sa_index, 3, 1), 1, 0, 31, 1, ubfx(sa_index, 2, 1), mask(sa_index, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(
+            ubfx(sa_index, 3, 1),
+            1,
+            0,
+            31,
+            1,
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 2),
+            sa_xn_sp,
+            sa_vt,
+        ))
     }
     // LD3  { <Vt>.B, <Vt2>.B, <Vt3>.B }[<index>], [<Xn|SP>], <Xm>
     if isIdxVec3(v0) &&
@@ -36522,7 +36853,7 @@ func (self *Program) LD3(v0, v1 interface{}) *Instruction {
 func (self *Program) LD3R(v0, v1 interface{}) *Instruction {
     p := self.alloc("LD3R", 2, asm.Operands { v0, v1 })
     // LD3R  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T> }, [<Xn|SP>]
-    if isVec3(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isVec3(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
@@ -36633,7 +36964,7 @@ func (self *Program) LD3R(v0, v1 interface{}) *Instruction {
 func (self *Program) LD4(v0, v1 interface{}) *Instruction {
     p := self.alloc("LD4", 2, asm.Operands { v0, v1 })
     // LD4  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T>, <Vt4>.<T> }, [<Xn|SP>]
-    if isVec4(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isVec4(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
@@ -36698,12 +37029,22 @@ func (self *Program) LD4(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        moffs(v1) == 0 &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlso(ubfx(sa_index, 3, 1), 1, 1, 0, 1, ubfx(sa_index, 2, 1), mask(sa_index, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlso(
+            ubfx(sa_index, 3, 1),
+            1,
+            1,
+            0,
+            1,
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 2),
+            sa_xn_sp,
+            sa_vt,
+        ))
     }
     // LD4  { <Vt>.D, <Vt2>.D, <Vt3>.D, <Vt4>.D }[<index>], [<Xn|SP>]
     if isIdxVec4(v0) &&
@@ -36712,7 +37053,7 @@ func (self *Program) LD4(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        moffs(v1) == 0 &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_1 := uint32(v0.(IndexedVector).Index())
@@ -36726,7 +37067,7 @@ func (self *Program) LD4(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        moffs(v1) == 0 &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_2 := uint32(v0.(IndexedVector).Index())
@@ -36750,7 +37091,7 @@ func (self *Program) LD4(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        moffs(v1) == 0 &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
@@ -36769,7 +37110,17 @@ func (self *Program) LD4(v0, v1 interface{}) *Instruction {
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlsop(ubfx(sa_index, 3, 1), 1, 1, 31, 1, ubfx(sa_index, 2, 1), mask(sa_index, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(
+            ubfx(sa_index, 3, 1),
+            1,
+            1,
+            31,
+            1,
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 2),
+            sa_xn_sp,
+            sa_vt,
+        ))
     }
     // LD4  { <Vt>.B, <Vt2>.B, <Vt3>.B, <Vt4>.B }[<index>], [<Xn|SP>], <Xm>
     if isIdxVec4(v0) &&
@@ -36927,7 +37278,7 @@ func (self *Program) LD4(v0, v1 interface{}) *Instruction {
 func (self *Program) LD4R(v0, v1 interface{}) *Instruction {
     p := self.alloc("LD4R", 2, asm.Operands { v0, v1 })
     // LD4R  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T>, <Vt4>.<T> }, [<Xn|SP>]
-    if isVec4(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isVec4(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
@@ -37011,7 +37362,7 @@ func (self *Program) LD64B(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         self.Arch.Require(FEAT_LS64)
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
@@ -37053,7 +37404,7 @@ func (self *Program) LDADD(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -37068,7 +37419,7 @@ func (self *Program) LDADD(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -37112,7 +37463,7 @@ func (self *Program) LDADDA(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -37127,7 +37478,7 @@ func (self *Program) LDADDA(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -37168,7 +37519,7 @@ func (self *Program) LDADDAB(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -37208,7 +37559,7 @@ func (self *Program) LDADDAH(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -37251,7 +37602,7 @@ func (self *Program) LDADDAL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -37266,7 +37617,7 @@ func (self *Program) LDADDAL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -37307,7 +37658,7 @@ func (self *Program) LDADDALB(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -37347,7 +37698,7 @@ func (self *Program) LDADDALH(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -37387,7 +37738,7 @@ func (self *Program) LDADDB(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -37427,7 +37778,7 @@ func (self *Program) LDADDH(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -37470,7 +37821,7 @@ func (self *Program) LDADDL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -37485,7 +37836,7 @@ func (self *Program) LDADDL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -37526,7 +37877,7 @@ func (self *Program) LDADDLB(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -37566,7 +37917,7 @@ func (self *Program) LDADDLH(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -37615,7 +37966,7 @@ func (self *Program) LDAP1(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        moffs(v1) == 0 &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC3)
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
@@ -37670,7 +38021,7 @@ func (self *Program) LDAPR(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC)
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
@@ -37691,7 +38042,7 @@ func (self *Program) LDAPR(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC)
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
@@ -37734,7 +38085,7 @@ func (self *Program) LDAPRB(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC)
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
@@ -37776,7 +38127,7 @@ func (self *Program) LDAPRH(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC)
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
@@ -37843,7 +38194,7 @@ func (self *Program) LDAPRH(v0, v1 interface{}) *Instruction {
 func (self *Program) LDAPUR(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDAPUR", 2, asm.Operands { v0, v1 })
     // LDAPUR  <Bt>, [<Xn|SP>{, #<simm>}]
-    if isBr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isBr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC3)
         p.Domain = DomainFpSimd
         sa_bt := uint32(v0.(asm.Register).ID())
@@ -37852,7 +38203,7 @@ func (self *Program) LDAPUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldapstl_simd(0, 1, sa_simm, sa_xn_sp, sa_bt))
     }
     // LDAPUR  <Dt>, [<Xn|SP>{, #<simm>}]
-    if isDr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isDr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC3)
         p.Domain = DomainFpSimd
         sa_dt := uint32(v0.(asm.Register).ID())
@@ -37861,7 +38212,7 @@ func (self *Program) LDAPUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldapstl_simd(3, 1, sa_simm, sa_xn_sp, sa_dt))
     }
     // LDAPUR  <Ht>, [<Xn|SP>{, #<simm>}]
-    if isHr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isHr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC3)
         p.Domain = DomainFpSimd
         sa_ht := uint32(v0.(asm.Register).ID())
@@ -37870,7 +38221,7 @@ func (self *Program) LDAPUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldapstl_simd(1, 1, sa_simm, sa_xn_sp, sa_ht))
     }
     // LDAPUR  <Qt>, [<Xn|SP>{, #<simm>}]
-    if isQr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isQr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC3)
         p.Domain = DomainFpSimd
         sa_qt := uint32(v0.(asm.Register).ID())
@@ -37879,7 +38230,7 @@ func (self *Program) LDAPUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldapstl_simd(0, 3, sa_simm, sa_xn_sp, sa_qt))
     }
     // LDAPUR  <St>, [<Xn|SP>{, #<simm>}]
-    if isSr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isSr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC3)
         p.Domain = DomainFpSimd
         sa_st := uint32(v0.(asm.Register).ID())
@@ -37888,7 +38239,7 @@ func (self *Program) LDAPUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldapstl_simd(2, 1, sa_simm, sa_xn_sp, sa_st))
     }
     // LDAPUR  <Wt>, [<Xn|SP>{, #<simm>}]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC2)
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
@@ -37897,7 +38248,7 @@ func (self *Program) LDAPUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldapstl_unscaled(2, 1, sa_simm, sa_xn_sp, sa_wt))
     }
     // LDAPUR  <Xt>, [<Xn|SP>{, #<simm>}]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC2)
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
@@ -37936,7 +38287,7 @@ func (self *Program) LDAPUR(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) LDAPURB(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDAPURB", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC2)
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
@@ -37974,7 +38325,7 @@ func (self *Program) LDAPURB(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) LDAPURH(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDAPURH", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC2)
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
@@ -38014,7 +38365,7 @@ func (self *Program) LDAPURH(v0, v1 interface{}) *Instruction {
 func (self *Program) LDAPURSB(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDAPURSB", 2, asm.Operands { v0, v1 })
     // LDAPURSB  <Wt>, [<Xn|SP>{, #<simm>}]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC2)
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
@@ -38023,7 +38374,7 @@ func (self *Program) LDAPURSB(v0, v1 interface{}) *Instruction {
         return p.setins(ldapstl_unscaled(0, 3, sa_simm, sa_xn_sp, sa_wt))
     }
     // LDAPURSB  <Xt>, [<Xn|SP>{, #<simm>}]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC2)
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
@@ -38064,7 +38415,7 @@ func (self *Program) LDAPURSB(v0, v1 interface{}) *Instruction {
 func (self *Program) LDAPURSH(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDAPURSH", 2, asm.Operands { v0, v1 })
     // LDAPURSH  <Wt>, [<Xn|SP>{, #<simm>}]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC2)
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
@@ -38073,7 +38424,7 @@ func (self *Program) LDAPURSH(v0, v1 interface{}) *Instruction {
         return p.setins(ldapstl_unscaled(1, 3, sa_simm, sa_xn_sp, sa_wt))
     }
     // LDAPURSH  <Xt>, [<Xn|SP>{, #<simm>}]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC2)
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
@@ -38112,7 +38463,7 @@ func (self *Program) LDAPURSH(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) LDAPURSW(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDAPURSW", 2, asm.Operands { v0, v1 })
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC2)
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
@@ -38150,7 +38501,7 @@ func (self *Program) LDAR(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -38162,7 +38513,7 @@ func (self *Program) LDAR(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -38196,7 +38547,7 @@ func (self *Program) LDARB(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -38230,7 +38581,7 @@ func (self *Program) LDARH(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -38270,7 +38621,7 @@ func (self *Program) LDAXP(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt1 := uint32(v0.(asm.Register).ID())
         sa_wt2 := uint32(v1.(asm.Register).ID())
@@ -38284,7 +38635,7 @@ func (self *Program) LDAXP(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         p.Domain = asm.DomainGeneric
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
@@ -38319,7 +38670,7 @@ func (self *Program) LDAXR(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -38331,7 +38682,7 @@ func (self *Program) LDAXR(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -38363,7 +38714,7 @@ func (self *Program) LDAXRB(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -38394,7 +38745,7 @@ func (self *Program) LDAXRH(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -38435,7 +38786,7 @@ func (self *Program) LDCLR(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -38450,7 +38801,7 @@ func (self *Program) LDCLR(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -38494,7 +38845,7 @@ func (self *Program) LDCLRA(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -38509,7 +38860,7 @@ func (self *Program) LDCLRA(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -38551,7 +38902,7 @@ func (self *Program) LDCLRAB(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -38592,7 +38943,7 @@ func (self *Program) LDCLRAH(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -38635,7 +38986,7 @@ func (self *Program) LDCLRAL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -38650,7 +39001,7 @@ func (self *Program) LDCLRAL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -38692,7 +39043,7 @@ func (self *Program) LDCLRALB(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -38733,7 +39084,7 @@ func (self *Program) LDCLRALH(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -38774,7 +39125,7 @@ func (self *Program) LDCLRB(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -38815,7 +39166,7 @@ func (self *Program) LDCLRH(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -38858,7 +39209,7 @@ func (self *Program) LDCLRL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -38873,7 +39224,7 @@ func (self *Program) LDCLRL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -38915,7 +39266,7 @@ func (self *Program) LDCLRLB(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -38956,7 +39307,7 @@ func (self *Program) LDCLRLH(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -38991,7 +39342,7 @@ func (self *Program) LDCLRP(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE128)
         p.Domain = asm.DomainGeneric
         sa_xt1 := uint32(v0.(asm.Register).ID())
@@ -39026,7 +39377,7 @@ func (self *Program) LDCLRPA(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE128)
         p.Domain = asm.DomainGeneric
         sa_xt1 := uint32(v0.(asm.Register).ID())
@@ -39061,7 +39412,7 @@ func (self *Program) LDCLRPAL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE128)
         p.Domain = asm.DomainGeneric
         sa_xt1 := uint32(v0.(asm.Register).ID())
@@ -39096,7 +39447,7 @@ func (self *Program) LDCLRPL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE128)
         p.Domain = asm.DomainGeneric
         sa_xt1 := uint32(v0.(asm.Register).ID())
@@ -39139,7 +39490,7 @@ func (self *Program) LDEOR(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -39154,7 +39505,7 @@ func (self *Program) LDEOR(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -39198,7 +39549,7 @@ func (self *Program) LDEORA(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -39213,7 +39564,7 @@ func (self *Program) LDEORA(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -39255,7 +39606,7 @@ func (self *Program) LDEORAB(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -39296,7 +39647,7 @@ func (self *Program) LDEORAH(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -39339,7 +39690,7 @@ func (self *Program) LDEORAL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -39354,7 +39705,7 @@ func (self *Program) LDEORAL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -39396,7 +39747,7 @@ func (self *Program) LDEORALB(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -39437,7 +39788,7 @@ func (self *Program) LDEORALH(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -39478,7 +39829,7 @@ func (self *Program) LDEORB(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -39519,7 +39870,7 @@ func (self *Program) LDEORH(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -39562,7 +39913,7 @@ func (self *Program) LDEORL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -39577,7 +39928,7 @@ func (self *Program) LDEORL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -39619,7 +39970,7 @@ func (self *Program) LDEORLB(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -39660,7 +40011,7 @@ func (self *Program) LDEORLH(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -39685,7 +40036,7 @@ func (self *Program) LDEORLH(v0, v1, v2 interface{}) *Instruction {
 //
 func (self *Program) LDG(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDG", 2, asm.Operands { v0, v1 })
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         self.Arch.Require(FEAT_MTE)
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
@@ -39718,7 +40069,7 @@ func (self *Program) LDG(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) LDGM(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDGM", 2, asm.Operands { v0, v1 })
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_MTE2)
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
@@ -39789,7 +40140,7 @@ func (self *Program) LDIAPP(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LRCPC3)
         p.Domain = asm.DomainGeneric
         sa_wt1 := uint32(v0.(asm.Register).ID())
@@ -39819,7 +40170,7 @@ func (self *Program) LDIAPP(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LRCPC3)
         p.Domain = asm.DomainGeneric
         sa_xt1 := uint32(v0.(asm.Register).ID())
@@ -39857,7 +40208,7 @@ func (self *Program) LDLAR(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         self.Arch.Require(FEAT_LOR)
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
@@ -39870,7 +40221,7 @@ func (self *Program) LDLAR(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         self.Arch.Require(FEAT_LOR)
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
@@ -39905,7 +40256,7 @@ func (self *Program) LDLARB(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         self.Arch.Require(FEAT_LOR)
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
@@ -39939,7 +40290,7 @@ func (self *Program) LDLARH(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         self.Arch.Require(FEAT_LOR)
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
@@ -39994,7 +40345,7 @@ func (self *Program) LDLARH(v0, v1 interface{}) *Instruction {
 func (self *Program) LDNP(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDNP", 3, asm.Operands { v0, v1, v2 })
     // LDNP  <Dt1>, <Dt2>, [<Xn|SP>{, #<imm>}]
-    if isDr(v0) && isDr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == nil {
+    if isDr(v0) && isDr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == Basic {
         p.Domain = DomainFpSimd
         sa_dt1 := uint32(v0.(asm.Register).ID())
         sa_dt2 := uint32(v1.(asm.Register).ID())
@@ -40003,7 +40354,7 @@ func (self *Program) LDNP(v0, v1, v2 interface{}) *Instruction {
         return p.setins(ldstnapair_offs(1, 1, 1, sa_imm, sa_dt2, sa_xn_sp, sa_dt1))
     }
     // LDNP  <Qt1>, <Qt2>, [<Xn|SP>{, #<imm>}]
-    if isQr(v0) && isQr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == nil {
+    if isQr(v0) && isQr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == Basic {
         p.Domain = DomainFpSimd
         sa_qt1 := uint32(v0.(asm.Register).ID())
         sa_qt2 := uint32(v1.(asm.Register).ID())
@@ -40012,7 +40363,7 @@ func (self *Program) LDNP(v0, v1, v2 interface{}) *Instruction {
         return p.setins(ldstnapair_offs(2, 1, 1, sa_imm_1, sa_qt2, sa_xn_sp, sa_qt1))
     }
     // LDNP  <St1>, <St2>, [<Xn|SP>{, #<imm>}]
-    if isSr(v0) && isSr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == nil {
+    if isSr(v0) && isSr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == Basic {
         p.Domain = DomainFpSimd
         sa_st1 := uint32(v0.(asm.Register).ID())
         sa_st2 := uint32(v1.(asm.Register).ID())
@@ -40021,7 +40372,7 @@ func (self *Program) LDNP(v0, v1, v2 interface{}) *Instruction {
         return p.setins(ldstnapair_offs(0, 1, 1, sa_imm_2, sa_st2, sa_xn_sp, sa_st1))
     }
     // LDNP  <Wt1>, <Wt2>, [<Xn|SP>{, #<imm>}]
-    if isWr(v0) && isWr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == nil {
+    if isWr(v0) && isWr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt1 := uint32(v0.(asm.Register).ID())
         sa_wt2 := uint32(v1.(asm.Register).ID())
@@ -40030,7 +40381,7 @@ func (self *Program) LDNP(v0, v1, v2 interface{}) *Instruction {
         return p.setins(ldstnapair_offs(0, 0, 1, sa_imm, sa_wt2, sa_xn_sp, sa_wt1))
     }
     // LDNP  <Xt1>, <Xt2>, [<Xn|SP>{, #<imm>}]
-    if isXr(v0) && isXr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == nil {
+    if isXr(v0) && isXr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == Basic {
         p.Domain = asm.DomainGeneric
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
@@ -40090,7 +40441,7 @@ func (self *Program) LDNP(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) LDP(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDP", 3, asm.Operands { v0, v1, v2 })
     // LDP  <Dt1>, <Dt2>, [<Xn|SP>{, #<imm>}]
-    if isDr(v0) && isDr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == nil {
+    if isDr(v0) && isDr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == Basic {
         p.Domain = DomainFpSimd
         sa_dt1 := uint32(v0.(asm.Register).ID())
         sa_dt2 := uint32(v1.(asm.Register).ID())
@@ -40117,7 +40468,7 @@ func (self *Program) LDP(v0, v1, v2 interface{}) *Instruction {
         return p.setins(ldstpair_pre(1, 1, 1, sa_imm_1, sa_dt2, sa_xn_sp, sa_dt1))
     }
     // LDP  <Qt1>, <Qt2>, [<Xn|SP>{, #<imm>}]
-    if isQr(v0) && isQr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == nil {
+    if isQr(v0) && isQr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == Basic {
         p.Domain = DomainFpSimd
         sa_qt1 := uint32(v0.(asm.Register).ID())
         sa_qt2 := uint32(v1.(asm.Register).ID())
@@ -40144,7 +40495,7 @@ func (self *Program) LDP(v0, v1, v2 interface{}) *Instruction {
         return p.setins(ldstpair_pre(2, 1, 1, sa_imm_3, sa_qt2, sa_xn_sp, sa_qt1))
     }
     // LDP  <St1>, <St2>, [<Xn|SP>{, #<imm>}]
-    if isSr(v0) && isSr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == nil {
+    if isSr(v0) && isSr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == Basic {
         p.Domain = DomainFpSimd
         sa_st1 := uint32(v0.(asm.Register).ID())
         sa_st2 := uint32(v1.(asm.Register).ID())
@@ -40171,7 +40522,7 @@ func (self *Program) LDP(v0, v1, v2 interface{}) *Instruction {
         return p.setins(ldstpair_pre(0, 1, 1, sa_imm_5, sa_st2, sa_xn_sp, sa_st1))
     }
     // LDP  <Wt1>, <Wt2>, [<Xn|SP>{, #<imm>}]
-    if isWr(v0) && isWr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == nil {
+    if isWr(v0) && isWr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt1 := uint32(v0.(asm.Register).ID())
         sa_wt2 := uint32(v1.(asm.Register).ID())
@@ -40198,7 +40549,7 @@ func (self *Program) LDP(v0, v1, v2 interface{}) *Instruction {
         return p.setins(ldstpair_pre(0, 0, 1, sa_imm_1, sa_wt2, sa_xn_sp, sa_wt1))
     }
     // LDP  <Xt1>, <Xt2>, [<Xn|SP>{, #<imm>}]
-    if isXr(v0) && isXr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == nil {
+    if isXr(v0) && isXr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == Basic {
         p.Domain = asm.DomainGeneric
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
@@ -40249,7 +40600,7 @@ func (self *Program) LDP(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) LDPSW(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDPSW", 3, asm.Operands { v0, v1, v2 })
     // LDPSW  <Xt1>, <Xt2>, [<Xn|SP>{, #<imm>}]
-    if isXr(v0) && isXr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == nil {
+    if isXr(v0) && isXr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == Basic {
         p.Domain = asm.DomainGeneric
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
@@ -40399,7 +40750,7 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpre(0, 1, 1, sa_simm, sa_xn_sp, sa_bt))
     }
     // LDR  <Bt>, [<Xn|SP>{, #<pimm>}]
-    if isBr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isBr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = DomainFpSimd
         sa_bt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -40423,7 +40774,7 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpre(3, 1, 1, sa_simm, sa_xn_sp, sa_dt))
     }
     // LDR  <Dt>, [<Xn|SP>{, #<pimm>}]
-    if isDr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isDr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = DomainFpSimd
         sa_dt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -40447,7 +40798,7 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpre(1, 1, 1, sa_simm, sa_xn_sp, sa_ht))
     }
     // LDR  <Ht>, [<Xn|SP>{, #<pimm>}]
-    if isHr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isHr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = DomainFpSimd
         sa_ht := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -40471,7 +40822,7 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpre(0, 1, 3, sa_simm, sa_xn_sp, sa_qt))
     }
     // LDR  <Qt>, [<Xn|SP>{, #<pimm>}]
-    if isQr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isQr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = DomainFpSimd
         sa_qt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -40495,7 +40846,7 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpre(2, 1, 1, sa_simm, sa_xn_sp, sa_st))
     }
     // LDR  <St>, [<Xn|SP>{, #<pimm>}]
-    if isSr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isSr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = DomainFpSimd
         sa_st := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -40519,7 +40870,7 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpre(2, 0, 1, sa_simm, sa_xn_sp, sa_wt))
     }
     // LDR  <Wt>, [<Xn|SP>{, #<pimm>}]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -40543,7 +40894,7 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpre(3, 0, 1, sa_simm, sa_xn_sp, sa_xt))
     }
     // LDR  <Xt>, [<Xn|SP>{, #<pimm>}]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -40555,35 +40906,35 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
         p.Domain = DomainFpSimd
         sa_dt := uint32(v0.(asm.Register).ID())
         sa_label := v1.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return loadlit(1, 1, uint32(sa_label.RelativeTo(pc)), sa_dt) })
+        return p.setenc(func(pc uintptr) uint32 { return loadlit(1, 1, rel19(sa_label, pc), sa_dt) })
     }
     // LDR  <Qt>, <label>
     if isQr(v0) && isLabel(v1) {
         p.Domain = DomainFpSimd
         sa_qt := uint32(v0.(asm.Register).ID())
         sa_label := v1.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return loadlit(2, 1, uint32(sa_label.RelativeTo(pc)), sa_qt) })
+        return p.setenc(func(pc uintptr) uint32 { return loadlit(2, 1, rel19(sa_label, pc), sa_qt) })
     }
     // LDR  <St>, <label>
     if isSr(v0) && isLabel(v1) {
         p.Domain = DomainFpSimd
         sa_st := uint32(v0.(asm.Register).ID())
         sa_label := v1.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return loadlit(0, 1, uint32(sa_label.RelativeTo(pc)), sa_st) })
+        return p.setenc(func(pc uintptr) uint32 { return loadlit(0, 1, rel19(sa_label, pc), sa_st) })
     }
     // LDR  <Wt>, <label>
     if isWr(v0) && isLabel(v1) {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_label := v1.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return loadlit(0, 0, uint32(sa_label.RelativeTo(pc)), sa_wt) })
+        return p.setenc(func(pc uintptr) uint32 { return loadlit(0, 0, rel19(sa_label, pc), sa_wt) })
     }
     // LDR  <Xt>, <label>
     if isXr(v0) && isLabel(v1) {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_label := v1.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return loadlit(1, 0, uint32(sa_label.RelativeTo(pc)), sa_xt) })
+        return p.setenc(func(pc uintptr) uint32 { return loadlit(1, 0, rel19(sa_label, pc), sa_xt) })
     }
     // LDR  <Bt>, [<Xn|SP>, <Xm>{, LSL <amount>}]
     if isBr(v0) &&
@@ -40591,7 +40942,7 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
-       (mext(v1) == nil || modt(mext(v1)) == ModLSL) {
+       (mext(v1) == Basic || modt(mext(v1)) == ModLSL) {
         p.Domain = DomainFpSimd
         var sa_amount uint32
         sa_bt := uint32(v0.(asm.Register).ID())
@@ -40624,7 +40975,7 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isWrOrXr(midx(v1)) &&
-       (mext(v1) == nil || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
+       (mext(v1) == Basic || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
         p.Domain = DomainFpSimd
         var sa_amount_1 uint32
         sa_extend_1 := uint32(0b011)
@@ -40653,7 +41004,7 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isWrOrXr(midx(v1)) &&
-       (mext(v1) == nil || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
+       (mext(v1) == Basic || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
         p.Domain = DomainFpSimd
         var sa_amount_2 uint32
         sa_extend_1 := uint32(0b011)
@@ -40682,7 +41033,7 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isWrOrXr(midx(v1)) &&
-       (mext(v1) == nil || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
+       (mext(v1) == Basic || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
         p.Domain = DomainFpSimd
         var sa_amount_3 uint32
         sa_extend_1 := uint32(0b011)
@@ -40711,7 +41062,7 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isWrOrXr(midx(v1)) &&
-       (mext(v1) == nil || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
+       (mext(v1) == Basic || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
         p.Domain = DomainFpSimd
         var sa_amount_4 uint32
         sa_extend_1 := uint32(0b011)
@@ -40740,7 +41091,7 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isWrOrXr(midx(v1)) &&
-       (mext(v1) == nil || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
+       (mext(v1) == Basic || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
         p.Domain = asm.DomainGeneric
         var sa_amount uint32
         sa_extend := uint32(0b011)
@@ -40769,7 +41120,7 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isWrOrXr(midx(v1)) &&
-       (mext(v1) == nil || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
+       (mext(v1) == Basic || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
         p.Domain = asm.DomainGeneric
         var sa_amount_1 uint32
         sa_extend := uint32(0b011)
@@ -40834,7 +41185,7 @@ func (self *Program) LDRAA(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_pac(3, 0, 0, ubfx(sa_simm, 9, 1), mask(sa_simm, 9), 1, sa_xn_sp, sa_xt))
     }
     // LDRAA  <Xt>, [<Xn|SP>{, #<simm>}]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         self.Arch.Require(FEAT_PAuth)
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
@@ -40884,7 +41235,7 @@ func (self *Program) LDRAB(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_pac(3, 0, 1, ubfx(sa_simm, 9, 1), mask(sa_simm, 9), 1, sa_xn_sp, sa_xt))
     }
     // LDRAB  <Xt>, [<Xn|SP>{, #<simm>}]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         self.Arch.Require(FEAT_PAuth)
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
@@ -40943,7 +41294,7 @@ func (self *Program) LDRB(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpre(0, 0, 1, sa_simm, sa_xn_sp, sa_wt))
     }
     // LDRB  <Wt>, [<Xn|SP>{, #<pimm>}]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -40956,7 +41307,7 @@ func (self *Program) LDRB(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
-       (mext(v1) == nil || modt(mext(v1)) == ModLSL) {
+       (mext(v1) == Basic || modt(mext(v1)) == ModLSL) {
         p.Domain = asm.DomainGeneric
         var sa_amount uint32
         sa_wt := uint32(v0.(asm.Register).ID())
@@ -41033,7 +41384,7 @@ func (self *Program) LDRH(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpre(1, 0, 1, sa_simm, sa_xn_sp, sa_wt))
     }
     // LDRH  <Wt>, [<Xn|SP>{, #<pimm>}]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -41046,7 +41397,7 @@ func (self *Program) LDRH(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isWrOrXr(midx(v1)) &&
-       (mext(v1) == nil || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
+       (mext(v1) == Basic || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
         p.Domain = asm.DomainGeneric
         var sa_amount uint32
         sa_extend := uint32(0b011)
@@ -41125,7 +41476,7 @@ func (self *Program) LDRSB(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpre(0, 0, 3, sa_simm, sa_xn_sp, sa_wt))
     }
     // LDRSB  <Wt>, [<Xn|SP>{, #<pimm>}]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -41149,7 +41500,7 @@ func (self *Program) LDRSB(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpre(0, 0, 2, sa_simm, sa_xn_sp, sa_xt))
     }
     // LDRSB  <Xt>, [<Xn|SP>{, #<pimm>}]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -41162,7 +41513,7 @@ func (self *Program) LDRSB(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
-       (mext(v1) == nil || modt(mext(v1)) == ModLSL) {
+       (mext(v1) == Basic || modt(mext(v1)) == ModLSL) {
         p.Domain = asm.DomainGeneric
         var sa_amount uint32
         sa_wt := uint32(v0.(asm.Register).ID())
@@ -41195,7 +41546,7 @@ func (self *Program) LDRSB(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
-       (mext(v1) == nil || modt(mext(v1)) == ModLSL) {
+       (mext(v1) == Basic || modt(mext(v1)) == ModLSL) {
         p.Domain = asm.DomainGeneric
         var sa_amount uint32
         sa_xt := uint32(v0.(asm.Register).ID())
@@ -41277,7 +41628,7 @@ func (self *Program) LDRSH(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpre(1, 0, 3, sa_simm, sa_xn_sp, sa_wt))
     }
     // LDRSH  <Wt>, [<Xn|SP>{, #<pimm>}]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -41301,7 +41652,7 @@ func (self *Program) LDRSH(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpre(1, 0, 2, sa_simm, sa_xn_sp, sa_xt))
     }
     // LDRSH  <Xt>, [<Xn|SP>{, #<pimm>}]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -41314,7 +41665,7 @@ func (self *Program) LDRSH(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isWrOrXr(midx(v1)) &&
-       (mext(v1) == nil || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
+       (mext(v1) == Basic || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
         p.Domain = asm.DomainGeneric
         var sa_amount uint32
         sa_extend := uint32(0b011)
@@ -41343,7 +41694,7 @@ func (self *Program) LDRSH(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isWrOrXr(midx(v1)) &&
-       (mext(v1) == nil || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
+       (mext(v1) == Basic || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
         p.Domain = asm.DomainGeneric
         var sa_amount uint32
         sa_extend := uint32(0b011)
@@ -41425,7 +41776,7 @@ func (self *Program) LDRSW(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpre(2, 0, 2, sa_simm, sa_xn_sp, sa_xt))
     }
     // LDRSW  <Xt>, [<Xn|SP>{, #<pimm>}]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -41437,7 +41788,7 @@ func (self *Program) LDRSW(v0, v1 interface{}) *Instruction {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_label := v1.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return loadlit(2, 0, uint32(sa_label.RelativeTo(pc)), sa_xt) })
+        return p.setenc(func(pc uintptr) uint32 { return loadlit(2, 0, rel19(sa_label, pc), sa_xt) })
     }
     // LDRSW  <Xt>, [<Xn|SP>, (<Wm>|<Xm>){, <extend> {<amount>}}]
     if isXr(v0) &&
@@ -41445,7 +41796,7 @@ func (self *Program) LDRSW(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isWrOrXr(midx(v1)) &&
-       (mext(v1) == nil || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
+       (mext(v1) == Basic || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
         p.Domain = asm.DomainGeneric
         var sa_amount uint32
         sa_extend := uint32(0b011)
@@ -41504,7 +41855,7 @@ func (self *Program) LDSET(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -41519,7 +41870,7 @@ func (self *Program) LDSET(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -41563,7 +41914,7 @@ func (self *Program) LDSETA(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -41578,7 +41929,7 @@ func (self *Program) LDSETA(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -41620,7 +41971,7 @@ func (self *Program) LDSETAB(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -41661,7 +42012,7 @@ func (self *Program) LDSETAH(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -41704,7 +42055,7 @@ func (self *Program) LDSETAL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -41719,7 +42070,7 @@ func (self *Program) LDSETAL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -41761,7 +42112,7 @@ func (self *Program) LDSETALB(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -41802,7 +42153,7 @@ func (self *Program) LDSETALH(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -41843,7 +42194,7 @@ func (self *Program) LDSETB(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -41884,7 +42235,7 @@ func (self *Program) LDSETH(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -41927,7 +42278,7 @@ func (self *Program) LDSETL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -41942,7 +42293,7 @@ func (self *Program) LDSETL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -41984,7 +42335,7 @@ func (self *Program) LDSETLB(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -42025,7 +42376,7 @@ func (self *Program) LDSETLH(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -42060,7 +42411,7 @@ func (self *Program) LDSETP(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE128)
         p.Domain = asm.DomainGeneric
         sa_xt1 := uint32(v0.(asm.Register).ID())
@@ -42095,7 +42446,7 @@ func (self *Program) LDSETPA(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE128)
         p.Domain = asm.DomainGeneric
         sa_xt1 := uint32(v0.(asm.Register).ID())
@@ -42130,7 +42481,7 @@ func (self *Program) LDSETPAL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE128)
         p.Domain = asm.DomainGeneric
         sa_xt1 := uint32(v0.(asm.Register).ID())
@@ -42165,7 +42516,7 @@ func (self *Program) LDSETPL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE128)
         p.Domain = asm.DomainGeneric
         sa_xt1 := uint32(v0.(asm.Register).ID())
@@ -42209,7 +42560,7 @@ func (self *Program) LDSMAX(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -42224,7 +42575,7 @@ func (self *Program) LDSMAX(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -42269,7 +42620,7 @@ func (self *Program) LDSMAXA(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -42284,7 +42635,7 @@ func (self *Program) LDSMAXA(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -42326,7 +42677,7 @@ func (self *Program) LDSMAXAB(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -42367,7 +42718,7 @@ func (self *Program) LDSMAXAH(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -42411,7 +42762,7 @@ func (self *Program) LDSMAXAL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -42426,7 +42777,7 @@ func (self *Program) LDSMAXAL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -42468,7 +42819,7 @@ func (self *Program) LDSMAXALB(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -42509,7 +42860,7 @@ func (self *Program) LDSMAXALH(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -42550,7 +42901,7 @@ func (self *Program) LDSMAXB(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -42591,7 +42942,7 @@ func (self *Program) LDSMAXH(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -42635,7 +42986,7 @@ func (self *Program) LDSMAXL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -42650,7 +43001,7 @@ func (self *Program) LDSMAXL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -42692,7 +43043,7 @@ func (self *Program) LDSMAXLB(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -42733,7 +43084,7 @@ func (self *Program) LDSMAXLH(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -42777,7 +43128,7 @@ func (self *Program) LDSMIN(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -42792,7 +43143,7 @@ func (self *Program) LDSMIN(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -42837,7 +43188,7 @@ func (self *Program) LDSMINA(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -42852,7 +43203,7 @@ func (self *Program) LDSMINA(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -42894,7 +43245,7 @@ func (self *Program) LDSMINAB(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -42935,7 +43286,7 @@ func (self *Program) LDSMINAH(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -42979,7 +43330,7 @@ func (self *Program) LDSMINAL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -42994,7 +43345,7 @@ func (self *Program) LDSMINAL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -43036,7 +43387,7 @@ func (self *Program) LDSMINALB(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -43077,7 +43428,7 @@ func (self *Program) LDSMINALH(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -43118,7 +43469,7 @@ func (self *Program) LDSMINB(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -43159,7 +43510,7 @@ func (self *Program) LDSMINH(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -43203,7 +43554,7 @@ func (self *Program) LDSMINL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -43218,7 +43569,7 @@ func (self *Program) LDSMINL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -43260,7 +43611,7 @@ func (self *Program) LDSMINLB(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -43301,7 +43652,7 @@ func (self *Program) LDSMINLH(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -43338,7 +43689,7 @@ func (self *Program) LDSMINLH(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) LDTR(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDTR", 2, asm.Operands { v0, v1 })
     // LDTR  <Wt>, [<Xn|SP>{, #<simm>}]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -43346,7 +43697,7 @@ func (self *Program) LDTR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_unpriv(2, 0, 1, sa_simm, sa_xn_sp, sa_wt))
     }
     // LDTR  <Xt>, [<Xn|SP>{, #<simm>}]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -43381,7 +43732,7 @@ func (self *Program) LDTR(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) LDTRB(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDTRB", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -43415,7 +43766,7 @@ func (self *Program) LDTRB(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) LDTRH(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDTRH", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -43451,7 +43802,7 @@ func (self *Program) LDTRH(v0, v1 interface{}) *Instruction {
 func (self *Program) LDTRSB(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDTRSB", 2, asm.Operands { v0, v1 })
     // LDTRSB  <Wt>, [<Xn|SP>{, #<simm>}]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -43459,7 +43810,7 @@ func (self *Program) LDTRSB(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_unpriv(0, 0, 3, sa_simm, sa_xn_sp, sa_wt))
     }
     // LDTRSB  <Xt>, [<Xn|SP>{, #<simm>}]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -43497,7 +43848,7 @@ func (self *Program) LDTRSB(v0, v1 interface{}) *Instruction {
 func (self *Program) LDTRSH(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDTRSH", 2, asm.Operands { v0, v1 })
     // LDTRSH  <Wt>, [<Xn|SP>{, #<simm>}]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -43505,7 +43856,7 @@ func (self *Program) LDTRSH(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_unpriv(1, 0, 3, sa_simm, sa_xn_sp, sa_wt))
     }
     // LDTRSH  <Xt>, [<Xn|SP>{, #<simm>}]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -43540,7 +43891,7 @@ func (self *Program) LDTRSH(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) LDTRSW(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDTRSW", 2, asm.Operands { v0, v1 })
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -43583,7 +43934,7 @@ func (self *Program) LDUMAX(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -43598,7 +43949,7 @@ func (self *Program) LDUMAX(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -43643,7 +43994,7 @@ func (self *Program) LDUMAXA(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -43658,7 +44009,7 @@ func (self *Program) LDUMAXA(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -43700,7 +44051,7 @@ func (self *Program) LDUMAXAB(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -43741,7 +44092,7 @@ func (self *Program) LDUMAXAH(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -43785,7 +44136,7 @@ func (self *Program) LDUMAXAL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -43800,7 +44151,7 @@ func (self *Program) LDUMAXAL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -43842,7 +44193,7 @@ func (self *Program) LDUMAXALB(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -43883,7 +44234,7 @@ func (self *Program) LDUMAXALH(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -43924,7 +44275,7 @@ func (self *Program) LDUMAXB(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -43965,7 +44316,7 @@ func (self *Program) LDUMAXH(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -44009,7 +44360,7 @@ func (self *Program) LDUMAXL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -44024,7 +44375,7 @@ func (self *Program) LDUMAXL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -44066,7 +44417,7 @@ func (self *Program) LDUMAXLB(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -44107,7 +44458,7 @@ func (self *Program) LDUMAXLH(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -44151,7 +44502,7 @@ func (self *Program) LDUMIN(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -44166,7 +44517,7 @@ func (self *Program) LDUMIN(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -44211,7 +44562,7 @@ func (self *Program) LDUMINA(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -44226,7 +44577,7 @@ func (self *Program) LDUMINA(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -44268,7 +44619,7 @@ func (self *Program) LDUMINAB(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -44309,7 +44660,7 @@ func (self *Program) LDUMINAH(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -44353,7 +44704,7 @@ func (self *Program) LDUMINAL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -44368,7 +44719,7 @@ func (self *Program) LDUMINAL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -44410,7 +44761,7 @@ func (self *Program) LDUMINALB(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -44451,7 +44802,7 @@ func (self *Program) LDUMINALH(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -44492,7 +44843,7 @@ func (self *Program) LDUMINB(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -44533,7 +44884,7 @@ func (self *Program) LDUMINH(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -44577,7 +44928,7 @@ func (self *Program) LDUMINL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -44592,7 +44943,7 @@ func (self *Program) LDUMINL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -44634,7 +44985,7 @@ func (self *Program) LDUMINLB(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -44675,7 +45026,7 @@ func (self *Program) LDUMINLH(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -44718,7 +45069,7 @@ func (self *Program) LDUMINLH(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) LDUR(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDUR", 2, asm.Operands { v0, v1 })
     // LDUR  <Bt>, [<Xn|SP>{, #<simm>}]
-    if isBr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isBr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = DomainFpSimd
         sa_bt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -44726,7 +45077,7 @@ func (self *Program) LDUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_unscaled(0, 1, 1, sa_simm, sa_xn_sp, sa_bt))
     }
     // LDUR  <Dt>, [<Xn|SP>{, #<simm>}]
-    if isDr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isDr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = DomainFpSimd
         sa_dt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -44734,7 +45085,7 @@ func (self *Program) LDUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_unscaled(3, 1, 1, sa_simm, sa_xn_sp, sa_dt))
     }
     // LDUR  <Ht>, [<Xn|SP>{, #<simm>}]
-    if isHr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isHr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = DomainFpSimd
         sa_ht := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -44742,7 +45093,7 @@ func (self *Program) LDUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_unscaled(1, 1, 1, sa_simm, sa_xn_sp, sa_ht))
     }
     // LDUR  <Qt>, [<Xn|SP>{, #<simm>}]
-    if isQr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isQr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = DomainFpSimd
         sa_qt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -44750,7 +45101,7 @@ func (self *Program) LDUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_unscaled(0, 1, 3, sa_simm, sa_xn_sp, sa_qt))
     }
     // LDUR  <St>, [<Xn|SP>{, #<simm>}]
-    if isSr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isSr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = DomainFpSimd
         sa_st := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -44758,7 +45109,7 @@ func (self *Program) LDUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_unscaled(2, 1, 1, sa_simm, sa_xn_sp, sa_st))
     }
     // LDUR  <Wt>, [<Xn|SP>{, #<simm>}]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -44766,7 +45117,7 @@ func (self *Program) LDUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_unscaled(2, 0, 1, sa_simm, sa_xn_sp, sa_wt))
     }
     // LDUR  <Xt>, [<Xn|SP>{, #<simm>}]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -44791,7 +45142,7 @@ func (self *Program) LDUR(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) LDURB(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDURB", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -44815,7 +45166,7 @@ func (self *Program) LDURB(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) LDURH(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDURH", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -44841,7 +45192,7 @@ func (self *Program) LDURH(v0, v1 interface{}) *Instruction {
 func (self *Program) LDURSB(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDURSB", 2, asm.Operands { v0, v1 })
     // LDURSB  <Wt>, [<Xn|SP>{, #<simm>}]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -44849,7 +45200,7 @@ func (self *Program) LDURSB(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_unscaled(0, 0, 3, sa_simm, sa_xn_sp, sa_wt))
     }
     // LDURSB  <Xt>, [<Xn|SP>{, #<simm>}]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -44876,7 +45227,7 @@ func (self *Program) LDURSB(v0, v1 interface{}) *Instruction {
 func (self *Program) LDURSH(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDURSH", 2, asm.Operands { v0, v1 })
     // LDURSH  <Wt>, [<Xn|SP>{, #<simm>}]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -44884,7 +45235,7 @@ func (self *Program) LDURSH(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_unscaled(1, 0, 3, sa_simm, sa_xn_sp, sa_wt))
     }
     // LDURSH  <Xt>, [<Xn|SP>{, #<simm>}]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -44909,7 +45260,7 @@ func (self *Program) LDURSH(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) LDURSW(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDURSW", 2, asm.Operands { v0, v1 })
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -44949,7 +45300,7 @@ func (self *Program) LDXP(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt1 := uint32(v0.(asm.Register).ID())
         sa_wt2 := uint32(v1.(asm.Register).ID())
@@ -44963,7 +45314,7 @@ func (self *Program) LDXP(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         p.Domain = asm.DomainGeneric
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
@@ -44997,7 +45348,7 @@ func (self *Program) LDXR(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -45009,7 +45360,7 @@ func (self *Program) LDXR(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -45040,7 +45391,7 @@ func (self *Program) LDXRB(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -45070,7 +45421,7 @@ func (self *Program) LDXRH(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -45362,10 +45713,10 @@ func (self *Program) MLA(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if ubfx(sa_index, 3, 2) != ubfx(sa_t, 1, 2) || ubfx(sa_t, 1, 2) != sa_ts || sa_ts != sa_vm {
+        if ubfx(sa_index, 3, 2) != ubfx(sa_t, 1, 2) || ubfx(sa_t, 1, 2) != sa_ts || sa_ts != ubfx(sa_vm, 5, 2) {
             panic("aarch64: invalid combination of operands for MLA")
         }
-        if mask(sa_index, 1) != sa_vm {
+        if mask(sa_index, 1) != ubfx(sa_vm, 4, 1) {
             panic("aarch64: invalid combination of operands for MLA")
         }
         return p.setins(asimdelem(
@@ -45374,7 +45725,7 @@ func (self *Program) MLA(v0, v1, v2 interface{}) *Instruction {
             ubfx(sa_index, 3, 2),
             ubfx(sa_index, 2, 1),
             mask(sa_index, 1),
-            sa_vm,
+            mask(sa_vm, 4),
             0,
             ubfx(sa_index, 1, 1),
             sa_vn,
@@ -45468,10 +45819,10 @@ func (self *Program) MLS(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if ubfx(sa_index, 3, 2) != ubfx(sa_t, 1, 2) || ubfx(sa_t, 1, 2) != sa_ts || sa_ts != sa_vm {
+        if ubfx(sa_index, 3, 2) != ubfx(sa_t, 1, 2) || ubfx(sa_t, 1, 2) != sa_ts || sa_ts != ubfx(sa_vm, 5, 2) {
             panic("aarch64: invalid combination of operands for MLS")
         }
-        if mask(sa_index, 1) != sa_vm {
+        if mask(sa_index, 1) != ubfx(sa_vm, 4, 1) {
             panic("aarch64: invalid combination of operands for MLS")
         }
         return p.setins(asimdelem(
@@ -45480,7 +45831,7 @@ func (self *Program) MLS(v0, v1, v2 interface{}) *Instruction {
             ubfx(sa_index, 3, 2),
             ubfx(sa_index, 2, 1),
             mask(sa_index, 1),
-            sa_vm,
+            mask(sa_vm, 4),
             4,
             ubfx(sa_index, 1, 1),
             sa_vn,
@@ -45819,7 +46170,7 @@ func (self *Program) MOV(v0, v1 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_vn := uint32(v1.(asm.Register).ID())
-        return p.setins(asimdsame(sa_t, 0, 2, sa_vn, 3, sa_vn, sa_vd))
+        return p.setins(asimdsame(sa_t, 0, 2, ubfx(sa_vn, 5, 5), 3, mask(sa_vn, 5), sa_vd))
     }
     // MOV  <Wd|WSP>, #<imm>
     if isWrOrWSP(v0) && isMask32(v1) {
@@ -46329,7 +46680,7 @@ func (self *Program) MSR(v0, v1 interface{}) *Instruction {
         p.Domain = DomainSystem
         sa_pstatefield := uint32(v0.(PStateField)) << 4
         sa_imm := asUimm4(v1)
-        return p.setins(pstate(sa_pstatefield, sa_imm, sa_pstatefield, 31))
+        return p.setins(pstate(ubfx(sa_pstatefield, 7, 3), sa_imm, ubfx(sa_pstatefield, 4, 3), 31))
     }
     // MSR  (<systemreg>|S<op0>_<op1>_<Cn>_<Cm>_<op2>), <Xt>
     if isSysReg(v0) && isXr(v1) {
@@ -46494,10 +46845,10 @@ func (self *Program) MUL(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if ubfx(sa_index, 3, 2) != ubfx(sa_t, 1, 2) || ubfx(sa_t, 1, 2) != sa_ts || sa_ts != sa_vm {
+        if ubfx(sa_index, 3, 2) != ubfx(sa_t, 1, 2) || ubfx(sa_t, 1, 2) != sa_ts || sa_ts != ubfx(sa_vm, 5, 2) {
             panic("aarch64: invalid combination of operands for MUL")
         }
-        if mask(sa_index, 1) != sa_vm {
+        if mask(sa_index, 1) != ubfx(sa_vm, 4, 1) {
             panic("aarch64: invalid combination of operands for MUL")
         }
         return p.setins(asimdelem(
@@ -46506,7 +46857,7 @@ func (self *Program) MUL(v0, v1, v2 interface{}) *Instruction {
             ubfx(sa_index, 3, 2),
             ubfx(sa_index, 2, 1),
             mask(sa_index, 1),
-            sa_vm,
+            mask(sa_vm, 4),
             8,
             ubfx(sa_index, 1, 1),
             sa_vn,
@@ -48134,7 +48485,7 @@ func (self *Program) PMULL2(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) PRFM(v0, v1 interface{}) *Instruction {
     p := self.alloc("PRFM", 2, asm.Operands { v0, v1 })
     // PRFM  (<prfop>|#<imm5>), [<Xn|SP>{, #<pimm>}]
-    if isBasicPrf(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isBasicPrf(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_prfop := uint32(v0.(PrefetchOp))
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -48146,7 +48497,7 @@ func (self *Program) PRFM(v0, v1 interface{}) *Instruction {
         p.Domain = asm.DomainGeneric
         sa_prfop := uint32(v0.(PrefetchOp))
         sa_label := v1.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return loadlit(3, 0, uint32(sa_label.RelativeTo(pc)), sa_prfop) })
+        return p.setenc(func(pc uintptr) uint32 { return loadlit(3, 0, rel19(sa_label, pc), sa_prfop) })
     }
     // PRFM  (<prfop>|#<imm5>), [<Xn|SP>, (<Wm>|<Xm>){, <extend> {<amount>}}]
     if isBasicPrf(v0) &&
@@ -48154,7 +48505,7 @@ func (self *Program) PRFM(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isWrOrXr(midx(v1)) &&
-       (mext(v1) == nil || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
+       (mext(v1) == Basic || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
         p.Domain = asm.DomainGeneric
         var sa_amount uint32
         sa_extend := uint32(0b011)
@@ -48201,7 +48552,7 @@ func (self *Program) PRFM(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) PRFUM(v0, v1 interface{}) *Instruction {
     p := self.alloc("PRFUM", 2, asm.Operands { v0, v1 })
-    if isBasicPrf(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isBasicPrf(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_prfop := uint32(v0.(PrefetchOp))
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -48509,7 +48860,7 @@ func (self *Program) RCWCAS(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -48548,7 +48899,7 @@ func (self *Program) RCWCASA(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -48587,7 +48938,7 @@ func (self *Program) RCWCASAL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -48626,7 +48977,7 @@ func (self *Program) RCWCASL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -48669,7 +49020,7 @@ func (self *Program) RCWCASP(v0, v1, v2, v3, v4 interface{}) *Instruction {
        isXrOrSP(mbase(v4)) &&
        midx(v4) == nil &&
        moffs(v4) == 0 &&
-       mext(v4) == nil {
+       mext(v4) == Basic {
         self.Arch.Require(FEAT_D128)
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
@@ -48713,7 +49064,7 @@ func (self *Program) RCWCASPA(v0, v1, v2, v3, v4 interface{}) *Instruction {
        isXrOrSP(mbase(v4)) &&
        midx(v4) == nil &&
        moffs(v4) == 0 &&
-       mext(v4) == nil {
+       mext(v4) == Basic {
         self.Arch.Require(FEAT_D128)
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
@@ -48757,7 +49108,7 @@ func (self *Program) RCWCASPAL(v0, v1, v2, v3, v4 interface{}) *Instruction {
        isXrOrSP(mbase(v4)) &&
        midx(v4) == nil &&
        moffs(v4) == 0 &&
-       mext(v4) == nil {
+       mext(v4) == Basic {
         self.Arch.Require(FEAT_D128)
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
@@ -48801,7 +49152,7 @@ func (self *Program) RCWCASPL(v0, v1, v2, v3, v4 interface{}) *Instruction {
        isXrOrSP(mbase(v4)) &&
        midx(v4) == nil &&
        moffs(v4) == 0 &&
-       mext(v4) == nil {
+       mext(v4) == Basic {
         self.Arch.Require(FEAT_D128)
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
@@ -48840,7 +49191,7 @@ func (self *Program) RCWCLR(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -48878,7 +49229,7 @@ func (self *Program) RCWCLRA(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -48916,7 +49267,7 @@ func (self *Program) RCWCLRAL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -48954,7 +49305,7 @@ func (self *Program) RCWCLRL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -48992,7 +49343,7 @@ func (self *Program) RCWCLRP(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_D128)
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
@@ -49031,7 +49382,7 @@ func (self *Program) RCWCLRPA(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_D128)
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
@@ -49070,7 +49421,7 @@ func (self *Program) RCWCLRPAL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_D128)
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
@@ -49109,7 +49460,7 @@ func (self *Program) RCWCLRPL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_D128)
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
@@ -49149,7 +49500,7 @@ func (self *Program) RCWSCAS(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -49188,7 +49539,7 @@ func (self *Program) RCWSCASA(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -49227,7 +49578,7 @@ func (self *Program) RCWSCASAL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -49266,7 +49617,7 @@ func (self *Program) RCWSCASL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -49309,7 +49660,7 @@ func (self *Program) RCWSCASP(v0, v1, v2, v3, v4 interface{}) *Instruction {
        isXrOrSP(mbase(v4)) &&
        midx(v4) == nil &&
        moffs(v4) == 0 &&
-       mext(v4) == nil {
+       mext(v4) == Basic {
         self.Arch.Require(FEAT_D128)
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
@@ -49353,7 +49704,7 @@ func (self *Program) RCWSCASPA(v0, v1, v2, v3, v4 interface{}) *Instruction {
        isXrOrSP(mbase(v4)) &&
        midx(v4) == nil &&
        moffs(v4) == 0 &&
-       mext(v4) == nil {
+       mext(v4) == Basic {
         self.Arch.Require(FEAT_D128)
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
@@ -49397,7 +49748,7 @@ func (self *Program) RCWSCASPAL(v0, v1, v2, v3, v4 interface{}) *Instruction {
        isXrOrSP(mbase(v4)) &&
        midx(v4) == nil &&
        moffs(v4) == 0 &&
-       mext(v4) == nil {
+       mext(v4) == Basic {
         self.Arch.Require(FEAT_D128)
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
@@ -49441,7 +49792,7 @@ func (self *Program) RCWSCASPL(v0, v1, v2, v3, v4 interface{}) *Instruction {
        isXrOrSP(mbase(v4)) &&
        midx(v4) == nil &&
        moffs(v4) == 0 &&
-       mext(v4) == nil {
+       mext(v4) == Basic {
         self.Arch.Require(FEAT_D128)
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
@@ -49480,7 +49831,7 @@ func (self *Program) RCWSCLR(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -49518,7 +49869,7 @@ func (self *Program) RCWSCLRA(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -49556,7 +49907,7 @@ func (self *Program) RCWSCLRAL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -49594,7 +49945,7 @@ func (self *Program) RCWSCLRL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -49632,7 +49983,7 @@ func (self *Program) RCWSCLRP(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_D128)
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
@@ -49671,7 +50022,7 @@ func (self *Program) RCWSCLRPA(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_D128)
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
@@ -49710,7 +50061,7 @@ func (self *Program) RCWSCLRPAL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_D128)
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
@@ -49749,7 +50100,7 @@ func (self *Program) RCWSCLRPL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_D128)
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
@@ -49788,7 +50139,7 @@ func (self *Program) RCWSET(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -49826,7 +50177,7 @@ func (self *Program) RCWSETA(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -49864,7 +50215,7 @@ func (self *Program) RCWSETAL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -49902,7 +50253,7 @@ func (self *Program) RCWSETL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -49939,7 +50290,7 @@ func (self *Program) RCWSETP(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_D128)
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
@@ -49977,7 +50328,7 @@ func (self *Program) RCWSETPA(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_D128)
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
@@ -50015,7 +50366,7 @@ func (self *Program) RCWSETPAL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_D128)
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
@@ -50053,7 +50404,7 @@ func (self *Program) RCWSETPL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_D128)
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
@@ -50092,7 +50443,7 @@ func (self *Program) RCWSSET(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -50130,7 +50481,7 @@ func (self *Program) RCWSSETA(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -50168,7 +50519,7 @@ func (self *Program) RCWSSETAL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -50206,7 +50557,7 @@ func (self *Program) RCWSSETL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -50244,7 +50595,7 @@ func (self *Program) RCWSSETP(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_D128)
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
@@ -50283,7 +50634,7 @@ func (self *Program) RCWSSETPA(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_D128)
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
@@ -50322,7 +50673,7 @@ func (self *Program) RCWSSETPAL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_D128)
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
@@ -50361,7 +50712,7 @@ func (self *Program) RCWSSETPL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_D128)
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
@@ -50399,7 +50750,7 @@ func (self *Program) RCWSSWP(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -50436,7 +50787,7 @@ func (self *Program) RCWSSWPA(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -50473,7 +50824,7 @@ func (self *Program) RCWSSWPAL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -50510,7 +50861,7 @@ func (self *Program) RCWSSWPL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -50547,7 +50898,7 @@ func (self *Program) RCWSSWPP(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_D128)
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
@@ -50585,7 +50936,7 @@ func (self *Program) RCWSSWPPA(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_D128)
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
@@ -50623,7 +50974,7 @@ func (self *Program) RCWSSWPPAL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_D128)
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
@@ -50661,7 +51012,7 @@ func (self *Program) RCWSSWPPL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_D128)
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
@@ -50699,7 +51050,7 @@ func (self *Program) RCWSWP(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -50736,7 +51087,7 @@ func (self *Program) RCWSWPA(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -50773,7 +51124,7 @@ func (self *Program) RCWSWPAL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -50810,7 +51161,7 @@ func (self *Program) RCWSWPL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -50847,7 +51198,7 @@ func (self *Program) RCWSWPP(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_D128)
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
@@ -50885,7 +51236,7 @@ func (self *Program) RCWSWPPA(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_D128)
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
@@ -50923,7 +51274,7 @@ func (self *Program) RCWSWPPAL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_D128)
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
@@ -50961,7 +51312,7 @@ func (self *Program) RCWSWPPL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_D128)
         self.Arch.Require(FEAT_THE)
         p.Domain = asm.DomainGeneric
@@ -51311,7 +51662,7 @@ func (self *Program) ROR(v0, v1, v2 interface{}) *Instruction {
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_ws := uint32(v1.(asm.Register).ID())
         sa_shift := asUimm6(v2)
-        return p.setins(extract(0, 0, 0, 0, sa_ws, sa_shift, sa_ws, sa_wd))
+        return p.setins(extract(0, 0, 0, 0, ubfx(sa_ws, 5, 5), sa_shift, mask(sa_ws, 5), sa_wd))
     }
     // ROR  <Xd>, <Xs>, #<shift>
     if isXr(v0) && isXr(v1) && isUimm6(v2) {
@@ -51319,7 +51670,7 @@ func (self *Program) ROR(v0, v1, v2 interface{}) *Instruction {
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xs := uint32(v1.(asm.Register).ID())
         sa_shift_1 := asUimm6(v2)
-        return p.setins(extract(1, 0, 1, 0, sa_xs, sa_shift_1, sa_xs, sa_xd))
+        return p.setins(extract(1, 0, 1, 0, ubfx(sa_xs, 5, 5), sa_shift_1, mask(sa_xs, 5), sa_xd))
     }
     // ROR  <Wd>, <Wn>, <Wm>
     if isWr(v0) && isWr(v1) && isWr(v2) {
@@ -51461,7 +51812,7 @@ func (self *Program) RPRFM(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_RPRFM)
         p.Domain = asm.DomainGeneric
         sa_rprfop := v0.(RangePrefetchOp).encode()
@@ -53197,7 +53548,18 @@ func (self *Program) SDOT(v0, v1, v2 interface{}) *Instruction {
         if sa_ta != sa_tb {
             panic("aarch64: invalid combination of operands for SDOT")
         }
-        return p.setins(asimdelem(sa_ta, 0, 2, mask(sa_index, 1), sa_vm, sa_vm, 14, ubfx(sa_index, 1, 1), sa_vn, sa_vd))
+        return p.setins(asimdelem(
+            sa_ta,
+            0,
+            2,
+            mask(sa_index, 1),
+            ubfx(sa_vm, 4, 1),
+            mask(sa_vm, 4),
+            14,
+            ubfx(sa_index, 1, 1),
+            sa_vn,
+            sa_vd,
+        ))
     }
     // SDOT  <Vd>.<Ta>, <Vn>.<Tb>, <Vm>.<Tb>
     if isVr(v0) &&
@@ -57685,10 +58047,13 @@ func (self *Program) SMLAL(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if ubfx(sa_index, 3, 2) != sa_ta || sa_ta != ubfx(sa_tb, 1, 2) || ubfx(sa_tb, 1, 2) != sa_ts || sa_ts != sa_vm {
+        if ubfx(sa_index, 3, 2) != sa_ta ||
+           sa_ta != ubfx(sa_tb, 1, 2) ||
+           ubfx(sa_tb, 1, 2) != sa_ts ||
+           sa_ts != ubfx(sa_vm, 5, 2) {
             panic("aarch64: invalid combination of operands for SMLAL")
         }
-        if mask(sa_index, 1) != sa_vm {
+        if mask(sa_index, 1) != ubfx(sa_vm, 4, 1) {
             panic("aarch64: invalid combination of operands for SMLAL")
         }
         if mask(sa_tb, 1) != 0 {
@@ -57700,7 +58065,7 @@ func (self *Program) SMLAL(v0, v1, v2 interface{}) *Instruction {
             ubfx(sa_index, 3, 2),
             ubfx(sa_index, 2, 1),
             mask(sa_index, 1),
-            sa_vm,
+            mask(sa_vm, 4),
             2,
             ubfx(sa_index, 1, 1),
             sa_vn,
@@ -57817,10 +58182,13 @@ func (self *Program) SMLAL2(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if ubfx(sa_index, 3, 2) != sa_ta || sa_ta != ubfx(sa_tb, 1, 2) || ubfx(sa_tb, 1, 2) != sa_ts || sa_ts != sa_vm {
+        if ubfx(sa_index, 3, 2) != sa_ta ||
+           sa_ta != ubfx(sa_tb, 1, 2) ||
+           ubfx(sa_tb, 1, 2) != sa_ts ||
+           sa_ts != ubfx(sa_vm, 5, 2) {
             panic("aarch64: invalid combination of operands for SMLAL2")
         }
-        if mask(sa_index, 1) != sa_vm {
+        if mask(sa_index, 1) != ubfx(sa_vm, 4, 1) {
             panic("aarch64: invalid combination of operands for SMLAL2")
         }
         if mask(sa_tb, 1) != 1 {
@@ -57832,7 +58200,7 @@ func (self *Program) SMLAL2(v0, v1, v2 interface{}) *Instruction {
             ubfx(sa_index, 3, 2),
             ubfx(sa_index, 2, 1),
             mask(sa_index, 1),
-            sa_vm,
+            mask(sa_vm, 4),
             2,
             ubfx(sa_index, 1, 1),
             sa_vn,
@@ -57949,10 +58317,13 @@ func (self *Program) SMLSL(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if ubfx(sa_index, 3, 2) != sa_ta || sa_ta != ubfx(sa_tb, 1, 2) || ubfx(sa_tb, 1, 2) != sa_ts || sa_ts != sa_vm {
+        if ubfx(sa_index, 3, 2) != sa_ta ||
+           sa_ta != ubfx(sa_tb, 1, 2) ||
+           ubfx(sa_tb, 1, 2) != sa_ts ||
+           sa_ts != ubfx(sa_vm, 5, 2) {
             panic("aarch64: invalid combination of operands for SMLSL")
         }
-        if mask(sa_index, 1) != sa_vm {
+        if mask(sa_index, 1) != ubfx(sa_vm, 4, 1) {
             panic("aarch64: invalid combination of operands for SMLSL")
         }
         if mask(sa_tb, 1) != 0 {
@@ -57964,7 +58335,7 @@ func (self *Program) SMLSL(v0, v1, v2 interface{}) *Instruction {
             ubfx(sa_index, 3, 2),
             ubfx(sa_index, 2, 1),
             mask(sa_index, 1),
-            sa_vm,
+            mask(sa_vm, 4),
             6,
             ubfx(sa_index, 1, 1),
             sa_vn,
@@ -58081,10 +58452,13 @@ func (self *Program) SMLSL2(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if ubfx(sa_index, 3, 2) != sa_ta || sa_ta != ubfx(sa_tb, 1, 2) || ubfx(sa_tb, 1, 2) != sa_ts || sa_ts != sa_vm {
+        if ubfx(sa_index, 3, 2) != sa_ta ||
+           sa_ta != ubfx(sa_tb, 1, 2) ||
+           ubfx(sa_tb, 1, 2) != sa_ts ||
+           sa_ts != ubfx(sa_vm, 5, 2) {
             panic("aarch64: invalid combination of operands for SMLSL2")
         }
-        if mask(sa_index, 1) != sa_vm {
+        if mask(sa_index, 1) != ubfx(sa_vm, 4, 1) {
             panic("aarch64: invalid combination of operands for SMLSL2")
         }
         if mask(sa_tb, 1) != 1 {
@@ -58096,7 +58470,7 @@ func (self *Program) SMLSL2(v0, v1, v2 interface{}) *Instruction {
             ubfx(sa_index, 3, 2),
             ubfx(sa_index, 2, 1),
             mask(sa_index, 1),
-            sa_vm,
+            mask(sa_vm, 4),
             6,
             ubfx(sa_index, 1, 1),
             sa_vn,
@@ -58298,7 +58672,7 @@ func (self *Program) SMSTART(vv ...interface{}) *Instruction {
         if len(vv) == 1 {
             sa_pstatefield = uint32(vv[0].(SMEOption))
         }
-        return p.setins(pstate(3, sa_pstatefield, 3, 31))
+        return p.setins(pstate(3, mask(sa_pstatefield, 4), 3, 31))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for SMSTART")
@@ -58333,7 +58707,7 @@ func (self *Program) SMSTOP(vv ...interface{}) *Instruction {
         if len(vv) == 1 {
             sa_pstatefield = uint32(vv[0].(SMEOption))
         }
-        return p.setins(pstate(3, sa_pstatefield, 3, 31))
+        return p.setins(pstate(3, mask(sa_pstatefield, 4), 3, 31))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for SMSTOP")
@@ -58470,10 +58844,13 @@ func (self *Program) SMULL(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if ubfx(sa_index, 3, 2) != sa_ta || sa_ta != ubfx(sa_tb, 1, 2) || ubfx(sa_tb, 1, 2) != sa_ts || sa_ts != sa_vm {
+        if ubfx(sa_index, 3, 2) != sa_ta ||
+           sa_ta != ubfx(sa_tb, 1, 2) ||
+           ubfx(sa_tb, 1, 2) != sa_ts ||
+           sa_ts != ubfx(sa_vm, 5, 2) {
             panic("aarch64: invalid combination of operands for SMULL")
         }
-        if mask(sa_index, 1) != sa_vm {
+        if mask(sa_index, 1) != ubfx(sa_vm, 4, 1) {
             panic("aarch64: invalid combination of operands for SMULL")
         }
         if mask(sa_tb, 1) != 0 {
@@ -58485,7 +58862,7 @@ func (self *Program) SMULL(v0, v1, v2 interface{}) *Instruction {
             ubfx(sa_index, 3, 2),
             ubfx(sa_index, 2, 1),
             mask(sa_index, 1),
-            sa_vm,
+            mask(sa_vm, 4),
             10,
             ubfx(sa_index, 1, 1),
             sa_vn,
@@ -58604,10 +58981,13 @@ func (self *Program) SMULL2(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if ubfx(sa_index, 3, 2) != sa_ta || sa_ta != ubfx(sa_tb, 1, 2) || ubfx(sa_tb, 1, 2) != sa_ts || sa_ts != sa_vm {
+        if ubfx(sa_index, 3, 2) != sa_ta ||
+           sa_ta != ubfx(sa_tb, 1, 2) ||
+           ubfx(sa_tb, 1, 2) != sa_ts ||
+           sa_ts != ubfx(sa_vm, 5, 2) {
             panic("aarch64: invalid combination of operands for SMULL2")
         }
-        if mask(sa_index, 1) != sa_vm {
+        if mask(sa_index, 1) != ubfx(sa_vm, 4, 1) {
             panic("aarch64: invalid combination of operands for SMULL2")
         }
         if mask(sa_tb, 1) != 1 {
@@ -58619,7 +58999,7 @@ func (self *Program) SMULL2(v0, v1, v2 interface{}) *Instruction {
             ubfx(sa_index, 3, 2),
             ubfx(sa_index, 2, 1),
             mask(sa_index, 1),
-            sa_vm,
+            mask(sa_vm, 4),
             10,
             ubfx(sa_index, 1, 1),
             sa_vn,
@@ -58873,10 +59253,10 @@ func (self *Program) SQDMLAL(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if ubfx(sa_index, 3, 2) != sa_ts || sa_ts != sa_va || sa_va != sa_vb || sa_vb != sa_vm {
+        if ubfx(sa_index, 3, 2) != sa_ts || sa_ts != sa_va || sa_va != sa_vb || sa_vb != ubfx(sa_vm, 5, 2) {
             panic("aarch64: invalid combination of operands for SQDMLAL")
         }
-        if mask(sa_index, 1) != sa_vm {
+        if mask(sa_index, 1) != ubfx(sa_vm, 4, 1) {
             panic("aarch64: invalid combination of operands for SQDMLAL")
         }
         return p.setins(asisdelem(
@@ -58884,7 +59264,7 @@ func (self *Program) SQDMLAL(v0, v1, v2 interface{}) *Instruction {
             ubfx(sa_index, 3, 2),
             ubfx(sa_index, 2, 1),
             mask(sa_index, 1),
-            sa_vm,
+            mask(sa_vm, 4),
             3,
             ubfx(sa_index, 1, 1),
             sa_n,
@@ -58918,10 +59298,13 @@ func (self *Program) SQDMLAL(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if ubfx(sa_index, 3, 2) != sa_ta || sa_ta != ubfx(sa_tb, 1, 2) || ubfx(sa_tb, 1, 2) != sa_ts || sa_ts != sa_vm {
+        if ubfx(sa_index, 3, 2) != sa_ta ||
+           sa_ta != ubfx(sa_tb, 1, 2) ||
+           ubfx(sa_tb, 1, 2) != sa_ts ||
+           sa_ts != ubfx(sa_vm, 5, 2) {
             panic("aarch64: invalid combination of operands for SQDMLAL")
         }
-        if mask(sa_index, 1) != sa_vm {
+        if mask(sa_index, 1) != ubfx(sa_vm, 4, 1) {
             panic("aarch64: invalid combination of operands for SQDMLAL")
         }
         if mask(sa_tb, 1) != 0 {
@@ -58933,7 +59316,7 @@ func (self *Program) SQDMLAL(v0, v1, v2 interface{}) *Instruction {
             ubfx(sa_index, 3, 2),
             ubfx(sa_index, 2, 1),
             mask(sa_index, 1),
-            sa_vm,
+            mask(sa_vm, 4),
             3,
             ubfx(sa_index, 1, 1),
             sa_vn,
@@ -59077,10 +59460,13 @@ func (self *Program) SQDMLAL2(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if ubfx(sa_index, 3, 2) != sa_ta || sa_ta != ubfx(sa_tb, 1, 2) || ubfx(sa_tb, 1, 2) != sa_ts || sa_ts != sa_vm {
+        if ubfx(sa_index, 3, 2) != sa_ta ||
+           sa_ta != ubfx(sa_tb, 1, 2) ||
+           ubfx(sa_tb, 1, 2) != sa_ts ||
+           sa_ts != ubfx(sa_vm, 5, 2) {
             panic("aarch64: invalid combination of operands for SQDMLAL2")
         }
-        if mask(sa_index, 1) != sa_vm {
+        if mask(sa_index, 1) != ubfx(sa_vm, 4, 1) {
             panic("aarch64: invalid combination of operands for SQDMLAL2")
         }
         if mask(sa_tb, 1) != 1 {
@@ -59092,7 +59478,7 @@ func (self *Program) SQDMLAL2(v0, v1, v2 interface{}) *Instruction {
             ubfx(sa_index, 3, 2),
             ubfx(sa_index, 2, 1),
             mask(sa_index, 1),
-            sa_vm,
+            mask(sa_vm, 4),
             3,
             ubfx(sa_index, 1, 1),
             sa_vn,
@@ -59214,10 +59600,10 @@ func (self *Program) SQDMLSL(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if ubfx(sa_index, 3, 2) != sa_ts || sa_ts != sa_va || sa_va != sa_vb || sa_vb != sa_vm {
+        if ubfx(sa_index, 3, 2) != sa_ts || sa_ts != sa_va || sa_va != sa_vb || sa_vb != ubfx(sa_vm, 5, 2) {
             panic("aarch64: invalid combination of operands for SQDMLSL")
         }
-        if mask(sa_index, 1) != sa_vm {
+        if mask(sa_index, 1) != ubfx(sa_vm, 4, 1) {
             panic("aarch64: invalid combination of operands for SQDMLSL")
         }
         return p.setins(asisdelem(
@@ -59225,7 +59611,7 @@ func (self *Program) SQDMLSL(v0, v1, v2 interface{}) *Instruction {
             ubfx(sa_index, 3, 2),
             ubfx(sa_index, 2, 1),
             mask(sa_index, 1),
-            sa_vm,
+            mask(sa_vm, 4),
             7,
             ubfx(sa_index, 1, 1),
             sa_n,
@@ -59259,10 +59645,13 @@ func (self *Program) SQDMLSL(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if ubfx(sa_index, 3, 2) != sa_ta || sa_ta != ubfx(sa_tb, 1, 2) || ubfx(sa_tb, 1, 2) != sa_ts || sa_ts != sa_vm {
+        if ubfx(sa_index, 3, 2) != sa_ta ||
+           sa_ta != ubfx(sa_tb, 1, 2) ||
+           ubfx(sa_tb, 1, 2) != sa_ts ||
+           sa_ts != ubfx(sa_vm, 5, 2) {
             panic("aarch64: invalid combination of operands for SQDMLSL")
         }
-        if mask(sa_index, 1) != sa_vm {
+        if mask(sa_index, 1) != ubfx(sa_vm, 4, 1) {
             panic("aarch64: invalid combination of operands for SQDMLSL")
         }
         if mask(sa_tb, 1) != 0 {
@@ -59274,7 +59663,7 @@ func (self *Program) SQDMLSL(v0, v1, v2 interface{}) *Instruction {
             ubfx(sa_index, 3, 2),
             ubfx(sa_index, 2, 1),
             mask(sa_index, 1),
-            sa_vm,
+            mask(sa_vm, 4),
             7,
             ubfx(sa_index, 1, 1),
             sa_vn,
@@ -59419,10 +59808,13 @@ func (self *Program) SQDMLSL2(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if ubfx(sa_index, 3, 2) != sa_ta || sa_ta != ubfx(sa_tb, 1, 2) || ubfx(sa_tb, 1, 2) != sa_ts || sa_ts != sa_vm {
+        if ubfx(sa_index, 3, 2) != sa_ta ||
+           sa_ta != ubfx(sa_tb, 1, 2) ||
+           ubfx(sa_tb, 1, 2) != sa_ts ||
+           sa_ts != ubfx(sa_vm, 5, 2) {
             panic("aarch64: invalid combination of operands for SQDMLSL2")
         }
-        if mask(sa_index, 1) != sa_vm {
+        if mask(sa_index, 1) != ubfx(sa_vm, 4, 1) {
             panic("aarch64: invalid combination of operands for SQDMLSL2")
         }
         if mask(sa_tb, 1) != 1 {
@@ -59434,7 +59826,7 @@ func (self *Program) SQDMLSL2(v0, v1, v2 interface{}) *Instruction {
             ubfx(sa_index, 3, 2),
             ubfx(sa_index, 2, 1),
             mask(sa_index, 1),
-            sa_vm,
+            mask(sa_vm, 4),
             7,
             ubfx(sa_index, 1, 1),
             sa_vn,
@@ -59547,10 +59939,10 @@ func (self *Program) SQDMULH(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if ubfx(sa_index, 3, 2) != ubfx(sa_t, 1, 2) || ubfx(sa_t, 1, 2) != sa_ts || sa_ts != sa_vm {
+        if ubfx(sa_index, 3, 2) != ubfx(sa_t, 1, 2) || ubfx(sa_t, 1, 2) != sa_ts || sa_ts != ubfx(sa_vm, 5, 2) {
             panic("aarch64: invalid combination of operands for SQDMULH")
         }
-        if mask(sa_index, 1) != sa_vm {
+        if mask(sa_index, 1) != ubfx(sa_vm, 4, 1) {
             panic("aarch64: invalid combination of operands for SQDMULH")
         }
         return p.setins(asimdelem(
@@ -59559,7 +59951,7 @@ func (self *Program) SQDMULH(v0, v1, v2 interface{}) *Instruction {
             ubfx(sa_index, 3, 2),
             ubfx(sa_index, 2, 1),
             mask(sa_index, 1),
-            sa_vm,
+            mask(sa_vm, 4),
             12,
             ubfx(sa_index, 1, 1),
             sa_vn,
@@ -59585,10 +59977,10 @@ func (self *Program) SQDMULH(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if ubfx(sa_index, 3, 2) != sa_ts || sa_ts != sa_v || sa_v != sa_vm {
+        if ubfx(sa_index, 3, 2) != sa_ts || sa_ts != sa_v || sa_v != ubfx(sa_vm, 5, 2) {
             panic("aarch64: invalid combination of operands for SQDMULH")
         }
-        if mask(sa_index, 1) != sa_vm {
+        if mask(sa_index, 1) != ubfx(sa_vm, 4, 1) {
             panic("aarch64: invalid combination of operands for SQDMULH")
         }
         return p.setins(asisdelem(
@@ -59596,7 +59988,7 @@ func (self *Program) SQDMULH(v0, v1, v2 interface{}) *Instruction {
             ubfx(sa_index, 3, 2),
             ubfx(sa_index, 2, 1),
             mask(sa_index, 1),
-            sa_vm,
+            mask(sa_vm, 4),
             12,
             ubfx(sa_index, 1, 1),
             sa_n,
@@ -59718,10 +60110,10 @@ func (self *Program) SQDMULL(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if ubfx(sa_index, 3, 2) != sa_ts || sa_ts != sa_va || sa_va != sa_vb || sa_vb != sa_vm {
+        if ubfx(sa_index, 3, 2) != sa_ts || sa_ts != sa_va || sa_va != sa_vb || sa_vb != ubfx(sa_vm, 5, 2) {
             panic("aarch64: invalid combination of operands for SQDMULL")
         }
-        if mask(sa_index, 1) != sa_vm {
+        if mask(sa_index, 1) != ubfx(sa_vm, 4, 1) {
             panic("aarch64: invalid combination of operands for SQDMULL")
         }
         return p.setins(asisdelem(
@@ -59729,7 +60121,7 @@ func (self *Program) SQDMULL(v0, v1, v2 interface{}) *Instruction {
             ubfx(sa_index, 3, 2),
             ubfx(sa_index, 2, 1),
             mask(sa_index, 1),
-            sa_vm,
+            mask(sa_vm, 4),
             11,
             ubfx(sa_index, 1, 1),
             sa_n,
@@ -59763,10 +60155,13 @@ func (self *Program) SQDMULL(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if ubfx(sa_index, 3, 2) != sa_ta || sa_ta != ubfx(sa_tb, 1, 2) || ubfx(sa_tb, 1, 2) != sa_ts || sa_ts != sa_vm {
+        if ubfx(sa_index, 3, 2) != sa_ta ||
+           sa_ta != ubfx(sa_tb, 1, 2) ||
+           ubfx(sa_tb, 1, 2) != sa_ts ||
+           sa_ts != ubfx(sa_vm, 5, 2) {
             panic("aarch64: invalid combination of operands for SQDMULL")
         }
-        if mask(sa_index, 1) != sa_vm {
+        if mask(sa_index, 1) != ubfx(sa_vm, 4, 1) {
             panic("aarch64: invalid combination of operands for SQDMULL")
         }
         if mask(sa_tb, 1) != 0 {
@@ -59778,7 +60173,7 @@ func (self *Program) SQDMULL(v0, v1, v2 interface{}) *Instruction {
             ubfx(sa_index, 3, 2),
             ubfx(sa_index, 2, 1),
             mask(sa_index, 1),
-            sa_vm,
+            mask(sa_vm, 4),
             11,
             ubfx(sa_index, 1, 1),
             sa_vn,
@@ -59920,10 +60315,13 @@ func (self *Program) SQDMULL2(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if ubfx(sa_index, 3, 2) != sa_ta || sa_ta != ubfx(sa_tb, 1, 2) || ubfx(sa_tb, 1, 2) != sa_ts || sa_ts != sa_vm {
+        if ubfx(sa_index, 3, 2) != sa_ta ||
+           sa_ta != ubfx(sa_tb, 1, 2) ||
+           ubfx(sa_tb, 1, 2) != sa_ts ||
+           sa_ts != ubfx(sa_vm, 5, 2) {
             panic("aarch64: invalid combination of operands for SQDMULL2")
         }
-        if mask(sa_index, 1) != sa_vm {
+        if mask(sa_index, 1) != ubfx(sa_vm, 4, 1) {
             panic("aarch64: invalid combination of operands for SQDMULL2")
         }
         if mask(sa_tb, 1) != 1 {
@@ -59935,7 +60333,7 @@ func (self *Program) SQDMULL2(v0, v1, v2 interface{}) *Instruction {
             ubfx(sa_index, 3, 2),
             ubfx(sa_index, 2, 1),
             mask(sa_index, 1),
-            sa_vm,
+            mask(sa_vm, 4),
             11,
             ubfx(sa_index, 1, 1),
             sa_vn,
@@ -60115,10 +60513,10 @@ func (self *Program) SQRDMLAH(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if ubfx(sa_index, 3, 2) != ubfx(sa_t, 1, 2) || ubfx(sa_t, 1, 2) != sa_ts || sa_ts != sa_vm {
+        if ubfx(sa_index, 3, 2) != ubfx(sa_t, 1, 2) || ubfx(sa_t, 1, 2) != sa_ts || sa_ts != ubfx(sa_vm, 5, 2) {
             panic("aarch64: invalid combination of operands for SQRDMLAH")
         }
-        if mask(sa_index, 1) != sa_vm {
+        if mask(sa_index, 1) != ubfx(sa_vm, 4, 1) {
             panic("aarch64: invalid combination of operands for SQRDMLAH")
         }
         return p.setins(asimdelem(
@@ -60127,7 +60525,7 @@ func (self *Program) SQRDMLAH(v0, v1, v2 interface{}) *Instruction {
             ubfx(sa_index, 3, 2),
             ubfx(sa_index, 2, 1),
             mask(sa_index, 1),
-            sa_vm,
+            mask(sa_vm, 4),
             13,
             ubfx(sa_index, 1, 1),
             sa_vn,
@@ -60154,10 +60552,10 @@ func (self *Program) SQRDMLAH(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if ubfx(sa_index, 3, 2) != sa_ts || sa_ts != sa_v || sa_v != sa_vm {
+        if ubfx(sa_index, 3, 2) != sa_ts || sa_ts != sa_v || sa_v != ubfx(sa_vm, 5, 2) {
             panic("aarch64: invalid combination of operands for SQRDMLAH")
         }
-        if mask(sa_index, 1) != sa_vm {
+        if mask(sa_index, 1) != ubfx(sa_vm, 4, 1) {
             panic("aarch64: invalid combination of operands for SQRDMLAH")
         }
         return p.setins(asisdelem(
@@ -60165,7 +60563,7 @@ func (self *Program) SQRDMLAH(v0, v1, v2 interface{}) *Instruction {
             ubfx(sa_index, 3, 2),
             ubfx(sa_index, 2, 1),
             mask(sa_index, 1),
-            sa_vm,
+            mask(sa_vm, 4),
             13,
             ubfx(sa_index, 1, 1),
             sa_n,
@@ -60287,10 +60685,10 @@ func (self *Program) SQRDMLSH(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if ubfx(sa_index, 3, 2) != ubfx(sa_t, 1, 2) || ubfx(sa_t, 1, 2) != sa_ts || sa_ts != sa_vm {
+        if ubfx(sa_index, 3, 2) != ubfx(sa_t, 1, 2) || ubfx(sa_t, 1, 2) != sa_ts || sa_ts != ubfx(sa_vm, 5, 2) {
             panic("aarch64: invalid combination of operands for SQRDMLSH")
         }
-        if mask(sa_index, 1) != sa_vm {
+        if mask(sa_index, 1) != ubfx(sa_vm, 4, 1) {
             panic("aarch64: invalid combination of operands for SQRDMLSH")
         }
         return p.setins(asimdelem(
@@ -60299,7 +60697,7 @@ func (self *Program) SQRDMLSH(v0, v1, v2 interface{}) *Instruction {
             ubfx(sa_index, 3, 2),
             ubfx(sa_index, 2, 1),
             mask(sa_index, 1),
-            sa_vm,
+            mask(sa_vm, 4),
             15,
             ubfx(sa_index, 1, 1),
             sa_vn,
@@ -60326,10 +60724,10 @@ func (self *Program) SQRDMLSH(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if ubfx(sa_index, 3, 2) != sa_ts || sa_ts != sa_v || sa_v != sa_vm {
+        if ubfx(sa_index, 3, 2) != sa_ts || sa_ts != sa_v || sa_v != ubfx(sa_vm, 5, 2) {
             panic("aarch64: invalid combination of operands for SQRDMLSH")
         }
-        if mask(sa_index, 1) != sa_vm {
+        if mask(sa_index, 1) != ubfx(sa_vm, 4, 1) {
             panic("aarch64: invalid combination of operands for SQRDMLSH")
         }
         return p.setins(asisdelem(
@@ -60337,7 +60735,7 @@ func (self *Program) SQRDMLSH(v0, v1, v2 interface{}) *Instruction {
             ubfx(sa_index, 3, 2),
             ubfx(sa_index, 2, 1),
             mask(sa_index, 1),
-            sa_vm,
+            mask(sa_vm, 4),
             15,
             ubfx(sa_index, 1, 1),
             sa_n,
@@ -60458,10 +60856,10 @@ func (self *Program) SQRDMULH(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if ubfx(sa_index, 3, 2) != ubfx(sa_t, 1, 2) || ubfx(sa_t, 1, 2) != sa_ts || sa_ts != sa_vm {
+        if ubfx(sa_index, 3, 2) != ubfx(sa_t, 1, 2) || ubfx(sa_t, 1, 2) != sa_ts || sa_ts != ubfx(sa_vm, 5, 2) {
             panic("aarch64: invalid combination of operands for SQRDMULH")
         }
-        if mask(sa_index, 1) != sa_vm {
+        if mask(sa_index, 1) != ubfx(sa_vm, 4, 1) {
             panic("aarch64: invalid combination of operands for SQRDMULH")
         }
         return p.setins(asimdelem(
@@ -60470,7 +60868,7 @@ func (self *Program) SQRDMULH(v0, v1, v2 interface{}) *Instruction {
             ubfx(sa_index, 3, 2),
             ubfx(sa_index, 2, 1),
             mask(sa_index, 1),
-            sa_vm,
+            mask(sa_vm, 4),
             13,
             ubfx(sa_index, 1, 1),
             sa_vn,
@@ -60496,10 +60894,10 @@ func (self *Program) SQRDMULH(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if ubfx(sa_index, 3, 2) != sa_ts || sa_ts != sa_v || sa_v != sa_vm {
+        if ubfx(sa_index, 3, 2) != sa_ts || sa_ts != sa_v || sa_v != ubfx(sa_vm, 5, 2) {
             panic("aarch64: invalid combination of operands for SQRDMULH")
         }
-        if mask(sa_index, 1) != sa_vm {
+        if mask(sa_index, 1) != ubfx(sa_vm, 4, 1) {
             panic("aarch64: invalid combination of operands for SQRDMULH")
         }
         return p.setins(asisdelem(
@@ -60507,7 +60905,7 @@ func (self *Program) SQRDMULH(v0, v1, v2 interface{}) *Instruction {
             ubfx(sa_index, 3, 2),
             ubfx(sa_index, 2, 1),
             mask(sa_index, 1),
-            sa_vm,
+            mask(sa_vm, 4),
             13,
             ubfx(sa_index, 1, 1),
             sa_n,
@@ -63341,7 +63739,7 @@ func (self *Program) SSUBW2(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) ST1(v0, v1 interface{}) *Instruction {
     p := self.alloc("ST1", 2, asm.Operands { v0, v1 })
     // ST1  { <Vt>.<T> }, [<Xn|SP>]
-    if isVec1(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isVec1(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
@@ -63360,7 +63758,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
         return p.setins(asisdlse(mask(sa_t, 1), 0, 7, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // ST1  { <Vt>.<T>, <Vt2>.<T> }, [<Xn|SP>]
-    if isVec2(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isVec2(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
@@ -63379,7 +63777,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
         return p.setins(asisdlse(mask(sa_t, 1), 0, 10, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // ST1  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T> }, [<Xn|SP>]
-    if isVec3(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isVec3(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
@@ -63398,7 +63796,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
         return p.setins(asisdlse(mask(sa_t, 1), 0, 6, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // ST1  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T>, <Vt4>.<T> }, [<Xn|SP>]
-    if isVec4(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isVec4(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
@@ -63595,12 +63993,22 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        moffs(v1) == 0 &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlso(ubfx(sa_index, 3, 1), 0, 0, 0, 0, ubfx(sa_index, 2, 1), mask(sa_index, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlso(
+            ubfx(sa_index, 3, 1),
+            0,
+            0,
+            0,
+            0,
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 2),
+            sa_xn_sp,
+            sa_vt,
+        ))
     }
     // ST1  { <Vt>.D }[<index>], [<Xn|SP>]
     if isIdxVec1(v0) &&
@@ -63609,7 +64017,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        moffs(v1) == 0 &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_1 := uint32(v0.(IndexedVector).Index())
@@ -63623,7 +64031,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        moffs(v1) == 0 &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_2 := uint32(v0.(IndexedVector).Index())
@@ -63647,7 +64055,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        moffs(v1) == 0 &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
@@ -63666,7 +64074,17 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlsop(ubfx(sa_index, 3, 1), 0, 0, 31, 0, ubfx(sa_index, 2, 1), mask(sa_index, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(
+            ubfx(sa_index, 3, 1),
+            0,
+            0,
+            31,
+            0,
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 2),
+            sa_xn_sp,
+            sa_vt,
+        ))
     }
     // ST1  { <Vt>.B }[<index>], [<Xn|SP>], <Xm>
     if isIdxVec1(v0) &&
@@ -63847,7 +64265,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
 func (self *Program) ST2(v0, v1 interface{}) *Instruction {
     p := self.alloc("ST2", 2, asm.Operands { v0, v1 })
     // ST2  { <Vt>.<T>, <Vt2>.<T> }, [<Xn|SP>]
-    if isVec2(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isVec2(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
@@ -63912,12 +64330,22 @@ func (self *Program) ST2(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        moffs(v1) == 0 &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlso(ubfx(sa_index, 3, 1), 0, 1, 0, 0, ubfx(sa_index, 2, 1), mask(sa_index, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlso(
+            ubfx(sa_index, 3, 1),
+            0,
+            1,
+            0,
+            0,
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 2),
+            sa_xn_sp,
+            sa_vt,
+        ))
     }
     // ST2  { <Vt>.D, <Vt2>.D }[<index>], [<Xn|SP>]
     if isIdxVec2(v0) &&
@@ -63926,7 +64354,7 @@ func (self *Program) ST2(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        moffs(v1) == 0 &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_1 := uint32(v0.(IndexedVector).Index())
@@ -63940,7 +64368,7 @@ func (self *Program) ST2(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        moffs(v1) == 0 &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_2 := uint32(v0.(IndexedVector).Index())
@@ -63964,7 +64392,7 @@ func (self *Program) ST2(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        moffs(v1) == 0 &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
@@ -63983,7 +64411,17 @@ func (self *Program) ST2(v0, v1 interface{}) *Instruction {
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlsop(ubfx(sa_index, 3, 1), 0, 1, 31, 0, ubfx(sa_index, 2, 1), mask(sa_index, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(
+            ubfx(sa_index, 3, 1),
+            0,
+            1,
+            31,
+            0,
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 2),
+            sa_xn_sp,
+            sa_vt,
+        ))
     }
     // ST2  { <Vt>.B, <Vt2>.B }[<index>], [<Xn|SP>], <Xm>
     if isIdxVec2(v0) &&
@@ -64140,7 +64578,7 @@ func (self *Program) ST2(v0, v1 interface{}) *Instruction {
 func (self *Program) ST2G(v0, v1 interface{}) *Instruction {
     p := self.alloc("ST2G", 2, asm.Operands { v0, v1 })
     // ST2G  <Xt|SP>, [<Xn|SP>{, #<simm>}]
-    if isXrOrSP(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isXrOrSP(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         self.Arch.Require(FEAT_MTE)
         p.Domain = asm.DomainGeneric
         sa_xt_sp := uint32(v0.(asm.Register).ID())
@@ -64225,7 +64663,7 @@ func (self *Program) ST2G(v0, v1 interface{}) *Instruction {
 func (self *Program) ST3(v0, v1 interface{}) *Instruction {
     p := self.alloc("ST3", 2, asm.Operands { v0, v1 })
     // ST3  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T> }, [<Xn|SP>]
-    if isVec3(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isVec3(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
@@ -64290,12 +64728,22 @@ func (self *Program) ST3(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        moffs(v1) == 0 &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlso(ubfx(sa_index, 3, 1), 0, 0, 0, 1, ubfx(sa_index, 2, 1), mask(sa_index, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlso(
+            ubfx(sa_index, 3, 1),
+            0,
+            0,
+            0,
+            1,
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 2),
+            sa_xn_sp,
+            sa_vt,
+        ))
     }
     // ST3  { <Vt>.D, <Vt2>.D, <Vt3>.D }[<index>], [<Xn|SP>]
     if isIdxVec3(v0) &&
@@ -64304,7 +64752,7 @@ func (self *Program) ST3(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        moffs(v1) == 0 &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_1 := uint32(v0.(IndexedVector).Index())
@@ -64318,7 +64766,7 @@ func (self *Program) ST3(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        moffs(v1) == 0 &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_2 := uint32(v0.(IndexedVector).Index())
@@ -64342,7 +64790,7 @@ func (self *Program) ST3(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        moffs(v1) == 0 &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
@@ -64361,7 +64809,17 @@ func (self *Program) ST3(v0, v1 interface{}) *Instruction {
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlsop(ubfx(sa_index, 3, 1), 0, 0, 31, 1, ubfx(sa_index, 2, 1), mask(sa_index, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(
+            ubfx(sa_index, 3, 1),
+            0,
+            0,
+            31,
+            1,
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 2),
+            sa_xn_sp,
+            sa_vt,
+        ))
     }
     // ST3  { <Vt>.B, <Vt2>.B, <Vt3>.B }[<index>], [<Xn|SP>], <Xm>
     if isIdxVec3(v0) &&
@@ -64542,7 +65000,7 @@ func (self *Program) ST3(v0, v1 interface{}) *Instruction {
 func (self *Program) ST4(v0, v1 interface{}) *Instruction {
     p := self.alloc("ST4", 2, asm.Operands { v0, v1 })
     // ST4  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T>, <Vt4>.<T> }, [<Xn|SP>]
-    if isVec4(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isVec4(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
@@ -64607,12 +65065,22 @@ func (self *Program) ST4(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        moffs(v1) == 0 &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlso(ubfx(sa_index, 3, 1), 0, 1, 0, 1, ubfx(sa_index, 2, 1), mask(sa_index, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlso(
+            ubfx(sa_index, 3, 1),
+            0,
+            1,
+            0,
+            1,
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 2),
+            sa_xn_sp,
+            sa_vt,
+        ))
     }
     // ST4  { <Vt>.D, <Vt2>.D, <Vt3>.D, <Vt4>.D }[<index>], [<Xn|SP>]
     if isIdxVec4(v0) &&
@@ -64621,7 +65089,7 @@ func (self *Program) ST4(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        moffs(v1) == 0 &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_1 := uint32(v0.(IndexedVector).Index())
@@ -64635,7 +65103,7 @@ func (self *Program) ST4(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        moffs(v1) == 0 &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_2 := uint32(v0.(IndexedVector).Index())
@@ -64659,7 +65127,7 @@ func (self *Program) ST4(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        moffs(v1) == 0 &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
@@ -64678,7 +65146,17 @@ func (self *Program) ST4(v0, v1 interface{}) *Instruction {
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
         sa_xn_sp := uint32(mbase(v1).ID())
-        return p.setins(asisdlsop(ubfx(sa_index, 3, 1), 0, 1, 31, 1, ubfx(sa_index, 2, 1), mask(sa_index, 2), sa_xn_sp, sa_vt))
+        return p.setins(asisdlsop(
+            ubfx(sa_index, 3, 1),
+            0,
+            1,
+            31,
+            1,
+            ubfx(sa_index, 2, 1),
+            mask(sa_index, 2),
+            sa_xn_sp,
+            sa_vt,
+        ))
     }
     // ST4  { <Vt>.B, <Vt2>.B, <Vt3>.B, <Vt4>.B }[<index>], [<Xn|SP>], <Xm>
     if isIdxVec4(v0) &&
@@ -64834,7 +65312,7 @@ func (self *Program) ST64B(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         self.Arch.Require(FEAT_LS64)
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
@@ -64864,7 +65342,7 @@ func (self *Program) ST64BV(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LS64_V)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -64896,7 +65374,7 @@ func (self *Program) ST64BV0(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LS64_ACCDATA)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -64928,7 +65406,7 @@ func (self *Program) ST64BV0(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) STADD(v0, v1 interface{}) *Instruction {
     p := self.alloc("STADD", 2, asm.Operands { v0, v1 })
     // STADD  <Ws>, [<Xn|SP>]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -64936,7 +65414,7 @@ func (self *Program) STADD(v0, v1 interface{}) *Instruction {
         return p.setins(memop(2, 0, 0, 0, sa_ws, 0, 0, sa_xn_sp, 31))
     }
     // STADD  <Xs>, [<Xn|SP>]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -64966,7 +65444,7 @@ func (self *Program) STADD(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) STADDB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STADDB", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -64995,7 +65473,7 @@ func (self *Program) STADDB(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) STADDH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STADDH", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -65026,7 +65504,7 @@ func (self *Program) STADDH(v0, v1 interface{}) *Instruction {
 func (self *Program) STADDL(v0, v1 interface{}) *Instruction {
     p := self.alloc("STADDL", 2, asm.Operands { v0, v1 })
     // STADDL  <Ws>, [<Xn|SP>]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -65034,7 +65512,7 @@ func (self *Program) STADDL(v0, v1 interface{}) *Instruction {
         return p.setins(memop(2, 0, 0, 1, sa_ws, 0, 0, sa_xn_sp, 31))
     }
     // STADDL  <Xs>, [<Xn|SP>]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -65064,7 +65542,7 @@ func (self *Program) STADDL(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) STADDLB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STADDLB", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -65093,7 +65571,7 @@ func (self *Program) STADDLB(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) STADDLH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STADDLH", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -65125,7 +65603,7 @@ func (self *Program) STADDLH(v0, v1 interface{}) *Instruction {
 func (self *Program) STCLR(v0, v1 interface{}) *Instruction {
     p := self.alloc("STCLR", 2, asm.Operands { v0, v1 })
     // STCLR  <Ws>, [<Xn|SP>]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -65133,7 +65611,7 @@ func (self *Program) STCLR(v0, v1 interface{}) *Instruction {
         return p.setins(memop(2, 0, 0, 0, sa_ws, 0, 1, sa_xn_sp, 31))
     }
     // STCLR  <Xs>, [<Xn|SP>]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -65163,7 +65641,7 @@ func (self *Program) STCLR(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) STCLRB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STCLRB", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -65192,7 +65670,7 @@ func (self *Program) STCLRB(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) STCLRH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STCLRH", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -65224,7 +65702,7 @@ func (self *Program) STCLRH(v0, v1 interface{}) *Instruction {
 func (self *Program) STCLRL(v0, v1 interface{}) *Instruction {
     p := self.alloc("STCLRL", 2, asm.Operands { v0, v1 })
     // STCLRL  <Ws>, [<Xn|SP>]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -65232,7 +65710,7 @@ func (self *Program) STCLRL(v0, v1 interface{}) *Instruction {
         return p.setins(memop(2, 0, 0, 1, sa_ws, 0, 1, sa_xn_sp, 31))
     }
     // STCLRL  <Xs>, [<Xn|SP>]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -65262,7 +65740,7 @@ func (self *Program) STCLRL(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) STCLRLB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STCLRLB", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -65291,7 +65769,7 @@ func (self *Program) STCLRLB(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) STCLRLH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STCLRLH", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -65322,7 +65800,7 @@ func (self *Program) STCLRLH(v0, v1 interface{}) *Instruction {
 func (self *Program) STEOR(v0, v1 interface{}) *Instruction {
     p := self.alloc("STEOR", 2, asm.Operands { v0, v1 })
     // STEOR  <Ws>, [<Xn|SP>]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -65330,7 +65808,7 @@ func (self *Program) STEOR(v0, v1 interface{}) *Instruction {
         return p.setins(memop(2, 0, 0, 0, sa_ws, 0, 2, sa_xn_sp, 31))
     }
     // STEOR  <Xs>, [<Xn|SP>]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -65360,7 +65838,7 @@ func (self *Program) STEOR(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) STEORB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STEORB", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -65389,7 +65867,7 @@ func (self *Program) STEORB(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) STEORH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STEORH", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -65420,7 +65898,7 @@ func (self *Program) STEORH(v0, v1 interface{}) *Instruction {
 func (self *Program) STEORL(v0, v1 interface{}) *Instruction {
     p := self.alloc("STEORL", 2, asm.Operands { v0, v1 })
     // STEORL  <Ws>, [<Xn|SP>]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -65428,7 +65906,7 @@ func (self *Program) STEORL(v0, v1 interface{}) *Instruction {
         return p.setins(memop(2, 0, 0, 1, sa_ws, 0, 2, sa_xn_sp, 31))
     }
     // STEORL  <Xs>, [<Xn|SP>]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -65458,7 +65936,7 @@ func (self *Program) STEORL(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) STEORLB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STEORLB", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -65487,7 +65965,7 @@ func (self *Program) STEORLB(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) STEORLH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STEORLH", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -65516,7 +65994,7 @@ func (self *Program) STEORLH(v0, v1 interface{}) *Instruction {
 func (self *Program) STG(v0, v1 interface{}) *Instruction {
     p := self.alloc("STG", 2, asm.Operands { v0, v1 })
     // STG  <Xt|SP>, [<Xn|SP>{, #<simm>}]
-    if isXrOrSP(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isXrOrSP(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         self.Arch.Require(FEAT_MTE)
         p.Domain = asm.DomainGeneric
         sa_xt_sp := uint32(v0.(asm.Register).ID())
@@ -65575,7 +66053,7 @@ func (self *Program) STG(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) STGM(v0, v1 interface{}) *Instruction {
     p := self.alloc("STGM", 2, asm.Operands { v0, v1 })
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_MTE2)
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
@@ -65609,7 +66087,7 @@ func (self *Program) STGM(v0, v1 interface{}) *Instruction {
 func (self *Program) STGP(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("STGP", 3, asm.Operands { v0, v1, v2 })
     // STGP  <Xt1>, <Xt2>, [<Xn|SP>{, #<imm>}]
-    if isXr(v0) && isXr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == nil {
+    if isXr(v0) && isXr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == Basic {
         self.Arch.Require(FEAT_MTE)
         p.Domain = asm.DomainGeneric
         sa_xt1 := uint32(v0.(asm.Register).ID())
@@ -65720,7 +66198,7 @@ func (self *Program) STILP(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LRCPC3)
         p.Domain = asm.DomainGeneric
         sa_wt1 := uint32(v0.(asm.Register).ID())
@@ -65750,7 +66228,7 @@ func (self *Program) STILP(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LRCPC3)
         p.Domain = asm.DomainGeneric
         sa_xt1 := uint32(v0.(asm.Register).ID())
@@ -65788,7 +66266,7 @@ func (self *Program) STL1(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        moffs(v1) == 0 &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC3)
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
@@ -65820,7 +66298,7 @@ func (self *Program) STLLR(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         self.Arch.Require(FEAT_LOR)
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
@@ -65833,7 +66311,7 @@ func (self *Program) STLLR(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         self.Arch.Require(FEAT_LOR)
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
@@ -65863,7 +66341,7 @@ func (self *Program) STLLRB(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         self.Arch.Require(FEAT_LOR)
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
@@ -65892,7 +66370,7 @@ func (self *Program) STLLRH(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         self.Arch.Require(FEAT_LOR)
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
@@ -65941,7 +66419,7 @@ func (self *Program) STLR(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -65953,7 +66431,7 @@ func (self *Program) STLR(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -65982,7 +66460,7 @@ func (self *Program) STLRB(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -66010,7 +66488,7 @@ func (self *Program) STLRH(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        midx(v1) == nil &&
        (moffs(v1) == 0 || moffs(v1) == 0) &&
-       mext(v1) == nil {
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -66058,7 +66536,7 @@ func (self *Program) STLRH(v0, v1 interface{}) *Instruction {
 func (self *Program) STLUR(v0, v1 interface{}) *Instruction {
     p := self.alloc("STLUR", 2, asm.Operands { v0, v1 })
     // STLUR  <Bt>, [<Xn|SP>{, #<simm>}]
-    if isBr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isBr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC3)
         p.Domain = DomainFpSimd
         sa_bt := uint32(v0.(asm.Register).ID())
@@ -66067,7 +66545,7 @@ func (self *Program) STLUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldapstl_simd(0, 0, sa_simm, sa_xn_sp, sa_bt))
     }
     // STLUR  <Dt>, [<Xn|SP>{, #<simm>}]
-    if isDr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isDr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC3)
         p.Domain = DomainFpSimd
         sa_dt := uint32(v0.(asm.Register).ID())
@@ -66076,7 +66554,7 @@ func (self *Program) STLUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldapstl_simd(3, 0, sa_simm, sa_xn_sp, sa_dt))
     }
     // STLUR  <Ht>, [<Xn|SP>{, #<simm>}]
-    if isHr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isHr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC3)
         p.Domain = DomainFpSimd
         sa_ht := uint32(v0.(asm.Register).ID())
@@ -66085,7 +66563,7 @@ func (self *Program) STLUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldapstl_simd(1, 0, sa_simm, sa_xn_sp, sa_ht))
     }
     // STLUR  <Qt>, [<Xn|SP>{, #<simm>}]
-    if isQr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isQr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC3)
         p.Domain = DomainFpSimd
         sa_qt := uint32(v0.(asm.Register).ID())
@@ -66094,7 +66572,7 @@ func (self *Program) STLUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldapstl_simd(0, 2, sa_simm, sa_xn_sp, sa_qt))
     }
     // STLUR  <St>, [<Xn|SP>{, #<simm>}]
-    if isSr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isSr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC3)
         p.Domain = DomainFpSimd
         sa_st := uint32(v0.(asm.Register).ID())
@@ -66103,7 +66581,7 @@ func (self *Program) STLUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldapstl_simd(2, 0, sa_simm, sa_xn_sp, sa_st))
     }
     // STLUR  <Wt>, [<Xn|SP>{, #<simm>}]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC2)
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
@@ -66112,7 +66590,7 @@ func (self *Program) STLUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldapstl_unscaled(2, 0, sa_simm, sa_xn_sp, sa_wt))
     }
     // STLUR  <Xt>, [<Xn|SP>{, #<simm>}]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC2)
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
@@ -66142,7 +66620,7 @@ func (self *Program) STLUR(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) STLURB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STLURB", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC2)
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
@@ -66171,7 +66649,7 @@ func (self *Program) STLURB(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) STLURH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STLURH", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC2)
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
@@ -66215,7 +66693,7 @@ func (self *Program) STLXP(v0, v1, v2, v3 interface{}) *Instruction {
        isXrOrSP(mbase(v3)) &&
        midx(v3) == nil &&
        (moffs(v3) == 0 || moffs(v3) == 0) &&
-       mext(v3) == nil {
+       mext(v3) == Basic {
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt1 := uint32(v1.(asm.Register).ID())
@@ -66231,7 +66709,7 @@ func (self *Program) STLXP(v0, v1, v2, v3 interface{}) *Instruction {
        isXrOrSP(mbase(v3)) &&
        midx(v3) == nil &&
        (moffs(v3) == 0 || moffs(v3) == 0) &&
-       mext(v3) == nil {
+       mext(v3) == Basic {
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xt1 := uint32(v1.(asm.Register).ID())
@@ -66272,7 +66750,7 @@ func (self *Program) STLXR(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
@@ -66286,7 +66764,7 @@ func (self *Program) STLXR(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
@@ -66324,7 +66802,7 @@ func (self *Program) STLXRB(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
@@ -66361,7 +66839,7 @@ func (self *Program) STLXRH(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
@@ -66406,7 +66884,7 @@ func (self *Program) STLXRH(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) STNP(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("STNP", 3, asm.Operands { v0, v1, v2 })
     // STNP  <Dt1>, <Dt2>, [<Xn|SP>{, #<imm>}]
-    if isDr(v0) && isDr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == nil {
+    if isDr(v0) && isDr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == Basic {
         p.Domain = DomainFpSimd
         sa_dt1 := uint32(v0.(asm.Register).ID())
         sa_dt2 := uint32(v1.(asm.Register).ID())
@@ -66415,7 +66893,7 @@ func (self *Program) STNP(v0, v1, v2 interface{}) *Instruction {
         return p.setins(ldstnapair_offs(1, 1, 0, sa_imm, sa_dt2, sa_xn_sp, sa_dt1))
     }
     // STNP  <Qt1>, <Qt2>, [<Xn|SP>{, #<imm>}]
-    if isQr(v0) && isQr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == nil {
+    if isQr(v0) && isQr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == Basic {
         p.Domain = DomainFpSimd
         sa_qt1 := uint32(v0.(asm.Register).ID())
         sa_qt2 := uint32(v1.(asm.Register).ID())
@@ -66424,7 +66902,7 @@ func (self *Program) STNP(v0, v1, v2 interface{}) *Instruction {
         return p.setins(ldstnapair_offs(2, 1, 0, sa_imm_1, sa_qt2, sa_xn_sp, sa_qt1))
     }
     // STNP  <St1>, <St2>, [<Xn|SP>{, #<imm>}]
-    if isSr(v0) && isSr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == nil {
+    if isSr(v0) && isSr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == Basic {
         p.Domain = DomainFpSimd
         sa_st1 := uint32(v0.(asm.Register).ID())
         sa_st2 := uint32(v1.(asm.Register).ID())
@@ -66433,7 +66911,7 @@ func (self *Program) STNP(v0, v1, v2 interface{}) *Instruction {
         return p.setins(ldstnapair_offs(0, 1, 0, sa_imm_2, sa_st2, sa_xn_sp, sa_st1))
     }
     // STNP  <Wt1>, <Wt2>, [<Xn|SP>{, #<imm>}]
-    if isWr(v0) && isWr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == nil {
+    if isWr(v0) && isWr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt1 := uint32(v0.(asm.Register).ID())
         sa_wt2 := uint32(v1.(asm.Register).ID())
@@ -66442,7 +66920,7 @@ func (self *Program) STNP(v0, v1, v2 interface{}) *Instruction {
         return p.setins(ldstnapair_offs(0, 0, 0, sa_imm, sa_wt2, sa_xn_sp, sa_wt1))
     }
     // STNP  <Xt1>, <Xt2>, [<Xn|SP>{, #<imm>}]
-    if isXr(v0) && isXr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == nil {
+    if isXr(v0) && isXr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == Basic {
         p.Domain = asm.DomainGeneric
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
@@ -66498,7 +66976,7 @@ func (self *Program) STNP(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) STP(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("STP", 3, asm.Operands { v0, v1, v2 })
     // STP  <Dt1>, <Dt2>, [<Xn|SP>{, #<imm>}]
-    if isDr(v0) && isDr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == nil {
+    if isDr(v0) && isDr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == Basic {
         p.Domain = DomainFpSimd
         sa_dt1 := uint32(v0.(asm.Register).ID())
         sa_dt2 := uint32(v1.(asm.Register).ID())
@@ -66525,7 +67003,7 @@ func (self *Program) STP(v0, v1, v2 interface{}) *Instruction {
         return p.setins(ldstpair_pre(1, 1, 0, sa_imm_1, sa_dt2, sa_xn_sp, sa_dt1))
     }
     // STP  <Qt1>, <Qt2>, [<Xn|SP>{, #<imm>}]
-    if isQr(v0) && isQr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == nil {
+    if isQr(v0) && isQr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == Basic {
         p.Domain = DomainFpSimd
         sa_qt1 := uint32(v0.(asm.Register).ID())
         sa_qt2 := uint32(v1.(asm.Register).ID())
@@ -66552,7 +67030,7 @@ func (self *Program) STP(v0, v1, v2 interface{}) *Instruction {
         return p.setins(ldstpair_pre(2, 1, 0, sa_imm_3, sa_qt2, sa_xn_sp, sa_qt1))
     }
     // STP  <St1>, <St2>, [<Xn|SP>{, #<imm>}]
-    if isSr(v0) && isSr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == nil {
+    if isSr(v0) && isSr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == Basic {
         p.Domain = DomainFpSimd
         sa_st1 := uint32(v0.(asm.Register).ID())
         sa_st2 := uint32(v1.(asm.Register).ID())
@@ -66579,7 +67057,7 @@ func (self *Program) STP(v0, v1, v2 interface{}) *Instruction {
         return p.setins(ldstpair_pre(0, 1, 0, sa_imm_5, sa_st2, sa_xn_sp, sa_st1))
     }
     // STP  <Wt1>, <Wt2>, [<Xn|SP>{, #<imm>}]
-    if isWr(v0) && isWr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == nil {
+    if isWr(v0) && isWr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt1 := uint32(v0.(asm.Register).ID())
         sa_wt2 := uint32(v1.(asm.Register).ID())
@@ -66606,7 +67084,7 @@ func (self *Program) STP(v0, v1, v2 interface{}) *Instruction {
         return p.setins(ldstpair_pre(0, 0, 0, sa_imm_1, sa_wt2, sa_xn_sp, sa_wt1))
     }
     // STP  <Xt1>, <Xt2>, [<Xn|SP>{, #<imm>}]
-    if isXr(v0) && isXr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == nil {
+    if isXr(v0) && isXr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == Basic {
         p.Domain = asm.DomainGeneric
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
@@ -66730,7 +67208,7 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpre(0, 1, 0, sa_simm, sa_xn_sp, sa_bt))
     }
     // STR  <Bt>, [<Xn|SP>{, #<pimm>}]
-    if isBr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isBr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = DomainFpSimd
         sa_bt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -66754,7 +67232,7 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpre(3, 1, 0, sa_simm, sa_xn_sp, sa_dt))
     }
     // STR  <Dt>, [<Xn|SP>{, #<pimm>}]
-    if isDr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isDr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = DomainFpSimd
         sa_dt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -66778,7 +67256,7 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpre(1, 1, 0, sa_simm, sa_xn_sp, sa_ht))
     }
     // STR  <Ht>, [<Xn|SP>{, #<pimm>}]
-    if isHr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isHr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = DomainFpSimd
         sa_ht := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -66802,7 +67280,7 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpre(0, 1, 2, sa_simm, sa_xn_sp, sa_qt))
     }
     // STR  <Qt>, [<Xn|SP>{, #<pimm>}]
-    if isQr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isQr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = DomainFpSimd
         sa_qt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -66826,7 +67304,7 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpre(2, 1, 0, sa_simm, sa_xn_sp, sa_st))
     }
     // STR  <St>, [<Xn|SP>{, #<pimm>}]
-    if isSr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isSr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = DomainFpSimd
         sa_st := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -66850,7 +67328,7 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpre(2, 0, 0, sa_simm, sa_xn_sp, sa_wt))
     }
     // STR  <Wt>, [<Xn|SP>{, #<pimm>}]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -66874,7 +67352,7 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpre(3, 0, 0, sa_simm, sa_xn_sp, sa_xt))
     }
     // STR  <Xt>, [<Xn|SP>{, #<pimm>}]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -66887,7 +67365,7 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
-       (mext(v1) == nil || modt(mext(v1)) == ModLSL) {
+       (mext(v1) == Basic || modt(mext(v1)) == ModLSL) {
         p.Domain = DomainFpSimd
         var sa_amount uint32
         sa_bt := uint32(v0.(asm.Register).ID())
@@ -66920,7 +67398,7 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isWrOrXr(midx(v1)) &&
-       (mext(v1) == nil || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
+       (mext(v1) == Basic || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
         p.Domain = DomainFpSimd
         var sa_amount_1 uint32
         sa_extend_1 := uint32(0b011)
@@ -66949,7 +67427,7 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isWrOrXr(midx(v1)) &&
-       (mext(v1) == nil || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
+       (mext(v1) == Basic || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
         p.Domain = DomainFpSimd
         var sa_amount_2 uint32
         sa_extend_1 := uint32(0b011)
@@ -66978,7 +67456,7 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isWrOrXr(midx(v1)) &&
-       (mext(v1) == nil || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
+       (mext(v1) == Basic || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
         p.Domain = DomainFpSimd
         var sa_amount_3 uint32
         sa_extend_1 := uint32(0b011)
@@ -67007,7 +67485,7 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isWrOrXr(midx(v1)) &&
-       (mext(v1) == nil || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
+       (mext(v1) == Basic || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
         p.Domain = DomainFpSimd
         var sa_amount_4 uint32
         sa_extend_1 := uint32(0b011)
@@ -67036,7 +67514,7 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isWrOrXr(midx(v1)) &&
-       (mext(v1) == nil || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
+       (mext(v1) == Basic || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
         p.Domain = asm.DomainGeneric
         var sa_amount uint32
         sa_extend := uint32(0b011)
@@ -67065,7 +67543,7 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isWrOrXr(midx(v1)) &&
-       (mext(v1) == nil || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
+       (mext(v1) == Basic || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
         p.Domain = asm.DomainGeneric
         var sa_amount_1 uint32
         sa_extend := uint32(0b011)
@@ -67143,7 +67621,7 @@ func (self *Program) STRB(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpre(0, 0, 0, sa_simm, sa_xn_sp, sa_wt))
     }
     // STRB  <Wt>, [<Xn|SP>{, #<pimm>}]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -67156,7 +67634,7 @@ func (self *Program) STRB(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
-       (mext(v1) == nil || modt(mext(v1)) == ModLSL) {
+       (mext(v1) == Basic || modt(mext(v1)) == ModLSL) {
         p.Domain = asm.DomainGeneric
         var sa_amount uint32
         sa_wt := uint32(v0.(asm.Register).ID())
@@ -67237,7 +67715,7 @@ func (self *Program) STRH(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpre(1, 0, 0, sa_simm, sa_xn_sp, sa_wt))
     }
     // STRH  <Wt>, [<Xn|SP>{, #<pimm>}]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -67250,7 +67728,7 @@ func (self *Program) STRH(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isWrOrXr(midx(v1)) &&
-       (mext(v1) == nil || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
+       (mext(v1) == Basic || isMods(mext(v1), ModLSL, ModSXTW, ModSXTX, ModUXTW)) {
         p.Domain = asm.DomainGeneric
         var sa_amount uint32
         sa_extend := uint32(0b011)
@@ -67298,7 +67776,7 @@ func (self *Program) STRH(v0, v1 interface{}) *Instruction {
 func (self *Program) STSET(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSET", 2, asm.Operands { v0, v1 })
     // STSET  <Ws>, [<Xn|SP>]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -67306,7 +67784,7 @@ func (self *Program) STSET(v0, v1 interface{}) *Instruction {
         return p.setins(memop(2, 0, 0, 0, sa_ws, 0, 3, sa_xn_sp, 31))
     }
     // STSET  <Xs>, [<Xn|SP>]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -67336,7 +67814,7 @@ func (self *Program) STSET(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) STSETB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSETB", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -67365,7 +67843,7 @@ func (self *Program) STSETB(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) STSETH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSETH", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -67396,7 +67874,7 @@ func (self *Program) STSETH(v0, v1 interface{}) *Instruction {
 func (self *Program) STSETL(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSETL", 2, asm.Operands { v0, v1 })
     // STSETL  <Ws>, [<Xn|SP>]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -67404,7 +67882,7 @@ func (self *Program) STSETL(v0, v1 interface{}) *Instruction {
         return p.setins(memop(2, 0, 0, 1, sa_ws, 0, 3, sa_xn_sp, 31))
     }
     // STSETL  <Xs>, [<Xn|SP>]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -67434,7 +67912,7 @@ func (self *Program) STSETL(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) STSETLB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSETLB", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -67463,7 +67941,7 @@ func (self *Program) STSETLB(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) STSETLH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSETLH", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -67495,7 +67973,7 @@ func (self *Program) STSETLH(v0, v1 interface{}) *Instruction {
 func (self *Program) STSMAX(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSMAX", 2, asm.Operands { v0, v1 })
     // STSMAX  <Ws>, [<Xn|SP>]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -67503,7 +67981,7 @@ func (self *Program) STSMAX(v0, v1 interface{}) *Instruction {
         return p.setins(memop(2, 0, 0, 0, sa_ws, 0, 4, sa_xn_sp, 31))
     }
     // STSMAX  <Xs>, [<Xn|SP>]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -67533,7 +68011,7 @@ func (self *Program) STSMAX(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) STSMAXB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSMAXB", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -67563,7 +68041,7 @@ func (self *Program) STSMAXB(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) STSMAXH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSMAXH", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -67595,7 +68073,7 @@ func (self *Program) STSMAXH(v0, v1 interface{}) *Instruction {
 func (self *Program) STSMAXL(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSMAXL", 2, asm.Operands { v0, v1 })
     // STSMAXL  <Ws>, [<Xn|SP>]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -67603,7 +68081,7 @@ func (self *Program) STSMAXL(v0, v1 interface{}) *Instruction {
         return p.setins(memop(2, 0, 0, 1, sa_ws, 0, 4, sa_xn_sp, 31))
     }
     // STSMAXL  <Xs>, [<Xn|SP>]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -67633,7 +68111,7 @@ func (self *Program) STSMAXL(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) STSMAXLB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSMAXLB", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -67663,7 +68141,7 @@ func (self *Program) STSMAXLB(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) STSMAXLH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSMAXLH", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -67695,7 +68173,7 @@ func (self *Program) STSMAXLH(v0, v1 interface{}) *Instruction {
 func (self *Program) STSMIN(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSMIN", 2, asm.Operands { v0, v1 })
     // STSMIN  <Ws>, [<Xn|SP>]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -67703,7 +68181,7 @@ func (self *Program) STSMIN(v0, v1 interface{}) *Instruction {
         return p.setins(memop(2, 0, 0, 0, sa_ws, 0, 5, sa_xn_sp, 31))
     }
     // STSMIN  <Xs>, [<Xn|SP>]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -67733,7 +68211,7 @@ func (self *Program) STSMIN(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) STSMINB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSMINB", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -67763,7 +68241,7 @@ func (self *Program) STSMINB(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) STSMINH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSMINH", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -67795,7 +68273,7 @@ func (self *Program) STSMINH(v0, v1 interface{}) *Instruction {
 func (self *Program) STSMINL(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSMINL", 2, asm.Operands { v0, v1 })
     // STSMINL  <Ws>, [<Xn|SP>]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -67803,7 +68281,7 @@ func (self *Program) STSMINL(v0, v1 interface{}) *Instruction {
         return p.setins(memop(2, 0, 0, 1, sa_ws, 0, 5, sa_xn_sp, 31))
     }
     // STSMINL  <Xs>, [<Xn|SP>]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -67833,7 +68311,7 @@ func (self *Program) STSMINL(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) STSMINLB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSMINLB", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -67863,7 +68341,7 @@ func (self *Program) STSMINLB(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) STSMINLH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSMINLH", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -67899,7 +68377,7 @@ func (self *Program) STSMINLH(v0, v1 interface{}) *Instruction {
 func (self *Program) STTR(v0, v1 interface{}) *Instruction {
     p := self.alloc("STTR", 2, asm.Operands { v0, v1 })
     // STTR  <Wt>, [<Xn|SP>{, #<simm>}]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -67907,7 +68385,7 @@ func (self *Program) STTR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_unpriv(2, 0, 0, sa_simm, sa_xn_sp, sa_wt))
     }
     // STTR  <Xt>, [<Xn|SP>{, #<simm>}]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -67942,7 +68420,7 @@ func (self *Program) STTR(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) STTRB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STTRB", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -67976,7 +68454,7 @@ func (self *Program) STTRB(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) STTRH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STTRH", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -68008,7 +68486,7 @@ func (self *Program) STTRH(v0, v1 interface{}) *Instruction {
 func (self *Program) STUMAX(v0, v1 interface{}) *Instruction {
     p := self.alloc("STUMAX", 2, asm.Operands { v0, v1 })
     // STUMAX  <Ws>, [<Xn|SP>]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -68016,7 +68494,7 @@ func (self *Program) STUMAX(v0, v1 interface{}) *Instruction {
         return p.setins(memop(2, 0, 0, 0, sa_ws, 0, 6, sa_xn_sp, 31))
     }
     // STUMAX  <Xs>, [<Xn|SP>]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -68046,7 +68524,7 @@ func (self *Program) STUMAX(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) STUMAXB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STUMAXB", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -68076,7 +68554,7 @@ func (self *Program) STUMAXB(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) STUMAXH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STUMAXH", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -68108,7 +68586,7 @@ func (self *Program) STUMAXH(v0, v1 interface{}) *Instruction {
 func (self *Program) STUMAXL(v0, v1 interface{}) *Instruction {
     p := self.alloc("STUMAXL", 2, asm.Operands { v0, v1 })
     // STUMAXL  <Ws>, [<Xn|SP>]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -68116,7 +68594,7 @@ func (self *Program) STUMAXL(v0, v1 interface{}) *Instruction {
         return p.setins(memop(2, 0, 0, 1, sa_ws, 0, 6, sa_xn_sp, 31))
     }
     // STUMAXL  <Xs>, [<Xn|SP>]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -68146,7 +68624,7 @@ func (self *Program) STUMAXL(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) STUMAXLB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STUMAXLB", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -68176,7 +68654,7 @@ func (self *Program) STUMAXLB(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) STUMAXLH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STUMAXLH", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -68208,7 +68686,7 @@ func (self *Program) STUMAXLH(v0, v1 interface{}) *Instruction {
 func (self *Program) STUMIN(v0, v1 interface{}) *Instruction {
     p := self.alloc("STUMIN", 2, asm.Operands { v0, v1 })
     // STUMIN  <Ws>, [<Xn|SP>]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -68216,7 +68694,7 @@ func (self *Program) STUMIN(v0, v1 interface{}) *Instruction {
         return p.setins(memop(2, 0, 0, 0, sa_ws, 0, 7, sa_xn_sp, 31))
     }
     // STUMIN  <Xs>, [<Xn|SP>]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -68247,7 +68725,7 @@ func (self *Program) STUMIN(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) STUMINB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STUMINB", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -68277,7 +68755,7 @@ func (self *Program) STUMINB(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) STUMINH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STUMINH", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -68309,7 +68787,7 @@ func (self *Program) STUMINH(v0, v1 interface{}) *Instruction {
 func (self *Program) STUMINL(v0, v1 interface{}) *Instruction {
     p := self.alloc("STUMINL", 2, asm.Operands { v0, v1 })
     // STUMINL  <Ws>, [<Xn|SP>]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -68317,7 +68795,7 @@ func (self *Program) STUMINL(v0, v1 interface{}) *Instruction {
         return p.setins(memop(2, 0, 0, 1, sa_ws, 0, 7, sa_xn_sp, 31))
     }
     // STUMINL  <Xs>, [<Xn|SP>]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -68348,7 +68826,7 @@ func (self *Program) STUMINL(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) STUMINLB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STUMINLB", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -68378,7 +68856,7 @@ func (self *Program) STUMINLB(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) STUMINLH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STUMINLH", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -68420,7 +68898,7 @@ func (self *Program) STUMINLH(v0, v1 interface{}) *Instruction {
 func (self *Program) STUR(v0, v1 interface{}) *Instruction {
     p := self.alloc("STUR", 2, asm.Operands { v0, v1 })
     // STUR  <Bt>, [<Xn|SP>{, #<simm>}]
-    if isBr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isBr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = DomainFpSimd
         sa_bt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -68428,7 +68906,7 @@ func (self *Program) STUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_unscaled(0, 1, 0, sa_simm, sa_xn_sp, sa_bt))
     }
     // STUR  <Dt>, [<Xn|SP>{, #<simm>}]
-    if isDr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isDr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = DomainFpSimd
         sa_dt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -68436,7 +68914,7 @@ func (self *Program) STUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_unscaled(3, 1, 0, sa_simm, sa_xn_sp, sa_dt))
     }
     // STUR  <Ht>, [<Xn|SP>{, #<simm>}]
-    if isHr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isHr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = DomainFpSimd
         sa_ht := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -68444,7 +68922,7 @@ func (self *Program) STUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_unscaled(1, 1, 0, sa_simm, sa_xn_sp, sa_ht))
     }
     // STUR  <Qt>, [<Xn|SP>{, #<simm>}]
-    if isQr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isQr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = DomainFpSimd
         sa_qt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -68452,7 +68930,7 @@ func (self *Program) STUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_unscaled(0, 1, 2, sa_simm, sa_xn_sp, sa_qt))
     }
     // STUR  <St>, [<Xn|SP>{, #<simm>}]
-    if isSr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isSr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = DomainFpSimd
         sa_st := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -68460,7 +68938,7 @@ func (self *Program) STUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_unscaled(2, 1, 0, sa_simm, sa_xn_sp, sa_st))
     }
     // STUR  <Wt>, [<Xn|SP>{, #<simm>}]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -68468,7 +68946,7 @@ func (self *Program) STUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_unscaled(2, 0, 0, sa_simm, sa_xn_sp, sa_wt))
     }
     // STUR  <Xt>, [<Xn|SP>{, #<simm>}]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -68493,7 +68971,7 @@ func (self *Program) STUR(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) STURB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STURB", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -68517,7 +68995,7 @@ func (self *Program) STURB(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) STURH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STURH", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -68559,7 +69037,7 @@ func (self *Program) STXP(v0, v1, v2, v3 interface{}) *Instruction {
        isXrOrSP(mbase(v3)) &&
        midx(v3) == nil &&
        (moffs(v3) == 0 || moffs(v3) == 0) &&
-       mext(v3) == nil {
+       mext(v3) == Basic {
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt1 := uint32(v1.(asm.Register).ID())
@@ -68575,7 +69053,7 @@ func (self *Program) STXP(v0, v1, v2, v3 interface{}) *Instruction {
        isXrOrSP(mbase(v3)) &&
        midx(v3) == nil &&
        (moffs(v3) == 0 || moffs(v3) == 0) &&
-       mext(v3) == nil {
+       mext(v3) == Basic {
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xt1 := uint32(v1.(asm.Register).ID())
@@ -68614,7 +69092,7 @@ func (self *Program) STXR(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
@@ -68628,7 +69106,7 @@ func (self *Program) STXR(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_xt := uint32(v1.(asm.Register).ID())
@@ -68665,7 +69143,7 @@ func (self *Program) STXRB(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
@@ -68697,7 +69175,7 @@ func (self *Program) STXRH(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        (moffs(v2) == 0 || moffs(v2) == 0) &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
         sa_wt := uint32(v1.(asm.Register).ID())
@@ -68727,7 +69205,7 @@ func (self *Program) STXRH(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) STZ2G(v0, v1 interface{}) *Instruction {
     p := self.alloc("STZ2G", 2, asm.Operands { v0, v1 })
     // STZ2G  <Xt|SP>, [<Xn|SP>{, #<simm>}]
-    if isXrOrSP(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isXrOrSP(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         self.Arch.Require(FEAT_MTE)
         p.Domain = asm.DomainGeneric
         sa_xt_sp := uint32(v0.(asm.Register).ID())
@@ -68789,7 +69267,7 @@ func (self *Program) STZ2G(v0, v1 interface{}) *Instruction {
 func (self *Program) STZG(v0, v1 interface{}) *Instruction {
     p := self.alloc("STZG", 2, asm.Operands { v0, v1 })
     // STZG  <Xt|SP>, [<Xn|SP>{, #<simm>}]
-    if isXrOrSP(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == nil {
+    if isXrOrSP(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         self.Arch.Require(FEAT_MTE)
         p.Domain = asm.DomainGeneric
         sa_xt_sp := uint32(v0.(asm.Register).ID())
@@ -68849,7 +69327,7 @@ func (self *Program) STZG(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) STZGM(v0, v1 interface{}) *Instruction {
     p := self.alloc("STZGM", 2, asm.Operands { v0, v1 })
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == nil {
+    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && moffs(v1) == 0 && mext(v1) == Basic {
         self.Arch.Require(FEAT_MTE2)
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
@@ -68864,7 +69342,7 @@ func (self *Program) STZGM(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STZGM")
 }
 
-// SUB instruction have 8 forms from 4 categories:
+// SUB instruction have 10 forms from 4 categories:
 //
 // 1. Subtract (extended register)
 //
@@ -68879,7 +69357,9 @@ func (self *Program) STZGM(v0, v1 interface{}) *Instruction {
 // 2. Subtract (immediate)
 //
 //    SUB  <Wd|WSP>, <Wn|WSP>, #<imm>{, <shift>}
+//    SUB  <Wd|WSP>, <Wn|WSP>, <label>{, <shift>}
 //    SUB  <Xd|SP>, <Xn|SP>, #<imm>{, <shift>}
+//    SUB  <Xd|SP>, <Xn|SP>, <label>{, <shift>}
 //
 // Subtract (immediate) subtracts an optionally-shifted immediate value from a
 // register value, and writes the result to the destination register.
@@ -69006,6 +69486,36 @@ func (self *Program) SUB(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
         }
         return p.setins(addsub_imm(0, 1, 0, sa_shift, sa_imm, sa_wn_wsp, sa_wd_wsp))
     }
+    // SUB  <Wd|WSP>, <Wn|WSP>, <label>{, <shift>}
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isWrOrWSP(v0) &&
+       isWrOrWSP(v1) &&
+       isLabel(v2) &&
+       (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) {
+        p.Domain = asm.DomainGeneric
+        var sa_shift uint32
+        sa_wd_wsp := uint32(v0.(asm.Register).ID())
+        sa_wn_wsp := uint32(v1.(asm.Register).ID())
+        sa_label := v2.(*asm.Label)
+        if len(vv) == 1 {
+            switch {
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
+                default: panic("aarch64: invalid modifier flags")
+            }
+        }
+        return p.setenc(func(pc uintptr) uint32 {
+            return addsub_imm(
+                0,
+                1,
+                0,
+                sa_shift,
+                abs12(sa_label),
+                sa_wn_wsp,
+                sa_wd_wsp,
+            )
+        })
+    }
     // SUB  <Xd|SP>, <Xn|SP>, #<imm>{, <shift>}
     if (len(vv) == 0 || len(vv) == 1) &&
        isXrOrSP(v0) &&
@@ -69025,6 +69535,36 @@ func (self *Program) SUB(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
             }
         }
         return p.setins(addsub_imm(1, 1, 0, sa_shift, sa_imm, sa_xn_sp, sa_xd_sp))
+    }
+    // SUB  <Xd|SP>, <Xn|SP>, <label>{, <shift>}
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isXrOrSP(v0) &&
+       isXrOrSP(v1) &&
+       isLabel(v2) &&
+       (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) {
+        p.Domain = asm.DomainGeneric
+        var sa_shift uint32
+        sa_xd_sp := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(v1.(asm.Register).ID())
+        sa_label := v2.(*asm.Label)
+        if len(vv) == 1 {
+            switch {
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
+                default: panic("aarch64: invalid modifier flags")
+            }
+        }
+        return p.setenc(func(pc uintptr) uint32 {
+            return addsub_imm(
+                1,
+                1,
+                0,
+                sa_shift,
+                abs12(sa_label),
+                sa_xn_sp,
+                sa_xd_sp,
+            )
+        })
     }
     // SUB  <Wd>, <Wn>, <Wm>{, <shift> #<amount>}
     if (len(vv) == 0 || len(vv) == 1) &&
@@ -69340,7 +69880,7 @@ func (self *Program) SUBPS(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SUBPS")
 }
 
-// SUBS instruction have 6 forms from 3 categories:
+// SUBS instruction have 8 forms from 3 categories:
 //
 // 1. Subtract (extended register), setting flags
 //
@@ -69356,7 +69896,9 @@ func (self *Program) SUBPS(v0, v1, v2 interface{}) *Instruction {
 // 2. Subtract (immediate), setting flags
 //
 //    SUBS  <Wd>, <Wn|WSP>, #<imm>{, <shift>}
+//    SUBS  <Wd>, <Wn|WSP>, <label>{, <shift>}
 //    SUBS  <Xd>, <Xn|SP>, #<imm>{, <shift>}
+//    SUBS  <Xd>, <Xn|SP>, <label>{, <shift>}
 //
 // Subtract (immediate), setting flags, subtracts an optionally-shifted immediate
 // value from a register value, and writes the result to the destination register.
@@ -69471,6 +70013,36 @@ func (self *Program) SUBS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
         }
         return p.setins(addsub_imm(0, 1, 1, sa_shift, sa_imm, sa_wn_wsp, sa_wd))
     }
+    // SUBS  <Wd>, <Wn|WSP>, <label>{, <shift>}
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isWr(v0) &&
+       isWrOrWSP(v1) &&
+       isLabel(v2) &&
+       (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) {
+        p.Domain = asm.DomainGeneric
+        var sa_shift uint32
+        sa_wd := uint32(v0.(asm.Register).ID())
+        sa_wn_wsp := uint32(v1.(asm.Register).ID())
+        sa_label := v2.(*asm.Label)
+        if len(vv) == 1 {
+            switch {
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
+                default: panic("aarch64: invalid modifier flags")
+            }
+        }
+        return p.setenc(func(pc uintptr) uint32 {
+            return addsub_imm(
+                0,
+                1,
+                1,
+                sa_shift,
+                abs12(sa_label),
+                sa_wn_wsp,
+                sa_wd,
+            )
+        })
+    }
     // SUBS  <Xd>, <Xn|SP>, #<imm>{, <shift>}
     if (len(vv) == 0 || len(vv) == 1) &&
        isXr(v0) &&
@@ -69490,6 +70062,36 @@ func (self *Program) SUBS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
             }
         }
         return p.setins(addsub_imm(1, 1, 1, sa_shift, sa_imm, sa_xn_sp, sa_xd))
+    }
+    // SUBS  <Xd>, <Xn|SP>, <label>{, <shift>}
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isXr(v0) &&
+       isXrOrSP(v1) &&
+       isLabel(v2) &&
+       (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) {
+        p.Domain = asm.DomainGeneric
+        var sa_shift uint32
+        sa_xd := uint32(v0.(asm.Register).ID())
+        sa_xn_sp := uint32(v1.(asm.Register).ID())
+        sa_label := v2.(*asm.Label)
+        if len(vv) == 1 {
+            switch {
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
+                case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
+                default: panic("aarch64: invalid modifier flags")
+            }
+        }
+        return p.setenc(func(pc uintptr) uint32 {
+            return addsub_imm(
+                1,
+                1,
+                1,
+                sa_shift,
+                abs12(sa_label),
+                sa_xn_sp,
+                sa_xd,
+            )
+        })
     }
     // SUBS  <Wd>, <Wn>, <Wm>{, <shift> #<amount>}
     if (len(vv) == 0 || len(vv) == 1) &&
@@ -69587,7 +70189,18 @@ func (self *Program) SUDOT(v0, v1, v2 interface{}) *Instruction {
         if sa_ta != sa_tb {
             panic("aarch64: invalid combination of operands for SUDOT")
         }
-        return p.setins(asimdelem(sa_ta, 0, 0, mask(sa_index, 1), sa_vm, sa_vm, 15, ubfx(sa_index, 1, 1), sa_vn, sa_vd))
+        return p.setins(asimdelem(
+            sa_ta,
+            0,
+            0,
+            mask(sa_index, 1),
+            ubfx(sa_vm, 4, 1),
+            mask(sa_vm, 4),
+            15,
+            ubfx(sa_index, 1, 1),
+            sa_vn,
+            sa_vd,
+        ))
     }
     p.Free()
     panic("aarch64: invalid combination of operands for SUDOT")
@@ -69711,7 +70324,7 @@ func (self *Program) SWP(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -69726,7 +70339,7 @@ func (self *Program) SWP(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -69770,7 +70383,7 @@ func (self *Program) SWPA(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -69785,7 +70398,7 @@ func (self *Program) SWPA(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -69826,7 +70439,7 @@ func (self *Program) SWPAB(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -69867,7 +70480,7 @@ func (self *Program) SWPAH(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -69910,7 +70523,7 @@ func (self *Program) SWPAL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -69925,7 +70538,7 @@ func (self *Program) SWPAL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -69966,7 +70579,7 @@ func (self *Program) SWPALB(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -70007,7 +70620,7 @@ func (self *Program) SWPALH(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -70047,7 +70660,7 @@ func (self *Program) SWPB(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -70088,7 +70701,7 @@ func (self *Program) SWPH(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -70131,7 +70744,7 @@ func (self *Program) SWPL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -70146,7 +70759,7 @@ func (self *Program) SWPL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_xs := uint32(v0.(asm.Register).ID())
@@ -70187,7 +70800,7 @@ func (self *Program) SWPLB(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -70228,7 +70841,7 @@ func (self *Program) SWPLH(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE)
         p.Domain = asm.DomainGeneric
         sa_ws := uint32(v0.(asm.Register).ID())
@@ -70263,7 +70876,7 @@ func (self *Program) SWPP(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE128)
         p.Domain = asm.DomainGeneric
         sa_xt1 := uint32(v0.(asm.Register).ID())
@@ -70298,7 +70911,7 @@ func (self *Program) SWPPA(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE128)
         p.Domain = asm.DomainGeneric
         sa_xt1 := uint32(v0.(asm.Register).ID())
@@ -70333,7 +70946,7 @@ func (self *Program) SWPPAL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE128)
         p.Domain = asm.DomainGeneric
         sa_xt1 := uint32(v0.(asm.Register).ID())
@@ -70368,7 +70981,7 @@ func (self *Program) SWPPL(v0, v1, v2 interface{}) *Instruction {
        isXrOrSP(mbase(v2)) &&
        midx(v2) == nil &&
        moffs(v2) == 0 &&
-       mext(v2) == nil {
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_LSE128)
         p.Domain = asm.DomainGeneric
         sa_xt1 := uint32(v0.(asm.Register).ID())
@@ -70860,7 +71473,7 @@ func (self *Program) TBNZ(v0, v1, v2 interface{}) *Instruction {
                 mask(sa_imm, 1),
                 1,
                 ubfx(sa_imm, 1, 5),
-                uint32(sa_label.RelativeTo(pc)),
+                rel14(sa_label, pc),
                 sa_t,
             )
         })
@@ -71010,7 +71623,7 @@ func (self *Program) TBZ(v0, v1, v2 interface{}) *Instruction {
                 mask(sa_imm, 1),
                 0,
                 ubfx(sa_imm, 1, 5),
-                uint32(sa_label.RelativeTo(pc)),
+                rel14(sa_label, pc),
                 sa_t,
             )
         })
@@ -72754,7 +73367,18 @@ func (self *Program) UDOT(v0, v1, v2 interface{}) *Instruction {
         if sa_ta != sa_tb {
             panic("aarch64: invalid combination of operands for UDOT")
         }
-        return p.setins(asimdelem(sa_ta, 1, 2, mask(sa_index, 1), sa_vm, sa_vm, 14, ubfx(sa_index, 1, 1), sa_vn, sa_vd))
+        return p.setins(asimdelem(
+            sa_ta,
+            1,
+            2,
+            mask(sa_index, 1),
+            ubfx(sa_vm, 4, 1),
+            mask(sa_vm, 4),
+            14,
+            ubfx(sa_index, 1, 1),
+            sa_vn,
+            sa_vd,
+        ))
     }
     // UDOT  <Vd>.<Ta>, <Vn>.<Tb>, <Vm>.<Tb>
     if isVr(v0) &&
@@ -73359,10 +73983,13 @@ func (self *Program) UMLAL(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if ubfx(sa_index, 3, 2) != sa_ta || sa_ta != ubfx(sa_tb, 1, 2) || ubfx(sa_tb, 1, 2) != sa_ts || sa_ts != sa_vm {
+        if ubfx(sa_index, 3, 2) != sa_ta ||
+           sa_ta != ubfx(sa_tb, 1, 2) ||
+           ubfx(sa_tb, 1, 2) != sa_ts ||
+           sa_ts != ubfx(sa_vm, 5, 2) {
             panic("aarch64: invalid combination of operands for UMLAL")
         }
-        if mask(sa_index, 1) != sa_vm {
+        if mask(sa_index, 1) != ubfx(sa_vm, 4, 1) {
             panic("aarch64: invalid combination of operands for UMLAL")
         }
         if mask(sa_tb, 1) != 0 {
@@ -73374,7 +74001,7 @@ func (self *Program) UMLAL(v0, v1, v2 interface{}) *Instruction {
             ubfx(sa_index, 3, 2),
             ubfx(sa_index, 2, 1),
             mask(sa_index, 1),
-            sa_vm,
+            mask(sa_vm, 4),
             2,
             ubfx(sa_index, 1, 1),
             sa_vn,
@@ -73492,10 +74119,13 @@ func (self *Program) UMLAL2(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if ubfx(sa_index, 3, 2) != sa_ta || sa_ta != ubfx(sa_tb, 1, 2) || ubfx(sa_tb, 1, 2) != sa_ts || sa_ts != sa_vm {
+        if ubfx(sa_index, 3, 2) != sa_ta ||
+           sa_ta != ubfx(sa_tb, 1, 2) ||
+           ubfx(sa_tb, 1, 2) != sa_ts ||
+           sa_ts != ubfx(sa_vm, 5, 2) {
             panic("aarch64: invalid combination of operands for UMLAL2")
         }
-        if mask(sa_index, 1) != sa_vm {
+        if mask(sa_index, 1) != ubfx(sa_vm, 4, 1) {
             panic("aarch64: invalid combination of operands for UMLAL2")
         }
         if mask(sa_tb, 1) != 1 {
@@ -73507,7 +74137,7 @@ func (self *Program) UMLAL2(v0, v1, v2 interface{}) *Instruction {
             ubfx(sa_index, 3, 2),
             ubfx(sa_index, 2, 1),
             mask(sa_index, 1),
-            sa_vm,
+            mask(sa_vm, 4),
             2,
             ubfx(sa_index, 1, 1),
             sa_vn,
@@ -73625,10 +74255,13 @@ func (self *Program) UMLSL(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if ubfx(sa_index, 3, 2) != sa_ta || sa_ta != ubfx(sa_tb, 1, 2) || ubfx(sa_tb, 1, 2) != sa_ts || sa_ts != sa_vm {
+        if ubfx(sa_index, 3, 2) != sa_ta ||
+           sa_ta != ubfx(sa_tb, 1, 2) ||
+           ubfx(sa_tb, 1, 2) != sa_ts ||
+           sa_ts != ubfx(sa_vm, 5, 2) {
             panic("aarch64: invalid combination of operands for UMLSL")
         }
-        if mask(sa_index, 1) != sa_vm {
+        if mask(sa_index, 1) != ubfx(sa_vm, 4, 1) {
             panic("aarch64: invalid combination of operands for UMLSL")
         }
         if mask(sa_tb, 1) != 0 {
@@ -73640,7 +74273,7 @@ func (self *Program) UMLSL(v0, v1, v2 interface{}) *Instruction {
             ubfx(sa_index, 3, 2),
             ubfx(sa_index, 2, 1),
             mask(sa_index, 1),
-            sa_vm,
+            mask(sa_vm, 4),
             6,
             ubfx(sa_index, 1, 1),
             sa_vn,
@@ -73758,10 +74391,13 @@ func (self *Program) UMLSL2(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if ubfx(sa_index, 3, 2) != sa_ta || sa_ta != ubfx(sa_tb, 1, 2) || ubfx(sa_tb, 1, 2) != sa_ts || sa_ts != sa_vm {
+        if ubfx(sa_index, 3, 2) != sa_ta ||
+           sa_ta != ubfx(sa_tb, 1, 2) ||
+           ubfx(sa_tb, 1, 2) != sa_ts ||
+           sa_ts != ubfx(sa_vm, 5, 2) {
             panic("aarch64: invalid combination of operands for UMLSL2")
         }
-        if mask(sa_index, 1) != sa_vm {
+        if mask(sa_index, 1) != ubfx(sa_vm, 4, 1) {
             panic("aarch64: invalid combination of operands for UMLSL2")
         }
         if mask(sa_tb, 1) != 1 {
@@ -73773,7 +74409,7 @@ func (self *Program) UMLSL2(v0, v1, v2 interface{}) *Instruction {
             ubfx(sa_index, 3, 2),
             ubfx(sa_index, 2, 1),
             mask(sa_index, 1),
-            sa_vm,
+            mask(sa_vm, 4),
             6,
             ubfx(sa_index, 1, 1),
             sa_vn,
@@ -74073,10 +74709,13 @@ func (self *Program) UMULL(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if ubfx(sa_index, 3, 2) != sa_ta || sa_ta != ubfx(sa_tb, 1, 2) || ubfx(sa_tb, 1, 2) != sa_ts || sa_ts != sa_vm {
+        if ubfx(sa_index, 3, 2) != sa_ta ||
+           sa_ta != ubfx(sa_tb, 1, 2) ||
+           ubfx(sa_tb, 1, 2) != sa_ts ||
+           sa_ts != ubfx(sa_vm, 5, 2) {
             panic("aarch64: invalid combination of operands for UMULL")
         }
-        if mask(sa_index, 1) != sa_vm {
+        if mask(sa_index, 1) != ubfx(sa_vm, 4, 1) {
             panic("aarch64: invalid combination of operands for UMULL")
         }
         if mask(sa_tb, 1) != 0 {
@@ -74088,7 +74727,7 @@ func (self *Program) UMULL(v0, v1, v2 interface{}) *Instruction {
             ubfx(sa_index, 3, 2),
             ubfx(sa_index, 2, 1),
             mask(sa_index, 1),
-            sa_vm,
+            mask(sa_vm, 4),
             10,
             ubfx(sa_index, 1, 1),
             sa_vn,
@@ -74205,10 +74844,13 @@ func (self *Program) UMULL2(v0, v1, v2 interface{}) *Instruction {
             default: panic("aarch64: unreachable")
         }
         sa_index := uint32(vidxr(v2))
-        if ubfx(sa_index, 3, 2) != sa_ta || sa_ta != ubfx(sa_tb, 1, 2) || ubfx(sa_tb, 1, 2) != sa_ts || sa_ts != sa_vm {
+        if ubfx(sa_index, 3, 2) != sa_ta ||
+           sa_ta != ubfx(sa_tb, 1, 2) ||
+           ubfx(sa_tb, 1, 2) != sa_ts ||
+           sa_ts != ubfx(sa_vm, 5, 2) {
             panic("aarch64: invalid combination of operands for UMULL2")
         }
-        if mask(sa_index, 1) != sa_vm {
+        if mask(sa_index, 1) != ubfx(sa_vm, 4, 1) {
             panic("aarch64: invalid combination of operands for UMULL2")
         }
         if mask(sa_tb, 1) != 1 {
@@ -74220,7 +74862,7 @@ func (self *Program) UMULL2(v0, v1, v2 interface{}) *Instruction {
             ubfx(sa_index, 3, 2),
             ubfx(sa_index, 2, 1),
             mask(sa_index, 1),
-            sa_vm,
+            mask(sa_vm, 4),
             10,
             ubfx(sa_index, 1, 1),
             sa_vn,
@@ -75681,7 +76323,18 @@ func (self *Program) USDOT(v0, v1, v2 interface{}) *Instruction {
         if sa_ta != sa_tb {
             panic("aarch64: invalid combination of operands for USDOT")
         }
-        return p.setins(asimdelem(sa_ta, 0, 2, mask(sa_index, 1), sa_vm, sa_vm, 15, ubfx(sa_index, 1, 1), sa_vn, sa_vd))
+        return p.setins(asimdelem(
+            sa_ta,
+            0,
+            2,
+            mask(sa_index, 1),
+            ubfx(sa_vm, 4, 1),
+            mask(sa_vm, 4),
+            15,
+            ubfx(sa_index, 1, 1),
+            sa_vn,
+            sa_vd,
+        ))
     }
     // USDOT  <Vd>.<Ta>, <Vn>.<Tb>, <Vm>.<Tb>
     if isVr(v0) &&

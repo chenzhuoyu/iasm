@@ -2166,16 +2166,22 @@ def match_operands(form: InstrForm, argc: int) -> Iterator['And | Or | str']:
 
             if val.extend is None:
                 match val.index:
-                    case None   : yield 'mext(%s) == nil' % name
+                    case None   : yield 'mext(%s) == Basic' % name
                     case 'pre'  : yield 'mext(%s) == PreIndex' % name
                     case 'post' : yield 'mext(%s) == PostIndex' % name
                     case _      : raise RuntimeError('invalid memory index')
 
+            elif val.index is None:
+                yield from match_modifier(
+                    form,
+                    'mext(%s)' % name,
+                    val.extend[0],
+                    val.extend[1],
+                    'mext(%s) == Basic' % name,
+                )
+
             else:
-                if val.index is not None:
-                    raise RuntimeError('extension conflits with indexing')
-                else:
-                    yield from match_modifier(form, 'mext(%s)' % name, val.extend[0], val.extend[1], 'mext(%s) == nil' % name)
+                raise RuntimeError('extension conflits with indexing')
 
         elif isinstance(val, Mod):
             yield from match_modifier(form, name, val, bool(optcond), *optcond)
@@ -2227,8 +2233,7 @@ def match_operands(form: InstrForm, argc: int) -> Iterator['And | Or | str']:
     )
 
 BM_FORMAT   = '%s__bit_mask'
-REL_VARNAME = 'delta'
-REL_VARINIT = 'uint32(sa_label.RelativeTo(pc))'
+REF_VARNAME = 'refs'
 
 BR_ENUMS = {
     '(omitted)' : '_BrOmitted',
@@ -2266,6 +2271,40 @@ IMM_SPECIAL_ENCODER = {
     'MOV_MOVN_64_movewide': { 'hw:imm16': 'asMOVxImm(%s, 64, true)' },
     'MOV_MOVZ_32_movewide': { 'hw:imm16': 'asMOVxImm(%s, 32, false)' },
     'MOV_MOVZ_64_movewide': { 'hw:imm16': 'asMOVxImm(%s, 64, false)' },
+}
+
+REF_ADDRESS = {
+    'ADD_32_addsub_imm'       : 'abs12(sa_label)',
+    'ADD_64_addsub_imm'       : 'abs12(sa_label)',
+    'ADR_only_pcreladdr'      : 'reladr(sa_label, pc, false)',
+    'ADRP_only_pcreladdr'     : 'reladr(sa_label, pc, true)',
+    'ADDS_32S_addsub_imm'     : 'abs12(sa_label)',
+    'ADDS_64S_addsub_imm'     : 'abs12(sa_label)',
+    'B_only_branch_imm'       : 'rel26(sa_label, pc)',
+    'B_only_condbranch'       : 'rel19(sa_label, pc)',
+    'BC_only_condbranch'      : 'rel19(sa_label, pc)',
+    'BL_only_branch_imm'      : 'rel26(sa_label, pc)',
+    'CBNZ_32_compbranch'      : 'rel19(sa_label, pc)',
+    'CBNZ_64_compbranch'      : 'rel19(sa_label, pc)',
+    'CBZ_32_compbranch'       : 'rel19(sa_label, pc)',
+    'CBZ_64_compbranch'       : 'rel19(sa_label, pc)',
+    'CMN_ADDS_32S_addsub_imm' : 'abs12(sa_label)',
+    'CMN_ADDS_64S_addsub_imm' : 'abs12(sa_label)',
+    'CMP_SUBS_32S_addsub_imm' : 'abs12(sa_label)',
+    'CMP_SUBS_64S_addsub_imm' : 'abs12(sa_label)',
+    'LDR_D_loadlit'           : 'rel19(sa_label, pc)',
+    'LDR_Q_loadlit'           : 'rel19(sa_label, pc)',
+    'LDR_S_loadlit'           : 'rel19(sa_label, pc)',
+    'LDR_32_loadlit'          : 'rel19(sa_label, pc)',
+    'LDR_64_loadlit'          : 'rel19(sa_label, pc)',
+    'LDRSW_64_loadlit'        : 'rel19(sa_label, pc)',
+    'PRFM_P_loadlit'          : 'rel19(sa_label, pc)',
+    'SUB_32_addsub_imm'       : 'abs12(sa_label)',
+    'SUB_64_addsub_imm'       : 'abs12(sa_label)',
+    'SUBS_32S_addsub_imm'     : 'abs12(sa_label)',
+    'SUBS_64S_addsub_imm'     : 'abs12(sa_label)',
+    'TBNZ_only_testbranch'    : 'rel14(sa_label, pc)',
+    'TBZ_only_testbranch'     : 'rel14(sa_label, pc)',
 }
 
 XBFM_ENCODER = {
@@ -3093,10 +3132,56 @@ def preprocess_instr_forms(ftab: dict[str, list[InstrForm]]) -> Iterator[tuple[s
 
         match mod:
             case None:
-                if nomod:
-                    yield name, nomod
-                else:
+                if not nomod:
                     raise RuntimeError('non-encodable instruction ' + repr(name))
+
+                out = []
+                nomod.clear()
+
+                for form in forms:
+                    pos = None
+                    opv = None
+                    req = form.inst.operands.req
+                    opt = form.inst.operands.opt
+
+                    for i, op in enumerate(req):
+                        if isinstance(op, Imm) and form.fields[op.name].name == 'imm12':
+                            pos, opv = i, op
+                            break
+
+                    if pos is None:
+                        out.append(form)
+                        continue
+
+                    if opv is None:
+                        raise RuntimeError('invalid operands')
+
+                    new_operands = req[:]
+                    new_operands[pos] = Reg('sa_label')
+
+                    new_fields = dict(form.fields)
+                    new_fields['sa_label'] = new_fields.pop(opv.name)
+
+                    out.append(form)
+                    out.append(InstrForm(
+                        text   = form.text.replace('#<imm>', '<label>'),
+                        inst   = Instr(
+                            mnemonic = form.inst.mnemonic,
+                            operands = Seq(req = new_operands, opt = opt[:]),
+                            modifier = None,
+                        ),
+                        feat   = form.feat[:],
+                        bits   = form.bits,
+                        opts   = form.opts,
+                        args   = dict(form.args),
+                        enctab = form.enctab,
+                        fields = new_fields,
+                    ))
+
+                if not out:
+                    raise RuntimeError('non-encodable instruction ' + repr(name))
+                else:
+                    yield name, out
 
             case 'sa_2':
                 yield name, nomod + rebuild_upper_half('{2}', '', withmod, __ensure__Q = 0)
@@ -3400,9 +3485,7 @@ for mnemonic, forms in preprocess_instr_forms(formtab):
                 _, n = form.bits.refs[x]
                 nb -= n
 
-                if key in REG_CHECKS:
-                    fmt = '%s'
-                elif not nb:
+                if not nb:
                     fmt = 'mask(%%s, %d)' % n
                 else:
                     fmt = 'ubfx(%%s, %d, %d)' % (nb, n)
@@ -3591,13 +3674,15 @@ for mnemonic, forms in preprocess_instr_forms(formtab):
                 args[form.enctab.args.index(arg[10:])] = str(exp)
 
         deferred = ['sa_label' in v for v in args].count(True)
+        reldelta = REF_ADDRESS[form.enctab.name] if deferred else ''
+
         encoding = '%s(%s)' % (form.enctab.func, ', '.join(
-            v.replace('sa_label', REL_VARINIT if deferred == 1 else REL_VARNAME)
+            v.replace('sa_label', reldelta if deferred == 1 else REF_VARNAME)
             for v in args
         ))
 
         if not deferred:
-            if len(encoding) + cc.level * 4 + 10 <= MAX_LINE_WIDTH:
+            if len(encoding) + cc.level * 4 + 17 <= MAX_LINE_WIDTH:
                 cc.line('return p.setins(%s)' % encoding)
 
             else:
@@ -3611,7 +3696,7 @@ for mnemonic, forms in preprocess_instr_forms(formtab):
                 cc.line('))')
 
         elif deferred == 1:
-            if len(encoding) + cc.level * 4 + 45 <= MAX_LINE_WIDTH:
+            if len(encoding) + cc.level * 4 + 52 <= MAX_LINE_WIDTH:
                 cc.line('return p.setenc(func(pc uintptr) uint32 { return %s })' % encoding)
 
             else:
@@ -3621,7 +3706,7 @@ for mnemonic, forms in preprocess_instr_forms(formtab):
                 cc.indent()
 
                 for arg in args:
-                    cc.line(arg.replace('sa_label', REL_VARINIT) + ',')
+                    cc.line(arg.replace('sa_label', reldelta) + ',')
 
                 cc.dedent()
                 cc.line(')')
@@ -3631,7 +3716,7 @@ for mnemonic, forms in preprocess_instr_forms(formtab):
         else:
             cc.line('return p.setenc(func(pc uintptr) uint32 {')
             cc.indent()
-            cc.line('%s := %s' % (REL_VARNAME, REL_VARINIT))
+            cc.line('%s := %s' % (REF_VARNAME, reldelta))
 
             if len(encoding) + cc.level * 4 + 7 <= MAX_LINE_WIDTH:
                 cc.line('return %s' % encoding)
@@ -3641,7 +3726,7 @@ for mnemonic, forms in preprocess_instr_forms(formtab):
                 cc.indent()
 
                 for arg in args:
-                    cc.line(arg.replace('sa_label', REL_VARNAME) + ',')
+                    cc.line(arg.replace('sa_label', REF_VARNAME) + ',')
 
                 cc.dedent()
                 cc.line(')')

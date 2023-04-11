@@ -6,18 +6,18 @@ import (
     `github.com/chenzhuoyu/iasm/internal/rt`
 )
 
-func asInt32    (v interface{}) int32  { x, _ := asInt64(v)  ; return int32(x) }
-func asImm12    (v interface{}) uint32 { x, _ := asInt64(v)  ; return uint32(x & 0b111111111111) }
-func asUimm3    (v interface{}) uint32 { x, _ := asUint64(v) ; return uint32(x & 0b111) }
-func asUimm4    (v interface{}) uint32 { x, _ := asUint64(v) ; return uint32(x & 0b1111) }
-func asUimm5    (v interface{}) uint32 { x, _ := asUint64(v) ; return uint32(x & 0b11111) }
-func asUimm6    (v interface{}) uint32 { x, _ := asUint64(v) ; return uint32(x & 0b111111) }
-func asUimm7    (v interface{}) uint32 { x, _ := asUint64(v) ; return uint32(x & 0b1111111) }
-func asUimm8    (v interface{}) uint32 { x, _ := asUint64(v) ; return uint32(x & 0xff) }
-func asUimm16   (v interface{}) uint32 { x, _ := asUint64(v) ; return uint32(x & 0xffff) }
-func asMaskOp   (v interface{}) uint32 { x, _ := asUint64(v) ; return _BitMask(x).mask() }
-func asFpImm8   (v interface{}) uint32 { x, _ := asFloat8(v) ; return uint32(x) }
-func asFpScale  (v interface{}) uint32 { x, _ := asUint64(v) ; return uint32(64 - (x & 0b111111)) }
+func asInt32   (v interface{}) int32  { x, _ := asInt64(v)  ; return int32(x) }
+func asImm12   (v interface{}) uint32 { x, _ := asInt64(v)  ; return uint32(x & 0b111111111111) }
+func asUimm3   (v interface{}) uint32 { x, _ := asUint64(v) ; return uint32(x & 0b111) }
+func asUimm4   (v interface{}) uint32 { x, _ := asUint64(v) ; return uint32(x & 0b1111) }
+func asUimm5   (v interface{}) uint32 { x, _ := asUint64(v) ; return uint32(x & 0b11111) }
+func asUimm6   (v interface{}) uint32 { x, _ := asUint64(v) ; return uint32(x & 0b111111) }
+func asUimm7   (v interface{}) uint32 { x, _ := asUint64(v) ; return uint32(x & 0b1111111) }
+func asUimm8   (v interface{}) uint32 { x, _ := asUint64(v) ; return uint32(x & 0xff) }
+func asUimm16  (v interface{}) uint32 { x, _ := asUint64(v) ; return uint32(x & 0xffff) }
+func asMaskOp  (v interface{}) uint32 { x, _ := asUint64(v) ; return _BitMask(x).mask() }
+func asFpImm8  (v interface{}) uint32 { x, _ := asFloat8(v) ; return uint32(x) }
+func asFpScale (v interface{}) uint32 { x, _ := asUint64(v) ; return uint32(64 - (x & 0b111111)) }
 
 func asLit(v interface{}) int64 {
     if isSpecial(v) {

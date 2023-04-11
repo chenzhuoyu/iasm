@@ -59,19 +59,19 @@ func (self *Label) Retain() *Label {
     return self
 }
 
-func (self *Label) Evaluate() (int64, error) {
-    if self.Dest != nil {
-        return int64(self.Dest.PC), nil
+func (self *Label) Address() uintptr {
+    if self.Dest == nil {
+        panic("unresolved label: " + self.Name)
     } else {
-        return 0, errors.New("unresolved label: " + self.Name)
+        return self.Dest.PC
     }
 }
 
-func (self *Label) RelativeTo(pc uintptr) uintptr {
+func (self *Label) Evaluate() (int64, error) {
     if self.Dest == nil {
-        panic("aarch64: unresolved label: " + self.Name)
+        return 0, errors.New("unresolved label: " + self.Name)
     } else {
-        return self.Dest.PC - pc
+        return int64(self.Dest.PC), nil
     }
 }
 
