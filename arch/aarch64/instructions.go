@@ -32004,10 +32004,10 @@ func (self *Program) FMLSL2(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) FMOV(v0, v1 interface{}) *Instruction {
     p := self.alloc("FMOV", 2, asm.Operands { v0, v1 })
     // FMOV  <Vd>.2D, #<imm>
-    if isVr(v0) && vfmt(v0) == Vec2D && isUimm8(v1) {
+    if isVr(v0) && vfmt(v0) == Vec2D && isFpImm8(v1) {
         p.Domain = DomainAdvSimd
         sa_vd := uint32(v0.(asm.Register).ID())
-        sa_imm := asUimm8(v1)
+        sa_imm := asFpImm8(v1)
         return p.setins(asimdimm(
             1,
             1,
@@ -32025,7 +32025,7 @@ func (self *Program) FMOV(v0, v1 interface{}) *Instruction {
         ))
     }
     // FMOV  <Vd>.<T>, #<imm>
-    if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isUimm8(v1) {
+    if isVr(v0) && isVfmt(v0, Vec4H, Vec8H) && isFpImm8(v1) {
         self.Arch.Require(FEAT_FP16)
         p.Domain = DomainAdvSimd
         var sa_t_1 uint32
@@ -32035,7 +32035,7 @@ func (self *Program) FMOV(v0, v1 interface{}) *Instruction {
             case Vec8H: sa_t_1 = 0b1
             default: panic("aarch64: unreachable")
         }
-        sa_imm := asUimm8(v1)
+        sa_imm := asFpImm8(v1)
         return p.setins(asimdimm(
             sa_t_1,
             0,
@@ -32053,7 +32053,7 @@ func (self *Program) FMOV(v0, v1 interface{}) *Instruction {
         ))
     }
     // FMOV  <Vd>.<T>, #<imm>
-    if isVr(v0) && isVfmt(v0, Vec2S, Vec4S) && isUimm8(v1) {
+    if isVr(v0) && isVfmt(v0, Vec2S, Vec4S) && isFpImm8(v1) {
         p.Domain = DomainAdvSimd
         var sa_t uint32
         sa_vd := uint32(v0.(asm.Register).ID())
@@ -32062,7 +32062,7 @@ func (self *Program) FMOV(v0, v1 interface{}) *Instruction {
             case Vec4S: sa_t = 0b1
             default: panic("aarch64: unreachable")
         }
-        sa_imm := asUimm8(v1)
+        sa_imm := asFpImm8(v1)
         return p.setins(asimdimm(
             sa_t,
             0,
@@ -57621,21 +57621,21 @@ func (self *Program) SMAX(v0, v1, v2 interface{}) *Instruction {
         return p.setins(asimdsame(mask(sa_t, 1), 0, ubfx(sa_t, 1, 2), sa_vm, 12, sa_vn, sa_vd))
     }
     // SMAX  <Wd>, <Wn>, #<simm>
-    if isWr(v0) && isWr(v1) && isFpImm8(v2) {
+    if isWr(v0) && isWr(v1) && isImm8(v2) {
         self.Arch.Require(FEAT_CSSC)
         p.Domain = asm.DomainGeneric
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
-        sa_simm := asFpImm8(v2)
+        sa_simm := asImm8(v2)
         return p.setins(minmax_imm(0, 0, 0, 0, sa_simm, sa_wn, sa_wd))
     }
     // SMAX  <Xd>, <Xn>, #<simm>
-    if isXr(v0) && isXr(v1) && isFpImm8(v2) {
+    if isXr(v0) && isXr(v1) && isImm8(v2) {
         self.Arch.Require(FEAT_CSSC)
         p.Domain = asm.DomainGeneric
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
-        sa_simm := asFpImm8(v2)
+        sa_simm := asImm8(v2)
         return p.setins(minmax_imm(1, 0, 0, 0, sa_simm, sa_xn, sa_xd))
     }
     // SMAX  <Wd>, <Wn>, <Wm>
@@ -57846,21 +57846,21 @@ func (self *Program) SMIN(v0, v1, v2 interface{}) *Instruction {
         return p.setins(asimdsame(mask(sa_t, 1), 0, ubfx(sa_t, 1, 2), sa_vm, 13, sa_vn, sa_vd))
     }
     // SMIN  <Wd>, <Wn>, #<simm>
-    if isWr(v0) && isWr(v1) && isFpImm8(v2) {
+    if isWr(v0) && isWr(v1) && isImm8(v2) {
         self.Arch.Require(FEAT_CSSC)
         p.Domain = asm.DomainGeneric
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
-        sa_simm := asFpImm8(v2)
+        sa_simm := asImm8(v2)
         return p.setins(minmax_imm(0, 0, 0, 2, sa_simm, sa_wn, sa_wd))
     }
     // SMIN  <Xd>, <Xn>, #<simm>
-    if isXr(v0) && isXr(v1) && isFpImm8(v2) {
+    if isXr(v0) && isXr(v1) && isImm8(v2) {
         self.Arch.Require(FEAT_CSSC)
         p.Domain = asm.DomainGeneric
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
-        sa_simm := asFpImm8(v2)
+        sa_simm := asImm8(v2)
         return p.setins(minmax_imm(1, 0, 0, 2, sa_simm, sa_xn, sa_xd))
     }
     // SMIN  <Wd>, <Wn>, <Wm>
@@ -73589,21 +73589,21 @@ func (self *Program) UMAX(v0, v1, v2 interface{}) *Instruction {
         return p.setins(asimdsame(mask(sa_t, 1), 1, ubfx(sa_t, 1, 2), sa_vm, 12, sa_vn, sa_vd))
     }
     // UMAX  <Wd>, <Wn>, #<uimm>
-    if isWr(v0) && isWr(v1) && isFpImm8(v2) {
+    if isWr(v0) && isWr(v1) && isUimm8(v2) {
         self.Arch.Require(FEAT_CSSC)
         p.Domain = asm.DomainGeneric
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
-        sa_uimm := asFpImm8(v2)
+        sa_uimm := asUimm8(v2)
         return p.setins(minmax_imm(0, 0, 0, 1, sa_uimm, sa_wn, sa_wd))
     }
     // UMAX  <Xd>, <Xn>, #<uimm>
-    if isXr(v0) && isXr(v1) && isFpImm8(v2) {
+    if isXr(v0) && isXr(v1) && isUimm8(v2) {
         self.Arch.Require(FEAT_CSSC)
         p.Domain = asm.DomainGeneric
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
-        sa_uimm := asFpImm8(v2)
+        sa_uimm := asUimm8(v2)
         return p.setins(minmax_imm(1, 0, 0, 1, sa_uimm, sa_xn, sa_xd))
     }
     // UMAX  <Wd>, <Wn>, <Wm>
@@ -73781,21 +73781,21 @@ func (self *Program) UMIN(v0, v1, v2 interface{}) *Instruction {
         return p.setins(asimdsame(mask(sa_t, 1), 1, ubfx(sa_t, 1, 2), sa_vm, 13, sa_vn, sa_vd))
     }
     // UMIN  <Wd>, <Wn>, #<uimm>
-    if isWr(v0) && isWr(v1) && isFpImm8(v2) {
+    if isWr(v0) && isWr(v1) && isUimm8(v2) {
         self.Arch.Require(FEAT_CSSC)
         p.Domain = asm.DomainGeneric
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
-        sa_uimm := asFpImm8(v2)
+        sa_uimm := asUimm8(v2)
         return p.setins(minmax_imm(0, 0, 0, 3, sa_uimm, sa_wn, sa_wd))
     }
     // UMIN  <Xd>, <Xn>, #<uimm>
-    if isXr(v0) && isXr(v1) && isFpImm8(v2) {
+    if isXr(v0) && isXr(v1) && isUimm8(v2) {
         self.Arch.Require(FEAT_CSSC)
         p.Domain = asm.DomainGeneric
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
-        sa_uimm := asFpImm8(v2)
+        sa_uimm := asUimm8(v2)
         return p.setins(minmax_imm(1, 0, 0, 3, sa_uimm, sa_xn, sa_xd))
     }
     // UMIN  <Wd>, <Wn>, <Wm>

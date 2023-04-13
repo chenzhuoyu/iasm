@@ -1586,7 +1586,6 @@ IMM_CHECKS = {
     'b40:b5'                          : 'isUimm6(%s)',
     'imm5'                            : 'isUimm5(%s)',
     'imm6'                            : 'isUimm6(%s)',
-    'imm8'                            : 'isFpImm8(%s)',
     'imm12'                           : 'isImm12(%s)',
     'imm16'                           : 'isUimm16(%s)',
     'immh:immb'                       : 'isFpBits(%s)',
@@ -1603,10 +1602,24 @@ IMM_CHECKS = {
 }
 
 IMM_SPECIAL_CHECKS = {
-    'MOV_MOVN_32_movewide': { 'hw:imm16': 'isMOVxImm(%s, 32, true)' },
-    'MOV_MOVN_64_movewide': { 'hw:imm16': 'isMOVxImm(%s, 64, true)' },
-    'MOV_MOVZ_32_movewide': { 'hw:imm16': 'isMOVxImm(%s, 32, false)' },
-    'MOV_MOVZ_64_movewide': { 'hw:imm16': 'isMOVxImm(%s, 64, false)' },
+    'MOV_MOVN_32_movewide' : { 'hw:imm16'        : 'isMOVxImm(%s, 32, true)' },
+    'MOV_MOVN_64_movewide' : { 'hw:imm16'        : 'isMOVxImm(%s, 64, true)' },
+    'MOV_MOVZ_32_movewide' : { 'hw:imm16'        : 'isMOVxImm(%s, 32, false)' },
+    'MOV_MOVZ_64_movewide' : { 'hw:imm16'        : 'isMOVxImm(%s, 64, false)' },
+    'FMOV_D_floatimm'      : { 'imm8'            : 'isFpImm8(%s)' },
+    'FMOV_H_floatimm'      : { 'imm8'            : 'isFpImm8(%s)' },
+    'FMOV_S_floatimm'      : { 'imm8'            : 'isFpImm8(%s)' },
+    'FMOV_asimdimm_D2_d'   : { 'a:b:c:d:e:f:g:h' : 'isFpImm8(%s)' },
+    'FMOV_asimdimm_H_h'    : { 'a:b:c:d:e:f:g:h' : 'isFpImm8(%s)' },
+    'FMOV_asimdimm_S_s'    : { 'a:b:c:d:e:f:g:h' : 'isFpImm8(%s)' },
+    'SMAX_32_minmax_imm'   : { 'imm8'            : 'isImm8(%s)' },
+    'SMAX_64_minmax_imm'   : { 'imm8'            : 'isImm8(%s)' },
+    'SMIN_32_minmax_imm'   : { 'imm8'            : 'isImm8(%s)' },
+    'SMIN_64_minmax_imm'   : { 'imm8'            : 'isImm8(%s)' },
+    'UMAX_32U_minmax_imm'  : { 'imm8'            : 'isUimm8(%s)' },
+    'UMAX_64U_minmax_imm'  : { 'imm8'            : 'isUimm8(%s)' },
+    'UMIN_32U_minmax_imm'  : { 'imm8'            : 'isUimm8(%s)' },
+    'UMIN_64U_minmax_imm'  : { 'imm8'            : 'isUimm8(%s)' },
 }
 
 REG_CHECKS = {
@@ -2251,7 +2264,6 @@ IMM_ENCODER = {
     'b40:b5'                          : 'asUimm6(%s)',
     'imm5'                            : 'asUimm5(%s)',
     'imm6'                            : 'asUimm6(%s)',
-    'imm8'                            : 'asFpImm8(%s)',
     'imm12'                           : 'asImm12(%s)',
     'imm16'                           : 'asUimm16(%s)',
     'immr'                            : 'asUimm6(%s)',
@@ -2267,10 +2279,24 @@ IMM_ENCODER = {
 }
 
 IMM_SPECIAL_ENCODER = {
-    'MOV_MOVN_32_movewide': { 'hw:imm16': 'asMOVxImm(%s, 32, true)' },
-    'MOV_MOVN_64_movewide': { 'hw:imm16': 'asMOVxImm(%s, 64, true)' },
-    'MOV_MOVZ_32_movewide': { 'hw:imm16': 'asMOVxImm(%s, 32, false)' },
-    'MOV_MOVZ_64_movewide': { 'hw:imm16': 'asMOVxImm(%s, 64, false)' },
+    'MOV_MOVN_32_movewide' : { 'hw:imm16'        : 'asMOVxImm(%s, 32, true)' },
+    'MOV_MOVN_64_movewide' : { 'hw:imm16'        : 'asMOVxImm(%s, 64, true)' },
+    'MOV_MOVZ_32_movewide' : { 'hw:imm16'        : 'asMOVxImm(%s, 32, false)' },
+    'MOV_MOVZ_64_movewide' : { 'hw:imm16'        : 'asMOVxImm(%s, 64, false)' },
+    'FMOV_D_floatimm'      : { 'imm8'            : 'asFpImm8(%s)' },
+    'FMOV_H_floatimm'      : { 'imm8'            : 'asFpImm8(%s)' },
+    'FMOV_S_floatimm'      : { 'imm8'            : 'asFpImm8(%s)' },
+    'FMOV_asimdimm_D2_d'   : { 'a:b:c:d:e:f:g:h' : 'asFpImm8(%s)' },
+    'FMOV_asimdimm_H_h'    : { 'a:b:c:d:e:f:g:h' : 'asFpImm8(%s)' },
+    'FMOV_asimdimm_S_s'    : { 'a:b:c:d:e:f:g:h' : 'asFpImm8(%s)' },
+    'SMAX_32_minmax_imm'   : { 'imm8'            : 'asImm8(%s)' },
+    'SMAX_64_minmax_imm'   : { 'imm8'            : 'asImm8(%s)' },
+    'SMIN_32_minmax_imm'   : { 'imm8'            : 'asImm8(%s)' },
+    'SMIN_64_minmax_imm'   : { 'imm8'            : 'asImm8(%s)' },
+    'UMAX_32U_minmax_imm'  : { 'imm8'            : 'asUimm8(%s)' },
+    'UMAX_64U_minmax_imm'  : { 'imm8'            : 'asUimm8(%s)' },
+    'UMIN_32U_minmax_imm'  : { 'imm8'            : 'asUimm8(%s)' },
+    'UMIN_64U_minmax_imm'  : { 'imm8'            : 'asUimm8(%s)' },
 }
 
 REF_ADDRESS = {

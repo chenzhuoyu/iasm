@@ -387,6 +387,9 @@ const (
     // OpImm means the operand is an immediate value.
     OpImm OperandKind = 1 << iota
 
+    // OpFpImm means the operand is a floating-point immediate value.
+    OpFpImm
+
     // OpReg means the operand is a register.
     OpReg
 
@@ -426,6 +429,7 @@ type ParsedLabel struct {
 type ParsedOperand struct {
     Op     OperandKind
     Imm    int64
+    FpImm  float64
     Reg    Register
     Label  ParsedLabel
     Memory MemoryAddress
@@ -459,6 +463,14 @@ func (self *ParsedInstruction) Mem(v MemoryAddress) {
     self.Operands = append(self.Operands, ParsedOperand {
         Op     : OpMem,
         Memory : v,
+    })
+}
+
+// FpImm adds a floating-point immediate operand to this instruction.
+func (self *ParsedInstruction) FpImm(v float64) {
+    self.Operands = append(self.Operands, ParsedOperand {
+        Op    : OpFpImm,
+        FpImm : v,
     })
 }
 

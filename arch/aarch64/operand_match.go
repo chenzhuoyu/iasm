@@ -8,6 +8,11 @@ import (
     `github.com/chenzhuoyu/iasm/internal/rt`
 )
 
+const (
+    _MaxInt12 = 2047
+    _MinInt12 = -2048
+)
+
 const _IntMask =
     (1 << reflect.Int  ) |
     (1 << reflect.Int8 ) |
@@ -244,17 +249,17 @@ func isIdxVec2      (v interface{}) bool { x, f := v.(IndexedVector) ; return f 
 func isIdxVec3      (v interface{}) bool { x, f := v.(IndexedVector) ; return f && x.Size() == 3 }
 func isIdxVec4      (v interface{}) bool { x, f := v.(IndexedVector) ; return f && x.Size() == 4 }
 
-func isImm12        (v interface{}) bool { x, f := asInt64(v)  ; return f && x &^ 0b111111111111 == 0 }
-func isUimm3        (v interface{}) bool { x, f := asUint64(v) ; return f && x &^ 0b111 == 0 }
-func isUimm4        (v interface{}) bool { x, f := asUint64(v) ; return f && x &^ 0b1111 == 0 }
-func isUimm5        (v interface{}) bool { x, f := asUint64(v) ; return f && x &^ 0b11111 == 0 }
-func isUimm6        (v interface{}) bool { x, f := asUint64(v) ; return f && x &^ 0b111111 == 0 }
-func isUimm7        (v interface{}) bool { x, f := asUint64(v) ; return f && x &^ 0b1111111 == 0 }
+func isImm8         (v interface{}) bool { x, f := asInt64(v)  ; return f && x >= math.MinInt8 && x <= math.MaxInt8 }
+func isImm12        (v interface{}) bool { x, f := asInt64(v)  ; return f && x >= _MinInt12 && x <= _MaxInt12 }
+func isUimm3        (v interface{}) bool { x, f := asUint64(v) ; return f && x &^ 0x07 == 0 }
+func isUimm4        (v interface{}) bool { x, f := asUint64(v) ; return f && x &^ 0x0f == 0 }
+func isUimm5        (v interface{}) bool { x, f := asUint64(v) ; return f && x &^ 0x1f == 0 }
+func isUimm6        (v interface{}) bool { x, f := asUint64(v) ; return f && x &^ 0x3f == 0 }
+func isUimm7        (v interface{}) bool { x, f := asUint64(v) ; return f && x &^ 0x7f == 0 }
 func isUimm8        (v interface{}) bool { x, f := asUint64(v) ; return f && x <= math.MaxUint8 }
 func isUimm16       (v interface{}) bool { x, f := asUint64(v) ; return f && x <= math.MaxUint16 }
 func isMask32       (v interface{}) bool { x, f := asUint64(v) ; return f && _BitMask(x).is32() }
 func isMask64       (v interface{}) bool { x, f := asUint64(v) ; return f && _BitMask(x).is64() }
-func isFpImm8       (v interface{}) bool { _, f := asFloat8(v) ; return f }
 func isFpBits       (v interface{}) bool { x, f := asUint64(v) ; return f && x >= 1 && x <= 64 }
 
 func isMod          (v interface{}) bool { _, f := v.(Modifier)        ; return f }
@@ -296,6 +301,11 @@ func isVfmt(v interface{}, fmt ...VecFormat) bool {
     return false
 }
 
+func isFpImm8(v interface{}) bool {
+    _, f := encodeFpImm8(v)
+    return f
+}
+
 func isIntLit(v interface{}, imm ...int64) bool {
     var t int64
     var x rt.GoEface
@@ -321,13 +331,8 @@ func isExtIndex(r, v interface{}) bool {
 }
 
 func isFloatLit(v interface{}, imm float64) bool {
-    if isSpecial(v) {
-        return false
-    } else if x := rt.AsEface(v); !isFloat(x.Kind()) {
-        return false
-    } else {
-        return x.ToFloat64() == imm
-    }
+    x, ok := asFloat64(v)
+    return ok && x == imm
 }
 
 func isWrOrXr(v interface{}) bool {

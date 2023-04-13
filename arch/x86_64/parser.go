@@ -291,13 +291,13 @@ func (self *_ParserImpl) scale(base asm.Register, index asm.Register, disp int32
 }
 
 func (self *_ParserImpl) parse(ins *asm.ParsedInstruction) {
-    ff := true
-    rr := false
-    lk := false
+    var rr bool
+    var lk bool
+    var tt asm.TokenKind
 
     /* parse the first token */
+    ff := true
     tk := self.lex.Next()
-    tt := tk.Ty
 
     /* special case for the "lock" prefix */
     if tk.Ty == asm.TokenName && strings.ToLower(tk.Str) == "lock" {
