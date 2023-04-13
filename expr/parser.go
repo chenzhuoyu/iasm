@@ -311,3 +311,9 @@ func (self *Parser) SetSource(src string) *Parser {
     self.src = []rune(src)
     return self
 }
+
+// Parse creates a Parser, and parse the source.
+func Parse(src string, repo Repository) (*Expr, error) {
+    var p Parser
+    return p.SetSource(src).Parse(repo)
+}

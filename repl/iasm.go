@@ -1,6 +1,7 @@
 package repl
 
 import (
+    `errors`
     `fmt`
     `io`
     `math`
@@ -12,15 +13,17 @@ import (
     `unicode`
     `unsafe`
 
+    `github.com/chenzhuoyu/iasm/asm`
     `github.com/knz/go-libedit`
 )
 
 // IASM is the interactive REPL.
 type IASM struct {
     run bool
+    aid string
     off uintptr
+    arc *asm.Arch
     efd libedit.EditLine
-    ias _IASMArchSpecific
     mem map[uint64]_Memory
     fns map[string]unsafe.Pointer
 }
@@ -29,7 +32,7 @@ type IASM struct {
 var HistoryFile = path.Clean(os.ExpandEnv("$HOME/.iasmhistory"))
 
 // Start starts a new REPL session.
-func (self *IASM) Start() {
+func (self *IASM) Start(arch *asm.Arch) {
     var err error
     var efd libedit.EditLine
 
@@ -37,6 +40,7 @@ func (self *IASM) Start() {
     println("Interactive Assembler v1.0")
     println("Compiled with " + strconv.Quote(runtime.Version()) + ".")
     println("History will be loaded from " + strconv.Quote(HistoryFile) + ".")
+    println(fmt.Sprintf(`Architecture "%s" was enabled for live assembly.`, arch.Name()))
     println(`Type ".help" for more information.`)
 
     /* initialize libedit */
@@ -48,6 +52,8 @@ func (self *IASM) Start() {
     self.off = 0
     self.efd = efd
     self.run = true
+    self.arc = arch
+    self.aid = arch.Name()
     self.mem = map[uint64]_Memory{}
     self.fns = map[string]unsafe.Pointer{}
 
@@ -92,6 +98,32 @@ func (self *IASM) readLine() string {
     /* add to history */
     _ = self.efd.AddHistory(ret)
     return ret
+}
+
+func (self *IASM) assembleLine(offs uintptr, line string) ([]byte, error) {
+    var err error
+    var ast *asm.ParsedLine
+
+    /* create parser and assembler */
+    ps := self.arc.CreateParser()
+    as := self.arc.CreateAssembler()
+
+    /* parse the line */
+    if ast, err = ps.Feed(line); err != nil {
+        return nil, err
+    }
+
+    /* interactive shell does not support labels */
+    if ast.Kind == asm.LineLabel {
+        return nil, errors.New("interactive shell does not support labels")
+    }
+
+    /* assemble the line */
+    if err = as.Rebase(offs).Assemble(line); err != nil {
+        return nil, err
+    } else {
+        return as.Code(), nil
+    }
 }
 
 func (self *IASM) handleEOF() {
@@ -152,7 +184,7 @@ func (self *IASM) handleAsmImmediate(asm string) {
     var buf []byte
 
     /* assemble the instruction */
-    if buf, err = self.ias.doasm(self.off, asm); err != nil {
+    if buf, err = self.assembleLine(self.off, asm); err != nil {
         println("iasm: " + err.Error())
         return
     }
@@ -163,6 +195,7 @@ func (self *IASM) handleAsmImmediate(asm string) {
 }
 
 var _CMDS = map[string]func(*IASM, string) {
+    "arch"   : (*IASM)._cmd_arch,
     "free"   : (*IASM)._cmd_free,
     "malloc" : (*IASM)._cmd_malloc,
     "info"   : (*IASM)._cmd_info,
@@ -175,6 +208,32 @@ var _CMDS = map[string]func(*IASM, string) {
     "base"   : (*IASM)._cmd_base,
     "exit"   : (*IASM)._cmd_exit,
     "help"   : (*IASM)._cmd_help,
+}
+
+func (self *IASM) _cmd_arch(v string) {
+    var name string
+    var arch *asm.Arch
+
+    /* parse the arch ID */
+    scan    (v).
+    nameopt (&name).
+    close   ()
+
+    /* display the architecture */
+    if name == "" {
+        println(self.arc.Name())
+        return
+    }
+
+    /* find the architecture */
+    if arch = asm.GetArch(name); arch == nil {
+        println("iasm: no such architecture: " + name)
+        return
+    }
+
+    /* update the architecture */
+    self.arc = arch
+    println(fmt.Sprintf(`iasm: live assembly architecture switched to "%s".`, arch.Name()))
 }
 
 func (self *IASM) _cmd_free(v string) {
@@ -402,6 +461,12 @@ func (self *IASM) _cmd_asm(v string) {
     idoff (&mid, &off).
     close ()
 
+    /* check for active architecture */
+    if self.aid != self.arc.Name() {
+        println(fmt.Sprintf(`iasm: cannot assemble "%s" assembly on "%s" architecture.`, self.arc.Name(), self.aid))
+        return
+    }
+
     /* find the memory block */
     if mem, ok = self.mem[mid]; !ok {
         println(fmt.Sprintf("iasm: no such memory block with ID %d", mid))
@@ -435,7 +500,7 @@ func (self *IASM) _cmd_asm(v string) {
         }
 
         /* feed into the assembler */
-        if buf, err = self.ias.doasm(fnv, src); err != nil {
+        if buf, err = self.assembleLine(fnv, src); err != nil {
             println("iasm: assembly failed: " + err.Error())
             continue
         }
@@ -512,6 +577,9 @@ func (self *IASM) _cmd_exit(_ string) {
 
 func (self *IASM) _cmd_help(_ string) {
     println("Supported commands:")
+    println("    .arch   [NAME] .................... Display or change the architecture")
+    println("                                        to NAME for live assembly.")
+    println()
     println("    .free   ID ........................ Free a block of memory with ID.")
     println()
     println("    .malloc ID [SIZE] ................. Allocate a block of memory with ID of")

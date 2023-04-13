@@ -7,25 +7,14 @@ import (
     `strings`
     `testing`
 
+    `github.com/chenzhuoyu/iasm/asm`
     `github.com/chenzhuoyu/iasm/obj`
     `github.com/davecgh/go-spew/spew`
     `github.com/stretchr/testify/require`
 )
 
-func TestAssembler_Tokenizer(t *testing.T) {
-    k := new(_Tokenizer)
-    k.src = []rune(`movqorwhat $123, 123(%rax,%rbx), %rcx`)
-    for {
-        tk := k.next()
-        if tk.tag == _T_end {
-            break
-        }
-        spew.Dump(tk)
-    }
-}
-
 func TestAssembler_Parser(t *testing.T) {
-    p := new(Parser)
+    p := asm.GetArch("x86_64").CreateParser()
     v, e := p.Feed("movq " + strings.Join([]string {
         `$123`,
         `$-123`,
@@ -49,7 +38,7 @@ func TestAssembler_Parser(t *testing.T) {
 }
 
 func TestAssembler_Assemble(t *testing.T) {
-    p := new(Assembler)
+    p := asm.GetArch("x86_64").CreateAssembler()
     e := p.Assemble(`
 .org 0x08000000
 .entry start
@@ -92,7 +81,7 @@ start:
 }
 
 func TestAssembler_RIPRelative(t *testing.T) {
-    p := new(Assembler)
+    p := asm.GetArch("x86_64").CreateAssembler()
     e := p.Assemble(`leaq 0x1b(%rip), %rsi`)
     require.NoError(t, e)
     spew.Dump(p.Code())
@@ -100,7 +89,7 @@ func TestAssembler_RIPRelative(t *testing.T) {
 }
 
 func TestAssembler_AbsoluteAddressing(t *testing.T) {
-    p := new(Assembler)
+    p := asm.GetArch("x86_64").CreateAssembler()
     e := p.Assemble(`
 movq 0x1234, %rbx
 movq %rcx, 0x1234
@@ -114,7 +103,7 @@ movq %rcx, 0x1234
 }
 
 func TestAssembler_LockPrefix(t *testing.T) {
-    p := new(Assembler)
+    p := asm.GetArch("x86_64").CreateAssembler()
     e := p.Assemble(`lock cmpxchgq %r9, (%rbx)`)
     require.NoError(t, e)
     spew.Dump(p.Code())
@@ -122,11 +111,14 @@ func TestAssembler_LockPrefix(t *testing.T) {
 }
 
 func TestAssembler_SegmentOverride(t *testing.T) {
-    p := new(Assembler)
+    p := asm.GetArch("x86_64").CreateAssembler()
     e := p.Assemble(`
 movq gs:0x30, %rcx
 movq gs:10(%rax), %rcx
 movq fs:(%r9), %rcx
+movq %rcx, gs:0x30
+movq %rcx, gs:10(%rax)
+movq %rcx, fs:(%r9)
 `)
     require.NoError(t, e)
     spew.Dump(p.Code())
@@ -134,5 +126,8 @@ movq fs:(%r9), %rcx
         0x65, 0x48, 0x8b, 0x0c, 0x25, 0x30, 0x00, 0x00, 0x00,
         0x65, 0x48, 0x8b, 0x48, 0x0a,
         0x64, 0x49, 0x8b, 0x09,
+        0x65, 0x48, 0x89, 0x0c, 0x25, 0x30, 0x00, 0x00, 0x00,
+        0x65, 0x48, 0x89, 0x48, 0x0a,
+        0x64, 0x49, 0x89, 0x09,
     }, p.Code())
 }

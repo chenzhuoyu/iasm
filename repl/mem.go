@@ -26,7 +26,6 @@ func (self _Memory) buf() (v []byte) {
 }
 
 const (
-    _AP  = syscall.MAP_ANON  | syscall.MAP_PRIVATE
     _RWX = syscall.PROT_READ | syscall.PROT_WRITE | syscall.PROT_EXEC
 )
 
@@ -36,7 +35,7 @@ var (
 
 func mmap(nb uint64) (_Memory, error) {
     nb = (((nb - 1) / _PageSize) + 1) * _PageSize
-    mm, _, err := syscall.RawSyscall6(syscall.SYS_MMAP, 0, uintptr(nb), _RWX, _AP, 0, 0)
+    mm, _, err := syscall.RawSyscall6(syscall.SYS_MMAP, 0, uintptr(nb), _RWX, _MMAP_FLAGS, 0, 0)
 
     /* check for errors */
     if err != 0 {

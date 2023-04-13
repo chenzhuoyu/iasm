@@ -17,6 +17,8 @@ type Feature interface {
 type Implementation interface {
     New() *Instruction
     Free(p *Instruction)
+    Build(p *Program, asm *Assembler, ins *ParsedInstruction) error
+    Parse(p *Tokenizer, ins *ParsedInstruction)
     Encode(p *Instruction, m *[]byte) int
     Assemble(p *Program, pc uintptr) []byte
 }
@@ -24,6 +26,7 @@ type Implementation interface {
 // Arch represents an CPU architecture.
 type Arch struct {
     fmax uint8
+    name string
     fset [4]uint64
     impl Implementation
 }
@@ -52,6 +55,7 @@ func GetArch(name string) (p *Arch) {
 func RegisterArch(name string, maxft Feature, impl Implementation) (p *Arch) {
     p = new(Arch)
     p.impl = impl
+    p.name = name
     p.fset = featmax
     p.fmax = maxft.FeatureID()
     archmut.Lock()
@@ -77,6 +81,11 @@ func SupportedArch() []string {
     /* sort alphabetically */
     sort.Strings(ret)
     return ret
+}
+
+// Name returns the architecture name.
+func (self *Arch) Name() string {
+    return self.name
 }
 
 // Enable marks the feature as enabled.
@@ -112,7 +121,17 @@ func (self *Arch) HasFeature(ft Feature) bool {
     return id <= self.fmax && (self.fset[id >> 6] & (1 << (id & 0x3f))) != 0
 }
 
+// CreateParser creates a new arch-specific Parser.
+func (self *Arch) CreateParser() *Parser {
+    return new(Parser).init(self)
+}
+
 // CreateProgram creates a new arch-specific Program.
 func (self *Arch) CreateProgram() *Program {
     return newProgram(self)
+}
+
+// CreateAssembler creates a new arch-specific Assembler.
+func (self *Arch) CreateAssembler() *Assembler {
+    return new(Assembler).init(self)
 }

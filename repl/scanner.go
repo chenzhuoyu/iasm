@@ -88,3 +88,13 @@ func (self *_Scanner) uintopt(v *uint64) *_Scanner {
         return self
     }
 }
+
+func (self *_Scanner) nameopt(v *string) *_Scanner {
+    if self.tok != token.IDENT {
+        return self
+    } else {
+        *v = self.val
+        self.next()
+        return self
+    }
+}

@@ -2,7 +2,10 @@ package asm
 
 import (
     `encoding/binary`
+    `errors`
     `reflect`
+    `strconv`
+    `unicode/utf8`
     `unsafe`
 
     `github.com/chenzhuoyu/iasm/internal/rt`
@@ -29,6 +32,31 @@ func ispow2(v uint64) bool {
     return (v & (v - 1)) == 0
 }
 
+func isdigit(cc rune) bool {
+    return '0' <= cc && cc <= '9'
+}
+
+func isalpha(cc rune) bool {
+    return (cc >= 'a' && cc <= 'z') || (cc >= 'A' && cc <= 'Z')
+}
+
+func isident(cc rune) bool {
+    return cc == '_' || isalpha(cc) || isdigit(cc)
+}
+
+func isident0(cc rune) bool {
+    return cc == '_' || isalpha(cc)
+}
+
+func isnumber(cc rune) bool {
+    return (cc == 'b' || cc == 'B') ||
+           (cc == 'o' || cc == 'O') ||
+           (cc == 'x' || cc == 'X') ||
+           (cc >= '0' && cc <= '9') ||
+           (cc >= 'a' && cc <= 'f') ||
+           (cc >= 'A' && cc <= 'F')
+}
+
 func append8(m *[]byte, v byte) {
     *m = append(*m, v)
 }
@@ -49,6 +77,25 @@ func append64(m *[]byte, v uint64) {
     p := len(*m)
     *m = append(*m, 0, 0, 0, 0, 0, 0, 0, 0)
     binary.LittleEndian.PutUint64((*m)[p:], v)
+}
+
+func literal64(v string) (uint64, error) {
+    var nb int
+    var ch rune
+    var ex error
+    var mm [12]byte
+
+    /* unquote the runes */
+    for v != "" {
+        if ch, _, v, ex = strconv.UnquoteChar(v, '\''); ex != nil {
+            return 0, ex
+        } else if nb += utf8.EncodeRune(mm[nb:], ch); nb > 8 {
+            return 0, errors.New("multi-char constant too large")
+        }
+    }
+
+    /* convert to uint64 */
+    return *(*uint64)(unsafe.Pointer(&mm)), nil
 }
 
 func expandmm(m *[]byte, n int, v byte) {
