@@ -24,6 +24,19 @@ const (
     PrefixSegmentSS
 )
 
+func (self _PrefixImpl) String() string {
+    switch self {
+        case PrefixLock      : return "LOCK"
+        case PrefixSegmentCS : return "CS"
+        case PrefixSegmentDS : return "DS"
+        case PrefixSegmentES : return "ES"
+        case PrefixSegmentFS : return "FS"
+        case PrefixSegmentGS : return "GS"
+        case PrefixSegmentSS : return "SS"
+        default              : return "???"
+    }
+}
+
 func (self _PrefixImpl) EncodePrefix(p *asm.Instruction) {
     switch self {
         case PrefixLock      : this(p).LOCK()
@@ -94,9 +107,9 @@ func (self *_ParserImpl) negv() int64 {
     }
 }
 
-func (self *_ParserImpl) eval(p int) (r int64) {
+func (self *_ParserImpl) eval(p int) int64 {
+    var r int64
     var e error
-    var v *expr.Expr
 
     /* searching start */
     n := 1
@@ -117,27 +130,21 @@ func (self *_ParserImpl) eval(p int) (r int64) {
     }
 
     /* evaluate the expression */
-    if v, e = expr.Parse(string(self.lex.Src[p:q - 1]), nil); e != nil {
-        panic(self.err(p, "cannot evaluate expression: " + e.Error()))
-    }
-
-    /* evaluate the expression */
-    if r, e = v.Evaluate(); e != nil {
+    if r, e = expr.Eval(string(self.lex.Src[p:q - 1]), nil); e != nil {
         panic(self.err(p, "cannot evaluate expression: " + e.Error()))
     }
 
     /* skip the last ")" */
-    v.Free()
     self.lex.Pos = q
-    return
+    return r
 }
 
 func (self *_ParserImpl) relx(tk asm.Token) {
-    if tk.Ty != asm.TokenPunc || tk.Punc() != asm.PuncLBrk {
+    if tk.Ty != asm.TokenPunc || tk.Punc() != asm.PuncLBrace {
         panic(self.err(tk.Pos, "'(' expected for RIP-relative addressing"))
     } else if tk = self.lex.Next(); self.regx(tk) != rip {
         panic(self.err(tk.Pos, "RIP-relative addressing expects %rip as the base register"))
-    } else if tk = self.lex.Next(); tk.Ty != asm.TokenPunc || tk.Punc() != asm.PuncRBrk {
+    } else if tk = self.lex.Next(); tk.Ty != asm.TokenPunc || tk.Punc() != asm.PuncRBrace {
         panic(self.err(tk.Pos, "RIP-relative addressing does not support indexing or scaling"))
     }
 }
@@ -147,7 +154,7 @@ func (self *_ParserImpl) immx(tk asm.Token) int64 {
         panic(self.err(tk.Pos, "'$' expected for registers"))
     } else if tk = self.lex.Read(); tk.Ty == asm.TokenInt {
         return int64(tk.Uint)
-    } else if tk.Ty == asm.TokenPunc && tk.Punc() == asm.PuncLBrk {
+    } else if tk.Ty == asm.TokenPunc && tk.Punc() == asm.PuncLBrace {
         return self.eval(self.lex.Pos)
     } else if tk.Ty == asm.TokenPunc && tk.Punc() == asm.PuncMinus {
         return self.negv()
@@ -197,7 +204,7 @@ func (self *_ParserImpl) relm(tv asm.Token, disp int32) asm.MemoryAddress {
     }
 
     /* must be "(" now */
-    if tv.Punc() != asm.PuncLBrk {
+    if tv.Punc() != asm.PuncLBrace {
         panic(self.err(tv.Pos, "',' or '(' expected"))
     }
 
@@ -229,7 +236,7 @@ func (self *_ParserImpl) base(tk asm.Token, disp int32) asm.MemoryAddress {
         panic(self.err(nk.Pos, "',' or ')' expected"))
     } else if nk.Punc() == asm.PuncComma {
         return self.index(rr, disp)
-    } else if nk.Punc() == asm.PuncRBrk {
+    } else if nk.Punc() == asm.PuncRBrace {
         return MemoryAddress(rr, nil, 0, disp)
     } else {
         panic(self.err(nk.Pos, "',' or ')' expected"))
@@ -250,7 +257,7 @@ func (self *_ParserImpl) index(base asm.Register, disp int32) asm.MemoryAddress 
         panic(self.err(nk.Pos, "',' or ')' expected"))
     } else if nk.Punc() == asm.PuncComma {
         return self.scale(base, rr, disp)
-    } else if nk.Punc() == asm.PuncRBrk {
+    } else if nk.Punc() == asm.PuncRBrace {
         return MemoryAddress(base, rr, 1, disp)
     } else {
         panic(self.err(nk.Pos, "',' or ')' expected"))
@@ -277,7 +284,7 @@ func (self *_ParserImpl) scale(base asm.Register, index asm.Register, disp int32
     tt = tk.Ty
 
     /* check for the closing ")" */
-    if tt != asm.TokenPunc || tk.Punc() != asm.PuncRBrk {
+    if tt != asm.TokenPunc || tk.Punc() != asm.PuncRBrace {
         panic(self.err(tk.Pos, "')' expected"))
     }
 
@@ -395,7 +402,7 @@ func (self *_ParserImpl) parse(ins *asm.ParsedInstruction) {
 
         /* check the operator */
         switch tk.Punc() {
-            case asm.PuncLBrk    : break
+            case asm.PuncLBrace  : break
             case asm.PuncMinus   : ins.Mem(self.disp(self.i32(tk, self.negv()))) ; continue
             case asm.PuncDollar  : ins.Imm(self.immx(tk))                        ; continue
             case asm.PuncPercent : ins.Reg(self.regv(tk))                        ; continue

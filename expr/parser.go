@@ -312,7 +312,25 @@ func (self *Parser) SetSource(src string) *Parser {
     return self
 }
 
-// Parse creates a Parser, and parse the source.
+// Eval evaluates the expression.
+func Eval(src string, repo Repository) (int64, error) {
+    var ret int64
+    var err error
+    var val *Expr
+
+    /* parse the expression */
+    if val, err = Parse(src, repo); err != nil {
+        return 0, err
+    }
+
+    /* evaluate the expression */
+    ret, err = val.Evaluate()
+    val.Free()
+    return ret, err
+}
+
+
+// Parse parses the expression.
 func Parse(src string, repo Repository) (*Expr, error) {
     var p Parser
     return p.SetSource(src).Parse(repo)

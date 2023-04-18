@@ -14,6 +14,7 @@ type TokenKind int
 const (
     TokenEnd TokenKind = iota + 1
     TokenInt
+    TokenFp64
     TokenName
     TokenPunc
     TokenSpace
@@ -34,8 +35,10 @@ const (
     PuncShl
     PuncShr
     PuncTilde
-    PuncLBrk
-    PuncRBrk
+    PuncLBrace
+    PuncRBrace
+    PuncLIndex
+    PuncRIndex
     PuncDot
     PuncComma
     PuncColon
@@ -44,7 +47,7 @@ const (
     PuncBang
 )
 
-var _PUNC_NAME = map[Punctuation]string {
+var _PuncNames = map[Punctuation]string {
     PuncPlus    : "+",
     PuncMinus   : "-",
     PuncStar    : "*",
@@ -56,8 +59,10 @@ var _PUNC_NAME = map[Punctuation]string {
     PuncShl     : "<<",
     PuncShr     : ">>",
     PuncTilde   : "~",
-    PuncLBrk    : "(",
-    PuncRBrk    : ")",
+    PuncLBrace  : "(",
+    PuncRBrace  : ")",
+    PuncLIndex  : "[",
+    PuncRIndex  : "]",
     PuncDot     : ".",
     PuncComma   : ",",
     PuncColon   : ":",
@@ -67,7 +72,7 @@ var _PUNC_NAME = map[Punctuation]string {
 }
 
 func (self Punctuation) String() string {
-    if v, ok := _PUNC_NAME[self]; ok {
+    if v, ok := _PuncNames[self]; ok {
         return v
     } else {
         return fmt.Sprintf("Punctuation(%d)", self)
@@ -80,6 +85,7 @@ type Token struct {
     End  int
     Str  string
     Uint uint64
+    Fp64 float64
 }
 
 // Punc converts the token into a Punctuation.
@@ -95,6 +101,7 @@ func (self *Token) String() string {
     switch self.Ty {
         case TokenEnd   : return "<END>"
         case TokenInt   : return fmt.Sprintf("<INT %d>", self.Uint)
+        case TokenFp64  : return fmt.Sprintf("<FP64 %f>", self.Fp64)
         case TokenPunc  : return fmt.Sprintf("<PUNC %s>", Punctuation(self.Uint))
         case TokenName  : return fmt.Sprintf("<NAME %s>", strconv.QuoteToASCII(self.Str))
         case TokenSpace : return "<SPACE>"
@@ -115,6 +122,14 @@ func tokenInt(p int, val uint64) Token {
         Ty   : TokenInt,
         Pos  : p,
         Uint : val,
+    }
+}
+
+func tokenFp64(p int, val float64) Token {
+    return Token {
+        Ty   : TokenFp64,
+        Pos  : p,
+        Fp64 : val,
     }
 }
 
@@ -284,10 +299,14 @@ func (self *Tokenizer) chrv(p int) Token {
 }
 
 func (self *Tokenizer) numv(p int) Token {
-    if val, err := strconv.ParseUint(self.find(p, isnumber), 0, 64); err != nil {
-        panic(self.err(p, "invalid immediate value: " + err.Error()))
-    } else {
+    if num := self.find(p, isnumber); num == "" {
+        panic(self.err(p, "missing immediate value"))
+    } else if val, err := strconv.ParseUint(num, 0, 64); err == nil {
         return tokenInt(p, val)
+    } else if f64, err := strconv.ParseFloat(num, 64); err == nil {
+        return tokenFp64(p, f64)
+    } else {
+        panic(self.err(p, "invalid immediate value: " + err.Error()))
     }
 }
 
@@ -351,8 +370,10 @@ func (self *Tokenizer) Read() Token {
         case '<'  : t = self.rep2(p, PuncShl, '<')
         case '>'  : t = self.rep2(p, PuncShr, '>')
         case '~'  : t = tokenPunc(p, PuncTilde)
-        case '('  : t = tokenPunc(p, PuncLBrk)
-        case ')'  : t = tokenPunc(p, PuncRBrk)
+        case '('  : t = tokenPunc(p, PuncLBrace)
+        case ')'  : t = tokenPunc(p, PuncRBrace)
+        case '['  : t = tokenPunc(p, PuncLIndex)
+        case ']'  : t = tokenPunc(p, PuncRIndex)
         case '.'  : t = tokenPunc(p, PuncDot)
         case ','  : t = tokenPunc(p, PuncComma)
         case ':'  : t = tokenPunc(p, PuncColon)
@@ -377,15 +398,12 @@ func (self *Tokenizer) Next() (tk Token) {
     }
 }
 
-// LabelKind indicates the type of label reference.
-type LabelKind int
-
 // OperandKind indicates the type of the operand.
 type OperandKind int
 
 const (
     // OpImm means the operand is an immediate value.
-    OpImm OperandKind = 1 << iota
+    OpImm OperandKind = iota
 
     // OpFpImm means the operand is a floating-point immediate value.
     OpFpImm
@@ -396,10 +414,28 @@ const (
     // OpMem means the operand is a memory address.
     OpMem
 
+    // OpSym means the operand is a literal symbol.
+    OpSym
+
     // OpLabel means the operand is a label, specifically for
     // branch instructions.
     OpLabel
 )
+
+func (self OperandKind) String() string {
+    switch self {
+        case OpImm   : return "Imm"
+        case OpFpImm : return "FpImm"
+        case OpReg   : return "Reg"
+        case OpMem   : return "Mem"
+        case OpSym   : return "Sym"
+        case OpLabel : return "Label"
+        default      : return "???"
+    }
+}
+
+// LabelKind indicates the type of label reference.
+type LabelKind int
 
 const (
     // Declaration means the label is a declaration.
@@ -413,8 +449,18 @@ const (
     RelativeAddress
 )
 
+func (self LabelKind) String() string {
+    switch self {
+        case Declaration     : return "Declaration"
+        case BranchTarget    : return "BranchTarget"
+        case RelativeAddress : return "RelativeAddress"
+        default              : return "???"
+    }
+}
+
 // InstructionPrefix indicates the prefix bytes prepended to the instruction.
 type InstructionPrefix interface {
+    fmt.Stringer
     EncodePrefix(p *Instruction)
 }
 
@@ -425,14 +471,31 @@ type ParsedLabel struct {
     Kind LabelKind
 }
 
+func (self *ParsedLabel) String() string {
+    return fmt.Sprintf("(%s) %s", self.Kind, self.Name)
+}
+
 // ParsedOperand represents an operand of an instruction in the source.
 type ParsedOperand struct {
-    Op     OperandKind
-    Imm    int64
-    FpImm  float64
-    Reg    Register
-    Label  ParsedLabel
-    Memory MemoryAddress
+    Op    OperandKind
+    Imm   int64
+    FpImm float64
+    Sym   string
+    Reg   Register
+    Mem   MemoryAddress
+    Label ParsedLabel
+}
+
+func (self *ParsedOperand) String() string {
+    switch self.Op {
+        case OpImm   : return fmt.Sprintf("(%s) %#x", self.Op, self.Imm)
+        case OpFpImm : return fmt.Sprintf("(%s) %f", self.Op, self.FpImm)
+        case OpReg   : return fmt.Sprintf("(%s) %s", self.Op, self.Reg)
+        case OpMem   : return fmt.Sprintf("(%s) %s", self.Op, self.Mem.String())
+        case OpSym   : return fmt.Sprintf("(%s) %s", self.Op, self.Sym)
+        case OpLabel : return fmt.Sprintf("(%s) %s", self.Op, self.Label.String())
+        default      : return "???"
+    }
 }
 
 // ParsedInstruction represents an instruction in the source.
@@ -461,8 +524,16 @@ func (self *ParsedInstruction) Reg(v Register) {
 // Mem adds a memory operand to this instruction.
 func (self *ParsedInstruction) Mem(v MemoryAddress) {
     self.Operands = append(self.Operands, ParsedOperand {
-        Op     : OpMem,
-        Memory : v,
+        Op  : OpMem,
+        Mem : v,
+    })
+}
+
+// Sym adds a literal symbol operand to this instruction.
+func (self *ParsedInstruction) Sym(v string) {
+    self.Operands = append(self.Operands, ParsedOperand {
+        Op  : OpSym,
+        Sym : v,
     })
 }
 
@@ -496,6 +567,28 @@ func (self *ParsedInstruction) Reference(v string) {
     })
 }
 
+func (self *ParsedInstruction) String() string {
+    pfx := make([]string, 0, len(self.Prefixes))
+    ops := make([]string, 0, len(self.Operands))
+
+    /* add prefixes */
+    for _, v := range self.Prefixes {
+        pfx = append(pfx, v.String())
+    }
+
+    /* add operands */
+    for _, v := range self.Operands {
+        ops = append(ops, v.String())
+    }
+
+    /* add mnemonic and operands */
+    if pfx = append(pfx, self.Mnemonic); len(ops) == 0 {
+        return strings.Join(pfx, " ")
+    } else {
+        return strings.Join(append(pfx, strings.Join(ops, ", ")), " ")
+    }
+}
+
 // LineKind indicates the type of ParsedLine.
 type LineKind int
 
@@ -503,12 +596,22 @@ const (
     // LineLabel means the ParsedLine is a label.
     LineLabel LineKind = iota + 1
 
-    // LineInstr means the ParsedLine is an instruction.
-    LineInstr
-
     // LineCommand means the ParsedLine is a ParsedCommand.
     LineCommand
+
+    // LineInstruction means the ParsedLine is an instruction.
+    LineInstruction
+
 )
+
+func (self LineKind) String() string {
+    switch self {
+        case LineLabel       : return "Label"
+        case LineCommand     : return "Command"
+        case LineInstruction : return "Instruction"
+        default              : return "???"
+    }
+}
 
 // ParsedLine represents a parsed source line.
 type ParsedLine struct {
@@ -520,16 +623,50 @@ type ParsedLine struct {
     Instruction ParsedInstruction
 }
 
+func (self *ParsedLine) String() string {
+    switch self.Kind {
+        case LineLabel       : return fmt.Sprintf("(%s) %s", self.Kind, self.Label.String())
+        case LineCommand     : return fmt.Sprintf("(%s) %s", self.Kind, self.Command.String())
+        case LineInstruction : return fmt.Sprintf("(%s) %s", self.Kind, self.Instruction.String())
+        default              : return "???"
+    }
+}
+
 // ParsedCommand represents a parsed assembly directive command.
 type ParsedCommand struct {
     Cmd  string
     Args []ParsedCommandArg
 }
 
+func (self *ParsedCommand) String() string {
+    nb := len(self.Args)
+    ret := make([]string, 0, nb)
+
+    /* add arguments */
+    for _, v := range self.Args {
+        ret = append(ret, v.String())
+    }
+
+    /* join them together */
+    if nb == 0 {
+        return self.Cmd
+    } else {
+        return fmt.Sprintf("%s %s", self.Cmd, strings.Join(ret, ", "))
+    }
+}
+
 // ParsedCommandArg represents an argument of a ParsedCommand.
 type ParsedCommandArg struct {
     Value    string
     IsString bool
+}
+
+func (self *ParsedCommandArg) String() string {
+    if !self.IsString {
+        return self.Value
+    } else {
+        return strconv.Quote(self.Value)
+    }
 }
 
 // Parser parses the source, and generates a sequence of ParsedInstruction's.
@@ -648,7 +785,7 @@ func (self *Parser) feed(line string) *ParsedLine {
     ret := &ParsedLine {
         Row  : self.lex.Row,
         Src  : self.lex.Src,
-        Kind : LineInstr,
+        Kind : LineInstruction,
     }
 
     /* invoke the architecture specific parser */

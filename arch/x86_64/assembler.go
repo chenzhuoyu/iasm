@@ -87,7 +87,7 @@ func (self *_AssemblerImpl) build(p *Program, line *asm.ParsedInstruction) (err 
         switch op.Op {
             case asm.OpImm   : ops = append(ops, op.Imm)
             case asm.OpReg   : ops = append(ops, op.Reg)
-            case asm.OpMem   : self.buildMem(&ops, op.Memory)
+            case asm.OpMem   : self.buildMem(&ops, op.Mem)
             case asm.OpLabel : self.buildLabel(&ops, op.Label)
             default          : panic("parser yields an invalid operand kind")
         }

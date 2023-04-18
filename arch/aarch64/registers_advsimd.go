@@ -156,6 +156,9 @@ func (self VecIndexMode) String() string {
     }
 }
 
+// MaxVecIndex is the theoretical highest index of an indexed vector register.
+const MaxVecIndex = 31
+
 // VidxRegister represents an indexed vector register.
 type VidxRegister interface {
     asm.Register

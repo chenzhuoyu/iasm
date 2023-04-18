@@ -135,14 +135,6 @@ func (self *Assembler) init(arch *Arch) *Assembler {
     return self
 }
 
-func (self *Assembler) eval(stmt string) (int64, error) {
-    if exp, err := expr.Parse(stmt, nil); err != nil {
-        return 0, err
-    } else {
-        return exp.Evaluate()
-    }
-}
-
 func (self *Assembler) checkArgs(i int, n int, v *ParsedCommand, isString bool) error {
     if i >= len(v.Args) {
         return self.Error(fmt.Sprintf("command %s takes exact %d arguments", strconv.Quote(v.Cmd), n))
@@ -162,10 +154,6 @@ func (self *Assembler) buildLabel(p *Program, lb *ParsedLabel) error {
         p.Link(v)
         return nil
     }
-}
-
-func (self *Assembler) buildInstr(p *Program, line *ParsedInstruction) (err error) {
-    return self.arch.impl.Build(p, self, line)
 }
 
 func (self *Assembler) buildCommand(p *Program, line *ParsedCommand) error {
@@ -234,7 +222,7 @@ func (self *Assembler) assembleCommandOrg(_ *Program, argv []ParsedCommandArg) e
     var val int64
 
     /* evaluate the expression */
-    if val, err = self.eval(argv[0].Value); err != nil {
+    if val, err = expr.Eval(argv[0].Value, nil); err != nil {
         return err
     }
 
@@ -303,7 +291,7 @@ func (self *Assembler) assembleCommandFill(p *Program, argv []ParsedCommandArg) 
     var ex error
 
     /* evaluate the size */
-    if nb, ex = self.eval(argv[0].Value); ex != nil {
+    if nb, ex = expr.Eval(argv[0].Value, nil); ex != nil {
         return ex
     }
 
@@ -314,7 +302,7 @@ func (self *Assembler) assembleCommandFill(p *Program, argv []ParsedCommandArg) 
 
     /* check for optional filling value */
     if len(argv) == 2 {
-        if val, err := self.eval(argv[1].Value); err != nil {
+        if val, err := expr.Eval(argv[1].Value, nil); err != nil {
             return err
         } else if val < math.MinInt8 || val > math.MaxUint8 {
             return self.Error(fmt.Sprintf("value %d cannot be represented with a byte", val))
@@ -334,7 +322,7 @@ func (self *Assembler) assembleCommandAlign(p *Program, argv []ParsedCommandArg)
     var fv *expr.Expr
 
     /* evaluate the size */
-    if nb, ex = self.eval(argv[0].Value); ex != nil {
+    if nb, ex = expr.Eval(argv[0].Value, nil); ex != nil {
         return ex
     }
 
@@ -394,7 +382,7 @@ func (self *Assembler) assembleCommandP2Align(p *Program, argv []ParsedCommandAr
     var fv *expr.Expr
 
     /* evaluate the size */
-    if nb, ex = self.eval(argv[0].Value); ex != nil {
+    if nb, ex = expr.Eval(argv[0].Value, nil); ex != nil {
         return ex
     }
 
@@ -489,10 +477,10 @@ func (self *Assembler) Assemble(src string) error {
     /* process every line */
     for _, self.line = range buf {
         switch self.cc++; self.line.Kind {
-            case LineLabel   : if err = self.buildLabel(p, &self.line.Label)       ; err != nil { return err }
-            case LineInstr   : if err = self.buildInstr(p, &self.line.Instruction) ; err != nil { return err }
-            case LineCommand : if err = self.buildCommand(p, &self.line.Command)   ; err != nil { return err }
-            default          : panic("parser yields an invalid line kind")
+            case LineLabel       : if err = self.buildLabel(p, &self.line.Label)                  ; err != nil { return err }
+            case LineCommand     : if err = self.buildCommand(p, &self.line.Command)              ; err != nil { return err }
+            case LineInstruction : if err = self.arch.impl.Build(p, self, &self.line.Instruction) ; err != nil { return err }
+            default              : panic("parser yields an invalid line kind")
         }
     }
 

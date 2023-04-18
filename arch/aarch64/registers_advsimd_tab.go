@@ -528,7 +528,7 @@ const (
 )
 
 const (
-    Vib0 VidxRegisterB = iota
+    Vib0 VidxRegisterB = iota << 8
     Vib1
     Vib2
     Vib3
@@ -563,7 +563,7 @@ const (
 )
 
 const (
-    Vi4b0 VidxRegister4B = iota
+    Vi4b0 VidxRegister4B = iota << 8
     Vi4b1
     Vi4b2
     Vi4b3
@@ -598,7 +598,7 @@ const (
 )
 
 const (
-    Vih0 VidxRegisterH = iota
+    Vih0 VidxRegisterH = iota << 8
     Vih1
     Vih2
     Vih3
@@ -633,7 +633,7 @@ const (
 )
 
 const (
-    Vi2h0 VidxRegister2H = iota
+    Vi2h0 VidxRegister2H = iota << 8
     Vi2h1
     Vi2h2
     Vi2h3
@@ -668,7 +668,7 @@ const (
 )
 
 const (
-    Vis0 VidxRegisterS = iota
+    Vis0 VidxRegisterS = iota << 8
     Vis1
     Vis2
     Vis3
@@ -703,7 +703,7 @@ const (
 )
 
 const (
-    Vid0 VidxRegisterD = iota
+    Vid0 VidxRegisterD = iota << 8
     Vid1
     Vid2
     Vid3

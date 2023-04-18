@@ -54,7 +54,8 @@ func isnumber(cc rune) bool {
            (cc == 'x' || cc == 'X') ||
            (cc >= '0' && cc <= '9') ||
            (cc >= 'a' && cc <= 'f') ||
-           (cc >= 'A' && cc <= 'F')
+           (cc >= 'A' && cc <= 'F') ||
+           (cc == '.')
 }
 
 func append8(m *[]byte, v byte) {

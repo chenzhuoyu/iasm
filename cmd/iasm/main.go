@@ -5,13 +5,12 @@ import (
     `runtime`
     `strings`
 
+    _ `github.com/chenzhuoyu/iasm/arch/aarch64`
+    _ `github.com/chenzhuoyu/iasm/arch/x86_64`
     `github.com/chenzhuoyu/iasm/asm`
     `github.com/chenzhuoyu/iasm/obj`
     `github.com/chenzhuoyu/iasm/repl`
     `nullprogram.com/x/optparse`
-
-    _ `github.com/chenzhuoyu/iasm/arch/aarch64`
-    _ `github.com/chenzhuoyu/iasm/arch/x86_64`
 )
 
 type _FileFormat int
@@ -30,6 +29,7 @@ var formatTab = map[string]_FileFormat {
 
 func usage() {
     println("usage: iasm [OPTIONS] <source>")
+    println("       iasm [OPTIONS] -i")
     println("       iasm -h | --help")
     println()
     println("General Options:")
@@ -43,6 +43,7 @@ func usage() {
     println("    -h, --help                  This help message")
     println("    -o FILE, --output=FILE      Output file name")
     println("    -s, --gas-compat            GAS compatible mode")
+    println("    -i, --interactive           Start as an interactive REPL shell")
     println()
     println("Environment Variables:")
     println("    CPP                         The C Preprocessor")
@@ -52,7 +53,12 @@ func usage() {
     println()
 }
 
-func compile() {
+var _ArchTab = map[string]string {
+    "arm64": "aarch64",
+    "amd64": "x86_64",
+}
+
+func main() {
     var err error
     var src string
     var rem []string
@@ -62,26 +68,29 @@ func compile() {
 
     /* options list */
     opts := []optparse.Option {
-        { "help"       , 'h', optparse.KindNone     },
-        { "arch"       , 'a', optparse.KindRequired },
-        { "define"     , 'D', optparse.KindRequired },
-        { "format"     , 'f', optparse.KindRequired },
-        { "output"     , 'o', optparse.KindRequired },
-        { "gas-compat" , 's', optparse.KindNone     },
+        { "help"        , 'h', optparse.KindNone     },
+        { "arch"        , 'a', optparse.KindRequired },
+        { "define"      , 'D', optparse.KindRequired },
+        { "format"      , 'f', optparse.KindRequired },
+        { "output"      , 'o', optparse.KindRequired },
+        { "gas-compat"  , 's', optparse.KindNone     },
+        { "interactive" , 'i', optparse.KindNone     },
     }
 
     /* parse the options */
     if ret, rem, err = optparse.Parse(opts, os.Args); err != nil {
         println("iasm: error: " + err.Error())
         usage()
+        return
     }
 
     /* default values */
+    arch := ""
+    intr := false
     help := false
     mgas := false
     ffmt := "bin"
     fout := "a.out"
-    arch := "x86_64"
     defs := []string(nil)
 
     /* check the result */
@@ -89,6 +98,7 @@ func compile() {
         switch vv.Short {
             case 'h': help = true
             case 's': mgas = true
+            case 'i': intr = true
             case 'a': arch = vv.Optarg
             case 'f': ffmt = vv.Optarg
             case 'o': fout = vv.Optarg
@@ -105,24 +115,39 @@ func compile() {
     /* check for help */
     if help {
         usage()
+        return
     }
 
-    /* must have source files */
-    if len(rem) == 0 {
-        println("iasm: error: missing input file.")
-        os.Exit(1)
-    }
-
-    /* must have exactly 1 source file */
-    if len(rem) != 1 {
-        println("iasm: error: too many input files.")
-        os.Exit(1)
+    /* default to current architecture */
+    if arch == "" {
+        if arch = _ArchTab[runtime.GOARCH]; arch == "" {
+            arch = "x86_64"
+            println(`iasm: unsupported architecture "` + runtime.GOARCH + `", use "x86_64" instead.`)
+        }
     }
 
     /* create the architecture */
     if arc = asm.GetArch(arch); arc == nil {
         println("iasm: unsupported architecture: " + arch)
         println("iasm: available architectures are: " + strings.Join(asm.SupportedArch(), ", "))
+        os.Exit(1)
+    }
+
+    /* enter interactive mode if command line arguments or explicitly specified */
+    if intr || len(os.Args) == 1 {
+        new(repl.IASM).Start(arc)
+        return
+    }
+
+    /* check four source file */
+    if len(rem) == 0 {
+        println("iasm: error: missing input file.")
+        os.Exit(1)
+    }
+
+    /* must have exactly 1 source file for compilation mode */
+    if len(rem) != 1 {
+        println("iasm: error: too many input files.")
         os.Exit(1)
     }
 
@@ -156,33 +181,5 @@ func compile() {
     if err != nil {
         println("iasm: error: " + err.Error())
         os.Exit(1)
-    }
-}
-
-var _ArchTab = map[string]string {
-    "arm64": "aarch64",
-    "amd64": "x86_64",
-}
-
-func interactive() {
-    var ok bool
-    var id string
-
-    /* get the current architecture ID */
-    if id, ok = _ArchTab[runtime.GOARCH]; !ok {
-        id = "x86_64"
-        println(`* warning: unsupported architecture "` + runtime.GOARCH + `", use "x86_64" instead.`)
-    }
-
-    /* create the architecture, and start the REPL session */
-    ac := asm.GetArch(id)
-    new(repl.IASM).Start(ac)
-}
-
-func main() {
-    if len(os.Args) != 1 {
-        compile()
-    } else {
-        interactive()
     }
 }

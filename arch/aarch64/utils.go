@@ -22,6 +22,13 @@ func u32at(p unsafe.Pointer, i int) uint32 {
     return *(*uint32)(unsafe.Pointer(uintptr(p) + uintptr(i) * 4))
 }
 
+func isident(ch rune) bool {
+    return (ch >= '0' && ch <= '9') ||
+           (ch >= 'A' && ch <= 'Z') ||
+           (ch >= 'a' && ch <= 'z') ||
+           (ch == '_')
+}
+
 func matchany(v uint32, m *uint32, p *uint32, n int) (ret bool) {
     a := unsafe.Pointer(m)
     b := unsafe.Pointer(p)

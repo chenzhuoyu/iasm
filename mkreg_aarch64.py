@@ -2,27 +2,27 @@
 # -*- coding: utf-8 -*-
 
 REG_TAB = [
-    ('B'   , 'B'   , ''),
-    ('H'   , 'H'   , ''),
-    ('S'   , 'S'   , ''),
-    ('D'   , 'D'   , ''),
-    ('Q'   , 'Q'   , ''),
-    ('V8b' , 'V'   , '8B'),
-    ('V16b', 'V'   , '16B'),
-    ('V2h' , 'V'   , '2H'),
-    ('V4h' , 'V'   , '4H'),
-    ('V8h' , 'V'   , '8H'),
-    ('V2s' , 'V'   , '2S'),
-    ('V4s' , 'V'   , '4S'),
-    ('V1d' , 'V'   , '1D'),
-    ('V2d' , 'V'   , '2D'),
-    ('V1q' , 'V'   , '1Q'),
-    ('Vib' , 'Vidx', 'B'),
-    ('Vi4b', 'Vidx', '4B'),
-    ('Vih' , 'Vidx', 'H'),
-    ('Vi2h', 'Vidx', '2H'),
-    ('Vis' , 'Vidx', 'S'),
-    ('Vid' , 'Vidx', 'D'),
+    ('B'   , 'B'   , ''    , 'iota'),
+    ('H'   , 'H'   , ''    , 'iota'),
+    ('S'   , 'S'   , ''    , 'iota'),
+    ('D'   , 'D'   , ''    , 'iota'),
+    ('Q'   , 'Q'   , ''    , 'iota'),
+    ('V8b' , 'V'   , '8B'  , 'iota'),
+    ('V16b', 'V'   , '16B' , 'iota'),
+    ('V2h' , 'V'   , '2H'  , 'iota'),
+    ('V4h' , 'V'   , '4H'  , 'iota'),
+    ('V8h' , 'V'   , '8H'  , 'iota'),
+    ('V2s' , 'V'   , '2S'  , 'iota'),
+    ('V4s' , 'V'   , '4S'  , 'iota'),
+    ('V1d' , 'V'   , '1D'  , 'iota'),
+    ('V2d' , 'V'   , '2D'  , 'iota'),
+    ('V1q' , 'V'   , '1Q'  , 'iota'),
+    ('Vib' , 'Vidx', 'B'   , 'iota << 8'),
+    ('Vi4b', 'Vidx', '4B'  , 'iota << 8'),
+    ('Vih' , 'Vidx', 'H'   , 'iota << 8'),
+    ('Vi2h', 'Vidx', '2H'  , 'iota << 8'),
+    ('Vis' , 'Vidx', 'S'   , 'iota << 8'),
+    ('Vid' , 'Vidx', 'D'   , 'iota << 8'),
 ]
 
 with open('arch/aarch64/registers_advsimd_tab.go', 'w') as fp:
@@ -30,10 +30,10 @@ with open('arch/aarch64/registers_advsimd_tab.go', 'w') as fp:
     print(file = fp)
     print('package aarch64', file = fp)
 
-    for pfx, ty, sfx in REG_TAB:
+    for pfx, ty, sfx, iota in REG_TAB:
         print(file = fp)
         print('const (', file = fp)
-        print('    %s0 %sRegister%s = iota' % (pfx, ty, sfx), file = fp)
+        print('    %s0 %sRegister%s = %s' % (pfx, ty, sfx, iota), file = fp)
 
         for i in range(1, 32):
             print('    %s%d' % (pfx, i), file = fp)
